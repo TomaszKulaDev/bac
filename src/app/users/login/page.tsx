@@ -22,6 +22,7 @@
 //     </div>
 //   );
 // }
+
 "use client";
 
 import { useState } from "react";
@@ -29,9 +30,14 @@ import { useState } from "react";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    setErrorMessage(null); // Resetuje komunikat o błędzie
+    setSuccessMessage(null); // Resetuje komunikat o sukcesie
 
     const response = await fetch("/api/login", {
       method: "POST",
@@ -40,9 +46,9 @@ export default function Login() {
     });
 
     if (response.ok) {
-      alert("Login successful");
+      setSuccessMessage("Login successful"); // Ustawia komunikat o sukcesie
     } else {
-      alert("Login failed");
+      setErrorMessage("Invalid email or password"); // Ustawia komunikat o błędzie
     }
   };
 
@@ -53,6 +59,14 @@ export default function Login() {
         className="bg-white p-6 rounded shadow-md w-full max-w-sm"
       >
         <h1 className="text-2xl font-bold mb-4 text-center">Login</h1>
+        {errorMessage && (
+          <div className="mb-4 text-red-600 text-center">{errorMessage}</div>
+        )}
+        {successMessage && (
+          <div className="mb-4 text-green-600 text-center">
+            {successMessage}
+          </div>
+        )}
         <div className="mb-4">
           <label className="block text-gray-700 mb-2">Email</label>
           <input
