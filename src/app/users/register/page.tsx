@@ -1,19 +1,54 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState(""); // Pole do potwierdzenia hasła
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [name, setName] = useState("");
   const [errors, setErrors] = useState<string[]>([]);
+  const [isPasswordValid, setIsPasswordValid] = useState(false);
+  const [passwordsMatch, setPasswordsMatch] = useState(true);
+
+  useEffect(() => {
+    const isValidPassword = validatePassword(password);
+    const doPasswordsMatch = password === confirmPassword;
+
+    setIsPasswordValid(
+      isValidPassword &&
+        doPasswordsMatch &&
+        !!name.trim() &&
+        name.length <= 20 &&
+        !!email.trim() &&
+        /\S+@\S+\.\S+/.test(email)
+    );
+    setPasswordsMatch(doPasswordsMatch);
+  }, [password, confirmPassword, name, email]);
+
+  const validatePassword = (password: string) => {
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasNumber = /\d/.test(password);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+    const isValidLength = password.length >= 6;
+
+    return (
+      isValidLength &&
+      hasUpperCase &&
+      hasLowerCase &&
+      hasNumber &&
+      hasSpecialChar
+    );
+  };
 
   const validateForm = () => {
     const newErrors: string[] = [];
 
     if (!name.trim()) {
       newErrors.push("Name is required.");
+    } else if (name.length > 20) {
+      newErrors.push("Name cannot be longer than 20 characters.");
     }
     if (!email.trim()) {
       newErrors.push("Email is required.");
@@ -22,19 +57,14 @@ export default function Register() {
     }
     if (!password.trim()) {
       newErrors.push("Password is required.");
-    } else if (password.length < 8) {
-      newErrors.push("Password must be at least 8 characters long.");
-    } else if (!/[A-Z]/.test(password)) {
-      newErrors.push("Password must contain at least one uppercase letter.");
-    } else if (!/[a-z]/.test(password)) {
-      newErrors.push("Password must contain at least one lowercase letter.");
-    } else if (!/[0-9]/.test(password)) {
-      newErrors.push("Password must contain at least one digit.");
-    } else if (!/[!@#$%^&*]/.test(password)) {
-      newErrors.push("Password must contain at least one special character.");
+    } else if (!validatePassword(password)) {
+      newErrors.push(
+        "Password must be at least 6 characters long and include uppercase letters, lowercase letters, numbers, and special characters."
+      );
     }
-
-    if (password !== confirmPassword) {
+    if (!confirmPassword.trim()) {
+      newErrors.push("Confirm Password is required.");
+    } else if (!passwordsMatch) {
       newErrors.push("Passwords do not match.");
     }
 
@@ -54,9 +84,20 @@ export default function Register() {
     });
 
     if (response.ok) {
-      alert("User registered successfully.");
+      alert("User registered");
     } else {
       alert("Registration failed");
+    }
+  };
+
+  const getInputClasses = (value: string, isValid: boolean) => {
+    if (value === "") {
+      return ""; // Neutral color if the input is empty
+    }
+    if (isValid) {
+      return "focus:ring-green-500 border-green-500";
+    } else {
+      return "focus:ring-red-500 border-red-500";
     }
   };
 
@@ -75,25 +116,31 @@ export default function Register() {
           </div>
         )}
         <div className="mb-4">
-          <label className="block text-gray-700 mb-2">Name</label>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="w-full px-3 py-2 border rounded text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Enter your name"
-            autoComplete="username"
-          />
-        </div>
-        <div className="mb-4">
           <label className="block text-gray-700 mb-2">Email</label>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-3 py-2 border rounded text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className={`w-full px-3 py-2 border rounded text-gray-900 focus:outline-none ${getInputClasses(
+              email,
+              /\S+@\S+\.\S+/.test(email)
+            )}`}
             placeholder="Enter your email"
             autoComplete="email"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 mb-2">Name</label>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className={`w-full px-3 py-2 border rounded text-gray-900 focus:outline-none ${getInputClasses(
+              name,
+              name.trim() !== "" && name.length <= 20
+            )}`}
+            placeholder="Enter your name"
+            autoComplete="username"
           />
         </div>
         <div className="mb-4">
@@ -102,9 +149,12 @@ export default function Register() {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-3 py-2 border rounded text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className={`w-full px-3 py-2 border rounded text-gray-900 focus:outline-none ${getInputClasses(
+              password,
+              validatePassword(password)
+            )}`}
             placeholder="Enter your password"
-            autoComplete="new-password"
+            autoComplete="current-password"
           />
         </div>
         <div className="mb-4">
@@ -113,9 +163,12 @@ export default function Register() {
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            className="w-full px-3 py-2 border rounded text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className={`w-full px-3 py-2 border rounded text-gray-900 focus:outline-none ${getInputClasses(
+              confirmPassword,
+              passwordsMatch && validatePassword(confirmPassword)
+            )}`}
             placeholder="Confirm your password"
-            autoComplete="new-password"
+            autoComplete="current-password"
           />
         </div>
         <button
