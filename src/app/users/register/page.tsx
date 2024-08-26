@@ -7,24 +7,26 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [name, setName] = useState("");
+  const [agreeToTerms, setAgreeToTerms] = useState(false); // Checkbox zgody
   const [errors, setErrors] = useState<string[]>([]);
-  const [isPasswordValid, setIsPasswordValid] = useState(false);
+  const [isFormValid, setIsFormValid] = useState(false);
   const [passwordsMatch, setPasswordsMatch] = useState(true);
 
   useEffect(() => {
     const isValidPassword = validatePassword(password);
     const doPasswordsMatch = password === confirmPassword;
-
-    setIsPasswordValid(
+    const isNameValid = name.trim() !== "" && name.length <= 20;
+    const isEmailValid = /\S+@\S+\.\S+/.test(email);
+    const isFormValid =
       isValidPassword &&
-        doPasswordsMatch &&
-        !!name.trim() &&
-        name.length <= 20 &&
-        !!email.trim() &&
-        /\S+@\S+\.\S+/.test(email)
-    );
+      doPasswordsMatch &&
+      isNameValid &&
+      isEmailValid &&
+      agreeToTerms;
+
+    setIsFormValid(isFormValid);
     setPasswordsMatch(doPasswordsMatch);
-  }, [password, confirmPassword, name, email]);
+  }, [password, confirmPassword, name, email, agreeToTerms]);
 
   const validatePassword = (password: string) => {
     const hasUpperCase = /[A-Z]/.test(password);
@@ -67,6 +69,9 @@ export default function Register() {
     } else if (!passwordsMatch) {
       newErrors.push("Passwords do not match.");
     }
+    if (!agreeToTerms) {
+      newErrors.push("You must agree to the privacy policy.");
+    }
 
     setErrors(newErrors);
     return newErrors.length === 0;
@@ -80,11 +85,11 @@ export default function Register() {
     const response = await fetch("/api/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password, name }),
+      body: JSON.stringify({ email, password, name, agreeToTerms }), // Dodano agreeToTerms
     });
 
     if (response.ok) {
-      alert("User registered");
+      alert("User registered successfully");
     } else {
       const errorData = await response.json();
       setErrors([errorData.message]);
@@ -172,9 +177,24 @@ export default function Register() {
             autoComplete="current-password"
           />
         </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 mb-2">
+            <input
+              type="checkbox"
+              checked={agreeToTerms}
+              onChange={(e) => setAgreeToTerms(e.target.checked)}
+              className="mr-2"
+            />
+            I agree to the{" "}
+            <a href="/privacy-policy" className="text-blue-500">
+              Privacy Policy
+            </a>
+          </label>
+        </div>
         <button
           type="submit"
           className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition-colors duration-200"
+          disabled={!isFormValid}
         >
           Register
         </button>
