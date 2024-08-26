@@ -86,7 +86,8 @@ export default function Register() {
     if (response.ok) {
       alert("User registered");
     } else {
-      alert("Registration failed");
+      const errorData = await response.json();
+      setErrors([errorData.message]);
     }
   };
 

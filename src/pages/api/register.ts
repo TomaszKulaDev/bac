@@ -13,6 +13,7 @@ export default async function handler(
 
     const { email, password, name } = req.body;
 
+    // Sprawdzenie, czy wszystkie wymagane pola są wypełnione
     if (!name || !email || !password) {
       return res
         .status(400)
@@ -20,16 +21,22 @@ export default async function handler(
     }
 
     try {
-      // Sprawdź, czy użytkownik już istnieje
-      const existingUser = await User.findOne({ email });
-      if (existingUser) {
-        return res.status(400).json({ message: "User already exists" });
+      // Sprawdź, czy użytkownik o podanym e-mailu już istnieje
+      const existingUserByEmail = await User.findOne({ email });
+      if (existingUserByEmail) {
+        return res.status(400).json({ message: "Email already exists" });
+      }
+
+      // Sprawdź, czy nazwa użytkownika już istnieje
+      const existingUserByName = await User.findOne({ name });
+      if (existingUserByName) {
+        return res.status(400).json({ message: "Username already exists" });
       }
 
       // Hashowanie hasła przed zapisaniem
       const hashedPassword = await bcrypt.hash(password, 10);
 
-      // Zapisz użytkownika do bazy danych z zaszyfrowanym hasłem
+      // Zapisanie nowego użytkownika do bazy danych z zaszyfrowanym hasłem
       const newUser = new User({ email, password: hashedPassword, name });
       await newUser.save();
 
