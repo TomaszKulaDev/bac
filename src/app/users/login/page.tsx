@@ -1,6 +1,8 @@
+//src/app/users/login/page.tsx
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -63,6 +65,13 @@ export default function Login() {
             placeholder="Enter your password"
             autoComplete="current-password"
           />
+        </div>
+        <div className="mb-4 text-right">
+          <Link href="/users/forgot-password" legacyBehavior>
+            <a className="text-blue-500 hover:underline">
+              Forgot your password?
+            </a>
+          </Link>
         </div>
         <button
           type="submit"

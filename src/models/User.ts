@@ -6,16 +6,20 @@ interface IUser extends Document {
   email: string;
   name: string;
   password: string;
-  isVerified: boolean; // Nowe pole: status weryfikacji konta
-  verificationToken?: string; // Nowe pole: token weryfikacyjny, opcjonalny
+  isVerified: boolean;
+  verificationToken?: string;
+  resetPasswordToken?: string; // Nowe pole: token resetu hasła
+  resetPasswordExpires?: Date; // Nowe pole: data wygaśnięcia tokenu resetującego
 }
 
 const UserSchema: Schema = new Schema({
   email: { type: String, required: true, unique: true },
   name: { type: String, required: true },
   password: { type: String, required: true },
-  isVerified: { type: Boolean, default: false }, // Domyślnie konto jest niezweryfikowane
-  verificationToken: { type: String, required: false }, // Token weryfikacyjny, który może być pusty po weryfikacji
+  isVerified: { type: Boolean, default: false },
+  verificationToken: { type: String, required: false },
+  resetPasswordToken: { type: String, required: false }, // Dodajemy token resetu hasła
+  resetPasswordExpires: { type: Date, required: false }, // Dodajemy datę wygaśnięcia tokenu
 });
 
 const User = mongoose.models.User || mongoose.model<IUser>("User", UserSchema);
