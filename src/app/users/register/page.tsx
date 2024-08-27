@@ -1,3 +1,5 @@
+// src/app/users/register/page.tsx
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -7,7 +9,7 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [name, setName] = useState("");
-  const [agreeToTerms, setAgreeToTerms] = useState(false); // Checkbox zgody
+  const [agreeToTerms, setAgreeToTerms] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
   const [isFormValid, setIsFormValid] = useState(false);
   const [passwordsMatch, setPasswordsMatch] = useState(true);
@@ -85,15 +87,25 @@ export default function Register() {
     const response = await fetch("/api/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password, name, agreeToTerms }), // Dodano agreeToTerms
+      body: JSON.stringify({ email, password, name, agreeToTerms }),
     });
 
     if (response.ok) {
       alert("User registered successfully");
+      resetForm(); // Wyczyszczenie formularza po pomyślnej rejestracji
     } else {
       const errorData = await response.json();
       setErrors([errorData.message]);
     }
+  };
+
+  const resetForm = () => {
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
+    setName("");
+    setAgreeToTerms(false);
+    setErrors([]);
   };
 
   const getInputClasses = (value: string, isValid: boolean) => {
