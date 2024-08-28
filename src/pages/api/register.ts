@@ -52,19 +52,19 @@ export default async function handler(
       });
 
       // TO JEST WERSJA LOCALHOST
-      const mailOptions = {
-        from: "noreply@yourdomain.com",
-        to: newUser.email,
-        subject: "Account Verification",
-        html: `<h1>Verify your account</h1><p>Please click the link to verify your account:</p><a href="http://localhost:3000/verify?token=${verificationToken}">Verify Account</a>`,
-      };
-
       // const mailOptions = {
       //   from: "noreply@yourdomain.com",
       //   to: newUser.email,
       //   subject: "Account Verification",
-      //   html: `<h1>Verify your account</h1><p>Please click the link to verify your account:</p><a href="https://bac-eta.vercel.app/verify?token=${verificationToken}">Verify Account</a>`,
+      //   html: `<h1>Verify your account</h1><p>Please click the link to verify your account:</p><a href="http://localhost:3000/verify?token=${verificationToken}">Verify Account</a>`,
       // };
+
+      const mailOptions = {
+        from: "noreply@yourdomain.com",
+        to: newUser.email,
+        subject: "Account Verification",
+        html: `<h1>Verify your account</h1><p>Please click the link to verify your account:</p><a href="https://bac-eta.vercel.app/verify?token=${verificationToken}">Verify Account</a>`,
+      };
 
       await transporter.sendMail(mailOptions);
 

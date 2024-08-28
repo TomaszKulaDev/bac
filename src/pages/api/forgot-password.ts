@@ -41,19 +41,19 @@ export default async function handler(
         },
       });
       // TO JEST WERSJA LOCALHOST
-      const mailOptions = {
-        from: "noreply@yourdomain.com",
-        to: user.email,
-        subject: "Password Reset",
-        html: `<h1>Reset your password</h1><p>Please click the link to reset your password:</p><a href="http://localhost:3000/reset-password?token=${resetToken}">Reset Password</a>`,
-      };
-
       // const mailOptions = {
       //   from: "noreply@yourdomain.com",
       //   to: user.email,
       //   subject: "Password Reset",
-      //   html: `<h1>Reset your password</h1><p>Please click the link to reset your password:</p><a href="https://bac-eta.vercel.app/reset-password?token=${resetToken}">Reset Password</a>`,
+      //   html: `<h1>Reset your password</h1><p>Please click the link to reset your password:</p><a href="http://localhost:3000/reset-password?token=${resetToken}">Reset Password</a>`,
       // };
+
+      const mailOptions = {
+        from: "noreply@yourdomain.com",
+        to: user.email,
+        subject: "Password Reset",
+        html: `<h1>Reset your password</h1><p>Please click the link to reset your password:</p><a href="https://bac-eta.vercel.app/reset-password?token=${resetToken}">Reset Password</a>`,
+      };
 
       await transporter.sendMail(mailOptions);
 
