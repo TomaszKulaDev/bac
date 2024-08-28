@@ -3,6 +3,8 @@ import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
 import CredentialsProvider from "next-auth/providers/credentials";
 import connectToDatabase from "../../../lib/mongodb";
+import User from "@/models/User"; // Zakładając, że masz model User
+import bcrypt from "bcryptjs";
 
 export default NextAuth({
   providers: [
@@ -31,15 +33,25 @@ export default NextAuth({
 
         await connectToDatabase();
 
-        const { email, password } = credentials as Record<string, string>;
+        const { email, password } = credentials;
 
-        const user = {
-          id: "1", // Upewnij się, że id jest stringiem
-          name: "User",
-          email: email,
+        const user = await User.findOne({ email });
+
+        if (!user) {
+          return null;
+        }
+
+        const isValidPassword = await bcrypt.compare(password, user.password);
+
+        if (!isValidPassword) {
+          return null;
+        }
+
+        return {
+          id: user._id.toString(),
+          name: user.name,
+          email: user.email,
         };
-
-        return user;
       },
     }),
   ],

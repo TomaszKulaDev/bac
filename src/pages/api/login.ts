@@ -1,3 +1,4 @@
+import jwt from "jsonwebtoken";
 import type { NextApiRequest, NextApiResponse } from "next";
 import connectToDatabase from "@/lib/mongodb";
 import User from "@/models/User";
@@ -50,8 +51,17 @@ export default async function handler(
         return res.status(400).json({ message: "Invalid credentials" });
       }
 
-      console.log("Login successful");
-      res.status(200).json({ message: "Login successful" });
+      console.log("Generating JWT token");
+      console.log("JWT_SECRET:", process.env.JWT_SECRET);
+
+      const token = jwt.sign(
+        { id: user._id, email: user.email },
+        process.env.JWT_SECRET as string,
+        { expiresIn: "1h" }
+      );
+
+      console.log("JWT token generated:", token);
+      res.status(200).json({ message: "Login successful", token });
     } catch (error) {
       console.error("Login error: ", error);
       res.status(500).json({ message: "Login failed", error });

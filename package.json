@@ -11,6 +11,7 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.4.5",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.5.4",
     "next": "14.2.6",
     "next-auth": "^4.24.7",
@@ -20,6 +21,7 @@
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.6",
     "@types/next-auth": "^3.13.0",
     "@types/node": "^20",
     "@types/nodemailer": "^6.4.15",

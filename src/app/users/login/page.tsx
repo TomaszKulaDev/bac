@@ -1,14 +1,16 @@
-//src/app/users/login/page.tsx
+///src/app/users/login/page.tsx
 "use client";
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const router = useRouter(); // Hook do nawigacji
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,7 +25,17 @@ export default function Login() {
     });
 
     if (response.ok) {
+      const data = await response.json();
+      console.log("Received token:", data.token); // Logowanie odebranego tokenu
+      localStorage.setItem("token", data.token);
+      console.log(
+        "Token saved to localStorage:",
+        localStorage.getItem("token")
+      ); // Logowanie zapisanego tokenu
       setSuccessMessage("Login successful"); // Ustawia komunikat o sukcesie
+
+      // Przekierowanie użytkownika na stronę profilu
+      router.push("/users/profile");
     } else {
       setErrorMessage("Invalid email or password"); // Ustawia komunikat o błędzie
     }
