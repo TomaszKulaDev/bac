@@ -10,25 +10,7 @@ export default function Register() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [name, setName] = useState("");
   const [agreeToTerms, setAgreeToTerms] = useState(false);
-  const [errors, setErrors] = useState<string[]>([]);
-  const [isFormValid, setIsFormValid] = useState(false);
-  const [passwordsMatch, setPasswordsMatch] = useState(true);
-
-  useEffect(() => {
-    const isValidPassword = validatePassword(password);
-    const doPasswordsMatch = password === confirmPassword;
-    const isNameValid = name.trim() !== "" && name.length <= 20;
-    const isEmailValid = /\S+@\S+\.\S+/.test(email);
-    const isFormValid =
-      isValidPassword &&
-      doPasswordsMatch &&
-      isNameValid &&
-      isEmailValid &&
-      agreeToTerms;
-
-    setIsFormValid(isFormValid);
-    setPasswordsMatch(doPasswordsMatch);
-  }, [password, confirmPassword, name, email, agreeToTerms]);
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const validatePassword = (password: string) => {
     const hasUpperCase = /[A-Z]/.test(password);
@@ -47,36 +29,40 @@ export default function Register() {
   };
 
   const validateForm = () => {
-    const newErrors: string[] = [];
+    const newErrors: { [key: string]: string } = {};
 
     if (!name.trim()) {
-      newErrors.push("Name is required.");
+      newErrors.name = "Name is required.";
     } else if (name.length > 20) {
-      newErrors.push("Name cannot be longer than 20 characters.");
+      newErrors.name = "Name cannot be longer than 20 characters.";
     }
+
     if (!email.trim()) {
-      newErrors.push("Email is required.");
+      newErrors.email = "Email is required.";
     } else if (!/\S+@\S+\.\S+/.test(email)) {
-      newErrors.push("Email address is invalid.");
+      newErrors.email = "Email address is invalid.";
     }
+
     if (!password.trim()) {
-      newErrors.push("Password is required.");
+      newErrors.password = "Password is required.";
     } else if (!validatePassword(password)) {
-      newErrors.push(
-        "Password must be at least 6 characters long and include uppercase letters, lowercase letters, numbers, and special characters."
-      );
+      newErrors.password =
+        "Password must be at least 6 characters long and include uppercase letters, lowercase letters, numbers, and special characters.";
     }
+
     if (!confirmPassword.trim()) {
-      newErrors.push("Confirm Password is required.");
-    } else if (!passwordsMatch) {
-      newErrors.push("Passwords do not match.");
+      newErrors.confirmPassword = "Confirm Password is required.";
+    } else if (password !== confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match.";
     }
+
     if (!agreeToTerms) {
-      newErrors.push("You must agree to the privacy policy.");
+      newErrors.agreeToTerms = "You must agree to the privacy policy.";
     }
 
     setErrors(newErrors);
-    return newErrors.length === 0;
+
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -95,7 +81,7 @@ export default function Register() {
       resetForm(); // Wyczyszczenie formularza po pomyślnej rejestracji
     } else {
       const errorData = await response.json();
-      setErrors([errorData.message]);
+      setErrors({ form: errorData.message });
     }
   };
 
@@ -105,14 +91,14 @@ export default function Register() {
     setConfirmPassword("");
     setName("");
     setAgreeToTerms(false);
-    setErrors([]);
+    setErrors({});
   };
 
-  const getInputClasses = (value: string, isValid: boolean) => {
-    if (value === "") {
-      return ""; // Neutral color if the input is empty
+  const getInputClasses = (value: string, errorKey: string) => {
+    if (!value && !errors[errorKey]) {
+      return ""; // Neutral color if the input is empty and no error
     }
-    if (isValid) {
+    if (!errors[errorKey]) {
       return "focus:ring-green-500 border-green-500";
     } else {
       return "focus:ring-red-500 border-red-500";
@@ -126,11 +112,9 @@ export default function Register() {
         className="bg-white p-6 rounded shadow-md w-full max-w-sm"
       >
         <h1 className="text-2xl font-bold mb-4 text-center">Register</h1>
-        {errors.length > 0 && (
+        {errors.form && (
           <div className="mb-4 text-red-600">
-            {errors.map((error, index) => (
-              <p key={index}>{error}</p>
-            ))}
+            <p>{errors.form}</p>
           </div>
         )}
         <div className="mb-4">
@@ -139,13 +123,17 @@ export default function Register() {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            aria-invalid={!!errors.email}
             className={`w-full px-3 py-2 border rounded text-gray-900 focus:outline-none ${getInputClasses(
               email,
-              /\S+@\S+\.\S+/.test(email)
+              "email"
             )}`}
             placeholder="Enter your email"
             autoComplete="email"
           />
+          {errors.email && (
+            <p className="text-red-600 text-sm mt-2">{errors.email}</p>
+          )}
         </div>
         <div className="mb-4">
           <label className="block text-gray-700 mb-2">Name</label>
@@ -153,13 +141,17 @@ export default function Register() {
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            aria-invalid={!!errors.name}
             className={`w-full px-3 py-2 border rounded text-gray-900 focus:outline-none ${getInputClasses(
               name,
-              name.trim() !== "" && name.length <= 20
+              "name"
             )}`}
             placeholder="Enter your name"
             autoComplete="username"
           />
+          {errors.name && (
+            <p className="text-red-600 text-sm mt-2">{errors.name}</p>
+          )}
         </div>
         <div className="mb-4">
           <label className="block text-gray-700 mb-2">Password</label>
@@ -167,13 +159,17 @@ export default function Register() {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            aria-invalid={!!errors.password}
             className={`w-full px-3 py-2 border rounded text-gray-900 focus:outline-none ${getInputClasses(
               password,
-              validatePassword(password)
+              "password"
             )}`}
             placeholder="Enter your password"
-            autoComplete="current-password"
+            autoComplete="new-password"
           />
+          {errors.password && (
+            <p className="text-red-600 text-sm mt-2">{errors.password}</p>
+          )}
         </div>
         <div className="mb-4">
           <label className="block text-gray-700 mb-2">Confirm Password</label>
@@ -181,13 +177,19 @@ export default function Register() {
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
+            aria-invalid={!!errors.confirmPassword}
             className={`w-full px-3 py-2 border rounded text-gray-900 focus:outline-none ${getInputClasses(
               confirmPassword,
-              passwordsMatch && validatePassword(confirmPassword)
+              "confirmPassword"
             )}`}
             placeholder="Confirm your password"
-            autoComplete="current-password"
+            autoComplete="new-password"
           />
+          {errors.confirmPassword && (
+            <p className="text-red-600 text-sm mt-2">
+              {errors.confirmPassword}
+            </p>
+          )}
         </div>
         <div className="mb-4">
           <label className="block text-gray-700 mb-2">
@@ -202,11 +204,13 @@ export default function Register() {
               Privacy Policy
             </a>
           </label>
+          {errors.agreeToTerms && (
+            <p className="text-red-600 text-sm mt-2">{errors.agreeToTerms}</p>
+          )}
         </div>
         <button
           type="submit"
           className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition-colors duration-200"
-          disabled={!isFormValid}
         >
           Register
         </button>

@@ -1,5 +1,6 @@
-///src/app/users/login/page.tsx
-"use client";
+// src/app/users/login/page.tsx
+
+"use client"; // Dodajemy tę linijkę na początku
 
 import { useState } from "react";
 import Link from "next/link";
@@ -10,13 +11,13 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const router = useRouter(); // Hook do nawigacji
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    setErrorMessage(null); // Resetuje komunikat o błędzie
-    setSuccessMessage(null); // Resetuje komunikat o sukcesie
+    setErrorMessage(null);
+    setSuccessMessage(null);
 
     const response = await fetch("/api/login", {
       method: "POST",
@@ -26,18 +27,11 @@ export default function Login() {
 
     if (response.ok) {
       const data = await response.json();
-      console.log("Received token:", data.token); // Logowanie odebranego tokenu
       localStorage.setItem("token", data.token);
-      console.log(
-        "Token saved to localStorage:",
-        localStorage.getItem("token")
-      ); // Logowanie zapisanego tokenu
-      setSuccessMessage("Login successful"); // Ustawia komunikat o sukcesie
-
-      // Przekierowanie użytkownika na stronę profilu
+      setSuccessMessage("Login successful");
       router.push("/users/profile");
     } else {
-      setErrorMessage("Invalid email or password"); // Ustawia komunikat o błędzie
+      setErrorMessage("Invalid email or password");
     }
   };
 
@@ -49,10 +43,12 @@ export default function Login() {
       >
         <h1 className="text-2xl font-bold mb-4 text-center">Login</h1>
         {errorMessage && (
-          <div className="mb-4 text-red-600 text-center">{errorMessage}</div>
+          <div className="mb-4 p-3 bg-red-100 text-red-600 border border-red-600 rounded">
+            {errorMessage}
+          </div>
         )}
         {successMessage && (
-          <div className="mb-4 text-green-600 text-center">
+          <div className="mb-4 p-3 bg-green-100 text-green-600 border border-green-600 rounded">
             {successMessage}
           </div>
         )}
