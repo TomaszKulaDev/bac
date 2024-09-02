@@ -43,9 +43,14 @@ function NavContent() {
             </li>
           </>
         ) : (
-          <li>
-            <Link href="/users/login">Zaloguj</Link>
-          </li>
+          <>
+            <li>
+              <Link href="/users/login">Zaloguj</Link>
+            </li>
+            <li>
+              <Link href="/users/register">Zarejestruj się</Link>
+            </li>
+          </>
         )}
       </ul>
     </nav>
