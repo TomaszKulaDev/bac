@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "../../../contexts/AuthContext";
 
 export default function UserProfile() {
   const [userData, setUserData] = useState({
@@ -12,15 +13,21 @@ export default function UserProfile() {
   });
   const [errors, setErrors] = useState<string[]>([]);
   const [isFormValid, setIsFormValid] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
+  const { isLoggedIn } = useAuth();
 
   useEffect(() => {
+    if (!isLoggedIn) {
+      router.push("/users/login");
+      return;
+    }
+
     async function fetchUserData() {
       const token = localStorage.getItem("token");
-      console.log("Token from localStorage:", token); // Logowanie tokenu przed wysłaniem zapytania
+      setIsLoading(true);
 
       try {
-        console.log("Fetching user data...");
         const response = await fetch("/api/users/me", {
           method: "GET",
           headers: {
@@ -30,12 +37,10 @@ export default function UserProfile() {
         });
 
         if (!response.ok) {
-          console.error("Failed to fetch user data. Status:", response.status);
           throw new Error("Failed to fetch user data");
         }
 
         const data = await response.json();
-        console.log("User data fetched:", data);
         setUserData({
           name: data.name || "",
           email: data.email || "",
@@ -44,11 +49,13 @@ export default function UserProfile() {
       } catch (error) {
         console.error("Error during fetching user data:", error);
         setErrors(["Failed to fetch user data."]);
+      } finally {
+        setIsLoading(false);
       }
     }
 
     fetchUserData();
-  }, []);
+  }, [isLoggedIn, router]);
 
   const validateForm = useCallback(() => {
     const newErrors: string[] = [];
@@ -105,6 +112,14 @@ export default function UserProfile() {
       setErrors(["Failed to update profile."]);
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
