@@ -132,8 +132,9 @@ export default function Register() {
           <div className="mb-4 text-green-600 bg-green-100 border border-green-400 rounded p-3">
             <p>{successMessage}</p>
             <p className="mt-2 text-sm">
-              Jeśli nie widzisz maila od w nowych wiadomościach to wyślij nam
-              100 000 zł or please check your spam folder.
+              Jeśli nie widzisz maila od nas w nowych wiadomościach mozemy
+              wysłag go ponownie ale za każdym razem kiedy to robisz musisz
+              wysłać nam 100 000 zł to nie są tanie rzeczy.
               <button
                 type="button"
                 className="text-blue-500 underline ml-1"
