@@ -1,5 +1,3 @@
-// src/app/users/register/page.tsx
-
 "use client";
 
 import { useState, useEffect } from "react";
@@ -12,6 +10,7 @@ export default function Register() {
   const [name, setName] = useState("");
   const [agreeToTerms, setAgreeToTerms] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -73,18 +72,24 @@ export default function Register() {
 
     if (!validateForm()) return;
 
-    const response = await fetch("/api/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password, name, agreeToTerms }),
-    });
+    try {
+      const response = await fetch("/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password, name, agreeToTerms }),
+      });
 
-    if (response.ok) {
-      alert("User registered successfully");
-      resetForm(); // Wyczyszczenie formularza po pomyślnej rejestracji
-    } else {
-      const errorData = await response.json();
-      setErrors({ form: errorData.message });
+      if (response.ok) {
+        setSuccessMessage(
+          "Registration successful! Please check your email to verify your account and complete the registration process."
+        );
+        resetForm();
+      } else {
+        const errorData = await response.json();
+        setErrors({ form: errorData.message });
+      }
+    } catch (error) {
+      setErrors({ form: "An unexpected error occurred. Please try again." });
     }
   };
 
@@ -99,7 +104,7 @@ export default function Register() {
 
   const getInputClasses = (value: string, errorKey: string) => {
     if (!value && !errors[errorKey]) {
-      return ""; // Neutral color if the input is empty and no error
+      return "";
     }
     if (!errors[errorKey]) {
       return "focus:ring-green-500 border-green-500";
@@ -123,8 +128,27 @@ export default function Register() {
         className="bg-white p-6 rounded shadow-md w-full max-w-sm"
       >
         <h1 className="text-2xl font-bold mb-4 text-center">Register</h1>
+        {successMessage && (
+          <div className="mb-4 text-green-600 bg-green-100 border border-green-400 rounded p-3">
+            <p>{successMessage}</p>
+            <p className="mt-2 text-sm">
+              Jeśli nie widzisz maila od w nowych wiadomościach to wyślij nam
+              100 000 zł or please check your spam folder.
+              <button
+                type="button"
+                className="text-blue-500 underline ml-1"
+                onClick={() => {
+                  // Tutaj możesz dodać logikę do ponownego wysłania emaila
+                  alert("Verification email resent. Please check your inbox.");
+                }}
+              >
+                Resend verification email
+              </button>
+            </p>
+          </div>
+        )}
         {errors.form && (
-          <div className="mb-4 text-red-600">
+          <div className="mb-4 text-red-600 bg-red-100 border border-red-400 rounded p-3">
             <p>{errors.form}</p>
           </div>
         )}
