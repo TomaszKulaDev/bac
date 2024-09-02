@@ -3,6 +3,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -11,6 +12,8 @@ export default function Register() {
   const [name, setName] = useState("");
   const [agreeToTerms, setAgreeToTerms] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const validatePassword = (password: string) => {
     const hasUpperCase = /[A-Z]/.test(password);
@@ -105,6 +108,14 @@ export default function Register() {
     }
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
+
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <form
@@ -155,36 +166,62 @@ export default function Register() {
         </div>
         <div className="mb-4">
           <label className="block text-gray-700 mb-2">Password</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            aria-invalid={!!errors.password}
-            className={`w-full px-3 py-2 border rounded text-gray-900 focus:outline-none ${getInputClasses(
-              password,
-              "password"
-            )}`}
-            placeholder="Enter your password"
-            autoComplete="new-password"
-          />
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              aria-invalid={!!errors.password}
+              className={`w-full px-3 py-2 pr-10 border rounded text-gray-900 focus:outline-none ${getInputClasses(
+                password,
+                "password"
+              )}`}
+              placeholder="Enter your password"
+              autoComplete="new-password"
+            />
+            <button
+              type="button"
+              onClick={togglePasswordVisibility}
+              className="absolute inset-y-0 right-0 pr-3 flex items-center"
+            >
+              {showPassword ? (
+                <FaEyeSlash className="text-gray-500" />
+              ) : (
+                <FaEye className="text-gray-500" />
+              )}
+            </button>
+          </div>
           {errors.password && (
             <p className="text-red-600 text-sm mt-2">{errors.password}</p>
           )}
         </div>
         <div className="mb-4">
           <label className="block text-gray-700 mb-2">Confirm Password</label>
-          <input
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            aria-invalid={!!errors.confirmPassword}
-            className={`w-full px-3 py-2 border rounded text-gray-900 focus:outline-none ${getInputClasses(
-              confirmPassword,
-              "confirmPassword"
-            )}`}
-            placeholder="Confirm your password"
-            autoComplete="new-password"
-          />
+          <div className="relative">
+            <input
+              type={showConfirmPassword ? "text" : "password"}
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              aria-invalid={!!errors.confirmPassword}
+              className={`w-full px-3 py-2 pr-10 border rounded text-gray-900 focus:outline-none ${getInputClasses(
+                confirmPassword,
+                "confirmPassword"
+              )}`}
+              placeholder="Confirm your password"
+              autoComplete="new-password"
+            />
+            <button
+              type="button"
+              onClick={toggleConfirmPasswordVisibility}
+              className="absolute inset-y-0 right-0 pr-3 flex items-center"
+            >
+              {showConfirmPassword ? (
+                <FaEyeSlash className="text-gray-500" />
+              ) : (
+                <FaEye className="text-gray-500" />
+              )}
+            </button>
+          </div>
           {errors.confirmPassword && (
             <p className="text-red-600 text-sm mt-2">
               {errors.confirmPassword}
