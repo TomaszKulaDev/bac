@@ -5,6 +5,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useAuth } from "../../../contexts/AuthContext";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -12,6 +13,7 @@ export default function Login() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const router = useRouter();
+  const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,7 +29,7 @@ export default function Login() {
 
     if (response.ok) {
       const data = await response.json();
-      localStorage.setItem("token", data.token);
+      login(data.token);
       setSuccessMessage("Login successful");
       router.push("/users/profile");
     } else {
