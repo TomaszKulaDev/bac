@@ -133,7 +133,7 @@ export default function Register() {
             <p>{successMessage}</p>
             <p className="mt-2 text-sm">
               Jeśli nie widzisz maila od nas w nowych wiadomościach mozemy
-              wysłag go ponownie ale za każdym razem kiedy to robisz musisz
+              wysłać go ponownie ale za każdym razem kiedy to robimy musisz
               wysłać nam 100 000 zł to nie są tanie rzeczy.
               <button
                 type="button"
