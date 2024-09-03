@@ -28,10 +28,10 @@ export default async function handler(
         .json({ message: "Token is required and must be a string" });
     }
 
-    if (!password || password.length < 6) {
+    if (!password || password.length < 6 || password.length > 72) {
       return res
         .status(400)
-        .json({ message: "Password must be at least 6 characters long" });
+        .json({ message: "Hasło musi mieć od 6 do 72 znaków" });
     }
 
     // Znalezienie użytkownika na podstawie tokenu

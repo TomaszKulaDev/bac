@@ -1,7 +1,7 @@
 //src/app/users/register/page.tsx
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function Register() {
@@ -22,6 +22,15 @@ export default function Register() {
     const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
     const isValidLength = password.length >= 6 && password.length <= 72;
 
+    console.log("Validating password:", {
+      length: password.length,
+      hasUpperCase,
+      hasLowerCase,
+      hasNumber,
+      hasSpecialChar,
+      isValidLength,
+    });
+
     return (
       isValidLength &&
       hasUpperCase &&
@@ -32,37 +41,39 @@ export default function Register() {
   };
 
   const validateForm = () => {
+    console.log("Validating form");
     const newErrors: { [key: string]: string } = {};
 
     if (!name.trim()) {
-      newErrors.name = "Name is required.";
+      newErrors.name = "Imię jest wymagane.";
     } else if (name.length > 20) {
-      newErrors.name = "Name cannot be longer than 20 characters.";
+      newErrors.name = "Imię nie może być dłuższe niż 20 znaków.";
     }
 
     if (!email.trim()) {
-      newErrors.email = "Email is required.";
+      newErrors.email = "Email jest wymagany.";
     } else if (!/\S+@\S+\.\S+/.test(email)) {
-      newErrors.email = "Email address is invalid.";
+      newErrors.email = "Adres email jest nieprawidłowy.";
     }
 
     if (!password.trim()) {
-      newErrors.password = "Password is required.";
+      newErrors.password = "Hasło jest wymagane.";
     } else if (!validatePassword(password)) {
       newErrors.password =
-        "Password must be 6-72 characters long and include uppercase letters, lowercase letters, numbers, and special characters.";
+        "Hasło musi mieć od 6 do 72 znaków i zawierać duże i małe litery, cyfry oraz znaki specjalne.";
     }
 
     if (!confirmPassword.trim()) {
-      newErrors.confirmPassword = "Confirm Password is required.";
+      newErrors.confirmPassword = "Potwierdzenie hasła jest wymagane.";
     } else if (password !== confirmPassword) {
-      newErrors.confirmPassword = "Passwords do not match.";
+      newErrors.confirmPassword = "Hasła nie są identyczne.";
     }
 
     if (!agreeToTerms) {
-      newErrors.agreeToTerms = "You must agree to the privacy policy.";
+      newErrors.agreeToTerms = "Musisz zaakceptować politykę prywatności.";
     }
 
+    console.log("Validation errors:", newErrors);
     setErrors(newErrors);
 
     return Object.keys(newErrors).length === 0;
@@ -71,26 +82,51 @@ export default function Register() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!validateForm()) return;
+    console.log("Form submitted");
+    if (!validateForm()) {
+      console.log("Form validation failed");
+      return;
+    }
+
+    let trimmedPassword = password;
+    if (password.length > 72) {
+      trimmedPassword = password.slice(0, 72);
+      console.log("Password trimmed to 72 characters");
+    }
+
+    console.log(
+      "Sending registration request with password length:",
+      trimmedPassword.length
+    );
 
     try {
       const response = await fetch("/api/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password, name, agreeToTerms }),
+        body: JSON.stringify({
+          email,
+          password: trimmedPassword,
+          name,
+          agreeToTerms,
+        }),
       });
 
+      console.log("Server response status:", response.status);
+
       if (response.ok) {
+        console.log("Registration successful");
         setSuccessMessage(
-          "Registration successful! Please check your email to verify your account and complete the registration process."
+          "Rejestracja udana! Sprawdź swoją skrzynkę email, aby zweryfikować konto i zakończyć proces rejestracji."
         );
         resetForm();
       } else {
         const errorData = await response.json();
+        console.log("Server error:", errorData);
         setErrors({ form: errorData.message });
       }
     } catch (error) {
-      setErrors({ form: "An unexpected error occurred. Please try again." });
+      console.error("Unexpected error:", error);
+      setErrors({ form: "Wystąpił nieoczekiwany błąd. Spróbuj ponownie." });
     }
   };
 
@@ -138,8 +174,11 @@ export default function Register() {
         setErrors({ form: data.message });
       }
     } catch (error) {
-      console.error("Error resending verification email:", error);
-      setErrors({ form: "An unexpected error occurred. Please try again." });
+      console.error(
+        "Błąd przy ponownym wysyłaniu emaila weryfikacyjnego:",
+        error
+      );
+      setErrors({ form: "Wystąpił nieoczekiwany błąd. Spróbuj ponownie." });
     }
   };
 
@@ -149,20 +188,20 @@ export default function Register() {
         onSubmit={handleSubmit}
         className="bg-white p-6 rounded shadow-md w-full max-w-sm"
       >
-        <h1 className="text-2xl font-bold mb-4 text-center">Register</h1>
+        <h1 className="text-2xl font-bold mb-4 text-center">Rejestracja</h1>
         {successMessage && (
           <div className="mb-4 text-green-600 bg-green-100 border border-green-400 rounded p-3">
             <p>{successMessage}</p>
             <p className="mt-2 text-sm">
-              Jeśli nie widzisz maila od nas w nowych wiadomościach mozemy
-              wysłać go ponownie ale za każdym razem kiedy to robimy musisz
-              wysłać nam 100 000 zł to nie są tanie rzeczy.
+              Jeśli nie widzisz maila od nas w nowych wiadomościach, możemy
+              wysłać go ponownie, ale za każdym razem, kiedy to robimy, musisz
+              wysłać nam 100 000 zł. To nie są tanie rzeczy.
               <button
                 type="button"
                 className="text-blue-500 underline ml-1"
                 onClick={resendVerificationEmail}
               >
-                Resend verification email
+                Wyślij email weryfikacyjny ponownie
               </button>
             </p>
           </div>
@@ -183,7 +222,7 @@ export default function Register() {
               email,
               "email"
             )}`}
-            placeholder="Enter your email"
+            placeholder="Wprowadź swój email"
             autoComplete="email"
           />
           {errors.email && (
@@ -191,7 +230,7 @@ export default function Register() {
           )}
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700 mb-2">Name</label>
+          <label className="block text-gray-700 mb-2">Imię</label>
           <input
             type="text"
             value={name}
@@ -201,7 +240,7 @@ export default function Register() {
               name,
               "name"
             )}`}
-            placeholder="Enter your name"
+            placeholder="Wprowadź swoje imię"
             autoComplete="username"
           />
           {errors.name && (
@@ -209,7 +248,7 @@ export default function Register() {
           )}
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700 mb-2">Password</label>
+          <label className="block text-gray-700 mb-2">Hasło</label>
           <div className="relative">
             <input
               type={showPassword ? "text" : "password"}
@@ -220,7 +259,7 @@ export default function Register() {
                 password,
                 "password"
               )}`}
-              placeholder="Enter your password"
+              placeholder="Wprowadź hasło"
               autoComplete="new-password"
             />
             <button
@@ -240,7 +279,7 @@ export default function Register() {
           )}
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700 mb-2">Confirm Password</label>
+          <label className="block text-gray-700 mb-2">Potwierdź hasło</label>
           <div className="relative">
             <input
               type={showConfirmPassword ? "text" : "password"}
@@ -251,7 +290,7 @@ export default function Register() {
                 confirmPassword,
                 "confirmPassword"
               )}`}
-              placeholder="Confirm your password"
+              placeholder="Potwierdź hasło"
               autoComplete="new-password"
             />
             <button
@@ -280,9 +319,9 @@ export default function Register() {
               onChange={(e) => setAgreeToTerms(e.target.checked)}
               className="mr-2"
             />
-            I agree to the{" "}
+            Akceptuję{" "}
             <a href="/privacy-policy" className="text-blue-500">
-              Privacy Policy
+              Politykę Prywatności
             </a>
           </label>
           {errors.agreeToTerms && (
@@ -293,7 +332,7 @@ export default function Register() {
           type="submit"
           className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition-colors duration-200"
         >
-          Register
+          Zarejestruj się
         </button>
       </form>
     </div>
