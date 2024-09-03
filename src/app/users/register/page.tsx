@@ -1,3 +1,4 @@
+//src/app/users/register/page.tsx
 "use client";
 
 import { useState, useEffect } from "react";
@@ -121,6 +122,27 @@ export default function Register() {
     setShowConfirmPassword(!showConfirmPassword);
   };
 
+  const resendVerificationEmail = async () => {
+    try {
+      const response = await fetch("/api/resend-verification", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSuccessMessage(data.message);
+      } else {
+        setErrors({ form: data.message });
+      }
+    } catch (error) {
+      console.error("Error resending verification email:", error);
+      setErrors({ form: "An unexpected error occurred. Please try again." });
+    }
+  };
+
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <form
@@ -138,10 +160,7 @@ export default function Register() {
               <button
                 type="button"
                 className="text-blue-500 underline ml-1"
-                onClick={() => {
-                  // Tutaj możesz dodać logikę do ponownego wysłania emaila
-                  alert("Verification email resent. Please check your inbox.");
-                }}
+                onClick={resendVerificationEmail}
               >
                 Resend verification email
               </button>

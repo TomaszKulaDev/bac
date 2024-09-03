@@ -1,6 +1,6 @@
 // src/app/users/login/page.tsx
 
-"use client"; // Dodajemy tę linijkę na początku
+"use client";
 
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -13,26 +13,35 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [isUnverified, setIsUnverified] = useState(false);
   const router = useRouter();
   const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     setErrors({});
 
-    const response = await fetch("/api/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
+    try {
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
 
-    if (response.ok) {
       const data = await response.json();
-      login(data.token);
-      router.push("/users/profile");
-    } else {
-      setErrors({ form: "Invalid email or password" });
+
+      if (response.ok) {
+        login(data.token);
+        router.push("/users/profile");
+      } else if (response.status === 403) {
+        setIsUnverified(true);
+        setErrors({ form: "You need to verify your email before logging in." });
+      } else {
+        setErrors({ form: data.message || "Invalid email or password" });
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      setErrors({ form: "An unexpected error occurred. Please try again." });
     }
   };
 
@@ -48,6 +57,32 @@ export default function Login() {
       return "focus:ring-green-500 border-green-500";
     } else {
       return "focus:ring-red-500 border-red-500";
+    }
+  };
+
+  const handleResendVerification = async () => {
+    try {
+      const response = await fetch("/api/resend-verification", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setErrors({
+          form: "Verification email resent. Please check your inbox.",
+        });
+        setIsUnverified(false);
+      } else {
+        setErrors({
+          form: `Failed to resend verification email: ${data.message}`,
+        });
+      }
+    } catch (error) {
+      console.error("Error resending verification email:", error);
+      setErrors({ form: "An unexpected error occurred. Please try again." });
     }
   };
 
@@ -125,6 +160,15 @@ export default function Login() {
         >
           Login
         </button>
+        {isUnverified && (
+          <button
+            type="button"
+            onClick={handleResendVerification}
+            className="mt-2 text-blue-500 underline"
+          >
+            Resend verification email
+          </button>
+        )}
       </form>
     </div>
   );
