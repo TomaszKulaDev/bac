@@ -20,7 +20,7 @@ export default function Register() {
     const hasLowerCase = /[a-z]/.test(password);
     const hasNumber = /\d/.test(password);
     const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-    const isValidLength = password.length >= 6;
+    const isValidLength = password.length >= 6 && password.length <= 72;
 
     return (
       isValidLength &&
@@ -50,7 +50,7 @@ export default function Register() {
       newErrors.password = "Password is required.";
     } else if (!validatePassword(password)) {
       newErrors.password =
-        "Password must be at least 6 characters long and include uppercase letters, lowercase letters, numbers, and special characters.";
+        "Password must be 6-72 characters long and include uppercase letters, lowercase letters, numbers, and special characters.";
     }
 
     if (!confirmPassword.trim()) {

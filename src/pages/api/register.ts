@@ -21,6 +21,12 @@ export default async function handler(
         .json({ message: "Name, email, and password are required" });
     }
 
+    if (password.length < 6 || password.length > 72) {
+      return res
+        .status(400)
+        .json({ message: "Password must be between 6 and 72 characters long" });
+    }
+
     try {
       const existingUser = await User.findOne({ email });
       if (existingUser) {
