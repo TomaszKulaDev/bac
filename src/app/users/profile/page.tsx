@@ -4,6 +4,15 @@ import Image from "next/image";
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../../contexts/AuthContext";
+import { z } from "zod";
+
+const profileSchemaBase = z.object({
+  name: z
+    .string()
+    .min(1, "Imię jest wymagane")
+    .max(50, "Imię nie może być dłuższe niż 50 znaków"),
+  email: z.string().email("Nieprawidłowy adres email"),
+});
 
 export default function UserProfile() {
   const [userData, setUserData] = useState({
@@ -11,7 +20,7 @@ export default function UserProfile() {
     email: "",
     profilePicture: "",
   });
-  const [errors, setErrors] = useState<string[]>([]);
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [isFormValid, setIsFormValid] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -49,7 +58,7 @@ export default function UserProfile() {
         });
       } catch (error) {
         console.error("Error during fetching user data:", error);
-        setErrors(["Failed to fetch user data."]);
+        setErrors({ form: "Failed to fetch user data." });
       } finally {
         setIsLoading(false);
       }
@@ -58,17 +67,38 @@ export default function UserProfile() {
     fetchUserData();
   }, [isLoggedIn, router]);
 
+  const validateField = (
+    field: keyof typeof profileSchemaBase.shape,
+    value: string
+  ) => {
+    try {
+      profileSchemaBase.shape[field].parse(value);
+      setErrors((prev) => ({ ...prev, [field]: "" }));
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        setErrors((prev) => ({ ...prev, [field]: error.errors[0].message }));
+      }
+    }
+  };
+
   const validateForm = useCallback(() => {
-    const newErrors: string[] = [];
-    if (!userData.name?.trim()) {
-      newErrors.push("Name is required.");
+    try {
+      profileSchemaBase.parse(userData);
+      setErrors({});
+      return true;
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const newErrors: { [key: string]: string } = {};
+        error.errors.forEach((err) => {
+          if (err.path) {
+            newErrors[err.path[0]] = err.message;
+          }
+        });
+        setErrors(newErrors);
+      }
+      return false;
     }
-    if (!userData.email?.trim()) {
-      newErrors.push("Email is required.");
-    }
-    setErrors(newErrors);
-    return newErrors.length === 0;
-  }, [userData.name, userData.email]);
+  }, [userData]);
 
   useEffect(() => {
     setIsFormValid(validateForm());
@@ -76,7 +106,8 @@ export default function UserProfile() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setUserData({ ...userData, [name]: value });
+    setUserData((prev) => ({ ...prev, [name]: value }));
+    validateField(name as keyof typeof profileSchemaBase.shape, value);
   };
 
   const handleProfilePictureChange = (
@@ -84,7 +115,10 @@ export default function UserProfile() {
   ) => {
     const file = e.target.files?.[0];
     if (file) {
-      setUserData({ ...userData, profilePicture: URL.createObjectURL(file) });
+      setUserData((prev) => ({
+        ...prev,
+        profilePicture: URL.createObjectURL(file),
+      }));
     }
   };
 
@@ -95,35 +129,32 @@ export default function UserProfile() {
     setIsSubmitting(true);
 
     try {
+      const token = localStorage.getItem("token");
       const response = await fetch("/api/users/update-profile", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(userData),
       });
 
       if (response.ok) {
-        alert("Profile updated successfully");
-        router.push("/users/profile");
+        setErrors({ form: "Profile updated successfully." });
       } else {
         const errorData = await response.json();
-        setErrors([errorData.message]);
+        setErrors({ form: errorData.message || "Failed to update profile." });
       }
     } catch (error) {
-      setErrors(["Failed to update profile."]);
+      console.error("Error during profile update:", error);
+      setErrors({ form: "An unexpected error occurred. Please try again." });
     } finally {
       setIsSubmitting(false);
     }
   };
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
-      </div>
-    );
+    return <div>Loading...</div>;
   }
 
   return (
@@ -133,12 +164,16 @@ export default function UserProfile() {
         className="bg-white p-6 rounded shadow-md w-full max-w-sm"
       >
         <h1 className="text-2xl font-bold mb-4 text-center">Edit Profile</h1>
-        {errors.length > 0 && (
-          <div className="mb-4 text-red-600">
-            {errors.map((error, index) => (
-              <p key={index}>{error}</p>
-            ))}
-          </div>
+        {errors.form && (
+          <p
+            className={`mb-4 text-center text-sm font-medium p-2 rounded ${
+              errors.form.includes("successfully")
+                ? "text-green-800 bg-green-100"
+                : "text-red-800 bg-red-100"
+            }`}
+          >
+            {errors.form}
+          </p>
         )}
         <div className="mb-4">
           <label className="block text-gray-700 mb-2">Name</label>
@@ -147,9 +182,12 @@ export default function UserProfile() {
             name="name"
             value={userData.name}
             onChange={handleInputChange}
-            className="w-full px-3 py-2 border rounded text-gray-900 focus:outline-none"
+            className="w-full px-3 py-2 border rounded text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Enter your name"
           />
+          {errors.name && (
+            <p className="text-red-600 text-sm mt-2">{errors.name}</p>
+          )}
         </div>
         <div className="mb-4">
           <label className="block text-gray-700 mb-2">Email</label>
@@ -158,10 +196,13 @@ export default function UserProfile() {
             name="email"
             value={userData.email}
             onChange={handleInputChange}
-            className="w-full px-3 py-2 border rounded text-gray-900 focus:outline-none"
+            className="w-full px-3 py-2 border rounded text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Enter your email"
             autoComplete="email"
           />
+          {errors.email && (
+            <p className="text-red-600 text-sm mt-2">{errors.email}</p>
+          )}
         </div>
         <div className="mb-4">
           <label className="block text-gray-700 mb-2">Profile Picture</label>
@@ -169,7 +210,7 @@ export default function UserProfile() {
             type="file"
             name="profilePicture"
             onChange={handleProfilePictureChange}
-            className="w-full px-3 py-2 border rounded text-gray-900 focus:outline-none"
+            className="w-full px-3 py-2 border rounded text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           {userData.profilePicture && (
             <Image

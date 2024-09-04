@@ -4,32 +4,35 @@ import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { z } from "zod";
 
-const registerSchema = z
-  .object({
-    name: z
-      .string()
-      .min(1, "Imię jest wymagane")
-      .max(20, "Imię nie może być dłuższe niż 20 znaków"),
-    email: z.string().email("Nieprawidłowy adres email"),
-    password: z
-      .string()
-      .min(6, "Hasło musi mieć co najmniej 6 znaków")
-      .max(72, "Hasło nie może być dłuższe niż 72 znaki")
-      .regex(/[A-Z]/, "Hasło musi zawierać przynajmniej jedną dużą literę")
-      .regex(/[a-z]/, "Hasło musi zawierać przynajmniej jedną małą literę")
-      .regex(/[0-9]/, "Hasło musi zawierać przynajmniej jedną cyfrę")
-      .regex(
-        /[!@#$%^&*(),.?":{}|<>]/,
-        "Hasło musi zawierać przynajmniej jeden znak specjalny"
-      ),
-    confirmPassword: z.string(),
-    agreeToTerms: z.boolean().refine((val) => val === true, {
-      message: "Musisz zaakceptować politykę prywatności",
-    }),
-  })
+const registerSchemaBase = z.object({
+  name: z
+    .string()
+    .min(1, "Imię jest wymagane")
+    .max(20, "Imię nie może być dłuższe niż 20 znaków"),
+  email: z.string().email("Nieprawidłowy adres email"),
+  password: z
+    .string()
+    .min(6, "Hasło musi mieć co najmniej 6 znaków")
+    .max(72, "Hasło nie może być dłuższe niż 72 znaki")
+    .regex(/[A-Z]/, "Hasło musi zawierać przynajmniej jedną dużą literę")
+    .regex(/[a-z]/, "Hasło musi zawierać przynajmniej jedną małą literę")
+    .regex(/[0-9]/, "Hasło musi zawierać przynajmniej jedną cyfrę")
+    .regex(
+      /[!@#$%^&*(),.?":{}|<>]/,
+      "Hasło musi zawierać przynajmniej jeden znak specjalny"
+    ),
+  confirmPassword: z.string(),
+  agreeToTerms: z.boolean(),
+});
+
+const registerSchema = registerSchemaBase
   .refine((data) => data.password === data.confirmPassword, {
     message: "Hasła nie są identyczne",
     path: ["confirmPassword"],
+  })
+  .refine((data) => data.agreeToTerms, {
+    message: "Musisz zaakceptować politykę prywatności",
+    path: ["agreeToTerms"],
   });
 
 export default function Register() {
@@ -43,6 +46,44 @@ export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  const validateField = (
+    field: keyof typeof registerSchemaBase.shape,
+    value: string | boolean
+  ) => {
+    try {
+      registerSchemaBase.shape[field].parse(value);
+      setErrors((prev) => ({ ...prev, [field]: "" }));
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        setErrors((prev) => ({ ...prev, [field]: error.errors[0].message }));
+      }
+    }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, type, checked } = e.target;
+    if (type === "checkbox") {
+      setAgreeToTerms(checked);
+      validateField("agreeToTerms", checked);
+    } else {
+      switch (name) {
+        case "name":
+          setName(value);
+          break;
+        case "email":
+          setEmail(value);
+          break;
+        case "password":
+          setPassword(value);
+          break;
+        case "confirmPassword":
+          setConfirmPassword(value);
+          break;
+      }
+      validateField(name as keyof typeof registerSchemaBase.shape, value);
+    }
+  };
 
   const validateForm = () => {
     try {
@@ -119,19 +160,17 @@ export default function Register() {
     if (!value && !errors[errorKey]) {
       return "";
     }
-    if (!errors[errorKey]) {
-      return "focus:ring-green-500 border-green-500";
+    return errors[errorKey]
+      ? "focus:ring-red-500 border-red-500"
+      : "focus:ring-green-500 border-green-500";
+  };
+
+  const togglePasswordVisibility = (field: "password" | "confirmPassword") => {
+    if (field === "password") {
+      setShowPassword(!showPassword);
     } else {
-      return "focus:ring-red-500 border-red-500";
+      setShowConfirmPassword(!showConfirmPassword);
     }
-  };
-
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const toggleConfirmPasswordVisibility = () => {
-    setShowConfirmPassword(!showConfirmPassword);
   };
 
   const resendVerificationEmail = async () => {
@@ -187,8 +226,9 @@ export default function Register() {
           <label className="block text-gray-700 mb-2">Email</label>
           <input
             type="email"
+            name="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={handleInputChange}
             aria-invalid={!!errors.email}
             className={`w-full px-3 py-2 border rounded text-gray-900 focus:outline-none ${getInputClasses(
               email,
@@ -205,8 +245,9 @@ export default function Register() {
           <label className="block text-gray-700 mb-2">Imię</label>
           <input
             type="text"
+            name="name"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={handleInputChange}
             aria-invalid={!!errors.name}
             className={`w-full px-3 py-2 border rounded text-gray-900 focus:outline-none ${getInputClasses(
               name,
@@ -224,8 +265,9 @@ export default function Register() {
           <div className="relative">
             <input
               type={showPassword ? "text" : "password"}
+              name="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={handleInputChange}
               aria-invalid={!!errors.password}
               className={`w-full px-3 py-2 pr-10 border rounded text-gray-900 focus:outline-none ${getInputClasses(
                 password,
@@ -236,7 +278,7 @@ export default function Register() {
             />
             <button
               type="button"
-              onClick={togglePasswordVisibility}
+              onClick={() => togglePasswordVisibility("password")}
               className="absolute inset-y-0 right-0 pr-3 flex items-center"
             >
               {showPassword ? (
@@ -255,8 +297,9 @@ export default function Register() {
           <div className="relative">
             <input
               type={showConfirmPassword ? "text" : "password"}
+              name="confirmPassword"
               value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              onChange={handleInputChange}
               aria-invalid={!!errors.confirmPassword}
               className={`w-full px-3 py-2 pr-10 border rounded text-gray-900 focus:outline-none ${getInputClasses(
                 confirmPassword,
@@ -267,7 +310,7 @@ export default function Register() {
             />
             <button
               type="button"
-              onClick={toggleConfirmPasswordVisibility}
+              onClick={() => togglePasswordVisibility("confirmPassword")}
               className="absolute inset-y-0 right-0 pr-3 flex items-center"
             >
               {showConfirmPassword ? (
@@ -287,8 +330,9 @@ export default function Register() {
           <label className="block text-gray-700 mb-2">
             <input
               type="checkbox"
+              name="agreeToTerms"
               checked={agreeToTerms}
-              onChange={(e) => setAgreeToTerms(e.target.checked)}
+              onChange={handleInputChange}
               className="mr-2"
             />
             Akceptuję{" "}
