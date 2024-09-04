@@ -28,10 +28,24 @@ export default async function handler(
         .json({ message: "Token is required and must be a string" });
     }
 
-    if (!password || password.length < 6 || password.length > 72) {
-      return res
-        .status(400)
-        .json({ message: "Hasło musi mieć od 6 do 72 znaków" });
+    if (!password) {
+      return res.status(400).json({ message: "Hasło jest wymagane" });
+    }
+
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasNumber = /\d/.test(password);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+    if (
+      !(hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar) ||
+      password.length < 6 ||
+      password.length > 72
+    ) {
+      return res.status(400).json({
+        message:
+          "Hasło musi mieć od 6 do 72 znaków i zawierać duże i małe litery, cyfry oraz znaki specjalne",
+      });
     }
 
     // Znalezienie użytkownika na podstawie tokenu

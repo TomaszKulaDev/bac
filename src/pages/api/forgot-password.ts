@@ -28,7 +28,31 @@ export default async function handler(
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(400).json({ message: "Użytkownik nie znaleziony" });
+      return res
+        .status(400)
+        .json({ message: "Nie znaleziono użytkownika z tym adresem e-mail" });
+    }
+
+    if (!user.isVerified) {
+      return res
+        .status(400)
+        .json({
+          message:
+            "Konto nie zostało jeszcze zweryfikowane. Sprawdź swoją skrzynkę e-mail.",
+        });
+    }
+
+    if (
+      user.resetPasswordToken &&
+      user.resetPasswordExpires &&
+      user.resetPasswordExpires > Date.now()
+    ) {
+      return res
+        .status(400)
+        .json({
+          message:
+            "Link do resetowania hasła został już wysłany. Sprawdź swoją skrzynkę e-mail lub spróbuj ponownie później.",
+        });
     }
 
     const resetToken = crypto.randomBytes(32).toString("hex");
