@@ -195,9 +195,8 @@ export default function Register() {
           <div className="mb-4 text-green-600 bg-green-100 border border-green-400 rounded p-3">
             <p>{successMessage}</p>
             <p className="mt-2 text-sm">
-              Jeśli nie widzisz maila od nas w nowych wiadomościach, możemy
-              wysłać go ponownie, ale za każdym razem, kiedy to robimy, musisz
-              wysłać nam 100 000 zł. To nie są tanie rzeczy.
+              Jeśli nie otrzymałeś maila weryfikacyjnego, możesz poprosić o
+              ponowne wysłanie.
               <button
                 type="button"
                 className="text-blue-500 underline ml-1"

@@ -2,28 +2,37 @@
 
 "use client";
 
+// Importy z React i Next.js
 import { useState } from "react";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useAuth } from "../../../contexts/AuthContext";
-import LoadingSpinner from "@/components/LoadingSpinner";
+
+// Importy z zewnętrznych bibliotek
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { z } from "zod";
 
+// Importy lokalne
+import { useAuth } from "../../../contexts/AuthContext";
+import LoadingSpinner from "@/components/LoadingSpinner";
+
+// Schema walidacji formularza logowania
 const loginSchema = z.object({
   email: z.string().email("Nieprawidłowy adres email"),
   password: z.string().min(1, "Hasło jest wymagane"),
 });
 
 export default function Login() {
+  // Stan komponentu
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [isUnverified, setIsUnverified] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Hooki
   const router = useRouter();
   const { login } = useAuth();
-  const [isLoading, setIsLoading] = useState(false);
 
   const validateForm = () => {
     try {
@@ -179,9 +188,7 @@ export default function Login() {
         </div>
         <div className="mb-4 text-right">
           <Link href="/users/forgot-password" legacyBehavior>
-            <a className="text-blue-500 hover:underline">
-              Forgot your password?
-            </a>
+            <a className="text-blue-500 hover:underline">Zapomniałeś hasła?</a>
           </Link>
         </div>
         <button
