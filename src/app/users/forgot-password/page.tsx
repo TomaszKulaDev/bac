@@ -94,7 +94,9 @@ export default function ForgotPassword() {
           </p>
         )}
         <div className="mb-6">
-          <label className="block text-gray-700 mb-2 font-semibold">Email</label>
+          <label className="block text-gray-700 mb-2 font-semibold">
+            Email
+          </label>
           <div className="relative">
             <input
               type="email"
