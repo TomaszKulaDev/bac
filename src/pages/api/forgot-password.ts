@@ -34,12 +34,10 @@ export default async function handler(
     }
 
     if (!user.isVerified) {
-      return res
-        .status(400)
-        .json({
-          message:
-            "Konto nie zostało jeszcze zweryfikowane. Sprawdź swoją skrzynkę e-mail.",
-        });
+      return res.status(400).json({
+        message:
+          "Konto nie zostało jeszcze zweryfikowane. Sprawdź swoją skrzynkę e-mail.",
+      });
     }
 
     if (
@@ -47,12 +45,10 @@ export default async function handler(
       user.resetPasswordExpires &&
       user.resetPasswordExpires > Date.now()
     ) {
-      return res
-        .status(400)
-        .json({
-          message:
-            "Link do resetowania hasła został już wysłany. Sprawdź swoją skrzynkę e-mail lub spróbuj ponownie później.",
-        });
+      return res.status(400).json({
+        message:
+          "Link do resetowania hasła został już wysłany. Sprawdź swoją skrzynkę e-mail lub spróbuj ponownie później.",
+      });
     }
 
     const resetToken = crypto.randomBytes(32).toString("hex");
@@ -95,6 +91,29 @@ export default async function handler(
       .json({ message: "Link do resetowania hasła został wysłany" });
   } catch (error) {
     console.error("Błąd podczas resetowania hasła:", error);
-    res.status(500).json({ message: "Wystąpił błąd podczas wysyłania emaila" });
+
+    if (error instanceof Error) {
+      if (error.name === "MongoError") {
+        return res
+          .status(503)
+          .json({ message: "Błąd bazy danych. Spróbuj ponownie później." });
+      } else if (error.name === "ValidationError") {
+        return res
+          .status(400)
+          .json({ message: "Nieprawidłowe dane wejściowe." });
+      } else if (error.message === "Nodemailer error") {
+        return res
+          .status(502)
+          .json({
+            message: "Nie udało się wysłać e-maila. Spróbuj ponownie później.",
+          });
+      }
+    }
+
+    res
+      .status(500)
+      .json({
+        message: "Wystąpił nieoczekiwany błąd. Spróbuj ponownie później.",
+      });
   }
 }

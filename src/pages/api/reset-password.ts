@@ -12,7 +12,7 @@ export default async function handler(
   console.log("Password received:", req.body.password);
 
   if (req.method !== "POST") {
-    return res.status(405).json({ message: "Method not allowed" });
+    return res.status(405).json({ message: "Metoda niedozwolona" });
   }
 
   try {
@@ -25,7 +25,7 @@ export default async function handler(
     if (!token || typeof token !== "string") {
       return res
         .status(400)
-        .json({ message: "Token is required and must be a string" });
+        .json({ message: "Token jest wymagany i musi być ciągiem znaków" });
     }
 
     if (!password) {
@@ -56,7 +56,9 @@ export default async function handler(
     console.log("Found user:", user);
 
     if (!user) {
-      return res.status(400).json({ message: "Invalid or expired token" });
+      return res
+        .status(400)
+        .json({ message: "Nieprawidłowy lub wygasły token" });
     }
 
     // Hashowanie nowego hasła
@@ -67,9 +69,26 @@ export default async function handler(
     await user.save();
 
     console.log("Password reset successfully for user:", user.email);
-    res.status(200).json({ message: "Password reset successfully" });
+    res.status(200).json({ message: "Hasło zostało pomyślnie zresetowane" });
   } catch (error) {
     console.error("Reset password error:", error);
-    res.status(500).json({ message: "Failed to reset password", error });
+    if (error instanceof Error) {
+      if (error.name === "MongoError") {
+        return res
+          .status(503)
+          .json({ message: "Błąd bazy danych. Spróbuj ponownie później." });
+      } else if (error.name === "ValidationError") {
+        return res
+          .status(400)
+          .json({ message: "Nieprawidłowe dane wejściowe." });
+      } else if (error.message.includes("E11000 duplicate key error")) {
+        return res
+          .status(409)
+          .json({ message: "Konflikt danych. Spróbuj ponownie później." });
+      }
+    }
+    res.status(500).json({
+      message: "Nie udało się zresetować hasła. Spróbuj ponownie później.",
+    });
   }
 }

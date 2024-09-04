@@ -8,40 +8,32 @@ export default async function handler(
   req: AuthenticatedNextApiRequest,
   res: NextApiResponse
 ) {
-  console.log("Handler invoked");
-
   if (req.method !== "POST") {
-    console.log("Invalid method:", req.method);
-    return res.status(405).json({ message: "Method not allowed" });
+    return res.status(405).json({ message: "Metoda niedozwolona" });
   }
 
   try {
     await connectToDatabase();
-    console.log("Connected to database");
 
-    // Użycie middleware autoryzacyjnego
     authMiddleware(req, res, async () => {
-      console.log("Auth middleware passed, user data:", req.user);
-
-      const user = req.user; // Zakładamy, że `authMiddleware` dodało `user` do `req`
+      const user = req.user;
 
       if (!user) {
-        console.log("User not authenticated");
-        return res.status(401).json({ message: "User not authenticated" });
+        return res.status(401).json({ message: "Użytkownik niezalogowany" });
       }
 
       try {
-        // Aktualizacja danych użytkownika
         const updatedUser = await User.findByIdAndUpdate(user.id, req.body, {
           new: true,
+          runValidators: true,
         });
 
         if (!updatedUser) {
-          console.log("User not found");
-          return res.status(404).json({ message: "User not found" });
+          return res
+            .status(404)
+            .json({ message: "Nie znaleziono użytkownika" });
         }
 
-        console.log("User updated successfully:", updatedUser);
         res.status(200).json({
           id: updatedUser._id,
           name: updatedUser.name,
@@ -49,13 +41,33 @@ export default async function handler(
         });
       } catch (updateError) {
         console.error("Profile update error:", updateError);
+        if (updateError instanceof Error) {
+          if (updateError.name === "ValidationError") {
+            return res
+              .status(400)
+              .json({ message: "Nieprawidłowe dane wejściowe." });
+          } else if (
+            updateError.message.includes("E11000 duplicate key error")
+          ) {
+            return res
+              .status(409)
+              .json({ message: "Podany adres email jest już używany." });
+          }
+        }
         return res
           .status(500)
-          .json({ message: "Failed to update profile", error: updateError });
+          .json({
+            message:
+              "Nie udało się zaktualizować profilu. Spróbuj ponownie później.",
+          });
       }
     });
   } catch (error) {
     console.error("Database connection error:", error);
-    res.status(500).json({ message: "Database connection failed", error });
+    res
+      .status(503)
+      .json({
+        message: "Błąd połączenia z bazą danych. Spróbuj ponownie później.",
+      });
   }
 }
