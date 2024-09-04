@@ -2,6 +2,35 @@
 
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { z } from "zod";
+
+const registerSchema = z
+  .object({
+    name: z
+      .string()
+      .min(1, "Imię jest wymagane")
+      .max(20, "Imię nie może być dłuższe niż 20 znaków"),
+    email: z.string().email("Nieprawidłowy adres email"),
+    password: z
+      .string()
+      .min(6, "Hasło musi mieć co najmniej 6 znaków")
+      .max(72, "Hasło nie może być dłuższe niż 72 znaki")
+      .regex(/[A-Z]/, "Hasło musi zawierać przynajmniej jedną dużą literę")
+      .regex(/[a-z]/, "Hasło musi zawierać przynajmniej jedną małą literę")
+      .regex(/[0-9]/, "Hasło musi zawierać przynajmniej jedną cyfrę")
+      .regex(
+        /[!@#$%^&*(),.?":{}|<>]/,
+        "Hasło musi zawierać przynajmniej jeden znak specjalny"
+      ),
+    confirmPassword: z.string(),
+    agreeToTerms: z.boolean().refine((val) => val === true, {
+      message: "Musisz zaakceptować politykę prywatności",
+    }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Hasła nie są identyczne",
+    path: ["confirmPassword"],
+  });
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -15,91 +44,39 @@ export default function Register() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const validatePassword = (password: string) => {
-    const hasUpperCase = /[A-Z]/.test(password);
-    const hasLowerCase = /[a-z]/.test(password);
-    const hasNumber = /\d/.test(password);
-    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-    const isValidLength = password.length >= 6 && password.length <= 72;
-
-    console.log("Validating password:", {
-      length: password.length,
-      hasUpperCase,
-      hasLowerCase,
-      hasNumber,
-      hasSpecialChar,
-      isValidLength,
-    });
-
-    return (
-      isValidLength &&
-      hasUpperCase &&
-      hasLowerCase &&
-      hasNumber &&
-      hasSpecialChar
-    );
-  };
-
   const validateForm = () => {
-    console.log("Validating form");
-    const newErrors: { [key: string]: string } = {};
-
-    if (!name.trim()) {
-      newErrors.name = "Imię jest wymagane.";
-    } else if (name.length > 20) {
-      newErrors.name = "Imię nie może być dłuższe niż 20 znaków.";
+    try {
+      registerSchema.parse({
+        name,
+        email,
+        password,
+        confirmPassword,
+        agreeToTerms,
+      });
+      setErrors({});
+      return true;
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const newErrors: { [key: string]: string } = {};
+        error.errors.forEach((err) => {
+          if (err.path) {
+            newErrors[err.path[0]] = err.message;
+          }
+        });
+        setErrors(newErrors);
+      }
+      return false;
     }
-
-    if (!email.trim()) {
-      newErrors.email = "Email jest wymagany.";
-    } else if (!/\S+@\S+\.\S+/.test(email)) {
-      newErrors.email = "Adres email jest nieprawidłowy.";
-    }
-
-    if (!password.trim()) {
-      newErrors.password = "Hasło jest wymagane.";
-    } else if (!validatePassword(password)) {
-      newErrors.password =
-        "Hasło musi mieć od 6 do 72 znaków i zawierać duże i małe litery, cyfry oraz znaki specjalne.";
-    }
-
-    if (!confirmPassword.trim()) {
-      newErrors.confirmPassword = "Potwierdzenie hasła jest wymagane.";
-    } else if (password !== confirmPassword) {
-      newErrors.confirmPassword = "Hasła nie są identyczne.";
-    }
-
-    if (!agreeToTerms) {
-      newErrors.agreeToTerms = "Musisz zaakceptować politykę prywatności.";
-    }
-
-    console.log("Validation errors:", newErrors);
-    setErrors(newErrors);
-
-    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
-    console.log("Form submitted");
     if (!validateForm()) {
-      console.log("Form validation failed");
       setIsLoading(false);
       return;
     }
-
-    let trimmedPassword = password;
-    if (password.length > 72) {
-      trimmedPassword = password.slice(0, 72);
-      console.log("Password trimmed to 72 characters");
-    }
-
-    console.log(
-      "Sending registration request with password length:",
-      trimmedPassword.length
-    );
 
     try {
       const response = await fetch("/api/register", {
@@ -107,27 +84,22 @@ export default function Register() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email,
-          password: trimmedPassword,
+          password,
           name,
           agreeToTerms,
         }),
       });
 
-      console.log("Server response status:", response.status);
-
       if (response.ok) {
-        console.log("Registration successful");
         setSuccessMessage(
           "Rejestracja udana! Sprawdź swoją skrzynkę email, aby zweryfikować konto i zakończyć proces rejestracji."
         );
         resetForm();
       } else {
         const errorData = await response.json();
-        console.log("Server error:", errorData);
         setErrors({ form: errorData.message });
       }
     } catch (error) {
-      console.error("Unexpected error:", error);
       setErrors({ form: "Wystąpił nieoczekiwany błąd. Spróbuj ponownie." });
     } finally {
       setIsLoading(false);
@@ -178,10 +150,6 @@ export default function Register() {
         setErrors({ form: data.message });
       }
     } catch (error) {
-      console.error(
-        "Błąd przy ponownym wysyłaniu emaila weryfikacyjnego:",
-        error
-      );
       setErrors({ form: "Wystąpił nieoczekiwany błąd. Spróbuj ponownie." });
     }
   };

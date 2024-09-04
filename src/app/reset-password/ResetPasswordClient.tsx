@@ -2,6 +2,27 @@
 
 import { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+import { z } from "zod";
+
+const resetPasswordSchema = z
+  .object({
+    password: z
+      .string()
+      .min(6, "Hasło musi mieć co najmniej 6 znaków")
+      .max(72, "Hasło nie może być dłuższe niż 72 znaki")
+      .regex(/[A-Z]/, "Hasło musi zawierać przynajmniej jedną dużą literę")
+      .regex(/[a-z]/, "Hasło musi zawierać przynajmniej jedną małą literę")
+      .regex(/[0-9]/, "Hasło musi zawierać przynajmniej jedną cyfrę")
+      .regex(
+        /[!@#$%^&*(),.?":{}|<>]/,
+        "Hasło musi zawierać przynajmniej jeden znak specjalny"
+      ),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Hasła nie są identyczne",
+    path: ["confirmPassword"],
+  });
 
 export default function ResetPassword() {
   const [password, setPassword] = useState("");
@@ -46,23 +67,16 @@ export default function ResetPassword() {
   };
 
   const validateForm = () => {
-    const newErrors: string[] = [];
-
-    if (!password.trim()) {
-      newErrors.push("Password is required.");
-    } else if (!validatePassword(password)) {
-      newErrors.push(
-        "Password must be at least 6 characters long and include uppercase letters, lowercase letters, numbers, and special characters."
-      );
+    try {
+      resetPasswordSchema.parse({ password, confirmPassword });
+      setErrors([]);
+      return true;
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        setErrors(error.errors.map((err) => err.message));
+      }
+      return false;
     }
-    if (!confirmPassword.trim()) {
-      newErrors.push("Confirm Password is required.");
-    } else if (!passwordsMatch) {
-      newErrors.push("Passwords do not match.");
-    }
-
-    setErrors(newErrors);
-    return newErrors.length === 0;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {

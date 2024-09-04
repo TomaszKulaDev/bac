@@ -8,6 +8,12 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../../contexts/AuthContext";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import { z } from "zod";
+
+const loginSchema = z.object({
+  email: z.string().email("Nieprawidłowy adres email"),
+  password: z.string().min(1, "Hasło jest wymagane"),
+});
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -19,9 +25,28 @@ export default function Login() {
   const { login } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
 
+  const validateForm = () => {
+    try {
+      loginSchema.parse({ email, password });
+      setErrors({});
+      return true;
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const newErrors: { [key: string]: string } = {};
+        error.errors.forEach((err) => {
+          if (err.path) {
+            newErrors[err.path[0]] = err.message;
+          }
+        });
+        setErrors(newErrors);
+      }
+      return false;
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setErrors({});
+    if (!validateForm()) return;
 
     try {
       setIsLoading(true);
