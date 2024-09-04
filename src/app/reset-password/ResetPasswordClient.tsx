@@ -147,11 +147,13 @@ export default function ResetPassword() {
               type="button"
               onClick={() => togglePasswordVisibility("password")}
               className="absolute inset-y-0 right-0 pr-3 flex items-center"
+              aria-pressed={showPassword}
+              aria-label={showPassword ? "Ukryj hasło" : "Pokaż hasło"}
             >
               {showPassword ? (
-                <FaEyeSlash className="text-gray-500" />
+                <FaEyeSlash className="text-gray-500" aria-hidden="true" />
               ) : (
-                <FaEye className="text-gray-500" />
+                <FaEye className="text-gray-500" aria-hidden="true" />
               )}
             </button>
           </div>

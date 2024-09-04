@@ -24,6 +24,7 @@ function NavContent() {
       <button
         className="lg:hidden block"
         onClick={() => setIsMenuOpen(!isMenuOpen)}
+        aria-expanded={isMenuOpen}
         aria-label={isMenuOpen ? "Zamknij menu" : "Otwórz menu"}
       >
         ☰

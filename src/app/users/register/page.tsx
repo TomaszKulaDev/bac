@@ -259,6 +259,7 @@ export default function Register() {
               value={password}
               onChange={handleInputChange}
               aria-invalid={!!errors.password}
+              aria-describedby="password-error"
               className={`w-full px-3 py-2 pr-10 border rounded text-gray-900 focus:outline-none ${getInputClasses(
                 password,
                 "password"
@@ -270,16 +271,18 @@ export default function Register() {
               type="button"
               onClick={() => togglePasswordVisibility("password")}
               className="absolute inset-y-0 right-0 pr-3 flex items-center"
+              aria-pressed={showPassword}
+              aria-label={showPassword ? "Ukryj hasło" : "Pokaż hasło"}
             >
               {showPassword ? (
-                <FaEyeSlash className="text-gray-500" />
+                <FaEyeSlash className="text-gray-500" aria-hidden="true" />
               ) : (
-                <FaEye className="text-gray-500" />
+                <FaEye className="text-gray-500" aria-hidden="true" />
               )}
             </button>
           </div>
           {errors.password && (
-            <p className="text-red-600 text-sm mt-2">{errors.password}</p>
+            <p id="password-error" className="text-red-600 text-sm mt-2">{errors.password}</p>
           )}
         </div>
         <div className="mb-4">

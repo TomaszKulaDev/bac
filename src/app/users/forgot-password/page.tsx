@@ -85,12 +85,18 @@ export default function ForgotPassword() {
           Zapomniałeś hasła?
         </h1>
         {message && (
-          <p className="mb-4 text-center text-sm font-medium p-3 rounded text-green-800 bg-green-100 border border-green-300">
+          <p
+            className="mb-4 text-center text-sm font-medium p-3 rounded text-green-800 bg-green-100 border border-green-300"
+            role="status"
+          >
             {message}
           </p>
         )}
         {errors.form && (
-          <p className="mb-4 text-center text-sm font-medium p-3 rounded text-red-800 bg-red-100 border border-red-300">
+          <p
+            className="mb-4 text-center text-sm font-medium p-3 rounded text-red-800 bg-red-100 border border-red-300"
+            role="alert"
+          >
             {errors.form}
           </p>
         )}
