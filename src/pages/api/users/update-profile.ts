@@ -3,6 +3,12 @@ import { AuthenticatedNextApiRequest } from "@/types/next-auth";
 import connectToDatabase from "@/lib/mongodb";
 import { authMiddleware } from "@/lib/authMiddleware";
 import User from "@/models/User";
+import { z } from "zod";
+
+const updateProfileSchema = z.object({
+  name: z.string().min(1, "Imię jest wymagane").max(50, "Imię nie może być dłuższe niż 50 znaków"),
+  email: z.string().email("Nieprawidłowy adres email"),
+});
 
 export default async function handler(
   req: AuthenticatedNextApiRequest,
@@ -20,6 +26,11 @@ export default async function handler(
 
       if (!user) {
         return res.status(401).json({ message: "Użytkownik niezalogowany" });
+      }
+
+      const validationResult = updateProfileSchema.safeParse(req.body);
+      if (!validationResult.success) {
+        return res.status(400).json({ message: validationResult.error.errors[0].message });
       }
 
       try {

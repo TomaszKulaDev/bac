@@ -11,3 +11,12 @@ export const passwordSchema = z
     /[!@#$%^&*(),.?":{}|<>]/,
     "Hasło musi zawierać przynajmniej jeden znak specjalny"
   );
+
+export const validatePassword = (password: string): string | null => {
+  const result = passwordSchema.safeParse(password);
+  if (result.success) {
+    return null;
+  } else {
+    return result.error.errors[0].message;
+  }
+};

@@ -5,6 +5,7 @@ import bcrypt from "bcryptjs";
 import nodemailer from "nodemailer";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
+import { validatePassword } from "@/schemas/passwordSchema";
 
 export default async function handler(
   req: NextApiRequest,
@@ -25,21 +26,9 @@ export default async function handler(
         .json({ message: "Imię, email i hasło są wymagane" });
     }
 
-    // Sprawdzenie długości i złożoności hasła
-    const hasUpperCase = /[A-Z]/.test(password);
-    const hasLowerCase = /[a-z]/.test(password);
-    const hasNumber = /\d/.test(password);
-    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-
-    if (
-      password.length < 6 ||
-      password.length > 72 ||
-      !(hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar)
-    ) {
-      return res.status(400).json({
-        message:
-          "Hasło musi mieć od 6 do 72 znaków i zawierać duże i małe litery, cyfry oraz znaki specjalne",
-      });
+    const passwordValidationError = validatePassword(password);
+    if (passwordValidationError) {
+      return res.status(400).json({ message: passwordValidationError });
     }
 
     const existingUser = await User.findOne({ email });

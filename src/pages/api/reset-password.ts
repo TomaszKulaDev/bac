@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import connectToDatabase from "@/lib/mongodb";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
+import { validatePassword } from "@/schemas/passwordSchema";
 
 export default async function handler(
   req: NextApiRequest,
@@ -32,20 +33,9 @@ export default async function handler(
       return res.status(400).json({ message: "Hasło jest wymagane" });
     }
 
-    const hasUpperCase = /[A-Z]/.test(password);
-    const hasLowerCase = /[a-z]/.test(password);
-    const hasNumber = /\d/.test(password);
-    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-
-    if (
-      !(hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar) ||
-      password.length < 6 ||
-      password.length > 72
-    ) {
-      return res.status(400).json({
-        message:
-          "Hasło musi mieć od 6 do 72 znaków i zawierać duże i małe litery, cyfry oraz znaki specjalne",
-      });
+    const passwordValidationError = validatePassword(password);
+    if (passwordValidationError) {
+      return res.status(400).json({ message: passwordValidationError });
     }
 
     // Znalezienie użytkownika na podstawie tokenu

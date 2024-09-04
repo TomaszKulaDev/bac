@@ -3,6 +3,12 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import connectToDatabase from "@/lib/mongodb";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
+import { z } from "zod";
+
+const loginSchema = z.object({
+  email: z.string().email("Nieprawidłowy adres email"),
+  password: z.string().min(1, "Hasło jest wymagane"),
+});
 
 export default async function handler(
   req: NextApiRequest,
@@ -25,6 +31,11 @@ export default async function handler(
 
     const { email, password } = req.body;
     console.log("Request body:", { email, password });
+
+    const validationResult = loginSchema.safeParse({ email, password });
+    if (!validationResult.success) {
+      return res.status(400).json({ message: validationResult.error.errors[0].message });
+    }
 
     if (!email || !password) {
       console.log("Missing email or password");

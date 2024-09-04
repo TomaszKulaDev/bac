@@ -7,6 +7,9 @@ import connectToDatabase from "@/lib/mongodb";
 import User from "@/models/User";
 import nodemailer from "nodemailer";
 import crypto from "crypto";
+import { z } from "zod";
+
+const emailSchema = z.string().email("Nieprawidłowy adres email");
 
 export default async function handler(
   req: NextApiRequest,
@@ -21,8 +24,9 @@ export default async function handler(
 
     const { email } = req.body;
 
-    if (!email) {
-      return res.status(400).json({ message: "Email jest wymagany" });
+    const emailValidationResult = emailSchema.safeParse(email);
+    if (!emailValidationResult.success) {
+      return res.status(400).json({ message: emailValidationResult.error.errors[0].message });
     }
 
     const user = await User.findOne({ email });
