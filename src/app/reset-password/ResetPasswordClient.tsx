@@ -9,6 +9,7 @@ export default function ResetPassword() {
   const [errors, setErrors] = useState<string[]>([]);
   const [isFormValid, setIsFormValid] = useState(false);
   const [passwordsMatch, setPasswordsMatch] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams ? searchParams.get("token") : null;
@@ -66,7 +67,7 @@ export default function ResetPassword() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    setIsLoading(true);
     if (!validateForm()) return;
 
     const response = await fetch(`/api/reset-password?token=${token}`, {
@@ -81,6 +82,7 @@ export default function ResetPassword() {
     } else {
       alert("Failed to reset password");
     }
+    setIsLoading(false);
   };
 
   const getInputClasses = (value: string, isValid: boolean) => {
@@ -142,10 +144,31 @@ export default function ResetPassword() {
         </div>
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition-colors duration-200"
-          disabled={!isFormValid}
+          className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition-colors duration-200 flex items-center justify-center"
+          disabled={!isFormValid || isLoading}
         >
-          Reset Password
+          {isLoading ? (
+            <>
+              <svg className="animate-spin h-5 w-5 mr-3" viewBox="0 0 24 24">
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+              </svg>
+              Resetting...
+            </>
+          ) : (
+            "Reset Password"
+          )}
         </button>
       </form>
     </div>

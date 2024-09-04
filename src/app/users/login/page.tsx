@@ -7,6 +7,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../../contexts/AuthContext";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -16,12 +17,14 @@ export default function Login() {
   const [isUnverified, setIsUnverified] = useState(false);
   const router = useRouter();
   const { login } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
 
     try {
+      setIsLoading(true);
       const response = await fetch("/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -42,6 +45,8 @@ export default function Login() {
     } catch (error) {
       console.error("Login error:", error);
       setErrors({ form: "An unexpected error occurred. Please try again." });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -156,9 +161,11 @@ export default function Login() {
         </div>
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition-colors duration-200"
+          className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition-colors duration-200 flex items-center justify-center"
+          disabled={isLoading}
         >
-          Login
+          {isLoading ? <LoadingSpinner /> : null}
+          {isLoading ? "Logowanie..." : "Zaloguj się"}
         </button>
         {isUnverified && (
           <button
