@@ -44,50 +44,23 @@ export default function Register() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const validateForm = () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+
     try {
-      registerSchema.parse({
+      const validatedData = registerSchema.parse({
         name,
         email,
         password,
         confirmPassword,
         agreeToTerms,
       });
-      setErrors({});
-      return true;
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        const newErrors: { [key: string]: string } = {};
-        error.errors.forEach((err) => {
-          if (err.path) {
-            newErrors[err.path[0]] = err.message;
-          }
-        });
-        setErrors(newErrors);
-      }
-      return false;
-    }
-  };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-
-    if (!validateForm()) {
-      setIsLoading(false);
-      return;
-    }
-
-    try {
       const response = await fetch("/api/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email,
-          password,
-          name,
-          agreeToTerms,
-        }),
+        body: JSON.stringify(validatedData),
       });
 
       if (response.ok) {
@@ -100,7 +73,17 @@ export default function Register() {
         setErrors({ form: errorData.message });
       }
     } catch (error) {
-      setErrors({ form: "Wystąpił nieoczekiwany błąd. Spróbuj ponownie." });
+      if (error instanceof z.ZodError) {
+        const newErrors: { [key: string]: string } = {};
+        error.errors.forEach((err) => {
+          if (err.path) {
+            newErrors[err.path[0]] = err.message;
+          }
+        });
+        setErrors(newErrors);
+      } else {
+        setErrors({ form: "Wystąpił nieoczekiwany błąd. Spróbuj ponownie." });
+      }
     } finally {
       setIsLoading(false);
     }

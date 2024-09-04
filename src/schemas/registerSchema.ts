@@ -19,6 +19,9 @@ export const registerSchema = z
         "Hasło musi zawierać przynajmniej jeden znak specjalny"
       ),
     confirmPassword: z.string(),
+    agreeToTerms: z.boolean().refine((val) => val === true, {
+      message: "Musisz zaakceptować politykę prywatności",
+    }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Hasła nie są identyczne",
