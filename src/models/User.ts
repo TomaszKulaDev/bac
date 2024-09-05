@@ -1,27 +1,28 @@
-// src/models/User.ts
+import mongoose, { Document } from 'mongoose';
 
-import mongoose, { Schema, Document } from "mongoose";
-
-interface IUser extends Document {
-  email: string;
+export interface IUser extends Document {
   name: string;
-  password: string;
+  email: string;
+  password?: string;
+  image?: string;
   isVerified: boolean;
   verificationToken?: string;
-  resetPasswordToken?: string; // Nowe pole: token resetu hasła
-  resetPasswordExpires?: Date; // Nowe pole: data wygaśnięcia tokenu resetującego
+  provider?: string;
 }
 
-const UserSchema: Schema = new Schema({
-  email: { type: String, required: true, unique: true },
+const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  password: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  password: { type: String },
+  image: { type: String },
   isVerified: { type: Boolean, default: false },
-  verificationToken: { type: String, required: false },
-  resetPasswordToken: { type: String, required: false }, // Dodajemy token resetu hasła
-  resetPasswordExpires: { type: Date, required: false }, // Dodajemy datę wygaśnięcia tokenu
+  verificationToken: { type: String },
+  provider: { type: String },
+}, { 
+  timestamps: true,
+  _id: true // Upewniamy się, że MongoDB automatycznie generuje _id
 });
 
-const User = mongoose.models.User || mongoose.model<IUser>("User", UserSchema);
+const User = mongoose.models.User || mongoose.model('User', userSchema);
 
 export default User;

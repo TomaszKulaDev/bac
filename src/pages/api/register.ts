@@ -45,6 +45,7 @@ export default async function handler(
       password: hashedPassword,
       name,
       verificationToken,
+      isVerified: false,
     });
 
     await newUser.save();

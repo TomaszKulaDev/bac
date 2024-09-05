@@ -5,6 +5,7 @@ import "./globals.css";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { AuthProvider, useAuth } from "../contexts/AuthContext";
+import { SessionProvider } from "next-auth/react";
 
 function NavContent() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -15,6 +16,8 @@ function NavContent() {
     logout();
     router.push("/users/login");
   };
+
+  console.log("isLoggedIn:", isLoggedIn);
 
   return (
     <nav className="flex justify-between items-center p-4 bg-gray-800 text-white">
@@ -58,17 +61,23 @@ function NavContent() {
   );
 }
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <AuthProvider>
-      <html lang="en">
-        <body>
-          <header>
-            <NavContent />
-          </header>
-          <main>{children}</main>
-        </body>
-      </html>
-    </AuthProvider>
+    <SessionProvider>
+      <AuthProvider>
+        <html lang="en">
+          <body>
+            <header>
+              <NavContent />
+            </header>
+            <main>{children}</main>
+          </body>
+        </html>
+      </AuthProvider>
+    </SessionProvider>
   );
 }

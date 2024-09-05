@@ -6,6 +6,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 // Importy z zewnętrznych bibliotek
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -59,22 +60,16 @@ export default function Login() {
 
     try {
       setIsLoading(true);
-      const response = await fetch("/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+      const result = await signIn("credentials", {
+        redirect: false,
+        email,
+        password,
       });
 
-      const data = await response.json();
-
-      if (response.ok) {
-        login(data.token);
-        router.push("/users/profile");
-      } else if (response.status === 403) {
-        setIsUnverified(true);
-        setErrors({ form: "You need to verify your email before logging in." });
+      if (result?.error) {
+        setErrors({ form: result.error });
       } else {
-        setErrors({ form: data.message || "Invalid email or password" });
+        router.push("/users/profile");
       }
     } catch (error) {
       console.error("Login error:", error);
@@ -123,6 +118,14 @@ export default function Login() {
       console.error("Error resending verification email:", error);
       setErrors({ form: "An unexpected error occurred. Please try again." });
     }
+  };
+
+  const handleGoogleLogin = () => {
+    signIn("google", { callbackUrl: "/" });
+  };
+
+  const handleFacebookLogin = () => {
+    signIn("facebook", { callbackUrl: "/" });
   };
 
   return (
@@ -209,6 +212,22 @@ export default function Login() {
           </button>
         )}
       </form>
+      <div className="mt-4">
+        <button
+          onClick={handleGoogleLogin}
+          className="w-full bg-red-600 text-white py-2 rounded hover:bg-red-700 transition-colors duration-200"
+        >
+          Zaloguj się przez Google
+        </button>
+      </div>
+      <div className="mt-2">
+        <button
+          onClick={handleFacebookLogin}
+          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition-colors duration-200"
+        >
+          Zaloguj się przez Facebook
+        </button>
+      </div>
     </div>
   );
 }

@@ -4,7 +4,7 @@ import type { NextApiResponse } from "next";
 import { AuthenticatedNextApiRequest } from "@/types/next-auth";
 import connectToDatabase from "@/lib/mongodb";
 import { authMiddleware } from "@/lib/authMiddleware";
-import User from "@/models/User";
+import User, { IUser } from "@/models/User";
 
 export default async function handler(
   req: AuthenticatedNextApiRequest,
@@ -21,29 +21,32 @@ export default async function handler(
     await connectToDatabase();
     console.log("Connected to database");
 
-    // Middleware authMiddleware jest teraz wywoływane przed właściwą obsługą żądania
-    authMiddleware(req, res, async () => {
-      console.log("Auth middleware passed, user data:", req.user);
-      const user = req.user; // Zakładamy, że `authMiddleware` dodało `user` do `req`
+    return new Promise<void>((resolve) => {
+      authMiddleware(req, res, async () => {
+        console.log("Auth middleware passed, user data:", req.user);
+        const user = req.user;
 
-      if (!user) {
-        console.log("User not authenticated");
-        return res.status(401).json({ message: "User not authenticated" });
-      }
+        if (!user) {
+          console.log("User not authenticated");
+          res.status(401).json({ message: "User not authenticated" });
+          return resolve();
+        }
 
-      // Pobieramy dane użytkownika z bazy, jeśli potrzebujemy więcej danych
-      const userDetails = await User.findById(user.id);
-      console.log("User details retrieved:", userDetails);
+        const userDetails = await User.findOne({ email: req.user.email }) as IUser | null;
+        console.log("User details retrieved:", userDetails);
 
-      if (!userDetails) {
-        console.log("User not found with ID:", user.id);
-        return res.status(404).json({ message: "User not found" });
-      }
+        if (!userDetails) {
+          console.log("User not found with email:", req.user.email);
+          res.status(404).json({ message: "User not found" });
+          return resolve();
+        }
 
-      res.status(200).json({
-        id: userDetails._id,
-        name: userDetails.name,
-        email: userDetails.email,
+        res.status(200).json({
+          id: userDetails._id,
+          name: userDetails.name,
+          email: userDetails.email,
+        });
+        resolve();
       });
     });
   } catch (error) {

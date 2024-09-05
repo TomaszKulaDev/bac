@@ -5,8 +5,9 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import connectToDatabase from "../../../lib/mongodb";
 import User from "@/models/User"; // Zakładając, że masz model User
 import bcrypt from "bcryptjs";
+import { NextAuthOptions } from "next-auth";
 
-export default NextAuth({
+export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -19,11 +20,7 @@ export default NextAuth({
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: {
-          label: "Email",
-          type: "email",
-          placeholder: "email@example.com",
-        },
+        email: { label: "Email", type: "email", placeholder: "email@example.com" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
@@ -34,7 +31,6 @@ export default NextAuth({
         await connectToDatabase();
 
         const { email, password } = credentials;
-
         const user = await User.findOne({ email });
 
         if (!user) {
@@ -55,5 +51,39 @@ export default NextAuth({
       },
     }),
   ],
-  secret: process.env.NEXTAUTH_SECRET as string,
-});
+  callbacks: {
+    signIn: async ({ user, account }) => {
+      if (account?.provider === "google") {
+        await connectToDatabase();
+        let existingUser = await User.findOne({ email: user.email });
+        if (!existingUser) {
+          const newUser = new User({
+            name: user.name,
+            email: user.email,
+            image: user.image,
+            isVerified: true,
+            provider: "google",
+          });
+          existingUser = await newUser.save();
+        }
+        user.id = existingUser._id.toString();
+      }
+      return true;
+    },
+    session: async ({ session, token }) => {
+      if (session?.user) {
+        session.user.id = token.sub as string;
+      }
+      return session;
+    },
+    jwt: async ({ token, user }) => {
+      if (user) {
+        token.sub = user.id;
+      }
+      return token;
+    },
+  },
+  secret: process.env.NEXTAUTH_SECRET,
+};
+
+export default NextAuth(authOptions);
