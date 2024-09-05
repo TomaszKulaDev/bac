@@ -25,24 +25,30 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         if (!credentials) {
+          console.log("No credentials provided");
           return null;
         }
 
         await connectToDatabase();
 
         const { email, password } = credentials;
+        console.log("Attempting to find user with email:", email);
         const user = await User.findOne({ email });
 
         if (!user) {
+          console.log("User not found");
           return null;
         }
 
+        console.log("User found, comparing passwords");
         const isValidPassword = await bcrypt.compare(password, user.password);
 
         if (!isValidPassword) {
+          console.log("Invalid password");
           return null;
         }
 
+        console.log("Authentication successful");
         return {
           id: user._id.toString(),
           name: user.name,
@@ -52,36 +58,18 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    signIn: async ({ user, account }) => {
-      if (account?.provider === "google") {
-        await connectToDatabase();
-        let existingUser = await User.findOne({ email: user.email });
-        if (!existingUser) {
-          const newUser = new User({
-            name: user.name,
-            email: user.email,
-            image: user.image,
-            isVerified: true,
-            provider: "google",
-          });
-          existingUser = await newUser.save();
-        }
-        user.id = existingUser._id.toString();
-      }
-      return true;
-    },
-    session: async ({ session, token }) => {
-      if (session?.user) {
-        session.user.id = token.sub as string;
+    async session({ session, token }) {
+      if (session.user && token.sub) {
+        session.user.id = token.sub;
       }
       return session;
     },
-    jwt: async ({ token, user }) => {
+    async jwt({ token, user }) {
       if (user) {
-        token.sub = user.id;
+        token.id = user.id;
       }
       return token;
-    },
+    }
   },
   secret: process.env.NEXTAUTH_SECRET,
 };

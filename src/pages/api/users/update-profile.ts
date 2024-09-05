@@ -26,43 +26,60 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ message: "Metoda niedozwolona" });
-  }
-
   const session = await getServerSession(req, res, authOptions);
-  console.log("Session:", session);
   if (!session) {
     return res.status(401).json({ message: "Nie jesteś zalogowany" });
   }
 
-  try {
-    await connectToDatabase();
-
-    const validationResult = updateProfileSchema.safeParse(req.body);
-    if (!validationResult.success) {
-      return res.status(400).json({ message: validationResult.error.errors[0].message });
+  if (req.method === "GET") {
+    try {
+      await connectToDatabase();
+      const user = await User.findOne({ email: session.user?.email });
+      if (!user) {
+        return res.status(404).json({ message: "Nie znaleziono użytkownika" });
+      }
+      return res.status(200).json({
+        id: user._id.toString(),
+        name: user.name,
+        email: user.email,
+        image: user.image
+      });
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+      return res.status(500).json({ message: "Wystąpił błąd podczas pobierania danych użytkownika" });
     }
+  } else if (req.method === "POST") {
+    try {
+      await connectToDatabase();
 
-    const updatedUser = await User.findOneAndUpdate(
-      { email: session.user.email },
-      { $set: validationResult.data },
-      { new: true, runValidators: true }
-    ).lean() as IUser & { _id: mongoose.Types.ObjectId };
+      const validationResult = updateProfileSchema.safeParse(req.body);
+      if (!validationResult.success) {
+        return res.status(400).json({ message: validationResult.error.errors[0].message });
+      }
 
-    if (!updatedUser) {
-      return res.status(404).json({ message: "Nie znaleziono użytkownika" });
+      const updatedUser = await User.findOneAndUpdate(
+        { email: session.user?.email },
+        { $set: validationResult.data },
+        { new: true, runValidators: true }
+      );
+
+      if (!updatedUser) {
+        return res.status(404).json({ message: "Nie znaleziono użytkownika" });
+      }
+
+      return res.status(200).json({
+        id: updatedUser._id.toString(),
+        name: updatedUser.name,
+        email: updatedUser.email,
+        image: updatedUser.image
+      });
+    } catch (error) {
+      console.error("Profile update error:", error);
+      return res.status(500).json({
+        message: "Nie udało się zaktualizować profilu. Spróbuj ponownie później.",
+      });
     }
-
-    res.status(200).json({
-      id: updatedUser._id.toString(),
-      name: updatedUser.name,
-      email: updatedUser.email,
-    });
-  } catch (error) {
-    console.error("Profile update error:", error);
-    res.status(500).json({
-      message: "Nie udało się zaktualizować profilu. Spróbuj ponownie później.",
-    });
+  } else {
+    return res.status(405).json({ message: "Metoda niedozwolona" });
   }
 }

@@ -43,13 +43,18 @@ const ProfilePage = () => {
 
   const fetchUserData = async () => {
     try {
+      console.log("Fetching user data...");
       const response = await fetch("/api/users/me", {
-        credentials: 'include'
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include"
       });
       console.log("Response status:", response.status);
       if (response.ok) {
         const data: UserData = await response.json();
-        console.log("User data:", data);
+        console.log("User data received:", data);
         setUserData(data);
       } else {
         const errorText = await response.text();
