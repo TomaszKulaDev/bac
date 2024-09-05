@@ -1,12 +1,12 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 
 interface AuthContextType {
   isLoggedIn: boolean;
-  login: (token: string) => void;
-  logout: () => void;
+  login: () => Promise<void>;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -21,13 +21,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     setIsLoggedIn(status === "authenticated");
   }, [status]);
 
-  const login = useCallback(() => {
+  const login = async () => {
     setIsLoggedIn(true);
-  }, []);
+  };
 
-  const logout = useCallback(() => {
+  const logout = async () => {
     setIsLoggedIn(false);
-  }, []);
+  };
 
   return (
     <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
@@ -36,10 +36,4 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 };
 
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-  return context;
-};
+export const useAuth = () => useContext(AuthContext);

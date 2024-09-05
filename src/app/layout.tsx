@@ -9,15 +9,17 @@ import { SessionProvider } from "next-auth/react";
 
 function NavContent() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { isLoggedIn, logout } = useAuth();
+  const auth = useAuth();
+  const isLoggedIn = auth?.isLoggedIn;
+  const logout = auth?.logout;
   const router = useRouter();
 
   const handleLogout = () => {
-    logout();
-    router.push("/users/login");
+    if (logout) {
+      logout();
+      router.push("/users/login");
+    }
   };
-
-  console.log("isLoggedIn:", isLoggedIn);
 
   return (
     <nav className="flex justify-between items-center p-4 bg-gray-800 text-white">

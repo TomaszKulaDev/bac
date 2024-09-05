@@ -33,7 +33,8 @@ export default function Login() {
 
   // Hooki
   const router = useRouter();
-  const { login } = useAuth();
+  const auth = useAuth();
+  const login = auth?.login;
 
   const validateForm = () => {
     try {
@@ -69,6 +70,9 @@ export default function Login() {
       if (result?.error) {
         setErrors({ form: result.error });
       } else {
+        if (login) {
+          await login();
+        }
         router.push("/users/profile");
       }
     } catch (error) {
