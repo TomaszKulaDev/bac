@@ -72,7 +72,7 @@ export default function RootLayout({
     <SessionProvider>
       <AuthProvider>
         <html lang="en">
-          <body>
+          <body className="bg-gray-100 text-gray-900">
             <header>
               <NavContent />
             </header>
