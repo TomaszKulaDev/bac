@@ -46,14 +46,14 @@ const ProfilePage = () => {
       const response = await fetch("/api/users/me", {
         credentials: 'include'
       });
+      console.log("Response status:", response.status);
       if (response.ok) {
         const data: UserData = await response.json();
+        console.log("User data:", data);
         setUserData(data);
-      } else if (response.status === 404) {
-        console.error("User not found in database");
-        // Możesz tutaj dodać logikę do obsługi sytuacji, gdy użytkownik nie istnieje w bazie danych
       } else {
-        console.error("Failed to fetch user data");
+        const errorText = await response.text();
+        console.error("Failed to fetch user data. Status:", response.status, "Error:", errorText);
       }
     } catch (error) {
       console.error("Error fetching user data:", error);
