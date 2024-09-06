@@ -158,12 +158,20 @@ export default function Login() {
           Wybierz jedną z opcji logowania
         </p>
         {isWebViewDetected && (
-          <p className="text-xs text-center mb-4 text-red-500">
-            Uwaga: Jeśli masz problemy z logowaniem przez Google lub Facebook,
-            zapewne otworzyłeś tę stronę w aplikacji messenger z podesłanego
-            linku. Proszę otworzyć tę stronę w przeglądarce która spełnia normy
-            bezpieczeństwa np. Chrome, Edge, Safari, Opera, Firefox, Brave.
-          </p>
+          <div className="text-xs text-center mb-4">
+            <p className="text-red-500 mb-2">
+              Uwaga: Jeśli masz problemy z logowaniem przez Google lub Facebook,
+              zapewne otworzyłeś tę stronę w aplikacji messenger z podesłanego
+              linku. Proszę otworzyć tę stronę w przeglądarce która spełnia
+              normy bezpieczeństwa np. Chrome, Edge, Safari, Opera, Firefox,
+              Brave.
+            </p>
+            <img
+              src="data:image/jpeg;base64,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"
+              alt="Instrukcja otwarcia w przeglądarce"
+              className="mx-auto mt-2"
+            />
+          </div>
         )}
         <div className="mb-4 space-y-2">
           <button
@@ -201,22 +209,18 @@ export default function Login() {
           </button>
           <button
             onClick={handleFacebookLogin}
-            className="w-full bg-white text-gray-700 py-2 px-4 rounded border border-gray-300 hover:bg-gray-50 transition-colors duration-200 flex items-center justify-center"
+            className="w-full bg-blue-600 text-white py-2 px-4 rounded border border-blue-700 hover:bg-blue-700 transition-colors duration-200 flex items-center justify-center"
             type="button"
           >
             <svg
               width="24"
               height="24"
               viewBox="0 0 24 24"
-              fill="none"
+              fill="currentColor"
               xmlns="http://www.w3.org/2000/svg"
               className="mr-3"
             >
-              <rect width="24" height="24" rx="12" fill="#1877F2" />
-              <path
-                d="M16.6711 15.4688L17.2031 12H13.875V9.75C13.875 8.80078 14.3391 7.875 15.8297 7.875H17.3438V4.92188C17.3438 4.92188 15.9703 4.6875 14.6578 4.6875C11.9156 4.6875 10.125 6.34922 10.125 9.35625V12H7.07812V15.4688H10.125V23.8547C10.7367 23.9508 11.3625 24 12 24C12.6375 24 13.2633 23.9508 13.875 23.8547V15.4688H16.6711Z"
-                fill="white"
-              />
+              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
             </svg>
             Dołącz z Facebook
           </button>
