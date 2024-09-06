@@ -24,8 +24,10 @@ const loginSchema = z.object({
 
 function isWebView() {
   return (
-    typeof window !== 'undefined' &&
-    /(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari)/i.test(navigator.userAgent) ||
+    (typeof window !== "undefined" &&
+      /(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari)/i.test(
+        navigator.userAgent
+      )) ||
     /Android.*Version\/[0-9].[0-9]/.test(navigator.userAgent)
   );
 }
@@ -136,11 +138,11 @@ export default function Login() {
   };
 
   const handleGoogleLogin = () => {
-    signIn('google', { callbackUrl: '/' });
+    signIn("google", { callbackUrl: "/" });
   };
 
   const handleFacebookLogin = () => {
-    signIn('facebook', { callbackUrl: '/' });
+    signIn("facebook", { callbackUrl: "/" });
   };
 
   return (
@@ -157,8 +159,10 @@ export default function Login() {
         </p>
         {isWebViewDetected && (
           <p className="text-xs text-center mb-4 text-red-500">
-            Uwaga: Jeśli masz problemy z logowaniem przez Google lub Facebook, 
-            spróbuj otworzyć tę stronę w pełnej przeglądarce.
+            Uwaga: Jeśli masz problemy z logowaniem przez Google lub Facebook,
+            zapewne otworzyłeś tę stronę w aplikacji messenger z podesłanego
+            linku. Proszę otworzyć tę stronę w przeglądarce która spełnia normy
+            bezpieczeństwa np. Chrome, Safari, Firefox, Edge, Opera, Brave.
           </p>
         )}
         <div className="mb-4 space-y-2">
