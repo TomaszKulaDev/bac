@@ -1,9 +1,9 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 
-export default function OpenInBrowser() {
+function OpenInBrowserContent() {
   const searchParams = useSearchParams();
   const [url, setUrl] = useState("");
 
@@ -53,5 +53,13 @@ export default function OpenInBrowser() {
         Udostępnij / Kopiuj link
       </button>
     </div>
+  );
+}
+
+export default function OpenInBrowser() {
+  return (
+    <Suspense fallback={<div>Ładowanie...</div>}>
+      <OpenInBrowserContent />
+    </Suspense>
   );
 }
