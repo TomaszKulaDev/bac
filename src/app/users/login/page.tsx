@@ -45,6 +45,7 @@ export default function Login() {
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [isUnverified, setIsUnverified] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isWebViewDetected, setIsWebViewDetected] = useState(false);
 
   // Hooki
   const router = useRouter();
@@ -52,7 +53,9 @@ export default function Login() {
   const login = auth?.login;
 
   useEffect(() => {
-    if (isWebView()) {
+    const webViewDetected = isWebView();
+    setIsWebViewDetected(webViewDetected);
+    if (webViewDetected) {
       alert(
         "Dla lepszego doświadczenia, otwórz tę stronę w pełnej przeglądarce."
       );
@@ -175,6 +178,12 @@ export default function Login() {
         <p className="text-sm text-center mb-4 text-gray-600">
           Wybierz jedną z opcji logowania
         </p>
+        {isWebViewDetected && (
+          <p className="text-xs text-center mb-4 text-red-500">
+            Uwaga: Jeśli masz problemy z logowaniem przez Google lub Facebook, 
+            spróbuj otworzyć tę stronę w pełnej przeglądarce.
+          </p>
+        )}
         <div className="mb-4 space-y-2">
           <button
             onClick={handleGoogleLogin}
@@ -300,8 +309,14 @@ export default function Login() {
           className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition-colors duration-200 flex items-center justify-center"
           disabled={isLoading}
         >
-          {isLoading ? <LoadingSpinner /> : null}
-          {isLoading ? "Logowanie..." : "Zaloguj się"}
+          {isLoading ? (
+            <>
+              <LoadingSpinner />
+              <span className="ml-2">Logowanie...</span>
+            </>
+          ) : (
+            "Zaloguj się"
+          )}
         </button>
         {isUnverified && (
           <button

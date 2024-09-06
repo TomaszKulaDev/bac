@@ -53,9 +53,12 @@ export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isWebViewDetected, setIsWebViewDetected] = useState(false);
 
   useEffect(() => {
-    if (isWebView()) {
+    const webViewDetected = isWebView();
+    setIsWebViewDetected(webViewDetected);
+    if (webViewDetected) {
       alert(
         "Dla lepszego doświadczenia, otwórz tę stronę w pełnej przeglądarce."
       );
@@ -151,9 +154,7 @@ export default function Register() {
         setConfirmPassword("");
         setAgreeToTerms(false);
       } else {
-        setErrors({
-          form: data.message || "Wystąpił błąd podczas rejestracji",
-        });
+        setErrors({ form: data.message || "Wystąpił błąd podczas rejestracji" });
       }
     } catch (error) {
       setErrors({ form: "Wystąpił nieoczekiwany błąd. Spróbuj ponownie." });
@@ -201,11 +202,12 @@ export default function Register() {
         <p className="text-sm text-center mb-4 text-gray-600">
           Wybierz jedną z opcji rejestracji.
         </p>
-        <p className="text-xs text-center mb-4 text-red-500">
-          Uwaga: Jeśli korzystasz z urządzenia mobilnego i masz problemy z
-          logowaniem przez Google lub Facebook, spróbuj otworzyć tę stronę w
-          pełnej przeglądarce.
-        </p>
+        {isWebViewDetected && (
+          <p className="text-xs text-center mb-4 text-red-500">
+            Uwaga: Jeśli masz problemy z logowaniem przez Google lub Facebook, 
+            spróbuj otworzyć tę stronę w pełnej przeglądarce.
+          </p>
+        )}
         <div className="mb-4 space-y-2">
           <button
             onClick={handleGoogleLogin}
@@ -253,7 +255,9 @@ export default function Register() {
               xmlns="http://www.w3.org/2000/svg"
               className="mr-3"
             >
-              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+              <path
+                d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"
+              />
             </svg>
             Dołącz z Facebook
           </button>
@@ -264,9 +268,7 @@ export default function Register() {
           <div className="flex-grow border-t border-gray-300"></div>
         </div>
         {successMessage && (
-          <div className="mb-4 text-green-600 text-center">
-            {successMessage}
-          </div>
+          <div className="mb-4 text-green-600 text-center">{successMessage}</div>
         )}
         {errors.form && (
           <div className="mb-4 text-red-600 text-center">{errors.form}</div>
