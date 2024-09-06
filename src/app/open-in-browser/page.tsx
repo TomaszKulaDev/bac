@@ -22,11 +22,12 @@ function OpenInBrowserContent() {
         Otwórz w przeglądarce
       </h1>
       <p className="text-center mb-4">
-        Aby kontynuować logowanie, skopiuj poniższy link i otwórz go w
-        przeglądarce systemowej:
+        Aby kontynuować logowanie, kliknij poniższy link lub skopiuj go i otwórz w przeglądarce systemowej:
       </p>
       <div className="bg-white p-4 rounded shadow-md w-full max-w-md break-all">
-        <p className="text-blue-500">{url}</p>
+        <a href={url} className="text-blue-500 underline" target="_blank" rel="noopener noreferrer">
+          {url}
+        </a>
       </div>
       <button
         className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors duration-200"
