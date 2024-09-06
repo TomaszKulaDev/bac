@@ -162,7 +162,7 @@ export default function Login() {
             Uwaga: Jeśli masz problemy z logowaniem przez Google lub Facebook,
             zapewne otworzyłeś tę stronę w aplikacji messenger z podesłanego
             linku. Proszę otworzyć tę stronę w przeglądarce która spełnia normy
-            bezpieczeństwa np. Chrome, Safari, Firefox, Edge, Opera, Brave.
+            bezpieczeństwa np. Chrome, Edge, Safari, Opera, Firefox, Brave.
           </p>
         )}
         <div className="mb-4 space-y-2">
