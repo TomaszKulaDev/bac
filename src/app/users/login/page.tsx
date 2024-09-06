@@ -29,9 +29,9 @@ function isWebView() {
   );
 }
 
-function openInBrowser(url: string) {
+function openInBrowser(url: string, router: any) {
   if (isWebView()) {
-    window.open(url, "_system");
+    router.push(`/open-in-browser?url=${encodeURIComponent(url)}`);
   } else {
     window.location.href = url;
   }
@@ -154,7 +154,8 @@ export default function Login() {
     openInBrowser(
       `${
         process.env.NEXT_PUBLIC_APP_URL
-      }/api/auth/signin/google?callbackUrl=${encodeURIComponent("/")}`
+      }/api/auth/signin/google?callbackUrl=${encodeURIComponent("/")}`,
+      router
     );
   };
 
@@ -162,7 +163,8 @@ export default function Login() {
     openInBrowser(
       `${
         process.env.NEXT_PUBLIC_APP_URL
-      }/api/auth/signin/facebook?callbackUrl=${encodeURIComponent("/")}`
+      }/api/auth/signin/facebook?callbackUrl=${encodeURIComponent("/")}`,
+      router
     );
   };
 
@@ -180,7 +182,7 @@ export default function Login() {
         </p>
         {isWebViewDetected && (
           <p className="text-xs text-center mb-4 text-red-500">
-            Uwaga: Jeśli masz problemy z logowaniem przez Google lub Facebook, 
+            Uwaga: Jeśli masz problemy z logowaniem przez Google lub Facebook,
             spróbuj otworzyć tę stronę w pełnej przeglądarce.
           </p>
         )}
