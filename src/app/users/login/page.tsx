@@ -3,7 +3,7 @@
 "use client";
 
 // Importy z React i Next.js
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
@@ -22,6 +22,21 @@ const loginSchema = z.object({
   password: z.string().min(1, "Hasło jest wymagane"),
 });
 
+function isWebView() {
+  return (
+    /(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari)/i.test(navigator.userAgent) ||
+    /Android.*Version\/[0-9].[0-9]/.test(navigator.userAgent)
+  );
+}
+
+function openInBrowser(url: string) {
+  if (isWebView()) {
+    window.open(url, "_system");
+  } else {
+    window.location.href = url;
+  }
+}
+
 export default function Login() {
   // Stan komponentu
   const [email, setEmail] = useState("");
@@ -35,6 +50,14 @@ export default function Login() {
   const router = useRouter();
   const auth = useAuth();
   const login = auth?.login;
+
+  useEffect(() => {
+    if (isWebView()) {
+      alert(
+        "Dla lepszego doświadczenia, otwórz tę stronę w pełnej przeglądarce."
+      );
+    }
+  }, []);
 
   const validateForm = () => {
     try {
@@ -125,11 +148,19 @@ export default function Login() {
   };
 
   const handleGoogleLogin = () => {
-    signIn("google", { callbackUrl: "/" });
+    openInBrowser(
+      `${
+        process.env.NEXT_PUBLIC_APP_URL
+      }/api/auth/signin/google?callbackUrl=${encodeURIComponent("/")}`
+    );
   };
 
   const handleFacebookLogin = () => {
-    signIn("facebook", { callbackUrl: "/" });
+    openInBrowser(
+      `${
+        process.env.NEXT_PUBLIC_APP_URL
+      }/api/auth/signin/facebook?callbackUrl=${encodeURIComponent("/")}`
+    );
   };
 
   return (
@@ -142,7 +173,7 @@ export default function Login() {
           Dołącz szybko z:
         </h1>
         <p className="text-sm text-center mb-4 text-gray-600">
-          Nic nie publikujemy w Twoim imieniu
+          Wybierz jedną z opcji logowania
         </p>
         <div className="mb-4 space-y-2">
           <button
