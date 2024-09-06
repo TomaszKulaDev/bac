@@ -22,45 +22,18 @@ const loginSchema = z.object({
   password: z.string().min(1, "Hasło jest wymagane"),
 });
 
-function isWebView() {
-  return (
-    /(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari)/i.test(navigator.userAgent) ||
-    /Android.*Version\/[0-9].[0-9]/.test(navigator.userAgent)
-  );
-}
-
-function openInBrowser(url: string, router: any) {
-  if (isWebView()) {
-    router.push(`/open-in-browser?url=${encodeURIComponent(url)}`);
-  } else {
-    window.location.href = url;
-  }
-}
-
 export default function Login() {
   // Stan komponentu
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
-  const [isUnverified, setIsUnverified] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isWebViewDetected, setIsWebViewDetected] = useState(false);
 
   // Hooki
   const router = useRouter();
   const auth = useAuth();
   const login = auth?.login;
-
-  useEffect(() => {
-    const webViewDetected = isWebView();
-    setIsWebViewDetected(webViewDetected);
-    if (webViewDetected) {
-      alert(
-        "Dla lepszego doświadczenia, otwórz tę stronę w pełnej przeglądarce."
-      );
-    }
-  }, []);
 
   const validateForm = () => {
     try {
@@ -138,7 +111,6 @@ export default function Login() {
         setErrors({
           form: "Verification email resent. Please check your inbox.",
         });
-        setIsUnverified(false);
       } else {
         setErrors({
           form: `Failed to resend verification email: ${data.message}`,
@@ -151,21 +123,11 @@ export default function Login() {
   };
 
   const handleGoogleLogin = () => {
-    openInBrowser(
-      `${
-        process.env.NEXT_PUBLIC_APP_URL
-      }/api/auth/signin/google?callbackUrl=${encodeURIComponent("/")}`,
-      router
-    );
+    signIn('google', { callbackUrl: '/' });
   };
 
   const handleFacebookLogin = () => {
-    openInBrowser(
-      `${
-        process.env.NEXT_PUBLIC_APP_URL
-      }/api/auth/signin/facebook?callbackUrl=${encodeURIComponent("/")}`,
-      router
-    );
+    signIn('facebook', { callbackUrl: '/' });
   };
 
   return (
@@ -180,12 +142,6 @@ export default function Login() {
         <p className="text-sm text-center mb-4 text-gray-600">
           Wybierz jedną z opcji logowania
         </p>
-        {isWebViewDetected && (
-          <p className="text-xs text-center mb-4 text-red-500">
-            Uwaga: Jeśli masz problemy z logowaniem przez Google lub Facebook,
-            spróbuj otworzyć tę stronę w pełnej przeglądarce.
-          </p>
-        )}
         <div className="mb-4 space-y-2">
           <button
             onClick={handleGoogleLogin}
@@ -320,7 +276,7 @@ export default function Login() {
             "Zaloguj się"
           )}
         </button>
-        {isUnverified && (
+        {errors.form && (
           <button
             type="button"
             onClick={handleResendVerification}

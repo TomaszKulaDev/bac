@@ -27,21 +27,6 @@ const registerSchema = registerSchemaBase
     path: ["agreeToTerms"],
   });
 
-function isWebView() {
-  return (
-    /(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari)/i.test(navigator.userAgent) ||
-    /Android.*Version\/[0-9].[0-9]/.test(navigator.userAgent)
-  );
-}
-
-function openInBrowser(url: string) {
-  if (isWebView()) {
-    window.open(url, "_system");
-  } else {
-    window.location.href = url;
-  }
-}
-
 export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -53,17 +38,6 @@ export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isWebViewDetected, setIsWebViewDetected] = useState(false);
-
-  useEffect(() => {
-    const webViewDetected = isWebView();
-    setIsWebViewDetected(webViewDetected);
-    if (webViewDetected) {
-      alert(
-        "Dla lepszego doświadczenia, otwórz tę stronę w pełnej przeglądarce."
-      );
-    }
-  }, []);
 
   const validateField = (
     field: keyof typeof registerSchemaBase.shape,
@@ -177,19 +151,11 @@ export default function Register() {
   };
 
   const handleGoogleLogin = () => {
-    openInBrowser(
-      `${
-        process.env.NEXT_PUBLIC_APP_URL
-      }/api/auth/signin/google?callbackUrl=${encodeURIComponent("/")}`
-    );
+    signIn('google', { callbackUrl: '/' });
   };
 
   const handleFacebookLogin = () => {
-    openInBrowser(
-      `${
-        process.env.NEXT_PUBLIC_APP_URL
-      }/api/auth/signin/facebook?callbackUrl=${encodeURIComponent("/")}`
-    );
+    signIn('facebook', { callbackUrl: '/' });
   };
 
   return (
@@ -202,12 +168,6 @@ export default function Register() {
         <p className="text-sm text-center mb-4 text-gray-600">
           Wybierz jedną z opcji rejestracji.
         </p>
-        {isWebViewDetected && (
-          <p className="text-xs text-center mb-4 text-red-500">
-            Uwaga: Jeśli masz problemy z logowaniem przez Google lub Facebook, 
-            spróbuj otworzyć tę stronę w pełnej przeglądarce.
-          </p>
-        )}
         <div className="mb-4 space-y-2">
           <button
             onClick={handleGoogleLogin}
