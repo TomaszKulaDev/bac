@@ -22,6 +22,14 @@ const loginSchema = z.object({
   password: z.string().min(1, "Hasło jest wymagane"),
 });
 
+function isWebView() {
+  return (
+    typeof window !== 'undefined' &&
+    /(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari)/i.test(navigator.userAgent) ||
+    /Android.*Version\/[0-9].[0-9]/.test(navigator.userAgent)
+  );
+}
+
 export default function Login() {
   // Stan komponentu
   const [email, setEmail] = useState("");
@@ -29,11 +37,16 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [isLoading, setIsLoading] = useState(false);
+  const [isWebViewDetected, setIsWebViewDetected] = useState(false);
 
   // Hooki
   const router = useRouter();
   const auth = useAuth();
   const login = auth?.login;
+
+  useEffect(() => {
+    setIsWebViewDetected(isWebView());
+  }, []);
 
   const validateForm = () => {
     try {
@@ -142,6 +155,12 @@ export default function Login() {
         <p className="text-sm text-center mb-4 text-gray-600">
           Wybierz jedną z opcji logowania
         </p>
+        {isWebViewDetected && (
+          <p className="text-xs text-center mb-4 text-red-500">
+            Uwaga: Jeśli masz problemy z logowaniem przez Google lub Facebook, 
+            spróbuj otworzyć tę stronę w pełnej przeglądarce.
+          </p>
+        )}
         <div className="mb-4 space-y-2">
           <button
             onClick={handleGoogleLogin}
