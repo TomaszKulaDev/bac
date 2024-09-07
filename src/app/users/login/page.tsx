@@ -161,12 +161,13 @@ export default function Login() {
         {isWebViewDetected && (
           <div className="text-xs text-center mb-4">
             <p className="text-red-500 mb-2">
-              Uwaga: Opcje logowania przez Google lub Facebooka, zostały ukryte
-              ponieważ otworzyłeś tę stronę w aplikacji messenger ktora ma
-              własną przeglądarkę. niestety nie spełnia ona wymaganych norm
-              bezpieczeństwa dlatego widzisz ten komunikat. Proszę otworzyć tę
-              stronę w przeglądarce która spełnia normy bezpieczeństwa np.
-              Chrome, Edge, Safari, Opera, Firefox, Brave.
+              Uwaga: Opcje rejestracji przez Google lub Facebook zostały ukryte,
+              ponieważ otworzyłeś tę stronę w aplikacji Messenger, która
+              korzysta z wbudowanej przeglądarki (&quot;WebView&quot;).
+              Niestety, nie spełnia ona wymaganych standardów bezpieczeństwa,
+              dlatego widzisz ten komunikat. Prosimy o otwarcie tej strony w
+              przeglądarce spełniającej standardy bezpieczeństwa, np. Chrome,
+              Edge, Safari, Opera, Firefox, lub Brave.
             </p>
           </div>
         )}
