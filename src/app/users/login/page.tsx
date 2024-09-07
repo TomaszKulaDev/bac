@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
+import Image from "next/image";
 
 // Importy z zewnętrznych bibliotek
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -24,10 +25,8 @@ const loginSchema = z.object({
 
 function isWebView() {
   return (
-    (typeof window !== "undefined" &&
-      /(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari)/i.test(
-        navigator.userAgent
-      )) ||
+    typeof window !== 'undefined' &&
+    /(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari)/i.test(navigator.userAgent) ||
     /Android.*Version\/[0-9].[0-9]/.test(navigator.userAgent)
   );
 }
@@ -160,15 +159,15 @@ export default function Login() {
         {isWebViewDetected && (
           <div className="text-xs text-center mb-4">
             <p className="text-red-500 mb-2">
-              Uwaga: Jeśli masz problemy z logowaniem przez Google lub Facebook,
-              zapewne otworzyłeś tę stronę w aplikacji messenger z podesłanego
-              linku. Proszę otworzyć tę stronę w przeglądarce która spełnia
-              normy bezpieczeństwa np. Chrome, Edge, Safari, Opera, Firefox,
-              Brave.
+              Uwaga: Jeśli masz problemy z logowaniem przez Google lub Facebook, 
+              zapewne otworzyłeś tę stronę w aplikacji messenger z podesłanego linku. 
+              Proszę otworzyć tę stronę w przeglądarce która spełnia normy bezpieczeństwa np. Chrome, Edge, Safari, Opera, Firefox, Brave.
             </p>
-            <img
+            <Image
               src="data:image/jpeg;base64,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"
               alt="Instrukcja otwarcia w przeglądarce"
+              width={320}
+              height={320}
               className="mx-auto mt-2"
             />
           </div>
