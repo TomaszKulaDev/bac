@@ -169,6 +169,18 @@ export default function Login() {
               przeglądarce spełniającej standardy bezpieczeństwa, np. Chrome,
               Edge, Safari, Opera, Firefox, lub Brave.
             </p>
+            <div className="mt-4">
+              <Image
+                src="/images/open-in-browser.png"
+                alt="Jak otworzyć stronę w przeglądarce"
+                width={300}
+                height={150}
+                className="mx-auto"
+              />
+              <p className="text-sm text-gray-600 mt-2">
+                Kliknij w trzy kropki w prawym górnym rogu, a następnie wybierz &quot;Otwórz w przeglądarce&quot;
+              </p>
+            </div>
           </div>
         )}
         {isWebViewDetected ? null : (
