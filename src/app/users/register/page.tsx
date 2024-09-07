@@ -191,9 +191,13 @@ export default function Register() {
               ponieważ otworzyłeś tę stronę w aplikacji Messenger, która
               korzysta z wbudowanej przeglądarki (&quot;WebView&quot;).
               Niestety, nie spełnia ona wymaganych standardów bezpieczeństwa,
-              dlatego widzisz ten komunikat. Prosimy o otwarcie tej strony w
-              przeglądarce spełniającej standardy bezpieczeństwa, np. Chrome,
-              Edge, Safari, Opera, Firefox, lub Brave.
+              dlatego widzisz ten komunikat.
+              <br />
+              Prosimy o otwarcie tej strony w przeglądarce spełniającej
+              standardy bezpieczeństwa, np. Chrome, Edge, Safari, Opera,
+              Firefox, lub Brave.
+              <br />
+              Instrukcja jak to zrobić znajduje się poniżej.
             </p>
             <div className="mt-4">
               <Image
@@ -204,7 +208,8 @@ export default function Register() {
                 className="mx-auto"
               />
               <p className="text-sm text-gray-600 mt-2">
-                Kliknij w trzy kropki w prawym górnym rogu, a następnie wybierz &quot;Otwórz w przeglądarce&quot;
+                Kliknij w trzy kropki w prawym górnym rogu, a następnie wybierz
+                &quot;Otwórz w przeglądarce&quot;
               </p>
             </div>
           </div>
