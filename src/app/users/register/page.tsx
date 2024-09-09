@@ -6,6 +6,7 @@ import { z } from "zod";
 import { passwordSchema } from "../../../schemas/passwordSchema";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
+import Link from "next/link";
 
 const registerSchemaBase = z.object({
   name: z
@@ -274,6 +275,12 @@ export default function Register() {
           <div className="flex-grow border-t border-gray-300"></div>
           <span className="px-4 text-gray-500 text-sm">lub</span>
           <div className="flex-grow border-t border-gray-300"></div>
+        </div>
+
+        <div className="text-center text-sm text-gray-500">
+          <Link href="/privacy-policy" className="hover:underline">
+            Polityka Prywatności
+          </Link>
         </div>
 
         {successMessage && (

@@ -255,6 +255,11 @@ export default function Login() {
           <span className="px-4 text-gray-500 text-sm">lub</span>
           <div className="flex-grow border-t border-gray-300"></div>
         </div>
+        <div className="text-center text-sm text-gray-500">
+          <Link href="/privacy-policy" className="hover:underline">
+            Polityka Prywatności
+          </Link>
+        </div>
         {errors.form && (
           <div className="mb-4 text-red-600">
             <p>{errors.form}</p>
