@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { AuthProvider, useAuth } from "../contexts/AuthContext";
 import { SessionProvider } from "next-auth/react";
+import { signOut } from "next-auth/react";
 
 function NavContent() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -14,11 +15,12 @@ function NavContent() {
   const logout = auth?.logout;
   const router = useRouter();
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await signOut({ redirect: false });
     if (logout) {
       logout();
-      router.push("/users/login");
     }
+    router.push("/users/login");
   };
 
   return (
