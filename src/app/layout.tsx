@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { AuthProvider, useAuth } from "../contexts/AuthContext";
 import { SessionProvider } from "next-auth/react";
 import { signOut } from "next-auth/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 function NavContent() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -79,6 +80,7 @@ export default function RootLayout({
               <NavContent />
             </header>
             <main>{children}</main>
+            <SpeedInsights />
           </body>
         </html>
       </AuthProvider>
