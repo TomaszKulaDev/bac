@@ -403,9 +403,13 @@ export default function Register() {
               className="mr-2"
             />
             Akceptuję{" "}
-            <a href="/privacy-policy" className="text-blue-500">
+            <Link href="/privacy-policy" className="text-blue-500 hover:underline">
               Politykę Prywatności
-            </a>
+            </Link>{" "}
+            oraz{" "}
+            <Link href="/terms-of-service" className="text-blue-500 hover:underline">
+              Warunki Korzystania z Usługi
+            </Link>
           </label>
           {errors.agreeToTerms && (
             <p className="text-red-600 text-sm mt-2">{errors.agreeToTerms}</p>
