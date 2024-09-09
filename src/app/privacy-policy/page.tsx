@@ -4,11 +4,17 @@ export default function PrivacyPolicy() {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-6">Polityka Prywatności</h1>
-      <p className="mb-4">Ostatnia aktualizacja: {new Date().toLocaleDateString()}</p>
+      <p className="mb-4">
+        Ostatnia aktualizacja: {new Date().toLocaleDateString()}
+      </p>
 
       <section className="mb-6">
         <h2 className="text-2xl font-semibold mb-3">1. Wprowadzenie</h2>
-        <p>Niniejsza Polityka Prywatności opisuje, w jaki sposób zbieramy, używamy i chronimy Twoje dane osobowe podczas korzystania z naszej aplikacji.</p>
+        <p>
+          Niniejsza Polityka Prywatności opisuje, w jaki sposób zbieramy,
+          używamy i chronimy Twoje dane osobowe podczas korzystania z naszej
+          aplikacji.
+        </p>
       </section>
 
       <section className="mb-6">
@@ -17,7 +23,9 @@ export default function PrivacyPolicy() {
         <ul className="list-disc list-inside ml-4">
           <li>Adres e-mail</li>
           <li>Imię i nazwisko</li>
-          <li>Dane profilowe z kont Google i Facebook (jeśli używane do logowania)</li>
+          <li>
+            Dane profilowe z kont Google i Facebook (jeśli używane do logowania)
+          </li>
         </ul>
       </section>
 
@@ -33,12 +41,18 @@ export default function PrivacyPolicy() {
 
       <section className="mb-6">
         <h2 className="text-2xl font-semibold mb-3">4. Ochrona danych</h2>
-        <p>Stosujemy odpowiednie środki bezpieczeństwa, aby chronić Twoje dane przed nieautoryzowanym dostępem, utratą lub zmianą.</p>
+        <p>
+          Stosujemy odpowiednie środki bezpieczeństwa, aby chronić Twoje dane
+          przed nieautoryzowanym dostępem, utratą lub zmianą.
+        </p>
       </section>
 
       <section className="mb-6">
         <h2 className="text-2xl font-semibold mb-3">5. Udostępnianie danych</h2>
-        <p>Nie udostępniamy Twoich danych osobowych stronom trzecim bez Twojej zgody, z wyjątkiem sytuacji wymaganych prawem.</p>
+        <p>
+          Nie udostępniamy Twoich danych osobowych stronom trzecim bez Twojej
+          zgody, z wyjątkiem sytuacji wymaganych prawem.
+        </p>
       </section>
 
       <section className="mb-6">
@@ -54,7 +68,10 @@ export default function PrivacyPolicy() {
 
       <section className="mb-6">
         <h2 className="text-2xl font-semibold mb-3">7. Kontakt</h2>
-        <p>W przypadku pytań dotyczących naszej Polityki Prywatności, prosimy o kontakt pod adresem: privacy@baciata.pl</p>
+        <p>
+          W przypadku pytań dotyczących naszej Polityki Prywatności, prosimy o
+          kontakt pod adresem: privacy@baciata.pl
+        </p>
       </section>
     </div>
   );
