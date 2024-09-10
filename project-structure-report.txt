@@ -1,8 +1,8 @@
 Aktualna struktura projektu (61 plików)
 
 Statystyki projektu:
-Całkowity rozmiar: 0.82 MB
-Całkowita liczba linii kodu: 18579
+Całkowity rozmiar: 0.83 MB
+Całkowita liczba linii kodu: 18787
 Typy plików: {".local":1,".json":4,"":1,".ts":18,".mjs":3,".txt":1,".png":1,".md":1,".tsx":27,".ico":1,".css":1,".js":1,".tsbuildinfo":1}
 
 Struktura plików projektu:
@@ -14,7 +14,7 @@ Struktura plików projektu:
 ├── package-lock.json (.json, 265.20 KB)
 ├── package.json (.json, 1.07 KB)
 ├── postcss.config.mjs (.mjs, 0.13 KB)
-├── project-structure-report.txt (.txt, 143.49 KB)
+├── project-structure-report.txt (.txt, 149.69 KB)
 ├── public/
 │   └── images/
 │       └── open-in-browser.png (.png, 36.73 KB)
@@ -101,7 +101,7 @@ Struktura plików projektu:
 │   │   └── next-auth.d.ts (.ts, 0.60 KB)
 │   └── utils/
 │       ├── projectAnalyzer.d.ts (.ts, 0.15 KB)
-│       └── projectAnalyzer.js (.js, 30.73 KB)
+│       └── projectAnalyzer.js (.js, 34.66 KB)
 ├── tailwind.config.ts (.ts, 0.50 KB)
 ├── tsconfig.json (.json, 1.03 KB)
 └── tsconfig.tsbuildinfo (.tsbuildinfo, 246.16 KB)
@@ -126,6 +126,9 @@ Plik: C:\Users\xxx\bac\.env.local
   Strona: Nie
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -226,6 +229,9 @@ Plik: C:\Users\xxx\bac\.eslintrc.json
   Strona: Nie
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -326,6 +332,9 @@ Plik: C:\Users\xxx\bac\.gitignore
   Strona: Nie
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -426,6 +435,9 @@ Plik: C:\Users\xxx\bac\next-env.d.ts
   Strona: Nie
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -542,6 +554,9 @@ Plik: C:\Users\xxx\bac\next.config.mjs
   Strona: Nie
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -642,6 +657,9 @@ Plik: C:\Users\xxx\bac\package-lock.json
   Strona: Nie
 
   Zarządzanie stanem:
+    Wykryte biblioteki: mobx
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -742,6 +760,9 @@ Plik: C:\Users\xxx\bac\package.json
   Strona: Nie
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -842,6 +863,9 @@ Plik: C:\Users\xxx\bac\postcss.config.mjs
   Strona: Nie
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -926,13 +950,13 @@ Plik: C:\Users\xxx\bac\postcss.config.mjs
 
 Plik: C:\Users\xxx\bac\project-structure-report.txt
   Typ: .txt
-  Rozmiar: 143.49 KB
-  Liczba linii: 7035
-  Ostatnia modyfikacja: 2024-09-10T21:51:54.104Z
+  Rozmiar: 149.69 KB
+  Liczba linii: 7142
+  Ostatnia modyfikacja: 2024-09-10T21:57:01.862Z
   Importy: 0 (zewnętrzne: 0, lokalne: 0)
   Eksporty: 0
   Komponenty: 0
-  Hooki: 364
+  Hooki: 390
   Komponent kliencki: Nie
   Schematy Zod: 0
   Użycie Next Image: 0
@@ -942,6 +966,9 @@ Plik: C:\Users\xxx\bac\project-structure-report.txt
   Strona: Nie
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -1042,6 +1069,9 @@ Plik: C:\Users\xxx\bac\public\images\open-in-browser.png
   Strona: Nie
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -1142,6 +1172,9 @@ Plik: C:\Users\xxx\bac\README.md
   Strona: Nie
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -1242,6 +1275,9 @@ Plik: C:\Users\xxx\bac\src\app\accommodations\page.tsx
   Strona: Tak
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -1362,6 +1398,9 @@ Plik: C:\Users\xxx\bac\src\app\admin\page.tsx
   Strona: Tak
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -1482,6 +1521,9 @@ Plik: C:\Users\xxx\bac\src\app\blog\page.tsx
   Strona: Tak
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -1602,6 +1644,9 @@ Plik: C:\Users\xxx\bac\src\app\community\page.tsx
   Strona: Tak
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -1722,6 +1767,9 @@ Plik: C:\Users\xxx\bac\src\app\dance-schools\page.tsx
   Strona: Tak
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -1842,6 +1890,9 @@ Plik: C:\Users\xxx\bac\src\app\data-deletion\page.tsx
   Strona: Tak
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -1962,6 +2013,9 @@ Plik: C:\Users\xxx\bac\src\app\events\page.tsx
   Strona: Tak
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -2082,6 +2136,9 @@ Plik: C:\Users\xxx\bac\src\app\favicon.ico
   Strona: Nie
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -2186,6 +2243,9 @@ Plik: C:\Users\xxx\bac\src\app\funny-images\page.tsx
   Strona: Tak
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -2306,6 +2366,9 @@ Plik: C:\Users\xxx\bac\src\app\gamification\page.tsx
   Strona: Tak
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -2426,6 +2489,9 @@ Plik: C:\Users\xxx\bac\src\app\globals.css
   Strona: Nie
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -2530,6 +2596,9 @@ Plik: C:\Users\xxx\bac\src\app\jobs\page.tsx
   Strona: Tak
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -2650,6 +2719,9 @@ Plik: C:\Users\xxx\bac\src\app\layout.tsx
   Strona: Nie
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 1
     useReducer: 0
     Redux: 0
@@ -2770,6 +2842,9 @@ Plik: C:\Users\xxx\bac\src\app\mentorship\page.tsx
   Strona: Tak
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -2890,6 +2965,9 @@ Plik: C:\Users\xxx\bac\src\app\music\page.tsx
   Strona: Tak
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -3010,6 +3088,9 @@ Plik: C:\Users\xxx\bac\src\app\page.tsx
   Strona: Tak
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -3130,6 +3211,9 @@ Plik: C:\Users\xxx\bac\src\app\privacy-policy\page.tsx
   Strona: Tak
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -3250,6 +3334,9 @@ Plik: C:\Users\xxx\bac\src\app\reset-password\page.tsx
   Strona: Tak
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -3370,6 +3457,9 @@ Plik: C:\Users\xxx\bac\src\app\reset-password\ResetPasswordClient.tsx
   Strona: Nie
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 6
     useReducer: 0
     Redux: 0
@@ -3496,6 +3586,9 @@ Plik: C:\Users\xxx\bac\src\app\subscription\page.tsx
   Strona: Tak
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -3616,6 +3709,9 @@ Plik: C:\Users\xxx\bac\src\app\terms-of-service\page.tsx
   Strona: Tak
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -3736,6 +3832,9 @@ Plik: C:\Users\xxx\bac\src\app\users\forgot-password\page.tsx
   Strona: Tak
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 3
     useReducer: 0
     Redux: 0
@@ -3857,6 +3956,9 @@ Plik: C:\Users\xxx\bac\src\app\users\login\page.tsx
   Strona: Tak
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 5
     useReducer: 0
     Redux: 0
@@ -3985,6 +4087,9 @@ Plik: C:\Users\xxx\bac\src\app\users\page.tsx
   Strona: Tak
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -4105,6 +4210,9 @@ Plik: C:\Users\xxx\bac\src\app\users\profile\page.tsx
   Strona: Tak
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 1, Reselect: 0
     useState: 2
     useReducer: 0
     Redux: 0
@@ -4230,6 +4338,9 @@ Plik: C:\Users\xxx\bac\src\app\users\register\page.tsx
   Strona: Tak
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 9
     useReducer: 0
     Redux: 0
@@ -4356,6 +4467,9 @@ Plik: C:\Users\xxx\bac\src\components\LoadingSpinner.tsx
   Strona: Nie
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -4472,6 +4586,9 @@ Plik: C:\Users\xxx\bac\src\contexts\AuthContext.tsx
   Strona: Nie
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 1
     useReducer: 0
     Redux: 0
@@ -4588,6 +4705,9 @@ Plik: C:\Users\xxx\bac\src\global.d.ts
   Strona: Nie
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -4704,6 +4824,9 @@ Plik: C:\Users\xxx\bac\src\lib\authMiddleware.ts
   Strona: Nie
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -4820,6 +4943,9 @@ Plik: C:\Users\xxx\bac\src\lib\mongodb.ts
   Strona: Nie
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -4936,6 +5062,9 @@ Plik: C:\Users\xxx\bac\src\models\User.ts
   Strona: Nie
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -5055,6 +5184,9 @@ Plik: C:\Users\xxx\bac\src\pages\api\auth\[...nextauth].ts
   Strona: Nie
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -5175,6 +5307,9 @@ Plik: C:\Users\xxx\bac\src\pages\api\forgot-password.ts
   Strona: Nie
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -5298,6 +5433,9 @@ Plik: C:\Users\xxx\bac\src\pages\api\login.ts
   Strona: Nie
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -5421,6 +5559,9 @@ Plik: C:\Users\xxx\bac\src\pages\api\register.ts
   Strona: Nie
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -5544,6 +5685,9 @@ Plik: C:\Users\xxx\bac\src\pages\api\resend-verification.ts
   Strona: Nie
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -5667,6 +5811,9 @@ Plik: C:\Users\xxx\bac\src\pages\api\reset-password.ts
   Strona: Nie
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -5790,6 +5937,9 @@ Plik: C:\Users\xxx\bac\src\pages\api\users\me.ts
   Strona: Nie
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -5910,6 +6060,9 @@ Plik: C:\Users\xxx\bac\src\pages\api\users\update-profile.ts
   Strona: Nie
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -6033,6 +6186,9 @@ Plik: C:\Users\xxx\bac\src\pages\api\verify.ts
   Strona: Nie
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -6153,6 +6309,9 @@ Plik: C:\Users\xxx\bac\src\pages\verify.tsx
   Strona: Nie
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -6273,6 +6432,9 @@ Plik: C:\Users\xxx\bac\src\schemas\passwordSchema.ts
   Strona: Nie
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -6389,6 +6551,9 @@ Plik: C:\Users\xxx\bac\src\scripts\analyzeProject.mjs
   Strona: Nie
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -6489,6 +6654,9 @@ Plik: C:\Users\xxx\bac\src\types\next-auth.d.ts
   Strona: Nie
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -6605,6 +6773,9 @@ Plik: C:\Users\xxx\bac\src\utils\projectAnalyzer.d.ts
   Strona: Nie
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -6705,13 +6876,13 @@ Plik: C:\Users\xxx\bac\src\utils\projectAnalyzer.d.ts
 
 Plik: C:\Users\xxx\bac\src\utils\projectAnalyzer.js
   Typ: .js
-  Rozmiar: 30.73 KB
-  Liczba linii: 812
-  Ostatnia modyfikacja: 2024-09-10T21:55:28.969Z
+  Rozmiar: 34.66 KB
+  Liczba linii: 913
+  Ostatnia modyfikacja: 2024-09-10T22:08:29.783Z
   Importy: 3 (zewnętrzne: 3, lokalne: 0)
   Eksporty: 2
-  Komponenty: 36
-  Hooki: 39
+  Komponenty: 43
+  Hooki: 51
   Komponent kliencki: Tak
   Schematy Zod: 0
   Użycie Next Image: 2
@@ -6721,12 +6892,18 @@ Plik: C:\Users\xxx\bac\src\utils\projectAnalyzer.js
   Strona: Nie
 
   Zarządzanie stanem:
+    Wykryte biblioteki: redux, recoil, mobx, zustand, valtio
+    Redux - Slices: 0, Actions: 0, Reducers: 0
+    Recoil - Atoms: 2, Selectors: 0
+    Zustand - Stores: 0, Actions: 0
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
     MobX: 0
-    Recoil: 0
-    Zustand: 0
+    Recoil: 2
+    Zustand: 1
 
   Analiza wydajności:
     useMemo: 0
@@ -6761,11 +6938,11 @@ Plik: C:\Users\xxx\bac\src\utils\projectAnalyzer.js
   Analiza routingu:
     Biblioteka routingu: Next.js
     Trasy statyczne: 8
-    Trasy dynamiczne: 169
+    Trasy dynamiczne: 183
     Trasy stron Next.js: 0
     Trasy Express.js: 0
     Trasy React Router: 1
-    Łączna liczba tras: 178
+    Łączna liczba tras: 192
 
   Analiza SEO:
     Metadane:
@@ -6824,6 +7001,9 @@ Plik: C:\Users\xxx\bac\tailwind.config.ts
   Strona: Nie
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -6940,6 +7120,9 @@ Plik: C:\Users\xxx\bac\tsconfig.json
   Strona: Nie
 
   Zarządzanie stanem:
+    Wykryte biblioteki: 
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0
@@ -7040,6 +7223,9 @@ Plik: C:\Users\xxx\bac\tsconfig.tsbuildinfo
   Strona: Nie
 
   Zarządzanie stanem:
+    Wykryte biblioteki: mobx
+    Użycie selektorów: 0
+    Memoizacja - useMemo: 0, useCallback: 0, Reselect: 0
     useState: 0
     useReducer: 0
     Redux: 0

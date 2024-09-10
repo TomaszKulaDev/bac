@@ -40,7 +40,7 @@ function analyzeFile(filePath) {
   const tailwindClasses = countTailwindClasses(content);
   const isApiRoute = checkIsApiRoute(filePath);
   const isPage = checkIsPage(filePath);
-  const stateManagement = analyzeStateManagement(content);  // Nowa linia
+  const stateManagement = analyzeStateManagement(content);
   const performanceAnalysis = analyzePerformance(content);
   const apiAnalysis = analyzeAPI(content);
   const routingAnalysis = analyzeRouting(content, filePath);
@@ -137,6 +137,18 @@ function generateProjectStructureReport() {
     report += `  Trasa API: ${file.isApiRoute ? 'Tak' : 'Nie'}\n`;
     report += `  Strona: ${file.isPage ? 'Tak' : 'Nie'}\n\n`;
     report += `  Zarządzanie stanem:\n`;
+    report += `    Wykryte biblioteki: ${Object.entries(file.stateManagement.libraries).filter(([_, used]) => used).map(([lib]) => lib).join(', ')}\n`;
+    if (file.stateManagement.storeStructure.redux) {
+      report += `    Redux - Slices: ${file.stateManagement.storeStructure.redux.slices}, Actions: ${file.stateManagement.storeStructure.redux.actions}, Reducers: ${file.stateManagement.storeStructure.redux.reducers}\n`;
+    }
+    if (file.stateManagement.storeStructure.recoil) {
+      report += `    Recoil - Atoms: ${file.stateManagement.storeStructure.recoil.atoms}, Selectors: ${file.stateManagement.storeStructure.recoil.selectors}\n`;
+    }
+    if (file.stateManagement.storeStructure.zustand) {
+      report += `    Zustand - Stores: ${file.stateManagement.storeStructure.zustand.stores}, Actions: ${file.stateManagement.storeStructure.zustand.actions}\n`;
+    }
+    report += `    Użycie selektorów: ${file.stateManagement.selectorUsage.count}\n`;
+    report += `    Memoizacja - useMemo: ${file.stateManagement.memoizationUsage.useMemo}, useCallback: ${file.stateManagement.memoizationUsage.useCallback}, Reselect: ${file.stateManagement.memoizationUsage.reselect}\n`;
     report += `    useState: ${file.stateManagement.useState}\n`;
     report += `    useReducer: ${file.stateManagement.useReducer}\n`;
     report += `    Redux: ${file.stateManagement.redux}\n`;
@@ -384,13 +396,102 @@ function generateFileStructure(rootDir, allFiles, indent = '') {
 }
 
 function analyzeStateManagement(content) {
+  const stateLibraries = detectStateLibraries(content);
+  const storeStructure = analyzeStoreStructure(content, stateLibraries);
+  const selectorUsage = analyzeSelectorUsage(content, stateLibraries);
+  const memoizationUsage = analyzeMemoizationUsage(content);
+
   return {
+    libraries: stateLibraries,
+    storeStructure,
+    selectorUsage,
+    memoizationUsage,
     useState: (content.match(/useState\(/g) || []).length,
     useReducer: (content.match(/useReducer\(/g) || []).length,
     redux: (content.match(/useSelector\(|useDispatch\(|createSlice\(|configureStore\(/g) || []).length,
     mobx: (content.match(/observer\(|observable\(|action\(/g) || []).length,
     recoil: (content.match(/useRecoilState\(|useRecoilValue\(|atom\(|selector\(/g) || []).length,
     zustand: (content.match(/create\(|useStore\(/g) || []).length,
+  };
+}
+
+function detectStateLibraries(content) {
+  return {
+    redux: content.includes('createStore') || content.includes('configureStore'),
+    recoil: content.includes('RecoilRoot') || content.includes('atom('),
+    mobx: content.includes('observable') || content.includes('action'),
+    zustand: content.includes('create(') && content.includes('useStore'),
+    jotai: content.includes('atom(') && !content.includes('RecoilRoot'),
+    valtio: content.includes('proxy(') && content.includes('useSnapshot'),
+  };
+}
+
+function analyzeStoreStructure(content, stateLibraries) {
+  let storeStructure = {};
+
+  if (stateLibraries.redux) {
+    storeStructure.redux = analyzeReduxStore(content);
+  }
+
+  if (stateLibraries.recoil) {
+    storeStructure.recoil = analyzeRecoilStore(content);
+  }
+
+  if (stateLibraries.zustand) {
+    storeStructure.zustand = analyzeZustandStore(content);
+  }
+
+  return storeStructure;
+}
+
+function analyzeReduxStore(content) {
+  const slices = (content.match(/createSlice\(/g) || []).length;
+  const actions = (content.match(/createAction\(/g) || []).length;
+  const reducers = (content.match(/createReducer\(/g) || []).length;
+
+  return { slices, actions, reducers };
+}
+
+function analyzeRecoilStore(content) {
+  const atoms = (content.match(/atom\(/g) || []).length;
+  const selectors = (content.match(/selector\(/g) || []).length;
+
+  return { atoms, selectors };
+}
+
+function analyzeZustandStore(content) {
+  const stores = (content.match(/create\(\(/g) || []).length;
+  const actions = (content.match(/set\(\(state\)/g) || []).length;
+
+  return { stores, actions };
+}
+
+function analyzeSelectorUsage(content, stateLibraries) {
+  let selectorUsage = {
+    count: 0,
+    libraries: {},
+  };
+
+  if (stateLibraries.redux) {
+    const reduxSelectors = (content.match(/useSelector\(/g) || []).length;
+    selectorUsage.count += reduxSelectors;
+    selectorUsage.libraries.redux = reduxSelectors;
+  }
+
+  if (stateLibraries.recoil) {
+    const recoilSelectors = (content.match(/useRecoilValue\(/g) || []).length;
+    selectorUsage.count += recoilSelectors;
+    selectorUsage.libraries.recoil = recoilSelectors;
+  }
+
+  return selectorUsage;
+}
+
+function analyzeMemoizationUsage(content) {
+  return {
+    useMemo: (content.match(/useMemo\(/g) || []).length,
+    useCallback: (content.match(/useCallback\(/g) || []).length,
+    reselect: (content.match(/createSelector\(/g) || []).length,
   };
 }
 
