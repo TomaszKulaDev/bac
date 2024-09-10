@@ -40,6 +40,7 @@ function analyzeFile(filePath) {
   const tailwindClasses = countTailwindClasses(content);
   const isApiRoute = checkIsApiRoute(filePath);
   const isPage = checkIsPage(filePath);
+  const stateManagement = analyzeStateManagement(content);  // Nowa linia
 
   return {
     path: filePath,
@@ -57,7 +58,8 @@ function analyzeFile(filePath) {
     nextLinkUsage,
     tailwindClasses,
     isApiRoute,
-    isPage
+    isPage,
+    stateManagement
   };
 }
 
@@ -122,6 +124,13 @@ function generateProjectStructureReport() {
     report += `  Klasy Tailwind: ${file.tailwindClasses}\n`;
     report += `  Trasa API: ${file.isApiRoute ? 'Tak' : 'Nie'}\n`;
     report += `  Strona: ${file.isPage ? 'Tak' : 'Nie'}\n\n`;
+    report += `  Zarządzanie stanem:\n`;
+    report += `    useState: ${file.stateManagement.useState}\n`;
+    report += `    useReducer: ${file.stateManagement.useReducer}\n`;
+    report += `    Redux: ${file.stateManagement.redux}\n`;
+    report += `    MobX: ${file.stateManagement.mobx}\n`;
+    report += `    Recoil: ${file.stateManagement.recoil}\n`;
+    report += `    Zustand: ${file.stateManagement.zustand}\n\n`;
   });
 
   const { dependencies, devDependencies } = analyzeDependencies();
@@ -237,4 +246,15 @@ function generateFileStructure(rootDir, allFiles, indent = '') {
   });
 
   return structure;
+}
+
+function analyzeStateManagement(content) {
+  return {
+    useState: (content.match(/useState\(/g) || []).length,
+    useReducer: (content.match(/useReducer\(/g) || []).length,
+    redux: (content.match(/useSelector\(|useDispatch\(|createSlice\(|configureStore\(/g) || []).length,
+    mobx: (content.match(/observer\(|observable\(|action\(/g) || []).length,
+    recoil: (content.match(/useRecoilState\(|useRecoilValue\(|atom\(|selector\(/g) || []).length,
+    zustand: (content.match(/create\(|useStore\(/g) || []).length,
+  };
 }
