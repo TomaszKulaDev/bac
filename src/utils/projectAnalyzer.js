@@ -98,22 +98,10 @@ function generateProjectStructureReport() {
   report += `Całkowita liczba linii kodu: ${stats.totalLines}\n`;
   report += `Typy plików: ${JSON.stringify(stats.fileTypes)}\n\n`;
 
-  // Sortowanie według różnych kryteriów
-  const sortingCriteria = ['size', 'lines', 'type'];
-  sortingCriteria.forEach(criteria => {
-    const sortedFiles = [...allFiles].sort((a, b) => {
-      if (criteria === 'size') return b.size - a.size;
-      if (criteria === 'lines') return b.lineCount - a.lineCount;
-      if (criteria === 'type') return a.type.localeCompare(b.type);
-      return 0;
-    });
-
-    report += `Pliki posortowane według ${criteria}:\n`;
-    sortedFiles.forEach((file) => {
-      report += `${file.path} (${file.type}, ${(file.size / 1024).toFixed(2)} KB, ${file.lineCount} linii)\n`;
-    });
-    report += '\n';
-  });
+  // Generowanie struktury plików
+  report += `Struktura plików projektu:\n`;
+  report += generateFileStructure(rootDir, allFiles);
+  report += '\n';
 
   // Szczegółowe informacje o każdym pliku
   report += `Szczegółowe informacje o plikach:\n\n`;
@@ -226,4 +214,27 @@ function analyzeDependencies() {
     return { dependencies, devDependencies };
   }
   return { dependencies: 0, devDependencies: 0 };
+}
+
+function generateFileStructure(rootDir, allFiles, indent = '') {
+  let structure = '';
+  const dirContent = fs.readdirSync(rootDir);
+
+  dirContent.forEach((item, index) => {
+    const itemPath = path.join(rootDir, item);
+    const isLast = index === dirContent.length - 1;
+    const stats = fs.statSync(itemPath);
+
+    if (stats.isDirectory() && !shouldSkipDirectory(item)) {
+      structure += `${indent}${isLast ? '└── ' : '├── '}${item}/\n`;
+      structure += generateFileStructure(itemPath, allFiles, indent + (isLast ? '    ' : '│   '));
+    } else if (stats.isFile()) {
+      const fileInfo = allFiles.find(f => f.path === itemPath);
+      if (fileInfo) {
+        structure += `${indent}${isLast ? '└── ' : '├── '}${item} (${fileInfo.type}, ${(fileInfo.size / 1024).toFixed(2)} KB)\n`;
+      }
+    }
+  });
+
+  return structure;
 }
