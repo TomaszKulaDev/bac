@@ -147,8 +147,20 @@ function generateProjectStructureReport() {
     report += `    useMemo: ${file.performance.useMemo}\n`;
     report += `    useCallback: ${file.performance.useCallback}\n`;
     report += `    React.memo: ${file.performance.reactMemo}\n`;
+    report += `    Duże komponenty (>200 linii): ${file.performance.largeComponents.length}\n`;
+    if (file.performance.largeComponents.length > 0) {
+      file.performance.largeComponents.forEach(comp => {
+        report += `      - ${comp.name}: ${comp.lines} linii\n`;
+      });
+    }
     report += `    Potencjalne duże listy: ${file.performance.potentialPerformanceIssues.largeLists}\n`;
     report += `    Brak wirtualizacji: ${file.performance.potentialPerformanceIssues.missingVirtualization ? 'Tak' : 'Nie'}\n`;
+    if (file.performance.reRenderingIssues.length > 0) {
+      report += `    Potencjalne problemy z re-renderowaniem:\n`;
+      file.performance.reRenderingIssues.forEach(issue => {
+        report += `      - ${issue}\n`;
+      });
+    }
     if (file.performance.optimizationHints.length > 0) {
       report += `    Wskazówki optymalizacyjne:\n`;
       file.performance.optimizationHints.forEach(hint => {
@@ -387,6 +399,9 @@ function analyzePerformance(content) {
   const useCallbackCount = (content.match(/useCallback\(/g) || []).length;
   const reactMemoCount = (content.match(/React\.memo\(/g) || []).length;
   
+  const largeComponents = detectLargeComponents(content);
+  const reRenderingIssues = detectReRenderingIssues(content);
+  
   // Wykrywanie dużych list
   const largeListPatterns = [
     /\.map\(\s*\([^)]*\)\s*=>\s*\{[\s\S]*?\}(?!\s*\)\s*\.\s*slice)/g,
@@ -406,15 +421,68 @@ function analyzePerformance(content) {
     useMemo: useMemoCount,
     useCallback: useCallbackCount,
     reactMemo: reactMemoCount,
+    largeComponents,
+    reRenderingIssues,
     potentialPerformanceIssues: {
       largeLists: potentialLargeLists,
       missingVirtualization: potentialLargeLists > 0 && !virtualizationUsed
     },
-    optimizationHints: generateOptimizationHints(useMemoCount, useCallbackCount, reactMemoCount, potentialLargeLists, virtualizationUsed)
+    optimizationHints: generateOptimizationHints(useMemoCount, useCallbackCount, reactMemoCount, potentialLargeLists, virtualizationUsed, largeComponents, reRenderingIssues)
   };
 }
 
-function generateOptimizationHints(useMemoCount, useCallbackCount, reactMemoCount, potentialLargeLists, virtualizationUsed) {
+function detectLargeComponents(content) {
+  const componentPatterns = [
+    /function\s+\w+\s*\([^)]*\)\s*\{[\s\S]*?\}/g,
+    /const\s+\w+\s*=\s*\([^)]*\)\s*=>\s*\{[\s\S]*?\}/g
+  ];
+
+  const largeComponents = [];
+
+  componentPatterns.forEach(pattern => {
+    const matches = content.match(pattern);
+    if (matches) {
+      matches.forEach(match => {
+        const lines = match.split('\n');
+        if (lines.length > 200) {
+          largeComponents.push({
+            name: match.match(/function\s+(\w+)|const\s+(\w+)/)[1] || 'Anonymous',
+            lines: lines.length
+          });
+        }
+      });
+    }
+  });
+
+  return largeComponents;
+}
+
+function detectReRenderingIssues(content) {
+  const issues = [];
+
+  // Wykrywanie funkcji wewnątrz komponentów, które mogą powodować niepotrzebne re-renderowanie
+  const inlineObjectCreation = (content.match(/\{\s*\w+:\s*[^,\}]+\s*(,\s*\w+:\s*[^,\}]+\s*)*\}/g) || []).length;
+  const inlineFunctionCreation = (content.match(/\([^)]*\)\s*=>\s*\{[^}]*\}/g) || []).length;
+
+  if (inlineObjectCreation > 5) {
+    issues.push('Wykryto wiele inline obiektów. Rozważ przeniesienie ich poza komponent lub użycie useMemo.');
+  }
+
+  if (inlineFunctionCreation > 5) {
+    issues.push('Wykryto wiele inline funkcji. Rozważ przeniesienie ich poza komponent lub użycie useCallback.');
+  }
+
+  // Wykrywanie potencjalnych problemów z props drilling
+  const propsDrillingPattern = /\w+={[^}]+}/g;
+  const propsDrillingMatches = content.match(propsDrillingPattern) || [];
+  if (propsDrillingMatches.length > 10) {
+    issues.push('Możliwy problem z props drilling. Rozważ użycie Context API lub biblioteki do zarządzania stanem.');
+  }
+
+  return issues;
+}
+
+function generateOptimizationHints(useMemoCount, useCallbackCount, reactMemoCount, potentialLargeLists, virtualizationUsed, largeComponents, reRenderingIssues) {
   const hints = [];
 
   if (useMemoCount === 0 && useCallbackCount === 0 && reactMemoCount === 0) {
@@ -428,6 +496,12 @@ function generateOptimizationHints(useMemoCount, useCallbackCount, reactMemoCoun
   if (useMemoCount > 10 || useCallbackCount > 10) {
     hints.push("Duża liczba użyć useMemo/useCallback. Upewnij się, że są one rzeczywiście potrzebne i nie powodują nadmiernej optymalizacji.");
   }
+
+  if (largeComponents.length > 0) {
+    hints.push(`Wykryto ${largeComponents.length} dużych komponentów (>200 linii). Rozważ podzielenie ich na mniejsze komponenty.`);
+  }
+
+  hints.push(...reRenderingIssues);
 
   return hints;
 }
