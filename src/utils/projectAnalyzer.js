@@ -46,6 +46,7 @@ function analyzeFile(filePath) {
   const routingAnalysis = analyzeRouting(content, filePath);
   const seoAnalysis = analyzeSEO(content, filePath);
   const typeScriptAnalysis = analyzeTypeScript(content, filePath);
+  const imageOptimizationAnalysis = analyzeImageOptimization(content, filePath);
 
   return {
     path: filePath,
@@ -70,6 +71,7 @@ function analyzeFile(filePath) {
     routing: routingAnalysis,
     seo: seoAnalysis,
     typeScript: typeScriptAnalysis,
+    imageOptimization: imageOptimizationAnalysis,
   };
 }
 
@@ -218,6 +220,22 @@ function generateProjectStructureReport() {
       });
     }
     report += '\n';
+    report += `  Analiza optymalizacji obrazów:\n`;
+    report += `    Formaty obrazów:\n`;
+    Object.entries(file.imageOptimization.imageFormats).forEach(([format, count]) => {
+      report += `      ${format}: ${count}\n`;
+    });
+    report += `    Lazy loading: ${file.imageOptimization.lazyLoading}\n`;
+    report += `    Srcset: ${file.imageOptimization.srcset}\n`;
+    report += `    Sizes: ${file.imageOptimization.sizes}\n`;
+    report += `    Tag <picture>: ${file.imageOptimization.pictureTag}\n`;
+    report += `    Użycie Next.js Image: ${file.imageOptimization.nextImageUsage}\n`;
+    report += `    Użycie Gatsby Image: ${file.imageOptimization.gatsbyImageUsage}\n`;
+    report += `    Placeholdery base64: ${file.imageOptimization.base64Placeholders}\n`;
+    report += `    Całkowita liczba obrazów: ${file.imageOptimization.totalImages}\n`;
+    report += `    Procent obrazów nowej generacji: ${file.imageOptimization.nextGenImagePercentage.toFixed(2)}%\n`;
+    report += `    Wynik optymalizacji obrazów: ${file.imageOptimization.optimizationScore}/100\n`;
+    report += '\n';
   });
 
   const { dependencies, devDependencies } = analyzeDependencies();
@@ -231,6 +249,15 @@ function generateProjectStructureReport() {
   report += `  Całkowita liczba interfejsów: ${typeScriptStats.totalInterfaces}\n`;
   report += `  Całkowita liczba typów: ${typeScriptStats.totalTypes}\n`;
   report += `  Średnia liczba złożonych typów na plik: ${typeScriptStats.averageComplexTypes.toFixed(2)}\n`;
+  report += '\n';
+
+  const imageOptimizationStats = calculateImageOptimizationStats(allFiles);
+  report += `Statystyki optymalizacji obrazów:\n`;
+  report += `  Całkowita liczba obrazów: ${imageOptimizationStats.totalImages}\n`;
+  report += `  Procent obrazów nowej generacji: ${imageOptimizationStats.nextGenImagePercentage.toFixed(2)}%\n`;
+  report += `  Średni wynik optymalizacji: ${imageOptimizationStats.averageOptimizationScore.toFixed(2)}/100\n`;
+  report += `  Użycie lazy loading: ${imageOptimizationStats.lazyLoadingUsage.toFixed(2)}%\n`;
+  report += `  Użycie srcset: ${imageOptimizationStats.srcsetUsage.toFixed(2)}%\n`;
   report += '\n';
 
   const reportPath = path.join(process.cwd(), "project-structure-report.txt");
@@ -633,5 +660,78 @@ function calculateTypeScriptStats(allFiles) {
       totalStats.complexTypes.conditionalTypes
     ) / typeScriptFileCount,
     // Dodaj więcej statystyk według potrzeb
+  };
+}
+
+function analyzeImageOptimization(content, filePath) {
+  const imageFormats = {
+    webp: (content.match(/\.(webp)/gi) || []).length,
+    avif: (content.match(/\.(avif)/gi) || []).length,
+    jpg: (content.match(/\.(jpg|jpeg)/gi) || []).length,
+    png: (content.match(/\.(png)/gi) || []).length,
+    gif: (content.match(/\.(gif)/gi) || []).length,
+    svg: (content.match(/\.(svg)/gi) || []).length,
+  };
+
+  const lazyLoading = (content.match(/loading=["']lazy["']/g) || []).length;
+  const srcset = (content.match(/srcset=/g) || []).length;
+  const sizes = (content.match(/sizes=/g) || []).length;
+  const pictureTag = (content.match(/<picture/g) || []).length;
+
+  const nextImageUsage = (content.match(/<Image/g) || []).length;
+  const gatsbyImageUsage = (content.match(/<Img/g) || []).length;
+
+  const base64Placeholders = (content.match(/data:image\/[a-z]+;base64,/g) || []).length;
+
+  const totalImages = Object.values(imageFormats).reduce((sum, count) => sum + count, 0);
+  const nextGenImagePercentage = ((imageFormats.webp + imageFormats.avif) / totalImages) * 100 || 0;
+
+  return {
+    imageFormats,
+    lazyLoading,
+    srcset,
+    sizes,
+    pictureTag,
+    nextImageUsage,
+    gatsbyImageUsage,
+    base64Placeholders,
+    totalImages,
+    nextGenImagePercentage,
+    optimizationScore: calculateImageOptimizationScore({
+      lazyLoading,
+      srcset,
+      sizes,
+      pictureTag,
+      nextImageUsage,
+      gatsbyImageUsage,
+      nextGenImagePercentage
+    }),
+  };
+}
+
+function calculateImageOptimizationScore(data) {
+  let score = 0;
+  if (data.lazyLoading > 0) score += 20;
+  if (data.srcset > 0) score += 20;
+  if (data.sizes > 0) score += 10;
+  if (data.pictureTag > 0) score += 10;
+  if (data.nextImageUsage > 0 || data.gatsbyImageUsage > 0) score += 20;
+  score += Math.min(20, data.nextGenImagePercentage / 5);
+  return Math.min(100, score);
+}
+
+// Dodaj tę funkcję na końcu pliku, aby obliczyć ogólne statystyki optymalizacji obrazów dla projektu
+function calculateImageOptimizationStats(allFiles) {
+  const filesWithImages = allFiles.filter(file => file.imageOptimization && file.imageOptimization.totalImages > 0);
+  const totalImages = filesWithImages.reduce((sum, file) => sum + file.imageOptimization.totalImages, 0);
+  const totalNextGenImages = filesWithImages.reduce((sum, file) => 
+    sum + file.imageOptimization.imageFormats.webp + file.imageOptimization.imageFormats.avif, 0);
+
+  return {
+    totalImages,
+    nextGenImagePercentage: (totalNextGenImages / totalImages) * 100 || 0,
+    averageOptimizationScore: filesWithImages.reduce((sum, file) => sum + file.imageOptimization.optimizationScore, 0) / filesWithImages.length || 0,
+    lazyLoadingUsage: filesWithImages.filter(file => file.imageOptimization.lazyLoading > 0).length / filesWithImages.length * 100,
+    srcsetUsage: filesWithImages.filter(file => file.imageOptimization.srcset > 0).length / filesWithImages.length * 100,
   };
 }

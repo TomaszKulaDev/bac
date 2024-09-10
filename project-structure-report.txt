@@ -1,8 +1,8 @@
 Aktualna struktura projektu (61 plików)
 
 Statystyki projektu:
-Całkowity rozmiar: 0.78 MB
-Całkowita liczba linii kodu: 16451
+Całkowity rozmiar: 0.80 MB
+Całkowita liczba linii kodu: 17339
 Typy plików: {".local":1,".json":4,"":1,".ts":18,".mjs":3,".txt":1,".png":1,".md":1,".tsx":27,".ico":1,".css":1,".js":1,".tsbuildinfo":1}
 
 Struktura plików projektu:
@@ -14,7 +14,7 @@ Struktura plików projektu:
 ├── package-lock.json (.json, 265.20 KB)
 ├── package.json (.json, 1.07 KB)
 ├── postcss.config.mjs (.mjs, 0.13 KB)
-├── project-structure-report.txt (.txt, 103.36 KB)
+├── project-structure-report.txt (.txt, 119.04 KB)
 ├── public/
 │   └── images/
 │       └── open-in-browser.png (.png, 36.73 KB)
@@ -101,7 +101,7 @@ Struktura plików projektu:
 │   │   └── next-auth.d.ts (.ts, 0.60 KB)
 │   └── utils/
 │       ├── projectAnalyzer.d.ts (.ts, 0.15 KB)
-│       └── projectAnalyzer.js (.js, 23.24 KB)
+│       └── projectAnalyzer.js (.js, 28.04 KB)
 ├── tailwind.config.ts (.ts, 0.50 KB)
 ├── tsconfig.json (.json, 1.03 KB)
 └── tsconfig.tsbuildinfo (.tsbuildinfo, 246.16 KB)
@@ -188,6 +188,25 @@ Plik: C:\Users\xxx\bac\.env.local
     Meta robots: 0
 
 
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
+
 Plik: C:\Users\xxx\bac\.eslintrc.json
   Typ: .json
   Rozmiar: 0.04 KB
@@ -268,6 +287,25 @@ Plik: C:\Users\xxx\bac\.eslintrc.json
     Meta robots: 0
 
 
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
+
 Plik: C:\Users\xxx\bac\.gitignore
   Typ: 
   Rozmiar: 0.38 KB
@@ -347,6 +385,25 @@ Plik: C:\Users\xxx\bac\.gitignore
     URL kanoniczny: 0
     Meta robots: 0
 
+
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
 
 Plik: C:\Users\xxx\bac\next-env.d.ts
   Typ: .ts
@@ -444,6 +501,25 @@ Plik: C:\Users\xxx\bac\next-env.d.ts
       nonNullAssertion: 0
       enumUsage: 0
 
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
+
 Plik: C:\Users\xxx\bac\next.config.mjs
   Typ: .mjs
   Rozmiar: 0.09 KB
@@ -523,6 +599,25 @@ Plik: C:\Users\xxx\bac\next.config.mjs
     URL kanoniczny: 0
     Meta robots: 0
 
+
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
 
 Plik: C:\Users\xxx\bac\package-lock.json
   Typ: .json
@@ -604,6 +699,25 @@ Plik: C:\Users\xxx\bac\package-lock.json
     Meta robots: 0
 
 
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
+
 Plik: C:\Users\xxx\bac\package.json
   Typ: .json
   Rozmiar: 1.07 KB
@@ -683,6 +797,25 @@ Plik: C:\Users\xxx\bac\package.json
     URL kanoniczny: 0
     Meta robots: 0
 
+
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
 
 Plik: C:\Users\xxx\bac\postcss.config.mjs
   Typ: .mjs
@@ -764,11 +897,30 @@ Plik: C:\Users\xxx\bac\postcss.config.mjs
     Meta robots: 0
 
 
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
+
 Plik: C:\Users\xxx\bac\project-structure-report.txt
   Typ: .txt
-  Rozmiar: 103.36 KB
-  Liczba linii: 5081
-  Ostatnia modyfikacja: 2024-09-10T21:46:22.197Z
+  Rozmiar: 119.04 KB
+  Liczba linii: 5869
+  Ostatnia modyfikacja: 2024-09-10T21:49:18.768Z
   Importy: 0 (zewnętrzne: 0, lokalne: 0)
   Eksporty: 0
   Komponenty: 0
@@ -843,6 +995,25 @@ Plik: C:\Users\xxx\bac\project-structure-report.txt
     URL kanoniczny: 0
     Meta robots: 0
 
+
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 5
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 5
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
 
 Plik: C:\Users\xxx\bac\public\images\open-in-browser.png
   Typ: .png
@@ -924,6 +1095,25 @@ Plik: C:\Users\xxx\bac\public\images\open-in-browser.png
     Meta robots: 0
 
 
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
+
 Plik: C:\Users\xxx\bac\README.md
   Typ: .md
   Rozmiar: 1.46 KB
@@ -1003,6 +1193,25 @@ Plik: C:\Users\xxx\bac\README.md
     URL kanoniczny: 0
     Meta robots: 0
 
+
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
 
 Plik: C:\Users\xxx\bac\src\app\accommodations\page.tsx
   Typ: .tsx
@@ -1104,6 +1313,25 @@ Plik: C:\Users\xxx\bac\src\app\accommodations\page.tsx
       nonNullAssertion: 0
       enumUsage: 0
 
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
+
 Plik: C:\Users\xxx\bac\src\app\admin\page.tsx
   Typ: .tsx
   Rozmiar: 0.19 KB
@@ -1203,6 +1431,25 @@ Plik: C:\Users\xxx\bac\src\app\admin\page.tsx
       optionalChaining: 0
       nonNullAssertion: 0
       enumUsage: 0
+
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
 
 Plik: C:\Users\xxx\bac\src\app\blog\page.tsx
   Typ: .tsx
@@ -1304,6 +1551,25 @@ Plik: C:\Users\xxx\bac\src\app\blog\page.tsx
       nonNullAssertion: 0
       enumUsage: 0
 
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
+
 Plik: C:\Users\xxx\bac\src\app\community\page.tsx
   Typ: .tsx
   Rozmiar: 0.12 KB
@@ -1403,6 +1669,25 @@ Plik: C:\Users\xxx\bac\src\app\community\page.tsx
       optionalChaining: 0
       nonNullAssertion: 0
       enumUsage: 0
+
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
 
 Plik: C:\Users\xxx\bac\src\app\dance-schools\page.tsx
   Typ: .tsx
@@ -1504,6 +1789,25 @@ Plik: C:\Users\xxx\bac\src\app\dance-schools\page.tsx
       nonNullAssertion: 0
       enumUsage: 0
 
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
+
 Plik: C:\Users\xxx\bac\src\app\data-deletion\page.tsx
   Typ: .tsx
   Rozmiar: 1.16 KB
@@ -1603,6 +1907,25 @@ Plik: C:\Users\xxx\bac\src\app\data-deletion\page.tsx
       optionalChaining: 0
       nonNullAssertion: 0
       enumUsage: 0
+
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
 
 Plik: C:\Users\xxx\bac\src\app\events\page.tsx
   Typ: .tsx
@@ -1704,6 +2027,25 @@ Plik: C:\Users\xxx\bac\src\app\events\page.tsx
       nonNullAssertion: 0
       enumUsage: 0
 
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
+
 Plik: C:\Users\xxx\bac\src\app\favicon.ico
   Typ: .ico
   Rozmiar: 25.32 KB
@@ -1787,6 +2129,25 @@ Plik: C:\Users\xxx\bac\src\app\favicon.ico
       head: 0
       metaTags: 0
 
+
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
 
 Plik: C:\Users\xxx\bac\src\app\funny-images\page.tsx
   Typ: .tsx
@@ -1888,6 +2249,25 @@ Plik: C:\Users\xxx\bac\src\app\funny-images\page.tsx
       nonNullAssertion: 0
       enumUsage: 0
 
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
+
 Plik: C:\Users\xxx\bac\src\app\gamification\page.tsx
   Typ: .tsx
   Rozmiar: 0.12 KB
@@ -1988,6 +2368,25 @@ Plik: C:\Users\xxx\bac\src\app\gamification\page.tsx
       nonNullAssertion: 0
       enumUsage: 0
 
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
+
 Plik: C:\Users\xxx\bac\src\app\globals.css
   Typ: .css
   Rozmiar: 0.59 KB
@@ -2071,6 +2470,25 @@ Plik: C:\Users\xxx\bac\src\app\globals.css
       head: 0
       metaTags: 0
 
+
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
 
 Plik: C:\Users\xxx\bac\src\app\jobs\page.tsx
   Typ: .tsx
@@ -2172,6 +2590,25 @@ Plik: C:\Users\xxx\bac\src\app\jobs\page.tsx
       nonNullAssertion: 0
       enumUsage: 0
 
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
+
 Plik: C:\Users\xxx\bac\src\app\layout.tsx
   Typ: .tsx
   Rozmiar: 2.42 KB
@@ -2271,6 +2708,25 @@ Plik: C:\Users\xxx\bac\src\app\layout.tsx
       optionalChaining: 1
       nonNullAssertion: 0
       enumUsage: 0
+
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
 
 Plik: C:\Users\xxx\bac\src\app\mentorship\page.tsx
   Typ: .tsx
@@ -2372,6 +2828,25 @@ Plik: C:\Users\xxx\bac\src\app\mentorship\page.tsx
       nonNullAssertion: 0
       enumUsage: 0
 
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
+
 Plik: C:\Users\xxx\bac\src\app\music\page.tsx
   Typ: .tsx
   Rozmiar: 0.11 KB
@@ -2471,6 +2946,25 @@ Plik: C:\Users\xxx\bac\src\app\music\page.tsx
       optionalChaining: 0
       nonNullAssertion: 0
       enumUsage: 0
+
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
 
 Plik: C:\Users\xxx\bac\src\app\page.tsx
   Typ: .tsx
@@ -2572,6 +3066,25 @@ Plik: C:\Users\xxx\bac\src\app\page.tsx
       nonNullAssertion: 0
       enumUsage: 0
 
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
+
 Plik: C:\Users\xxx\bac\src\app\privacy-policy\page.tsx
   Typ: .tsx
   Rozmiar: 2.76 KB
@@ -2672,6 +3185,25 @@ Plik: C:\Users\xxx\bac\src\app\privacy-policy\page.tsx
       nonNullAssertion: 0
       enumUsage: 0
 
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
+
 Plik: C:\Users\xxx\bac\src\app\reset-password\page.tsx
   Typ: .tsx
   Rozmiar: 0.24 KB
@@ -2771,6 +3303,25 @@ Plik: C:\Users\xxx\bac\src\app\reset-password\page.tsx
       optionalChaining: 0
       nonNullAssertion: 0
       enumUsage: 0
+
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
 
 Plik: C:\Users\xxx\bac\src\app\reset-password\ResetPasswordClient.tsx
   Typ: .tsx
@@ -2873,6 +3424,25 @@ Plik: C:\Users\xxx\bac\src\app\reset-password\ResetPasswordClient.tsx
       nonNullAssertion: 0
       enumUsage: 0
 
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
+
 Plik: C:\Users\xxx\bac\src\app\subscription\page.tsx
   Typ: .tsx
   Rozmiar: 0.12 KB
@@ -2973,6 +3543,25 @@ Plik: C:\Users\xxx\bac\src\app\subscription\page.tsx
       nonNullAssertion: 0
       enumUsage: 0
 
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
+
 Plik: C:\Users\xxx\bac\src\app\terms-of-service\page.tsx
   Typ: .tsx
   Rozmiar: 1.90 KB
@@ -3072,6 +3661,25 @@ Plik: C:\Users\xxx\bac\src\app\terms-of-service\page.tsx
       optionalChaining: 0
       nonNullAssertion: 0
       enumUsage: 0
+
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
 
 Plik: C:\Users\xxx\bac\src\app\users\forgot-password\page.tsx
   Typ: .tsx
@@ -3174,6 +3782,25 @@ Plik: C:\Users\xxx\bac\src\app\users\forgot-password\page.tsx
       nonNullAssertion: 0
       enumUsage: 0
 
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
+
 Plik: C:\Users\xxx\bac\src\app\users\login\page.tsx
   Typ: .tsx
   Rozmiar: 11.89 KB
@@ -3275,6 +3902,25 @@ Plik: C:\Users\xxx\bac\src\app\users\login\page.tsx
       nonNullAssertion: 1
       enumUsage: 0
 
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 1
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 1
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 1
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 20/100
+
 Plik: C:\Users\xxx\bac\src\app\users\page.tsx
   Typ: .tsx
   Rozmiar: 0.10 KB
@@ -3375,6 +4021,25 @@ Plik: C:\Users\xxx\bac\src\app\users\page.tsx
       nonNullAssertion: 0
       enumUsage: 0
 
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
+
 Plik: C:\Users\xxx\bac\src\app\users\profile\page.tsx
   Typ: .tsx
   Rozmiar: 9.43 KB
@@ -3474,6 +4139,25 @@ Plik: C:\Users\xxx\bac\src\app\users\profile\page.tsx
       optionalChaining: 0
       nonNullAssertion: 0
       enumUsage: 0
+
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 1
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 1
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 1
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 20/100
 
 Plik: C:\Users\xxx\bac\src\app\users\register\page.tsx
   Typ: .tsx
@@ -3576,6 +4260,25 @@ Plik: C:\Users\xxx\bac\src\app\users\register\page.tsx
       nonNullAssertion: 1
       enumUsage: 0
 
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 1
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 1
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 1
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 20/100
+
 Plik: C:\Users\xxx\bac\src\components\LoadingSpinner.tsx
   Typ: .tsx
   Rozmiar: 0.56 KB
@@ -3671,6 +4374,25 @@ Plik: C:\Users\xxx\bac\src\components\LoadingSpinner.tsx
       optionalChaining: 0
       nonNullAssertion: 0
       enumUsage: 0
+
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
 
 Plik: C:\Users\xxx\bac\src\contexts\AuthContext.tsx
   Typ: .tsx
@@ -3768,6 +4490,25 @@ Plik: C:\Users\xxx\bac\src\contexts\AuthContext.tsx
       nonNullAssertion: 0
       enumUsage: 0
 
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
+
 Plik: C:\Users\xxx\bac\src\global.d.ts
   Typ: .ts
   Rozmiar: 0.16 KB
@@ -3863,6 +4604,25 @@ Plik: C:\Users\xxx\bac\src\global.d.ts
       optionalChaining: 0
       nonNullAssertion: 0
       enumUsage: 0
+
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
 
 Plik: C:\Users\xxx\bac\src\lib\authMiddleware.ts
   Typ: .ts
@@ -3960,6 +4720,25 @@ Plik: C:\Users\xxx\bac\src\lib\authMiddleware.ts
       nonNullAssertion: 0
       enumUsage: 0
 
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
+
 Plik: C:\Users\xxx\bac\src\lib\mongodb.ts
   Typ: .ts
   Rozmiar: 1.02 KB
@@ -4056,6 +4835,25 @@ Plik: C:\Users\xxx\bac\src\lib\mongodb.ts
       nonNullAssertion: 0
       enumUsage: 0
 
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
+
 Plik: C:\Users\xxx\bac\src\models\User.ts
   Typ: .ts
   Rozmiar: 0.76 KB
@@ -4151,6 +4949,25 @@ Plik: C:\Users\xxx\bac\src\models\User.ts
       optionalChaining: 0
       nonNullAssertion: 0
       enumUsage: 0
+
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
 
 Plik: C:\Users\xxx\bac\src\pages\api\auth\[...nextauth].ts
   Typ: .ts
@@ -4252,6 +5069,25 @@ Plik: C:\Users\xxx\bac\src\pages\api\auth\[...nextauth].ts
       nonNullAssertion: 0
       enumUsage: 0
 
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
+
 Plik: C:\Users\xxx\bac\src\pages\api\forgot-password.ts
   Typ: .ts
   Rozmiar: 3.63 KB
@@ -4351,6 +5187,25 @@ Plik: C:\Users\xxx\bac\src\pages\api\forgot-password.ts
       optionalChaining: 0
       nonNullAssertion: 0
       enumUsage: 0
+
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
 
 Plik: C:\Users\xxx\bac\src\pages\api\login.ts
   Typ: .ts
@@ -4452,6 +5307,25 @@ Plik: C:\Users\xxx\bac\src\pages\api\login.ts
       nonNullAssertion: 0
       enumUsage: 0
 
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
+
 Plik: C:\Users\xxx\bac\src\pages\api\register.ts
   Typ: .ts
   Rozmiar: 2.98 KB
@@ -4551,6 +5425,25 @@ Plik: C:\Users\xxx\bac\src\pages\api\register.ts
       optionalChaining: 0
       nonNullAssertion: 0
       enumUsage: 0
+
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
 
 Plik: C:\Users\xxx\bac\src\pages\api\resend-verification.ts
   Typ: .ts
@@ -4652,6 +5545,25 @@ Plik: C:\Users\xxx\bac\src\pages\api\resend-verification.ts
       nonNullAssertion: 0
       enumUsage: 0
 
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
+
 Plik: C:\Users\xxx\bac\src\pages\api\reset-password.ts
   Typ: .ts
   Rozmiar: 2.79 KB
@@ -4751,6 +5663,25 @@ Plik: C:\Users\xxx\bac\src\pages\api\reset-password.ts
       optionalChaining: 0
       nonNullAssertion: 0
       enumUsage: 0
+
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
 
 Plik: C:\Users\xxx\bac\src\pages\api\users\me.ts
   Typ: .ts
@@ -4852,6 +5783,25 @@ Plik: C:\Users\xxx\bac\src\pages\api\users\me.ts
       nonNullAssertion: 0
       enumUsage: 0
 
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
+
 Plik: C:\Users\xxx\bac\src\pages\api\users\update-profile.ts
   Typ: .ts
   Rozmiar: 2.67 KB
@@ -4951,6 +5901,25 @@ Plik: C:\Users\xxx\bac\src\pages\api\users\update-profile.ts
       optionalChaining: 1
       nonNullAssertion: 0
       enumUsage: 0
+
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
 
 Plik: C:\Users\xxx\bac\src\pages\api\verify.ts
   Typ: .ts
@@ -5052,6 +6021,25 @@ Plik: C:\Users\xxx\bac\src\pages\api\verify.ts
       nonNullAssertion: 0
       enumUsage: 0
 
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
+
 Plik: C:\Users\xxx\bac\src\pages\verify.tsx
   Typ: .tsx
   Rozmiar: 1.12 KB
@@ -5152,6 +6140,25 @@ Plik: C:\Users\xxx\bac\src\pages\verify.tsx
       nonNullAssertion: 0
       enumUsage: 0
 
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
+
 Plik: C:\Users\xxx\bac\src\schemas\passwordSchema.ts
   Typ: .ts
   Rozmiar: 0.75 KB
@@ -5248,6 +6255,25 @@ Plik: C:\Users\xxx\bac\src\schemas\passwordSchema.ts
       nonNullAssertion: 0
       enumUsage: 0
 
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
+
 Plik: C:\Users\xxx\bac\src\scripts\analyzeProject.mjs
   Typ: .mjs
   Rozmiar: 0.21 KB
@@ -5327,6 +6353,25 @@ Plik: C:\Users\xxx\bac\src\scripts\analyzeProject.mjs
     URL kanoniczny: 0
     Meta robots: 0
 
+
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
 
 Plik: C:\Users\xxx\bac\src\types\next-auth.d.ts
   Typ: .ts
@@ -5424,6 +6469,25 @@ Plik: C:\Users\xxx\bac\src\types\next-auth.d.ts
       nonNullAssertion: 0
       enumUsage: 0
 
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
+
 Plik: C:\Users\xxx\bac\src\utils\projectAnalyzer.d.ts
   Typ: .ts
   Rozmiar: 0.15 KB
@@ -5520,18 +6584,37 @@ Plik: C:\Users\xxx\bac\src\utils\projectAnalyzer.d.ts
       nonNullAssertion: 0
       enumUsage: 0
 
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
+
 Plik: C:\Users\xxx\bac\src\utils\projectAnalyzer.js
   Typ: .js
-  Rozmiar: 23.24 KB
-  Liczba linii: 638
-  Ostatnia modyfikacja: 2024-09-10T21:48:52.040Z
+  Rozmiar: 28.04 KB
+  Liczba linii: 738
+  Ostatnia modyfikacja: 2024-09-10T21:51:29.954Z
   Importy: 3 (zewnętrzne: 3, lokalne: 0)
   Eksporty: 2
-  Komponenty: 31
+  Komponenty: 34
   Hooki: 37
   Komponent kliencki: Tak
   Schematy Zod: 0
-  Użycie Next Image: 1
+  Użycie Next Image: 2
   Użycie Next Link: 1
   Klasy Tailwind: 1
   Trasa API: Nie
@@ -5549,7 +6632,7 @@ Plik: C:\Users\xxx\bac\src\utils\projectAnalyzer.js
     useMemo: 0
     useCallback: 0
     React.memo: 0
-    Potencjalne duże listy: 13
+    Potencjalne duże listy: 14
     Brak wirtualizacji: Nie
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
@@ -5574,11 +6657,11 @@ Plik: C:\Users\xxx\bac\src\utils\projectAnalyzer.js
   Analiza routingu:
     Biblioteka routingu: Next.js
     Trasy statyczne: 8
-    Trasy dynamiczne: 137
+    Trasy dynamiczne: 154
     Trasy stron Next.js: 0
     Trasy Express.js: 0
     Trasy React Router: 1
-    Łączna liczba tras: 146
+    Łączna liczba tras: 163
 
   Analiza SEO:
     Metadane:
@@ -5599,6 +6682,25 @@ Plik: C:\Users\xxx\bac\src\utils\projectAnalyzer.js
     URL kanoniczny: 1
     Meta robots: 1
 
+
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 2
+      avif: 2
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 1
+    Sizes: 1
+    Tag <picture>: 2
+    Użycie Next.js Image: 2
+    Użycie Gatsby Image: 1
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 4
+    Procent obrazów nowej generacji: 100.00%
+    Wynik optymalizacji obrazów: 80/100
 
 Plik: C:\Users\xxx\bac\tailwind.config.ts
   Typ: .ts
@@ -5696,6 +6798,25 @@ Plik: C:\Users\xxx\bac\tailwind.config.ts
       nonNullAssertion: 0
       enumUsage: 0
 
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
+
 Plik: C:\Users\xxx\bac\tsconfig.json
   Typ: .json
   Rozmiar: 1.03 KB
@@ -5775,6 +6896,25 @@ Plik: C:\Users\xxx\bac\tsconfig.json
     URL kanoniczny: 0
     Meta robots: 0
 
+
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
 
 Plik: C:\Users\xxx\bac\tsconfig.tsbuildinfo
   Typ: .tsbuildinfo
@@ -5856,6 +6996,25 @@ Plik: C:\Users\xxx\bac\tsconfig.tsbuildinfo
     Meta robots: 0
 
 
+  Analiza optymalizacji obrazów:
+    Formaty obrazów:
+      webp: 0
+      avif: 0
+      jpg: 0
+      png: 0
+      gif: 0
+      svg: 0
+    Lazy loading: 0
+    Srcset: 0
+    Sizes: 0
+    Tag <picture>: 0
+    Użycie Next.js Image: 0
+    Użycie Gatsby Image: 0
+    Placeholdery base64: 0
+    Całkowita liczba obrazów: 0
+    Procent obrazów nowej generacji: 0.00%
+    Wynik optymalizacji obrazów: 0/100
+
 Zależności: 13
 Zależności deweloperskie: 13
 
@@ -5865,4 +7024,11 @@ Statystyki TypeScript:
   Całkowita liczba interfejsów: 10
   Całkowita liczba typów: 0
   Średnia liczba złożonych typów na plik: 0.56
+
+Statystyki optymalizacji obrazów:
+  Całkowita liczba obrazów: 12
+  Procent obrazów nowej generacji: 33.33%
+  Średni wynik optymalizacji: 28.00/100
+  Użycie lazy loading: 0.00%
+  Użycie srcset: 20.00%
 
