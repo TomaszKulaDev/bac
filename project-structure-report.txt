@@ -1,0 +1,1238 @@
+Aktualna struktura projektu (61 plików)
+
+Statystyki projektu:
+Całkowity rozmiar: 0.68 MB
+Całkowita liczba linii kodu: 12002
+Typy plików: {".local":1,".json":4,"":1,".ts":18,".mjs":3,".txt":1,".png":1,".md":1,".tsx":27,".ico":1,".css":1,".js":1,".tsbuildinfo":1}
+
+Pliki posortowane według size:
+C:\Users\xxx\bac\package-lock.json (.json, 265.20 KB, 7493 linii)
+C:\Users\xxx\bac\tsconfig.tsbuildinfo (.tsbuildinfo, 246.16 KB, 1 linii)
+C:\Users\xxx\bac\public\images\open-in-browser.png (.png, 36.73 KB, 143 linii)
+C:\Users\xxx\bac\src\app\favicon.ico (.ico, 25.32 KB, 31 linii)
+C:\Users\xxx\bac\project-structure-report.txt (.txt, 22.33 KB, 1040 linii)
+C:\Users\xxx\bac\src\app\users\register\page.tsx (.tsx, 15.72 KB, 450 linii)
+C:\Users\xxx\bac\src\app\users\login\page.tsx (.tsx, 11.89 KB, 349 linii)
+C:\Users\xxx\bac\src\app\users\profile\page.tsx (.tsx, 9.43 KB, 266 linii)
+C:\Users\xxx\bac\src\utils\projectAnalyzer.js (.js, 7.47 KB, 230 linii)
+C:\Users\xxx\bac\src\app\reset-password\ResetPasswordClient.tsx (.tsx, 7.15 KB, 216 linii)
+C:\Users\xxx\bac\src\app\users\forgot-password\page.tsx (.tsx, 4.32 KB, 146 linii)
+C:\Users\xxx\bac\src\pages\api\forgot-password.ts (.ts, 3.63 KB, 124 linii)
+C:\Users\xxx\bac\src\pages\api\register.ts (.ts, 2.98 KB, 100 linii)
+C:\Users\xxx\bac\src\pages\api\login.ts (.ts, 2.89 KB, 93 linii)
+C:\Users\xxx\bac\src\pages\api\reset-password.ts (.ts, 2.79 KB, 85 linii)
+C:\Users\xxx\bac\src\app\privacy-policy\page.tsx (.tsx, 2.76 KB, 79 linii)
+C:\Users\xxx\bac\src\pages\api\users\update-profile.ts (.ts, 2.67 KB, 86 linii)
+C:\Users\xxx\bac\src\app\layout.tsx (.tsx, 2.42 KB, 93 linii)
+C:\Users\xxx\bac\src\pages\api\auth\[...nextauth].ts (.ts, 2.33 KB, 81 linii)
+C:\Users\xxx\bac\src\app\page.tsx (.tsx, 2.14 KB, 63 linii)
+C:\Users\xxx\bac\src\app\terms-of-service\page.tsx (.tsx, 1.90 KB, 44 linii)
+C:\Users\xxx\bac\src\pages\api\resend-verification.ts (.ts, 1.78 KB, 63 linii)
+C:\Users\xxx\bac\src\pages\api\users\me.ts (.ts, 1.56 KB, 51 linii)
+C:\Users\xxx\bac\README.md (.md, 1.42 KB, 43 linii)
+C:\Users\xxx\bac\src\pages\api\verify.ts (.ts, 1.28 KB, 42 linii)
+C:\Users\xxx\bac\src\app\data-deletion\page.tsx (.tsx, 1.16 KB, 30 linii)
+C:\Users\xxx\bac\src\pages\verify.tsx (.tsx, 1.12 KB, 36 linii)
+C:\Users\xxx\bac\package.json (.json, 1.07 KB, 44 linii)
+C:\Users\xxx\bac\tsconfig.json (.json, 1.03 KB, 29 linii)
+C:\Users\xxx\bac\src\lib\mongodb.ts (.ts, 1.02 KB, 49 linii)
+C:\Users\xxx\bac\src\contexts\AuthContext.tsx (.tsx, 0.99 KB, 41 linii)
+C:\Users\xxx\bac\src\models\User.ts (.ts, 0.76 KB, 29 linii)
+C:\Users\xxx\bac\src\schemas\passwordSchema.ts (.ts, 0.75 KB, 23 linii)
+C:\Users\xxx\bac\.env.local (.local, 0.67 KB, 26 linii)
+C:\Users\xxx\bac\src\types\next-auth.d.ts (.ts, 0.60 KB, 34 linii)
+C:\Users\xxx\bac\src\app\globals.css (.css, 0.59 KB, 34 linii)
+C:\Users\xxx\bac\src\components\LoadingSpinner.tsx (.tsx, 0.56 KB, 21 linii)
+C:\Users\xxx\bac\src\lib\authMiddleware.ts (.ts, 0.52 KB, 20 linii)
+C:\Users\xxx\bac\tailwind.config.ts (.ts, 0.50 KB, 21 linii)
+C:\Users\xxx\bac\.gitignore (, 0.38 KB, 37 linii)
+C:\Users\xxx\bac\next-env.d.ts (.ts, 0.26 KB, 7 linii)
+C:\Users\xxx\bac\src\app\reset-password\page.tsx (.tsx, 0.24 KB, 14 linii)
+C:\Users\xxx\bac\src\scripts\analyzeProject.mjs (.mjs, 0.21 KB, 6 linii)
+C:\Users\xxx\bac\src\app\admin\page.tsx (.tsx, 0.19 KB, 7 linii)
+C:\Users\xxx\bac\src\global.d.ts (.ts, 0.16 KB, 9 linii)
+C:\Users\xxx\bac\src\utils\projectAnalyzer.d.ts (.ts, 0.15 KB, 6 linii)
+C:\Users\xxx\bac\src\app\accommodations\page.tsx (.tsx, 0.15 KB, 4 linii)
+C:\Users\xxx\bac\postcss.config.mjs (.mjs, 0.13 KB, 9 linii)
+C:\Users\xxx\bac\src\app\dance-schools\page.tsx (.tsx, 0.12 KB, 4 linii)
+C:\Users\xxx\bac\src\app\gamification\page.tsx (.tsx, 0.12 KB, 4 linii)
+C:\Users\xxx\bac\src\app\subscription\page.tsx (.tsx, 0.12 KB, 4 linii)
+C:\Users\xxx\bac\src\app\funny-images\page.tsx (.tsx, 0.12 KB, 4 linii)
+C:\Users\xxx\bac\src\app\mentorship\page.tsx (.tsx, 0.12 KB, 4 linii)
+C:\Users\xxx\bac\src\app\community\page.tsx (.tsx, 0.12 KB, 4 linii)
+C:\Users\xxx\bac\src\app\events\page.tsx (.tsx, 0.11 KB, 4 linii)
+C:\Users\xxx\bac\src\app\music\page.tsx (.tsx, 0.11 KB, 4 linii)
+C:\Users\xxx\bac\src\app\blog\page.tsx (.tsx, 0.11 KB, 4 linii)
+C:\Users\xxx\bac\src\app\jobs\page.tsx (.tsx, 0.11 KB, 4 linii)
+C:\Users\xxx\bac\src\app\users\page.tsx (.tsx, 0.10 KB, 5 linii)
+C:\Users\xxx\bac\next.config.mjs (.mjs, 0.09 KB, 5 linii)
+C:\Users\xxx\bac\.eslintrc.json (.json, 0.04 KB, 4 linii)
+
+Pliki posortowane według lines:
+C:\Users\xxx\bac\package-lock.json (.json, 265.20 KB, 7493 linii)
+C:\Users\xxx\bac\project-structure-report.txt (.txt, 22.33 KB, 1040 linii)
+C:\Users\xxx\bac\src\app\users\register\page.tsx (.tsx, 15.72 KB, 450 linii)
+C:\Users\xxx\bac\src\app\users\login\page.tsx (.tsx, 11.89 KB, 349 linii)
+C:\Users\xxx\bac\src\app\users\profile\page.tsx (.tsx, 9.43 KB, 266 linii)
+C:\Users\xxx\bac\src\utils\projectAnalyzer.js (.js, 7.47 KB, 230 linii)
+C:\Users\xxx\bac\src\app\reset-password\ResetPasswordClient.tsx (.tsx, 7.15 KB, 216 linii)
+C:\Users\xxx\bac\src\app\users\forgot-password\page.tsx (.tsx, 4.32 KB, 146 linii)
+C:\Users\xxx\bac\public\images\open-in-browser.png (.png, 36.73 KB, 143 linii)
+C:\Users\xxx\bac\src\pages\api\forgot-password.ts (.ts, 3.63 KB, 124 linii)
+C:\Users\xxx\bac\src\pages\api\register.ts (.ts, 2.98 KB, 100 linii)
+C:\Users\xxx\bac\src\app\layout.tsx (.tsx, 2.42 KB, 93 linii)
+C:\Users\xxx\bac\src\pages\api\login.ts (.ts, 2.89 KB, 93 linii)
+C:\Users\xxx\bac\src\pages\api\users\update-profile.ts (.ts, 2.67 KB, 86 linii)
+C:\Users\xxx\bac\src\pages\api\reset-password.ts (.ts, 2.79 KB, 85 linii)
+C:\Users\xxx\bac\src\pages\api\auth\[...nextauth].ts (.ts, 2.33 KB, 81 linii)
+C:\Users\xxx\bac\src\app\privacy-policy\page.tsx (.tsx, 2.76 KB, 79 linii)
+C:\Users\xxx\bac\src\app\page.tsx (.tsx, 2.14 KB, 63 linii)
+C:\Users\xxx\bac\src\pages\api\resend-verification.ts (.ts, 1.78 KB, 63 linii)
+C:\Users\xxx\bac\src\pages\api\users\me.ts (.ts, 1.56 KB, 51 linii)
+C:\Users\xxx\bac\src\lib\mongodb.ts (.ts, 1.02 KB, 49 linii)
+C:\Users\xxx\bac\package.json (.json, 1.07 KB, 44 linii)
+C:\Users\xxx\bac\src\app\terms-of-service\page.tsx (.tsx, 1.90 KB, 44 linii)
+C:\Users\xxx\bac\README.md (.md, 1.42 KB, 43 linii)
+C:\Users\xxx\bac\src\pages\api\verify.ts (.ts, 1.28 KB, 42 linii)
+C:\Users\xxx\bac\src\contexts\AuthContext.tsx (.tsx, 0.99 KB, 41 linii)
+C:\Users\xxx\bac\.gitignore (, 0.38 KB, 37 linii)
+C:\Users\xxx\bac\src\pages\verify.tsx (.tsx, 1.12 KB, 36 linii)
+C:\Users\xxx\bac\src\app\globals.css (.css, 0.59 KB, 34 linii)
+C:\Users\xxx\bac\src\types\next-auth.d.ts (.ts, 0.60 KB, 34 linii)
+C:\Users\xxx\bac\src\app\favicon.ico (.ico, 25.32 KB, 31 linii)
+C:\Users\xxx\bac\src\app\data-deletion\page.tsx (.tsx, 1.16 KB, 30 linii)
+C:\Users\xxx\bac\src\models\User.ts (.ts, 0.76 KB, 29 linii)
+C:\Users\xxx\bac\tsconfig.json (.json, 1.03 KB, 29 linii)
+C:\Users\xxx\bac\.env.local (.local, 0.67 KB, 26 linii)
+C:\Users\xxx\bac\src\schemas\passwordSchema.ts (.ts, 0.75 KB, 23 linii)
+C:\Users\xxx\bac\src\components\LoadingSpinner.tsx (.tsx, 0.56 KB, 21 linii)
+C:\Users\xxx\bac\tailwind.config.ts (.ts, 0.50 KB, 21 linii)
+C:\Users\xxx\bac\src\lib\authMiddleware.ts (.ts, 0.52 KB, 20 linii)
+C:\Users\xxx\bac\src\app\reset-password\page.tsx (.tsx, 0.24 KB, 14 linii)
+C:\Users\xxx\bac\postcss.config.mjs (.mjs, 0.13 KB, 9 linii)
+C:\Users\xxx\bac\src\global.d.ts (.ts, 0.16 KB, 9 linii)
+C:\Users\xxx\bac\next-env.d.ts (.ts, 0.26 KB, 7 linii)
+C:\Users\xxx\bac\src\app\admin\page.tsx (.tsx, 0.19 KB, 7 linii)
+C:\Users\xxx\bac\src\scripts\analyzeProject.mjs (.mjs, 0.21 KB, 6 linii)
+C:\Users\xxx\bac\src\utils\projectAnalyzer.d.ts (.ts, 0.15 KB, 6 linii)
+C:\Users\xxx\bac\next.config.mjs (.mjs, 0.09 KB, 5 linii)
+C:\Users\xxx\bac\src\app\users\page.tsx (.tsx, 0.10 KB, 5 linii)
+C:\Users\xxx\bac\.eslintrc.json (.json, 0.04 KB, 4 linii)
+C:\Users\xxx\bac\src\app\accommodations\page.tsx (.tsx, 0.15 KB, 4 linii)
+C:\Users\xxx\bac\src\app\blog\page.tsx (.tsx, 0.11 KB, 4 linii)
+C:\Users\xxx\bac\src\app\community\page.tsx (.tsx, 0.12 KB, 4 linii)
+C:\Users\xxx\bac\src\app\dance-schools\page.tsx (.tsx, 0.12 KB, 4 linii)
+C:\Users\xxx\bac\src\app\events\page.tsx (.tsx, 0.11 KB, 4 linii)
+C:\Users\xxx\bac\src\app\funny-images\page.tsx (.tsx, 0.12 KB, 4 linii)
+C:\Users\xxx\bac\src\app\gamification\page.tsx (.tsx, 0.12 KB, 4 linii)
+C:\Users\xxx\bac\src\app\jobs\page.tsx (.tsx, 0.11 KB, 4 linii)
+C:\Users\xxx\bac\src\app\mentorship\page.tsx (.tsx, 0.12 KB, 4 linii)
+C:\Users\xxx\bac\src\app\music\page.tsx (.tsx, 0.11 KB, 4 linii)
+C:\Users\xxx\bac\src\app\subscription\page.tsx (.tsx, 0.12 KB, 4 linii)
+C:\Users\xxx\bac\tsconfig.tsbuildinfo (.tsbuildinfo, 246.16 KB, 1 linii)
+
+Pliki posortowane według type:
+C:\Users\xxx\bac\.gitignore (, 0.38 KB, 37 linii)
+C:\Users\xxx\bac\src\app\globals.css (.css, 0.59 KB, 34 linii)
+C:\Users\xxx\bac\src\app\favicon.ico (.ico, 25.32 KB, 31 linii)
+C:\Users\xxx\bac\src\utils\projectAnalyzer.js (.js, 7.47 KB, 230 linii)
+C:\Users\xxx\bac\.eslintrc.json (.json, 0.04 KB, 4 linii)
+C:\Users\xxx\bac\package-lock.json (.json, 265.20 KB, 7493 linii)
+C:\Users\xxx\bac\package.json (.json, 1.07 KB, 44 linii)
+C:\Users\xxx\bac\tsconfig.json (.json, 1.03 KB, 29 linii)
+C:\Users\xxx\bac\.env.local (.local, 0.67 KB, 26 linii)
+C:\Users\xxx\bac\README.md (.md, 1.42 KB, 43 linii)
+C:\Users\xxx\bac\next.config.mjs (.mjs, 0.09 KB, 5 linii)
+C:\Users\xxx\bac\postcss.config.mjs (.mjs, 0.13 KB, 9 linii)
+C:\Users\xxx\bac\src\scripts\analyzeProject.mjs (.mjs, 0.21 KB, 6 linii)
+C:\Users\xxx\bac\public\images\open-in-browser.png (.png, 36.73 KB, 143 linii)
+C:\Users\xxx\bac\next-env.d.ts (.ts, 0.26 KB, 7 linii)
+C:\Users\xxx\bac\src\global.d.ts (.ts, 0.16 KB, 9 linii)
+C:\Users\xxx\bac\src\lib\authMiddleware.ts (.ts, 0.52 KB, 20 linii)
+C:\Users\xxx\bac\src\lib\mongodb.ts (.ts, 1.02 KB, 49 linii)
+C:\Users\xxx\bac\src\models\User.ts (.ts, 0.76 KB, 29 linii)
+C:\Users\xxx\bac\src\pages\api\auth\[...nextauth].ts (.ts, 2.33 KB, 81 linii)
+C:\Users\xxx\bac\src\pages\api\forgot-password.ts (.ts, 3.63 KB, 124 linii)
+C:\Users\xxx\bac\src\pages\api\login.ts (.ts, 2.89 KB, 93 linii)
+C:\Users\xxx\bac\src\pages\api\register.ts (.ts, 2.98 KB, 100 linii)
+C:\Users\xxx\bac\src\pages\api\resend-verification.ts (.ts, 1.78 KB, 63 linii)
+C:\Users\xxx\bac\src\pages\api\reset-password.ts (.ts, 2.79 KB, 85 linii)
+C:\Users\xxx\bac\src\pages\api\users\me.ts (.ts, 1.56 KB, 51 linii)
+C:\Users\xxx\bac\src\pages\api\users\update-profile.ts (.ts, 2.67 KB, 86 linii)
+C:\Users\xxx\bac\src\pages\api\verify.ts (.ts, 1.28 KB, 42 linii)
+C:\Users\xxx\bac\src\schemas\passwordSchema.ts (.ts, 0.75 KB, 23 linii)
+C:\Users\xxx\bac\src\types\next-auth.d.ts (.ts, 0.60 KB, 34 linii)
+C:\Users\xxx\bac\src\utils\projectAnalyzer.d.ts (.ts, 0.15 KB, 6 linii)
+C:\Users\xxx\bac\tailwind.config.ts (.ts, 0.50 KB, 21 linii)
+C:\Users\xxx\bac\tsconfig.tsbuildinfo (.tsbuildinfo, 246.16 KB, 1 linii)
+C:\Users\xxx\bac\src\app\accommodations\page.tsx (.tsx, 0.15 KB, 4 linii)
+C:\Users\xxx\bac\src\app\admin\page.tsx (.tsx, 0.19 KB, 7 linii)
+C:\Users\xxx\bac\src\app\blog\page.tsx (.tsx, 0.11 KB, 4 linii)
+C:\Users\xxx\bac\src\app\community\page.tsx (.tsx, 0.12 KB, 4 linii)
+C:\Users\xxx\bac\src\app\dance-schools\page.tsx (.tsx, 0.12 KB, 4 linii)
+C:\Users\xxx\bac\src\app\data-deletion\page.tsx (.tsx, 1.16 KB, 30 linii)
+C:\Users\xxx\bac\src\app\events\page.tsx (.tsx, 0.11 KB, 4 linii)
+C:\Users\xxx\bac\src\app\funny-images\page.tsx (.tsx, 0.12 KB, 4 linii)
+C:\Users\xxx\bac\src\app\gamification\page.tsx (.tsx, 0.12 KB, 4 linii)
+C:\Users\xxx\bac\src\app\jobs\page.tsx (.tsx, 0.11 KB, 4 linii)
+C:\Users\xxx\bac\src\app\layout.tsx (.tsx, 2.42 KB, 93 linii)
+C:\Users\xxx\bac\src\app\mentorship\page.tsx (.tsx, 0.12 KB, 4 linii)
+C:\Users\xxx\bac\src\app\music\page.tsx (.tsx, 0.11 KB, 4 linii)
+C:\Users\xxx\bac\src\app\page.tsx (.tsx, 2.14 KB, 63 linii)
+C:\Users\xxx\bac\src\app\privacy-policy\page.tsx (.tsx, 2.76 KB, 79 linii)
+C:\Users\xxx\bac\src\app\reset-password\page.tsx (.tsx, 0.24 KB, 14 linii)
+C:\Users\xxx\bac\src\app\reset-password\ResetPasswordClient.tsx (.tsx, 7.15 KB, 216 linii)
+C:\Users\xxx\bac\src\app\subscription\page.tsx (.tsx, 0.12 KB, 4 linii)
+C:\Users\xxx\bac\src\app\terms-of-service\page.tsx (.tsx, 1.90 KB, 44 linii)
+C:\Users\xxx\bac\src\app\users\forgot-password\page.tsx (.tsx, 4.32 KB, 146 linii)
+C:\Users\xxx\bac\src\app\users\login\page.tsx (.tsx, 11.89 KB, 349 linii)
+C:\Users\xxx\bac\src\app\users\page.tsx (.tsx, 0.10 KB, 5 linii)
+C:\Users\xxx\bac\src\app\users\profile\page.tsx (.tsx, 9.43 KB, 266 linii)
+C:\Users\xxx\bac\src\app\users\register\page.tsx (.tsx, 15.72 KB, 450 linii)
+C:\Users\xxx\bac\src\components\LoadingSpinner.tsx (.tsx, 0.56 KB, 21 linii)
+C:\Users\xxx\bac\src\contexts\AuthContext.tsx (.tsx, 0.99 KB, 41 linii)
+C:\Users\xxx\bac\src\pages\verify.tsx (.tsx, 1.12 KB, 36 linii)
+C:\Users\xxx\bac\project-structure-report.txt (.txt, 22.33 KB, 1040 linii)
+
+Szczegółowe informacje o plikach:
+
+Plik: C:\Users\xxx\bac\.env.local
+  Typ: .local
+  Rozmiar: 0.67 KB
+  Liczba linii: 26
+  Ostatnia modyfikacja: 2024-09-09T20:55:18.578Z
+  Importy: 0 (zewnętrzne: 0, lokalne: 0)
+  Eksporty: 0
+  Komponenty: 0
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 0
+  Trasa API: Nie
+  Strona: Nie
+
+Plik: C:\Users\xxx\bac\.eslintrc.json
+  Typ: .json
+  Rozmiar: 0.04 KB
+  Liczba linii: 4
+  Ostatnia modyfikacja: 2024-08-22T17:36:02.889Z
+  Importy: 0 (zewnętrzne: 0, lokalne: 0)
+  Eksporty: 0
+  Komponenty: 0
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 0
+  Trasa API: Nie
+  Strona: Nie
+
+Plik: C:\Users\xxx\bac\.gitignore
+  Typ: 
+  Rozmiar: 0.38 KB
+  Liczba linii: 37
+  Ostatnia modyfikacja: 2024-09-04T14:05:10.655Z
+  Importy: 0 (zewnętrzne: 0, lokalne: 0)
+  Eksporty: 0
+  Komponenty: 0
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 0
+  Trasa API: Nie
+  Strona: Nie
+
+Plik: C:\Users\xxx\bac\next-env.d.ts
+  Typ: .ts
+  Rozmiar: 0.26 KB
+  Liczba linii: 7
+  Ostatnia modyfikacja: 2024-08-26T17:09:34.232Z
+  Importy: 0 (zewnętrzne: 0, lokalne: 0)
+  Eksporty: 0
+  Komponenty: 0
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 0
+  Trasa API: Nie
+  Strona: Nie
+
+Plik: C:\Users\xxx\bac\next.config.mjs
+  Typ: .mjs
+  Rozmiar: 0.09 KB
+  Liczba linii: 5
+  Ostatnia modyfikacja: 2024-08-22T17:36:02.916Z
+  Importy: 0 (zewnętrzne: 0, lokalne: 0)
+  Eksporty: 1
+  Komponenty: 0
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 0
+  Trasa API: Nie
+  Strona: Nie
+
+Plik: C:\Users\xxx\bac\package-lock.json
+  Typ: .json
+  Rozmiar: 265.20 KB
+  Liczba linii: 7493
+  Ostatnia modyfikacja: 2024-09-10T16:58:40.359Z
+  Importy: 0 (zewnętrzne: 0, lokalne: 0)
+  Eksporty: 0
+  Komponenty: 0
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 0
+  Trasa API: Nie
+  Strona: Nie
+
+Plik: C:\Users\xxx\bac\package.json
+  Typ: .json
+  Rozmiar: 1.07 KB
+  Liczba linii: 44
+  Ostatnia modyfikacja: 2024-09-10T17:01:04.245Z
+  Importy: 0 (zewnętrzne: 0, lokalne: 0)
+  Eksporty: 0
+  Komponenty: 0
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 0
+  Trasa API: Nie
+  Strona: Nie
+
+Plik: C:\Users\xxx\bac\postcss.config.mjs
+  Typ: .mjs
+  Rozmiar: 0.13 KB
+  Liczba linii: 9
+  Ostatnia modyfikacja: 2024-08-22T17:36:02.926Z
+  Importy: 0 (zewnętrzne: 0, lokalne: 0)
+  Eksporty: 1
+  Komponenty: 0
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 0
+  Trasa API: Nie
+  Strona: Nie
+
+Plik: C:\Users\xxx\bac\project-structure-report.txt
+  Typ: .txt
+  Rozmiar: 22.33 KB
+  Liczba linii: 1040
+  Ostatnia modyfikacja: 2024-09-10T17:37:08.074Z
+  Importy: 0 (zewnętrzne: 0, lokalne: 0)
+  Eksporty: 0
+  Komponenty: 0
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 0
+  Trasa API: Nie
+  Strona: Nie
+
+Plik: C:\Users\xxx\bac\public\images\open-in-browser.png
+  Typ: .png
+  Rozmiar: 36.73 KB
+  Liczba linii: 143
+  Ostatnia modyfikacja: 2024-09-09T16:29:48.673Z
+  Importy: 0 (zewnętrzne: 0, lokalne: 0)
+  Eksporty: 0
+  Komponenty: 0
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 0
+  Trasa API: Nie
+  Strona: Nie
+
+Plik: C:\Users\xxx\bac\README.md
+  Typ: .md
+  Rozmiar: 1.42 KB
+  Liczba linii: 43
+  Ostatnia modyfikacja: 2024-09-10T17:36:59.674Z
+  Importy: 0 (zewnętrzne: 0, lokalne: 0)
+  Eksporty: 0
+  Komponenty: 0
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 0
+  Trasa API: Nie
+  Strona: Nie
+
+Plik: C:\Users\xxx\bac\src\app\accommodations\page.tsx
+  Typ: .tsx
+  Rozmiar: 0.15 KB
+  Liczba linii: 4
+  Ostatnia modyfikacja: 2024-09-09T19:51:18.292Z
+  Importy: 0 (zewnętrzne: 0, lokalne: 0)
+  Eksporty: 1
+  Komponenty: 1
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 3
+  Trasa API: Nie
+  Strona: Tak
+
+Plik: C:\Users\xxx\bac\src\app\admin\page.tsx
+  Typ: .tsx
+  Rozmiar: 0.19 KB
+  Liczba linii: 7
+  Ostatnia modyfikacja: 2024-09-01T22:32:24.455Z
+  Importy: 0 (zewnętrzne: 0, lokalne: 0)
+  Eksporty: 1
+  Komponenty: 1
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 3
+  Trasa API: Nie
+  Strona: Tak
+
+Plik: C:\Users\xxx\bac\src\app\blog\page.tsx
+  Typ: .tsx
+  Rozmiar: 0.11 KB
+  Liczba linii: 4
+  Ostatnia modyfikacja: 2024-09-01T22:32:24.456Z
+  Importy: 0 (zewnętrzne: 0, lokalne: 0)
+  Eksporty: 1
+  Komponenty: 1
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 3
+  Trasa API: Nie
+  Strona: Tak
+
+Plik: C:\Users\xxx\bac\src\app\community\page.tsx
+  Typ: .tsx
+  Rozmiar: 0.12 KB
+  Liczba linii: 4
+  Ostatnia modyfikacja: 2024-09-01T22:32:24.457Z
+  Importy: 0 (zewnętrzne: 0, lokalne: 0)
+  Eksporty: 1
+  Komponenty: 1
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 3
+  Trasa API: Nie
+  Strona: Tak
+
+Plik: C:\Users\xxx\bac\src\app\dance-schools\page.tsx
+  Typ: .tsx
+  Rozmiar: 0.12 KB
+  Liczba linii: 4
+  Ostatnia modyfikacja: 2024-09-01T22:32:24.459Z
+  Importy: 0 (zewnętrzne: 0, lokalne: 0)
+  Eksporty: 1
+  Komponenty: 1
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 3
+  Trasa API: Nie
+  Strona: Tak
+
+Plik: C:\Users\xxx\bac\src\app\data-deletion\page.tsx
+  Typ: .tsx
+  Rozmiar: 1.16 KB
+  Liczba linii: 30
+  Ostatnia modyfikacja: 2024-09-09T21:42:40.939Z
+  Importy: 0 (zewnętrzne: 0, lokalne: 0)
+  Eksporty: 1
+  Komponenty: 1
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 17
+  Trasa API: Nie
+  Strona: Tak
+
+Plik: C:\Users\xxx\bac\src\app\events\page.tsx
+  Typ: .tsx
+  Rozmiar: 0.11 KB
+  Liczba linii: 4
+  Ostatnia modyfikacja: 2024-09-01T22:32:24.460Z
+  Importy: 0 (zewnętrzne: 0, lokalne: 0)
+  Eksporty: 1
+  Komponenty: 1
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 3
+  Trasa API: Nie
+  Strona: Tak
+
+Plik: C:\Users\xxx\bac\src\app\favicon.ico
+  Typ: .ico
+  Rozmiar: 25.32 KB
+  Liczba linii: 31
+  Ostatnia modyfikacja: 2024-08-22T17:36:02.829Z
+  Importy: 0 (zewnętrzne: 0, lokalne: 0)
+  Eksporty: 0
+  Komponenty: 0
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 0
+  Trasa API: Nie
+  Strona: Nie
+
+Plik: C:\Users\xxx\bac\src\app\funny-images\page.tsx
+  Typ: .tsx
+  Rozmiar: 0.12 KB
+  Liczba linii: 4
+  Ostatnia modyfikacja: 2024-09-01T22:32:24.461Z
+  Importy: 0 (zewnętrzne: 0, lokalne: 0)
+  Eksporty: 1
+  Komponenty: 1
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 3
+  Trasa API: Nie
+  Strona: Tak
+
+Plik: C:\Users\xxx\bac\src\app\gamification\page.tsx
+  Typ: .tsx
+  Rozmiar: 0.12 KB
+  Liczba linii: 4
+  Ostatnia modyfikacja: 2024-09-01T22:32:24.462Z
+  Importy: 0 (zewnętrzne: 0, lokalne: 0)
+  Eksporty: 1
+  Komponenty: 1
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 3
+  Trasa API: Nie
+  Strona: Tak
+
+Plik: C:\Users\xxx\bac\src\app\globals.css
+  Typ: .css
+  Rozmiar: 0.59 KB
+  Liczba linii: 34
+  Ostatnia modyfikacja: 2024-08-22T17:36:02.803Z
+  Importy: 0 (zewnętrzne: 0, lokalne: 0)
+  Eksporty: 0
+  Komponenty: 0
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 0
+  Trasa API: Nie
+  Strona: Nie
+
+Plik: C:\Users\xxx\bac\src\app\jobs\page.tsx
+  Typ: .tsx
+  Rozmiar: 0.11 KB
+  Liczba linii: 4
+  Ostatnia modyfikacja: 2024-09-01T22:32:24.463Z
+  Importy: 0 (zewnętrzne: 0, lokalne: 0)
+  Eksporty: 1
+  Komponenty: 1
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 3
+  Trasa API: Nie
+  Strona: Tak
+
+Plik: C:\Users\xxx\bac\src\app\layout.tsx
+  Typ: .tsx
+  Rozmiar: 2.42 KB
+  Liczba linii: 93
+  Ostatnia modyfikacja: 2024-09-09T21:42:40.940Z
+  Importy: 7 (zewnętrzne: 6, lokalne: 1)
+  Eksporty: 1
+  Komponenty: 1
+  Hooki: 6
+  Komponent kliencki: Tak
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 5
+  Klasy Tailwind: 14
+  Trasa API: Nie
+  Strona: Nie
+
+Plik: C:\Users\xxx\bac\src\app\mentorship\page.tsx
+  Typ: .tsx
+  Rozmiar: 0.12 KB
+  Liczba linii: 4
+  Ostatnia modyfikacja: 2024-09-01T22:32:24.465Z
+  Importy: 0 (zewnętrzne: 0, lokalne: 0)
+  Eksporty: 1
+  Komponenty: 1
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 3
+  Trasa API: Nie
+  Strona: Tak
+
+Plik: C:\Users\xxx\bac\src\app\music\page.tsx
+  Typ: .tsx
+  Rozmiar: 0.11 KB
+  Liczba linii: 4
+  Ostatnia modyfikacja: 2024-09-01T22:32:24.466Z
+  Importy: 0 (zewnętrzne: 0, lokalne: 0)
+  Eksporty: 1
+  Komponenty: 1
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 3
+  Trasa API: Nie
+  Strona: Tak
+
+Plik: C:\Users\xxx\bac\src\app\page.tsx
+  Typ: .tsx
+  Rozmiar: 2.14 KB
+  Liczba linii: 63
+  Ostatnia modyfikacja: 2024-09-05T20:40:49.508Z
+  Importy: 2 (zewnętrzne: 2, lokalne: 0)
+  Eksporty: 1
+  Komponenty: 2
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 1
+  Klasy Tailwind: 55
+  Trasa API: Nie
+  Strona: Tak
+
+Plik: C:\Users\xxx\bac\src\app\privacy-policy\page.tsx
+  Typ: .tsx
+  Rozmiar: 2.76 KB
+  Liczba linii: 79
+  Ostatnia modyfikacja: 2024-09-09T21:12:13.398Z
+  Importy: 1 (zewnętrzne: 1, lokalne: 0)
+  Eksporty: 1
+  Komponenty: 1
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 45
+  Trasa API: Nie
+  Strona: Tak
+
+Plik: C:\Users\xxx\bac\src\app\reset-password\page.tsx
+  Typ: .tsx
+  Rozmiar: 0.24 KB
+  Liczba linii: 14
+  Ostatnia modyfikacja: 2024-08-27T20:27:30.138Z
+  Importy: 1 (zewnętrzne: 1, lokalne: 0)
+  Eksporty: 1
+  Komponenty: 1
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 0
+  Trasa API: Nie
+  Strona: Tak
+
+Plik: C:\Users\xxx\bac\src\app\reset-password\ResetPasswordClient.tsx
+  Typ: .tsx
+  Rozmiar: 7.15 KB
+  Liczba linii: 216
+  Ostatnia modyfikacja: 2024-09-09T19:13:46.036Z
+  Importy: 6 (zewnętrzne: 5, lokalne: 1)
+  Eksporty: 1
+  Komponenty: 4
+  Hooki: 14
+  Komponent kliencki: Tak
+  Schematy Zod: 1
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 83
+  Trasa API: Nie
+  Strona: Nie
+
+Plik: C:\Users\xxx\bac\src\app\subscription\page.tsx
+  Typ: .tsx
+  Rozmiar: 0.12 KB
+  Liczba linii: 4
+  Ostatnia modyfikacja: 2024-09-01T22:32:24.468Z
+  Importy: 0 (zewnętrzne: 0, lokalne: 0)
+  Eksporty: 1
+  Komponenty: 1
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 3
+  Trasa API: Nie
+  Strona: Tak
+
+Plik: C:\Users\xxx\bac\src\app\terms-of-service\page.tsx
+  Typ: .tsx
+  Rozmiar: 1.90 KB
+  Liczba linii: 44
+  Ostatnia modyfikacja: 2024-09-09T21:29:47.750Z
+  Importy: 0 (zewnętrzne: 0, lokalne: 0)
+  Eksporty: 1
+  Komponenty: 1
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 36
+  Trasa API: Nie
+  Strona: Tak
+
+Plik: C:\Users\xxx\bac\src\app\users\forgot-password\page.tsx
+  Typ: .tsx
+  Rozmiar: 4.32 KB
+  Liczba linii: 146
+  Ostatnia modyfikacja: 2024-09-09T19:13:46.037Z
+  Importy: 4 (zewnętrzne: 4, lokalne: 0)
+  Eksporty: 1
+  Komponenty: 3
+  Hooki: 5
+  Komponent kliencki: Tak
+  Schematy Zod: 2
+  Użycie Next Image: 0
+  Użycie Next Link: 1
+  Klasy Tailwind: 62
+  Trasa API: Nie
+  Strona: Tak
+
+Plik: C:\Users\xxx\bac\src\app\users\login\page.tsx
+  Typ: .tsx
+  Rozmiar: 11.89 KB
+  Liczba linii: 349
+  Ostatnia modyfikacja: 2024-09-09T21:11:19.339Z
+  Importy: 9 (zewnętrzne: 8, lokalne: 1)
+  Eksporty: 1
+  Komponenty: 7
+  Hooki: 16
+  Komponent kliencki: Tak
+  Schematy Zod: 3
+  Użycie Next Image: 1
+  Użycie Next Link: 2
+  Klasy Tailwind: 121
+  Trasa API: Nie
+  Strona: Tak
+
+Plik: C:\Users\xxx\bac\src\app\users\page.tsx
+  Typ: .tsx
+  Rozmiar: 0.10 KB
+  Liczba linii: 5
+  Ostatnia modyfikacja: 2024-09-01T22:32:24.470Z
+  Importy: 0 (zewnętrzne: 0, lokalne: 0)
+  Eksporty: 1
+  Komponenty: 1
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 0
+  Trasa API: Nie
+  Strona: Tak
+
+Plik: C:\Users\xxx\bac\src\app\users\profile\page.tsx
+  Typ: .tsx
+  Rozmiar: 9.43 KB
+  Liczba linii: 266
+  Ostatnia modyfikacja: 2024-09-07T08:48:05.197Z
+  Importy: 6 (zewnętrzne: 6, lokalne: 0)
+  Eksporty: 1
+  Komponenty: 2
+  Hooki: 12
+  Komponent kliencki: Tak
+  Schematy Zod: 2
+  Użycie Next Image: 1
+  Użycie Next Link: 0
+  Klasy Tailwind: 154
+  Trasa API: Nie
+  Strona: Tak
+
+Plik: C:\Users\xxx\bac\src\app\users\register\page.tsx
+  Typ: .tsx
+  Rozmiar: 15.72 KB
+  Liczba linii: 450
+  Ostatnia modyfikacja: 2024-09-09T21:29:47.751Z
+  Importy: 7 (zewnętrzne: 6, lokalne: 1)
+  Eksporty: 1
+  Komponenty: 8
+  Hooki: 14
+  Komponent kliencki: Tak
+  Schematy Zod: 4
+  Użycie Next Image: 1
+  Użycie Next Link: 3
+  Klasy Tailwind: 154
+  Trasa API: Nie
+  Strona: Tak
+
+Plik: C:\Users\xxx\bac\src\components\LoadingSpinner.tsx
+  Typ: .tsx
+  Rozmiar: 0.56 KB
+  Liczba linii: 21
+  Ostatnia modyfikacja: 2024-09-04T20:19:51.084Z
+  Importy: 0 (zewnętrzne: 0, lokalne: 0)
+  Eksporty: 1
+  Komponenty: 1
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 6
+  Trasa API: Nie
+  Strona: Nie
+
+Plik: C:\Users\xxx\bac\src\contexts\AuthContext.tsx
+  Typ: .tsx
+  Rozmiar: 0.99 KB
+  Liczba linii: 41
+  Ostatnia modyfikacja: 2024-09-09T19:41:33.262Z
+  Importy: 2 (zewnętrzne: 2, lokalne: 0)
+  Eksporty: 2
+  Komponenty: 1
+  Hooki: 9
+  Komponent kliencki: Tak
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 0
+  Trasa API: Nie
+  Strona: Nie
+
+Plik: C:\Users\xxx\bac\src\global.d.ts
+  Typ: .ts
+  Rozmiar: 0.16 KB
+  Liczba linii: 9
+  Ostatnia modyfikacja: 2024-08-30T15:41:22.235Z
+  Importy: 1 (zewnętrzne: 1, lokalne: 0)
+  Eksporty: 0
+  Komponenty: 0
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 0
+  Trasa API: Nie
+  Strona: Nie
+
+Plik: C:\Users\xxx\bac\src\lib\authMiddleware.ts
+  Typ: .ts
+  Rozmiar: 0.52 KB
+  Liczba linii: 20
+  Ostatnia modyfikacja: 2024-09-09T19:38:49.099Z
+  Importy: 3 (zewnętrzne: 2, lokalne: 1)
+  Eksporty: 1
+  Komponenty: 0
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 0
+  Trasa API: Nie
+  Strona: Nie
+
+Plik: C:\Users\xxx\bac\src\lib\mongodb.ts
+  Typ: .ts
+  Rozmiar: 1.02 KB
+  Liczba linii: 49
+  Ostatnia modyfikacja: 2024-09-01T22:32:24.471Z
+  Importy: 1 (zewnętrzne: 1, lokalne: 0)
+  Eksporty: 1
+  Komponenty: 1
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 0
+  Trasa API: Nie
+  Strona: Nie
+
+Plik: C:\Users\xxx\bac\src\models\User.ts
+  Typ: .ts
+  Rozmiar: 0.76 KB
+  Liczba linii: 29
+  Ostatnia modyfikacja: 2024-09-09T19:13:46.040Z
+  Importy: 1 (zewnętrzne: 1, lokalne: 0)
+  Eksporty: 2
+  Komponenty: 0
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 0
+  Trasa API: Nie
+  Strona: Nie
+
+Plik: C:\Users\xxx\bac\src\pages\api\auth\[...nextauth].ts
+  Typ: .ts
+  Rozmiar: 2.33 KB
+  Liczba linii: 81
+  Ostatnia modyfikacja: 2024-09-09T19:36:09.721Z
+  Importy: 8 (zewnętrzne: 7, lokalne: 1)
+  Eksporty: 2
+  Komponenty: 0
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 0
+  Trasa API: Nie
+  Strona: Nie
+
+Plik: C:\Users\xxx\bac\src\pages\api\forgot-password.ts
+  Typ: .ts
+  Rozmiar: 3.63 KB
+  Liczba linii: 124
+  Ostatnia modyfikacja: 2024-09-09T19:00:34.134Z
+  Importy: 6 (zewnętrzne: 6, lokalne: 0)
+  Eksporty: 1
+  Komponenty: 0
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 1
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 0
+  Trasa API: Nie
+  Strona: Nie
+
+Plik: C:\Users\xxx\bac\src\pages\api\login.ts
+  Typ: .ts
+  Rozmiar: 2.89 KB
+  Liczba linii: 93
+  Ostatnia modyfikacja: 2024-09-09T16:29:04.657Z
+  Importy: 6 (zewnętrzne: 6, lokalne: 0)
+  Eksporty: 1
+  Komponenty: 0
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 3
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 0
+  Trasa API: Nie
+  Strona: Nie
+
+Plik: C:\Users\xxx\bac\src\pages\api\register.ts
+  Typ: .ts
+  Rozmiar: 2.98 KB
+  Liczba linii: 100
+  Ostatnia modyfikacja: 2024-09-09T19:13:46.042Z
+  Importy: 8 (zewnętrzne: 8, lokalne: 0)
+  Eksporty: 1
+  Komponenty: 0
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 0
+  Trasa API: Nie
+  Strona: Nie
+
+Plik: C:\Users\xxx\bac\src\pages\api\resend-verification.ts
+  Typ: .ts
+  Rozmiar: 1.78 KB
+  Liczba linii: 63
+  Ostatnia modyfikacja: 2024-09-09T19:13:46.043Z
+  Importy: 5 (zewnętrzne: 5, lokalne: 0)
+  Eksporty: 1
+  Komponenty: 0
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 0
+  Trasa API: Nie
+  Strona: Nie
+
+Plik: C:\Users\xxx\bac\src\pages\api\reset-password.ts
+  Typ: .ts
+  Rozmiar: 2.79 KB
+  Liczba linii: 85
+  Ostatnia modyfikacja: 2024-09-05T20:40:49.524Z
+  Importy: 5 (zewnętrzne: 5, lokalne: 0)
+  Eksporty: 1
+  Komponenty: 0
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 0
+  Trasa API: Nie
+  Strona: Nie
+
+Plik: C:\Users\xxx\bac\src\pages\api\users\me.ts
+  Typ: .ts
+  Rozmiar: 1.56 KB
+  Liczba linii: 51
+  Ostatnia modyfikacja: 2024-09-09T19:13:46.044Z
+  Importy: 6 (zewnętrzne: 5, lokalne: 1)
+  Eksporty: 1
+  Komponenty: 0
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 0
+  Trasa API: Nie
+  Strona: Nie
+
+Plik: C:\Users\xxx\bac\src\pages\api\users\update-profile.ts
+  Typ: .ts
+  Rozmiar: 2.67 KB
+  Liczba linii: 86
+  Ostatnia modyfikacja: 2024-09-09T19:13:46.045Z
+  Importy: 8 (zewnętrzne: 7, lokalne: 1)
+  Eksporty: 1
+  Komponenty: 0
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 2
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 0
+  Trasa API: Nie
+  Strona: Nie
+
+Plik: C:\Users\xxx\bac\src\pages\api\verify.ts
+  Typ: .ts
+  Rozmiar: 1.28 KB
+  Liczba linii: 42
+  Ostatnia modyfikacja: 2024-08-27T19:45:18.285Z
+  Importy: 3 (zewnętrzne: 3, lokalne: 0)
+  Eksporty: 1
+  Komponenty: 0
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 0
+  Trasa API: Nie
+  Strona: Nie
+
+Plik: C:\Users\xxx\bac\src\pages\verify.tsx
+  Typ: .tsx
+  Rozmiar: 1.12 KB
+  Liczba linii: 36
+  Ostatnia modyfikacja: 2024-08-30T16:54:08.022Z
+  Importy: 2 (zewnętrzne: 2, lokalne: 0)
+  Eksporty: 1
+  Komponenty: 1
+  Hooki: 6
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 15
+  Trasa API: Nie
+  Strona: Nie
+
+Plik: C:\Users\xxx\bac\src\schemas\passwordSchema.ts
+  Typ: .ts
+  Rozmiar: 0.75 KB
+  Liczba linii: 23
+  Ostatnia modyfikacja: 2024-09-05T20:40:49.527Z
+  Importy: 1 (zewnętrzne: 1, lokalne: 0)
+  Eksporty: 2
+  Komponenty: 0
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 0
+  Trasa API: Nie
+  Strona: Nie
+
+Plik: C:\Users\xxx\bac\src\scripts\analyzeProject.mjs
+  Typ: .mjs
+  Rozmiar: 0.21 KB
+  Liczba linii: 6
+  Ostatnia modyfikacja: 2024-09-10T17:48:14.824Z
+  Importy: 1 (zewnętrzne: 0, lokalne: 1)
+  Eksporty: 0
+  Komponenty: 0
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 0
+  Trasa API: Nie
+  Strona: Nie
+
+Plik: C:\Users\xxx\bac\src\types\next-auth.d.ts
+  Typ: .ts
+  Rozmiar: 0.60 KB
+  Liczba linii: 34
+  Ostatnia modyfikacja: 2024-09-05T20:40:49.528Z
+  Importy: 2 (zewnętrzne: 2, lokalne: 0)
+  Eksporty: 2
+  Komponenty: 0
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 0
+  Trasa API: Nie
+  Strona: Nie
+
+Plik: C:\Users\xxx\bac\src\utils\projectAnalyzer.d.ts
+  Typ: .ts
+  Rozmiar: 0.15 KB
+  Liczba linii: 6
+  Ostatnia modyfikacja: 2024-09-10T17:33:21.787Z
+  Importy: 0 (zewnętrzne: 0, lokalne: 0)
+  Eksporty: 1
+  Komponenty: 0
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 0
+  Trasa API: Nie
+  Strona: Nie
+
+Plik: C:\Users\xxx\bac\src\utils\projectAnalyzer.js
+  Typ: .js
+  Rozmiar: 7.47 KB
+  Liczba linii: 230
+  Ostatnia modyfikacja: 2024-09-10T17:47:28.091Z
+  Importy: 3 (zewnętrzne: 3, lokalne: 0)
+  Eksporty: 2
+  Komponenty: 17
+  Hooki: 0
+  Komponent kliencki: Tak
+  Schematy Zod: 0
+  Użycie Next Image: 1
+  Użycie Next Link: 1
+  Klasy Tailwind: 1
+  Trasa API: Nie
+  Strona: Nie
+
+Plik: C:\Users\xxx\bac\tailwind.config.ts
+  Typ: .ts
+  Rozmiar: 0.50 KB
+  Liczba linii: 21
+  Ostatnia modyfikacja: 2024-08-26T14:44:34.555Z
+  Importy: 1 (zewnętrzne: 1, lokalne: 0)
+  Eksporty: 1
+  Komponenty: 0
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 0
+  Trasa API: Nie
+  Strona: Nie
+
+Plik: C:\Users\xxx\bac\tsconfig.json
+  Typ: .json
+  Rozmiar: 1.03 KB
+  Liczba linii: 29
+  Ostatnia modyfikacja: 2024-09-10T16:59:07.337Z
+  Importy: 0 (zewnętrzne: 0, lokalne: 0)
+  Eksporty: 0
+  Komponenty: 0
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 0
+  Trasa API: Nie
+  Strona: Nie
+
+Plik: C:\Users\xxx\bac\tsconfig.tsbuildinfo
+  Typ: .tsbuildinfo
+  Rozmiar: 246.16 KB
+  Liczba linii: 1
+  Ostatnia modyfikacja: 2024-09-10T17:07:12.427Z
+  Importy: 0 (zewnętrzne: 0, lokalne: 0)
+  Eksporty: 0
+  Komponenty: 0
+  Hooki: 0
+  Komponent kliencki: Nie
+  Schematy Zod: 0
+  Użycie Next Image: 0
+  Użycie Next Link: 0
+  Klasy Tailwind: 0
+  Trasa API: Nie
+  Strona: Nie
+
+Zależności: 13
+Zależności deweloperskie: 13
+
