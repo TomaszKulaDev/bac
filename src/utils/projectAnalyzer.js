@@ -41,6 +41,7 @@ function analyzeFile(filePath) {
   const isApiRoute = checkIsApiRoute(filePath);
   const isPage = checkIsPage(filePath);
   const stateManagement = analyzeStateManagement(content);  // Nowa linia
+  const performanceAnalysis = analyzePerformance(content);
 
   return {
     path: filePath,
@@ -59,7 +60,8 @@ function analyzeFile(filePath) {
     tailwindClasses,
     isApiRoute,
     isPage,
-    stateManagement
+    stateManagement,
+    performance: performanceAnalysis
   };
 }
 
@@ -131,6 +133,19 @@ function generateProjectStructureReport() {
     report += `    MobX: ${file.stateManagement.mobx}\n`;
     report += `    Recoil: ${file.stateManagement.recoil}\n`;
     report += `    Zustand: ${file.stateManagement.zustand}\n\n`;
+    report += `  Analiza wydajności:\n`;
+    report += `    useMemo: ${file.performance.useMemo}\n`;
+    report += `    useCallback: ${file.performance.useCallback}\n`;
+    report += `    React.memo: ${file.performance.reactMemo}\n`;
+    report += `    Potencjalne duże listy: ${file.performance.potentialPerformanceIssues.largeLists}\n`;
+    report += `    Brak wirtualizacji: ${file.performance.potentialPerformanceIssues.missingVirtualization ? 'Tak' : 'Nie'}\n`;
+    if (file.performance.optimizationHints.length > 0) {
+      report += `    Wskazówki optymalizacyjne:\n`;
+      file.performance.optimizationHints.forEach(hint => {
+        report += `      - ${hint}\n`;
+      });
+    }
+    report += '\n';
   });
 
   const { dependencies, devDependencies } = analyzeDependencies();
@@ -257,4 +272,54 @@ function analyzeStateManagement(content) {
     recoil: (content.match(/useRecoilState\(|useRecoilValue\(|atom\(|selector\(/g) || []).length,
     zustand: (content.match(/create\(|useStore\(/g) || []).length,
   };
+}
+
+function analyzePerformance(content) {
+  const useMemoCount = (content.match(/useMemo\(/g) || []).length;
+  const useCallbackCount = (content.match(/useCallback\(/g) || []).length;
+  const reactMemoCount = (content.match(/React\.memo\(/g) || []).length;
+  
+  // Wykrywanie dużych list
+  const largeListPatterns = [
+    /\.map\(\s*\([^)]*\)\s*=>\s*\{[\s\S]*?\}(?!\s*\)\s*\.\s*slice)/g,
+    /\.forEach\(\s*\([^)]*\)\s*=>\s*\{[\s\S]*?\}/g,
+    /for\s*\([^)]*\)\s*\{[\s\S]*?<[^>]+>[^<]*<\/[^>]+>/g
+  ];
+  
+  const potentialLargeLists = largeListPatterns.reduce((count, pattern) => {
+    const matches = content.match(pattern);
+    return count + (matches ? matches.length : 0);
+  }, 0);
+
+  // Wykrywanie użycia wirtualizacji
+  const virtualizationUsed = /react-window|react-virtualized/.test(content);
+
+  return {
+    useMemo: useMemoCount,
+    useCallback: useCallbackCount,
+    reactMemo: reactMemoCount,
+    potentialPerformanceIssues: {
+      largeLists: potentialLargeLists,
+      missingVirtualization: potentialLargeLists > 0 && !virtualizationUsed
+    },
+    optimizationHints: generateOptimizationHints(useMemoCount, useCallbackCount, reactMemoCount, potentialLargeLists, virtualizationUsed)
+  };
+}
+
+function generateOptimizationHints(useMemoCount, useCallbackCount, reactMemoCount, potentialLargeLists, virtualizationUsed) {
+  const hints = [];
+
+  if (useMemoCount === 0 && useCallbackCount === 0 && reactMemoCount === 0) {
+    hints.push("Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.");
+  }
+
+  if (potentialLargeLists > 0 && !virtualizationUsed) {
+    hints.push("Wykryto potencjalnie duże listy. Rozważ użycie wirtualizacji (np. react-window lub react-virtualized) dla lepszej wydajności.");
+  }
+
+  if (useMemoCount > 10 || useCallbackCount > 10) {
+    hints.push("Duża liczba użyć useMemo/useCallback. Upewnij się, że są one rzeczywiście potrzebne i nie powodują nadmiernej optymalizacji.");
+  }
+
+  return hints;
 }
