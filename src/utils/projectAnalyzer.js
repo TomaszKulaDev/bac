@@ -44,6 +44,7 @@ function analyzeFile(filePath) {
   const performanceAnalysis = analyzePerformance(content);
   const apiAnalysis = analyzeAPI(content);
   const routingAnalysis = analyzeRouting(content, filePath);
+  const seoAnalysis = analyzeSEO(content, filePath);
 
   return {
     path: filePath,
@@ -65,7 +66,8 @@ function analyzeFile(filePath) {
     stateManagement,
     performance: performanceAnalysis,
     api: apiAnalysis,
-    routing: routingAnalysis
+    routing: routingAnalysis,
+    seo: seoAnalysis
   };
 }
 
@@ -172,6 +174,30 @@ function generateProjectStructureReport() {
     report += `    Trasy Express.js: ${file.routing.expressRoutes}\n`;
     report += `    Trasy React Router: ${file.routing.reactRouterRoutes}\n`;
     report += `    Łączna liczba tras: ${file.routing.totalRoutes}\n`;
+    report += '\n';
+    report += `  Analiza SEO:\n`;
+    report += `    Metadane:\n`;
+    Object.entries(file.seo.metadata).forEach(([key, value]) => {
+      report += `      ${key}: ${value}\n`;
+    });
+    report += `    Strukturyzowane dane:\n`;
+    Object.entries(file.seo.structuredData).forEach(([key, value]) => {
+      report += `      ${key}: ${value}\n`;
+    });
+    report += `    Nagłówki:\n`;
+    Object.entries(file.seo.headings).forEach(([key, value]) => {
+      report += `      ${key}: ${value}\n`;
+    });
+    report += `    Obrazy: ${file.seo.images.total} (z atrybutem alt: ${file.seo.images.withAlt})\n`;
+    report += `    Linki: wewnętrzne - ${file.seo.links.internal}, zewnętrzne - ${file.seo.links.external}\n`;
+    report += `    URL kanoniczny: ${file.seo.canonicalUrl}\n`;
+    report += `    Meta robots: ${file.seo.robotsMeta}\n`;
+    if (file.seo.nextJsSeo) {
+      report += `    Next.js SEO:\n`;
+      Object.entries(file.seo.nextJsSeo).forEach(([key, value]) => {
+        report += `      ${key}: ${value}\n`;
+      });
+    }
     report += '\n';
   });
 
@@ -439,4 +465,61 @@ function detectRoutingLibrary(content) {
   } else {
     return 'Nieznana';
   }
+}
+
+function analyzeSEO(content, filePath) {
+  const metadata = {
+    title: (content.match(/<title>.*?<\/title>/g) || []).length + (content.match(/name="title"/g) || []).length,
+    description: (content.match(/name="description"/g) || []).length,
+    keywords: (content.match(/name="keywords"/g) || []).length,
+    ogTags: (content.match(/property="og:/g) || []).length,
+    twitterTags: (content.match(/name="twitter:/g) || []).length,
+  };
+
+  const structuredData = {
+    jsonLd: (content.match(/<script type="application\/ld\+json">/g) || []).length,
+    microdata: (content.match(/itemtype="http:\/\/schema.org\//g) || []).length,
+  };
+
+  const headings = {
+    h1: (content.match(/<h1/g) || []).length,
+    h2: (content.match(/<h2/g) || []).length,
+    h3: (content.match(/<h3/g) || []).length,
+  };
+
+  const images = {
+    total: (content.match(/<img/g) || []).length,
+    withAlt: (content.match(/<img[^>]+alt=["'][^"']+["']/g) || []).length,
+  };
+
+  const links = {
+    internal: (content.match(/href=["']\/[^"']+["']/g) || []).length,
+    external: (content.match(/href=["']https?:\/\/[^"']+["']/g) || []).length,
+  };
+
+  const canonicalUrl = (content.match(/<link rel="canonical"/g) || []).length;
+
+  const robotsMeta = (content.match(/name="robots"/g) || []).length;
+
+  const isNextJs = filePath.includes('pages') || filePath.includes('app');
+  const nextJsSeo = isNextJs ? analyzeNextJsSeo(content) : null;
+
+  return {
+    metadata,
+    structuredData,
+    headings,
+    images,
+    links,
+    canonicalUrl,
+    robotsMeta,
+    nextJsSeo,
+  };
+}
+
+function analyzeNextJsSeo(content) {
+  return {
+    nextSeo: (content.match(/import.*?next-seo/g) || []).length > 0,
+    head: (content.match(/<Head>/g) || []).length,
+    metaTags: (content.match(/<meta/g) || []).length,
+  };
 }

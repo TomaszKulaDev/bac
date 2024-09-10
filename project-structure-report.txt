@@ -1,8 +1,8 @@
 Aktualna struktura projektu (61 plików)
 
 Statystyki projektu:
-Całkowity rozmiar: 0.73 MB
-Całkowita liczba linii kodu: 14404
+Całkowity rozmiar: 0.75 MB
+Całkowita liczba linii kodu: 15036
 Typy plików: {".local":1,".json":4,"":1,".ts":18,".mjs":3,".txt":1,".png":1,".md":1,".tsx":27,".ico":1,".css":1,".js":1,".tsbuildinfo":1}
 
 Struktura plików projektu:
@@ -14,7 +14,7 @@ Struktura plików projektu:
 ├── package-lock.json (.json, 265.20 KB)
 ├── package.json (.json, 1.07 KB)
 ├── postcss.config.mjs (.mjs, 0.13 KB)
-├── project-structure-report.txt (.txt, 67.46 KB)
+├── project-structure-report.txt (.txt, 79.81 KB)
 ├── public/
 │   └── images/
 │       └── open-in-browser.png (.png, 36.73 KB)
@@ -101,7 +101,7 @@ Struktura plików projektu:
 │   │   └── next-auth.d.ts (.ts, 0.60 KB)
 │   └── utils/
 │       ├── projectAnalyzer.d.ts (.ts, 0.15 KB)
-│       └── projectAnalyzer.js (.js, 15.87 KB)
+│       └── projectAnalyzer.js (.js, 18.80 KB)
 ├── tailwind.config.ts (.ts, 0.50 KB)
 ├── tsconfig.json (.json, 1.03 KB)
 └── tsconfig.tsbuildinfo (.tsbuildinfo, 246.16 KB)
@@ -168,6 +168,25 @@ Plik: C:\Users\xxx\bac\.env.local
     Trasy React Router: 0
     Łączna liczba tras: 0
 
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 0
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
+
 Plik: C:\Users\xxx\bac\.eslintrc.json
   Typ: .json
   Rozmiar: 0.04 KB
@@ -227,6 +246,25 @@ Plik: C:\Users\xxx\bac\.eslintrc.json
     Trasy Express.js: 0
     Trasy React Router: 0
     Łączna liczba tras: 0
+
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 0
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
 
 Plik: C:\Users\xxx\bac\.gitignore
   Typ: 
@@ -288,6 +326,25 @@ Plik: C:\Users\xxx\bac\.gitignore
     Trasy React Router: 0
     Łączna liczba tras: 0
 
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 0
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
+
 Plik: C:\Users\xxx\bac\next-env.d.ts
   Typ: .ts
   Rozmiar: 0.26 KB
@@ -347,6 +404,25 @@ Plik: C:\Users\xxx\bac\next-env.d.ts
     Trasy Express.js: 0
     Trasy React Router: 0
     Łączna liczba tras: 0
+
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 0
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
 
 Plik: C:\Users\xxx\bac\next.config.mjs
   Typ: .mjs
@@ -408,6 +484,25 @@ Plik: C:\Users\xxx\bac\next.config.mjs
     Trasy React Router: 0
     Łączna liczba tras: 0
 
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 0
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
+
 Plik: C:\Users\xxx\bac\package-lock.json
   Typ: .json
   Rozmiar: 265.20 KB
@@ -467,6 +562,25 @@ Plik: C:\Users\xxx\bac\package-lock.json
     Trasy Express.js: 0
     Trasy React Router: 0
     Łączna liczba tras: 0
+
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 0
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
 
 Plik: C:\Users\xxx\bac\package.json
   Typ: .json
@@ -528,6 +642,25 @@ Plik: C:\Users\xxx\bac\package.json
     Trasy React Router: 0
     Łączna liczba tras: 0
 
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 0
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
+
 Plik: C:\Users\xxx\bac\postcss.config.mjs
   Typ: .mjs
   Rozmiar: 0.13 KB
@@ -588,11 +721,30 @@ Plik: C:\Users\xxx\bac\postcss.config.mjs
     Trasy React Router: 0
     Łączna liczba tras: 0
 
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 0
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
+
 Plik: C:\Users\xxx\bac\project-structure-report.txt
   Typ: .txt
-  Rozmiar: 67.46 KB
-  Liczba linii: 3229
-  Ostatnia modyfikacja: 2024-09-10T21:42:03.884Z
+  Rozmiar: 79.81 KB
+  Liczba linii: 3778
+  Ostatnia modyfikacja: 2024-09-10T21:43:56.042Z
   Importy: 0 (zewnętrzne: 0, lokalne: 0)
   Eksporty: 0
   Komponenty: 0
@@ -647,6 +799,25 @@ Plik: C:\Users\xxx\bac\project-structure-report.txt
     Trasy Express.js: 0
     Trasy React Router: 0
     Łączna liczba tras: 2
+
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 0
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
 
 Plik: C:\Users\xxx\bac\public\images\open-in-browser.png
   Typ: .png
@@ -708,6 +879,25 @@ Plik: C:\Users\xxx\bac\public\images\open-in-browser.png
     Trasy React Router: 0
     Łączna liczba tras: 35
 
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 0
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
+
 Plik: C:\Users\xxx\bac\README.md
   Typ: .md
   Rozmiar: 1.46 KB
@@ -767,6 +957,25 @@ Plik: C:\Users\xxx\bac\README.md
     Trasy Express.js: 0
     Trasy React Router: 0
     Łączna liczba tras: 9
+
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 0
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
 
 Plik: C:\Users\xxx\bac\src\app\accommodations\page.tsx
   Typ: .tsx
@@ -828,6 +1037,29 @@ Plik: C:\Users\xxx\bac\src\app\accommodations\page.tsx
     Trasy React Router: 0
     Łączna liczba tras: 1
 
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 1
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
+    Next.js SEO:
+      nextSeo: false
+      head: 0
+      metaTags: 0
+
 Plik: C:\Users\xxx\bac\src\app\admin\page.tsx
   Typ: .tsx
   Rozmiar: 0.19 KB
@@ -887,6 +1119,29 @@ Plik: C:\Users\xxx\bac\src\app\admin\page.tsx
     Trasy Express.js: 0
     Trasy React Router: 0
     Łączna liczba tras: 1
+
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 1
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
+    Next.js SEO:
+      nextSeo: false
+      head: 0
+      metaTags: 0
 
 Plik: C:\Users\xxx\bac\src\app\blog\page.tsx
   Typ: .tsx
@@ -948,6 +1203,29 @@ Plik: C:\Users\xxx\bac\src\app\blog\page.tsx
     Trasy React Router: 0
     Łączna liczba tras: 1
 
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 1
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
+    Next.js SEO:
+      nextSeo: false
+      head: 0
+      metaTags: 0
+
 Plik: C:\Users\xxx\bac\src\app\community\page.tsx
   Typ: .tsx
   Rozmiar: 0.12 KB
@@ -1007,6 +1285,29 @@ Plik: C:\Users\xxx\bac\src\app\community\page.tsx
     Trasy Express.js: 0
     Trasy React Router: 0
     Łączna liczba tras: 1
+
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 1
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
+    Next.js SEO:
+      nextSeo: false
+      head: 0
+      metaTags: 0
 
 Plik: C:\Users\xxx\bac\src\app\dance-schools\page.tsx
   Typ: .tsx
@@ -1068,6 +1369,29 @@ Plik: C:\Users\xxx\bac\src\app\dance-schools\page.tsx
     Trasy React Router: 0
     Łączna liczba tras: 1
 
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 1
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
+    Next.js SEO:
+      nextSeo: false
+      head: 0
+      metaTags: 0
+
 Plik: C:\Users\xxx\bac\src\app\data-deletion\page.tsx
   Typ: .tsx
   Rozmiar: 1.16 KB
@@ -1127,6 +1451,29 @@ Plik: C:\Users\xxx\bac\src\app\data-deletion\page.tsx
     Trasy Express.js: 0
     Trasy React Router: 0
     Łączna liczba tras: 1
+
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 1
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
+    Next.js SEO:
+      nextSeo: false
+      head: 0
+      metaTags: 0
 
 Plik: C:\Users\xxx\bac\src\app\events\page.tsx
   Typ: .tsx
@@ -1188,6 +1535,29 @@ Plik: C:\Users\xxx\bac\src\app\events\page.tsx
     Trasy React Router: 0
     Łączna liczba tras: 1
 
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 1
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
+    Next.js SEO:
+      nextSeo: false
+      head: 0
+      metaTags: 0
+
 Plik: C:\Users\xxx\bac\src\app\favicon.ico
   Typ: .ico
   Rozmiar: 25.32 KB
@@ -1247,6 +1617,29 @@ Plik: C:\Users\xxx\bac\src\app\favicon.ico
     Trasy Express.js: 0
     Trasy React Router: 0
     Łączna liczba tras: 6
+
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 0
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
+    Next.js SEO:
+      nextSeo: false
+      head: 0
+      metaTags: 0
 
 Plik: C:\Users\xxx\bac\src\app\funny-images\page.tsx
   Typ: .tsx
@@ -1308,6 +1701,29 @@ Plik: C:\Users\xxx\bac\src\app\funny-images\page.tsx
     Trasy React Router: 0
     Łączna liczba tras: 1
 
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 1
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
+    Next.js SEO:
+      nextSeo: false
+      head: 0
+      metaTags: 0
+
 Plik: C:\Users\xxx\bac\src\app\gamification\page.tsx
   Typ: .tsx
   Rozmiar: 0.12 KB
@@ -1367,6 +1783,29 @@ Plik: C:\Users\xxx\bac\src\app\gamification\page.tsx
     Trasy Express.js: 0
     Trasy React Router: 0
     Łączna liczba tras: 1
+
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 1
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
+    Next.js SEO:
+      nextSeo: false
+      head: 0
+      metaTags: 0
 
 Plik: C:\Users\xxx\bac\src\app\globals.css
   Typ: .css
@@ -1428,6 +1867,29 @@ Plik: C:\Users\xxx\bac\src\app\globals.css
     Trasy React Router: 0
     Łączna liczba tras: 0
 
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 0
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
+    Next.js SEO:
+      nextSeo: false
+      head: 0
+      metaTags: 0
+
 Plik: C:\Users\xxx\bac\src\app\jobs\page.tsx
   Typ: .tsx
   Rozmiar: 0.11 KB
@@ -1487,6 +1949,29 @@ Plik: C:\Users\xxx\bac\src\app\jobs\page.tsx
     Trasy Express.js: 0
     Trasy React Router: 0
     Łączna liczba tras: 1
+
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 1
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
+    Next.js SEO:
+      nextSeo: false
+      head: 0
+      metaTags: 0
 
 Plik: C:\Users\xxx\bac\src\app\layout.tsx
   Typ: .tsx
@@ -1548,6 +2033,29 @@ Plik: C:\Users\xxx\bac\src\app\layout.tsx
     Trasy React Router: 0
     Łączna liczba tras: 6
 
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 0
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 4, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
+    Next.js SEO:
+      nextSeo: false
+      head: 0
+      metaTags: 0
+
 Plik: C:\Users\xxx\bac\src\app\mentorship\page.tsx
   Typ: .tsx
   Rozmiar: 0.12 KB
@@ -1607,6 +2115,29 @@ Plik: C:\Users\xxx\bac\src\app\mentorship\page.tsx
     Trasy Express.js: 0
     Trasy React Router: 0
     Łączna liczba tras: 1
+
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 1
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
+    Next.js SEO:
+      nextSeo: false
+      head: 0
+      metaTags: 0
 
 Plik: C:\Users\xxx\bac\src\app\music\page.tsx
   Typ: .tsx
@@ -1668,6 +2199,29 @@ Plik: C:\Users\xxx\bac\src\app\music\page.tsx
     Trasy React Router: 0
     Łączna liczba tras: 1
 
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 1
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
+    Next.js SEO:
+      nextSeo: false
+      head: 0
+      metaTags: 0
+
 Plik: C:\Users\xxx\bac\src\app\page.tsx
   Typ: .tsx
   Rozmiar: 2.14 KB
@@ -1727,6 +2281,29 @@ Plik: C:\Users\xxx\bac\src\app\page.tsx
     Trasy Express.js: 0
     Trasy React Router: 0
     Łączna liczba tras: 2
+
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 1
+      h2: 1
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 1, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
+    Next.js SEO:
+      nextSeo: false
+      head: 0
+      metaTags: 0
 
 Plik: C:\Users\xxx\bac\src\app\privacy-policy\page.tsx
   Typ: .tsx
@@ -1788,6 +2365,29 @@ Plik: C:\Users\xxx\bac\src\app\privacy-policy\page.tsx
     Trasy React Router: 0
     Łączna liczba tras: 1
 
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 1
+      h2: 7
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
+    Next.js SEO:
+      nextSeo: false
+      head: 0
+      metaTags: 0
+
 Plik: C:\Users\xxx\bac\src\app\reset-password\page.tsx
   Typ: .tsx
   Rozmiar: 0.24 KB
@@ -1847,6 +2447,29 @@ Plik: C:\Users\xxx\bac\src\app\reset-password\page.tsx
     Trasy Express.js: 0
     Trasy React Router: 0
     Łączna liczba tras: 1
+
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 0
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
+    Next.js SEO:
+      nextSeo: false
+      head: 0
+      metaTags: 0
 
 Plik: C:\Users\xxx\bac\src\app\reset-password\ResetPasswordClient.tsx
   Typ: .tsx
@@ -1909,6 +2532,29 @@ Plik: C:\Users\xxx\bac\src\app\reset-password\ResetPasswordClient.tsx
     Trasy React Router: 0
     Łączna liczba tras: 16
 
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 1
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
+    Next.js SEO:
+      nextSeo: false
+      head: 0
+      metaTags: 0
+
 Plik: C:\Users\xxx\bac\src\app\subscription\page.tsx
   Typ: .tsx
   Rozmiar: 0.12 KB
@@ -1969,6 +2615,29 @@ Plik: C:\Users\xxx\bac\src\app\subscription\page.tsx
     Trasy React Router: 0
     Łączna liczba tras: 1
 
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 1
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
+    Next.js SEO:
+      nextSeo: false
+      head: 0
+      metaTags: 0
+
 Plik: C:\Users\xxx\bac\src\app\terms-of-service\page.tsx
   Typ: .tsx
   Rozmiar: 1.90 KB
@@ -2028,6 +2697,29 @@ Plik: C:\Users\xxx\bac\src\app\terms-of-service\page.tsx
     Trasy Express.js: 0
     Trasy React Router: 0
     Łączna liczba tras: 2
+
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 1
+      h2: 7
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
+    Next.js SEO:
+      nextSeo: false
+      head: 0
+      metaTags: 0
 
 Plik: C:\Users\xxx\bac\src\app\users\forgot-password\page.tsx
   Typ: .tsx
@@ -2090,6 +2782,29 @@ Plik: C:\Users\xxx\bac\src\app\users\forgot-password\page.tsx
     Trasy React Router: 0
     Łączna liczba tras: 11
 
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 1
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 1, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
+    Next.js SEO:
+      nextSeo: false
+      head: 0
+      metaTags: 0
+
 Plik: C:\Users\xxx\bac\src\app\users\login\page.tsx
   Typ: .tsx
   Rozmiar: 11.89 KB
@@ -2151,6 +2866,29 @@ Plik: C:\Users\xxx\bac\src\app\users\login\page.tsx
     Trasy React Router: 0
     Łączna liczba tras: 22
 
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 1
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 2, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
+    Next.js SEO:
+      nextSeo: false
+      head: 0
+      metaTags: 0
+
 Plik: C:\Users\xxx\bac\src\app\users\page.tsx
   Typ: .tsx
   Rozmiar: 0.10 KB
@@ -2211,6 +2949,29 @@ Plik: C:\Users\xxx\bac\src\app\users\page.tsx
     Trasy React Router: 0
     Łączna liczba tras: 1
 
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 1
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
+    Next.js SEO:
+      nextSeo: false
+      head: 0
+      metaTags: 0
+
 Plik: C:\Users\xxx\bac\src\app\users\profile\page.tsx
   Typ: .tsx
   Rozmiar: 9.43 KB
@@ -2270,6 +3031,29 @@ Plik: C:\Users\xxx\bac\src\app\users\profile\page.tsx
     Trasy Express.js: 0
     Trasy React Router: 0
     Łączna liczba tras: 16
+
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 1
+      h2: 2
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
+    Next.js SEO:
+      nextSeo: false
+      head: 0
+      metaTags: 0
 
 Plik: C:\Users\xxx\bac\src\app\users\register\page.tsx
   Typ: .tsx
@@ -2332,6 +3116,29 @@ Plik: C:\Users\xxx\bac\src\app\users\register\page.tsx
     Trasy React Router: 0
     Łączna liczba tras: 30
 
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 1
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 3, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
+    Next.js SEO:
+      nextSeo: false
+      head: 0
+      metaTags: 0
+
 Plik: C:\Users\xxx\bac\src\components\LoadingSpinner.tsx
   Typ: .tsx
   Rozmiar: 0.56 KB
@@ -2391,6 +3198,25 @@ Plik: C:\Users\xxx\bac\src\components\LoadingSpinner.tsx
     Trasy Express.js: 0
     Trasy React Router: 0
     Łączna liczba tras: 0
+
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 0
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
 
 Plik: C:\Users\xxx\bac\src\contexts\AuthContext.tsx
   Typ: .tsx
@@ -2452,6 +3278,25 @@ Plik: C:\Users\xxx\bac\src\contexts\AuthContext.tsx
     Trasy React Router: 0
     Łączna liczba tras: 2
 
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 0
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
+
 Plik: C:\Users\xxx\bac\src\global.d.ts
   Typ: .ts
   Rozmiar: 0.16 KB
@@ -2511,6 +3356,25 @@ Plik: C:\Users\xxx\bac\src\global.d.ts
     Trasy Express.js: 0
     Trasy React Router: 0
     Łączna liczba tras: 0
+
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 0
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
 
 Plik: C:\Users\xxx\bac\src\lib\authMiddleware.ts
   Typ: .ts
@@ -2572,6 +3436,25 @@ Plik: C:\Users\xxx\bac\src\lib\authMiddleware.ts
     Trasy React Router: 0
     Łączna liczba tras: 1
 
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 0
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
+
 Plik: C:\Users\xxx\bac\src\lib\mongodb.ts
   Typ: .ts
   Rozmiar: 1.02 KB
@@ -2631,6 +3514,25 @@ Plik: C:\Users\xxx\bac\src\lib\mongodb.ts
     Trasy Express.js: 0
     Trasy React Router: 0
     Łączna liczba tras: 0
+
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 0
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
 
 Plik: C:\Users\xxx\bac\src\models\User.ts
   Typ: .ts
@@ -2692,6 +3594,25 @@ Plik: C:\Users\xxx\bac\src\models\User.ts
     Trasy React Router: 0
     Łączna liczba tras: 0
 
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 0
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
+
 Plik: C:\Users\xxx\bac\src\pages\api\auth\[...nextauth].ts
   Typ: .ts
   Rozmiar: 2.33 KB
@@ -2751,6 +3672,29 @@ Plik: C:\Users\xxx\bac\src\pages\api\auth\[...nextauth].ts
     Trasy Express.js: 0
     Trasy React Router: 0
     Łączna liczba tras: 1
+
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 0
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
+    Next.js SEO:
+      nextSeo: false
+      head: 0
+      metaTags: 0
 
 Plik: C:\Users\xxx\bac\src\pages\api\forgot-password.ts
   Typ: .ts
@@ -2812,6 +3756,29 @@ Plik: C:\Users\xxx\bac\src\pages\api\forgot-password.ts
     Trasy React Router: 0
     Łączna liczba tras: 2
 
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 1
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
+    Next.js SEO:
+      nextSeo: false
+      head: 0
+      metaTags: 0
+
 Plik: C:\Users\xxx\bac\src\pages\api\login.ts
   Typ: .ts
   Rozmiar: 2.89 KB
@@ -2871,6 +3838,29 @@ Plik: C:\Users\xxx\bac\src\pages\api\login.ts
     Trasy Express.js: 0
     Trasy React Router: 0
     Łączna liczba tras: 2
+
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 0
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
+    Next.js SEO:
+      nextSeo: false
+      head: 0
+      metaTags: 0
 
 Plik: C:\Users\xxx\bac\src\pages\api\register.ts
   Typ: .ts
@@ -2932,6 +3922,29 @@ Plik: C:\Users\xxx\bac\src\pages\api\register.ts
     Trasy React Router: 0
     Łączna liczba tras: 1
 
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 1
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 1
+    URL kanoniczny: 0
+    Meta robots: 0
+    Next.js SEO:
+      nextSeo: false
+      head: 0
+      metaTags: 0
+
 Plik: C:\Users\xxx\bac\src\pages\api\resend-verification.ts
   Typ: .ts
   Rozmiar: 1.78 KB
@@ -2991,6 +4004,29 @@ Plik: C:\Users\xxx\bac\src\pages\api\resend-verification.ts
     Trasy Express.js: 0
     Trasy React Router: 0
     Łączna liczba tras: 1
+
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 1
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 1
+    URL kanoniczny: 0
+    Meta robots: 0
+    Next.js SEO:
+      nextSeo: false
+      head: 0
+      metaTags: 0
 
 Plik: C:\Users\xxx\bac\src\pages\api\reset-password.ts
   Typ: .ts
@@ -3052,6 +4088,29 @@ Plik: C:\Users\xxx\bac\src\pages\api\reset-password.ts
     Trasy React Router: 0
     Łączna liczba tras: 1
 
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 0
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
+    Next.js SEO:
+      nextSeo: false
+      head: 0
+      metaTags: 0
+
 Plik: C:\Users\xxx\bac\src\pages\api\users\me.ts
   Typ: .ts
   Rozmiar: 1.56 KB
@@ -3111,6 +4170,29 @@ Plik: C:\Users\xxx\bac\src\pages\api\users\me.ts
     Trasy Express.js: 0
     Trasy React Router: 0
     Łączna liczba tras: 2
+
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 0
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
+    Next.js SEO:
+      nextSeo: false
+      head: 0
+      metaTags: 0
 
 Plik: C:\Users\xxx\bac\src\pages\api\users\update-profile.ts
   Typ: .ts
@@ -3172,6 +4254,29 @@ Plik: C:\Users\xxx\bac\src\pages\api\users\update-profile.ts
     Trasy React Router: 0
     Łączna liczba tras: 3
 
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 0
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
+    Next.js SEO:
+      nextSeo: false
+      head: 0
+      metaTags: 0
+
 Plik: C:\Users\xxx\bac\src\pages\api\verify.ts
   Typ: .ts
   Rozmiar: 1.28 KB
@@ -3231,6 +4336,29 @@ Plik: C:\Users\xxx\bac\src\pages\api\verify.ts
     Trasy Express.js: 0
     Trasy React Router: 0
     Łączna liczba tras: 1
+
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 0
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
+    Next.js SEO:
+      nextSeo: false
+      head: 0
+      metaTags: 0
 
 Plik: C:\Users\xxx\bac\src\pages\verify.tsx
   Typ: .tsx
@@ -3292,6 +4420,29 @@ Plik: C:\Users\xxx\bac\src\pages\verify.tsx
     Trasy React Router: 0
     Łączna liczba tras: 3
 
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 1
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
+    Next.js SEO:
+      nextSeo: false
+      head: 0
+      metaTags: 0
+
 Plik: C:\Users\xxx\bac\src\schemas\passwordSchema.ts
   Typ: .ts
   Rozmiar: 0.75 KB
@@ -3351,6 +4502,25 @@ Plik: C:\Users\xxx\bac\src\schemas\passwordSchema.ts
     Trasy Express.js: 0
     Trasy React Router: 0
     Łączna liczba tras: 5
+
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 0
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
 
 Plik: C:\Users\xxx\bac\src\scripts\analyzeProject.mjs
   Typ: .mjs
@@ -3412,6 +4582,25 @@ Plik: C:\Users\xxx\bac\src\scripts\analyzeProject.mjs
     Trasy React Router: 0
     Łączna liczba tras: 0
 
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 0
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
+
 Plik: C:\Users\xxx\bac\src\types\next-auth.d.ts
   Typ: .ts
   Rozmiar: 0.60 KB
@@ -3471,6 +4660,25 @@ Plik: C:\Users\xxx\bac\src\types\next-auth.d.ts
     Trasy Express.js: 0
     Trasy React Router: 0
     Łączna liczba tras: 1
+
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 0
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
 
 Plik: C:\Users\xxx\bac\src\utils\projectAnalyzer.d.ts
   Typ: .ts
@@ -3532,14 +4740,33 @@ Plik: C:\Users\xxx\bac\src\utils\projectAnalyzer.d.ts
     Trasy React Router: 0
     Łączna liczba tras: 0
 
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 0
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
+
 Plik: C:\Users\xxx\bac\src\utils\projectAnalyzer.js
   Typ: .js
-  Rozmiar: 15.87 KB
-  Liczba linii: 443
-  Ostatnia modyfikacja: 2024-09-10T21:43:36.660Z
+  Rozmiar: 18.80 KB
+  Liczba linii: 526
+  Ostatnia modyfikacja: 2024-09-10T21:46:11.886Z
   Importy: 3 (zewnętrzne: 3, lokalne: 0)
   Eksporty: 2
-  Komponenty: 25
+  Komponenty: 27
   Hooki: 37
   Komponent kliencki: Tak
   Schematy Zod: 0
@@ -3561,7 +4788,7 @@ Plik: C:\Users\xxx\bac\src\utils\projectAnalyzer.js
     useMemo: 0
     useCallback: 0
     React.memo: 0
-    Potencjalne duże listy: 5
+    Potencjalne duże listy: 9
     Brak wirtualizacji: Nie
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
@@ -3585,12 +4812,31 @@ Plik: C:\Users\xxx\bac\src\utils\projectAnalyzer.js
 
   Analiza routingu:
     Biblioteka routingu: Next.js
-    Trasy statyczne: 3
-    Trasy dynamiczne: 66
+    Trasy statyczne: 8
+    Trasy dynamiczne: 100
     Trasy stron Next.js: 0
     Trasy Express.js: 0
     Trasy React Router: 1
-    Łączna liczba tras: 70
+    Łączna liczba tras: 109
+
+  Analiza SEO:
+    Metadane:
+      title: 1
+      description: 1
+      keywords: 1
+      ogTags: 1
+      twitterTags: 1
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 1
+      h2: 1
+      h3: 1
+    Obrazy: 2 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 1
+    Meta robots: 1
 
 Plik: C:\Users\xxx\bac\tailwind.config.ts
   Typ: .ts
@@ -3652,6 +4898,25 @@ Plik: C:\Users\xxx\bac\tailwind.config.ts
     Trasy React Router: 0
     Łączna liczba tras: 1
 
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 0
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
+
 Plik: C:\Users\xxx\bac\tsconfig.json
   Typ: .json
   Rozmiar: 1.03 KB
@@ -3712,6 +4977,25 @@ Plik: C:\Users\xxx\bac\tsconfig.json
     Trasy React Router: 0
     Łączna liczba tras: 4
 
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 0
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
+
 Plik: C:\Users\xxx\bac\tsconfig.tsbuildinfo
   Typ: .tsbuildinfo
   Rozmiar: 246.16 KB
@@ -3771,6 +5055,25 @@ Plik: C:\Users\xxx\bac\tsconfig.tsbuildinfo
     Trasy Express.js: 0
     Trasy React Router: 0
     Łączna liczba tras: 1469
+
+  Analiza SEO:
+    Metadane:
+      title: 0
+      description: 0
+      keywords: 0
+      ogTags: 0
+      twitterTags: 0
+    Strukturyzowane dane:
+      jsonLd: 0
+      microdata: 0
+    Nagłówki:
+      h1: 0
+      h2: 0
+      h3: 0
+    Obrazy: 0 (z atrybutem alt: 0)
+    Linki: wewnętrzne - 0, zewnętrzne - 0
+    URL kanoniczny: 0
+    Meta robots: 0
 
 Zależności: 13
 Zależności deweloperskie: 13
