@@ -45,6 +45,7 @@ function analyzeFile(filePath) {
   const apiAnalysis = analyzeAPI(content);
   const routingAnalysis = analyzeRouting(content, filePath);
   const seoAnalysis = analyzeSEO(content, filePath);
+  const typeScriptAnalysis = analyzeTypeScript(content, filePath);
 
   return {
     path: filePath,
@@ -67,7 +68,8 @@ function analyzeFile(filePath) {
     performance: performanceAnalysis,
     api: apiAnalysis,
     routing: routingAnalysis,
-    seo: seoAnalysis
+    seo: seoAnalysis,
+    typeScript: typeScriptAnalysis,
   };
 }
 
@@ -199,11 +201,37 @@ function generateProjectStructureReport() {
       });
     }
     report += '\n';
+    if (file.typeScript) {
+      report += `  Analiza TypeScript:\n`;
+      report += `    Adnotacje typów: ${file.typeScript.typeAnnotations}\n`;
+      report += `    Interfejsy: ${file.typeScript.interfaces}\n`;
+      report += `    Typy: ${file.typeScript.types}\n`;
+      report += `    Generyki: ${file.typeScript.generics}\n`;
+      report += `    Asercje typów: ${file.typeScript.typeAssertions}\n`;
+      report += `    Złożone typy:\n`;
+      Object.entries(file.typeScript.complexTypes).forEach(([key, value]) => {
+        report += `      ${key}: ${value}\n`;
+      });
+      report += `    Funkcje TypeScript:\n`;
+      Object.entries(file.typeScript.typeScriptFeatures).forEach(([key, value]) => {
+        report += `      ${key}: ${value}\n`;
+      });
+    }
+    report += '\n';
   });
 
   const { dependencies, devDependencies } = analyzeDependencies();
   report += `Zależności: ${dependencies}\n`;
   report += `Zależności deweloperskie: ${devDependencies}\n\n`;
+
+  const typeScriptStats = calculateTypeScriptStats(allFiles);
+  report += `Statystyki TypeScript:\n`;
+  report += `  Wykorzystanie TypeScript: ${typeScriptStats.typeScriptUsage.toFixed(2)}%\n`;
+  report += `  Średnia liczba adnotacji typów na plik: ${typeScriptStats.averageTypeAnnotations.toFixed(2)}\n`;
+  report += `  Całkowita liczba interfejsów: ${typeScriptStats.totalInterfaces}\n`;
+  report += `  Całkowita liczba typów: ${typeScriptStats.totalTypes}\n`;
+  report += `  Średnia liczba złożonych typów na plik: ${typeScriptStats.averageComplexTypes.toFixed(2)}\n`;
+  report += '\n';
 
   const reportPath = path.join(process.cwd(), "project-structure-report.txt");
   fs.writeFileSync(reportPath, report, "utf-8");
@@ -521,5 +549,89 @@ function analyzeNextJsSeo(content) {
     nextSeo: (content.match(/import.*?next-seo/g) || []).length > 0,
     head: (content.match(/<Head>/g) || []).length,
     metaTags: (content.match(/<meta/g) || []).length,
+  };
+}
+
+function analyzeTypeScript(content, filePath) {
+  const isTypeScriptFile = filePath.endsWith('.ts') || filePath.endsWith('.tsx');
+  
+  if (!isTypeScriptFile) {
+    return null;
+  }
+
+  const typeAnnotations = (content.match(/:\s*[A-Za-z<>[\](){}|&]+/g) || []).length;
+  const interfaces = (content.match(/interface\s+\w+/g) || []).length;
+  const types = (content.match(/type\s+\w+\s*=/g) || []).length;
+  const generics = (content.match(/<[A-Za-z,\s]+>/g) || []).length;
+  const typeAssertions = (content.match(/as\s+[A-Za-z<>[\](){}|&]+/g) || []).length;
+
+  const complexTypes = analyzeComplexTypes(content);
+
+  return {
+    typeAnnotations,
+    interfaces,
+    types,
+    generics,
+    typeAssertions,
+    complexTypes,
+    typeScriptFeatures: analyzeTypeScriptFeatures(content),
+  };
+}
+
+function analyzeComplexTypes(content) {
+  const unionTypes = (content.match(/[A-Za-z]+(\s*\|\s*[A-Za-z]+)+/g) || []).length;
+  const intersectionTypes = (content.match(/[A-Za-z]+(\s*&\s*[A-Za-z]+)+/g) || []).length;
+  const mappedTypes = (content.match(/{\s*\[\w+\s+in\s+[A-Za-z]+\]:/g) || []).length;
+  const conditionalTypes = (content.match(/[A-Za-z]+\s+extends\s+[A-Za-z]+\s*\?\s*[A-Za-z]+\s*:\s*[A-Za-z]+/g) || []).length;
+
+  return {
+    unionTypes,
+    intersectionTypes,
+    mappedTypes,
+    conditionalTypes,
+  };
+}
+
+function analyzeTypeScriptFeatures(content) {
+  return {
+    nullishCoalescing: (content.match(/\?\?/g) || []).length,
+    optionalChaining: (content.match(/\?\./) || []).length,
+    nonNullAssertion: (content.match(/!\./g) || []).length,
+    enumUsage: (content.match(/enum\s+\w+/g) || []).length,
+  };
+}
+
+// Dodaj tę funkcję na końcu pliku, aby obliczyć ogólne statystyki TypeScript dla projektu
+function calculateTypeScriptStats(allFiles) {
+  const typeScriptFiles = allFiles.filter(file => file.typeScript);
+  const totalFiles = allFiles.length;
+  const typeScriptFileCount = typeScriptFiles.length;
+
+  const totalStats = typeScriptFiles.reduce((acc, file) => {
+    Object.entries(file.typeScript).forEach(([key, value]) => {
+      if (typeof value === 'number') {
+        acc[key] = (acc[key] || 0) + value;
+      } else if (typeof value === 'object') {
+        acc[key] = acc[key] || {};
+        Object.entries(value).forEach(([subKey, subValue]) => {
+          acc[key][subKey] = (acc[key][subKey] || 0) + subValue;
+        });
+      }
+    });
+    return acc;
+  }, {});
+
+  return {
+    typeScriptUsage: (typeScriptFileCount / totalFiles) * 100,
+    averageTypeAnnotations: totalStats.typeAnnotations / typeScriptFileCount,
+    totalInterfaces: totalStats.interfaces,
+    totalTypes: totalStats.types,
+    averageComplexTypes: (
+      totalStats.complexTypes.unionTypes +
+      totalStats.complexTypes.intersectionTypes +
+      totalStats.complexTypes.mappedTypes +
+      totalStats.complexTypes.conditionalTypes
+    ) / typeScriptFileCount,
+    // Dodaj więcej statystyk według potrzeb
   };
 }

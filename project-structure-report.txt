@@ -1,8 +1,8 @@
 Aktualna struktura projektu (61 plików)
 
 Statystyki projektu:
-Całkowity rozmiar: 0.75 MB
-Całkowita liczba linii kodu: 15036
+Całkowity rozmiar: 0.78 MB
+Całkowita liczba linii kodu: 16451
 Typy plików: {".local":1,".json":4,"":1,".ts":18,".mjs":3,".txt":1,".png":1,".md":1,".tsx":27,".ico":1,".css":1,".js":1,".tsbuildinfo":1}
 
 Struktura plików projektu:
@@ -14,7 +14,7 @@ Struktura plików projektu:
 ├── package-lock.json (.json, 265.20 KB)
 ├── package.json (.json, 1.07 KB)
 ├── postcss.config.mjs (.mjs, 0.13 KB)
-├── project-structure-report.txt (.txt, 79.81 KB)
+├── project-structure-report.txt (.txt, 103.36 KB)
 ├── public/
 │   └── images/
 │       └── open-in-browser.png (.png, 36.73 KB)
@@ -101,7 +101,7 @@ Struktura plików projektu:
 │   │   └── next-auth.d.ts (.ts, 0.60 KB)
 │   └── utils/
 │       ├── projectAnalyzer.d.ts (.ts, 0.15 KB)
-│       └── projectAnalyzer.js (.js, 18.80 KB)
+│       └── projectAnalyzer.js (.js, 23.24 KB)
 ├── tailwind.config.ts (.ts, 0.50 KB)
 ├── tsconfig.json (.json, 1.03 KB)
 └── tsconfig.tsbuildinfo (.tsbuildinfo, 246.16 KB)
@@ -187,6 +187,7 @@ Plik: C:\Users\xxx\bac\.env.local
     URL kanoniczny: 0
     Meta robots: 0
 
+
 Plik: C:\Users\xxx\bac\.eslintrc.json
   Typ: .json
   Rozmiar: 0.04 KB
@@ -265,6 +266,7 @@ Plik: C:\Users\xxx\bac\.eslintrc.json
     Linki: wewnętrzne - 0, zewnętrzne - 0
     URL kanoniczny: 0
     Meta robots: 0
+
 
 Plik: C:\Users\xxx\bac\.gitignore
   Typ: 
@@ -345,6 +347,7 @@ Plik: C:\Users\xxx\bac\.gitignore
     URL kanoniczny: 0
     Meta robots: 0
 
+
 Plik: C:\Users\xxx\bac\next-env.d.ts
   Typ: .ts
   Rozmiar: 0.26 KB
@@ -423,6 +426,23 @@ Plik: C:\Users\xxx\bac\next-env.d.ts
     Linki: wewnętrzne - 0, zewnętrzne - 0
     URL kanoniczny: 0
     Meta robots: 0
+
+  Analiza TypeScript:
+    Adnotacje typów: 1
+    Interfejsy: 0
+    Typy: 0
+    Generyki: 0
+    Asercje typów: 0
+    Złożone typy:
+      unionTypes: 0
+      intersectionTypes: 0
+      mappedTypes: 0
+      conditionalTypes: 0
+    Funkcje TypeScript:
+      nullishCoalescing: 0
+      optionalChaining: 0
+      nonNullAssertion: 0
+      enumUsage: 0
 
 Plik: C:\Users\xxx\bac\next.config.mjs
   Typ: .mjs
@@ -503,6 +523,7 @@ Plik: C:\Users\xxx\bac\next.config.mjs
     URL kanoniczny: 0
     Meta robots: 0
 
+
 Plik: C:\Users\xxx\bac\package-lock.json
   Typ: .json
   Rozmiar: 265.20 KB
@@ -581,6 +602,7 @@ Plik: C:\Users\xxx\bac\package-lock.json
     Linki: wewnętrzne - 0, zewnętrzne - 0
     URL kanoniczny: 0
     Meta robots: 0
+
 
 Plik: C:\Users\xxx\bac\package.json
   Typ: .json
@@ -661,6 +683,7 @@ Plik: C:\Users\xxx\bac\package.json
     URL kanoniczny: 0
     Meta robots: 0
 
+
 Plik: C:\Users\xxx\bac\postcss.config.mjs
   Typ: .mjs
   Rozmiar: 0.13 KB
@@ -740,11 +763,12 @@ Plik: C:\Users\xxx\bac\postcss.config.mjs
     URL kanoniczny: 0
     Meta robots: 0
 
+
 Plik: C:\Users\xxx\bac\project-structure-report.txt
   Typ: .txt
-  Rozmiar: 79.81 KB
-  Liczba linii: 3778
-  Ostatnia modyfikacja: 2024-09-10T21:43:56.042Z
+  Rozmiar: 103.36 KB
+  Liczba linii: 5081
+  Ostatnia modyfikacja: 2024-09-10T21:46:22.197Z
   Importy: 0 (zewnętrzne: 0, lokalne: 0)
   Eksporty: 0
   Komponenty: 0
@@ -818,6 +842,7 @@ Plik: C:\Users\xxx\bac\project-structure-report.txt
     Linki: wewnętrzne - 0, zewnętrzne - 0
     URL kanoniczny: 0
     Meta robots: 0
+
 
 Plik: C:\Users\xxx\bac\public\images\open-in-browser.png
   Typ: .png
@@ -898,6 +923,7 @@ Plik: C:\Users\xxx\bac\public\images\open-in-browser.png
     URL kanoniczny: 0
     Meta robots: 0
 
+
 Plik: C:\Users\xxx\bac\README.md
   Typ: .md
   Rozmiar: 1.46 KB
@@ -976,6 +1002,7 @@ Plik: C:\Users\xxx\bac\README.md
     Linki: wewnętrzne - 0, zewnętrzne - 0
     URL kanoniczny: 0
     Meta robots: 0
+
 
 Plik: C:\Users\xxx\bac\src\app\accommodations\page.tsx
   Typ: .tsx
@@ -1060,6 +1087,23 @@ Plik: C:\Users\xxx\bac\src\app\accommodations\page.tsx
       head: 0
       metaTags: 0
 
+  Analiza TypeScript:
+    Adnotacje typów: 0
+    Interfejsy: 0
+    Typy: 0
+    Generyki: 0
+    Asercje typów: 0
+    Złożone typy:
+      unionTypes: 0
+      intersectionTypes: 0
+      mappedTypes: 0
+      conditionalTypes: 0
+    Funkcje TypeScript:
+      nullishCoalescing: 0
+      optionalChaining: 0
+      nonNullAssertion: 0
+      enumUsage: 0
+
 Plik: C:\Users\xxx\bac\src\app\admin\page.tsx
   Typ: .tsx
   Rozmiar: 0.19 KB
@@ -1142,6 +1186,23 @@ Plik: C:\Users\xxx\bac\src\app\admin\page.tsx
       nextSeo: false
       head: 0
       metaTags: 0
+
+  Analiza TypeScript:
+    Adnotacje typów: 0
+    Interfejsy: 0
+    Typy: 0
+    Generyki: 0
+    Asercje typów: 0
+    Złożone typy:
+      unionTypes: 0
+      intersectionTypes: 0
+      mappedTypes: 0
+      conditionalTypes: 0
+    Funkcje TypeScript:
+      nullishCoalescing: 0
+      optionalChaining: 0
+      nonNullAssertion: 0
+      enumUsage: 0
 
 Plik: C:\Users\xxx\bac\src\app\blog\page.tsx
   Typ: .tsx
@@ -1226,6 +1287,23 @@ Plik: C:\Users\xxx\bac\src\app\blog\page.tsx
       head: 0
       metaTags: 0
 
+  Analiza TypeScript:
+    Adnotacje typów: 0
+    Interfejsy: 0
+    Typy: 0
+    Generyki: 0
+    Asercje typów: 0
+    Złożone typy:
+      unionTypes: 0
+      intersectionTypes: 0
+      mappedTypes: 0
+      conditionalTypes: 0
+    Funkcje TypeScript:
+      nullishCoalescing: 0
+      optionalChaining: 0
+      nonNullAssertion: 0
+      enumUsage: 0
+
 Plik: C:\Users\xxx\bac\src\app\community\page.tsx
   Typ: .tsx
   Rozmiar: 0.12 KB
@@ -1308,6 +1386,23 @@ Plik: C:\Users\xxx\bac\src\app\community\page.tsx
       nextSeo: false
       head: 0
       metaTags: 0
+
+  Analiza TypeScript:
+    Adnotacje typów: 0
+    Interfejsy: 0
+    Typy: 0
+    Generyki: 0
+    Asercje typów: 0
+    Złożone typy:
+      unionTypes: 0
+      intersectionTypes: 0
+      mappedTypes: 0
+      conditionalTypes: 0
+    Funkcje TypeScript:
+      nullishCoalescing: 0
+      optionalChaining: 0
+      nonNullAssertion: 0
+      enumUsage: 0
 
 Plik: C:\Users\xxx\bac\src\app\dance-schools\page.tsx
   Typ: .tsx
@@ -1392,6 +1487,23 @@ Plik: C:\Users\xxx\bac\src\app\dance-schools\page.tsx
       head: 0
       metaTags: 0
 
+  Analiza TypeScript:
+    Adnotacje typów: 0
+    Interfejsy: 0
+    Typy: 0
+    Generyki: 0
+    Asercje typów: 0
+    Złożone typy:
+      unionTypes: 0
+      intersectionTypes: 0
+      mappedTypes: 0
+      conditionalTypes: 0
+    Funkcje TypeScript:
+      nullishCoalescing: 0
+      optionalChaining: 0
+      nonNullAssertion: 0
+      enumUsage: 0
+
 Plik: C:\Users\xxx\bac\src\app\data-deletion\page.tsx
   Typ: .tsx
   Rozmiar: 1.16 KB
@@ -1474,6 +1586,23 @@ Plik: C:\Users\xxx\bac\src\app\data-deletion\page.tsx
       nextSeo: false
       head: 0
       metaTags: 0
+
+  Analiza TypeScript:
+    Adnotacje typów: 2
+    Interfejsy: 0
+    Typy: 0
+    Generyki: 0
+    Asercje typów: 0
+    Złożone typy:
+      unionTypes: 0
+      intersectionTypes: 3
+      mappedTypes: 0
+      conditionalTypes: 0
+    Funkcje TypeScript:
+      nullishCoalescing: 0
+      optionalChaining: 0
+      nonNullAssertion: 0
+      enumUsage: 0
 
 Plik: C:\Users\xxx\bac\src\app\events\page.tsx
   Typ: .tsx
@@ -1558,6 +1687,23 @@ Plik: C:\Users\xxx\bac\src\app\events\page.tsx
       head: 0
       metaTags: 0
 
+  Analiza TypeScript:
+    Adnotacje typów: 0
+    Interfejsy: 0
+    Typy: 0
+    Generyki: 0
+    Asercje typów: 0
+    Złożone typy:
+      unionTypes: 0
+      intersectionTypes: 0
+      mappedTypes: 0
+      conditionalTypes: 0
+    Funkcje TypeScript:
+      nullishCoalescing: 0
+      optionalChaining: 0
+      nonNullAssertion: 0
+      enumUsage: 0
+
 Plik: C:\Users\xxx\bac\src\app\favicon.ico
   Typ: .ico
   Rozmiar: 25.32 KB
@@ -1640,6 +1786,7 @@ Plik: C:\Users\xxx\bac\src\app\favicon.ico
       nextSeo: false
       head: 0
       metaTags: 0
+
 
 Plik: C:\Users\xxx\bac\src\app\funny-images\page.tsx
   Typ: .tsx
@@ -1724,6 +1871,23 @@ Plik: C:\Users\xxx\bac\src\app\funny-images\page.tsx
       head: 0
       metaTags: 0
 
+  Analiza TypeScript:
+    Adnotacje typów: 0
+    Interfejsy: 0
+    Typy: 0
+    Generyki: 0
+    Asercje typów: 0
+    Złożone typy:
+      unionTypes: 0
+      intersectionTypes: 0
+      mappedTypes: 0
+      conditionalTypes: 0
+    Funkcje TypeScript:
+      nullishCoalescing: 0
+      optionalChaining: 0
+      nonNullAssertion: 0
+      enumUsage: 0
+
 Plik: C:\Users\xxx\bac\src\app\gamification\page.tsx
   Typ: .tsx
   Rozmiar: 0.12 KB
@@ -1806,6 +1970,23 @@ Plik: C:\Users\xxx\bac\src\app\gamification\page.tsx
       nextSeo: false
       head: 0
       metaTags: 0
+
+  Analiza TypeScript:
+    Adnotacje typów: 0
+    Interfejsy: 0
+    Typy: 0
+    Generyki: 0
+    Asercje typów: 0
+    Złożone typy:
+      unionTypes: 0
+      intersectionTypes: 0
+      mappedTypes: 0
+      conditionalTypes: 0
+    Funkcje TypeScript:
+      nullishCoalescing: 0
+      optionalChaining: 0
+      nonNullAssertion: 0
+      enumUsage: 0
 
 Plik: C:\Users\xxx\bac\src\app\globals.css
   Typ: .css
@@ -1890,6 +2071,7 @@ Plik: C:\Users\xxx\bac\src\app\globals.css
       head: 0
       metaTags: 0
 
+
 Plik: C:\Users\xxx\bac\src\app\jobs\page.tsx
   Typ: .tsx
   Rozmiar: 0.11 KB
@@ -1972,6 +2154,23 @@ Plik: C:\Users\xxx\bac\src\app\jobs\page.tsx
       nextSeo: false
       head: 0
       metaTags: 0
+
+  Analiza TypeScript:
+    Adnotacje typów: 0
+    Interfejsy: 0
+    Typy: 0
+    Generyki: 0
+    Asercje typów: 0
+    Złożone typy:
+      unionTypes: 0
+      intersectionTypes: 0
+      mappedTypes: 0
+      conditionalTypes: 0
+    Funkcje TypeScript:
+      nullishCoalescing: 0
+      optionalChaining: 0
+      nonNullAssertion: 0
+      enumUsage: 0
 
 Plik: C:\Users\xxx\bac\src\app\layout.tsx
   Typ: .tsx
@@ -2056,6 +2255,23 @@ Plik: C:\Users\xxx\bac\src\app\layout.tsx
       head: 0
       metaTags: 0
 
+  Analiza TypeScript:
+    Adnotacje typów: 9
+    Interfejsy: 0
+    Typy: 0
+    Generyki: 8
+    Asercje typów: 0
+    Złożone typy:
+      unionTypes: 0
+      intersectionTypes: 0
+      mappedTypes: 0
+      conditionalTypes: 0
+    Funkcje TypeScript:
+      nullishCoalescing: 0
+      optionalChaining: 1
+      nonNullAssertion: 0
+      enumUsage: 0
+
 Plik: C:\Users\xxx\bac\src\app\mentorship\page.tsx
   Typ: .tsx
   Rozmiar: 0.12 KB
@@ -2138,6 +2354,23 @@ Plik: C:\Users\xxx\bac\src\app\mentorship\page.tsx
       nextSeo: false
       head: 0
       metaTags: 0
+
+  Analiza TypeScript:
+    Adnotacje typów: 0
+    Interfejsy: 0
+    Typy: 0
+    Generyki: 0
+    Asercje typów: 0
+    Złożone typy:
+      unionTypes: 0
+      intersectionTypes: 0
+      mappedTypes: 0
+      conditionalTypes: 0
+    Funkcje TypeScript:
+      nullishCoalescing: 0
+      optionalChaining: 0
+      nonNullAssertion: 0
+      enumUsage: 0
 
 Plik: C:\Users\xxx\bac\src\app\music\page.tsx
   Typ: .tsx
@@ -2222,6 +2455,23 @@ Plik: C:\Users\xxx\bac\src\app\music\page.tsx
       head: 0
       metaTags: 0
 
+  Analiza TypeScript:
+    Adnotacje typów: 0
+    Interfejsy: 0
+    Typy: 0
+    Generyki: 0
+    Asercje typów: 0
+    Złożone typy:
+      unionTypes: 0
+      intersectionTypes: 0
+      mappedTypes: 0
+      conditionalTypes: 0
+    Funkcje TypeScript:
+      nullishCoalescing: 0
+      optionalChaining: 0
+      nonNullAssertion: 0
+      enumUsage: 0
+
 Plik: C:\Users\xxx\bac\src\app\page.tsx
   Typ: .tsx
   Rozmiar: 2.14 KB
@@ -2304,6 +2554,23 @@ Plik: C:\Users\xxx\bac\src\app\page.tsx
       nextSeo: false
       head: 0
       metaTags: 0
+
+  Analiza TypeScript:
+    Adnotacje typów: 8
+    Interfejsy: 1
+    Typy: 0
+    Generyki: 0
+    Asercje typów: 0
+    Złożone typy:
+      unionTypes: 0
+      intersectionTypes: 0
+      mappedTypes: 0
+      conditionalTypes: 0
+    Funkcje TypeScript:
+      nullishCoalescing: 0
+      optionalChaining: 0
+      nonNullAssertion: 0
+      enumUsage: 0
 
 Plik: C:\Users\xxx\bac\src\app\privacy-policy\page.tsx
   Typ: .tsx
@@ -2388,6 +2655,23 @@ Plik: C:\Users\xxx\bac\src\app\privacy-policy\page.tsx
       head: 0
       metaTags: 0
 
+  Analiza TypeScript:
+    Adnotacje typów: 5
+    Interfejsy: 0
+    Typy: 0
+    Generyki: 17
+    Asercje typów: 1
+    Złożone typy:
+      unionTypes: 0
+      intersectionTypes: 0
+      mappedTypes: 0
+      conditionalTypes: 0
+    Funkcje TypeScript:
+      nullishCoalescing: 0
+      optionalChaining: 0
+      nonNullAssertion: 0
+      enumUsage: 0
+
 Plik: C:\Users\xxx\bac\src\app\reset-password\page.tsx
   Typ: .tsx
   Rozmiar: 0.24 KB
@@ -2470,6 +2754,23 @@ Plik: C:\Users\xxx\bac\src\app\reset-password\page.tsx
       nextSeo: false
       head: 0
       metaTags: 0
+
+  Analiza TypeScript:
+    Adnotacje typów: 1
+    Interfejsy: 0
+    Typy: 0
+    Generyki: 1
+    Asercje typów: 0
+    Złożone typy:
+      unionTypes: 0
+      intersectionTypes: 0
+      mappedTypes: 0
+      conditionalTypes: 0
+    Funkcje TypeScript:
+      nullishCoalescing: 0
+      optionalChaining: 0
+      nonNullAssertion: 0
+      enumUsage: 0
 
 Plik: C:\Users\xxx\bac\src\app\reset-password\ResetPasswordClient.tsx
   Typ: .tsx
@@ -2555,6 +2856,23 @@ Plik: C:\Users\xxx\bac\src\app\reset-password\ResetPasswordClient.tsx
       head: 0
       metaTags: 0
 
+  Analiza TypeScript:
+    Adnotacje typów: 23
+    Interfejsy: 0
+    Typy: 0
+    Generyki: 0
+    Asercje typów: 0
+    Złożone typy:
+      unionTypes: 0
+      intersectionTypes: 0
+      mappedTypes: 0
+      conditionalTypes: 0
+    Funkcje TypeScript:
+      nullishCoalescing: 0
+      optionalChaining: 0
+      nonNullAssertion: 0
+      enumUsage: 0
+
 Plik: C:\Users\xxx\bac\src\app\subscription\page.tsx
   Typ: .tsx
   Rozmiar: 0.12 KB
@@ -2638,6 +2956,23 @@ Plik: C:\Users\xxx\bac\src\app\subscription\page.tsx
       head: 0
       metaTags: 0
 
+  Analiza TypeScript:
+    Adnotacje typów: 0
+    Interfejsy: 0
+    Typy: 0
+    Generyki: 0
+    Asercje typów: 0
+    Złożone typy:
+      unionTypes: 0
+      intersectionTypes: 0
+      mappedTypes: 0
+      conditionalTypes: 0
+    Funkcje TypeScript:
+      nullishCoalescing: 0
+      optionalChaining: 0
+      nonNullAssertion: 0
+      enumUsage: 0
+
 Plik: C:\Users\xxx\bac\src\app\terms-of-service\page.tsx
   Typ: .tsx
   Rozmiar: 1.90 KB
@@ -2720,6 +3055,23 @@ Plik: C:\Users\xxx\bac\src\app\terms-of-service\page.tsx
       nextSeo: false
       head: 0
       metaTags: 0
+
+  Analiza TypeScript:
+    Adnotacje typów: 2
+    Interfejsy: 0
+    Typy: 0
+    Generyki: 7
+    Asercje typów: 0
+    Złożone typy:
+      unionTypes: 0
+      intersectionTypes: 0
+      mappedTypes: 0
+      conditionalTypes: 0
+    Funkcje TypeScript:
+      nullishCoalescing: 0
+      optionalChaining: 0
+      nonNullAssertion: 0
+      enumUsage: 0
 
 Plik: C:\Users\xxx\bac\src\app\users\forgot-password\page.tsx
   Typ: .tsx
@@ -2805,6 +3157,23 @@ Plik: C:\Users\xxx\bac\src\app\users\forgot-password\page.tsx
       head: 0
       metaTags: 0
 
+  Analiza TypeScript:
+    Adnotacje typów: 18
+    Interfejsy: 0
+    Typy: 0
+    Generyki: 0
+    Asercje typów: 0
+    Złożone typy:
+      unionTypes: 0
+      intersectionTypes: 0
+      mappedTypes: 0
+      conditionalTypes: 0
+    Funkcje TypeScript:
+      nullishCoalescing: 0
+      optionalChaining: 0
+      nonNullAssertion: 0
+      enumUsage: 0
+
 Plik: C:\Users\xxx\bac\src\app\users\login\page.tsx
   Typ: .tsx
   Rozmiar: 11.89 KB
@@ -2889,6 +3258,23 @@ Plik: C:\Users\xxx\bac\src\app\users\login\page.tsx
       head: 0
       metaTags: 0
 
+  Analiza TypeScript:
+    Adnotacje typów: 29
+    Interfejsy: 0
+    Typy: 0
+    Generyki: 1
+    Asercje typów: 0
+    Złożone typy:
+      unionTypes: 1
+      intersectionTypes: 3
+      mappedTypes: 0
+      conditionalTypes: 0
+    Funkcje TypeScript:
+      nullishCoalescing: 0
+      optionalChaining: 1
+      nonNullAssertion: 1
+      enumUsage: 0
+
 Plik: C:\Users\xxx\bac\src\app\users\page.tsx
   Typ: .tsx
   Rozmiar: 0.10 KB
@@ -2972,6 +3358,23 @@ Plik: C:\Users\xxx\bac\src\app\users\page.tsx
       head: 0
       metaTags: 0
 
+  Analiza TypeScript:
+    Adnotacje typów: 0
+    Interfejsy: 0
+    Typy: 0
+    Generyki: 0
+    Asercje typów: 0
+    Złożone typy:
+      unionTypes: 0
+      intersectionTypes: 0
+      mappedTypes: 0
+      conditionalTypes: 0
+    Funkcje TypeScript:
+      nullishCoalescing: 0
+      optionalChaining: 0
+      nonNullAssertion: 0
+      enumUsage: 0
+
 Plik: C:\Users\xxx\bac\src\app\users\profile\page.tsx
   Typ: .tsx
   Rozmiar: 9.43 KB
@@ -3054,6 +3457,23 @@ Plik: C:\Users\xxx\bac\src\app\users\profile\page.tsx
       nextSeo: false
       head: 0
       metaTags: 0
+
+  Analiza TypeScript:
+    Adnotacje typów: 49
+    Interfejsy: 1
+    Typy: 0
+    Generyki: 6
+    Asercje typów: 1
+    Złożone typy:
+      unionTypes: 1
+      intersectionTypes: 0
+      mappedTypes: 0
+      conditionalTypes: 0
+    Funkcje TypeScript:
+      nullishCoalescing: 0
+      optionalChaining: 0
+      nonNullAssertion: 0
+      enumUsage: 0
 
 Plik: C:\Users\xxx\bac\src\app\users\register\page.tsx
   Typ: .tsx
@@ -3139,6 +3559,23 @@ Plik: C:\Users\xxx\bac\src\app\users\register\page.tsx
       head: 0
       metaTags: 0
 
+  Analiza TypeScript:
+    Adnotacje typów: 40
+    Interfejsy: 0
+    Typy: 0
+    Generyki: 1
+    Asercje typów: 2
+    Złożone typy:
+      unionTypes: 3
+      intersectionTypes: 3
+      mappedTypes: 0
+      conditionalTypes: 0
+    Funkcje TypeScript:
+      nullishCoalescing: 0
+      optionalChaining: 0
+      nonNullAssertion: 1
+      enumUsage: 0
+
 Plik: C:\Users\xxx\bac\src\components\LoadingSpinner.tsx
   Typ: .tsx
   Rozmiar: 0.56 KB
@@ -3217,6 +3654,23 @@ Plik: C:\Users\xxx\bac\src\components\LoadingSpinner.tsx
     Linki: wewnętrzne - 0, zewnętrzne - 0
     URL kanoniczny: 0
     Meta robots: 0
+
+  Analiza TypeScript:
+    Adnotacje typów: 0
+    Interfejsy: 0
+    Typy: 0
+    Generyki: 0
+    Asercje typów: 0
+    Złożone typy:
+      unionTypes: 0
+      intersectionTypes: 0
+      mappedTypes: 0
+      conditionalTypes: 0
+    Funkcje TypeScript:
+      nullishCoalescing: 0
+      optionalChaining: 0
+      nonNullAssertion: 0
+      enumUsage: 0
 
 Plik: C:\Users\xxx\bac\src\contexts\AuthContext.tsx
   Typ: .tsx
@@ -3297,6 +3751,23 @@ Plik: C:\Users\xxx\bac\src\contexts\AuthContext.tsx
     URL kanoniczny: 0
     Meta robots: 0
 
+  Analiza TypeScript:
+    Adnotacje typów: 7
+    Interfejsy: 1
+    Typy: 0
+    Generyki: 2
+    Asercje typów: 0
+    Złożone typy:
+      unionTypes: 1
+      intersectionTypes: 0
+      mappedTypes: 0
+      conditionalTypes: 0
+    Funkcje TypeScript:
+      nullishCoalescing: 0
+      optionalChaining: 0
+      nonNullAssertion: 0
+      enumUsage: 0
+
 Plik: C:\Users\xxx\bac\src\global.d.ts
   Typ: .ts
   Rozmiar: 0.16 KB
@@ -3375,6 +3846,23 @@ Plik: C:\Users\xxx\bac\src\global.d.ts
     Linki: wewnętrzne - 0, zewnętrzne - 0
     URL kanoniczny: 0
     Meta robots: 0
+
+  Analiza TypeScript:
+    Adnotacje typów: 3
+    Interfejsy: 0
+    Typy: 0
+    Generyki: 1
+    Asercje typów: 0
+    Złożone typy:
+      unionTypes: 1
+      intersectionTypes: 0
+      mappedTypes: 0
+      conditionalTypes: 0
+    Funkcje TypeScript:
+      nullishCoalescing: 0
+      optionalChaining: 0
+      nonNullAssertion: 0
+      enumUsage: 0
 
 Plik: C:\Users\xxx\bac\src\lib\authMiddleware.ts
   Typ: .ts
@@ -3455,6 +3943,23 @@ Plik: C:\Users\xxx\bac\src\lib\authMiddleware.ts
     URL kanoniczny: 0
     Meta robots: 0
 
+  Analiza TypeScript:
+    Adnotacje typów: 3
+    Interfejsy: 0
+    Typy: 0
+    Generyki: 0
+    Asercje typów: 1
+    Złożone typy:
+      unionTypes: 0
+      intersectionTypes: 0
+      mappedTypes: 0
+      conditionalTypes: 0
+    Funkcje TypeScript:
+      nullishCoalescing: 0
+      optionalChaining: 0
+      nonNullAssertion: 0
+      enumUsage: 0
+
 Plik: C:\Users\xxx\bac\src\lib\mongodb.ts
   Typ: .ts
   Rozmiar: 1.02 KB
@@ -3534,6 +4039,23 @@ Plik: C:\Users\xxx\bac\src\lib\mongodb.ts
     URL kanoniczny: 0
     Meta robots: 0
 
+  Analiza TypeScript:
+    Adnotacje typów: 7
+    Interfejsy: 1
+    Typy: 0
+    Generyki: 2
+    Asercje typów: 1
+    Złożone typy:
+      unionTypes: 1
+      intersectionTypes: 0
+      mappedTypes: 0
+      conditionalTypes: 0
+    Funkcje TypeScript:
+      nullishCoalescing: 0
+      optionalChaining: 0
+      nonNullAssertion: 0
+      enumUsage: 0
+
 Plik: C:\Users\xxx\bac\src\models\User.ts
   Typ: .ts
   Rozmiar: 0.76 KB
@@ -3612,6 +4134,23 @@ Plik: C:\Users\xxx\bac\src\models\User.ts
     Linki: wewnętrzne - 0, zewnętrzne - 0
     URL kanoniczny: 0
     Meta robots: 0
+
+  Analiza TypeScript:
+    Adnotacje typów: 27
+    Interfejsy: 1
+    Typy: 0
+    Generyki: 0
+    Asercje typów: 0
+    Złożone typy:
+      unionTypes: 0
+      intersectionTypes: 0
+      mappedTypes: 0
+      conditionalTypes: 0
+    Funkcje TypeScript:
+      nullishCoalescing: 0
+      optionalChaining: 0
+      nonNullAssertion: 0
+      enumUsage: 0
 
 Plik: C:\Users\xxx\bac\src\pages\api\auth\[...nextauth].ts
   Typ: .ts
@@ -3696,6 +4235,23 @@ Plik: C:\Users\xxx\bac\src\pages\api\auth\[...nextauth].ts
       head: 0
       metaTags: 0
 
+  Analiza TypeScript:
+    Adnotacje typów: 15
+    Interfejsy: 0
+    Typy: 0
+    Generyki: 0
+    Asercje typów: 4
+    Złożone typy:
+      unionTypes: 0
+      intersectionTypes: 0
+      mappedTypes: 0
+      conditionalTypes: 0
+    Funkcje TypeScript:
+      nullishCoalescing: 0
+      optionalChaining: 0
+      nonNullAssertion: 0
+      enumUsage: 0
+
 Plik: C:\Users\xxx\bac\src\pages\api\forgot-password.ts
   Typ: .ts
   Rozmiar: 3.63 KB
@@ -3778,6 +4334,23 @@ Plik: C:\Users\xxx\bac\src\pages\api\forgot-password.ts
       nextSeo: false
       head: 0
       metaTags: 0
+
+  Analiza TypeScript:
+    Adnotacje typów: 9
+    Interfejsy: 0
+    Typy: 0
+    Generyki: 3
+    Asercje typów: 1
+    Złożone typy:
+      unionTypes: 0
+      intersectionTypes: 0
+      mappedTypes: 0
+      conditionalTypes: 0
+    Funkcje TypeScript:
+      nullishCoalescing: 0
+      optionalChaining: 0
+      nonNullAssertion: 0
+      enumUsage: 0
 
 Plik: C:\Users\xxx\bac\src\pages\api\login.ts
   Typ: .ts
@@ -3862,6 +4435,23 @@ Plik: C:\Users\xxx\bac\src\pages\api\login.ts
       head: 0
       metaTags: 0
 
+  Analiza TypeScript:
+    Adnotacje typów: 8
+    Interfejsy: 0
+    Typy: 0
+    Generyki: 0
+    Asercje typów: 1
+    Złożone typy:
+      unionTypes: 0
+      intersectionTypes: 0
+      mappedTypes: 0
+      conditionalTypes: 0
+    Funkcje TypeScript:
+      nullishCoalescing: 0
+      optionalChaining: 0
+      nonNullAssertion: 0
+      enumUsage: 0
+
 Plik: C:\Users\xxx\bac\src\pages\api\register.ts
   Typ: .ts
   Rozmiar: 2.98 KB
@@ -3944,6 +4534,23 @@ Plik: C:\Users\xxx\bac\src\pages\api\register.ts
       nextSeo: false
       head: 0
       metaTags: 0
+
+  Analiza TypeScript:
+    Adnotacje typów: 10
+    Interfejsy: 0
+    Typy: 0
+    Generyki: 1
+    Asercje typów: 1
+    Złożone typy:
+      unionTypes: 0
+      intersectionTypes: 0
+      mappedTypes: 0
+      conditionalTypes: 0
+    Funkcje TypeScript:
+      nullishCoalescing: 0
+      optionalChaining: 0
+      nonNullAssertion: 0
+      enumUsage: 0
 
 Plik: C:\Users\xxx\bac\src\pages\api\resend-verification.ts
   Typ: .ts
@@ -4028,6 +4635,23 @@ Plik: C:\Users\xxx\bac\src\pages\api\resend-verification.ts
       head: 0
       metaTags: 0
 
+  Analiza TypeScript:
+    Adnotacje typów: 7
+    Interfejsy: 0
+    Typy: 0
+    Generyki: 1
+    Asercje typów: 0
+    Złożone typy:
+      unionTypes: 0
+      intersectionTypes: 0
+      mappedTypes: 0
+      conditionalTypes: 0
+    Funkcje TypeScript:
+      nullishCoalescing: 0
+      optionalChaining: 0
+      nonNullAssertion: 0
+      enumUsage: 0
+
 Plik: C:\Users\xxx\bac\src\pages\api\reset-password.ts
   Typ: .ts
   Rozmiar: 2.79 KB
@@ -4110,6 +4734,23 @@ Plik: C:\Users\xxx\bac\src\pages\api\reset-password.ts
       nextSeo: false
       head: 0
       metaTags: 0
+
+  Analiza TypeScript:
+    Adnotacje typów: 6
+    Interfejsy: 0
+    Typy: 0
+    Generyki: 0
+    Asercje typów: 0
+    Złożone typy:
+      unionTypes: 0
+      intersectionTypes: 0
+      mappedTypes: 0
+      conditionalTypes: 0
+    Funkcje TypeScript:
+      nullishCoalescing: 0
+      optionalChaining: 0
+      nonNullAssertion: 0
+      enumUsage: 0
 
 Plik: C:\Users\xxx\bac\src\pages\api\users\me.ts
   Typ: .ts
@@ -4194,6 +4835,23 @@ Plik: C:\Users\xxx\bac\src\pages\api\users\me.ts
       head: 0
       metaTags: 0
 
+  Analiza TypeScript:
+    Adnotacje typów: 6
+    Interfejsy: 0
+    Typy: 0
+    Generyki: 0
+    Asercje typów: 0
+    Złożone typy:
+      unionTypes: 0
+      intersectionTypes: 0
+      mappedTypes: 0
+      conditionalTypes: 0
+    Funkcje TypeScript:
+      nullishCoalescing: 0
+      optionalChaining: 0
+      nonNullAssertion: 0
+      enumUsage: 0
+
 Plik: C:\Users\xxx\bac\src\pages\api\users\update-profile.ts
   Typ: .ts
   Rozmiar: 2.67 KB
@@ -4276,6 +4934,23 @@ Plik: C:\Users\xxx\bac\src\pages\api\users\update-profile.ts
       nextSeo: false
       head: 0
       metaTags: 0
+
+  Analiza TypeScript:
+    Adnotacje typów: 22
+    Interfejsy: 1
+    Typy: 0
+    Generyki: 0
+    Asercje typów: 1
+    Złożone typy:
+      unionTypes: 3
+      intersectionTypes: 0
+      mappedTypes: 0
+      conditionalTypes: 0
+    Funkcje TypeScript:
+      nullishCoalescing: 0
+      optionalChaining: 1
+      nonNullAssertion: 0
+      enumUsage: 0
 
 Plik: C:\Users\xxx\bac\src\pages\api\verify.ts
   Typ: .ts
@@ -4360,6 +5035,23 @@ Plik: C:\Users\xxx\bac\src\pages\api\verify.ts
       head: 0
       metaTags: 0
 
+  Analiza TypeScript:
+    Adnotacje typów: 3
+    Interfejsy: 0
+    Typy: 0
+    Generyki: 0
+    Asercje typów: 0
+    Złożone typy:
+      unionTypes: 0
+      intersectionTypes: 0
+      mappedTypes: 0
+      conditionalTypes: 0
+    Funkcje TypeScript:
+      nullishCoalescing: 0
+      optionalChaining: 0
+      nonNullAssertion: 0
+      enumUsage: 0
+
 Plik: C:\Users\xxx\bac\src\pages\verify.tsx
   Typ: .tsx
   Rozmiar: 1.12 KB
@@ -4443,6 +5135,23 @@ Plik: C:\Users\xxx\bac\src\pages\verify.tsx
       head: 0
       metaTags: 0
 
+  Analiza TypeScript:
+    Adnotacje typów: 1
+    Interfejsy: 0
+    Typy: 0
+    Generyki: 2
+    Asercje typów: 1
+    Złożone typy:
+      unionTypes: 1
+      intersectionTypes: 0
+      mappedTypes: 0
+      conditionalTypes: 0
+    Funkcje TypeScript:
+      nullishCoalescing: 0
+      optionalChaining: 0
+      nonNullAssertion: 0
+      enumUsage: 0
+
 Plik: C:\Users\xxx\bac\src\schemas\passwordSchema.ts
   Typ: .ts
   Rozmiar: 0.75 KB
@@ -4521,6 +5230,23 @@ Plik: C:\Users\xxx\bac\src\schemas\passwordSchema.ts
     Linki: wewnętrzne - 0, zewnętrzne - 0
     URL kanoniczny: 0
     Meta robots: 0
+
+  Analiza TypeScript:
+    Adnotacje typów: 3
+    Interfejsy: 0
+    Typy: 0
+    Generyki: 0
+    Asercje typów: 0
+    Złożone typy:
+      unionTypes: 1
+      intersectionTypes: 0
+      mappedTypes: 0
+      conditionalTypes: 0
+    Funkcje TypeScript:
+      nullishCoalescing: 0
+      optionalChaining: 0
+      nonNullAssertion: 0
+      enumUsage: 0
 
 Plik: C:\Users\xxx\bac\src\scripts\analyzeProject.mjs
   Typ: .mjs
@@ -4601,6 +5327,7 @@ Plik: C:\Users\xxx\bac\src\scripts\analyzeProject.mjs
     URL kanoniczny: 0
     Meta robots: 0
 
+
 Plik: C:\Users\xxx\bac\src\types\next-auth.d.ts
   Typ: .ts
   Rozmiar: 0.60 KB
@@ -4679,6 +5406,23 @@ Plik: C:\Users\xxx\bac\src\types\next-auth.d.ts
     Linki: wewnętrzne - 0, zewnętrzne - 0
     URL kanoniczny: 0
     Meta robots: 0
+
+  Analiza TypeScript:
+    Adnotacje typów: 10
+    Interfejsy: 4
+    Typy: 0
+    Generyki: 0
+    Asercje typów: 0
+    Złożone typy:
+      unionTypes: 3
+      intersectionTypes: 0
+      mappedTypes: 0
+      conditionalTypes: 0
+    Funkcje TypeScript:
+      nullishCoalescing: 0
+      optionalChaining: 0
+      nonNullAssertion: 0
+      enumUsage: 0
 
 Plik: C:\Users\xxx\bac\src\utils\projectAnalyzer.d.ts
   Typ: .ts
@@ -4759,14 +5503,31 @@ Plik: C:\Users\xxx\bac\src\utils\projectAnalyzer.d.ts
     URL kanoniczny: 0
     Meta robots: 0
 
+  Analiza TypeScript:
+    Adnotacje typów: 1
+    Interfejsy: 0
+    Typy: 0
+    Generyki: 0
+    Asercje typów: 0
+    Złożone typy:
+      unionTypes: 0
+      intersectionTypes: 0
+      mappedTypes: 0
+      conditionalTypes: 0
+    Funkcje TypeScript:
+      nullishCoalescing: 0
+      optionalChaining: 0
+      nonNullAssertion: 0
+      enumUsage: 0
+
 Plik: C:\Users\xxx\bac\src\utils\projectAnalyzer.js
   Typ: .js
-  Rozmiar: 18.80 KB
-  Liczba linii: 526
-  Ostatnia modyfikacja: 2024-09-10T21:46:11.886Z
+  Rozmiar: 23.24 KB
+  Liczba linii: 638
+  Ostatnia modyfikacja: 2024-09-10T21:48:52.040Z
   Importy: 3 (zewnętrzne: 3, lokalne: 0)
   Eksporty: 2
-  Komponenty: 27
+  Komponenty: 31
   Hooki: 37
   Komponent kliencki: Tak
   Schematy Zod: 0
@@ -4788,7 +5549,7 @@ Plik: C:\Users\xxx\bac\src\utils\projectAnalyzer.js
     useMemo: 0
     useCallback: 0
     React.memo: 0
-    Potencjalne duże listy: 9
+    Potencjalne duże listy: 13
     Brak wirtualizacji: Nie
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
@@ -4813,11 +5574,11 @@ Plik: C:\Users\xxx\bac\src\utils\projectAnalyzer.js
   Analiza routingu:
     Biblioteka routingu: Next.js
     Trasy statyczne: 8
-    Trasy dynamiczne: 100
+    Trasy dynamiczne: 137
     Trasy stron Next.js: 0
     Trasy Express.js: 0
     Trasy React Router: 1
-    Łączna liczba tras: 109
+    Łączna liczba tras: 146
 
   Analiza SEO:
     Metadane:
@@ -4837,6 +5598,7 @@ Plik: C:\Users\xxx\bac\src\utils\projectAnalyzer.js
     Linki: wewnętrzne - 0, zewnętrzne - 0
     URL kanoniczny: 1
     Meta robots: 1
+
 
 Plik: C:\Users\xxx\bac\tailwind.config.ts
   Typ: .ts
@@ -4917,6 +5679,23 @@ Plik: C:\Users\xxx\bac\tailwind.config.ts
     URL kanoniczny: 0
     Meta robots: 0
 
+  Analiza TypeScript:
+    Adnotacje typów: 6
+    Interfejsy: 0
+    Typy: 0
+    Generyki: 0
+    Asercje typów: 0
+    Złożone typy:
+      unionTypes: 0
+      intersectionTypes: 0
+      mappedTypes: 0
+      conditionalTypes: 0
+    Funkcje TypeScript:
+      nullishCoalescing: 0
+      optionalChaining: 0
+      nonNullAssertion: 0
+      enumUsage: 0
+
 Plik: C:\Users\xxx\bac\tsconfig.json
   Typ: .json
   Rozmiar: 1.03 KB
@@ -4995,6 +5774,7 @@ Plik: C:\Users\xxx\bac\tsconfig.json
     Linki: wewnętrzne - 0, zewnętrzne - 0
     URL kanoniczny: 0
     Meta robots: 0
+
 
 Plik: C:\Users\xxx\bac\tsconfig.tsbuildinfo
   Typ: .tsbuildinfo
@@ -5075,6 +5855,14 @@ Plik: C:\Users\xxx\bac\tsconfig.tsbuildinfo
     URL kanoniczny: 0
     Meta robots: 0
 
+
 Zależności: 13
 Zależności deweloperskie: 13
+
+Statystyki TypeScript:
+  Wykorzystanie TypeScript: 73.77%
+  Średnia liczba adnotacji typów na plik: 7.58
+  Całkowita liczba interfejsów: 10
+  Całkowita liczba typów: 0
+  Średnia liczba złożonych typów na plik: 0.56
 
