@@ -43,6 +43,7 @@ function analyzeFile(filePath) {
   const stateManagement = analyzeStateManagement(content);  // Nowa linia
   const performanceAnalysis = analyzePerformance(content);
   const apiAnalysis = analyzeAPI(content);
+  const routingAnalysis = analyzeRouting(content, filePath);
 
   return {
     path: filePath,
@@ -63,7 +64,8 @@ function analyzeFile(filePath) {
     isPage,
     stateManagement,
     performance: performanceAnalysis,
-    api: apiAnalysis
+    api: apiAnalysis,
+    routing: routingAnalysis
   };
 }
 
@@ -161,6 +163,15 @@ function generateProjectStructureReport() {
       report += `      ${framework}: ${used ? 'Tak' : 'Nie'}\n`;
     });
     report += `    Obsługa błędów: ${file.api.errorHandling}\n`;
+    report += '\n';
+    report += `  Analiza routingu:\n`;
+    report += `    Biblioteka routingu: ${file.routing.routingLibrary}\n`;
+    report += `    Trasy statyczne: ${file.routing.staticRoutes}\n`;
+    report += `    Trasy dynamiczne: ${file.routing.dynamicRoutes}\n`;
+    report += `    Trasy stron Next.js: ${file.routing.nextjsPageRoutes}\n`;
+    report += `    Trasy Express.js: ${file.routing.expressRoutes}\n`;
+    report += `    Trasy React Router: ${file.routing.reactRouterRoutes}\n`;
+    report += `    Łączna liczba tras: ${file.routing.totalRoutes}\n`;
     report += '\n';
   });
 
@@ -389,4 +400,43 @@ function analyzeDataStructures(content) {
   });
 
   return structures;
+}
+
+function analyzeRouting(content, filePath) {
+  const isRoutingFile = /routes?|pages?/i.test(filePath);
+  
+  const staticRoutes = (content.match(/['"]\/[^'"]+['"]/g) || []).length;
+  const dynamicRoutes = (content.match(/\[.*?\]/g) || []).length;
+  
+  const nextjsPageRoutes = isRoutingFile ? 1 : 0;
+  
+  const expressRoutes = (content.match(/app\.(get|post|put|delete|patch)\s*\(/g) || []).length;
+  
+  const reactRouterRoutes = (content.match(/<Route/g) || []).length;
+  
+  const totalRoutes = staticRoutes + dynamicRoutes + nextjsPageRoutes + expressRoutes + reactRouterRoutes;
+
+  const routingLibrary = detectRoutingLibrary(content);
+
+  return {
+    staticRoutes,
+    dynamicRoutes,
+    nextjsPageRoutes,
+    expressRoutes,
+    reactRouterRoutes,
+    totalRoutes,
+    routingLibrary,
+  };
+}
+
+function detectRoutingLibrary(content) {
+  if (content.includes('next/router') || content.includes('next/navigation')) {
+    return 'Next.js';
+  } else if (content.includes('react-router-dom')) {
+    return 'React Router';
+  } else if (content.includes('express')) {
+    return 'Express.js';
+  } else {
+    return 'Nieznana';
+  }
 }
