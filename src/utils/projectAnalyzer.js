@@ -42,6 +42,7 @@ function analyzeFile(filePath) {
   const isPage = checkIsPage(filePath);
   const stateManagement = analyzeStateManagement(content);  // Nowa linia
   const performanceAnalysis = analyzePerformance(content);
+  const apiAnalysis = analyzeAPI(content);
 
   return {
     path: filePath,
@@ -61,7 +62,8 @@ function analyzeFile(filePath) {
     isApiRoute,
     isPage,
     stateManagement,
-    performance: performanceAnalysis
+    performance: performanceAnalysis,
+    api: apiAnalysis
   };
 }
 
@@ -145,6 +147,20 @@ function generateProjectStructureReport() {
         report += `      - ${hint}\n`;
       });
     }
+    report += '\n';
+    report += `  Analiza API:\n`;
+    report += `    Metody HTTP:\n`;
+    Object.entries(file.api.httpMethods).forEach(([method, count]) => {
+      report += `      ${method}: ${count}\n`;
+    });
+    report += `    Struktury danych:\n`;
+    report += `      Ciała zapytań: ${file.api.dataStructures.requestBodies.length}\n`;
+    report += `      Struktury odpowiedzi: ${file.api.dataStructures.responseStructures.length}\n`;
+    report += `    Frameworki API:\n`;
+    Object.entries(file.api.apiFrameworks).forEach(([framework, used]) => {
+      report += `      ${framework}: ${used ? 'Tak' : 'Nie'}\n`;
+    });
+    report += `    Obsługa błędów: ${file.api.errorHandling}\n`;
     report += '\n';
   });
 
@@ -322,4 +338,55 @@ function generateOptimizationHints(useMemoCount, useCallbackCount, reactMemoCoun
   }
 
   return hints;
+}
+
+function analyzeAPI(content) {
+  const httpMethods = {
+    GET: (content.match(/\.get\(|method:\s*['"]GET/g) || []).length,
+    POST: (content.match(/\.post\(|method:\s*['"]POST/g) || []).length,
+    PUT: (content.match(/\.put\(|method:\s*['"]PUT/g) || []).length,
+    DELETE: (content.match(/\.delete\(|method:\s*['"]DELETE/g) || []).length,
+    PATCH: (content.match(/\.patch\(|method:\s*['"]PATCH/g) || []).length,
+  };
+
+  const dataStructures = analyzeDataStructures(content);
+
+  const apiFrameworks = {
+    axios: content.includes('axios'),
+    fetch: content.includes('fetch('),
+    superagent: content.includes('superagent'),
+    graphql: content.includes('graphql'),
+  };
+
+  const errorHandling = (content.match(/\.catch\(|try\s*{[\s\S]*?}\s*catch/g) || []).length;
+
+  return {
+    httpMethods,
+    dataStructures,
+    apiFrameworks,
+    errorHandling,
+  };
+}
+
+function analyzeDataStructures(content) {
+  const structures = {
+    requestBodies: [],
+    responseStructures: [],
+  };
+
+  // Analiza ciał zapytań
+  const requestBodyMatches = content.match(/body:\s*{[\s\S]*?}/g) || [];
+  requestBodyMatches.forEach(match => {
+    const fields = match.match(/\w+:/g) || [];
+    structures.requestBodies.push(fields.map(f => f.replace(':', '')));
+  });
+
+  // Analiza struktur odpowiedzi
+  const responseStructureMatches = content.match(/\.then\(\s*(?:function\s*\([^)]*\)|[^)]*=>\s*{)[\s\S]*?}\)/g) || [];
+  responseStructureMatches.forEach(match => {
+    const fields = match.match(/data\.(\w+)/g) || [];
+    structures.responseStructures.push(fields.map(f => f.replace('data.', '')));
+  });
+
+  return structures;
 }

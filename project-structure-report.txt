@@ -1,8 +1,8 @@
 Aktualna struktura projektu (61 plików)
 
 Statystyki projektu:
-Całkowity rozmiar: 0.70 MB
-Całkowita liczba linii kodu: 12697
+Całkowity rozmiar: 0.72 MB
+Całkowita liczba linii kodu: 13317
 Typy plików: {".local":1,".json":4,"":1,".ts":18,".mjs":3,".txt":1,".png":1,".md":1,".tsx":27,".ico":1,".css":1,".js":1,".tsbuildinfo":1}
 
 Struktura plików projektu:
@@ -14,7 +14,7 @@ Struktura plików projektu:
 ├── package-lock.json (.json, 265.20 KB)
 ├── package.json (.json, 1.07 KB)
 ├── postcss.config.mjs (.mjs, 0.13 KB)
-├── project-structure-report.txt (.txt, 33.51 KB)
+├── project-structure-report.txt (.txt, 49.47 KB)
 ├── public/
 │   └── images/
 │       └── open-in-browser.png (.png, 36.73 KB)
@@ -101,7 +101,7 @@ Struktura plików projektu:
 │   │   └── next-auth.d.ts (.ts, 0.60 KB)
 │   └── utils/
 │       ├── projectAnalyzer.d.ts (.ts, 0.15 KB)
-│       └── projectAnalyzer.js (.js, 11.67 KB)
+│       └── projectAnalyzer.js (.js, 14.07 KB)
 ├── tailwind.config.ts (.ts, 0.50 KB)
 ├── tsconfig.json (.json, 1.03 KB)
 └── tsconfig.tsbuildinfo (.tsbuildinfo, 246.16 KB)
@@ -142,6 +142,23 @@ Plik: C:\Users\xxx\bac\.env.local
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
 
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 0
+
 Plik: C:\Users\xxx\bac\.eslintrc.json
   Typ: .json
   Rozmiar: 0.04 KB
@@ -175,6 +192,23 @@ Plik: C:\Users\xxx\bac\.eslintrc.json
     Brak wirtualizacji: Nie
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
+
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 0
 
 Plik: C:\Users\xxx\bac\.gitignore
   Typ: 
@@ -210,6 +244,23 @@ Plik: C:\Users\xxx\bac\.gitignore
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
 
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 0
+
 Plik: C:\Users\xxx\bac\next-env.d.ts
   Typ: .ts
   Rozmiar: 0.26 KB
@@ -243,6 +294,23 @@ Plik: C:\Users\xxx\bac\next-env.d.ts
     Brak wirtualizacji: Nie
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
+
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 0
 
 Plik: C:\Users\xxx\bac\next.config.mjs
   Typ: .mjs
@@ -278,6 +346,23 @@ Plik: C:\Users\xxx\bac\next.config.mjs
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
 
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 0
+
 Plik: C:\Users\xxx\bac\package-lock.json
   Typ: .json
   Rozmiar: 265.20 KB
@@ -311,6 +396,23 @@ Plik: C:\Users\xxx\bac\package-lock.json
     Brak wirtualizacji: Nie
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
+
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 0
 
 Plik: C:\Users\xxx\bac\package.json
   Typ: .json
@@ -346,6 +448,23 @@ Plik: C:\Users\xxx\bac\package.json
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
 
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 0
+
 Plik: C:\Users\xxx\bac\postcss.config.mjs
   Typ: .mjs
   Rozmiar: 0.13 KB
@@ -380,15 +499,32 @@ Plik: C:\Users\xxx\bac\postcss.config.mjs
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
 
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 0
+
 Plik: C:\Users\xxx\bac\project-structure-report.txt
   Typ: .txt
-  Rozmiar: 33.51 KB
-  Liczba linii: 1639
-  Ostatnia modyfikacja: 2024-09-10T21:38:13.586Z
+  Rozmiar: 49.47 KB
+  Liczba linii: 2192
+  Ostatnia modyfikacja: 2024-09-10T21:39:54.917Z
   Importy: 0 (zewnętrzne: 0, lokalne: 0)
   Eksporty: 0
   Komponenty: 0
-  Hooki: 122
+  Hooki: 364
   Komponent kliencki: Nie
   Schematy Zod: 0
   Użycie Next Image: 0
@@ -413,6 +549,23 @@ Plik: C:\Users\xxx\bac\project-structure-report.txt
     Brak wirtualizacji: Nie
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
+
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 0
 
 Plik: C:\Users\xxx\bac\public\images\open-in-browser.png
   Typ: .png
@@ -448,6 +601,23 @@ Plik: C:\Users\xxx\bac\public\images\open-in-browser.png
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
 
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 0
+
 Plik: C:\Users\xxx\bac\README.md
   Typ: .md
   Rozmiar: 1.46 KB
@@ -481,6 +651,23 @@ Plik: C:\Users\xxx\bac\README.md
     Brak wirtualizacji: Nie
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
+
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 0
 
 Plik: C:\Users\xxx\bac\src\app\accommodations\page.tsx
   Typ: .tsx
@@ -516,6 +703,23 @@ Plik: C:\Users\xxx\bac\src\app\accommodations\page.tsx
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
 
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 0
+
 Plik: C:\Users\xxx\bac\src\app\admin\page.tsx
   Typ: .tsx
   Rozmiar: 0.19 KB
@@ -549,6 +753,23 @@ Plik: C:\Users\xxx\bac\src\app\admin\page.tsx
     Brak wirtualizacji: Nie
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
+
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 0
 
 Plik: C:\Users\xxx\bac\src\app\blog\page.tsx
   Typ: .tsx
@@ -584,6 +805,23 @@ Plik: C:\Users\xxx\bac\src\app\blog\page.tsx
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
 
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 0
+
 Plik: C:\Users\xxx\bac\src\app\community\page.tsx
   Typ: .tsx
   Rozmiar: 0.12 KB
@@ -617,6 +855,23 @@ Plik: C:\Users\xxx\bac\src\app\community\page.tsx
     Brak wirtualizacji: Nie
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
+
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 0
 
 Plik: C:\Users\xxx\bac\src\app\dance-schools\page.tsx
   Typ: .tsx
@@ -652,6 +907,23 @@ Plik: C:\Users\xxx\bac\src\app\dance-schools\page.tsx
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
 
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 0
+
 Plik: C:\Users\xxx\bac\src\app\data-deletion\page.tsx
   Typ: .tsx
   Rozmiar: 1.16 KB
@@ -685,6 +957,23 @@ Plik: C:\Users\xxx\bac\src\app\data-deletion\page.tsx
     Brak wirtualizacji: Nie
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
+
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 0
 
 Plik: C:\Users\xxx\bac\src\app\events\page.tsx
   Typ: .tsx
@@ -720,6 +1009,23 @@ Plik: C:\Users\xxx\bac\src\app\events\page.tsx
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
 
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 0
+
 Plik: C:\Users\xxx\bac\src\app\favicon.ico
   Typ: .ico
   Rozmiar: 25.32 KB
@@ -753,6 +1059,23 @@ Plik: C:\Users\xxx\bac\src\app\favicon.ico
     Brak wirtualizacji: Nie
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
+
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 0
 
 Plik: C:\Users\xxx\bac\src\app\funny-images\page.tsx
   Typ: .tsx
@@ -788,6 +1111,23 @@ Plik: C:\Users\xxx\bac\src\app\funny-images\page.tsx
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
 
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 0
+
 Plik: C:\Users\xxx\bac\src\app\gamification\page.tsx
   Typ: .tsx
   Rozmiar: 0.12 KB
@@ -821,6 +1161,23 @@ Plik: C:\Users\xxx\bac\src\app\gamification\page.tsx
     Brak wirtualizacji: Nie
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
+
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 0
 
 Plik: C:\Users\xxx\bac\src\app\globals.css
   Typ: .css
@@ -856,6 +1213,23 @@ Plik: C:\Users\xxx\bac\src\app\globals.css
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
 
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 0
+
 Plik: C:\Users\xxx\bac\src\app\jobs\page.tsx
   Typ: .tsx
   Rozmiar: 0.11 KB
@@ -889,6 +1263,23 @@ Plik: C:\Users\xxx\bac\src\app\jobs\page.tsx
     Brak wirtualizacji: Nie
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
+
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 0
 
 Plik: C:\Users\xxx\bac\src\app\layout.tsx
   Typ: .tsx
@@ -924,6 +1315,23 @@ Plik: C:\Users\xxx\bac\src\app\layout.tsx
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
 
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 0
+
 Plik: C:\Users\xxx\bac\src\app\mentorship\page.tsx
   Typ: .tsx
   Rozmiar: 0.12 KB
@@ -957,6 +1365,23 @@ Plik: C:\Users\xxx\bac\src\app\mentorship\page.tsx
     Brak wirtualizacji: Nie
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
+
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 0
 
 Plik: C:\Users\xxx\bac\src\app\music\page.tsx
   Typ: .tsx
@@ -992,6 +1417,23 @@ Plik: C:\Users\xxx\bac\src\app\music\page.tsx
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
 
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 0
+
 Plik: C:\Users\xxx\bac\src\app\page.tsx
   Typ: .tsx
   Rozmiar: 2.14 KB
@@ -1025,6 +1467,23 @@ Plik: C:\Users\xxx\bac\src\app\page.tsx
     Brak wirtualizacji: Nie
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
+
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 0
 
 Plik: C:\Users\xxx\bac\src\app\privacy-policy\page.tsx
   Typ: .tsx
@@ -1060,6 +1519,23 @@ Plik: C:\Users\xxx\bac\src\app\privacy-policy\page.tsx
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
 
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 0
+
 Plik: C:\Users\xxx\bac\src\app\reset-password\page.tsx
   Typ: .tsx
   Rozmiar: 0.24 KB
@@ -1093,6 +1569,23 @@ Plik: C:\Users\xxx\bac\src\app\reset-password\page.tsx
     Brak wirtualizacji: Nie
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
+
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 0
 
 Plik: C:\Users\xxx\bac\src\app\reset-password\ResetPasswordClient.tsx
   Typ: .tsx
@@ -1129,6 +1622,23 @@ Plik: C:\Users\xxx\bac\src\app\reset-password\ResetPasswordClient.tsx
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
       - Wykryto potencjalnie duże listy. Rozważ użycie wirtualizacji (np. react-window lub react-virtualized) dla lepszej wydajności.
 
+  Analiza API:
+    Metody HTTP:
+      GET: 1
+      POST: 1
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Tak
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 2
+
 Plik: C:\Users\xxx\bac\src\app\subscription\page.tsx
   Typ: .tsx
   Rozmiar: 0.12 KB
@@ -1163,6 +1673,23 @@ Plik: C:\Users\xxx\bac\src\app\subscription\page.tsx
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
 
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 0
+
 Plik: C:\Users\xxx\bac\src\app\terms-of-service\page.tsx
   Typ: .tsx
   Rozmiar: 1.90 KB
@@ -1196,6 +1723,23 @@ Plik: C:\Users\xxx\bac\src\app\terms-of-service\page.tsx
     Brak wirtualizacji: Nie
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
+
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 0
 
 Plik: C:\Users\xxx\bac\src\app\users\forgot-password\page.tsx
   Typ: .tsx
@@ -1232,6 +1776,23 @@ Plik: C:\Users\xxx\bac\src\app\users\forgot-password\page.tsx
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
       - Wykryto potencjalnie duże listy. Rozważ użycie wirtualizacji (np. react-window lub react-virtualized) dla lepszej wydajności.
 
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 1
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Tak
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 2
+
 Plik: C:\Users\xxx\bac\src\app\users\login\page.tsx
   Typ: .tsx
   Rozmiar: 11.89 KB
@@ -1267,6 +1828,23 @@ Plik: C:\Users\xxx\bac\src\app\users\login\page.tsx
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
       - Wykryto potencjalnie duże listy. Rozważ użycie wirtualizacji (np. react-window lub react-virtualized) dla lepszej wydajności.
 
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 1
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Tak
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 3
+
 Plik: C:\Users\xxx\bac\src\app\users\page.tsx
   Typ: .tsx
   Rozmiar: 0.10 KB
@@ -1301,6 +1879,23 @@ Plik: C:\Users\xxx\bac\src\app\users\page.tsx
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
 
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 0
+
 Plik: C:\Users\xxx\bac\src\app\users\profile\page.tsx
   Typ: .tsx
   Rozmiar: 9.43 KB
@@ -1334,6 +1929,23 @@ Plik: C:\Users\xxx\bac\src\app\users\profile\page.tsx
     Brak wirtualizacji: Tak
     Wskazówki optymalizacyjne:
       - Wykryto potencjalnie duże listy. Rozważ użycie wirtualizacji (np. react-window lub react-virtualized) dla lepszej wydajności.
+
+  Analiza API:
+    Metody HTTP:
+      GET: 1
+      POST: 1
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Tak
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 3
 
 Plik: C:\Users\xxx\bac\src\app\users\register\page.tsx
   Typ: .tsx
@@ -1370,6 +1982,23 @@ Plik: C:\Users\xxx\bac\src\app\users\register\page.tsx
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
       - Wykryto potencjalnie duże listy. Rozważ użycie wirtualizacji (np. react-window lub react-virtualized) dla lepszej wydajności.
 
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 1
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Tak
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 3
+
 Plik: C:\Users\xxx\bac\src\components\LoadingSpinner.tsx
   Typ: .tsx
   Rozmiar: 0.56 KB
@@ -1403,6 +2032,23 @@ Plik: C:\Users\xxx\bac\src\components\LoadingSpinner.tsx
     Brak wirtualizacji: Nie
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
+
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 0
 
 Plik: C:\Users\xxx\bac\src\contexts\AuthContext.tsx
   Typ: .tsx
@@ -1438,6 +2084,23 @@ Plik: C:\Users\xxx\bac\src\contexts\AuthContext.tsx
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
 
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 0
+
 Plik: C:\Users\xxx\bac\src\global.d.ts
   Typ: .ts
   Rozmiar: 0.16 KB
@@ -1471,6 +2134,23 @@ Plik: C:\Users\xxx\bac\src\global.d.ts
     Brak wirtualizacji: Nie
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
+
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 0
 
 Plik: C:\Users\xxx\bac\src\lib\authMiddleware.ts
   Typ: .ts
@@ -1506,6 +2186,23 @@ Plik: C:\Users\xxx\bac\src\lib\authMiddleware.ts
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
 
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 0
+
 Plik: C:\Users\xxx\bac\src\lib\mongodb.ts
   Typ: .ts
   Rozmiar: 1.02 KB
@@ -1539,6 +2236,23 @@ Plik: C:\Users\xxx\bac\src\lib\mongodb.ts
     Brak wirtualizacji: Nie
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
+
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 1
 
 Plik: C:\Users\xxx\bac\src\models\User.ts
   Typ: .ts
@@ -1574,6 +2288,23 @@ Plik: C:\Users\xxx\bac\src\models\User.ts
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
 
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 0
+
 Plik: C:\Users\xxx\bac\src\pages\api\auth\[...nextauth].ts
   Typ: .ts
   Rozmiar: 2.33 KB
@@ -1607,6 +2338,23 @@ Plik: C:\Users\xxx\bac\src\pages\api\auth\[...nextauth].ts
     Brak wirtualizacji: Nie
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
+
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 0
 
 Plik: C:\Users\xxx\bac\src\pages\api\forgot-password.ts
   Typ: .ts
@@ -1642,6 +2390,23 @@ Plik: C:\Users\xxx\bac\src\pages\api\forgot-password.ts
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
 
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 1
+
 Plik: C:\Users\xxx\bac\src\pages\api\login.ts
   Typ: .ts
   Rozmiar: 2.89 KB
@@ -1675,6 +2440,23 @@ Plik: C:\Users\xxx\bac\src\pages\api\login.ts
     Brak wirtualizacji: Nie
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
+
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 2
 
 Plik: C:\Users\xxx\bac\src\pages\api\register.ts
   Typ: .ts
@@ -1710,6 +2492,23 @@ Plik: C:\Users\xxx\bac\src\pages\api\register.ts
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
 
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 1
+
 Plik: C:\Users\xxx\bac\src\pages\api\resend-verification.ts
   Typ: .ts
   Rozmiar: 1.78 KB
@@ -1743,6 +2542,23 @@ Plik: C:\Users\xxx\bac\src\pages\api\resend-verification.ts
     Brak wirtualizacji: Nie
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
+
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 1
 
 Plik: C:\Users\xxx\bac\src\pages\api\reset-password.ts
   Typ: .ts
@@ -1778,6 +2594,23 @@ Plik: C:\Users\xxx\bac\src\pages\api\reset-password.ts
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
 
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 1
+
 Plik: C:\Users\xxx\bac\src\pages\api\users\me.ts
   Typ: .ts
   Rozmiar: 1.56 KB
@@ -1811,6 +2644,23 @@ Plik: C:\Users\xxx\bac\src\pages\api\users\me.ts
     Brak wirtualizacji: Nie
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
+
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 1
 
 Plik: C:\Users\xxx\bac\src\pages\api\users\update-profile.ts
   Typ: .ts
@@ -1846,6 +2696,23 @@ Plik: C:\Users\xxx\bac\src\pages\api\users\update-profile.ts
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
 
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 2
+
 Plik: C:\Users\xxx\bac\src\pages\api\verify.ts
   Typ: .ts
   Rozmiar: 1.28 KB
@@ -1879,6 +2746,23 @@ Plik: C:\Users\xxx\bac\src\pages\api\verify.ts
     Brak wirtualizacji: Nie
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
+
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 1
 
 Plik: C:\Users\xxx\bac\src\pages\verify.tsx
   Typ: .tsx
@@ -1914,6 +2798,23 @@ Plik: C:\Users\xxx\bac\src\pages\verify.tsx
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
 
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Tak
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 1
+
 Plik: C:\Users\xxx\bac\src\schemas\passwordSchema.ts
   Typ: .ts
   Rozmiar: 0.75 KB
@@ -1947,6 +2848,23 @@ Plik: C:\Users\xxx\bac\src\schemas\passwordSchema.ts
     Brak wirtualizacji: Nie
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
+
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 0
 
 Plik: C:\Users\xxx\bac\src\scripts\analyzeProject.mjs
   Typ: .mjs
@@ -1982,6 +2900,23 @@ Plik: C:\Users\xxx\bac\src\scripts\analyzeProject.mjs
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
 
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 0
+
 Plik: C:\Users\xxx\bac\src\types\next-auth.d.ts
   Typ: .ts
   Rozmiar: 0.60 KB
@@ -2015,6 +2950,23 @@ Plik: C:\Users\xxx\bac\src\types\next-auth.d.ts
     Brak wirtualizacji: Nie
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
+
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 0
 
 Plik: C:\Users\xxx\bac\src\utils\projectAnalyzer.d.ts
   Typ: .ts
@@ -2050,14 +3002,31 @@ Plik: C:\Users\xxx\bac\src\utils\projectAnalyzer.d.ts
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
 
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 0
+
 Plik: C:\Users\xxx\bac\src\utils\projectAnalyzer.js
   Typ: .js
-  Rozmiar: 11.67 KB
-  Liczba linii: 326
-  Ostatnia modyfikacja: 2024-09-10T21:39:49.648Z
+  Rozmiar: 14.07 KB
+  Liczba linii: 393
+  Ostatnia modyfikacja: 2024-09-10T21:41:52.229Z
   Importy: 3 (zewnętrzne: 3, lokalne: 0)
   Eksporty: 2
-  Komponenty: 21
+  Komponenty: 23
   Hooki: 37
   Komponent kliencki: Tak
   Schematy Zod: 0
@@ -2079,10 +3048,27 @@ Plik: C:\Users\xxx\bac\src\utils\projectAnalyzer.js
     useMemo: 0
     useCallback: 0
     React.memo: 0
-    Potencjalne duże listy: 3
+    Potencjalne duże listy: 5
     Brak wirtualizacji: Nie
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
+
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Tak
+      fetch: Tak
+      superagent: Tak
+      graphql: Tak
+    Obsługa błędów: 0
 
 Plik: C:\Users\xxx\bac\tailwind.config.ts
   Typ: .ts
@@ -2118,6 +3104,23 @@ Plik: C:\Users\xxx\bac\tailwind.config.ts
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
 
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 0
+
 Plik: C:\Users\xxx\bac\tsconfig.json
   Typ: .json
   Rozmiar: 1.03 KB
@@ -2152,6 +3155,23 @@ Plik: C:\Users\xxx\bac\tsconfig.json
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
 
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 0
+
 Plik: C:\Users\xxx\bac\tsconfig.tsbuildinfo
   Typ: .tsbuildinfo
   Rozmiar: 246.16 KB
@@ -2185,6 +3205,23 @@ Plik: C:\Users\xxx\bac\tsconfig.tsbuildinfo
     Brak wirtualizacji: Nie
     Wskazówki optymalizacyjne:
       - Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.
+
+  Analiza API:
+    Metody HTTP:
+      GET: 0
+      POST: 0
+      PUT: 0
+      DELETE: 0
+      PATCH: 0
+    Struktury danych:
+      Ciała zapytań: 0
+      Struktury odpowiedzi: 0
+    Frameworki API:
+      axios: Nie
+      fetch: Nie
+      superagent: Nie
+      graphql: Nie
+    Obsługa błędów: 0
 
 Zależności: 13
 Zależności deweloperskie: 13
