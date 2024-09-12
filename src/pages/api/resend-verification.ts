@@ -46,8 +46,15 @@ export default async function handler(
     const mailOptions = {
       from: "noreply@yourdomain.com",
       to: user.email,
-      subject: "Account Verification",
-      html: `<h1>Verify your account</h1><p>Please click the link to verify your account:</p><a href="https://www.baciata.pl/verify?token=${verificationToken}">Verify Account</a>`,
+      subject: "Potwierdź swoje konto w Baciata - Czekamy na Ciebie!",
+      html: `
+        <h1>Cześć Tancerko, tancerzu! 💃🕺</h1>
+        <p>Ups! Wygląda na to, że jeszcze nie potwierdziłeś swojego konta w Baciata. Nic straconego!</p>
+        <p>Kliknij poniższy przycisk, aby dołączyć do naszej roztańczonej społeczności:</p>
+        <a href="https://www.baciata.pl/verify?token=${verificationToken}" style="background-color: #FF4500; color: white; padding: 12px 24px; text-align: center; text-decoration: none; display: inline-block; border-radius: 25px; font-weight: bold; font-size: 16px;">Potwierdź konto i zaczynamy taniec!</a>
+        <p>Parkiet czeka, a muzyka gra. Nie możemy się doczekać, aby zobaczyć Twoje pierwsze kroki!</p>
+        <p>Do zobaczenia wkrótce,<br>Zespół Baciata 🎵</p>
+      `,
     };
 
     await transporter.sendMail(mailOptions);
