@@ -6,6 +6,20 @@ import nodemailer from "nodemailer";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import { validatePassword } from "@/schemas/passwordSchema";
+import axios from 'axios';
+
+async function verifyRecaptcha(token: string) {
+  const secretKey = process.env.RECAPTCHA_SECRET_KEY;
+  const verificationURL = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${token}`;
+  
+  try {
+    const response = await axios.post(verificationURL);
+    return response.data.success;
+  } catch (error) {
+    console.error('Błąd weryfikacji reCAPTCHA:', error);
+    return false;
+  }
+}
 
 export default async function handler(
   req: NextApiRequest,
@@ -18,12 +32,17 @@ export default async function handler(
   try {
     await connectToDatabase();
 
-    const { email, password, name } = req.body;
+    const { email, password, name, recaptchaToken } = req.body;
 
-    if (!name || !email || !password) {
+    if (!name || !email || !password || !recaptchaToken) {
       return res
         .status(400)
-        .json({ message: "Imię, email i hasło są wymagane" });
+        .json({ message: "Imię, email, hasło i token reCAPTCHA są wymagane" });
+    }
+
+    const isHuman = await verifyRecaptcha(recaptchaToken);
+    if (!isHuman) {
+      return res.status(400).json({ message: "Weryfikacja reCAPTCHA nie powiodła się" });
     }
 
     const passwordValidationError = validatePassword(password);

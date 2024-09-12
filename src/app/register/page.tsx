@@ -7,6 +7,7 @@ import { passwordSchema } from "../../schemas/passwordSchema";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const registerSchemaBase = z.object({
   name: z
@@ -51,6 +52,7 @@ export default function Register() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isWebViewDetected, setIsWebViewDetected] = useState(false);
+  const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null);
 
   useEffect(() => {
     setIsWebViewDetected(isWebView());
@@ -119,8 +121,12 @@ export default function Register() {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!recaptchaValue) {
+      setErrors({ form: "Proszę zweryfikować, że nie jesteś robotem" });
+      return;
+    }
     if (!validateForm()) return;
 
     setIsLoading(true);
@@ -130,7 +136,7 @@ export default function Register() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify({ name, email, password, recaptchaToken: recaptchaValue }),
       });
 
       const data = await response.json();
@@ -144,6 +150,7 @@ export default function Register() {
         setPassword("");
         setConfirmPassword("");
         setAgreeToTerms(false);
+        setRecaptchaValue(null);
       } else {
         setErrors({
           form: data.message || "Wystąpił błąd podczas rejestracji",
@@ -421,6 +428,10 @@ export default function Register() {
             <p className="text-red-600 text-sm mt-2">{errors.agreeToTerms}</p>
           )}
         </div>
+        <ReCAPTCHA
+          sitekey="6LdV-0AqAAAAAHnmteJIAYaCs3S6NhRCGtfq-Nex"
+          onChange={(value) => setRecaptchaValue(value)}
+        />
         <button
           type="submit"
           className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition-colors duration-200 flex items-center justify-center"
