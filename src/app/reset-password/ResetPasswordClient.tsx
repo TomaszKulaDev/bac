@@ -79,7 +79,7 @@ export default function ResetPassword() {
 
       if (response.ok) {
         setMessage("Hasło zostało zresetowane pomyślnie");
-        setTimeout(() => router.push("/users/login"), 3000);
+        setTimeout(() => router.push("/login"), 3000);
       } else {
         const data = await response.json();
         setErrors({ form: data.message || "Nie udało się zresetować hasła" });

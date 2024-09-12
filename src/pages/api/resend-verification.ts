@@ -47,7 +47,7 @@ export default async function handler(
       from: "noreply@yourdomain.com",
       to: user.email,
       subject: "Account Verification",
-      html: `<h1>Verify your account</h1><p>Please click the link to verify your account:</p><a href="https://bac-eta.vercel.app/verify?token=${verificationToken}">Verify Account</a>`,
+      html: `<h1>Verify your account</h1><p>Please click the link to verify your account:</p><a href="https://www.baciata.pl/verify?token=${verificationToken}">Verify Account</a>`,
     };
 
     await transporter.sendMail(mailOptions);
