@@ -62,9 +62,6 @@ function NavContent() {
           </>
         )}
       </ul>
-      <Link href="/data-deletion" className="text-blue-500 hover:underline">
-        Usuwanie danych
-      </Link>
     </nav>
   );
 }
