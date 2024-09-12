@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { z } from "zod";
-import { passwordSchema } from "../../../schemas/passwordSchema";
+import { passwordSchema } from "../../schemas/passwordSchema";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -403,11 +403,17 @@ export default function Register() {
               className="mr-2"
             />
             Akceptuję{" "}
-            <Link href="/privacy-policy" className="text-blue-500 hover:underline">
+            <Link
+              href="/privacy-policy"
+              className="text-blue-500 hover:underline"
+            >
               Politykę Prywatności
             </Link>{" "}
             oraz{" "}
-            <Link href="/terms-of-service" className="text-blue-500 hover:underline">
+            <Link
+              href="/terms-of-service"
+              className="text-blue-500 hover:underline"
+            >
               Warunki Korzystania z Usługi
             </Link>
           </label>

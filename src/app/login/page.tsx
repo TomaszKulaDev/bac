@@ -14,7 +14,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { z } from "zod";
 
 // Importy lokalne
-import { useAuth } from "../../../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 import LoadingSpinner from "@/components/LoadingSpinner";
 
 // Schema walidacji formularza logowania
