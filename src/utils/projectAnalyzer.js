@@ -26,8 +26,8 @@ import path from "path";
 
 function analyzeFile(filePath) {
   const stats = fs.statSync(filePath);
-  const content = fs.readFileSync(filePath, 'utf-8');
-  const lines = content.split('\n');
+  const content = fs.readFileSync(filePath, "utf-8");
+  const lines = content.split("\n");
 
   const imports = analyzeImports(content);
   const exports = countExports(content);
@@ -76,8 +76,28 @@ function analyzeFile(filePath) {
 }
 
 function shouldSkipDirectory(dirName) {
-  const skipDirs = ['node_modules', '.git', '.next', 'out', 'build', 'dist'];
+  const skipDirs = [
+    "node_modules",
+    ".git",
+    ".next",
+    "out",
+    "build",
+    "dist",
+    "projectAnalyzer",
+  ];
   return skipDirs.includes(dirName);
+}
+
+function shouldSkipFile(filePath) {
+  const skipFiles = [
+    ".gitignore",
+    ".env",
+    "package-lock.json",
+    "yarn.lock",
+    "project-structure-report.txt",
+  ];
+  const fileName = path.basename(filePath);
+  return skipFiles.includes(fileName);
 }
 
 function scanProjectStructure(dir) {
@@ -92,30 +112,63 @@ function scanProjectStructure(dir) {
         fileList.push(...scanProjectStructure(filePath));
       }
     } else {
-      fileList.push(analyzeFile(filePath));
+      if (!shouldSkipFile(filePath)) {
+        fileList.push(analyzeFile(filePath));
+      }
     }
   });
 
   return fileList;
 }
 
+function copyProjectCode(rootDir) {
+  let projectCode = "";
+
+  function readDirectoryRecursively(dir) {
+    const files = fs.readdirSync(dir);
+
+    files.forEach((file) => {
+      const filePath = path.join(dir, file);
+      const stats = fs.statSync(filePath);
+
+      if (stats.isDirectory()) {
+        if (!shouldSkipDirectory(file)) {
+          readDirectoryRecursively(filePath);
+        }
+      } else {
+        if (!shouldSkipFile(filePath)) {
+          const fileContent = fs.readFileSync(filePath, "utf-8");
+          projectCode += `\n\n// Plik: ${filePath}\n${fileContent}`;
+        }
+      }
+    });
+  }
+
+  readDirectoryRecursively(rootDir);
+  return projectCode;
+}
+
 function generateProjectStructureReport() {
   const rootDir = path.join(process.cwd());
   const allFiles = scanProjectStructure(rootDir);
+
+  const projectCode = copyProjectCode(rootDir);
 
   let report = `Aktualna struktura projektu (${allFiles.length} plików)\n\n`;
 
   // Dodajmy statystyki projektu
   const stats = calculateProjectStats(allFiles);
   report += `Statystyki projektu:\n`;
-  report += `Całkowity rozmiar: ${(stats.totalSize / 1024 / 1024).toFixed(2)} MB\n`;
+  report += `Całkowity rozmiar: ${(stats.totalSize / 1024 / 1024).toFixed(
+    2
+  )} MB\n`;
   report += `Całkowita liczba linii kodu: ${stats.totalLines}\n`;
   report += `Typy plików: ${JSON.stringify(stats.fileTypes)}\n\n`;
 
   // Generowanie struktury plików
   report += `Struktura plików projektu:\n`;
   report += generateFileStructure(rootDir, allFiles);
-  report += '\n';
+  report += "\n";
 
   // Szczegółowe informacje o każdym pliku
   report += `Szczegółowe informacje o plikach:\n\n`;
@@ -129,15 +182,22 @@ function generateProjectStructureReport() {
     report += `  Eksporty: ${file.exports}\n`;
     report += `  Komponenty: ${file.components}\n`;
     report += `  Hooki: ${file.hooks}\n`;
-    report += `  Komponent kliencki: ${file.isClientComponent ? 'Tak' : 'Nie'}\n`;
+    report += `  Komponent kliencki: ${
+      file.isClientComponent ? "Tak" : "Nie"
+    }\n`;
     report += `  Schematy Zod: ${file.zodSchemas}\n`;
     report += `  Użycie Next Image: ${file.nextImageUsage}\n`;
     report += `  Użycie Next Link: ${file.nextLinkUsage}\n`;
     report += `  Klasy Tailwind: ${file.tailwindClasses}\n`;
-    report += `  Trasa API: ${file.isApiRoute ? 'Tak' : 'Nie'}\n`;
-    report += `  Strona: ${file.isPage ? 'Tak' : 'Nie'}\n\n`;
+    report += `  Trasa API: ${file.isApiRoute ? "Tak" : "Nie"}\n`;
+    report += `  Strona: ${file.isPage ? "Tak" : "Nie"}\n\n`;
     report += `  Zarządzanie stanem:\n`;
-    report += `    Wykryte biblioteki: ${Object.entries(file.stateManagement.libraries).filter(([_, used]) => used).map(([lib]) => lib).join(', ')}\n`;
+    report += `    Wykryte biblioteki: ${Object.entries(
+      file.stateManagement.libraries
+    )
+      .filter(([_, used]) => used)
+      .map(([lib]) => lib)
+      .join(", ")}\n`;
     if (file.stateManagement.storeStructure.redux) {
       report += `    Redux - Slices: ${file.stateManagement.storeStructure.redux.slices}, Actions: ${file.stateManagement.storeStructure.redux.actions}, Reducers: ${file.stateManagement.storeStructure.redux.reducers}\n`;
     }
@@ -161,25 +221,29 @@ function generateProjectStructureReport() {
     report += `    React.memo: ${file.performance.reactMemo}\n`;
     report += `    Duże komponenty (>200 linii): ${file.performance.largeComponents.length}\n`;
     if (file.performance.largeComponents.length > 0) {
-      file.performance.largeComponents.forEach(comp => {
+      file.performance.largeComponents.forEach((comp) => {
         report += `      - ${comp.name}: ${comp.lines} linii\n`;
       });
     }
     report += `    Potencjalne duże listy: ${file.performance.potentialPerformanceIssues.largeLists}\n`;
-    report += `    Brak wirtualizacji: ${file.performance.potentialPerformanceIssues.missingVirtualization ? 'Tak' : 'Nie'}\n`;
+    report += `    Brak wirtualizacji: ${
+      file.performance.potentialPerformanceIssues.missingVirtualization
+        ? "Tak"
+        : "Nie"
+    }\n`;
     if (file.performance.reRenderingIssues.length > 0) {
       report += `    Potencjalne problemy z re-renderowaniem:\n`;
-      file.performance.reRenderingIssues.forEach(issue => {
+      file.performance.reRenderingIssues.forEach((issue) => {
         report += `      - ${issue}\n`;
       });
     }
     if (file.performance.optimizationHints.length > 0) {
       report += `    Wskazówki optymalizacyjne:\n`;
-      file.performance.optimizationHints.forEach(hint => {
+      file.performance.optimizationHints.forEach((hint) => {
         report += `      - ${hint}\n`;
       });
     }
-    report += '\n';
+    report += "\n";
     report += `  Analiza API:\n`;
     report += `    Metody HTTP:\n`;
     Object.entries(file.api.httpMethods).forEach(([method, count]) => {
@@ -190,10 +254,10 @@ function generateProjectStructureReport() {
     report += `      Struktury odpowiedzi: ${file.api.dataStructures.responseStructures.length}\n`;
     report += `    Frameworki API:\n`;
     Object.entries(file.api.apiFrameworks).forEach(([framework, used]) => {
-      report += `      ${framework}: ${used ? 'Tak' : 'Nie'}\n`;
+      report += `      ${framework}: ${used ? "Tak" : "Nie"}\n`;
     });
     report += `    Obsługa błędów: ${file.api.errorHandling}\n`;
-    report += '\n';
+    report += "\n";
     report += `  Analiza routingu:\n`;
     report += `    Biblioteka routingu: ${file.routing.routingLibrary}\n`;
     report += `    Trasy statyczne: ${file.routing.staticRoutes}\n`;
@@ -202,7 +266,7 @@ function generateProjectStructureReport() {
     report += `    Trasy Express.js: ${file.routing.expressRoutes}\n`;
     report += `    Trasy React Router: ${file.routing.reactRouterRoutes}\n`;
     report += `    Łączna liczba tras: ${file.routing.totalRoutes}\n`;
-    report += '\n';
+    report += "\n";
     report += `  Analiza SEO:\n`;
     report += `    Metadane:\n`;
     Object.entries(file.seo.metadata).forEach(([key, value]) => {
@@ -226,7 +290,7 @@ function generateProjectStructureReport() {
         report += `      ${key}: ${value}\n`;
       });
     }
-    report += '\n';
+    report += "\n";
     if (file.typeScript) {
       report += `  Analiza TypeScript:\n`;
       report += `    Adnotacje typów: ${file.typeScript.typeAnnotations}\n`;
@@ -239,16 +303,20 @@ function generateProjectStructureReport() {
         report += `      ${key}: ${value}\n`;
       });
       report += `    Funkcje TypeScript:\n`;
-      Object.entries(file.typeScript.typeScriptFeatures).forEach(([key, value]) => {
-        report += `      ${key}: ${value}\n`;
-      });
+      Object.entries(file.typeScript.typeScriptFeatures).forEach(
+        ([key, value]) => {
+          report += `      ${key}: ${value}\n`;
+        }
+      );
     }
-    report += '\n';
+    report += "\n";
     report += `  Analiza optymalizacji obrazów:\n`;
     report += `    Formaty obrazów:\n`;
-    Object.entries(file.imageOptimization.imageFormats).forEach(([format, count]) => {
-      report += `      ${format}: ${count}\n`;
-    });
+    Object.entries(file.imageOptimization.imageFormats).forEach(
+      ([format, count]) => {
+        report += `      ${format}: ${count}\n`;
+      }
+    );
     report += `    Lazy loading: ${file.imageOptimization.lazyLoading}\n`;
     report += `    Srcset: ${file.imageOptimization.srcset}\n`;
     report += `    Sizes: ${file.imageOptimization.sizes}\n`;
@@ -257,9 +325,11 @@ function generateProjectStructureReport() {
     report += `    Użycie Gatsby Image: ${file.imageOptimization.gatsbyImageUsage}\n`;
     report += `    Placeholdery base64: ${file.imageOptimization.base64Placeholders}\n`;
     report += `    Całkowita liczba obrazów: ${file.imageOptimization.totalImages}\n`;
-    report += `    Procent obrazów nowej generacji: ${file.imageOptimization.nextGenImagePercentage.toFixed(2)}%\n`;
+    report += `    Procent obrazów nowej generacji: ${file.imageOptimization.nextGenImagePercentage.toFixed(
+      2
+    )}%\n`;
     report += `    Wynik optymalizacji obrazów: ${file.imageOptimization.optimizationScore}/100\n`;
-    report += '\n';
+    report += "\n";
   });
 
   const { dependencies, devDependencies } = analyzeDependencies();
@@ -268,21 +338,37 @@ function generateProjectStructureReport() {
 
   const typeScriptStats = calculateTypeScriptStats(allFiles);
   report += `Statystyki TypeScript:\n`;
-  report += `  Wykorzystanie TypeScript: ${typeScriptStats.typeScriptUsage.toFixed(2)}%\n`;
-  report += `  Średnia liczba adnotacji typów na plik: ${typeScriptStats.averageTypeAnnotations.toFixed(2)}\n`;
+  report += `  Wykorzystanie TypeScript: ${typeScriptStats.typeScriptUsage.toFixed(
+    2
+  )}%\n`;
+  report += `  Średnia liczba adnotacji typów na plik: ${typeScriptStats.averageTypeAnnotations.toFixed(
+    2
+  )}\n`;
   report += `  Całkowita liczba interfejsów: ${typeScriptStats.totalInterfaces}\n`;
   report += `  Całkowita liczba typów: ${typeScriptStats.totalTypes}\n`;
-  report += `  Średnia liczba złożonych typów na plik: ${typeScriptStats.averageComplexTypes.toFixed(2)}\n`;
-  report += '\n';
+  report += `  Średnia liczba złożonych typów na plik: ${typeScriptStats.averageComplexTypes.toFixed(
+    2
+  )}\n`;
+  report += "\n";
 
   const imageOptimizationStats = calculateImageOptimizationStats(allFiles);
   report += `Statystyki optymalizacji obrazów:\n`;
   report += `  Całkowita liczba obrazów: ${imageOptimizationStats.totalImages}\n`;
-  report += `  Procent obrazów nowej generacji: ${imageOptimizationStats.nextGenImagePercentage.toFixed(2)}%\n`;
-  report += `  Średni wynik optymalizacji: ${imageOptimizationStats.averageOptimizationScore.toFixed(2)}/100\n`;
-  report += `  Użycie lazy loading: ${imageOptimizationStats.lazyLoadingUsage.toFixed(2)}%\n`;
-  report += `  Użycie srcset: ${imageOptimizationStats.srcsetUsage.toFixed(2)}%\n`;
-  report += '\n';
+  report += `  Procent obrazów nowej generacji: ${imageOptimizationStats.nextGenImagePercentage.toFixed(
+    2
+  )}%\n`;
+  report += `  Średni wynik optymalizacji: ${imageOptimizationStats.averageOptimizationScore.toFixed(
+    2
+  )}/100\n`;
+  report += `  Użycie lazy loading: ${imageOptimizationStats.lazyLoadingUsage.toFixed(
+    2
+  )}%\n`;
+  report += `  Użycie srcset: ${imageOptimizationStats.srcsetUsage.toFixed(
+    2
+  )}%\n`;
+  report += "\n";
+
+  report += `\n\nKod projektu:\n\`\`\`\n${projectCode}\n\`\`\``;
 
   const reportPath = path.join(process.cwd(), "project-structure-report.txt");
   fs.writeFileSync(reportPath, report, "utf-8");
@@ -297,7 +383,7 @@ function calculateProjectStats(files) {
   let totalLines = 0;
   let fileTypes = {};
 
-  files.forEach(file => {
+  files.forEach((file) => {
     totalSize += file.size;
     totalLines += file.lineCount;
     fileTypes[file.type] = (fileTypes[file.type] || 0) + 1;
@@ -310,11 +396,13 @@ export { generateProjectStructureReport };
 
 function analyzeImports(content) {
   const importLines = content.match(/import .+ from .+/g) || [];
-  const externalImports = importLines.filter(line => !line.includes('./') && !line.includes('../')).length;
+  const externalImports = importLines.filter(
+    (line) => !line.includes("./") && !line.includes("../")
+  ).length;
   return {
     total: importLines.length,
     external: externalImports,
-    local: importLines.length - externalImports
+    local: importLines.length - externalImports,
   };
 }
 
@@ -323,8 +411,10 @@ function countExports(content) {
 }
 
 function countComponents(content) {
-  const functionComponents = (content.match(/function \w+\(.*\).*{/g) || []).length;
-  const arrowComponents = (content.match(/const \w+ = (\(.*\))?\s*=>/g) || []).length;
+  const functionComponents = (content.match(/function \w+\(.*\).*{/g) || [])
+    .length;
+  const arrowComponents = (content.match(/const \w+ = (\(.*\))?\s*=>/g) || [])
+    .length;
   return functionComponents + arrowComponents;
 }
 
@@ -350,30 +440,35 @@ function countNextLinkUsage(content) {
 
 function countTailwindClasses(content) {
   const classNames = content.match(/className="[^"]+"/g) || [];
-  return classNames.reduce((count, className) => count + className.split(' ').length, 0);
+  return classNames.reduce(
+    (count, className) => count + className.split(" ").length,
+    0
+  );
 }
 
 function checkIsApiRoute(filePath) {
-  return filePath.includes('/api/');
+  return filePath.includes("/api/");
 }
 
 function checkIsPage(filePath) {
-  return filePath.includes('/pages/') || filePath.endsWith('page.tsx');
+  return filePath.includes("/pages/") || filePath.endsWith("page.tsx");
 }
 
 function analyzeDependencies() {
-  const packagePath = path.join(process.cwd(), 'package.json');
+  const packagePath = path.join(process.cwd(), "package.json");
   if (fs.existsSync(packagePath)) {
-    const packageJson = JSON.parse(fs.readFileSync(packagePath, 'utf-8'));
+    const packageJson = JSON.parse(fs.readFileSync(packagePath, "utf-8"));
     const dependencies = Object.keys(packageJson.dependencies || {}).length;
-    const devDependencies = Object.keys(packageJson.devDependencies || {}).length;
+    const devDependencies = Object.keys(
+      packageJson.devDependencies || {}
+    ).length;
     return { dependencies, devDependencies };
   }
   return { dependencies: 0, devDependencies: 0 };
 }
 
-function generateFileStructure(rootDir, allFiles, indent = '') {
-  let structure = '';
+function generateFileStructure(rootDir, allFiles, indent = "") {
+  let structure = "";
   const dirContent = fs.readdirSync(rootDir);
 
   dirContent.forEach((item, index) => {
@@ -382,12 +477,18 @@ function generateFileStructure(rootDir, allFiles, indent = '') {
     const stats = fs.statSync(itemPath);
 
     if (stats.isDirectory() && !shouldSkipDirectory(item)) {
-      structure += `${indent}${isLast ? '└── ' : '├── '}${item}/\n`;
-      structure += generateFileStructure(itemPath, allFiles, indent + (isLast ? '    ' : '│   '));
+      structure += `${indent}${isLast ? "└── " : "├── "}${item}/\n`;
+      structure += generateFileStructure(
+        itemPath,
+        allFiles,
+        indent + (isLast ? "    " : "│   ")
+      );
     } else if (stats.isFile()) {
-      const fileInfo = allFiles.find(f => f.path === itemPath);
+      const fileInfo = allFiles.find((f) => f.path === itemPath);
       if (fileInfo) {
-        structure += `${indent}${isLast ? '└── ' : '├── '}${item} (${fileInfo.type}, ${(fileInfo.size / 1024).toFixed(2)} KB)\n`;
+        structure += `${indent}${isLast ? "└── " : "├── "}${item} (${
+          fileInfo.type
+        }, ${(fileInfo.size / 1024).toFixed(2)} KB)\n`;
       }
     }
   });
@@ -408,21 +509,29 @@ function analyzeStateManagement(content) {
     memoizationUsage,
     useState: (content.match(/useState\(/g) || []).length,
     useReducer: (content.match(/useReducer\(/g) || []).length,
-    redux: (content.match(/useSelector\(|useDispatch\(|createSlice\(|configureStore\(/g) || []).length,
+    redux: (
+      content.match(
+        /useSelector\(|useDispatch\(|createSlice\(|configureStore\(/g
+      ) || []
+    ).length,
     mobx: (content.match(/observer\(|observable\(|action\(/g) || []).length,
-    recoil: (content.match(/useRecoilState\(|useRecoilValue\(|atom\(|selector\(/g) || []).length,
+    recoil: (
+      content.match(/useRecoilState\(|useRecoilValue\(|atom\(|selector\(/g) ||
+      []
+    ).length,
     zustand: (content.match(/create\(|useStore\(/g) || []).length,
   };
 }
 
 function detectStateLibraries(content) {
   return {
-    redux: content.includes('createStore') || content.includes('configureStore'),
-    recoil: content.includes('RecoilRoot') || content.includes('atom('),
-    mobx: content.includes('observable') || content.includes('action'),
-    zustand: content.includes('create(') && content.includes('useStore'),
-    jotai: content.includes('atom(') && !content.includes('RecoilRoot'),
-    valtio: content.includes('proxy(') && content.includes('useSnapshot'),
+    redux:
+      content.includes("createStore") || content.includes("configureStore"),
+    recoil: content.includes("RecoilRoot") || content.includes("atom("),
+    mobx: content.includes("observable") || content.includes("action"),
+    zustand: content.includes("create(") && content.includes("useStore"),
+    jotai: content.includes("atom(") && !content.includes("RecoilRoot"),
+    valtio: content.includes("proxy(") && content.includes("useSnapshot"),
   };
 }
 
@@ -499,17 +608,17 @@ function analyzePerformance(content) {
   const useMemoCount = (content.match(/useMemo\(/g) || []).length;
   const useCallbackCount = (content.match(/useCallback\(/g) || []).length;
   const reactMemoCount = (content.match(/React\.memo\(/g) || []).length;
-  
+
   const largeComponents = detectLargeComponents(content);
   const reRenderingIssues = detectReRenderingIssues(content);
-  
+
   // Wykrywanie dużych list
   const largeListPatterns = [
     /\.map\(\s*\([^)]*\)\s*=>\s*\{[\s\S]*?\}(?!\s*\)\s*\.\s*slice)/g,
     /\.forEach\(\s*\([^)]*\)\s*=>\s*\{[\s\S]*?\}/g,
-    /for\s*\([^)]*\)\s*\{[\s\S]*?<[^>]+>[^<]*<\/[^>]+>/g
+    /for\s*\([^)]*\)\s*\{[\s\S]*?<[^>]+>[^<]*<\/[^>]+>/g,
   ];
-  
+
   const potentialLargeLists = largeListPatterns.reduce((count, pattern) => {
     const matches = content.match(pattern);
     return count + (matches ? matches.length : 0);
@@ -526,29 +635,38 @@ function analyzePerformance(content) {
     reRenderingIssues,
     potentialPerformanceIssues: {
       largeLists: potentialLargeLists,
-      missingVirtualization: potentialLargeLists > 0 && !virtualizationUsed
+      missingVirtualization: potentialLargeLists > 0 && !virtualizationUsed,
     },
-    optimizationHints: generateOptimizationHints(useMemoCount, useCallbackCount, reactMemoCount, potentialLargeLists, virtualizationUsed, largeComponents, reRenderingIssues)
+    optimizationHints: generateOptimizationHints(
+      useMemoCount,
+      useCallbackCount,
+      reactMemoCount,
+      potentialLargeLists,
+      virtualizationUsed,
+      largeComponents,
+      reRenderingIssues
+    ),
   };
 }
 
 function detectLargeComponents(content) {
   const componentPatterns = [
     /function\s+\w+\s*\([^)]*\)\s*\{[\s\S]*?\}/g,
-    /const\s+\w+\s*=\s*\([^)]*\)\s*=>\s*\{[\s\S]*?\}/g
+    /const\s+\w+\s*=\s*\([^)]*\)\s*=>\s*\{[\s\S]*?\}/g,
   ];
 
   const largeComponents = [];
 
-  componentPatterns.forEach(pattern => {
+  componentPatterns.forEach((pattern) => {
     const matches = content.match(pattern);
     if (matches) {
-      matches.forEach(match => {
-        const lines = match.split('\n');
+      matches.forEach((match) => {
+        const lines = match.split("\n");
         if (lines.length > 200) {
           largeComponents.push({
-            name: match.match(/function\s+(\w+)|const\s+(\w+)/)[1] || 'Anonymous',
-            lines: lines.length
+            name:
+              match.match(/function\s+(\w+)|const\s+(\w+)/)[1] || "Anonymous",
+            lines: lines.length,
           });
         }
       });
@@ -562,44 +680,70 @@ function detectReRenderingIssues(content) {
   const issues = [];
 
   // Wykrywanie funkcji wewnątrz komponentów, które mogą powodować niepotrzebne re-renderowanie
-  const inlineObjectCreation = (content.match(/\{\s*\w+:\s*[^,\}]+\s*(,\s*\w+:\s*[^,\}]+\s*)*\}/g) || []).length;
-  const inlineFunctionCreation = (content.match(/\([^)]*\)\s*=>\s*\{[^}]*\}/g) || []).length;
+  const inlineObjectCreation = (
+    content.match(/\{\s*\w+:\s*[^,\}]+\s*(,\s*\w+:\s*[^,\}]+\s*)*\}/g) || []
+  ).length;
+  const inlineFunctionCreation = (
+    content.match(/\([^)]*\)\s*=>\s*\{[^}]*\}/g) || []
+  ).length;
 
   if (inlineObjectCreation > 5) {
-    issues.push('Wykryto wiele inline obiektów. Rozważ przeniesienie ich poza komponent lub użycie useMemo.');
+    issues.push(
+      "Wykryto wiele inline obiektów. Rozważ przeniesienie ich poza komponent lub użycie useMemo."
+    );
   }
 
   if (inlineFunctionCreation > 5) {
-    issues.push('Wykryto wiele inline funkcji. Rozważ przeniesienie ich poza komponent lub użycie useCallback.');
+    issues.push(
+      "Wykryto wiele inline funkcji. Rozważ przeniesienie ich poza komponent lub użycie useCallback."
+    );
   }
 
   // Wykrywanie potencjalnych problemów z props drilling
   const propsDrillingPattern = /\w+={[^}]+}/g;
   const propsDrillingMatches = content.match(propsDrillingPattern) || [];
   if (propsDrillingMatches.length > 10) {
-    issues.push('Możliwy problem z props drilling. Rozważ użycie Context API lub biblioteki do zarządzania stanem.');
+    issues.push(
+      "Możliwy problem z props drilling. Rozważ użycie Context API lub biblioteki do zarządzania stanem."
+    );
   }
 
   return issues;
 }
 
-function generateOptimizationHints(useMemoCount, useCallbackCount, reactMemoCount, potentialLargeLists, virtualizationUsed, largeComponents, reRenderingIssues) {
+function generateOptimizationHints(
+  useMemoCount,
+  useCallbackCount,
+  reactMemoCount,
+  potentialLargeLists,
+  virtualizationUsed,
+  largeComponents,
+  reRenderingIssues
+) {
   const hints = [];
 
   if (useMemoCount === 0 && useCallbackCount === 0 && reactMemoCount === 0) {
-    hints.push("Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania.");
+    hints.push(
+      "Rozważ użycie useMemo, useCallback lub React.memo do optymalizacji renderowania."
+    );
   }
 
   if (potentialLargeLists > 0 && !virtualizationUsed) {
-    hints.push("Wykryto potencjalnie duże listy. Rozważ użycie wirtualizacji (np. react-window lub react-virtualized) dla lepszej wydajności.");
+    hints.push(
+      "Wykryto potencjalnie duże listy. Rozważ użycie wirtualizacji (np. react-window lub react-virtualized) dla lepszej wydajności."
+    );
   }
 
   if (useMemoCount > 10 || useCallbackCount > 10) {
-    hints.push("Duża liczba użyć useMemo/useCallback. Upewnij się, że są one rzeczywiście potrzebne i nie powodują nadmiernej optymalizacji.");
+    hints.push(
+      "Duża liczba użyć useMemo/useCallback. Upewnij się, że są one rzeczywiście potrzebne i nie powodują nadmiernej optymalizacji."
+    );
   }
 
   if (largeComponents.length > 0) {
-    hints.push(`Wykryto ${largeComponents.length} dużych komponentów (>200 linii). Rozważ podzielenie ich na mniejsze komponenty.`);
+    hints.push(
+      `Wykryto ${largeComponents.length} dużych komponentów (>200 linii). Rozważ podzielenie ich na mniejsze komponenty.`
+    );
   }
 
   hints.push(...reRenderingIssues);
@@ -619,13 +763,15 @@ function analyzeAPI(content) {
   const dataStructures = analyzeDataStructures(content);
 
   const apiFrameworks = {
-    axios: content.includes('axios'),
-    fetch: content.includes('fetch('),
-    superagent: content.includes('superagent'),
-    graphql: content.includes('graphql'),
+    axios: content.includes("axios"),
+    fetch: content.includes("fetch("),
+    superagent: content.includes("superagent"),
+    graphql: content.includes("graphql"),
   };
 
-  const errorHandling = (content.match(/\.catch\(|try\s*{[\s\S]*?}\s*catch/g) || []).length;
+  const errorHandling = (
+    content.match(/\.catch\(|try\s*{[\s\S]*?}\s*catch/g) || []
+  ).length;
 
   return {
     httpMethods,
@@ -643,16 +789,21 @@ function analyzeDataStructures(content) {
 
   // Analiza ciał zapytań
   const requestBodyMatches = content.match(/body:\s*{[\s\S]*?}/g) || [];
-  requestBodyMatches.forEach(match => {
+  requestBodyMatches.forEach((match) => {
     const fields = match.match(/\w+:/g) || [];
-    structures.requestBodies.push(fields.map(f => f.replace(':', '')));
+    structures.requestBodies.push(fields.map((f) => f.replace(":", "")));
   });
 
   // Analiza struktur odpowiedzi
-  const responseStructureMatches = content.match(/\.then\(\s*(?:function\s*\([^)]*\)|[^)]*=>\s*{)[\s\S]*?}\)/g) || [];
-  responseStructureMatches.forEach(match => {
+  const responseStructureMatches =
+    content.match(
+      /\.then\(\s*(?:function\s*\([^)]*\)|[^)]*=>\s*{)[\s\S]*?}\)/g
+    ) || [];
+  responseStructureMatches.forEach((match) => {
     const fields = match.match(/data\.(\w+)/g) || [];
-    structures.responseStructures.push(fields.map(f => f.replace('data.', '')));
+    structures.responseStructures.push(
+      fields.map((f) => f.replace("data.", ""))
+    );
   });
 
   return structures;
@@ -660,17 +811,24 @@ function analyzeDataStructures(content) {
 
 function analyzeRouting(content, filePath) {
   const isRoutingFile = /routes?|pages?/i.test(filePath);
-  
+
   const staticRoutes = (content.match(/['"]\/[^'"]+['"]/g) || []).length;
   const dynamicRoutes = (content.match(/\[.*?\]/g) || []).length;
-  
+
   const nextjsPageRoutes = isRoutingFile ? 1 : 0;
-  
-  const expressRoutes = (content.match(/app\.(get|post|put|delete|patch)\s*\(/g) || []).length;
-  
+
+  const expressRoutes = (
+    content.match(/app\.(get|post|put|delete|patch)\s*\(/g) || []
+  ).length;
+
   const reactRouterRoutes = (content.match(/<Route/g) || []).length;
-  
-  const totalRoutes = staticRoutes + dynamicRoutes + nextjsPageRoutes + expressRoutes + reactRouterRoutes;
+
+  const totalRoutes =
+    staticRoutes +
+    dynamicRoutes +
+    nextjsPageRoutes +
+    expressRoutes +
+    reactRouterRoutes;
 
   const routingLibrary = detectRoutingLibrary(content);
 
@@ -686,20 +844,22 @@ function analyzeRouting(content, filePath) {
 }
 
 function detectRoutingLibrary(content) {
-  if (content.includes('next/router') || content.includes('next/navigation')) {
-    return 'Next.js';
-  } else if (content.includes('react-router-dom')) {
-    return 'React Router';
-  } else if (content.includes('express')) {
-    return 'Express.js';
+  if (content.includes("next/router") || content.includes("next/navigation")) {
+    return "Next.js";
+  } else if (content.includes("react-router-dom")) {
+    return "React Router";
+  } else if (content.includes("express")) {
+    return "Express.js";
   } else {
-    return 'Nieznana';
+    return "Nieznana";
   }
 }
 
 function analyzeSEO(content, filePath) {
   const metadata = {
-    title: (content.match(/<title>.*?<\/title>/g) || []).length + (content.match(/name="title"/g) || []).length,
+    title:
+      (content.match(/<title>.*?<\/title>/g) || []).length +
+      (content.match(/name="title"/g) || []).length,
     description: (content.match(/name="description"/g) || []).length,
     keywords: (content.match(/name="keywords"/g) || []).length,
     ogTags: (content.match(/property="og:/g) || []).length,
@@ -707,7 +867,8 @@ function analyzeSEO(content, filePath) {
   };
 
   const structuredData = {
-    jsonLd: (content.match(/<script type="application\/ld\+json">/g) || []).length,
+    jsonLd: (content.match(/<script type="application\/ld\+json">/g) || [])
+      .length,
     microdata: (content.match(/itemtype="http:\/\/schema.org\//g) || []).length,
   };
 
@@ -731,7 +892,7 @@ function analyzeSEO(content, filePath) {
 
   const robotsMeta = (content.match(/name="robots"/g) || []).length;
 
-  const isNextJs = filePath.includes('pages') || filePath.includes('app');
+  const isNextJs = filePath.includes("pages") || filePath.includes("app");
   const nextJsSeo = isNextJs ? analyzeNextJsSeo(content) : null;
 
   return {
@@ -755,17 +916,20 @@ function analyzeNextJsSeo(content) {
 }
 
 function analyzeTypeScript(content, filePath) {
-  const isTypeScriptFile = filePath.endsWith('.ts') || filePath.endsWith('.tsx');
-  
+  const isTypeScriptFile =
+    filePath.endsWith(".ts") || filePath.endsWith(".tsx");
+
   if (!isTypeScriptFile) {
     return null;
   }
 
-  const typeAnnotations = (content.match(/:\s*[A-Za-z<>[\](){}|&]+/g) || []).length;
+  const typeAnnotations = (content.match(/:\s*[A-Za-z<>[\](){}|&]+/g) || [])
+    .length;
   const interfaces = (content.match(/interface\s+\w+/g) || []).length;
   const types = (content.match(/type\s+\w+\s*=/g) || []).length;
   const generics = (content.match(/<[A-Za-z,\s]+>/g) || []).length;
-  const typeAssertions = (content.match(/as\s+[A-Za-z<>[\](){}|&]+/g) || []).length;
+  const typeAssertions = (content.match(/as\s+[A-Za-z<>[\](){}|&]+/g) || [])
+    .length;
 
   const complexTypes = analyzeComplexTypes(content);
 
@@ -781,10 +945,18 @@ function analyzeTypeScript(content, filePath) {
 }
 
 function analyzeComplexTypes(content) {
-  const unionTypes = (content.match(/[A-Za-z]+(\s*\|\s*[A-Za-z]+)+/g) || []).length;
-  const intersectionTypes = (content.match(/[A-Za-z]+(\s*&\s*[A-Za-z]+)+/g) || []).length;
-  const mappedTypes = (content.match(/{\s*\[\w+\s+in\s+[A-Za-z]+\]:/g) || []).length;
-  const conditionalTypes = (content.match(/[A-Za-z]+\s+extends\s+[A-Za-z]+\s*\?\s*[A-Za-z]+\s*:\s*[A-Za-z]+/g) || []).length;
+  const unionTypes = (content.match(/[A-Za-z]+(\s*\|\s*[A-Za-z]+)+/g) || [])
+    .length;
+  const intersectionTypes = (
+    content.match(/[A-Za-z]+(\s*&\s*[A-Za-z]+)+/g) || []
+  ).length;
+  const mappedTypes = (content.match(/{\s*\[\w+\s+in\s+[A-Za-z]+\]:/g) || [])
+    .length;
+  const conditionalTypes = (
+    content.match(
+      /[A-Za-z]+\s+extends\s+[A-Za-z]+\s*\?\s*[A-Za-z]+\s*:\s*[A-Za-z]+/g
+    ) || []
+  ).length;
 
   return {
     unionTypes,
@@ -805,15 +977,15 @@ function analyzeTypeScriptFeatures(content) {
 
 // Dodaj tę funkcję na końcu pliku, aby obliczyć ogólne statystyki TypeScript dla projektu
 function calculateTypeScriptStats(allFiles) {
-  const typeScriptFiles = allFiles.filter(file => file.typeScript);
+  const typeScriptFiles = allFiles.filter((file) => file.typeScript);
   const totalFiles = allFiles.length;
   const typeScriptFileCount = typeScriptFiles.length;
 
   const totalStats = typeScriptFiles.reduce((acc, file) => {
     Object.entries(file.typeScript).forEach(([key, value]) => {
-      if (typeof value === 'number') {
+      if (typeof value === "number") {
         acc[key] = (acc[key] || 0) + value;
-      } else if (typeof value === 'object') {
+      } else if (typeof value === "object") {
         acc[key] = acc[key] || {};
         Object.entries(value).forEach(([subKey, subValue]) => {
           acc[key][subKey] = (acc[key][subKey] || 0) + subValue;
@@ -828,12 +1000,12 @@ function calculateTypeScriptStats(allFiles) {
     averageTypeAnnotations: totalStats.typeAnnotations / typeScriptFileCount,
     totalInterfaces: totalStats.interfaces,
     totalTypes: totalStats.types,
-    averageComplexTypes: (
-      totalStats.complexTypes.unionTypes +
-      totalStats.complexTypes.intersectionTypes +
-      totalStats.complexTypes.mappedTypes +
-      totalStats.complexTypes.conditionalTypes
-    ) / typeScriptFileCount,
+    averageComplexTypes:
+      (totalStats.complexTypes.unionTypes +
+        totalStats.complexTypes.intersectionTypes +
+        totalStats.complexTypes.mappedTypes +
+        totalStats.complexTypes.conditionalTypes) /
+      typeScriptFileCount,
     // Dodaj więcej statystyk według potrzeb
   };
 }
@@ -856,10 +1028,16 @@ function analyzeImageOptimization(content, filePath) {
   const nextImageUsage = (content.match(/<Image/g) || []).length;
   const gatsbyImageUsage = (content.match(/<Img/g) || []).length;
 
-  const base64Placeholders = (content.match(/data:image\/[a-z]+;base64,/g) || []).length;
+  const base64Placeholders = (
+    content.match(/data:image\/[a-z]+;base64,/g) || []
+  ).length;
 
-  const totalImages = Object.values(imageFormats).reduce((sum, count) => sum + count, 0);
-  const nextGenImagePercentage = ((imageFormats.webp + imageFormats.avif) / totalImages) * 100 || 0;
+  const totalImages = Object.values(imageFormats).reduce(
+    (sum, count) => sum + count,
+    0
+  );
+  const nextGenImagePercentage =
+    ((imageFormats.webp + imageFormats.avif) / totalImages) * 100 || 0;
 
   return {
     imageFormats,
@@ -879,7 +1057,7 @@ function analyzeImageOptimization(content, filePath) {
       pictureTag,
       nextImageUsage,
       gatsbyImageUsage,
-      nextGenImagePercentage
+      nextGenImagePercentage,
     }),
   };
 }
@@ -897,16 +1075,38 @@ function calculateImageOptimizationScore(data) {
 
 // Dodaj tę funkcję na końcu pliku, aby obliczyć ogólne statystyki optymalizacji obrazów dla projektu
 function calculateImageOptimizationStats(allFiles) {
-  const filesWithImages = allFiles.filter(file => file.imageOptimization && file.imageOptimization.totalImages > 0);
-  const totalImages = filesWithImages.reduce((sum, file) => sum + file.imageOptimization.totalImages, 0);
-  const totalNextGenImages = filesWithImages.reduce((sum, file) => 
-    sum + file.imageOptimization.imageFormats.webp + file.imageOptimization.imageFormats.avif, 0);
+  const filesWithImages = allFiles.filter(
+    (file) => file.imageOptimization && file.imageOptimization.totalImages > 0
+  );
+  const totalImages = filesWithImages.reduce(
+    (sum, file) => sum + file.imageOptimization.totalImages,
+    0
+  );
+  const totalNextGenImages = filesWithImages.reduce(
+    (sum, file) =>
+      sum +
+      file.imageOptimization.imageFormats.webp +
+      file.imageOptimization.imageFormats.avif,
+    0
+  );
 
   return {
     totalImages,
     nextGenImagePercentage: (totalNextGenImages / totalImages) * 100 || 0,
-    averageOptimizationScore: filesWithImages.reduce((sum, file) => sum + file.imageOptimization.optimizationScore, 0) / filesWithImages.length || 0,
-    lazyLoadingUsage: filesWithImages.filter(file => file.imageOptimization.lazyLoading > 0).length / filesWithImages.length * 100,
-    srcsetUsage: filesWithImages.filter(file => file.imageOptimization.srcset > 0).length / filesWithImages.length * 100,
+    averageOptimizationScore:
+      filesWithImages.reduce(
+        (sum, file) => sum + file.imageOptimization.optimizationScore,
+        0
+      ) / filesWithImages.length || 0,
+    lazyLoadingUsage:
+      (filesWithImages.filter((file) => file.imageOptimization.lazyLoading > 0)
+        .length /
+        filesWithImages.length) *
+      100,
+    srcsetUsage:
+      (filesWithImages.filter((file) => file.imageOptimization.srcset > 0)
+        .length /
+        filesWithImages.length) *
+      100,
   };
 }

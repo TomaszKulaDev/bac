@@ -34,3 +34,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+*.project-structure-report.txt
+.project-structure-report.txt
+
+*.project-structure-report
+.project-structure-report
