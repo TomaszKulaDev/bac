@@ -7,7 +7,6 @@ import { passwordSchema } from "../../schemas/passwordSchema";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import ReCAPTCHA from "react-google-recaptcha";
 
 const registerSchemaBase = z.object({
   name: z
@@ -52,10 +51,21 @@ export default function Register() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isWebViewDetected, setIsWebViewDetected] = useState(false);
-  const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null);
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
 
   useEffect(() => {
     setIsWebViewDetected(isWebView());
+  }, []);
+
+  useEffect(() => {
+    const loadRecaptchaScript = () => {
+      const script = document.createElement('script');
+      script.src = `https://www.google.com/recaptcha/api.js?render=6LdV-0AqAAAAAHnmteJIAYaCs3S6NhRCGtfq-Nex`;
+      script.async = true;
+      script.defer = true;
+      document.body.appendChild(script);
+    };
+    loadRecaptchaScript();
   }, []);
 
   const validateField = (
@@ -123,19 +133,22 @@ export default function Register() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!recaptchaValue) {
-      setErrors({ form: "Proszę zweryfikować, że nie jesteś robotem" });
-      return;
-    }
     if (!validateForm()) return;
     setIsLoading(true);
     try {
+      // Wykonaj reCAPTCHA
+      const token = await new Promise<string>((resolve, reject) => {
+        (window as any).grecaptcha.ready(() => {
+          (window as any).grecaptcha.execute('6LdV-0AqAAAAAHnmteJIAYaCs3S6NhRCGtfq-Nex', {action: 'submit'}).then(resolve, reject);
+        });
+      });
+
       const response = await fetch("/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name, email, password, recaptchaToken: recaptchaValue }),
+        body: JSON.stringify({ name, email, password, recaptchaToken: token }),
       });
 
       const data = await response.json();
@@ -149,7 +162,6 @@ export default function Register() {
         setPassword("");
         setConfirmPassword("");
         setAgreeToTerms(false);
-        setRecaptchaValue(null);
       } else {
         setErrors({
           form: data.message || "Wystąpił błąd podczas rejestracji",
@@ -426,12 +438,6 @@ export default function Register() {
           {errors.agreeToTerms && (
             <p className="text-red-600 text-sm mt-2">{errors.agreeToTerms}</p>
           )}
-        </div>
-        <div className="mb-4">
-          <ReCAPTCHA
-            sitekey="6LdV-0AqAAAAAHnmteJIAYaCs3S6NhRCGtfq-Nex"
-            onChange={(value: string | null) => setRecaptchaValue(value)}
-          />
         </div>
         <button
           type="submit"

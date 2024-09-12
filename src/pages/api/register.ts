@@ -10,11 +10,17 @@ import axios from 'axios';
 
 async function verifyRecaptcha(token: string) {
   const secretKey = process.env.RECAPTCHA_SECRET_KEY;
-  const verificationURL = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${token}`;
+  const verificationURL = `https://www.google.com/recaptcha/api/siteverify`;
   
   try {
-    const response = await axios.post(verificationURL);
-    return response.data.success;
+    const response = await axios.post(verificationURL, null, {
+      params: {
+        secret: secretKey,
+        response: token
+      }
+    });
+    console.log("reCAPTCHA API response:", response.data);
+    return response.data.score >= 0.5; // Ustaw próg według potrzeb
   } catch (error) {
     console.error('Błąd weryfikacji reCAPTCHA:', error);
     return false;
@@ -33,6 +39,7 @@ export default async function handler(
     await connectToDatabase();
 
     const { email, password, name, recaptchaToken } = req.body;
+    console.log("Received data:", { email, name, recaptchaToken: recaptchaToken ? "present" : "missing" });
 
     if (!name || !email || !password || !recaptchaToken) {
       return res
@@ -40,7 +47,9 @@ export default async function handler(
         .json({ message: "Imię, email, hasło i token reCAPTCHA są wymagane" });
     }
 
+    console.log("Verifying reCAPTCHA");
     const isHuman = await verifyRecaptcha(recaptchaToken);
+    console.log("reCAPTCHA verification result:", isHuman);
     if (!isHuman) {
       return res.status(400).json({ message: "Weryfikacja reCAPTCHA nie powiodła się" });
     }
