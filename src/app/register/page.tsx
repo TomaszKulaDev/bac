@@ -188,11 +188,11 @@ export default function Register() {
         {isWebViewDetected && (
           <div className="text-xs text-center mb-4">
             <p className="text-red-500 mb-2">
-              Uwaga: Opcje rejestracji przez Google lub Facebook zostały ukryte,
-              ponieważ otworzyłeś tę stronę w aplikacji Messenger, która
-              korzysta z wbudowanej przeglądarki (&quot;WebView&quot;).
-              Niestety, nie spełnia ona wymaganych standardów bezpieczeństwa,
-              dlatego widzisz ten komunikat.
+              Uwaga: Opcje rejestracji przez Googlezostały ukryte, ponieważ
+              otworzyłeś tę stronę w aplikacji Messenger, która korzysta z
+              wbudowanej przeglądarki (&quot;WebView&quot;). Niestety, nie
+              spełnia ona wymaganych standardów bezpieczeństwa, dlatego widzisz
+              ten komunikat.
               <br />
               Prosimy o otwarcie tej strony w przeglądarce spełniającej
               standardy bezpieczeństwa, np. Chrome, Edge, Safari, Opera,
@@ -258,12 +258,6 @@ export default function Register() {
           <div className="flex-grow border-t border-gray-300"></div>
           <span className="px-4 text-gray-500 text-sm">lub</span>
           <div className="flex-grow border-t border-gray-300"></div>
-        </div>
-
-        <div className="text-center text-sm text-gray-500">
-          <Link href="/privacy-policy" className="hover:underline">
-            Polityka Prywatności
-          </Link>
         </div>
 
         {successMessage && (
