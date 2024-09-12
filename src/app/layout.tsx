@@ -21,7 +21,7 @@ function NavContent() {
     if (logout) {
       logout();
     }
-    router.push("/users/login");
+    router.push("/login");
   };
 
   return (
@@ -45,7 +45,7 @@ function NavContent() {
         {isLoggedIn ? (
           <>
             <li>
-              <Link href="/users/profile">Profil</Link>
+              <Link href="/profile">Profil</Link>
             </li>
             <li>
               <button onClick={handleLogout}>Wyloguj</button>
@@ -54,10 +54,10 @@ function NavContent() {
         ) : (
           <>
             <li>
-              <Link href="/users/login">Zaloguj</Link>
+              <Link href="/login">Zaloguj</Link>
             </li>
             <li>
-              <Link href="/users/register">Zarejestruj się</Link>
+              <Link href="/register">Zarejestruj się</Link>
             </li>
           </>
         )}

@@ -1,4 +1,4 @@
-// src/app/users/login/page.tsx
+// src/app/login/page.tsx
 
 "use client";
 
@@ -55,7 +55,7 @@ export default function Login() {
 
   useEffect(() => {
     if (status === "authenticated") {
-      router.push("/users/profile");
+      router.push("/profile");
     }
   }, [status, router]);
 
@@ -96,7 +96,7 @@ export default function Login() {
         if (login) {
           await login();
         }
-        router.push("/users/profile");
+        router.push("/profile");
       }
     } catch (error) {
       console.error("Login error:", error);
@@ -315,7 +315,7 @@ export default function Login() {
           )}
         </div>
         <div className="mb-4 text-right">
-          <Link href="/users/forgot-password" legacyBehavior>
+          <Link href="/forgot-password" legacyBehavior>
             <a className="text-blue-500 hover:underline">Zapomniałeś hasła?</a>
           </Link>
         </div>

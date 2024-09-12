@@ -38,7 +38,7 @@ export default function ResetPassword() {
   useEffect(() => {
     if (!token) {
       setMessage("Nieprawidłowy lub brakujący token");
-      router.push("/users/login");
+      router.push("/login");
     }
   }, [token, router]);
 
