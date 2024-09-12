@@ -128,7 +128,6 @@ export default function Register() {
       return;
     }
     if (!validateForm()) return;
-
     setIsLoading(true);
     try {
       const response = await fetch("/api/register", {
@@ -428,10 +427,12 @@ export default function Register() {
             <p className="text-red-600 text-sm mt-2">{errors.agreeToTerms}</p>
           )}
         </div>
-        <ReCAPTCHA
-          sitekey="6LdV-0AqAAAAAHnmteJIAYaCs3S6NhRCGtfq-Nex"
-          onChange={(value) => setRecaptchaValue(value)}
-        />
+        <div className="mb-4">
+          <ReCAPTCHA
+            sitekey="6LdV-0AqAAAAAHnmteJIAYaCs3S6NhRCGtfq-Nex"
+            onChange={(value: string | null) => setRecaptchaValue(value)}
+          />
+        </div>
         <button
           type="submit"
           className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition-colors duration-200 flex items-center justify-center"
