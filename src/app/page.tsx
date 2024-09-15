@@ -1,3 +1,4 @@
+import Head from "next/head";
 import Link from "next/link";
 import { FaUser, FaLock, FaShieldAlt } from "react-icons/fa";
 
@@ -10,6 +11,13 @@ interface FeatureCardProps {
 export default function Home(): React.ReactElement {
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-100 to-purple-200">
+      <Head>
+        <title>baciata.pl – Twoja nowa przestrzeń do tańca bachaty!</title>
+        <meta
+          name="description"
+          content="Dołącz do baciata.pl – To miejsce, gdzie pasja do tańca łączy ludzi! Dołącz do społeczności Bachaty pełnej energii, dziel się swoimi doświadczeniami i odkrywaj nowe rytmy życia. Razem tworzymy przestrzeń, w której każdy krok ma znaczenie."
+        />
+      </Head>
       <main className="container mx-auto px-4 py-16">
         <h1 className="text-5xl font-bold text-center text-indigo-800 mb-8">
           Witaj w MyApp
