@@ -28,6 +28,10 @@ const registerSchema = registerSchemaBase
   .refine((data) => data.agreeToTerms, {
     message: "Musisz zaakceptować politykę prywatności",
     path: ["agreeToTerms"],
+  })
+  .refine((data) => !data.password.toLowerCase().includes(data.name.toLowerCase()), {
+    message: "Hasło nie może zawierać Twojego imienia",
+    path: ["password"],
   });
 
 function isWebView() {
