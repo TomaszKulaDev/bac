@@ -7,6 +7,7 @@ import { passwordSchema } from "../../schemas/passwordSchema";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import Head from "next/head";
 
 const registerSchemaBase = z.object({
   name: z
@@ -40,6 +41,9 @@ function isWebView() {
 }
 
 export default function Register() {
+  const description =
+    "Zarejestruj się na baciata.pl i dołącz do naszej roztańczonej społeczności. Odkryj nowe możliwości, poznaj pasjonatów bachaty i rozwijaj swoją taneczną pasję.";
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -173,9 +177,9 @@ export default function Register() {
     signIn("google", { callbackUrl: "/" });
   };
 
-  const handleFacebookLogin = () => {
-    signIn("facebook", { callbackUrl: "/" });
-  };
+  // const handleFacebookLogin = () => {
+  //   signIn("facebook", { callbackUrl: "/" });
+  // };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
@@ -183,6 +187,10 @@ export default function Register() {
         onSubmit={handleSubmit}
         className="bg-white p-6 rounded shadow-md w-full max-w-sm"
       >
+        <Head>
+          <title>Rejestracja - baciata.pl</title>
+          <meta name="description" content={description} />
+        </Head>
         <h1 className="text-2xl font-bold mb-4 text-center">Zarejestruj się</h1>
 
         {isWebViewDetected && (
