@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { z } from "zod";
 import { passwordSchema } from "../../schemas/passwordSchema";
@@ -64,19 +64,19 @@ export default function Register() {
     setIsWebViewDetected(isWebView());
   }, []);
 
-  const validateField = (
-    field: keyof typeof registerSchemaBase.shape,
-    value: string | boolean
-  ) => {
-    try {
-      registerSchemaBase.shape[field].parse(value);
-      setErrors((prev) => ({ ...prev, [field]: "" }));
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        setErrors((prev) => ({ ...prev, [field]: error.errors[0].message }));
+  const validateField = useCallback(
+    (field: keyof typeof registerSchemaBase.shape, value: string | boolean) => {
+      try {
+        registerSchemaBase.shape[field].parse(value);
+        setErrors((prev) => ({ ...prev, [field]: "" }));
+      } catch (error) {
+        if (error instanceof z.ZodError) {
+          setErrors((prev) => ({ ...prev, [field]: error.errors[0].message }));
+        }
       }
-    }
-  };
+    },
+    []
+  );
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -181,9 +181,15 @@ export default function Register() {
     signIn("google", { callbackUrl: "/" });
   };
 
-  // const handleFacebookLogin = () => {
-  //   signIn("facebook", { callbackUrl: "/" });
-  // };
+  const isFormValid = useMemo(() => {
+    return (
+      name.length > 0 &&
+      email.length > 0 &&
+      password.length > 0 &&
+      confirmPassword.length > 0 &&
+      agreeToTerms
+    );
+  }, [name, email, password, confirmPassword, agreeToTerms]);
 
   return (
     <>
@@ -420,7 +426,7 @@ export default function Register() {
           <button
             type="submit"
             className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition-colors duration-200 flex items-center justify-center"
-            disabled={isLoading}
+            disabled={isLoading || !isFormValid}
           >
             {isLoading ? (
               <>
