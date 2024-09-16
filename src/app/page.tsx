@@ -15,7 +15,7 @@ export default function Home(): React.ReactElement {
         <title>baciata.pl – Twoja nowa przestrzeń do tańca bachaty!</title>
         <meta
           name="description"
-          content="Dołącz do baciata.pl – To miejsce, gdzie pasja do tańca łączy ludzi! Dołącz do społeczności Bachaty pełnej energii, dziel się swoimi doświadczeniami i odkrywaj nowe rytmy życia. Razem tworzymy przestrzeń, w której każdy krok ma znaczenie."
+          content="Dołącz do społeczności Baciata.pl – Odkryj najnowsze trendy w tańcu i muzyce, badz na bieząco z wydarzeniami. Baciata.pl to miejsce, gdzie pasja do tańca łączy ludzi! Dołącz do społeczności Bachaty pełnej energii, dziel się swoimi doświadczeniami i odkrywaj nowe rytmy życia. Razem tworzymy przestrzeń, w której każdy krok ma znaczenie."
         />
       </Head>
       <main className="container mx-auto px-4 py-16">
