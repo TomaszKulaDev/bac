@@ -10,7 +10,7 @@ interface FeatureCardProps {
 
 export default function Home(): React.ReactElement {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-100 to-purple-200">
+    <div className="min-h-screen bg-indigo-100">
       <Head>
         <title>baciata.pl – Twoja nowa przestrzeń do tańca bachaty!</title>
         <meta
