@@ -49,7 +49,7 @@ const ProfilePage = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: "include"
+        credentials: "include",
       });
       console.log("Response status:", response.status);
       if (response.ok) {
@@ -58,7 +58,12 @@ const ProfilePage = () => {
         setUserData(data);
       } else {
         const errorText = await response.text();
-        console.error("Failed to fetch user data. Status:", response.status, "Error:", errorText);
+        console.error(
+          "Failed to fetch user data. Status:",
+          response.status,
+          "Error:",
+          errorText
+        );
       }
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -135,7 +140,7 @@ const ProfilePage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-100 to-purple-200 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-4xl font-bold text-center text-gray-800 mb-12">
           Profil użytkownika
