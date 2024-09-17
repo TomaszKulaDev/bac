@@ -17,6 +17,8 @@ import { z } from "zod";
 // Importy lokalne
 import { useAuth } from "../../contexts/AuthContext";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import { useDispatch } from "react-redux";
+import { login } from "../../store/slices/authSlice";
 
 // Schema walidacji formularza logowania
 const loginSchema = z.object({
@@ -49,7 +51,7 @@ export default function Login() {
   // Hooki
   const router = useRouter();
   const auth = useAuth();
-  const login = auth?.login;
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setIsWebViewDetected(isWebView());
@@ -82,12 +84,11 @@ export default function Login() {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validateForm()) return;
+    setIsLoading(true);
 
     try {
-      setIsLoading(true);
       const result = await signIn("credentials", {
         redirect: false,
         email,
@@ -96,15 +97,12 @@ export default function Login() {
 
       if (result?.error) {
         setErrors({ form: result.error });
-      } else {
-        if (login) {
-          await login();
-        }
+      } else if (result?.ok) {
+        dispatch(login({ email }));
         router.push("/profile");
       }
     } catch (error) {
-      console.error("Login error:", error);
-      setErrors({ form: "An unexpected error occurred. Please try again." });
+      setErrors({ form: "Wystąpił błąd podczas logowania. Spróbuj ponownie." });
     } finally {
       setIsLoading(false);
     }
@@ -162,7 +160,7 @@ export default function Login() {
       </Head>
       <div className="flex justify-center items-center min-h-screen bg-gray-100">
         <form
-          onSubmit={handleSubmit}
+          onSubmit={handleLogin}
           className="bg-white p-6 rounded shadow-md w-full max-w-sm"
         >
           <h1 className="text-2xl font-bold mb-4 text-center">

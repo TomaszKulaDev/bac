@@ -8,19 +8,21 @@ import { AuthProvider, useAuth } from "../contexts/AuthContext";
 import { SessionProvider } from "next-auth/react";
 import { signOut } from "next-auth/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Provider } from 'react-redux';
+import { store } from '../store/store';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../store/store';
+import { logout } from '../store/slices/authSlice';
 
 function NavContent() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const auth = useAuth();
-  const isLoggedIn = auth?.isLoggedIn;
-  const logout = auth?.logout;
+  const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
+  const dispatch = useDispatch();
   const router = useRouter();
 
   const handleLogout = async () => {
     await signOut({ redirect: false });
-    if (logout) {
-      logout();
-    }
+    dispatch(logout());
     router.push("/login");
   };
 
@@ -72,18 +74,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <SessionProvider>
-      <AuthProvider>
-        <html lang="en">
-          <body className="bg-gray-100 text-gray-900">
-            <header>
+    <html lang="en">
+      <body>
+        <Provider store={store}>
+          <AuthProvider>
+            <SessionProvider>
               <NavContent />
-            </header>
-            <main>{children}</main>
-            <SpeedInsights />
-          </body>
-        </html>
-      </AuthProvider>
-    </SessionProvider>
+              {children}
+              <SpeedInsights />
+            </SessionProvider>
+          </AuthProvider>
+        </Provider>
+      </body>
+    </html>
   );
 }
