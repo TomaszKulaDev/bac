@@ -6,7 +6,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { signIn, useSession, SessionContextValue } from "next-auth/react";
+import { signIn, useSession, SessionContextValue, getSession } from "next-auth/react";
 import Image from "next/image";
 import Head from "next/head";
 
@@ -59,12 +59,6 @@ export default function Login() {
 
   const { data: session, status }: SessionContextValue = useSession();
 
-  useEffect(() => {
-    if (status === "authenticated") {
-      router.push("/profile");
-    }
-  }, [status, router]);
-
   const validateForm = () => {
     try {
       loginSchema.parse({ email, password });
@@ -87,6 +81,11 @@ export default function Login() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+
+    if (!validateForm()) {
+      setIsLoading(false);
+      return;
+    }
 
     try {
       const result = await signIn("credentials", {

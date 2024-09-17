@@ -75,10 +75,9 @@ export const authOptions: NextAuthOptions = {
       }
       return session;
     },
-    async signIn({ user, account, profile, email, credentials }) {
-      console.log("SignIn callback called", { user, account, profile, email, credentials });
-      return true;
-    },
+  },
+  pages: {
+    signIn: '/login',
   },
   session: {
     strategy: "jwt",

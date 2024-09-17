@@ -2,11 +2,12 @@
 
 import Image from "next/image";
 import { useState, useEffect, useCallback } from "react";
-import { useSession, getSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
+import type { Session } from "next-auth";
 import { z } from "zod";
 import { FaEdit, FaSave, FaTimes, FaCamera } from "react-icons/fa";
 import LoadingSpinner from "@/components/LoadingSpinner";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 
 interface UserData {
   name: string;
@@ -22,28 +23,22 @@ const profileSchemaBase = z.object({
   email: z.string().email("Nieprawidłowy adres email"),
 });
 
-
 const ProfilePage = () => {
   const router = useRouter();
   const { data: session, status } = useSession({
     required: true,
     onUnauthenticated() {
-      router.push('/login');
+      router.push("/login");
     },
-  });
+  }) as { data: Session | null; status: "loading" | "authenticated" | "unauthenticated" };
+
   const [userData, setUserData] = useState<UserData | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    if (status === "authenticated") {
-      fetchUserData();
-    }
-  }, [status]);
-
-  const fetchUserData = async () => {
+  const fetchUserData = useCallback(async () => {
     try {
-      const response = await fetch("/api/users/me");
+      const response = await fetch("/api/users/update-profile");
       if (response.ok) {
         const data = await response.json();
         setUserData(data);
@@ -55,7 +50,15 @@ const ProfilePage = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      fetchUserData();
+    } else if (status === "unauthenticated") {
+      router.push("/login");
+    }
+  }, [status, router, fetchUserData]);
 
   const [formData, setFormData] = useState({ name: "", email: "" });
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -248,6 +251,5 @@ const ProfilePage = () => {
     </div>
   );
 };
-
 
 export default ProfilePage;

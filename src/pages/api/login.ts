@@ -80,7 +80,7 @@ export default async function handler(
       );
 
       console.log("JWT token generated:", token);
-      res.status(200).json({ message: "Login successful", token });
+      res.status(200).json({ message: "Login successful", token, user: { id: user._id, email: user.email, name: user.name } });
     } catch (error) {
       console.error("Login error: ", error);
       res.status(500).json({ message: "Login failed", error });
