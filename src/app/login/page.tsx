@@ -110,6 +110,9 @@ export default function Login() {
         const updatedSession = await getSession();
         console.log("Updated session:", updatedSession);
 
+        // Aktualizacja stanu Redux
+        dispatch(login({ user: updatedSession?.user }));
+
         // Przekierowanie do strony profilu
         router.push("/profile");
       }
