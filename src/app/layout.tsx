@@ -23,15 +23,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Provider store={store}>
-          <SessionProvider>
-            <AuthProvider>
-              <NavContent />
-              {children}
-              <SpeedInsights />
-            </AuthProvider>
-          </SessionProvider>
-        </Provider>
+        <SessionProvider>
+          <Provider store={store}>
+            <NavContent />
+            {children}
+          </Provider>
+        </SessionProvider>
       </body>
     </html>
   );

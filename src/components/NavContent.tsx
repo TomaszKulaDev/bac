@@ -17,6 +17,8 @@ export function NavContent() {
     (state: RootState) => state.auth.isAuthenticated
   );
 
+  console.log("NavContent rendered", { status, isAuthenticated });
+
   const handleLogout = async () => {
     await signOut({ redirect: false });
     dispatch(logout());
@@ -24,6 +26,7 @@ export function NavContent() {
   };
 
   useEffect(() => {
+    console.log("NavContent useEffect", { status, session, isAuthenticated });
     if (status === "authenticated" && !isAuthenticated) {
       dispatch(login({ user: session.user }));
     }
