@@ -136,7 +136,7 @@ const ProfilePage = () => {
   }
 
   if (status !== "authenticated") {
-    return null; // Router will redirect, no need to render anything
+    return null;
   }
 
   return (
