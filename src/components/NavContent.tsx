@@ -12,7 +12,7 @@ export function NavContent() {
 
   const handleLogout = async () => {
     await signOut({ redirect: false });
-    router.push("/login");
+    router.push("/");
   };
 
   return (
@@ -20,19 +20,7 @@ export function NavContent() {
       <div className="text-2xl font-bold">
         <Link href="/">MyApp</Link>
       </div>
-      <button
-        className="lg:hidden block"
-        onClick={() => setIsMenuOpen(!isMenuOpen)}
-        aria-expanded={isMenuOpen}
-        aria-label={isMenuOpen ? "Zamknij menu" : "Otwórz menu"}
-      >
-        ☰
-      </button>
-      <ul
-        className={`lg:flex lg:space-x-4 p-4 bg-gray-800 text-white ${
-          isMenuOpen ? "block" : "hidden"
-        } lg:block`}
-      >
+      <ul className="flex space-x-4">
         {status === "authenticated" ? (
           <>
             <li>

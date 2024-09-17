@@ -26,15 +26,22 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  console.log("Handler invoked");
   const session = await getServerSession(req, res, authOptions);
+  console.log("Session:", session);
+
   if (!session) {
+    console.log("User not authenticated");
     return res.status(401).json({ message: "Nie jesteś zalogowany" });
   }
 
+  await connectToDatabase();
+  console.log("Connected to database");
+
   if (req.method === "GET") {
     try {
-      await connectToDatabase();
       const user = await User.findOne({ email: session.user?.email });
+      console.log("User details retrieved:", user);
       if (!user) {
         return res.status(404).json({ message: "Nie znaleziono użytkownika" });
       }
@@ -42,11 +49,15 @@ export default async function handler(
         id: user._id.toString(),
         name: user.name,
         email: user.email,
-        image: user.image
+        image: user.image,
       });
     } catch (error) {
       console.error("Error fetching user data:", error);
-      return res.status(500).json({ message: "Wystąpił błąd podczas pobierania danych użytkownika" });
+      return res
+        .status(500)
+        .json({
+          message: "Wystąpił błąd podczas pobierania danych użytkownika",
+        });
     }
   } else if (req.method === "POST") {
     try {
@@ -54,7 +65,9 @@ export default async function handler(
 
       const validationResult = updateProfileSchema.safeParse(req.body);
       if (!validationResult.success) {
-        return res.status(400).json({ message: validationResult.error.errors[0].message });
+        return res
+          .status(400)
+          .json({ message: validationResult.error.errors[0].message });
       }
 
       const updatedUser = await User.findOneAndUpdate(
@@ -71,12 +84,13 @@ export default async function handler(
         id: updatedUser._id.toString(),
         name: updatedUser.name,
         email: updatedUser.email,
-        image: updatedUser.image
+        image: updatedUser.image,
       });
     } catch (error) {
       console.error("Profile update error:", error);
       return res.status(500).json({
-        message: "Nie udało się zaktualizować profilu. Spróbuj ponownie później.",
+        message:
+          "Nie udało się zaktualizować profilu. Spróbuj ponownie później.",
       });
     }
   } else {

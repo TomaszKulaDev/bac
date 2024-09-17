@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState, useEffect, useCallback } from "react";
-import { useSession } from "next-auth/react";
+import { useSession, getSession } from "next-auth/react";
 import { z } from "zod";
 import { FaEdit, FaSave, FaTimes, FaCamera } from "react-icons/fa";
 import LoadingSpinner from "@/components/LoadingSpinner";
@@ -36,6 +36,18 @@ const ProfilePage = () => {
     } else if (status === "authenticated") {
       fetchUserData();
     }
+  }, [status, router]);
+
+  useEffect(() => {
+    const checkSession = async () => {
+      if (status === "unauthenticated") {
+        router.push('/login');
+      } else if (status === "authenticated") {
+        fetchUserData();
+      }
+    };
+
+    checkSession();
   }, [status, router]);
 
   const fetchUserData = async () => {

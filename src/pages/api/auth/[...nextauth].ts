@@ -64,16 +64,22 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async session({ session, token }) {
+      console.log("Session callback called", { session, token });
       if (session.user && token.sub) {
         session.user.id = token.sub;
       }
       return session;
     },
     async jwt({ token, user }) {
+      console.log("JWT callback called", { token, user });
       if (user) {
         token.id = user.id;
       }
       return token;
+    },
+    async signIn({ user, account, profile, email, credentials }) {
+      console.log("SignIn callback called", { user, account, profile, email, credentials });
+      return true;
     },
   },
   session: {

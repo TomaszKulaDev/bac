@@ -95,13 +95,16 @@ export default function Login() {
         password,
       });
 
+      console.log("SignIn result:", result);
+
       if (result?.error) {
         setErrors({ form: result.error });
       } else if (result?.ok) {
-        dispatch(login({ email })); // Dispatch akcji login
+        dispatch(login({ email }));
         router.push("/profile");
       }
     } catch (error) {
+      console.error("Login error:", error);
       setErrors({ form: "Wystąpił błąd podczas logowania. Spróbuj ponownie." });
     } finally {
       setIsLoading(false);
