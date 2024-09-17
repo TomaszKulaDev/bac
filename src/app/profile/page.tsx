@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState, useEffect, useCallback } from "react";
-import { useSession, SessionContextValue } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { z } from "zod";
 import { FaEdit, FaSave, FaTimes, FaCamera } from "react-icons/fa";
 import LoadingSpinner from "@/components/LoadingSpinner";
@@ -24,8 +24,7 @@ const profileSchemaBase = z.object({
 
 const ProfilePage = () => {
   const router = useRouter();
-  const { data: session, status }: SessionContextValue = useSession();
-
+  const { data: session, status } = useSession();
   const [userData, setUserData] = useState<UserData | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({ name: "", email: "" });
@@ -34,20 +33,13 @@ const ProfilePage = () => {
   useEffect(() => {
     if (status === "unauthenticated") {
       router.push('/login');
-    } else if (status === "authenticated" && session) {
+    } else if (status === "authenticated") {
       fetchUserData();
     }
-  }, [status, session, router]);
-
-  useEffect(() => {
-    if (userData) {
-      setFormData({ name: userData.name, email: userData.email });
-    }
-  }, [userData]);
+  }, [status, router]);
 
   const fetchUserData = async () => {
     try {
-      console.log("Fetching user data...");
       const response = await fetch("/api/users/me", {
         method: "GET",
         headers: {
@@ -55,19 +47,12 @@ const ProfilePage = () => {
         },
         credentials: "include",
       });
-      console.log("Response status:", response.status);
       if (response.ok) {
         const data: UserData = await response.json();
-        console.log("User data received:", data);
         setUserData(data);
+        setFormData({ name: data.name, email: data.email });
       } else {
-        const errorText = await response.text();
-        console.error(
-          "Failed to fetch user data. Status:",
-          response.status,
-          "Error:",
-          errorText
-        );
+        console.error("Failed to fetch user data");
       }
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -128,11 +113,7 @@ const ProfilePage = () => {
   };
 
   if (status === "loading") {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <LoadingSpinner />
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   if (status !== "authenticated") {

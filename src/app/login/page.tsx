@@ -98,6 +98,7 @@ export default function Login() {
       if (result?.error) {
         setErrors({ form: result.error });
       } else if (result?.ok) {
+        dispatch(login({ email })); // Dispatch akcji login
         router.push("/profile");
       }
     } catch (error) {
