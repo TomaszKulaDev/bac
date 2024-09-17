@@ -6,7 +6,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { signIn, useSession } from "next-auth/react";
+import { signIn, useSession, SessionContextValue } from "next-auth/react";
 import Image from "next/image";
 import Head from "next/head";
 
@@ -57,7 +57,7 @@ export default function Login() {
     setIsWebViewDetected(isWebView());
   }, []);
 
-  const { data: session, status } = useSession();
+  const { data: session, status }: SessionContextValue = useSession();
 
   useEffect(() => {
     if (status === "authenticated") {

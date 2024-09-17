@@ -2,10 +2,11 @@
 
 import Image from "next/image";
 import { useState, useEffect, useCallback } from "react";
-import { useSession } from "next-auth/react";
+import { useSession, SessionContextValue } from "next-auth/react";
 import { z } from "zod";
 import { FaEdit, FaSave, FaTimes, FaCamera } from "react-icons/fa";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import { useRouter } from 'next/navigation';
 
 interface UserData {
   name: string;
@@ -22,18 +23,21 @@ const profileSchemaBase = z.object({
 });
 
 const ProfilePage = () => {
-  const { data: session, status } = useSession();
+  const router = useRouter();
+  const { data: session, status }: SessionContextValue = useSession();
+
   const [userData, setUserData] = useState<UserData | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({ name: "", email: "" });
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   useEffect(() => {
-    if (status === "authenticated") {
-      console.log("Session:", session);
+    if (status === "unauthenticated") {
+      router.push('/login');
+    } else if (status === "authenticated" && session) {
       fetchUserData();
     }
-  }, [status, session]);
+  }, [status, session, router]);
 
   useEffect(() => {
     if (userData) {
@@ -126,17 +130,13 @@ const ProfilePage = () => {
   if (status === "loading") {
     return (
       <div className="flex justify-center items-center h-screen">
-        Ładowanie...
+        <LoadingSpinner />
       </div>
     );
   }
 
-  if (status === "unauthenticated") {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        Nie jesteś zalogowany
-      </div>
-    );
+  if (status !== "authenticated") {
+    return null; // Router will redirect, no need to render anything
   }
 
   return (
