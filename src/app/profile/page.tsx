@@ -22,54 +22,43 @@ const profileSchemaBase = z.object({
   email: z.string().email("Nieprawidłowy adres email"),
 });
 
+
 const ProfilePage = () => {
   const router = useRouter();
-  const { data: session, status } = useSession();
+  const { data: session, status } = useSession({
+    required: true,
+    onUnauthenticated() {
+      router.push('/login');
+    },
+  });
   const [userData, setUserData] = useState<UserData | null>(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState({ name: "", email: "" });
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push('/login');
-    } else if (status === "authenticated") {
+    if (status === "authenticated") {
       fetchUserData();
     }
-  }, [status, router]);
-
-  useEffect(() => {
-    const checkSession = async () => {
-      if (status === "unauthenticated") {
-        router.push('/login');
-      } else if (status === "authenticated") {
-        fetchUserData();
-      }
-    };
-
-    checkSession();
-  }, [status, router]);
+  }, [status]);
 
   const fetchUserData = async () => {
     try {
-      const response = await fetch("/api/users/me", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
+      const response = await fetch("/api/users/me");
       if (response.ok) {
-        const data: UserData = await response.json();
+        const data = await response.json();
         setUserData(data);
-        setFormData({ name: data.name, email: data.email });
       } else {
         console.error("Failed to fetch user data");
       }
     } catch (error) {
       console.error("Error fetching user data:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
+
+  const [formData, setFormData] = useState({ name: "", email: "" });
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -124,11 +113,11 @@ const ProfilePage = () => {
     }
   };
 
-  if (status === "loading") {
+  if (isLoading) {
     return <LoadingSpinner />;
   }
 
-  if (status !== "authenticated") {
+  if (!session) {
     return null;
   }
 
@@ -259,5 +248,6 @@ const ProfilePage = () => {
     </div>
   );
 };
+
 
 export default ProfilePage;
