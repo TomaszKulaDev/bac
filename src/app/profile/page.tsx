@@ -30,11 +30,16 @@ const ProfilePage = () => {
     onUnauthenticated() {
       router.push("/login");
     },
-  }) as { data: Session | null; status: "loading" | "authenticated" | "unauthenticated" };
+  }) as {
+    data: Session | null;
+    status: "loading" | "authenticated" | "unauthenticated";
+  };
 
   const [userData, setUserData] = useState<UserData | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [formData, setFormData] = useState({ name: "", email: "" });
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const fetchUserData = useCallback(async () => {
     try {
@@ -42,6 +47,7 @@ const ProfilePage = () => {
       if (response.ok) {
         const data = await response.json();
         setUserData(data);
+        setFormData({ name: data.name, email: data.email });
       } else {
         console.error("Failed to fetch user data");
       }
@@ -51,23 +57,6 @@ const ProfilePage = () => {
       setIsLoading(false);
     }
   }, []);
-
-  useEffect(() => {
-    if (status === "authenticated") {
-      fetchUserData();
-    } else if (status === "unauthenticated") {
-      router.push("/login");
-    }
-  }, [status, router, fetchUserData]);
-
-  const [formData, setFormData] = useState({ name: "", email: "" });
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    setErrors((prev) => ({ ...prev, [name]: "" }));
-  };
 
   const validateForm = useCallback(() => {
     try {
@@ -87,6 +76,28 @@ const ProfilePage = () => {
       return false;
     }
   }, [formData]);
+
+  useEffect(() => {
+    if (status === "authenticated" && session) {
+      fetchUserData();
+    } else if (status === "unauthenticated") {
+      router.push("/login");
+    }
+  }, [status, session, router, fetchUserData]);
+
+  if (status === "loading") {
+    return <LoadingSpinner />;
+  }
+
+  if (!session) {
+    return null;
+  }
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, [name]: "" }));
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -115,14 +126,6 @@ const ProfilePage = () => {
       setErrors({ form: "Wystąpił błąd podczas aktualizacji profilu" });
     }
   };
-
-  if (isLoading) {
-    return <LoadingSpinner />;
-  }
-
-  if (!session) {
-    return null;
-  }
 
   return (
     <div className="min-h-screen bg-indigo-100 py-12 px-4 sm:px-6 lg:px-8">

@@ -6,9 +6,13 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { signIn, useSession, SessionContextValue, getSession } from "next-auth/react";
+import {
+  signIn,
+  useSession,
+  SessionContextValue,
+  getSession,
+} from "next-auth/react";
 import Image from "next/image";
-import Head from "next/head";
 
 // Importy z zewnętrznych bibliotek
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -37,9 +41,6 @@ function isWebView() {
 }
 
 export default function Login() {
-  const description =
-    "Zaloguj się do swojego konta na baciata.pl. Uzyskaj dostęp do ekskluzywnych treści, wydarzeń tanecznych i połącz się z innymi miłośnikami bachaty.";
-
   // Stan komponentu
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -57,7 +58,13 @@ export default function Login() {
     setIsWebViewDetected(isWebView());
   }, []);
 
-  const { data: session, status }: SessionContextValue = useSession();
+  const { data: session, status } = useSession();
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      router.push("/profile");
+    }
+  }, [status, router]);
 
   const validateForm = () => {
     try {
@@ -99,7 +106,11 @@ export default function Login() {
       if (result?.error) {
         setErrors({ form: result.error });
       } else if (result?.ok) {
-        dispatch(login({ email }));
+        // Aktualizacja sesji
+        const updatedSession = await getSession();
+        console.log("Updated session:", updatedSession);
+
+        // Przekierowanie do strony profilu
         router.push("/profile");
       }
     } catch (error) {
@@ -156,10 +167,6 @@ export default function Login() {
 
   return (
     <>
-      <Head>
-        <title>Logowanie - baciata.pl</title>
-        <meta name="description" content={description} />
-      </Head>
       <div className="flex justify-center items-center min-h-screen bg-gray-100">
         <form
           onSubmit={handleLogin}
