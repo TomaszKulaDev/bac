@@ -29,10 +29,13 @@ const registerSchema = registerSchemaBase
     message: "Musisz zaakceptować politykę prywatności",
     path: ["agreeToTerms"],
   })
-  .refine((data) => !data.password.toLowerCase().includes(data.name.toLowerCase()), {
-    message: "Hasło nie może zawierać Twojego imienia",
-    path: ["password"],
-  });
+  .refine(
+    (data) => !data.password.toLowerCase().includes(data.name.toLowerCase()),
+    {
+      message: "Hasło nie może zawierać Twojego imienia",
+      path: ["password"],
+    }
+  );
 
 export default function Register() {
   const description =
@@ -51,8 +54,10 @@ export default function Register() {
   const [isWebViewDetected, setIsWebViewDetected] = useState(false);
 
   useEffect(() => {
-    const isWebView = /(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari)/i.test(navigator.userAgent) ||
-      /Android.*Version\/[0-9].[0-9]/.test(navigator.userAgent);
+    const isWebView =
+      /(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari)/i.test(
+        navigator.userAgent
+      ) || /Android.*Version\/[0-9].[0-9]/.test(navigator.userAgent);
     setIsWebViewDetected(isWebView);
   }, []);
 
@@ -398,14 +403,14 @@ export default function Register() {
               />
               Akceptuję{" "}
               <Link
-                href="/privacy-policy"
+                href="/polityka-prywatnosci-baciata-pl"
                 className="text-blue-500 hover:underline"
               >
                 Politykę Prywatności
               </Link>{" "}
               oraz{" "}
               <Link
-                href="/terms-of-service"
+                href="/warunki-korzystania-z-uslugi-baciata-pl"
                 className="text-blue-500 hover:underline"
               >
                 Warunki Korzystania z Usługi
