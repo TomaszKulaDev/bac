@@ -1,6 +1,6 @@
 // src/pages/api/reset-password.ts
 import type { NextApiRequest, NextApiResponse } from "next";
-import connectToDatabase from "@/lib/mongodb";
+import { connectToDatabase } from "@/lib/mongodb";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
 import { validatePassword } from "@/schemas/passwordSchema";
