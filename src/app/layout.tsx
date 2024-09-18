@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import "./globals.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { AuthProvider, useAuth } from "../contexts/AuthContext";
 import { SessionProvider, useSession } from "next-auth/react";
@@ -21,6 +21,28 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.text = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      name: "Baciata.pl",
+      url: "https://www.baciata.pl",
+      description: "Platforma dla miłośników bachaty w Polsce",
+      potentialAction: {
+        "@type": "SearchAction",
+        target: "https://www.baciata.pl/search?q={search_term_string}",
+        "query-input": "required name=search_term_string",
+      },
+    });
+    document.head.appendChild(script);
+
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, []);
+
   return (
     <html lang="pl">
       <Head>
@@ -42,20 +64,6 @@ export default function RootLayout({
             {children}
           </Provider>
         </SessionProvider>
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "WebSite",
-            "name": "Baciata.pl",
-            "url": "https://www.baciata.pl",
-            "description": "Platforma dla miłośników bachaty w Polsce",
-            "potentialAction": {
-              "@type": "SearchAction",
-              "target": "https://www.baciata.pl/search?q={search_term_string}",
-              "query-input": "required name=search_term_string"
-            }
-          })}
-        </script>
       </body>
     </html>
   );
