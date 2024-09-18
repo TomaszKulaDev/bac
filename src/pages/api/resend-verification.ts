@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import connectToDatabase from "@/lib/mongodb";
+import { connectToDatabase } from "@/lib/mongodb";
 import User from "@/models/User";
 import crypto from "crypto";
 import nodemailer from "nodemailer";

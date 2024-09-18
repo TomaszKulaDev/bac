@@ -3,7 +3,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "../auth/[...nextauth]";
-import connectToDatabase from "@/lib/mongodb";
+import { connectToDatabase } from "@/lib/mongodb";
 import { authMiddleware } from "@/lib/authMiddleware";
 import User, { IUser } from "@/models/User";
 

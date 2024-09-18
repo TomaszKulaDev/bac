@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import type { NextApiRequest, NextApiResponse } from "next";
-import connectToDatabase from "@/lib/mongodb";
+import { connectToDatabase } from "@/lib/mongodb";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
@@ -34,7 +34,9 @@ export default async function handler(
 
     const validationResult = loginSchema.safeParse({ email, password });
     if (!validationResult.success) {
-      return res.status(400).json({ message: validationResult.error.errors[0].message });
+      return res
+        .status(400)
+        .json({ message: validationResult.error.errors[0].message });
     }
 
     if (!email || !password) {
@@ -80,7 +82,13 @@ export default async function handler(
       );
 
       console.log("JWT token generated:", token);
-      res.status(200).json({ message: "Login successful", token, user: { id: user._id, email: user.email, name: user.name } });
+      res
+        .status(200)
+        .json({
+          message: "Login successful",
+          token,
+          user: { id: user._id, email: user.email, name: user.name },
+        });
     } catch (error) {
       console.error("Login error: ", error);
       res.status(500).json({ message: "Login failed", error });
