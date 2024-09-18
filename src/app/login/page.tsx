@@ -9,7 +9,6 @@ import { useRouter } from "next/navigation";
 import {
   signIn,
   useSession,
-  SessionContextValue,
   getSession,
 } from "next-auth/react";
 import Image from "next/image";

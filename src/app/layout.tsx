@@ -1,18 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import "./globals.css";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { AuthProvider, useAuth } from "../contexts/AuthContext";
-import { SessionProvider, useSession } from "next-auth/react";
-import { signOut } from "next-auth/react";
-import { SpeedInsights } from "@vercel/speed-insights/next";
+import { useEffect } from "react";
+import { SessionProvider } from "next-auth/react";
 import { Provider } from "react-redux";
 import { store } from "../store/store";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "../store/store";
-import { logout } from "../store/slices/authSlice";
 import { NavContent } from "../components/NavContent";
 import Head from "next/head";
 
