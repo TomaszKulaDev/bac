@@ -1,4 +1,3 @@
-import Head from "next/head";
 import Link from "next/link";
 import { FaUser, FaLock, FaShieldAlt } from "react-icons/fa";
 
@@ -11,36 +10,19 @@ interface FeatureCardProps {
 export default function Home(): React.ReactElement {
   return (
     <div className="min-h-screen bg-indigo-100">
-      <Head>
-        <title>baciata.pl – Twoja nowa przestrzeń do tańca bachaty!</title>
-        <meta
-          name="description"
-          content="Dołącz do społeczności Baciata.pl – Odkryj najnowsze trendy w tańcu i muzyce, badz na bieząco z wydarzeniami. Baciata.pl to miejsce, gdzie pasja do tańca łączy ludzi! Dołącz do społeczności Bachaty pełnej energii, dziel się swoimi doświadczeniami i odkrywaj nowe rytmy życia. Razem tworzymy przestrzeń, w której każdy krok ma znaczenie."
-        />
-      </Head>
       <main className="container mx-auto px-4 py-16">
         <h1 className="text-5xl font-bold text-center text-indigo-800 mb-8">
-          Witaj w MyApp
+          Baciata.pl
         </h1>
         <p className="text-xl text-center text-gray-700 mb-12">
-          Bezpieczne i intuicyjne rozwiązanie dla Twoich potrzeb
+          Baciata.pl – Twoja nowa przestrzeń do tańca bachaty!
         </p>
 
-        <div className="grid md:grid-cols-3 gap-8 mb-16">
+        <div className="grid md:grid-cols-1 gap-8 mb-16">
           <FeatureCard
             icon={<FaUser className="text-4xl text-indigo-600" />}
-            title="Zarządzaj profilem"
-            description="Łatwo aktualizuj swoje dane i preferencje"
-          />
-          <FeatureCard
-            icon={<FaLock className="text-4xl text-indigo-600" />}
-            title="Bezpieczne logowanie"
-            description="Wielopoziomowe zabezpieczenia Twoich danych"
-          />
-          <FeatureCard
-            icon={<FaShieldAlt className="text-4xl text-indigo-600" />}
-            title="Ochrona prywatności"
-            description="Pełna kontrola nad udostępnianymi informacjami"
+            title="Taniec"
+            description="Dołącz do społeczności Baciata.pl – Odkryj najnowsze trendy w tańcu i muzyce, badz na bieząco z wydarzeniami. Baciata.pl to miejsce, gdzie pasja do tańca łączy ludzi! Dołącz do społeczności Bachaty pełnej energii, dziel się swoimi doświadczeniami i odkrywaj nowe rytmy życia. Razem tworzymy przestrzeń, w której każdy krok ma znaczenie."
           />
         </div>
 
