@@ -7,30 +7,31 @@ import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
 import { logout, login } from "../store/slices/authSlice";
 import { RootState } from "../store/slices/types";
+import { useMemo } from "react";
 
 export function NavContent() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { data: session, status } = useSession();
   const router = useRouter();
   const dispatch = useDispatch();
-  const isAuthenticated = useSelector(
-    (state: RootState) => state.auth.isAuthenticated
-  );
-
-  console.log("NavContent rendered", { status, isAuthenticated });
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+  const user = useSelector((state: RootState) => state.auth.user);
 
   const handleLogout = async () => {
+    console.log("Logout initiated");
     await signOut({ redirect: false });
     dispatch(logout());
     router.push("/");
+    console.log("Logout completed");
   };
 
   useEffect(() => {
-    console.log("NavContent useEffect", { status, session, isAuthenticated });
-    if (status === "authenticated" && !isAuthenticated) {
+    if (status === "authenticated" && session?.user) {
       dispatch(login({ user: session.user }));
+    } else if (status === "unauthenticated") {
+      dispatch(logout());
     }
-  }, [status, session, dispatch, isAuthenticated]);
+  }, [status, session, dispatch]);
 
   return (
     <nav className="flex justify-between items-center p-4 bg-gray-800 text-white">
@@ -38,7 +39,7 @@ export function NavContent() {
         <Link href="/">MyApp</Link>
       </div>
       <ul className="flex space-x-4">
-        {status === "authenticated" ? (
+        {isAuthenticated && user ? (
           <>
             <li>
               <Link href="/profile">Profil</Link>

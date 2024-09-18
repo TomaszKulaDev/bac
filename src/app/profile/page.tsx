@@ -1,3 +1,5 @@
+// src/app/profile/page.tsx
+
 "use client";
 
 import Image from "next/image";
@@ -8,6 +10,8 @@ import { z } from "zod";
 import { FaEdit, FaSave, FaTimes, FaCamera } from "react-icons/fa";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { login } from "../../store/slices/authSlice";
 
 interface UserData {
   name: string;
@@ -34,6 +38,8 @@ const ProfilePage = () => {
     data: Session | null;
     status: "loading" | "authenticated" | "unauthenticated";
   };
+
+  const dispatch = useDispatch();
 
   const [userData, setUserData] = useState<UserData | null>(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -80,10 +86,13 @@ const ProfilePage = () => {
   useEffect(() => {
     if (status === "authenticated" && session) {
       fetchUserData();
+      if (session.user) {
+        dispatch(login({ user: session.user }));
+      }
     } else if (status === "unauthenticated") {
       router.push("/login");
     }
-  }, [status, session, router, fetchUserData]);
+  }, [status, session, router, fetchUserData, dispatch]);
 
   if (status === "loading") {
     return <LoadingSpinner />;
@@ -127,6 +136,8 @@ const ProfilePage = () => {
     }
   };
 
+  const avatarSrc = userData?.image || "/default-avatar.png";
+
   return (
     <div className="min-h-screen bg-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
@@ -139,11 +150,14 @@ const ProfilePage = () => {
               <div className="flex items-center justify-center mb-8">
                 <div className="relative">
                   <Image
-                    src={userData.image || "/default-avatar.png"}
-                    alt="Avatar"
-                    width={120}
-                    height={120}
-                    className="rounded-full border-4 border-indigo-500"
+                    src={avatarSrc}
+                    alt="Avatar użytkownika"
+                    width={100}
+                    height={100}
+                    className="rounded-full"
+                    onError={(e) => {
+                      e.currentTarget.src = "/default-avatar.png";
+                    }}
                   />
                   <button
                     className="absolute bottom-0 right-0 bg-indigo-500 text-white p-2 rounded-full hover:bg-indigo-600 transition-colors duration-200"

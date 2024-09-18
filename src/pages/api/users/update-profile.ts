@@ -53,11 +53,9 @@ export default async function handler(
       });
     } catch (error) {
       console.error("Error fetching user data:", error);
-      return res
-        .status(500)
-        .json({
-          message: "Wystąpił błąd podczas pobierania danych użytkownika",
-        });
+      return res.status(500).json({
+        message: "Wystąpił błąd podczas pobierania danych użytkownika",
+      });
     }
   } else if (req.method === "POST") {
     try {

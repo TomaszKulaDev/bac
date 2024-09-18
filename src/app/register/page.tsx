@@ -34,16 +34,6 @@ const registerSchema = registerSchemaBase
     path: ["password"],
   });
 
-function isWebView() {
-  return (
-    (typeof window !== "undefined" &&
-      /(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari)/i.test(
-        navigator.userAgent
-      )) ||
-    /Android.*Version\/[0-9].[0-9]/.test(navigator.userAgent)
-  );
-}
-
 export default function Register() {
   const description =
     "Zarejestruj się na baciata.pl i dołącz do naszej roztańczonej społeczności. Odkryj nowe możliwości, poznaj pasjonatów bachaty i rozwijaj swoją taneczną pasję.";
@@ -61,7 +51,9 @@ export default function Register() {
   const [isWebViewDetected, setIsWebViewDetected] = useState(false);
 
   useEffect(() => {
-    setIsWebViewDetected(isWebView());
+    const isWebView = /(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari)/i.test(navigator.userAgent) ||
+      /Android.*Version\/[0-9].[0-9]/.test(navigator.userAgent);
+    setIsWebViewDetected(isWebView);
   }, []);
 
   const validateField = useCallback(

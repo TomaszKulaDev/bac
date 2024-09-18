@@ -88,9 +88,11 @@ export default function Login() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    console.log("Login initiated");
 
     if (!validateForm()) {
       setIsLoading(false);
+      console.log("Form validation failed");
       return;
     }
 
@@ -105,22 +107,25 @@ export default function Login() {
 
       if (result?.error) {
         setErrors({ form: result.error });
+        console.log("Login error:", result.error);
       } else if (result?.ok) {
-        // Aktualizacja sesji
         const updatedSession = await getSession();
         console.log("Updated session:", updatedSession);
 
-        // Aktualizacja stanu Redux
-        dispatch(login({ user: updatedSession?.user }));
-
-        // Przekierowanie do strony profilu
-        router.push("/profile");
+        if (updatedSession?.user) {
+          console.log("Dispatching login action from login page");
+          dispatch(login({ user: updatedSession.user }));
+          router.push("/profile");
+        } else {
+          console.error("Session user is undefined");
+        }
       }
     } catch (error) {
       console.error("Login error:", error);
       setErrors({ form: "Wystąpił błąd podczas logowania. Spróbuj ponownie." });
     } finally {
       setIsLoading(false);
+      console.log("Login process completed");
     }
   };
 
