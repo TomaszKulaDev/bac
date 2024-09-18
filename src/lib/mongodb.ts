@@ -1,3 +1,5 @@
+// src/lib/mongodb.ts
+
 import mongoose from "mongoose";
 
 const MONGODB_URI =
@@ -30,19 +32,26 @@ async function connectToDatabase(): Promise<typeof mongoose> {
       bufferCommands: false,
     };
 
-    cached.promise = mongoose
-      .connect(MONGODB_URI, opts)
-      .then((mongoose) => {
-        return mongoose;
-      })
-      .catch((error) => {
-        cached.promise = null;
-        throw error;
-      });
+    cached.promise = mongoose.connect(MONGODB_URI, opts);
   }
 
-  cached.conn = await cached.promise;
+  try {
+    cached.conn = await cached.promise;
+  } catch (e) {
+    cached.promise = null;
+    console.error('Failed to connect to MongoDB', e);
+    throw e;
+  }
+
   return cached.conn;
 }
 
-export default connectToDatabase;
+async function disconnectFromDatabase(): Promise<void> {
+  if (cached.conn) {
+    await cached.conn.disconnect();
+    cached.conn = null;
+    cached.promise = null;
+  }
+}
+
+export { connectToDatabase, disconnectFromDatabase };

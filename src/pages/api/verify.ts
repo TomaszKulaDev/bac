@@ -1,7 +1,7 @@
 // src/pages/api/verify.ts
 
 import type { NextApiRequest, NextApiResponse } from "next";
-import connectToDatabase from "@/lib/mongodb";
+import { connectToDatabase } from "@/lib/mongodb";
 import User from "@/models/User";
 
 export default async function verifyHandler(

@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "../auth/[...nextauth]";
-import connectToDatabase from "@/lib/mongodb";
+import { connectToDatabase } from "@/lib/mongodb";
 import { authMiddleware } from "@/lib/authMiddleware";
 import User, { IUser } from "@/models/User";
 import mongoose from "mongoose";
@@ -26,22 +26,17 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  console.log("Handler invoked");
+  await connectToDatabase();
+
   const session = await getServerSession(req, res, authOptions);
-  console.log("Session:", session);
 
   if (!session) {
-    console.log("User not authenticated");
     return res.status(401).json({ message: "Nie jesteś zalogowany" });
   }
-
-  await connectToDatabase();
-  console.log("Connected to database");
 
   if (req.method === "GET") {
     try {
       const user = await User.findOne({ email: session.user?.email });
-      console.log("User details retrieved:", user);
       if (!user) {
         return res.status(404).json({ message: "Nie znaleziono użytkownika" });
       }
@@ -59,8 +54,6 @@ export default async function handler(
     }
   } else if (req.method === "POST") {
     try {
-      await connectToDatabase();
-
       const validationResult = updateProfileSchema.safeParse(req.body);
       if (!validationResult.success) {
         return res

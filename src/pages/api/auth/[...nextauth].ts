@@ -2,7 +2,7 @@ import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
 import CredentialsProvider from "next-auth/providers/credentials";
-import connectToDatabase from "../../../lib/mongodb";
+import { connectToDatabase } from "../../../lib/mongodb";
 import User from "@/models/User"; // Zakładając, że masz model User
 import bcrypt from "bcryptjs";
 import { NextAuthOptions } from "next-auth";
@@ -77,7 +77,7 @@ export const authOptions: NextAuthOptions = {
     },
   },
   pages: {
-    signIn: '/login',
+    signIn: "/login",
   },
   session: {
     strategy: "jwt",

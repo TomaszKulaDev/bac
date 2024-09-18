@@ -3,7 +3,7 @@
 // src/pages/api/forgot-password.ts
 
 import type { NextApiRequest, NextApiResponse } from "next";
-import connectToDatabase from "@/lib/mongodb";
+import { connectToDatabase } from "@/lib/mongodb";
 import User from "@/models/User";
 import nodemailer from "nodemailer";
 import crypto from "crypto";
