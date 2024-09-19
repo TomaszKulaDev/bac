@@ -1,6 +1,8 @@
+// src/pages/api/auth/[...nextauth].ts
+
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import FacebookProvider from "next-auth/providers/facebook";
+// import FacebookProvider from "next-auth/providers/facebook";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { connectToDatabase } from "../../../lib/mongodb";
 import User from "@/models/User"; // Zakładając, że masz model User
@@ -63,17 +65,18 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async session({ session, token }) {
-      if (token.sub) {
-        session.user.id = token.sub;
-      }
-      return session;
-    },
     async jwt({ token, user }) {
       if (user) {
-        token.id = user.id;
+        token.role = (user as any).role || 'user';
       }
       return token;
+    },
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.role = typeof token.role === 'string' ? token.role : 'user';
+        session.user.id = token.sub || '';
+      }
+      return session;
     },
   },
   pages: {

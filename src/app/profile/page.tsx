@@ -27,6 +27,7 @@ const profileSchemaBase = z.object({
   email: z.string().email("Nieprawidłowy adres email"),
 });
 
+
 const ProfilePage = () => {
   const router = useRouter();
   const { data: session, status } = useSession({
@@ -84,11 +85,16 @@ const ProfilePage = () => {
   }, [formData]);
 
   useEffect(() => {
-    if (status === "authenticated" && session) {
+    if (status === "authenticated" && session?.user) {
       fetchUserData();
-      if (session.user) {
-        dispatch(login({ user: session.user }));
-      }
+      dispatch(login({
+        user: {
+          id: session.user.id || '',
+          email: session.user.email || null,
+          name: session.user.name || null,
+          role: session.user.role || 'user'
+        }
+      }));
     } else if (status === "unauthenticated") {
       router.push("/login");
     }
@@ -268,5 +274,6 @@ const ProfilePage = () => {
     </div>
   );
 };
+
 
 export default ProfilePage;

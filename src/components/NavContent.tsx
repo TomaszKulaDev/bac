@@ -27,7 +27,14 @@ export function NavContent() {
 
   useEffect(() => {
     if (status === "authenticated" && session?.user) {
-      dispatch(login({ user: session.user }));
+      dispatch(login({
+        user: {
+          id: session.user.id || '',
+          email: session.user.email || null,
+          name: session.user.name || null,
+          role: session.user.role || null
+        }
+      }));
     } else if (status === "unauthenticated") {
       dispatch(logout());
     }

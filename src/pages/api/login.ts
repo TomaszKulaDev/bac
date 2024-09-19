@@ -49,6 +49,7 @@ export default async function handler(
     try {
       const user = await User.findOne({ email });
       console.log("Found user:", user);
+      console.log("User role:", user?.role);
 
       if (!user) {
         console.log("No user found with this email");
@@ -82,12 +83,13 @@ export default async function handler(
       );
 
       console.log("JWT token generated:", token);
+      console.log("Sending response with user:", { id: user._id, email: user.email, name: user.name, role: user.role });
       res
         .status(200)
         .json({
           message: "Login successful",
           token,
-          user: { id: user._id, email: user.email, name: user.name },
+          user: { id: user._id, email: user.email, name: user.name, role: user.role },
         });
     } catch (error) {
       console.error("Login error: ", error);

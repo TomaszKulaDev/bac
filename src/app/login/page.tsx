@@ -12,6 +12,8 @@ import {
   getSession,
 } from "next-auth/react";
 import Image from "next/image";
+import { useDispatch } from "react-redux";
+import { login } from "../../store/slices/authSlice";
 
 // Importy z zewnętrznych bibliotek
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -20,8 +22,6 @@ import { z } from "zod";
 // Importy lokalne
 import { useAuth } from "../../contexts/AuthContext";
 import LoadingSpinner from "@/components/LoadingSpinner";
-import { useDispatch } from "react-redux";
-import { login } from "../../store/slices/authSlice";
 
 // Schema walidacji formularza logowania
 const loginSchema = z.object({
@@ -61,9 +61,17 @@ export default function Login() {
 
   useEffect(() => {
     if (status === "authenticated") {
+      dispatch(login({
+        user: {
+          id: session.user.id || '',
+          email: session.user.email || null,
+          name: session.user.name || null,
+          role: session.user.role || 'user'
+        }
+      }));
       router.push("/profile");
     }
-  }, [status, router]);
+  }, [status, session, router, dispatch]);
 
   const validateForm = () => {
     try {
@@ -113,7 +121,14 @@ export default function Login() {
 
         if (updatedSession?.user) {
           console.log("Dispatching login action from login page");
-          dispatch(login({ user: updatedSession.user }));
+          dispatch(login({
+            user: {
+              id: updatedSession.user.id || '',
+              email: updatedSession.user.email || null,
+              name: updatedSession.user.name || null,
+              role: updatedSession.user.role || null
+            }
+          }));
           router.push("/profile");
         } else {
           console.error("Session user is undefined");

@@ -1,3 +1,5 @@
+// src/app/admin/users/page.tsx
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -23,20 +25,35 @@ export default function AdminUsersPage() {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
   const user = useSelector((state: RootState) => state.auth.user);
-  const { users, totalUsers, currentPage } = useSelector((state: RootState) => state.admin);
+  const { users, totalUsers, currentPage } = useSelector(
+    (state: RootState) => state.admin
+  );
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [newUser, setNewUser] = useState({ name: '', email: '', password: '', role: 'user' });
+  const [newUser, setNewUser] = useState({
+    name: "",
+    email: "",
+    password: "",
+    role: "user",
+  });
   const [pageSize, setPageSize] = useState(10);
 
   useEffect(() => {
+    console.log("AdminUsersPage useEffect - user:", user);
+    console.log("AdminUsersPage useEffect - user role:", user?.role);
     if (!user || user.role !== "admin") {
+      console.log("Redirecting to login - no user or not admin");
       router.push("/login");
     } else {
+      console.log("Fetching users");
       dispatch(fetchUsers({ page: currentPage, pageSize }))
         .unwrap()
-        .then(() => setIsLoading(false))
+        .then(() => {
+          console.log("Users fetched successfully");
+          setIsLoading(false);
+        })
         .catch((error) => {
+          console.error("Error fetching users:", error);
           setError("Nie udało się pobrać listy użytkowników");
           setIsLoading(false);
         });
@@ -66,7 +83,7 @@ export default function AdminUsersPage() {
     dispatch(createUser(newUser))
       .unwrap()
       .then(() => {
-        setNewUser({ name: '', email: '', password: '', role: 'user' });
+        setNewUser({ name: "", email: "", password: "", role: "user" });
         setError(null);
       })
       .catch((error) => {
@@ -90,12 +107,18 @@ export default function AdminUsersPage() {
     <div className="min-h-screen bg-gray-100">
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-6">Zarządzanie Użytkownikami</h1>
-        
+
         {/* Formularz tworzenia nowego użytkownika */}
-        <form onSubmit={handleCreateUser} className="mb-8 bg-white shadow-md rounded px-8 pt-6 pb-8">
+        <form
+          onSubmit={handleCreateUser}
+          className="mb-8 bg-white shadow-md rounded px-8 pt-6 pb-8"
+        >
           <h2 className="text-2xl font-bold mb-4">Utwórz nowego użytkownika</h2>
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="name"
+            >
               Imię
             </label>
             <input
@@ -108,7 +131,10 @@ export default function AdminUsersPage() {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="email"
+            >
               Email
             </label>
             <input
@@ -116,12 +142,17 @@ export default function AdminUsersPage() {
               id="email"
               type="email"
               value={newUser.email}
-              onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
+              onChange={(e) =>
+                setNewUser({ ...newUser, email: e.target.value })
+              }
               required
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="password"
+            >
               Hasło
             </label>
             <input
@@ -129,12 +160,17 @@ export default function AdminUsersPage() {
               id="password"
               type="password"
               value={newUser.password}
-              onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
+              onChange={(e) =>
+                setNewUser({ ...newUser, password: e.target.value })
+              }
               required
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="role">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="role"
+            >
               Rola
             </label>
             <select
@@ -198,7 +234,9 @@ export default function AdminUsersPage() {
         {/* Paginacja */}
         <div className="mt-4 flex justify-between items-center">
           <div>
-            <span>Strona {currentPage} z {Math.ceil(totalUsers / pageSize)}</span>
+            <span>
+              Strona {currentPage} z {Math.ceil(totalUsers / pageSize)}
+            </span>
           </div>
           <div>
             <button

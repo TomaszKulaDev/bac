@@ -1,21 +1,24 @@
 "use client";
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store/store';
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 
 export default function AdminPanel() {
   const router = useRouter();
   const user = useSelector((state: RootState) => state.auth.user);
 
   useEffect(() => {
-    if (!user || user.role !== 'admin') {
-      router.push('/login');
+    console.log("AdminPanel useEffect - user:", user);
+    console.log("AdminPanel useEffect - user role:", user?.role);
+    if (!user || user.role !== "admin") {
+      console.log("Redirecting to login - no user or not admin");
+      router.push("/login");
     }
   }, [user, router]);
 
-  if (!user || user.role !== 'admin') {
+  if (!user || user.role !== "admin") {
     return null;
   }
 
@@ -26,7 +29,10 @@ export default function AdminPanel() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <AdminCard title="Zarządzanie Użytkownikami" link="/admin/users" />
           <AdminCard title="Zarządzanie Wydarzeniami" link="/admin/events" />
-          <AdminCard title="Zarządzanie Szkołami Tańca" link="/admin/dance-schools" />
+          <AdminCard
+            title="Zarządzanie Szkołami Tańca"
+            link="/admin/dance-schools"
+          />
           <AdminCard title="Statystyki" link="/admin/statistics" />
         </div>
       </div>
