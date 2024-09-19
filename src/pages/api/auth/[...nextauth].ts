@@ -31,48 +31,54 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
+        console.log("NextAuth: Authorizing user");
         if (!credentials) {
-          console.log("No credentials provided");
+          console.log("NextAuth: No credentials provided");
           return null;
         }
 
         await connectToDatabase();
 
         const { email, password } = credentials;
-        console.log("Attempting to find user with email:", email);
         const user = await User.findOne({ email });
+        console.log("NextAuth: User found:", user ? "Yes" : "No");
 
         if (!user) {
-          console.log("User not found");
+          console.log("NextAuth: User not found");
           return null;
         }
 
-        console.log("User found, comparing passwords");
+        console.log("NextAuth: Comparing passwords");
         const isValidPassword = await bcrypt.compare(password, user.password);
 
         if (!isValidPassword) {
-          console.log("Invalid password");
+          console.log("NextAuth: Invalid credentials");
           return null;
         }
 
-        console.log("Authentication successful");
+        console.log("NextAuth: Authentication successful");
         return {
           id: user._id.toString(),
           name: user.name,
           email: user.email,
+          role: user.role,
         };
       },
     }),
   ],
   callbacks: {
     async jwt({ token, user }) {
+      console.log("NextAuth: JWT callback");
       if (user) {
+        console.log("NextAuth: Adding user data to token", user);
         token.role = (user as any).role || 'user';
       }
       return token;
     },
     async session({ session, token }) {
+      console.log("NextAuth: Session callback");
       if (session.user) {
+        console.log("NextAuth: Adding token data to session", token);
         session.user.role = typeof token.role === 'string' ? token.role : 'user';
         session.user.id = token.sub || '';
       }

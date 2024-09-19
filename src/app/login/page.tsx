@@ -60,7 +60,10 @@ export default function Login() {
   const { data: session, status } = useSession();
 
   useEffect(() => {
-    if (status === "authenticated") {
+    console.log("Login page - Session status:", status);
+    console.log("Login page - Session data:", session);
+    if (status === "authenticated" && session?.user) {
+      console.log("Login page - Dispatching login action with user:", session.user);
       dispatch(login({
         user: {
           id: session.user.id || '',
@@ -69,7 +72,13 @@ export default function Login() {
           role: session.user.role || 'user'
         }
       }));
-      router.push("/profile");
+      console.log("Login page - Login action dispatched");
+      
+      // Dodajemy małe opóźnienie przed przekierowaniem
+      setTimeout(() => {
+        console.log("Login page - Redirecting to admin panel");
+        router.push("/admin");
+      }, 100);
     }
   }, [status, session, router, dispatch]);
 
@@ -104,35 +113,20 @@ export default function Login() {
     }
 
     try {
+      console.log("Login attempt with email:", email);
       const result = await signIn("credentials", {
         redirect: false,
         email,
         password,
       });
-
       console.log("SignIn result:", result);
 
       if (result?.error) {
+        console.error("Login error:", result.error);
         setErrors({ form: result.error });
-        console.log("Login error:", result.error);
-      } else if (result?.ok) {
-        const updatedSession = await getSession();
-        console.log("Updated session:", updatedSession);
-
-        if (updatedSession?.user) {
-          console.log("Dispatching login action from login page");
-          dispatch(login({
-            user: {
-              id: updatedSession.user.id || '',
-              email: updatedSession.user.email || null,
-              name: updatedSession.user.name || null,
-              role: updatedSession.user.role || null
-            }
-          }));
-          router.push("/profile");
-        } else {
-          console.error("Session user is undefined");
-        }
+      } else {
+        console.log("Login successful, redirecting to profile");
+        router.push("/profile");
       }
     } catch (error) {
       console.error("Login error:", error);

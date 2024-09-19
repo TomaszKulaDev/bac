@@ -36,15 +36,24 @@ export default async function handler(
 
   if (req.method === "GET") {
     try {
+      console.log("Fetching user data for email:", session.user?.email);
       const user = await User.findOne({ email: session.user?.email });
+      console.log("User data fetched:", user);
       if (!user) {
+        console.log("User not found");
         return res.status(404).json({ message: "Nie znaleziono użytkownika" });
       }
+      console.log("Sending user data:", {
+        id: user._id.toString(),
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      });
       return res.status(200).json({
         id: user._id.toString(),
         name: user.name,
         email: user.email,
-        image: user.image,
+        role: user.role,
       });
     } catch (error) {
       console.error("Error fetching user data:", error);

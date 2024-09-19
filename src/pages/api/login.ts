@@ -48,8 +48,9 @@ export default async function handler(
 
     try {
       const user = await User.findOne({ email });
+      console.log("Te dane są pobierane z bazy danych MongoDB:");
       console.log("Found user:", user);
-      console.log("User role:", user?.role);
+      console.log("User role from database:", user?.role);
 
       if (!user) {
         console.log("No user found with this email");
@@ -82,8 +83,10 @@ export default async function handler(
         { expiresIn: "1h" }
       );
 
+      console.log("JWT token payload:", { id: user._id, email: user.email, role: user.role });
       console.log("JWT token generated:", token);
       console.log("Sending response with user:", { id: user._id, email: user.email, name: user.name, role: user.role });
+
       res
         .status(200)
         .json({

@@ -4,22 +4,34 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
+import { useSession } from "next-auth/react";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 export default function AdminPanel() {
   const router = useRouter();
   const user = useSelector((state: RootState) => state.auth.user);
+  const { status } = useSession();
 
   useEffect(() => {
     console.log("AdminPanel useEffect - user:", user);
     console.log("AdminPanel useEffect - user role:", user?.role);
-    if (!user || user.role !== "admin") {
+    console.log("AdminPanel useEffect - status:", status);
+
+    if (status === "loading") {
+      return; // Czekamy na załadowanie sesji
+    }
+
+    if (
+      status === "unauthenticated" ||
+      (status === "authenticated" && (!user || user.role !== "admin"))
+    ) {
       console.log("Redirecting to login - no user or not admin");
       router.push("/login");
     }
-  }, [user, router]);
+  }, [user, router, status]);
 
-  if (!user || user.role !== "admin") {
-    return null;
+  if (!user || user.role !== "admin" || status !== "authenticated") {
+    return <LoadingSpinner />;
   }
 
   return (
