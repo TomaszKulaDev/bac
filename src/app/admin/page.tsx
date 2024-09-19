@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { useSession } from "next-auth/react";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import AdminCard from '@/components/AdminCard';
 
 export default function AdminPanel() {
   const router = useRouter();
@@ -37,28 +38,19 @@ export default function AdminPanel() {
   return (
     <div className="min-h-screen bg-gray-100">
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-6">Panel Administracyjny</h1>
+        <h1 className="text-3xl font-bold mb-6 text-gray-800">Panel Administracyjny</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <AdminCard title="Zarządzanie Użytkownikami" link="/admin/users" />
-          <AdminCard title="Zarządzanie Wydarzeniami" link="/admin/events" />
+          <AdminCard title="Zarządzanie Użytkownikami" link="/admin/users" bgColor="bg-blue-500" textColor="text-white" />
+          <AdminCard title="Zarządzanie Wydarzeniami" link="/admin/events" bgColor="bg-green-500" textColor="text-white" />
           <AdminCard
             title="Zarządzanie Szkołami Tańca"
             link="/admin/dance-schools"
+            bgColor="bg-purple-500"
+            textColor="text-white"
           />
-          <AdminCard title="Statystyki" link="/admin/statistics" />
+          <AdminCard title="Statystyki" link="/admin/statistics" bgColor="bg-yellow-500" textColor="text-gray-800" />
         </div>
       </div>
-    </div>
-  );
-}
-
-function AdminCard({ title, link }: { title: string; link: string }) {
-  return (
-    <div className="bg-white shadow-md rounded-lg p-6">
-      <h2 className="text-xl font-semibold mb-4">{title}</h2>
-      <a href={link} className="text-blue-500 hover:underline">
-        Przejdź
-      </a>
     </div>
   );
 }
