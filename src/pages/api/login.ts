@@ -77,7 +77,7 @@ export default async function handler(
       console.log("JWT_SECRET:", process.env.JWT_SECRET);
 
       const token = jwt.sign(
-        { id: user._id, email: user.email },
+        { id: user._id, email: user.email, role: user.role },
         process.env.JWT_SECRET as string,
         { expiresIn: "1h" }
       );
