@@ -91,8 +91,9 @@ export default function AdminUsersPage() {
   const fetchParams = useMemo(() => ({ page: currentPage, pageSize }), [currentPage, pageSize]);
 
   useEffect(() => {
-    if (session?.user?.role === 'admin' && !isInitialized) {
-      dispatch(fetchUsers(fetchParams))
+    if (session?.user?.role === 'admin' && !isInitialized && users.length === 0) {
+      console.log("Fetching users");
+      dispatch(fetchUsers({ page: currentPage, pageSize }))
         .unwrap()
         .then(() => {
           setIsLoading(false);
@@ -106,7 +107,7 @@ export default function AdminUsersPage() {
     } else if (session?.user?.role !== 'admin') {
       router.push("/login");
     }
-  }, [session, dispatch, router, isInitialized, fetchParams]);
+  }, [session, dispatch, router, isInitialized, users.length, currentPage, pageSize]);
 
   const handleDeleteUser = useCallback(async (userId: string) => {
     if (!userId) {
@@ -155,8 +156,18 @@ export default function AdminUsersPage() {
   };
 
   const handlePageChange = useCallback((newPage: number) => {
-    dispatch(fetchUsers({ page: newPage, pageSize }));
-  }, [dispatch, pageSize]);
+    if (newPage !== currentPage) {
+      setIsLoading(true);
+      dispatch(fetchUsers({ page: newPage, pageSize }))
+        .unwrap()
+        .then(() => setIsLoading(false))
+        .catch((error) => {
+          console.error("Error fetching users:", error);
+          setError("Nie udało się pobrać listy użytkowników");
+          setIsLoading(false);
+        });
+    }
+  }, [dispatch, pageSize, currentPage]);
 
   if (isLoading) {
     return <LoadingSpinner />;
