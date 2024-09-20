@@ -34,6 +34,7 @@ export default async function handler(
         name: user.name,
         email: user.email,
         role: user.role,
+        isVerified: user.isVerified,
       }));
 
       const totalUsers = await User.countDocuments();
@@ -73,6 +74,7 @@ export default async function handler(
         email,
         password: hashedPassword,
         role,
+        isVerified: true, // Ustawiamy isVerified na true dla użytkowników tworzonych przez administratora
       });
 
       await newUser.save();
@@ -82,6 +84,7 @@ export default async function handler(
         name: newUser.name,
         email: newUser.email,
         role: newUser.role,
+        isVerified: newUser.isVerified,
       });
     } catch (error) {
       console.error("Error creating user:", error);

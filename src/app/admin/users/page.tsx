@@ -19,6 +19,7 @@ interface User {
   name: string;
   email: string;
   role: string;
+  isVerified: boolean;
 }
 
 export default function AdminUsersPage() {
@@ -62,12 +63,12 @@ export default function AdminUsersPage() {
 
   const handleDeleteUser = async (userId: string) => {
     if (!userId) {
-      console.error('Invalid userId:', userId);
+      console.error("Invalid userId:", userId);
       return;
     }
     try {
       const response = await fetch(`/api/admin/users/${userId}`, {
-        method: 'DELETE',
+        method: "DELETE",
       });
       if (response.ok) {
         // Odśwież listę użytkowników
@@ -77,7 +78,7 @@ export default function AdminUsersPage() {
         setError(errorData.message || "Nie udało się usunąć użytkownika");
       }
     } catch (error) {
-      console.error('Error deleting user:', error);
+      console.error("Error deleting user:", error);
       setError("Wystąpił błąd podczas usuwania użytkownika");
     }
   };
@@ -225,6 +226,7 @@ export default function AdminUsersPage() {
                 <th className="p-3 text-left text-gray-600">Email</th>
                 <th className="p-3 text-left text-gray-600">Rola</th>
                 <th className="p-3 text-left text-gray-600">Akcje</th>
+                <th className="px-4 py-2 text-gray-600">Status weryfikacji</th>
               </tr>
             </thead>
             <tbody>
@@ -252,6 +254,17 @@ export default function AdminUsersPage() {
                     >
                       Usuń
                     </button>
+                  </td>
+                  <td className="border px-4 py-2">
+                    {user.isVerified ? (
+                      <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-sm font-semibold">
+                        Zweryfikowany
+                      </span>
+                    ) : (
+                      <span className="bg-red-100 text-red-800 px-2 py-1 rounded-full text-sm font-semibold">
+                        Niezweryfikowany
+                      </span>
+                    )}
                   </td>
                 </tr>
               ))}

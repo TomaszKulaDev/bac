@@ -1,3 +1,5 @@
+// src/store/slices/adminSlice.ts
+
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 
 interface User {
@@ -5,6 +7,7 @@ interface User {
   name: string;
   email: string;
   role: string;
+  isVerified: boolean;
 }
 
 interface AdminState {
@@ -20,11 +23,20 @@ const initialState: AdminState = {
 };
 
 export const fetchUsers = createAsyncThunk(
-  'admin/fetchUsers',
+  "admin/fetchUsers",
   async ({ page, pageSize }: { page: number; pageSize: number }) => {
-    const response = await fetch(`/api/admin/users?page=${page}&pageSize=${pageSize}`);
+    const response = await fetch(
+      `/api/admin/users?page=${page}&pageSize=${pageSize}`
+    );
     const data = await response.json();
-    return data;
+    return {
+      users: data.users.map((user: any) => ({
+        ...user,
+        isVerified: user.isVerified || false
+      })),
+      totalUsers: data.totalUsers,
+      currentPage: data.currentPage
+    };
   }
 );
 
@@ -52,11 +64,16 @@ export const updateUserRole = createAsyncThunk(
 );
 
 export const createUser = createAsyncThunk(
-  'admin/createUser',
-  async (userData: { name: string; email: string; password: string; role: string }) => {
-    const response = await fetch('/api/admin/users', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+  "admin/createUser",
+  async (userData: {
+    name: string;
+    email: string;
+    password: string;
+    role: string;
+  }) => {
+    const response = await fetch("/api/admin/users", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(userData),
     });
     if (!response.ok) {
@@ -74,19 +91,29 @@ const adminSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchUsers.fulfilled, (state, action: PayloadAction<{ users: User[], totalUsers: number, currentPage: number }>) => {
-        state.users = action.payload.users;
-        state.totalUsers = action.payload.totalUsers;
-        state.currentPage = action.payload.currentPage;
-      })
+      .addCase(
+        fetchUsers.fulfilled,
+        (
+          state,
+          action: PayloadAction<{
+            users: User[];
+            totalUsers: number;
+            currentPage: number;
+          }>
+        ) => {
+          state.users = action.payload.users;
+          state.totalUsers = action.payload.totalUsers;
+          state.currentPage = action.payload.currentPage;
+        }
+      )
       .addCase(fetchUsers.rejected, (state, action) => {
-        console.error('Błąd podczas pobierania użytkowników:', action.error);
+        console.error("Błąd podczas pobierania użytkowników:", action.error);
       })
       .addCase(deleteUser.fulfilled, (state, action: PayloadAction<string>) => {
-        state.users = state.users.filter(user => user.id !== action.payload);
+        state.users = state.users.filter((user) => user.id !== action.payload);
       })
       .addCase(deleteUser.rejected, (state, action) => {
-        console.error('Błąd podczas usuwania użytkownika:', action.error);
+        console.error("Błąd podczas usuwania użytkownika:", action.error);
       })
       .addCase(
         updateUserRole.fulfilled,
@@ -101,7 +128,7 @@ const adminSlice = createSlice({
       )
       .addCase(updateUserRole.rejected, (state, action) => {
         console.error(
-          'Błąd podczas aktualizacji roli użytkownika:',
+          "Błąd podczas aktualizacji roli użytkownika:",
           action.error
         );
       })
@@ -109,7 +136,7 @@ const adminSlice = createSlice({
         state.users.push(action.payload);
       })
       .addCase(createUser.rejected, (state, action) => {
-        console.error('Błąd podczas tworzenia użytkownika:', action.error);
+        console.error("Błąd podczas tworzenia użytkownika:", action.error);
       });
   },
 });
