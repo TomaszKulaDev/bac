@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import {
@@ -83,6 +83,7 @@ export default function AdminUsersPage() {
     role: "user",
   });
   const [pageSize, setPageSize] = useState(10);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   const handleDeleteUser = useCallback(
     async (userId: string) => {
@@ -133,23 +134,32 @@ export default function AdminUsersPage() {
       });
   };
 
-  const handlePageChange = (newPage: number) => {
-    dispatch(fetchUsers({ page: newPage, pageSize }));
-  };
+  const handlePageChange = useCallback((newPage: number) => {
+    setIsLoading(true);
+    dispatch(fetchUsers({ page: newPage, pageSize }))
+      .unwrap()
+      .then(() => setIsLoading(false))
+      .catch((error) => {
+        console.error("Error fetching users:", error);
+        setError("Nie udało się pobrać listy użytkowników");
+        setIsLoading(false);
+      });
+  }, [dispatch, pageSize]);
+
+  const fetchParams = useMemo(() => ({ page: currentPage, pageSize }), [currentPage, pageSize]);
 
   useEffect(() => {
-    console.log("AdminUsersPage useEffect - user:", user);
-    console.log("AdminUsersPage useEffect - user role:", user?.role);
     if (!user || user.role !== "admin") {
       console.log("Redirecting to login - no user or not admin");
       router.push("/login");
-    } else {
+    } else if (!isInitialized) {
       console.log("Fetching users");
-      dispatch(fetchUsers({ page: currentPage, pageSize }))
+      dispatch(fetchUsers(fetchParams))
         .unwrap()
         .then(() => {
           console.log("Users fetched successfully");
           setIsLoading(false);
+          setIsInitialized(true);
         })
         .catch((error) => {
           console.error("Error fetching users:", error);
@@ -157,7 +167,7 @@ export default function AdminUsersPage() {
           setIsLoading(false);
         });
     }
-  }, [user, dispatch, currentPage, pageSize, router]);
+  }, [user, dispatch, router, isInitialized, fetchParams]);
 
   if (isLoading) {
     return <LoadingSpinner />;

@@ -9,9 +9,35 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       await connectToDatabase();
 
       if (req.method === 'GET') {
-        const page = Number(req.query.page) || 1;
-        const pageSize = Number(req.query.pageSize) || 10;
-        // Reszta kodu...
+        try {
+          const page = parseInt(req.query.page as string) || 1;
+          const pageSize = parseInt(req.query.pageSize as string) || 10;
+          const skip = (page - 1) * pageSize;
+          const users = await User.find({}, "-password")
+            .skip(skip)
+            .limit(pageSize)
+            .lean();
+          const mappedUsers = users.map((user: any) => ({
+            id: user._id.toString(),
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            isVerified: user.isVerified,
+          }));
+          const totalUsers = await User.countDocuments();
+          return res.status(200).json({
+            users: mappedUsers,
+            totalUsers,
+            currentPage: page,
+          });
+        } catch (error) {
+          console.error('Error fetching users:', error);
+          return res
+            .status(500)
+            .json({ message: 'Internal server error' });
+        }
+      } else {
+        res.status(405).json({ message: 'Method not allowed' });
       }
     });
   } catch (error) {

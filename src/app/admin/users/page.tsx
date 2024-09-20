@@ -2,7 +2,7 @@
 
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../../../store/store";
@@ -15,6 +15,7 @@ import {
 import LoadingSpinner from "@/components/LoadingSpinner";
 import AdminLayout from '@/components/AdminLayout';
 import { useSession } from 'next-auth/react';
+import { debounce } from 'lodash';
 
 interface User {
   id: string;
@@ -85,30 +86,27 @@ export default function AdminUsersPage() {
     role: "user",
   });
   const [pageSize, setPageSize] = useState(10);
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  const fetchParams = useMemo(() => ({ page: currentPage, pageSize }), [currentPage, pageSize]);
 
   useEffect(() => {
-    if (status === 'loading') return;
-
-    if (!session || session.user.role !== 'admin') {
-      router.push("/login");
-      return;
-    }
-
-    if (users.length === 0 && !isLoading) {
-      setIsLoading(true);
-      dispatch(fetchUsers({ page: currentPage || 1, pageSize }))
+    if (session?.user?.role === 'admin' && !isInitialized) {
+      dispatch(fetchUsers(fetchParams))
         .unwrap()
         .then(() => {
           setIsLoading(false);
-          setError(null);
+          setIsInitialized(true);
         })
-        .catch((error: Error) => {
+        .catch((error) => {
           console.error("Error fetching users:", error);
           setError("Nie udało się pobrać listy użytkowników");
           setIsLoading(false);
         });
+    } else if (session?.user?.role !== 'admin') {
+      router.push("/login");
     }
-  }, [session, status, router, dispatch, currentPage, pageSize, users.length, isLoading]);
+  }, [session, dispatch, router, isInitialized, fetchParams]);
 
   const handleDeleteUser = useCallback(async (userId: string) => {
     if (!userId) {
@@ -156,9 +154,9 @@ export default function AdminUsersPage() {
       });
   };
 
-  const handlePageChange = (newPage: number) => {
+  const handlePageChange = useCallback((newPage: number) => {
     dispatch(fetchUsers({ page: newPage, pageSize }));
-  };
+  }, [dispatch, pageSize]);
 
   if (isLoading) {
     return <LoadingSpinner />;
