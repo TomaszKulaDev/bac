@@ -94,9 +94,9 @@ export default function AdminUsersPage() {
       return;
     }
 
-    if (users.length === 0) {
+    if (users.length === 0 && !isLoading) {
       setIsLoading(true);
-      dispatch(fetchUsers({ page: currentPage, pageSize }))
+      dispatch(fetchUsers({ page: currentPage || 1, pageSize }))
         .unwrap()
         .then(() => {
           setIsLoading(false);
@@ -108,7 +108,7 @@ export default function AdminUsersPage() {
           setIsLoading(false);
         });
     }
-  }, [session, status, router, dispatch, currentPage, pageSize, users.length]);
+  }, [session, status, router, dispatch, currentPage, pageSize, users.length, isLoading]);
 
   const handleDeleteUser = useCallback(async (userId: string) => {
     if (!userId) {
