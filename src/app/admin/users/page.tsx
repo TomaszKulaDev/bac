@@ -2,7 +2,7 @@
 
 "use client";
 
-import { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from 'react';
 import { useRouter } from "next/navigation";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../../../store/store";
@@ -21,6 +21,49 @@ interface User {
   role: string;
   isVerified: boolean;
 }
+
+interface UserRowProps {
+  user: User;
+  onUpdateRole: (userId: string, newRole: string) => void;
+  onDeleteUser: (userId: string) => Promise<void>;
+}
+
+const UserRow: React.FC<UserRowProps> = React.memo(({ user, onUpdateRole, onDeleteUser }) => {
+  return (
+    <tr key={user.id} className="border-b hover:bg-gray-50">
+      <td className="p-3 text-gray-700">{user.id}</td>
+      <td className="p-3 text-gray-700">{user.name}</td>
+      <td className="p-3 text-gray-700">{user.email}</td>
+      <td className="p-3">
+        <select
+          value={user.role}
+          onChange={(e) => onUpdateRole(user.id, e.target.value)}
+          className="border rounded p-1 text-gray-700"
+        >
+          <option value="user">Użytkownik</option>
+          <option value="admin">Admin</option>
+        </select>
+      </td>
+      <td className="p-3">
+        <button
+          onClick={() => onDeleteUser(user.id)}
+          className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition duration-300"
+        >
+          Usuń
+        </button>
+      </td>
+      <td className="px-4 py-2">
+        {user.isVerified ? (
+          <span className="text-green-500">Zweryfikowany</span>
+        ) : (
+          <span className="text-red-500">Niezweryfikowany</span>
+        )}
+      </td>
+    </tr>
+  );
+});
+
+UserRow.displayName = 'UserRow';
 
 export default function AdminUsersPage() {
   const router = useRouter();
@@ -61,7 +104,7 @@ export default function AdminUsersPage() {
     }
   }, [user, router, dispatch, currentPage, pageSize]);
 
-  const handleDeleteUser = async (userId: string) => {
+  const handleDeleteUser = useCallback(async (userId: string) => {
     if (!userId) {
       console.error("Invalid userId:", userId);
       return;
@@ -81,15 +124,15 @@ export default function AdminUsersPage() {
       console.error("Error deleting user:", error);
       setError("Wystąpił błąd podczas usuwania użytkownika");
     }
-  };
+  }, [dispatch, currentPage, pageSize]);
 
-  const handleUpdateRole = (userId: string, newRole: string) => {
+  const handleUpdateRole = useCallback((userId: string, newRole: string) => {
     dispatch(updateUserRole({ userId, newRole }))
       .unwrap()
       .catch((error) => {
         setError("Nie udało się zaktualizować roli użytkownika");
       });
-  };
+  }, [dispatch]);
 
   const handleCreateUser = (e: React.FormEvent) => {
     e.preventDefault();
@@ -231,42 +274,12 @@ export default function AdminUsersPage() {
             </thead>
             <tbody>
               {users.map((user) => (
-                <tr key={user.id} className="border-b hover:bg-gray-50">
-                  <td className="p-3 text-gray-700">{user.id}</td>
-                  <td className="p-3 text-gray-700">{user.name}</td>
-                  <td className="p-3 text-gray-700">{user.email}</td>
-                  <td className="p-3">
-                    <select
-                      value={user.role}
-                      onChange={(e) =>
-                        handleUpdateRole(user.id, e.target.value)
-                      }
-                      className="border rounded p-1 text-gray-700"
-                    >
-                      <option value="user">Użytkownik</option>
-                      <option value="admin">Admin</option>
-                    </select>
-                  </td>
-                  <td className="p-3">
-                    <button
-                      onClick={() => handleDeleteUser(user.id)}
-                      className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition duration-300"
-                    >
-                      Usuń
-                    </button>
-                  </td>
-                  <td className="border px-4 py-2">
-                    {user.isVerified ? (
-                      <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-sm font-semibold">
-                        Zweryfikowany
-                      </span>
-                    ) : (
-                      <span className="bg-red-100 text-red-800 px-2 py-1 rounded-full text-sm font-semibold">
-                        Niezweryfikowany
-                      </span>
-                    )}
-                  </td>
-                </tr>
+                <UserRow 
+                  key={user.id} 
+                  user={user} 
+                  onUpdateRole={handleUpdateRole} 
+                  onDeleteUser={handleDeleteUser}
+                />
               ))}
             </tbody>
           </table>
