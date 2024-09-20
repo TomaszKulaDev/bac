@@ -14,6 +14,7 @@ import {
 } from "../../../store/slices/adminSlice";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import AdminLayout from '@/components/AdminLayout';
+import { useSession } from 'next-auth/react';
 
 interface User {
   id: string;
@@ -71,7 +72,7 @@ UserRow.displayName = "UserRow";
 export default function AdminUsersPage() {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
-  const user = useSelector((state: RootState) => state.auth.user);
+  const { data: session, status } = useSession();
   const { users, totalUsers, currentPage } = useSelector(
     (state: RootState) => state.admin
   );
@@ -86,13 +87,10 @@ export default function AdminUsersPage() {
   const [pageSize, setPageSize] = useState(10);
 
   useEffect(() => {
-    if (!user) {
+    if (status === 'loading') return;
+
+    if (!session || session.user.role !== 'admin') {
       router.push("/login");
-      return;
-    }
-    
-    if (user.role !== "admin") {
-      router.push("/");
       return;
     }
 
@@ -110,7 +108,7 @@ export default function AdminUsersPage() {
           setIsLoading(false);
         });
     }
-  }, [user, router, dispatch, currentPage, pageSize, users.length]);
+  }, [session, status, router, dispatch, currentPage, pageSize, users.length]);
 
   const handleDeleteUser = useCallback(async (userId: string) => {
     if (!userId) {
