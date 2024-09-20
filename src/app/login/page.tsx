@@ -60,25 +60,21 @@ export default function Login() {
   const { data: session, status } = useSession();
 
   useEffect(() => {
-    console.log("Login page - Session status:", status);
-    console.log("Login page - Session data:", session);
     if (status === "authenticated" && session?.user) {
-      console.log("Login page - Dispatching login action with user:", session.user);
       dispatch(login({
         user: {
           id: session.user.id || '',
-          email: session.user.email || null,
-          name: session.user.name || null,
+          email: session.user.email || '',
+          name: session.user.name || '',
           role: session.user.role || 'user'
         }
       }));
-      console.log("Login page - Login action dispatched");
       
-      // Dodajemy małe opóźnienie przed przekierowaniem
-      setTimeout(() => {
-        console.log("Login page - Redirecting to admin panel");
+      if (session.user.role === 'admin') {
         router.push("/admin");
-      }, 100);
+      } else {
+        router.push("/profile");
+      }
     }
   }, [status, session, router, dispatch]);
 

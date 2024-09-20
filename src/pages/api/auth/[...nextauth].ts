@@ -42,6 +42,7 @@ export const authOptions: NextAuthOptions = {
         const { email, password } = credentials;
         const user = await User.findOne({ email });
         console.log("NextAuth: User found:", user ? "Yes" : "No");
+        console.log("NextAuth: User found:", user ? "Yes" : "No");
 
         if (!user) {
           console.log("NextAuth: User not found");
@@ -71,18 +72,35 @@ export const authOptions: NextAuthOptions = {
       console.log("NextAuth: JWT callback");
       if (user) {
         console.log("NextAuth: Adding user data to token", user);
-        token.role = (user as any).role || 'user';
+        token.role = (user as any).role || "user";
       }
       return token;
     },
-    async session({ session, token }) {
-      console.log("NextAuth: Session callback");
-      if (session.user) {
-        console.log("NextAuth: Adding token data to session", token);
-        session.user.role = typeof token.role === 'string' ? token.role : 'user';
-        session.user.id = token.sub || '';
+    async session({ session, token, user }) {
+      if (session?.user) {
+        session.user.id = token.sub || "";
+        const dbUser = await User.findOne({ email: session.user.email });
+        if (dbUser) {
+          session.user.role = dbUser.role;
+        }
       }
       return session;
+    },
+    async signIn({ user, account }) {
+      if (account?.provider === "google") {
+        await connectToDatabase();
+        const existingUser = await User.findOne({ email: user.email });
+        if (!existingUser) {
+          const newUser = new User({
+            name: user.name,
+            email: user.email,
+            role: "user",
+            isVerified: true,
+          });
+          await newUser.save();
+        }
+      }
+      return true;
     },
   },
   pages: {
