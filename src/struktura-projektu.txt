@@ -1,9 +1,9 @@
-Aktualna struktura projektu (70 plików)
+Aktualna struktura projektu (71 plików)
 
 Statystyki projektu:
 Całkowity rozmiar: 0.86 MB
-Całkowita liczba linii kodu: 6668
-Typy plików: {".local":1,".json":3,".ts":25,".mjs":3,"":1,".png":2,".txt":1,".md":1,".tsx":29,".ico":1,".css":1,".js":1,".tsbuildinfo":1}
+Całkowita liczba linii kodu: 6823
+Typy plików: {".local":1,".json":3,".ts":25,".mjs":3,"":1,".png":2,".txt":2,".md":1,".tsx":29,".ico":1,".css":1,".js":1,".tsbuildinfo":1}
 
 Struktura plików projektu:
 ├── .env.local (.local, 0.80 KB)
@@ -24,7 +24,7 @@ Struktura plików projektu:
 │   │   ├── accommodations/
 │   │   │   └── page.tsx (.tsx, 0.15 KB)
 │   │   ├── admin/
-│   │   │   ├── page.tsx (.tsx, 2.05 KB)
+│   │   │   ├── page.tsx (.tsx, 2.82 KB)
 │   │   │   └── users/
 │   │   │       └── page.tsx (.tsx, 9.57 KB)
 │   │   ├── blog/
@@ -47,7 +47,7 @@ Struktura plików projektu:
 │   │   │   └── page.tsx (.tsx, 0.11 KB)
 │   │   ├── layout.tsx (.tsx, 1.85 KB)
 │   │   ├── login/
-│   │   │   └── page.tsx (.tsx, 12.17 KB)
+│   │   │   └── page.tsx (.tsx, 11.85 KB)
 │   │   ├── mentorship/
 │   │   │   └── page.tsx (.tsx, 0.12 KB)
 │   │   ├── music/
@@ -88,7 +88,7 @@ Struktura plików projektu:
 │   │   │   │       ├── index.ts (.ts, 2.40 KB)
 │   │   │   │       └── [userId].ts (.ts, 1.94 KB)
 │   │   │   ├── auth/
-│   │   │   │   └── [...nextauth].ts (.ts, 2.95 KB)
+│   │   │   │   └── [...nextauth].ts (.ts, 3.44 KB)
 │   │   │   ├── forgot-password.ts (.ts, 3.63 KB)
 │   │   │   ├── login.ts (.ts, 3.41 KB)
 │   │   │   ├── register.ts (.ts, 3.79 KB)
@@ -110,6 +110,7 @@ Struktura plików projektu:
 │   │   │   ├── authSlice.ts (.ts, 0.79 KB)
 │   │   │   └── types.ts (.ts, 0.12 KB)
 │   │   └── store.ts (.ts, 0.39 KB)
+│   ├── struktura-projektu.txt (.txt, 5.29 KB)
 │   ├── types/
 │   │   └── next-auth.d.ts (.ts, 0.62 KB)
 │   └── utils/

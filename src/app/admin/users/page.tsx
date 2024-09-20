@@ -60,13 +60,25 @@ export default function AdminUsersPage() {
     }
   }, [user, router, dispatch, currentPage, pageSize]);
 
-  const handleDeleteUser = (userId: string) => {
-    if (window.confirm("Czy na pewno chcesz usunąć tego użytkownika?")) {
-      dispatch(deleteUser(userId))
-        .unwrap()
-        .catch((error) => {
-          setError("Nie udało się usunąć użytkownika");
-        });
+  const handleDeleteUser = async (userId: string) => {
+    if (!userId) {
+      console.error('Invalid userId:', userId);
+      return;
+    }
+    try {
+      const response = await fetch(`/api/admin/users/${userId}`, {
+        method: 'DELETE',
+      });
+      if (response.ok) {
+        // Odśwież listę użytkowników
+        dispatch(fetchUsers({ page: currentPage, pageSize }));
+      } else {
+        const errorData = await response.json();
+        setError(errorData.message || "Nie udało się usunąć użytkownika");
+      }
+    } catch (error) {
+      console.error('Error deleting user:', error);
+      setError("Wystąpił błąd podczas usuwania użytkownika");
     }
   };
 
@@ -216,7 +228,7 @@ export default function AdminUsersPage() {
               </tr>
             </thead>
             <tbody>
-              {users.map((user: User) => (
+              {users.map((user) => (
                 <tr key={user.id} className="border-b hover:bg-gray-50">
                   <td className="p-3 text-gray-700">{user.id}</td>
                   <td className="p-3 text-gray-700">{user.name}</td>

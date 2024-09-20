@@ -18,6 +18,12 @@ export default async function handler(
 
   const { userId } = req.query;
 
+  console.log("Received userId:", userId);
+
+  if (!userId || typeof userId !== 'string') {
+    return res.status(400).json({ message: "Nieprawidłowe ID użytkownika" });
+  }
+
   if (req.method === "DELETE") {
     try {
       const deletedUser = await User.findByIdAndDelete(userId);
@@ -27,6 +33,11 @@ export default async function handler(
       return res.status(200).json({ message: "Użytkownik usunięty pomyślnie" });
     } catch (error) {
       console.error("Error deleting user:", error);
+      if (error instanceof Error) {
+        if (error.name === 'CastError') {
+          return res.status(400).json({ message: "Nieprawidłowy format ID użytkownika" });
+        }
+      }
       return res
         .status(500)
         .json({ message: "Wystąpił błąd podczas usuwania użytkownika" });
