@@ -13,7 +13,7 @@ import {
   createUser,
 } from "../../../store/slices/adminSlice";
 import LoadingSpinner from "@/components/LoadingSpinner";
-import AdminLayout from "@/components/AdminLayout";
+import AdminLayout from '@/components/AdminLayout';
 
 interface User {
   id: string;
@@ -86,51 +86,53 @@ export default function AdminUsersPage() {
   const [pageSize, setPageSize] = useState(10);
 
   useEffect(() => {
-    console.log("AdminUsersPage useEffect - user:", user);
-    console.log("AdminUsersPage useEffect - user role:", user?.role);
-    if (!user || user.role !== "admin") {
-      console.log("Redirecting to login - no user or not admin");
+    if (!user) {
       router.push("/login");
-    } else {
-      console.log("Fetching users");
+      return;
+    }
+    
+    if (user.role !== "admin") {
+      router.push("/");
+      return;
+    }
+
+    if (users.length === 0) {
+      setIsLoading(true);
       dispatch(fetchUsers({ page: currentPage, pageSize }))
         .unwrap()
         .then(() => {
-          console.log("Users fetched successfully");
           setIsLoading(false);
+          setError(null);
         })
-        .catch((error) => {
+        .catch((error: Error) => {
           console.error("Error fetching users:", error);
           setError("Nie udało się pobrać listy użytkowników");
           setIsLoading(false);
         });
     }
-  }, [user, router, dispatch, currentPage, pageSize]);
+  }, [user, router, dispatch, currentPage, pageSize, users.length]);
 
-  const handleDeleteUser = useCallback(
-    async (userId: string) => {
-      if (!userId) {
-        console.error("Invalid userId:", userId);
-        return;
+  const handleDeleteUser = useCallback(async (userId: string) => {
+    if (!userId) {
+      console.error("Invalid userId:", userId);
+      return;
+    }
+    try {
+      const response = await fetch(`/api/admin/users/${userId}`, {
+        method: "DELETE",
+      });
+      if (response.ok) {
+        // Odśwież listę użytkowników
+        dispatch(fetchUsers({ page: currentPage, pageSize }));
+      } else {
+        const errorData = await response.json();
+        setError(errorData.message || "Nie udało się usunąć użytkownika");
       }
-      try {
-        const response = await fetch(`/api/admin/users/${userId}`, {
-          method: "DELETE",
-        });
-        if (response.ok) {
-          // Odśwież listę użytkowników
-          dispatch(fetchUsers({ page: currentPage, pageSize }));
-        } else {
-          const errorData = await response.json();
-          setError(errorData.message || "Nie udało się usunąć użytkownika");
-        }
-      } catch (error) {
-        console.error("Error deleting user:", error);
-        setError("Wystąpił błąd podczas usuwania użytkownika");
-      }
-    },
-    [dispatch, currentPage, pageSize]
-  );
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      setError("Wystąpił błąd podczas usuwania użytkownika");
+    }
+  }, [dispatch, currentPage, pageSize]);
 
   const handleUpdateRole = useCallback(
     (userId: string, newRole: string) => {
@@ -282,7 +284,7 @@ export default function AdminUsersPage() {
               </tr>
             </thead>
             <tbody>
-              {users.map((user) => (
+              {users.map((user: User) => (
                 <UserRow
                   key={user.id}
                   user={user}
