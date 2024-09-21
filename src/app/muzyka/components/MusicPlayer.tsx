@@ -10,12 +10,7 @@ import Image from "next/image";
 
 // Rest of the imports...
 
-interface Song {
-  id: string;
-  title: string;
-  artist: string;
-  youtubeId: string;
-}
+import { Song } from "../types";
 
 interface MusicPlayerProps {
   songs: Song[];

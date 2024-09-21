@@ -1,10 +1,13 @@
 import React from "react";
 import dynamic from "next/dynamic";
 
-const MusicPlayer = dynamic(() => import("@/components/MusicPlayer"), {
-  ssr: false,
-  loading: () => <p>Loading...</p>,
-});
+const MusicPlayer = dynamic(
+  () => import("@/app/muzyka/components/MusicPlayer"),
+  {
+    ssr: false,
+    loading: () => <p>Loading...</p>,
+  }
+);
 
 const songs = [
   {
