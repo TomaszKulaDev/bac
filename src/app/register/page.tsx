@@ -203,7 +203,7 @@ export default function Register() {
             <title>Rejestracja - baciata.pl</title>
             <meta name="description" content={description} />
           </Head>
-          <h1 className="text-2xl font-bold mb-4 text-center">
+          <h1 className="text-gray-700 font-medium mb-4 text-2xltext-center">
             Zarejestruj się
           </h1>
 

@@ -16,6 +16,7 @@ import LoadingSpinner from "@/components/LoadingSpinner";
 import AdminLayout from '@/components/AdminLayout';
 import { useSession } from 'next-auth/react';
 import { debounce } from 'lodash';
+import { connectToDatabase, isConnected } from '@/lib/mongodb';
 
 interface User {
   id: string;
@@ -93,6 +94,9 @@ export default function AdminUsersPage() {
   useEffect(() => {
     if (session?.user?.role === 'admin' && !isInitialized && users.length === 0) {
       console.log("Fetching users");
+      if (!isConnected()) {
+        connectToDatabase();
+      }
       dispatch(fetchUsers({ page: currentPage, pageSize }))
         .unwrap()
         .then(() => {
