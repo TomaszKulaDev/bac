@@ -4,7 +4,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import YouTube, { YouTubeProps } from "react-youtube";
-import { FaPlay, FaMusic, FaArrowUp, FaArrowDown, FaThumbsUp, FaThumbsDown } from "react-icons/fa";
+import { FaPlay, FaMusic, FaArrowUp, FaArrowDown, FaThumbsUp, FaThumbsDown, FaHeart } from "react-icons/fa";
 import Image from "next/image";
 import { Song } from "../types";
 
@@ -22,6 +22,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
   const [isLoading, setIsLoading] = useState(true);
   const playerRef = useRef<any>(null);
   const [votes, setVotes] = useState<{ [key: string]: number }>({});
+  const [favorites, setFavorites] = useState<{ [key: string]: boolean }>({});
 
   const opts: YouTubeProps["opts"] = {
     height: "390",
@@ -69,6 +70,13 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
     setVotes(prevVotes => ({
       ...prevVotes,
       [songId]: (prevVotes[songId] || 0) + (voteType === 'up' ? 1 : -1)
+    }));
+  };
+
+  const toggleFavorite = (songId: string) => {
+    setFavorites(prevFavorites => ({
+      ...prevFavorites,
+      [songId]: !prevFavorites[songId]
     }));
   };
 
@@ -150,6 +158,14 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
               >
                 <FaThumbsUp className="inline mr-2" />
                 {votes[songs[currentSongIndex].id] > 0 ? votes[songs[currentSongIndex].id] : 0}
+              </button>
+              <button
+                onClick={() => toggleFavorite(songs[currentSongIndex].id)}
+                className={`${
+                  favorites[songs[currentSongIndex].id] ? 'bg-red-500' : 'bg-gray-300'
+                } text-white px-4 py-2 rounded-full hover:bg-red-600 transition duration-300`}
+              >
+                <FaHeart className="inline" />
               </button>
               <button
                 onClick={() => handleVote(songs[currentSongIndex].id, 'down')}
