@@ -2,7 +2,7 @@
 
 "use client";
 
-import { FaPlay, FaPause, FaArrowUp, FaArrowDown } from "react-icons/fa";
+import { FaPlay, FaPause, FaArrowUp, FaArrowDown, FaMusic } from "react-icons/fa";
 import React, { useState, useEffect, useRef } from "react";
 
 import { YouTubePlayer } from "youtube-player/dist/types";
@@ -143,7 +143,11 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
                 </div>
               </div>
               <div className="flex-shrink-0">
-                <FaPlay className="text-gray-500 text-xl hover:text-blue-500 transition-colors duration-300" />
+                {currentSongIndex === index && isPlaying ? (
+                  <FaMusic className="text-blue-500 text-xl transition-colors duration-300" />
+                ) : (
+                  <FaPlay className="text-gray-500 text-xl hover:text-blue-500 transition-colors duration-300" />
+                )}
               </div>
             </div>
           ))}
