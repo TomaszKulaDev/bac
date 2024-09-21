@@ -229,7 +229,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
             <div className="flex justify-center items-center space-x-4 mt-4 mb-4">
               <button
                 onClick={() => handleVote(songs[currentSongIndex].id, "up")}
-                className="bg-green-500 text-white px-4 py-2 rounded-full hover:bg-green-600 transition duration-300"
+                className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-full hover:from-purple-600 hover:to-pink-600 transition duration-300"
               >
                 <FaThumbsUp className="inline mr-2" />
                 {votes[songs[currentSongIndex].id] > 0
@@ -240,15 +240,15 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
                 onClick={() => toggleFavorite(songs[currentSongIndex].id)}
                 className={`${
                   favorites[songs[currentSongIndex].id]
-                    ? "bg-red-500"
+                    ? "bg-gradient-to-r from-pink-500 to-purple-500"
                     : "bg-gray-300"
-                } text-white px-4 py-2 rounded-full hover:bg-red-600 transition duration-300`}
+                } text-white px-4 py-2 rounded-full hover:from-pink-600 hover:to-purple-600 transition duration-300`}
               >
                 <FaHeart className="inline" />
               </button>
               <button
                 onClick={() => handleVote(songs[currentSongIndex].id, "down")}
-                className="bg-red-500 text-white px-4 py-2 rounded-full hover:bg-red-600 transition duration-300"
+                className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-full hover:from-purple-600 hover:to-pink-600 transition duration-300"
               >
                 <FaThumbsDown className="inline mr-2" />
                 {votes[songs[currentSongIndex].id] < 0
@@ -259,20 +259,20 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
             <div className="flex justify-center items-center space-x-4 mt-4">
               <button
                 onClick={previousSong}
-                className="bg-blue-500 text-white px-6 py-3 rounded-full hover:bg-blue-600 transition duration-300 text-lg"
+                className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-full hover:from-purple-600 hover:to-pink-600 transition duration-300 text-lg"
               >
                 <FaArrowUp className="mr-2 inline" />
                 Poprzedni
               </button>
               <button
                 onClick={togglePlay}
-                className="bg-blue-500 text-white px-6 py-3 rounded-full hover:bg-blue-600 transition duration-300 text-lg"
+                className="bg-gradient-to-r from-pink-500 to-purple-500 text-white px-6 py-3 rounded-full hover:from-pink-600 hover:to-purple-600 transition duration-300 text-lg"
               >
                 {isPlaying ? "Pauza" : "Odtwórz"}
               </button>
               <button
                 onClick={nextSong}
-                className="bg-blue-500 text-white px-6 py-3 rounded-full hover:bg-blue-600 transition duration-300 text-lg"
+                className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-full hover:from-purple-600 hover:to-pink-600 transition duration-300 text-lg"
               >
                 Następny
                 <FaArrowDown className="ml-2 inline" />
