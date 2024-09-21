@@ -93,6 +93,22 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
 
   return (
     <div className="music-player bg-white shadow-lg min-h-screen flex flex-col w-full">
+      <div className="playlist-header bg-gradient-to-r from-purple-500 to-pink-500 text-white p-6 shadow-md">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center">
+            <FaMusic className="text-4xl mr-4" />
+            <div>
+              <h1 className="text-3xl font-bold">Bachata Top Playlist 2024</h1>
+              <p className="text-sm opacity-75">{songs.length} utworów • Zaktualizowano: {new Date().toLocaleDateString()}</p>
+            </div>
+          </div>
+          <div className="hidden md:block">
+            <button className="bg-white text-purple-500 px-4 py-2 rounded-full hover:bg-opacity-90 transition duration-300">
+              Udostępnij playlistę
+            </button>
+          </div>
+        </div>
+      </div>
       <div className="flex flex-col md:flex-row flex-grow">
         <div className="song-list md:w-1/3 border-r border-gray-200 overflow-y-auto">
           {songs.slice(0, visibleSongs).map((song, index) => (
