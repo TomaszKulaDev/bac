@@ -6,6 +6,7 @@ import { FaPlay, FaPause } from "react-icons/fa";
 import React, { useState, useEffect, useRef } from "react";
 import { YouTubePlayer } from "youtube-player/dist/types";
 import YouTube, { YouTubeEvent, YouTubeProps } from "react-youtube";
+import Image from "next/image";
 
 // Rest of the imports...
 
@@ -19,6 +20,10 @@ interface Song {
 interface MusicPlayerProps {
   songs: Song[];
 }
+
+const getYouTubeThumbnail = (youtubeId: string) => {
+  return `https://img.youtube.com/vi/${youtubeId}/0.jpg`;
+};
 
 const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
@@ -105,17 +110,27 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
               key={song.id}
               className={`song-item p-3 cursor-pointer hover:bg-gray-100 transition duration-300 ease-in-out ${
                 currentSongIndex === index ? "bg-gray-200" : ""
-              }`}
+              } flex items-center`}
               onClick={() => {
                 setCurrentSongIndex(index);
                 setIsPlaying(true);
                 setIsLoading(true);
               }}
             >
-              <h3 className="text-lg font-semibold text-gray-800">
-                {song.title}
-              </h3>
-              <p className="text-sm text-gray-600">{song.artist}</p>
+              <div className="w-16 h-16 relative rounded-full overflow-hidden mr-3">
+                <Image
+                  src={getYouTubeThumbnail(song.youtubeId)}
+                  alt={song.artist}
+                  layout="fill"
+                  objectFit="cover"
+                />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-gray-800">
+                  {song.title}
+                </h3>
+                <p className="text-sm text-gray-600">{song.artist}</p>
+              </div>
             </div>
           ))}
         </div>

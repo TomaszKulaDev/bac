@@ -13,31 +13,13 @@ const songs = [
     artist: "David Guetta",
     youtubeId: "UO3N_PRIgX0",
   },
-  { id: "2", title: "To Binge", artist: "Gorillaz", youtubeId: "LMnrFiG8FRo" },
   {
-    id: "3",
-    title: "Blinding Lights",
-    artist: "The Weeknd",
-    youtubeId: "4NRXx6U8ABQ",
+    id: "2",
+    title: "To Binge",
+    artist: "Gorillaz",
+    youtubeId: "LMnrFiG8FRo",
   },
-  {
-    id: "4",
-    title: "Dance Monkey",
-    artist: "Tones and I",
-    youtubeId: "1__CAdTJ5JU",
-  },
-  {
-    id: "5",
-    title: "Shape of You",
-    artist: "Ed Sheeran",
-    youtubeId: "JGwWNGJdvx8",
-  },
-  {
-    id: "6",
-    title: "Uptown Funk",
-    artist: "Mark Ronson ft. Bruno Mars",
-    youtubeId: "OPf0YbXqDm0",
-  },
+  // Dodaj thumbnailUrl dla pozostałych utworów
 ];
 
 export default function Muzyka() {
