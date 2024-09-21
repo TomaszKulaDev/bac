@@ -4,7 +4,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import YouTube, { YouTubeProps } from "react-youtube";
-import { FaPlay, FaMusic, FaArrowUp, FaArrowDown, FaThumbsUp, FaThumbsDown, FaHeart } from "react-icons/fa";
+import { FaPlay, FaMusic, FaArrowUp, FaArrowDown, FaThumbsUp, FaThumbsDown, FaHeart, FaChevronDown, FaChevronUp } from "react-icons/fa";
 import Image from "next/image";
 import { Song } from "../types";
 
@@ -23,6 +23,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
   const playerRef = useRef<any>(null);
   const [votes, setVotes] = useState<{ [key: string]: number }>({});
   const [favorites, setFavorites] = useState<{ [key: string]: boolean }>({});
+  const [showAllSongs, setShowAllSongs] = useState(false);
 
   const opts: YouTubeProps["opts"] = {
     height: "390",
@@ -80,11 +81,15 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
     }));
   };
 
+  const toggleShowAllSongs = () => {
+    setShowAllSongs(!showAllSongs);
+  };
+
   return (
     <div className="music-player bg-white shadow-lg min-h-screen flex flex-col w-full">
       <div className="flex flex-col md:flex-row flex-grow">
         <div className="song-list md:w-1/3 border-r border-gray-200 overflow-y-auto">
-          {songs.map((song, index) => (
+          {songs.slice(0, 9).map((song, index) => (
             <div
               key={song.id}
               className={`song-item p-4 cursor-pointer hover:bg-gray-100 transition duration-300 ease-in-out ${
@@ -132,6 +137,75 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
               </div>
             </div>
           ))}
+          {songs.length > 9 && (
+            <>
+              {showAllSongs ? (
+                <>
+                  {songs.slice(9).map((song, index) => (
+                    <div
+                      key={song.id}
+                      className={`song-item p-4 cursor-pointer hover:bg-gray-100 transition duration-300 ease-in-out ${
+                        currentSongIndex === index + 9 ? "bg-gray-200" : ""
+                      } flex items-center`}
+                      onClick={() => {
+                        setCurrentSongIndex(index + 9);
+                        setIsPlaying(true);
+                        setIsLoading(true);
+                      }}
+                    >
+                      <div className="flex items-center">
+                        <div className="w-8 h-8 mr-2 flex items-center justify-center bg-gray-200 rounded-full">
+                          <span className="text-gray-600 font-semibold">
+                            {index + 10}
+                          </span>
+                        </div>
+                        <div className="mx-2">
+                          {index % 2 === 0 ? (
+                            <FaArrowUp className="text-green-500 text-2xl" />
+                          ) : (
+                            <FaArrowDown className="text-red-500 text-2xl" />
+                          )}
+                        </div>
+                        <div className="w-12 h-12 mr-4 relative">
+                          <Image
+                            src={getYouTubeThumbnail(song.youtubeId)}
+                            alt={song.title}
+                            layout="fill"
+                            objectFit="cover"
+                            className="rounded"
+                          />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold">{song.title}</h3>
+                          <p className="text-sm text-gray-600">{song.artist}</p>
+                        </div>
+                      </div>
+                      <div className="ml-auto">
+                        {currentSongIndex === index + 9 && isPlaying ? (
+                          <FaMusic className="text-blue-500 text-xl transition-colors duration-300" />
+                        ) : (
+                          <FaPlay className="text-gray-500 text-xl hover:text-blue-500 transition-colors duration-300" />
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                  <button
+                    className="w-full p-4 bg-gray-100 text-blue-500 hover:bg-gray-200 transition duration-300 flex items-center justify-center"
+                    onClick={toggleShowAllSongs}
+                  >
+                    <FaChevronUp className="mr-2" /> Zwiń listę
+                  </button>
+                </>
+              ) : (
+                <button
+                  className="w-full p-4 bg-gray-100 text-blue-500 hover:bg-gray-200 transition duration-300 flex items-center justify-center"
+                  onClick={toggleShowAllSongs}
+                >
+                  <FaChevronDown className="mr-2" /> Zobacz więcej ({songs.length - 9})
+                </button>
+              )}
+            </>
+          )}
         </div>
         <div className="md:w-2/3 flex flex-col">
           <div className="sticky top-0 bg-white z-10 p-6">
