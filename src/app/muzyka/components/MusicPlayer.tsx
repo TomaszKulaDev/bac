@@ -4,7 +4,17 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import YouTube, { YouTubeProps } from "react-youtube";
-import { FaPlay, FaMusic, FaArrowUp, FaArrowDown, FaThumbsUp, FaThumbsDown, FaHeart, FaChevronDown, FaChevronUp } from "react-icons/fa";
+import {
+  FaPlay,
+  FaMusic,
+  FaArrowUp,
+  FaArrowDown,
+  FaThumbsUp,
+  FaThumbsDown,
+  FaHeart,
+  FaChevronDown,
+  FaChevronUp,
+} from "react-icons/fa";
 import Image from "next/image";
 import { Song } from "../types";
 
@@ -69,22 +79,24 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
     setIsLoading(true);
   };
 
-  const handleVote = (songId: string, voteType: 'up' | 'down') => {
-    setVotes(prevVotes => ({
+  const handleVote = (songId: string, voteType: "up" | "down") => {
+    setVotes((prevVotes) => ({
       ...prevVotes,
-      [songId]: (prevVotes[songId] || 0) + (voteType === 'up' ? 1 : -1)
+      [songId]: (prevVotes[songId] || 0) + (voteType === "up" ? 1 : -1),
     }));
   };
 
   const toggleFavorite = (songId: string) => {
-    setFavorites(prevFavorites => ({
+    setFavorites((prevFavorites) => ({
       ...prevFavorites,
-      [songId]: !prevFavorites[songId]
+      [songId]: !prevFavorites[songId],
     }));
   };
 
   const loadMoreSongs = () => {
-    setVisibleSongs(prevVisible => Math.min(prevVisible + songsPerLoad, songs.length));
+    setVisibleSongs((prevVisible) =>
+      Math.min(prevVisible + songsPerLoad, songs.length)
+    );
   };
 
   const collapseSongList = () => {
@@ -99,7 +111,10 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
             <FaMusic className="text-4xl mr-4" />
             <div>
               <h1 className="text-3xl font-bold">Bachata Top Playlist 2024</h1>
-              <p className="text-sm opacity-75">{songs.length} utworów • Zaktualizowano: {new Date().toLocaleDateString()}</p>
+              <p className="text-sm opacity-75">
+                {songs.length} utworów • Zaktualizowano:{" "}
+                {new Date().toLocaleDateString()}
+              </p>
             </div>
           </div>
           <div className="hidden md:block">
@@ -158,36 +173,40 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
                   )}
                 </div>
               </div>
-              {(index + 1) % 10 === 0 && index + 1 < visibleSongs && index + 1 !== songs.length && (
-                <button
-                  className="w-full p-2 bg-gray-100 text-blue-500 hover:bg-gray-200 transition duration-300 flex items-center justify-center text-sm"
-                  onClick={collapseSongList}
-                >
-                  <FaChevronUp className="mr-2" /> 
-                  Zwiń listę
-                </button>
-              )}
+              {(index + 1) % 10 === 0 &&
+                index + 1 < visibleSongs &&
+                index + 1 !== songs.length && (
+                  <button
+                    className="w-full p-2 bg-gray-100 text-blue-500 hover:bg-gray-200 transition duration-300 flex items-center justify-center text-sm"
+                    onClick={collapseSongList}
+                  >
+                    <FaChevronUp className="mr-2" />
+                    Zwiń listę
+                  </button>
+                )}
             </React.Fragment>
           ))}
-          {songs.length > initialVisibleSongs && (
-            visibleSongs < songs.length ? (
+          {songs.length > initialVisibleSongs &&
+            (visibleSongs < songs.length ? (
               <button
                 className="w-full p-4 bg-gray-100 text-blue-500 hover:bg-gray-200 transition duration-300 flex items-center justify-center"
                 onClick={loadMoreSongs}
               >
-                <FaChevronDown className="mr-2" /> 
-                Zobacz więcej ({Math.min(songsPerLoad, songs.length - visibleSongs)})
+                <FaChevronDown className="mr-2" />
+                Zobacz więcej (
+                {Math.min(songsPerLoad, songs.length - visibleSongs)})
               </button>
-            ) : visibleSongs > initialVisibleSongs && (
-              <button
-                className="w-full p-4 bg-gray-100 text-blue-500 hover:bg-gray-200 transition duration-300 flex items-center justify-center"
-                onClick={collapseSongList}
-              >
-                <FaChevronUp className="mr-2" /> 
-                Zwiń listę
-              </button>
-            )
-          )}
+            ) : (
+              visibleSongs > initialVisibleSongs && (
+                <button
+                  className="w-full p-4 bg-gray-100 text-blue-500 hover:bg-gray-200 transition duration-300 flex items-center justify-center"
+                  onClick={collapseSongList}
+                >
+                  <FaChevronUp className="mr-2" />
+                  Zwiń listę
+                </button>
+              )
+            ))}
         </div>
         <div className="md:w-2/3 flex flex-col">
           <div className="sticky top-0 bg-white z-10 p-6">
@@ -209,26 +228,32 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
             </div>
             <div className="flex justify-center items-center space-x-4 mt-4 mb-4">
               <button
-                onClick={() => handleVote(songs[currentSongIndex].id, 'up')}
+                onClick={() => handleVote(songs[currentSongIndex].id, "up")}
                 className="bg-green-500 text-white px-4 py-2 rounded-full hover:bg-green-600 transition duration-300"
               >
                 <FaThumbsUp className="inline mr-2" />
-                {votes[songs[currentSongIndex].id] > 0 ? votes[songs[currentSongIndex].id] : 0}
+                {votes[songs[currentSongIndex].id] > 0
+                  ? votes[songs[currentSongIndex].id]
+                  : 0}
               </button>
               <button
                 onClick={() => toggleFavorite(songs[currentSongIndex].id)}
                 className={`${
-                  favorites[songs[currentSongIndex].id] ? 'bg-red-500' : 'bg-gray-300'
+                  favorites[songs[currentSongIndex].id]
+                    ? "bg-red-500"
+                    : "bg-gray-300"
                 } text-white px-4 py-2 rounded-full hover:bg-red-600 transition duration-300`}
               >
                 <FaHeart className="inline" />
               </button>
               <button
-                onClick={() => handleVote(songs[currentSongIndex].id, 'down')}
+                onClick={() => handleVote(songs[currentSongIndex].id, "down")}
                 className="bg-red-500 text-white px-4 py-2 rounded-full hover:bg-red-600 transition duration-300"
               >
                 <FaThumbsDown className="inline mr-2" />
-                {votes[songs[currentSongIndex].id] < 0 ? Math.abs(votes[songs[currentSongIndex].id]) : 0}
+                {votes[songs[currentSongIndex].id] < 0
+                  ? Math.abs(votes[songs[currentSongIndex].id])
+                  : 0}
               </button>
             </div>
             <div className="flex justify-center items-center space-x-4 mt-4">
@@ -255,6 +280,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
             </div>
           </div>
           <div className="p-6">
+            <h1> Sekcja Komentarzy</h1>
             {/* Tutaj możesz dodać dodatkową zawartość, która będzie przewijana pod odtwarzaczem */}
           </div>
         </div>
