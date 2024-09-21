@@ -1,9 +1,9 @@
 // src/components/MusicPlayer.tsx
 
 "use client";
-
-import { FaPlay, FaPause } from "react-icons/fa";
+import { FaPlay, FaPause, FaArrowUp, FaArrowDown } from "react-icons/fa";
 import React, { useState, useEffect, useRef } from "react";
+
 import { YouTubePlayer } from "youtube-player/dist/types";
 import YouTube, { YouTubeEvent, YouTubeProps } from "react-youtube";
 import Image from "next/image";
@@ -112,8 +112,17 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
                 setIsLoading(true);
               }}
             >
-              <div className="w-6 flex-shrink-0 text-gray-500 font-bold text-2xl mr-4">
-                {index + 2}
+              <div className="w-20 flex-shrink-0 flex items-center mr-2">
+                <span className="text-gray-500 font-bold text-2xl w-8 text-right mr-2">
+                  {index + 2}
+                </span>
+                <div className="w-8 h-8 flex items-center justify-center">
+                  {index % 2 === 0 ? (
+                    <FaArrowUp className="text-green-500 text-xl" />
+                  ) : (
+                    <FaArrowDown className="text-red-500 text-xl" />
+                  )}
+                </div>
               </div>
               <div className="w-16 h-16 relative overflow-hidden mr-3">
                 <Image
