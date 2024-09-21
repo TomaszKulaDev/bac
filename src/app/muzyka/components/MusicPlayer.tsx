@@ -1,6 +1,7 @@
 // src/components/MusicPlayer.tsx
 
 "use client";
+
 import { FaPlay, FaPause, FaArrowUp, FaArrowDown } from "react-icons/fa";
 import React, { useState, useEffect, useRef } from "react";
 
@@ -105,39 +106,44 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
               key={song.id}
               className={`song-item p-3 cursor-pointer hover:bg-gray-100 transition duration-300 ease-in-out ${
                 currentSongIndex === index ? "bg-gray-200" : ""
-              } flex items-center`}
+              } flex items-center justify-between`}
               onClick={() => {
                 setCurrentSongIndex(index);
                 setIsPlaying(true);
                 setIsLoading(true);
               }}
             >
-              <div className="w-20 flex-shrink-0 flex items-center mr-2">
-                <span className="text-gray-500 font-bold text-2xl w-8 text-right mr-2">
-                  {index + 2}
-                </span>
-                <div className="w-8 h-8 flex items-center justify-center">
-                  {index % 2 === 0 ? (
-                    <FaArrowUp className="text-green-500 text-xl" />
-                  ) : (
-                    <FaArrowDown className="text-red-500 text-xl" />
-                  )}
+              <div className="flex items-center">
+                <div className="w-20 flex-shrink-0 flex items-center mr-2">
+                  <span className="text-gray-500 font-bold text-2xl w-8 text-right mr-2">
+                    {index + 2}
+                  </span>
+                  <div className="w-8 h-8 flex items-center justify-center">
+                    {index % 2 === 0 ? (
+                      <FaArrowUp className="text-green-500 text-xl" />
+                    ) : (
+                      <FaArrowDown className="text-red-500 text-xl" />
+                    )}
+                  </div>
+                </div>
+                <div className="w-16 h-16 relative overflow-hidden mr-3">
+                  <Image
+                    src={getYouTubeThumbnail(song.youtubeId)}
+                    alt={song.artist}
+                    layout="fill"
+                    objectFit="cover"
+                    className="rounded-lg"
+                  />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-800">
+                    {song.title}
+                  </h3>
+                  <p className="text-sm text-gray-600">{song.artist}</p>
                 </div>
               </div>
-              <div className="w-16 h-16 relative overflow-hidden mr-3">
-                <Image
-                  src={getYouTubeThumbnail(song.youtubeId)}
-                  alt={song.artist}
-                  layout="fill"
-                  objectFit="cover"
-                  className="rounded-lg"
-                />
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold text-gray-800">
-                  {song.title}
-                </h3>
-                <p className="text-sm text-gray-600">{song.artist}</p>
+              <div className="flex-shrink-0">
+                <FaPlay className="text-gray-500 text-xl hover:text-blue-500 transition-colors duration-300" />
               </div>
             </div>
           ))}
