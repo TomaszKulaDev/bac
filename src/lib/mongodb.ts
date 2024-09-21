@@ -22,24 +22,28 @@ if (!cached) {
   cached = global.mongoose = { conn: null, promise: null };
 }
 
+const opts = {
+  bufferCommands: false,
+  serverSelectionTimeoutMS: 15000,
+  socketTimeoutMS: 45000,
+  connectTimeoutMS: 30000,
+  maxPoolSize: 10,
+};
+
 async function connectToDatabase(): Promise<typeof mongoose> {
   if (cached.conn) {
     return cached.conn;
   }
 
   if (!cached.promise) {
-    const opts = {
-      bufferCommands: false,
-    };
-
-    cached.promise = mongoose.connect(MONGODB_URI, opts);
+    cached.promise = connectWithRetry();
   }
 
   try {
     cached.conn = await cached.promise;
   } catch (e) {
     cached.promise = null;
-    console.error('Failed to connect to MongoDB', e);
+    console.error('Nie udało się połączyć z MongoDB', e);
     throw e;
   }
 
@@ -54,4 +58,21 @@ async function disconnectFromDatabase(): Promise<void> {
   }
 }
 
-export { connectToDatabase, disconnectFromDatabase };
+async function connectWithRetry(retries = 5): Promise<typeof mongoose> {
+  try {
+    return await mongoose.connect(MONGODB_URI, opts);
+  } catch (err) {
+    if (retries > 0) {
+      console.log(`Ponowna próba połączenia z MongoDB. Pozostało prób: ${retries}`);
+      await new Promise(resolve => setTimeout(resolve, 5000));
+      return connectWithRetry(retries - 1);
+    }
+    throw err;
+  }
+}
+
+function isConnected(): boolean {
+  return mongoose.connection.readyState === 1;
+}
+
+export { connectToDatabase, disconnectFromDatabase, isConnected };

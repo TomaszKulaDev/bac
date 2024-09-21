@@ -2,7 +2,7 @@
 
 "use client";
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../../../store/store";
@@ -13,6 +13,10 @@ import {
   createUser,
 } from "../../../store/slices/adminSlice";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import AdminLayout from '@/components/AdminLayout';
+import { useSession } from 'next-auth/react';
+import { debounce } from 'lodash';
+import { connectToDatabase, isConnected } from '@/lib/mongodb';
 
 interface User {
   id: string;
@@ -28,47 +32,49 @@ interface UserRowProps {
   onDeleteUser: (userId: string) => Promise<void>;
 }
 
-const UserRow: React.FC<UserRowProps> = React.memo(({ user, onUpdateRole, onDeleteUser }) => {
-  return (
-    <tr key={user.id} className="border-b hover:bg-gray-50">
-      <td className="p-3 text-gray-700">{user.id}</td>
-      <td className="p-3 text-gray-700">{user.name}</td>
-      <td className="p-3 text-gray-700">{user.email}</td>
-      <td className="p-3">
-        <select
-          value={user.role}
-          onChange={(e) => onUpdateRole(user.id, e.target.value)}
-          className="border rounded p-1 text-gray-700"
-        >
-          <option value="user">Użytkownik</option>
-          <option value="admin">Admin</option>
-        </select>
-      </td>
-      <td className="p-3">
-        <button
-          onClick={() => onDeleteUser(user.id)}
-          className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition duration-300"
-        >
-          Usuń
-        </button>
-      </td>
-      <td className="px-4 py-2">
-        {user.isVerified ? (
-          <span className="text-green-500">Zweryfikowany</span>
-        ) : (
-          <span className="text-red-500">Niezweryfikowany</span>
-        )}
-      </td>
-    </tr>
-  );
-});
+const UserRow: React.FC<UserRowProps> = React.memo(
+  ({ user, onUpdateRole, onDeleteUser }) => {
+    return (
+      <tr key={user.id} className="border-b hover:bg-gray-50">
+        <td className="p-3 text-gray-700">{user.id}</td>
+        <td className="p-3 text-gray-700">{user.name}</td>
+        <td className="p-3 text-gray-700">{user.email}</td>
+        <td className="p-3">
+          <select
+            value={user.role}
+            onChange={(e) => onUpdateRole(user.id, e.target.value)}
+            className="border rounded p-1 text-gray-700"
+          >
+            <option value="user">Użytkownik</option>
+            <option value="admin">Admin</option>
+          </select>
+        </td>
+        <td className="p-3">
+          <button
+            onClick={() => onDeleteUser(user.id)}
+            className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition duration-300"
+          >
+            Usuń
+          </button>
+        </td>
+        <td className="px-4 py-2">
+          {user.isVerified ? (
+            <span className="text-green-500">Zweryfikowany</span>
+          ) : (
+            <span className="text-red-500">Niezweryfikowany</span>
+          )}
+        </td>
+      </tr>
+    );
+  }
+);
 
-UserRow.displayName = 'UserRow';
+UserRow.displayName = "UserRow";
 
 export default function AdminUsersPage() {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
-  const user = useSelector((state: RootState) => state.auth.user);
+  const { data: session, status } = useSession();
   const { users, totalUsers, currentPage } = useSelector(
     (state: RootState) => state.admin
   );
@@ -81,28 +87,31 @@ export default function AdminUsersPage() {
     role: "user",
   });
   const [pageSize, setPageSize] = useState(10);
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  const fetchParams = useMemo(() => ({ page: currentPage, pageSize }), [currentPage, pageSize]);
 
   useEffect(() => {
-    console.log("AdminUsersPage useEffect - user:", user);
-    console.log("AdminUsersPage useEffect - user role:", user?.role);
-    if (!user || user.role !== "admin") {
-      console.log("Redirecting to login - no user or not admin");
-      router.push("/login");
-    } else {
+    if (session?.user?.role === 'admin' && !isInitialized && users.length === 0) {
       console.log("Fetching users");
+      if (!isConnected()) {
+        connectToDatabase();
+      }
       dispatch(fetchUsers({ page: currentPage, pageSize }))
         .unwrap()
         .then(() => {
-          console.log("Users fetched successfully");
           setIsLoading(false);
+          setIsInitialized(true);
         })
         .catch((error) => {
           console.error("Error fetching users:", error);
           setError("Nie udało się pobrać listy użytkowników");
           setIsLoading(false);
         });
+    } else if (session?.user?.role !== 'admin') {
+      router.push("/login");
     }
-  }, [user, router, dispatch, currentPage, pageSize]);
+  }, [session, dispatch, router, isInitialized, users.length, currentPage, pageSize]);
 
   const handleDeleteUser = useCallback(async (userId: string) => {
     if (!userId) {
@@ -126,13 +135,16 @@ export default function AdminUsersPage() {
     }
   }, [dispatch, currentPage, pageSize]);
 
-  const handleUpdateRole = useCallback((userId: string, newRole: string) => {
-    dispatch(updateUserRole({ userId, newRole }))
-      .unwrap()
-      .catch((error) => {
-        setError("Nie udało się zaktualizować roli użytkownika");
-      });
-  }, [dispatch]);
+  const handleUpdateRole = useCallback(
+    (userId: string, newRole: string) => {
+      dispatch(updateUserRole({ userId, newRole }))
+        .unwrap()
+        .catch((error) => {
+          setError("Nie udało się zaktualizować roli użytkownika");
+        });
+    },
+    [dispatch]
+  );
 
   const handleCreateUser = (e: React.FormEvent) => {
     e.preventDefault();
@@ -147,9 +159,19 @@ export default function AdminUsersPage() {
       });
   };
 
-  const handlePageChange = (newPage: number) => {
-    dispatch(fetchUsers({ page: newPage, pageSize }));
-  };
+  const handlePageChange = useCallback((newPage: number) => {
+    if (newPage !== currentPage) {
+      setIsLoading(true);
+      dispatch(fetchUsers({ page: newPage, pageSize }))
+        .unwrap()
+        .then(() => setIsLoading(false))
+        .catch((error) => {
+          console.error("Error fetching users:", error);
+          setError("Nie udało się pobrać listy użytkowników");
+          setIsLoading(false);
+        });
+    }
+  }, [dispatch, pageSize, currentPage]);
 
   if (isLoading) {
     return <LoadingSpinner />;
@@ -160,9 +182,9 @@ export default function AdminUsersPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-4xl font-bold mb-8 text-gray-800">
+    <AdminLayout>
+      <div className="container mx-auto px-4 py-8">
+        <h1 className="text-3xl font-bold mb-6 text-gray-800">
           Zarządzanie Użytkownikami
         </h1>
 
@@ -273,11 +295,11 @@ export default function AdminUsersPage() {
               </tr>
             </thead>
             <tbody>
-              {users.map((user) => (
-                <UserRow 
-                  key={user.id} 
-                  user={user} 
-                  onUpdateRole={handleUpdateRole} 
+              {users.map((user: User) => (
+                <UserRow
+                  key={user.id}
+                  user={user}
+                  onUpdateRole={handleUpdateRole}
                   onDeleteUser={handleDeleteUser}
                 />
               ))}
@@ -308,6 +330,6 @@ export default function AdminUsersPage() {
           </div>
         </div>
       </div>
-    </div>
+    </AdminLayout>
   );
 }

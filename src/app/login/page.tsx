@@ -6,11 +6,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import {
-  signIn,
-  useSession,
-  getSession,
-} from "next-auth/react";
+import { signIn, useSession, getSession } from "next-auth/react";
 import Image from "next/image";
 import { useDispatch } from "react-redux";
 import { login } from "../../store/slices/authSlice";
@@ -61,16 +57,18 @@ export default function Login() {
 
   useEffect(() => {
     if (status === "authenticated" && session?.user) {
-      dispatch(login({
-        user: {
-          id: session.user.id || '',
-          email: session.user.email || '',
-          name: session.user.name || '',
-          role: session.user.role || 'user'
-        }
-      }));
-      
-      if (session.user.role === 'admin') {
+      dispatch(
+        login({
+          user: {
+            id: session.user.id || "",
+            email: session.user.email || "",
+            name: session.user.name || "",
+            role: session.user.role || "user",
+          },
+        })
+      );
+
+      if (session.user.role === "admin") {
         router.push("/admin");
       } else {
         router.push("/profile");
@@ -184,7 +182,7 @@ export default function Login() {
           onSubmit={handleLogin}
           className="bg-white p-6 rounded shadow-md w-full max-w-sm"
         >
-          <h1 className="text-2xl font-bold mb-4 text-center">
+          <h1 className="text-gray-700 font-medium mb-4 text-2xl text-center">
             Dołącz szybko z:
           </h1>
           <p className="text-sm text-center mb-4 text-gray-600">
