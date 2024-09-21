@@ -4,7 +4,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import YouTube, { YouTubeProps } from "react-youtube";
-import { FaPlay, FaMusic, FaArrowUp, FaArrowDown } from "react-icons/fa";
+import { FaPlay, FaMusic, FaArrowUp, FaArrowDown, FaThumbsUp, FaThumbsDown } from "react-icons/fa";
 import Image from "next/image";
 import { Song } from "../types";
 
@@ -21,6 +21,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const playerRef = useRef<any>(null);
+  const [votes, setVotes] = useState<{ [key: string]: number }>({});
 
   const opts: YouTubeProps["opts"] = {
     height: "390",
@@ -62,6 +63,13 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
     }
     setIsPlaying(true);
     setIsLoading(true);
+  };
+
+  const handleVote = (songId: string, voteType: 'up' | 'down') => {
+    setVotes(prevVotes => ({
+      ...prevVotes,
+      [songId]: (prevVotes[songId] || 0) + (voteType === 'up' ? 1 : -1)
+    }));
   };
 
   return (
@@ -134,6 +142,22 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
                 onPause={() => setIsPlaying(false)}
                 onEnd={nextSong}
               />
+            </div>
+            <div className="flex justify-center items-center space-x-4 mt-4 mb-4">
+              <button
+                onClick={() => handleVote(songs[currentSongIndex].id, 'up')}
+                className="bg-green-500 text-white px-4 py-2 rounded-full hover:bg-green-600 transition duration-300"
+              >
+                <FaThumbsUp className="inline mr-2" />
+                {votes[songs[currentSongIndex].id] > 0 ? votes[songs[currentSongIndex].id] : 0}
+              </button>
+              <button
+                onClick={() => handleVote(songs[currentSongIndex].id, 'down')}
+                className="bg-red-500 text-white px-4 py-2 rounded-full hover:bg-red-600 transition duration-300"
+              >
+                <FaThumbsDown className="inline mr-2" />
+                {votes[songs[currentSongIndex].id] < 0 ? Math.abs(votes[songs[currentSongIndex].id]) : 0}
+              </button>
             </div>
             <div className="flex justify-center items-center space-x-4 mt-4">
               <button
