@@ -112,14 +112,16 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
                 setIsLoading(true);
               }}
             >
-              <div className="w-16 h-16 relative rounded-full overflow-hidden mr-3">
+              <div className="w-16 h-16 relative overflow-hidden mr-3">
                 <Image
                   src={getYouTubeThumbnail(song.youtubeId)}
                   alt={song.artist}
                   layout="fill"
                   objectFit="cover"
+                  className="rounded-lg"
                 />
               </div>
+
               <div>
                 <h3 className="text-lg font-semibold text-gray-800">
                   {song.title}
