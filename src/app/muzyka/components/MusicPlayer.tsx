@@ -32,15 +32,16 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const playerRef = useRef<any>(null);
-  const [votes, setVotes] = useState<{ [key: string]: number }>({});
-  const [favorites, setFavorites] = useState<{ [key: string]: boolean }>({});
   const [visibleSongs, setVisibleSongs] = useState(7);
   const initialVisibleSongs = 7;
   const songsPerLoad = 10;
   const [localSongs, setLocalSongs] = useState<Song[]>(songs);
   const [player, setPlayer] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
-  const [playerDimensions, setPlayerDimensions] = useState({ width: "640px", height: "360px" });
+  const [playerDimensions, setPlayerDimensions] = useState({
+    width: "640px",
+    height: "360px",
+  });
 
   const opts: YouTubeProps["opts"] = {
     width: "100%",
@@ -87,27 +88,25 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
   };
 
   const handleVote = (songId: string, voteType: "up" | "down") => {
-    setVotes((prevVotes) => {
-      const newVotes = {
-        ...prevVotes,
-        [songId]: (prevVotes[songId] || 0) + (voteType === "up" ? 1 : -1),
-      };
-
-      setLocalSongs((prevSongs) =>
-        prevSongs.map((song) =>
-          song.id === songId ? { ...song, score: newVotes[songId] } : song
-        )
-      );
-
-      return newVotes;
-    });
+    setLocalSongs((prevSongs) =>
+      prevSongs.map((song) =>
+        song.id === songId
+          ? {
+              ...song,
+              votes: song.votes + (voteType === "up" ? 1 : -1),
+              score: song.score + (voteType === "up" ? 1 : -1),
+            }
+          : song
+      )
+    );
   };
 
   const toggleFavorite = (songId: string) => {
-    setFavorites((prevFavorites) => ({
-      ...prevFavorites,
-      [songId]: !prevFavorites[songId],
-    }));
+    setLocalSongs((prevSongs) =>
+      prevSongs.map((song) =>
+        song.id === songId ? { ...song, isFavorite: !song.isFavorite } : song
+      )
+    );
   };
 
   const loadMoreSongs = () => {
@@ -128,7 +127,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
 
   useEffect(() => {
     sortSongs();
-  }, [votes, sortSongs]);
+  }, [localSongs, sortSongs]);
 
   const onReady = (event: { target: any }) => {
     setPlayer(event.target);
@@ -155,8 +154,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
 
   useEffect(() => {
     updatePlayerDimensions();
-    window.addEventListener('resize', updatePlayerDimensions);
-    return () => window.removeEventListener('resize', updatePlayerDimensions);
+    window.addEventListener("resize", updatePlayerDimensions);
+    return () => window.removeEventListener("resize", updatePlayerDimensions);
   }, [updatePlayerDimensions]);
 
   return (
@@ -266,7 +265,13 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
         </div>
         <div className="md:w-2/3 flex flex-col">
           <div className="sticky top-0 bg-white z-10 p-6">
-            <div className="youtube-player mb-4" style={{ width: playerDimensions.width, height: playerDimensions.height }}>
+            <div
+              className="youtube-player mb-4"
+              style={{
+                width: playerDimensions.width,
+                height: playerDimensions.height,
+              }}
+            >
               {error && <div className="error-message">{error}</div>}
               <YouTube
                 videoId={localSongs[currentSongIndex].youtubeId}
@@ -287,14 +292,14 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
                 className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-full hover:from-purple-600 hover:to-pink-600 transition duration-300"
               >
                 <FaThumbsUp className="inline mr-2" />
-                {votes[localSongs[currentSongIndex].id] > 0
-                  ? votes[localSongs[currentSongIndex].id]
+                {localSongs[currentSongIndex].votes > 0
+                  ? localSongs[currentSongIndex].votes
                   : 0}
               </button>
               <button
                 onClick={() => toggleFavorite(localSongs[currentSongIndex].id)}
                 className={`${
-                  favorites[localSongs[currentSongIndex].id]
+                  localSongs[currentSongIndex].isFavorite
                     ? "bg-gradient-to-r from-pink-500 to-purple-500"
                     : "bg-gray-300"
                 } text-white px-4 py-2 rounded-full hover:from-pink-600 hover:to-purple-600 transition duration-300`}
@@ -308,8 +313,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
                 className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-full hover:from-purple-600 hover:to-pink-600 transition duration-300"
               >
                 <FaThumbsDown className="inline mr-2" />
-                {votes[localSongs[currentSongIndex].id] < 0
-                  ? Math.abs(votes[localSongs[currentSongIndex].id])
+                {localSongs[currentSongIndex].votes < 0
+                  ? Math.abs(localSongs[currentSongIndex].votes)
                   : 0}
               </button>
             </div>

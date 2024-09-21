@@ -9,6 +9,7 @@ const MusicPlayer = dynamic(
   }
 );
 
+
 const songs = [
   {
     id: "1",
@@ -16,6 +17,8 @@ const songs = [
     artist: "David Guetta",
     youtubeId: "UO3N_PRIgX0",
     score: 0,
+    votes: 0,
+    isFavorite: false,
   },
   {
     id: "2",
@@ -23,6 +26,8 @@ const songs = [
     artist: "Gorillaz",
     youtubeId: "LMnrFiG8FRo",
     score: 0,
+    votes: 0,
+    isFavorite: false,
   },
   {
     id: "3",
@@ -30,6 +35,8 @@ const songs = [
     artist: "The Weeknd",
     youtubeId: "4NRXx6U8ABQ",
     score: 0,
+    votes: 0,
+    isFavorite: false,
   },
   {
     id: "4",
@@ -37,6 +44,8 @@ const songs = [
     artist: "Tones and I",
     youtubeId: "q0hyYWKXF0Q",
     score: 0,
+    votes: 0,
+    isFavorite: false,
   },
   {
     id: "5",
@@ -44,6 +53,8 @@ const songs = [
     artist: "Ed Sheeran",
     youtubeId: "JGwWNGJdvx8",
     score: 0,
+    votes: 0,
+    isFavorite: false,
   },
   {
     id: "6",
@@ -51,6 +62,8 @@ const songs = [
     artist: "Mark Ronson ft. Bruno Mars",
     youtubeId: "OPf0YbXqDm0",
     score: 0,
+    votes: 0,
+    isFavorite: false,
   },
   {
     id: "7",
@@ -58,6 +71,8 @@ const songs = [
     artist: "Luis Fonsi & Daddy Yankee ft. Justin Bieber",
     youtubeId: "kJQP7kiw5Fk",
     score: 0,
+    votes: 0,
+    isFavorite: false,
   },
   {
     id: "8",
@@ -65,6 +80,8 @@ const songs = [
     artist: "Maroon 5",
     youtubeId: "09R8_2nJtjg",
     score: 0,
+    votes: 0,
+    isFavorite: false,
   },
   {
     id: "9",
@@ -72,6 +89,8 @@ const songs = [
     artist: "Katy Perry",
     youtubeId: "CevxZvSJLk8",
     score: 0,
+    votes: 0,
+    isFavorite: false,
   },
   {
     id: "10",
@@ -79,6 +98,8 @@ const songs = [
     artist: "Taylor Swift",
     youtubeId: "nfWlot6h_JM",
     score: 0,
+    votes: 0,
+    isFavorite: false,
   },
   {
     id: "11",
@@ -86,6 +107,8 @@ const songs = [
     artist: "Pharrell Williams",
     youtubeId: "ZbZSe6N_BXs",
     score: 0,
+    votes: 0,
+    isFavorite: false,
   },
   {
     id: "12",
@@ -93,6 +116,8 @@ const songs = [
     artist: "Justin Timberlake",
     youtubeId: "ru0K8uYEZWw",
     score: 0,
+    votes: 0,
+    isFavorite: false,
   },
   {
     id: "13",
@@ -100,6 +125,8 @@ const songs = [
     artist: "Camila Cabello",
     youtubeId: "BQ0mxQXmLsk",
     score: 0,
+    votes: 0,
+    isFavorite: false,
   },
   {
     id: "14",
@@ -107,6 +134,8 @@ const songs = [
     artist: "Sia ft. Sean Paul",
     youtubeId: "nYh-n7EOtMA",
     score: 0,
+    votes: 0,
+    isFavorite: false,
   },
   {
     id: "15",
@@ -114,6 +143,8 @@ const songs = [
     artist: "The Chainsmokers ft. Halsey",
     youtubeId: "PT2_F-1esPk",
     score: 0,
+    votes: 0,
+    isFavorite: false,
   },
   {
     id: "16",
@@ -121,6 +152,8 @@ const songs = [
     artist: "Shawn Mendes & Camila Cabello",
     youtubeId: "Pkh8UtuejGw",
     score: 0,
+    votes: 0,
+    isFavorite: false,
   },
   {
     id: "17",
@@ -128,6 +161,8 @@ const songs = [
     artist: "Billie Eilish",
     youtubeId: "DyDfgMOUjCI",
     score: 0,
+    votes: 0,
+    isFavorite: false,
   },
   {
     id: "18",
@@ -135,6 +170,8 @@ const songs = [
     artist: "Ariana Grande",
     youtubeId: "QYh6mYIJG2Y",
     score: 0,
+    votes: 0,
+    isFavorite: false,
   },
   {
     id: "19",
@@ -142,6 +179,8 @@ const songs = [
     artist: "Lil Nas X ft. Billy Ray Cyrus",
     youtubeId: "r7qovpFAGrQ",
     score: 0,
+    votes: 0,
+    isFavorite: false,
   },
   {
     id: "20",
@@ -149,6 +188,8 @@ const songs = [
     artist: "Post Malone & Swae Lee",
     youtubeId: "ApXoWvfEYVU",
     score: 0,
+    votes: 0,
+    isFavorite: false,
   },
   {
     id: "21",
@@ -156,6 +197,8 @@ const songs = [
     artist: "Harry Styles",
     youtubeId: "E07s5ZYygMg",
     score: 0,
+    votes: 0,
+    isFavorite: false,
   },
   {
     id: "22",
@@ -163,6 +206,8 @@ const songs = [
     artist: "Dua Lipa",
     youtubeId: "oygrmJFKYZY",
     score: 0,
+    votes: 0,
+    isFavorite: false,
   },
   {
     id: "23",
@@ -170,6 +215,8 @@ const songs = [
     artist: "Maroon 5",
     youtubeId: "SlPhMPnQ58k",
     score: 0,
+    votes: 0,
+    isFavorite: false,
   },
   {
     id: "24",
@@ -177,6 +224,8 @@ const songs = [
     artist: "Post Malone",
     youtubeId: "wXhTHyIgQ_U",
     score: 0,
+    votes: 0,
+    isFavorite: false,
   },
   {
     id: "25",
@@ -184,6 +233,8 @@ const songs = [
     artist: "Lewis Capaldi",
     youtubeId: "zABLecsR5UE",
     score: 0,
+    votes: 0,
+    isFavorite: false,
   },
   {
     id: "26",
@@ -191,6 +242,8 @@ const songs = [
     artist: "Lady Gaga & Bradley Cooper",
     youtubeId: "bo_efYhYU2A",
     score: 0,
+    votes: 0,
+    isFavorite: false,
   },
   {
     id: "27",
@@ -198,6 +251,8 @@ const songs = [
     artist: "Imagine Dragons",
     youtubeId: "7wtfhZwyrcc",
     score: 0,
+    votes: 0,
+    isFavorite: false,
   },
   {
     id: "28",
@@ -205,6 +260,8 @@ const songs = [
     artist: "Imagine Dragons",
     youtubeId: "fKopy74weus",
     score: 0,
+    votes: 0,
+    isFavorite: false,
   },
   {
     id: "29",
@@ -212,6 +269,8 @@ const songs = [
     artist: "Maroon 5 ft. Cardi B",
     youtubeId: "aJOTlE1K90k",
     score: 0,
+    votes: 0,
+    isFavorite: false,
   },
   {
     id: "30",
@@ -219,6 +278,8 @@ const songs = [
     artist: "Shawn Mendes & Camila Cabello",
     youtubeId: "Pkh8UtuejGw",
     score: 0,
+    votes: 0,
+    isFavorite: false,
   },
 ];
 

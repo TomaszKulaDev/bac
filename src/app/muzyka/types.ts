@@ -4,4 +4,6 @@ export interface Song {
   artist: string;
   youtubeId: string;
   score: number;
+  votes: number;
+  isFavorite: boolean;
 }
