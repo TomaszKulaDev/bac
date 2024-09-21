@@ -9,12 +9,14 @@ const AdminMusicPage = () => {
       title: "Hey Mama",
       artist: "David Guetta",
       youtubeId: "dQw4w9WgXcQ",
+      score: 0,
     },
     {
       id: "2",
       title: "To Binge",
       artist: "Gorillaz",
       youtubeId: "dQw4w9WgXcQ",
+      score: 0,
     },
   ]);
 
@@ -25,7 +27,7 @@ const AdminMusicPage = () => {
   });
 
   const addSong = () => {
-    setSongs([...songs, { id: Date.now().toString(), ...newSong }]);
+    setSongs([...songs, { id: Date.now().toString(), ...newSong, score: 0 }]);
     setNewSong({ title: "", artist: "", youtubeId: "" });
   };
 

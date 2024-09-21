@@ -3,4 +3,5 @@ export interface Song {
   title: string;
   artist: string;
   youtubeId: string;
+  score: number;
 }

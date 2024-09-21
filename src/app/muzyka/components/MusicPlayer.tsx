@@ -2,10 +2,11 @@
 
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import YouTube, { YouTubeProps } from "react-youtube";
 import {
   FaPlay,
+  FaPause,
   FaMusic,
   FaArrowUp,
   FaArrowDown,
@@ -36,10 +37,14 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
   const [visibleSongs, setVisibleSongs] = useState(7);
   const initialVisibleSongs = 7;
   const songsPerLoad = 10;
+  const [localSongs, setLocalSongs] = useState<Song[]>(songs);
+  const [player, setPlayer] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [playerDimensions, setPlayerDimensions] = useState({ width: "640px", height: "360px" });
 
   const opts: YouTubeProps["opts"] = {
-    height: "390",
-    width: "640",
+    width: "100%",
+    height: "100%",
     playerVars: {
       autoplay: 1,
     },
@@ -54,23 +59,25 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
     if (currentSongIndex > 0) {
       setCurrentSongIndex(currentSongIndex - 1);
     } else {
-      setCurrentSongIndex(songs.length - 1);
+      setCurrentSongIndex(localSongs.length - 1);
     }
     setIsPlaying(true);
     setIsLoading(true);
   };
 
-  const togglePlay = () => {
-    if (isPlaying) {
-      playerRef.current?.pauseVideo();
-    } else {
-      playerRef.current?.playVideo();
+  const togglePlayback = useCallback(() => {
+    if (player) {
+      if (isPlaying) {
+        player.pauseVideo();
+      } else {
+        player.playVideo();
+      }
+      setIsPlaying(!isPlaying);
     }
-    setIsPlaying(!isPlaying);
-  };
+  }, [player, isPlaying]);
 
   const nextSong = () => {
-    if (currentSongIndex < songs.length - 1) {
+    if (currentSongIndex < localSongs.length - 1) {
       setCurrentSongIndex(currentSongIndex + 1);
     } else {
       setCurrentSongIndex(0);
@@ -80,10 +87,20 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
   };
 
   const handleVote = (songId: string, voteType: "up" | "down") => {
-    setVotes((prevVotes) => ({
-      ...prevVotes,
-      [songId]: (prevVotes[songId] || 0) + (voteType === "up" ? 1 : -1),
-    }));
+    setVotes((prevVotes) => {
+      const newVotes = {
+        ...prevVotes,
+        [songId]: (prevVotes[songId] || 0) + (voteType === "up" ? 1 : -1),
+      };
+
+      setLocalSongs((prevSongs) =>
+        prevSongs.map((song) =>
+          song.id === songId ? { ...song, score: newVotes[songId] } : song
+        )
+      );
+
+      return newVotes;
+    });
   };
 
   const toggleFavorite = (songId: string) => {
@@ -95,13 +112,52 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
 
   const loadMoreSongs = () => {
     setVisibleSongs((prevVisible) =>
-      Math.min(prevVisible + songsPerLoad, songs.length)
+      Math.min(prevVisible + songsPerLoad, localSongs.length)
     );
   };
 
   const collapseSongList = () => {
     setVisibleSongs(initialVisibleSongs);
   };
+
+  const sortSongs = useCallback(() => {
+    setLocalSongs((prevSongs) =>
+      [...prevSongs].sort((a, b) => b.score - a.score)
+    );
+  }, []);
+
+  useEffect(() => {
+    sortSongs();
+  }, [votes, sortSongs]);
+
+  const onReady = (event: { target: any }) => {
+    setPlayer(event.target);
+    setError(null);
+  };
+
+  const onError = (event: { data: number }) => {
+    console.error("Błąd YouTube:", event.data);
+    setError(
+      "Wystąpił błąd podczas ładowania filmu. Sprawdź swoje ustawienia prywatności lub blokery reklam."
+    );
+  };
+
+  const updatePlayerDimensions = useCallback(() => {
+    const width = window.innerWidth;
+    if (width < 640) {
+      setPlayerDimensions({ width: "100%", height: "200px" });
+    } else if (width < 1024) {
+      setPlayerDimensions({ width: "100%", height: "300px" });
+    } else {
+      setPlayerDimensions({ width: "100%", height: "360px" });
+    }
+  }, []);
+
+  useEffect(() => {
+    updatePlayerDimensions();
+    window.addEventListener('resize', updatePlayerDimensions);
+    return () => window.removeEventListener('resize', updatePlayerDimensions);
+  }, [updatePlayerDimensions]);
 
   return (
     <div className="music-player bg-white shadow-lg min-h-screen flex flex-col w-full">
@@ -112,7 +168,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
             <div>
               <h1 className="text-3xl font-bold">Bachata Top Playlist 2024</h1>
               <p className="text-sm opacity-75">
-                {songs.length} utworów • Zaktualizowano:{" "}
+                {localSongs.length} utworów • Zaktualizowano:{" "}
                 {new Date().toLocaleDateString()}
               </p>
             </div>
@@ -126,7 +182,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
       </div>
       <div className="flex flex-col md:flex-row flex-grow">
         <div className="song-list md:w-1/3 border-r border-gray-200 overflow-y-auto">
-          {songs.slice(0, visibleSongs).map((song, index) => (
+          {localSongs.slice(0, visibleSongs).map((song, index) => (
             <React.Fragment key={song.id}>
               <div
                 className={`song-item p-4 cursor-pointer hover:bg-gray-100 transition duration-300 ease-in-out ${
@@ -175,7 +231,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
               </div>
               {(index + 1) % 10 === 0 &&
                 index + 1 < visibleSongs &&
-                index + 1 !== songs.length && (
+                index + 1 !== localSongs.length && (
                   <button
                     className="w-full p-2 bg-gray-100 text-blue-500 hover:bg-gray-200 transition duration-300 flex items-center justify-center text-sm"
                     onClick={collapseSongList}
@@ -186,15 +242,15 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
                 )}
             </React.Fragment>
           ))}
-          {songs.length > initialVisibleSongs &&
-            (visibleSongs < songs.length ? (
+          {localSongs.length > initialVisibleSongs &&
+            (visibleSongs < localSongs.length ? (
               <button
                 className="w-full p-4 bg-gray-100 text-blue-500 hover:bg-gray-200 transition duration-300 flex items-center justify-center"
                 onClick={loadMoreSongs}
               >
                 <FaChevronDown className="mr-2" />
                 Zobacz więcej (
-                {Math.min(songsPerLoad, songs.length - visibleSongs)})
+                {Math.min(songsPerLoad, localSongs.length - visibleSongs)})
               </button>
             ) : (
               visibleSongs > initialVisibleSongs && (
@@ -210,36 +266,35 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
         </div>
         <div className="md:w-2/3 flex flex-col">
           <div className="sticky top-0 bg-white z-10 p-6">
-            <div className="youtube-player mb-4">
+            <div className="youtube-player mb-4" style={{ width: playerDimensions.width, height: playerDimensions.height }}>
+              {error && <div className="error-message">{error}</div>}
               <YouTube
-                videoId={songs[currentSongIndex].youtubeId}
-                opts={{
-                  width: "100%",
-                  height: "480",
-                  playerVars: {
-                    autoplay: 1,
-                  },
-                }}
-                onReady={onPlayerReady}
+                videoId={localSongs[currentSongIndex].youtubeId}
+                opts={opts}
+                onReady={onReady}
+                onError={onError}
                 onPlay={() => setIsPlaying(true)}
                 onPause={() => setIsPlaying(false)}
                 onEnd={nextSong}
+                className="w-full h-full"
               />
             </div>
             <div className="flex justify-center items-center space-x-4 mt-4 mb-4">
               <button
-                onClick={() => handleVote(songs[currentSongIndex].id, "up")}
+                onClick={() =>
+                  handleVote(localSongs[currentSongIndex].id, "up")
+                }
                 className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-full hover:from-purple-600 hover:to-pink-600 transition duration-300"
               >
                 <FaThumbsUp className="inline mr-2" />
-                {votes[songs[currentSongIndex].id] > 0
-                  ? votes[songs[currentSongIndex].id]
+                {votes[localSongs[currentSongIndex].id] > 0
+                  ? votes[localSongs[currentSongIndex].id]
                   : 0}
               </button>
               <button
-                onClick={() => toggleFavorite(songs[currentSongIndex].id)}
+                onClick={() => toggleFavorite(localSongs[currentSongIndex].id)}
                 className={`${
-                  favorites[songs[currentSongIndex].id]
+                  favorites[localSongs[currentSongIndex].id]
                     ? "bg-gradient-to-r from-pink-500 to-purple-500"
                     : "bg-gray-300"
                 } text-white px-4 py-2 rounded-full hover:from-pink-600 hover:to-purple-600 transition duration-300`}
@@ -247,12 +302,14 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
                 <FaHeart className="inline" />
               </button>
               <button
-                onClick={() => handleVote(songs[currentSongIndex].id, "down")}
+                onClick={() =>
+                  handleVote(localSongs[currentSongIndex].id, "down")
+                }
                 className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-full hover:from-purple-600 hover:to-pink-600 transition duration-300"
               >
                 <FaThumbsDown className="inline mr-2" />
-                {votes[songs[currentSongIndex].id] < 0
-                  ? Math.abs(votes[songs[currentSongIndex].id])
+                {votes[localSongs[currentSongIndex].id] < 0
+                  ? Math.abs(votes[localSongs[currentSongIndex].id])
                   : 0}
               </button>
             </div>
@@ -265,10 +322,10 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
                 Poprzedni
               </button>
               <button
-                onClick={togglePlay}
-                className="bg-gradient-to-r from-pink-500 to-purple-500 text-white px-6 py-3 rounded-full hover:from-pink-600 hover:to-purple-600 transition duration-300 text-lg"
+                onClick={togglePlayback}
+                className="bg-gradient-to-r from-pink-500 to-purple-500 text-white p-3 rounded-full hover:from-pink-600 hover:to-purple-600 transition duration-300 text-lg"
               >
-                {isPlaying ? "Pauza" : "Odtwórz"}
+                {isPlaying ? <FaPause /> : <FaPlay />}
               </button>
               <button
                 onClick={nextSong}

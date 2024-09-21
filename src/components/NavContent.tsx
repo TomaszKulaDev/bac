@@ -7,14 +7,15 @@ import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
 import { logout, login } from "../store/slices/authSlice";
 import { RootState } from "../store/slices/types";
-import { useMemo } from "react";
 
 export function NavContent() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const { data: session, status } = useSession();
   const router = useRouter();
   const dispatch = useDispatch();
-  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.auth.isAuthenticated
+  );
   const user = useSelector((state: RootState) => state.auth.user);
 
   const handleLogout = async () => {
@@ -26,19 +27,28 @@ export function NavContent() {
   };
 
   useEffect(() => {
-    if (status === "authenticated" && session?.user) {
-      dispatch(login({
-        user: {
-          id: session.user.id || '',
-          email: session.user.email || null,
-          name: session.user.name || null,
-          role: session.user.role || null
-        }
-      }));
-    } else if (status === "unauthenticated") {
-      dispatch(logout());
+    if (status === "loading") {
+      setIsLoading(true);
+    } else {
+      setIsLoading(false);
+      if (status === "authenticated" && session?.user) {
+        dispatch(login({
+          user: {
+            id: session.user.id || '',
+            email: session.user.email || null,
+            name: session.user.name || null,
+            role: session.user.role || null
+          }
+        }));
+      } else if (status === "unauthenticated") {
+        dispatch(logout());
+      }
     }
   }, [status, session, dispatch]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <nav className="flex justify-between items-center p-4 bg-gray-800 text-white">
