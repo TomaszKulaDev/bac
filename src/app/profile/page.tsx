@@ -98,7 +98,9 @@ export default function ProfilePage() {
   }
 
   if (!userProfile) {
-    return <div className="text-red-500">Nie znaleziono profilu użytkownika</div>;
+    return (
+      <div className="text-red-500">Nie znaleziono profilu użytkownika</div>
+    );
   }
 
   const avatarSrc = userProfile.image || "/default-avatar.png";
@@ -142,8 +144,15 @@ export default function ProfilePage() {
                     onChange={handleInputChange}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-gray-900"
                   />
-                  {profileSchemaBase.shape.name.safeParse(editedProfile.name).success === false && (
-                    <p className="text-red-500 text-sm mt-1">{profileSchemaBase.shape.name.safeParse(editedProfile.name).error?.errors[0].message}</p>
+                  {profileSchemaBase.shape.name.safeParse(editedProfile.name)
+                    .success === false && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {
+                        profileSchemaBase.shape.name.safeParse(
+                          editedProfile.name
+                        ).error?.errors[0].message
+                      }
+                    </p>
                   )}
                 </div>
                 <div>
@@ -161,8 +170,15 @@ export default function ProfilePage() {
                     onChange={handleInputChange}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-gray-900"
                   />
-                  {profileSchemaBase.shape.email.safeParse(editedProfile.email).success === false && (
-                    <p className="text-red-500 text-sm mt-1">{profileSchemaBase.shape.email.safeParse(editedProfile.email).error?.errors[0].message}</p>
+                  {profileSchemaBase.shape.email.safeParse(editedProfile.email)
+                    .success === false && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {
+                        profileSchemaBase.shape.email.safeParse(
+                          editedProfile.email
+                        ).error?.errors[0].message
+                      }
+                    </p>
                   )}
                 </div>
                 <div className="flex justify-end space-x-3">
@@ -184,15 +200,12 @@ export default function ProfilePage() {
             ) : (
               <div className="space-y-6">
                 <div>
-                  <h2 className="text-xl font-semibold text-gray-800">
-                    Imię
-                  </h2>
+                  <h2 className="text-2xl font-semibold text-gray-800">Imię</h2>
                   <p className="mt-1 text-gray-600">{userProfile.name}</p>
                 </div>
+
                 <div>
-                  <h2 className="text-xl font-semibold text-gray-800">
-                    Email
-                  </h2>
+                  <h2 className="text-xl font-semibold text-gray-800">Email</h2>
                   <p className="mt-1 text-gray-600">{userProfile.email}</p>
                 </div>
                 <div className="flex justify-end">
