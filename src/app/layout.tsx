@@ -7,6 +7,9 @@ import { Provider } from "react-redux";
 import { store } from "../store/store";
 import { NavContent } from "../components/NavContent";
 import Head from "next/head";
+import { Inter } from "next/font/google";
+
+const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({
   children,
@@ -49,7 +52,7 @@ export default function RootLayout({
         />
         <link rel="canonical" href="https://www.baciata.pl" />
       </Head>
-      <body>
+      <body className={`${inter.className} text-gray-800`}>
         <SessionProvider>
           <Provider store={store}>
             <NavContent />
