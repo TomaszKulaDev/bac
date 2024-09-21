@@ -65,9 +65,9 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
   };
 
   return (
-    <div className="music-player bg-white shadow-lg min-h-screen flex flex-col w-full overflow-y-auto">
+    <div className="music-player bg-white shadow-lg min-h-screen flex flex-col w-full">
       <div className="flex flex-col md:flex-row flex-grow">
-        <div className="song-list md:w-1/3 border-r border-gray-200">
+        <div className="song-list md:w-1/3 border-r border-gray-200 overflow-y-auto">
           {songs.map((song, index) => (
             <div
               key={song.id}
@@ -117,44 +117,49 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
             </div>
           ))}
         </div>
-        <div className="md:w-2/3 flex flex-col justify-between p-6">
-          <div className="youtube-player mb-4 flex justify-center">
-            <YouTube
-              videoId={songs[currentSongIndex].youtubeId}
-              opts={{
-                width: "100%",
-                height: "480",
-                playerVars: {
-                  autoplay: 1,
-                },
-              }}
-              onReady={onPlayerReady}
-              onPlay={() => setIsPlaying(true)}
-              onPause={() => setIsPlaying(false)}
-              onEnd={nextSong}
-            />
+        <div className="md:w-2/3 flex flex-col">
+          <div className="sticky top-0 bg-white z-10 p-6">
+            <div className="youtube-player mb-4">
+              <YouTube
+                videoId={songs[currentSongIndex].youtubeId}
+                opts={{
+                  width: "100%",
+                  height: "480",
+                  playerVars: {
+                    autoplay: 1,
+                  },
+                }}
+                onReady={onPlayerReady}
+                onPlay={() => setIsPlaying(true)}
+                onPause={() => setIsPlaying(false)}
+                onEnd={nextSong}
+              />
+            </div>
+            <div className="flex justify-center items-center space-x-4 mt-4">
+              <button
+                onClick={previousSong}
+                className="bg-blue-500 text-white px-6 py-3 rounded-full hover:bg-blue-600 transition duration-300 text-lg"
+              >
+                <FaArrowUp className="mr-2 inline" />
+                Poprzedni
+              </button>
+              <button
+                onClick={togglePlay}
+                className="bg-blue-500 text-white px-6 py-3 rounded-full hover:bg-blue-600 transition duration-300 text-lg"
+              >
+                {isPlaying ? "Pauza" : "Odtwórz"}
+              </button>
+              <button
+                onClick={nextSong}
+                className="bg-blue-500 text-white px-6 py-3 rounded-full hover:bg-blue-600 transition duration-300 text-lg"
+              >
+                Następny
+                <FaArrowDown className="ml-2 inline" />
+              </button>
+            </div>
           </div>
-          <div className="flex justify-center items-center space-x-4 mt-4">
-            <button
-              onClick={previousSong}
-              className="bg-blue-500 text-white px-6 py-3 rounded-full hover:bg-blue-600 transition duration-300 text-lg"
-            >
-              <FaArrowUp className="mr-2 inline" />
-              Poprzedni
-            </button>
-            <button
-              onClick={togglePlay}
-              className="bg-blue-500 text-white px-6 py-3 rounded-full hover:bg-blue-600 transition duration-300 text-lg"
-            >
-              {isPlaying ? "Pauza" : "Odtwórz"}
-            </button>
-            <button
-              onClick={nextSong}
-              className="bg-blue-500 text-white px-6 py-3 rounded-full hover:bg-blue-600 transition duration-300 text-lg"
-            >
-              Następny
-              <FaArrowDown className="ml-2 inline" />
-            </button>
+          <div className="p-6">
+            {/* Tutaj możesz dodać dodatkową zawartość, która będzie przewijana pod odtwarzaczem */}
           </div>
         </div>
       </div>
