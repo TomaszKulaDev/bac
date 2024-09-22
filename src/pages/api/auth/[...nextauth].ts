@@ -107,9 +107,9 @@ export const authOptions: NextAuthOptions = {
           
           if (existingUser) {
             console.log("Existing user found:", existingUser);
-            // Aktualizuj istniejącego użytkownika
             existingUser.googleId = profile?.sub;
             existingUser.name = user.name;
+            existingUser.isVerified = true;
             await existingUser.save();
             console.log("User updated successfully");
           } else {
@@ -131,6 +131,14 @@ export const authOptions: NextAuthOptions = {
         }
       }
       return true;
+    },
+    async redirect({ url, baseUrl }) {
+      // Jeśli URL zaczyna się od baseUrl, pozwól na przekierowanie
+      if (url.startsWith(baseUrl)) return url;
+      // Jeśli URL zaczyna się od "/", dodaj baseUrl
+      if (url.startsWith("/")) return new URL(url, baseUrl).toString();
+      // W przeciwnym razie przekieruj do baseUrl
+      return baseUrl;
     },
   },
 };

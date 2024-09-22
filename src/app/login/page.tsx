@@ -171,14 +171,6 @@ export default function Login() {
     }
   };
 
-  const handleGoogleSignIn = async () => {
-    const result = await signIn("google", { callbackUrl: "/dashboard" });
-    if (result?.error) {
-      console.error("Google sign-in error:", result.error);
-      setErrors({ form: "Wystąpił błąd podczas logowania przez Google. Spróbuj ponownie." });
-    }
-  };
-
   return (
     <>
       <div className="flex justify-center items-center min-h-screen bg-gray-100">
@@ -225,7 +217,7 @@ export default function Login() {
           {isWebViewDetected ? null : (
             <div className="mb-4 space-y-2">
               <button
-                onClick={handleGoogleSignIn}
+                onClick={() => signIn('google', { callbackUrl: '/dashboard' })}
                 className="w-full flex items-center justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
               >
                 <svg className="w-5 h-5 mr-2" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
