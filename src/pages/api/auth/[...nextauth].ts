@@ -89,7 +89,7 @@ export const authOptions: NextAuthOptions = {
         if (existingUser) {
           // Aktualizuj istniejącego użytkownika o dane Google
           existingUser.googleId = profile.sub;
-          existingUser.provider = "google";
+          existingUser.provider = existingUser.provider ? 'both' : 'google';
           await existingUser.save();
           return true;
         } else {
@@ -98,7 +98,7 @@ export const authOptions: NextAuthOptions = {
             name: user.name,
             email: user.email,
             googleId: profile.sub,
-            provider: "google",
+            provider: 'google',
             isVerified: true,
             role: "user",
             password: await bcrypt.hash(Math.random().toString(36).slice(-8), 10),
