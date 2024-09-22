@@ -19,10 +19,9 @@ import { connectToDatabase, isConnected } from "@/lib/mongodb";
 
 interface User {
   _id: string;
-  id: string;
   name: string;
   email: string;
-  role: string;
+  role: "user" | "admin";
   isVerified: boolean;
 }
 
