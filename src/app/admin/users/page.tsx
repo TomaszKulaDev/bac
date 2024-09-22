@@ -20,6 +20,7 @@ import { connectToDatabase, isConnected } from '@/lib/mongodb';
 
 interface User {
   id: string;
+  _id?: string;
   name: string;
   email: string;
   role: string;
@@ -34,15 +35,16 @@ interface UserRowProps {
 
 const UserRow: React.FC<UserRowProps> = React.memo(
   ({ user, onUpdateRole, onDeleteUser }) => {
+    const userId = user._id || user.id;
     return (
-      <tr key={user.id} className="border-b hover:bg-gray-50">
-        <td className="p-3 text-gray-700">{user.id}</td>
+      <tr key={userId} className="border-b hover:bg-gray-50">
+        <td className="p-3 text-gray-700">{userId}</td>
         <td className="p-3 text-gray-700">{user.name}</td>
         <td className="p-3 text-gray-700">{user.email}</td>
         <td className="p-3">
           <select
             value={user.role}
-            onChange={(e) => onUpdateRole(user.id, e.target.value)}
+            onChange={(e) => onUpdateRole(userId, e.target.value)}
             className="border rounded p-1 text-gray-700"
           >
             <option value="user">Użytkownik</option>
@@ -51,7 +53,7 @@ const UserRow: React.FC<UserRowProps> = React.memo(
         </td>
         <td className="p-3">
           <button
-            onClick={() => onDeleteUser(user.id)}
+            onClick={() => onDeleteUser(userId)}
             className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition duration-300"
           >
             Usuń
@@ -88,6 +90,7 @@ export default function AdminUsersPage() {
   });
   const [pageSize, setPageSize] = useState(10);
   const [isInitialized, setIsInitialized] = useState(false);
+  const [localUsers, setLocalUsers] = useState<User[]>([]);
 
   const fetchParams = useMemo(() => ({ page: currentPage, pageSize }), [currentPage, pageSize]);
 
@@ -162,6 +165,8 @@ export default function AdminUsersPage() {
         dispatch(createUser(createdUser.user));
         setNewUser({ name: "", email: "", password: "", role: "user" });
         setError(null);
+        // Ręcznie aktualizuj listę użytkowników
+        setLocalUsers(prevUsers => [...prevUsers, createdUser.user]);
       } else {
         const errorData = await response.json();
         setError(errorData.message || "Nie udało się utworzyć nowego użytkownika");
@@ -185,6 +190,16 @@ export default function AdminUsersPage() {
         });
     }
   }, [dispatch, pageSize, currentPage]);
+
+  useEffect(() => {
+    if (session?.user?.role === 'admin') {
+      dispatch(fetchUsers({ page: currentPage, pageSize }))
+        .unwrap()
+        .then((fetchedData) => {
+          setLocalUsers(fetchedData.users);
+        });
+    }
+  }, [dispatch, currentPage, pageSize, session?.user?.role]);
 
   if (isLoading) {
     return <LoadingSpinner />;
@@ -308,7 +323,7 @@ export default function AdminUsersPage() {
               </tr>
             </thead>
             <tbody>
-              {users.map((user: User) => (
+              {localUsers.map((user: User) => (
                 <UserRow
                   key={user.id}
                   user={user}

@@ -67,10 +67,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           res.status(201).json({
             message: "Użytkownik został utworzony",
             user: {
-              id: newUser._id,
+              id: newUser._id.toString(),
               name: newUser.name,
               email: newUser.email,
               role: newUser.role,
+              isVerified: newUser.isVerified,
             },
           });
         } catch (error) {

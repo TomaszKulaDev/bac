@@ -122,17 +122,21 @@ export default function AdminUsersPage() {
     [dispatch]
   );
 
-  const handleCreateUser = (e: React.FormEvent) => {
+  const handleCreateUser = async (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(createUser(newUser))
-      .unwrap()
-      .then(() => {
-        setNewUser({ name: "", email: "", password: "", role: "user" });
-        setError(null);
-      })
-      .catch((error) => {
+    try {
+      const result = await dispatch(createUser(newUser)).unwrap();
+      setNewUser({ name: "", email: "", password: "", role: "user" });
+      setError(null);
+      // Ręcznie dodajemy nowego użytkownika do listy
+      dispatch(fetchUsers({ page: currentPage, pageSize }));
+    } catch (error) {
+      if (error instanceof Error) {
         setError("Nie udało się utworzyć nowego użytkownika: " + error.message);
-      });
+      } else {
+        setError("Nie udało się utworzyć nowego użytkownika");
+      }
+    }
   };
 
   const handlePageChange = useCallback((newPage: number) => {
@@ -174,6 +178,12 @@ export default function AdminUsersPage() {
         });
     }
   }, [user, dispatch, router, fetchParams]);
+
+  useEffect(() => {
+    if (users.length > 0) {
+      setIsLoading(false);
+    }
+  }, [users]);
 
   if (isLoading) {
     return <LoadingSpinner />;
@@ -300,7 +310,7 @@ export default function AdminUsersPage() {
                   key={user.id}
                   user={{
                     ...user,
-                    _id: user.id, // Dodajemy _id
+                    _id: user.id,
                     id: user.id
                   }}
                   onUpdateRole={handleUpdateRole}

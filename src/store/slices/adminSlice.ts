@@ -64,31 +64,33 @@ export const updateUserRole = createAsyncThunk(
 );
 
 export const createUser = createAsyncThunk(
-  "admin/createUser",
-  async (userData: {
-    name: string;
-    email: string;
-    password: string;
-    role: string;
-  }) => {
-    const response = await fetch("/api/admin/users", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+  'admin/createUser',
+  async (userData: Partial<User>, { dispatch }) => {
+    const response = await fetch('/api/admin/users', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify(userData),
     });
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message);
+      throw new Error('Nie udało się utworzyć użytkownika');
     }
-    const data = await response.json();
-    return data;
+    const newUser = await response.json();
+    dispatch(fetchUsers({ page: 1, pageSize: 10 })); // Odśwież listę użytkowników
+    return newUser;
   }
 );
 
 const adminSlice = createSlice({
   name: "admin",
   initialState,
-  reducers: {},
+  reducers: {
+    addUser: (state, action: PayloadAction<User>) => {
+      state.users.unshift(action.payload);
+      state.totalUsers += 1;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(
@@ -134,6 +136,7 @@ const adminSlice = createSlice({
       })
       .addCase(createUser.fulfilled, (state, action: PayloadAction<User>) => {
         state.users.push(action.payload);
+        state.totalUsers += 1;
       })
       .addCase(createUser.rejected, (state, action) => {
         console.error("Błąd podczas tworzenia użytkownika:", action.error);
