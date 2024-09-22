@@ -1,6 +1,32 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import nodemailer from "nodemailer";
 
+// Funkcja walidacyjna do sprawdzania poprawności linku do YouTube
+function isValidYoutubeLink(url: string): boolean {
+  const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/;
+  return youtubeRegex.test(url);
+}
+
+// Dodatkowe funkcje walidacyjne
+function isValidLength(str: string, minLength: number, maxLength: number): boolean {
+  return str.length >= minLength && str.length <= maxLength;
+}
+
+function isUniqueSubmission(title: string, artist: string): Promise<boolean> {
+  // Tutaj dodaj logikę sprawdzania w bazie danych
+  return Promise.resolve(true); // Tymczasowo zawsze zwraca true
+}
+
+function isWithinSubmissionLimit(userId: string): Promise<boolean> {
+  // Tutaj dodaj logikę sprawdzania limitu zgłoszeń
+  return Promise.resolve(true); // Tymczasowo zawsze zwraca true
+}
+
+function containsProfanity(str: string): boolean {
+  const profanityList = ['wulgaryzm1', 'wulgaryzm2']; // Rozszerz tę listę
+  return profanityList.some(word => str.toLowerCase().includes(word));
+}
+
 // Główna funkcja obsługująca żądanie zgłoszenia utworu
 export default async function handler(
   req: NextApiRequest,
@@ -12,8 +38,31 @@ export default async function handler(
   }
 
   try {
-    // Pobieranie danych z ciała żądania
-    const { title, artist, youtubeLink } = req.body;
+    const { title, artist, youtubeLink, userId } = req.body;
+
+    if (!title || !artist || !youtubeLink) {
+      return res.status(400).json({ message: "Wszystkie pola są wymagane" });
+    }
+
+    if (!isValidLength(title, 1, 100) || !isValidLength(artist, 1, 100)) {
+      return res.status(400).json({ message: "Tytuł i wykonawca muszą mieć od 1 do 100 znaków" });
+    }
+
+    if (!isValidYoutubeLink(youtubeLink)) {
+      return res.status(400).json({ message: "Nieprawidłowy link do YouTube" });
+    }
+
+    if (containsProfanity(title) || containsProfanity(artist)) {
+      return res.status(400).json({ message: "Tytuł lub wykonawca zawiera niedozwolone słowa" });
+    }
+
+    if (!(await isUniqueSubmission(title, artist))) {
+      return res.status(400).json({ message: "Ten utwór został już zgłoszony" });
+    }
+
+    if (!(await isWithinSubmissionLimit(userId))) {
+      return res.status(400).json({ message: "Przekroczono limit zgłoszeń" });
+    }
 
     // Konfiguracja transportera do wysyłania e-maili za pomocą Gmaila
     const transporter = nodemailer.createTransport({
