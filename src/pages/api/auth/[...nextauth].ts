@@ -83,7 +83,7 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
     signIn: async ({ user, account, profile }) => {
-      if (account?.provider === "google") {
+      if (account?.provider === "google" && profile) {
         const existingUser = await User.findOne({ email: user.email });
         if (existingUser) {
           if (!existingUser.googleId) {
