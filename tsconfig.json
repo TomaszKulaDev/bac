@@ -1,21 +1,21 @@
 {
   "compilerOptions": {
     "target": "esnext", // Opcja targetu została dodana, aby lepiej dostosować się do współczesnych przeglądarek.
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "noEmit": true,
-    "esModuleInterop": true,
-    "module": "ESNext",
+    "lib": ["dom", "dom.iterable", "esnext"], // Biblioteki, które mają być uwzględnione w kompilacji.
+    "allowJs": true, // Pozwala na kompilację plików JavaScript.
+    "skipLibCheck": true, // Pomija sprawdzanie typów w plikach definicji bibliotek.
+    "strict": true, // Włącza wszystkie opcje ścisłego sprawdzania typów.
+    "noEmit": true, // Zapobiega generowaniu plików wyjściowych.
+    "esModuleInterop": true, // Włącza zgodność z ES Module.
+    "module": "ESNext", // Ustawia system modułów na ESNext.
     "moduleResolution": "node", // Zmieniono na 'node', co jest bardziej standardowe i kompatybilne z większością środowisk.
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "incremental": true,
+    "resolveJsonModule": true, // Pozwala na importowanie plików JSON jako modułów.
+    "isolatedModules": true, // Wymusza izolację modułów.
+    "jsx": "preserve", // Zachowuje JSX bez zmian.
+    "incremental": true, // Włącza kompilację przyrostową.
     "plugins": [
       {
-        "name": "next"
+        "name": "next" // Plugin Next.js dla TypeScript.
       }
     ],
     "paths": {
@@ -23,6 +23,14 @@
     },
     "baseUrl": "./src" // Ustawienie baseUrl na './src', aby ścieżki względne zaczynały się od tego katalogu.
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/utils/projectAnalyzer.js"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts", // Plik definicji środowiska Next.js.
+    "**/*.ts", // Uwzględnia wszystkie pliki TypeScript.
+    "**/*.tsx", // Uwzględnia wszystkie pliki TypeScript z JSX.
+    ".next/types/**/*.ts", // Uwzględnia typy generowane przez Next.js.
+    "src/utils/projectAnalyzer.js" // Uwzględnia skrypt do analizy projektu.
+  ],
+  "exclude": [
+    "node_modules" // Wyklucza katalog node_modules.
+  ]
 }
