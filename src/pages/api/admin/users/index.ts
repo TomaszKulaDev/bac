@@ -11,21 +11,32 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     await adminAuthMiddleware(req, res, async () => {
       console.log("Middleware administratora przeszedł pomyślnie");
-      await connectToDatabase();
-      console.log("Połączono z bazą danych");
+      try {
+        await connectToDatabase();
+        console.log("Połączono z bazą danych");
 
-      if (req.method === 'GET') {
-        try {
-          console.log("Rozpoczęcie pobierania użytkowników");
-          // Tutaj dodaj kod do pobierania użytkowników
-          console.log("Użytkownicy pobrani pomyślnie");
-          // res.status(200).json({ users: [...], totalUsers: ..., currentPage: ... });
-        } catch (error) {
-          console.error('Błąd podczas pobierania użytkowników:', error);
-          res.status(500).json({ message: 'Wystąpił błąd podczas pobierania użytkowników' });
+        if (req.method === 'GET') {
+          try {
+            console.log("Rozpoczęcie pobierania użytkowników");
+            const page = parseInt(req.query.page as string) || 1;
+            const pageSize = parseInt(req.query.pageSize as string) || 10;
+            const skip = (page - 1) * pageSize;
+
+            const users = await User.find().skip(skip).limit(pageSize).lean();
+            const totalUsers = await User.countDocuments();
+
+            console.log("Użytkownicy pobrani pomyślnie");
+            res.status(200).json({ users, totalUsers, currentPage: page });
+          } catch (error) {
+            console.error('Błąd podczas pobierania użytkowników:', error);
+            res.status(500).json({ message: 'Wystąpił błąd podczas pobierania użytkowników' });
+          }
+        } else {
+          res.status(405).json({ message: 'Metoda niedozwolona' });
         }
-      } else {
-        res.status(405).json({ message: 'Metoda niedozwolona' });
+      } catch (dbError) {
+        console.error('Błąd połączenia z bazą danych:', dbError);
+        res.status(500).json({ message: 'Błąd połączenia z bazą danych' });
       }
     });
   } catch (error) {

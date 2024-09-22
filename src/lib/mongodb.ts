@@ -24,7 +24,7 @@ if (!cached) {
 
 const opts = {
   bufferCommands: false,
-  serverSelectionTimeoutMS: 15000,
+  serverSelectionTimeoutMS: 30000, // Zwiększ timeout do 30 sekund
   socketTimeoutMS: 45000,
   connectTimeoutMS: 30000,
   maxPoolSize: 10,
@@ -43,7 +43,7 @@ async function connectToDatabase(): Promise<typeof mongoose> {
     cached.conn = await cached.promise;
   } catch (e) {
     cached.promise = null;
-    console.error('Nie udało się połączyć z MongoDB', e);
+    console.error("Nie udało się połączyć z MongoDB", e);
     throw e;
   }
 
@@ -63,8 +63,10 @@ async function connectWithRetry(retries = 5): Promise<typeof mongoose> {
     return await mongoose.connect(MONGODB_URI, opts);
   } catch (err) {
     if (retries > 0) {
-      console.log(`Ponowna próba połączenia z MongoDB. Pozostało prób: ${retries}`);
-      await new Promise(resolve => setTimeout(resolve, 5000));
+      console.log(
+        `Ponowna próba połączenia z MongoDB. Pozostało prób: ${retries}`
+      );
+      await new Promise((resolve) => setTimeout(resolve, 5000));
       return connectWithRetry(retries - 1);
     }
     throw err;
