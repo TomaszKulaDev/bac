@@ -102,6 +102,7 @@ export const authOptions: NextAuthOptions = {
             provider: "google",
             isVerified: true,
             role: "user",
+            password: await bcrypt.hash(Math.random().toString(36).slice(-8), 10), // Generowanie losowego hasła
           });
           await newUser.save();
           return true;
