@@ -15,6 +15,7 @@ import {
   FaHeart,
   FaChevronDown,
   FaChevronUp,
+  FaMinus,
 } from "react-icons/fa";
 import Image from "next/image";
 import { Song } from "../types";
@@ -343,10 +344,12 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
                     </span>
                   </div>
                   <div className="mx-2">
-                    {index % 2 === 0 ? (
+                    {song.votes > 0 ? (
                       <FaArrowUp className="text-green-500 text-2xl" />
-                    ) : (
+                    ) : song.votes < 0 ? (
                       <FaArrowDown className="text-red-500 text-2xl" />
+                    ) : (
+                      <FaMinus className="text-gray-500 text-2xl" />
                     )}
                   </div>
                   <div className="w-12 h-12 mr-4 relative">
