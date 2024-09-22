@@ -22,10 +22,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             const pageSize = parseInt(req.query.pageSize as string) || 10;
             const skip = (page - 1) * pageSize;
 
-            const [users, totalUsers] = await Promise.all([
-              User.find().select('-password').skip(skip).limit(pageSize).lean(),
-              User.countDocuments()
-            ]);
+            const users = await User.find().select('_id name email role isVerified').lean();
+            const totalUsers = await User.countDocuments();
 
             console.log(`Pobrano ${users.length} użytkowników`);
             res.status(200).json({ users, totalUsers, currentPage: page });

@@ -127,7 +127,16 @@ export default function AdminUsersPage() {
           setIsLoading(false);
         });
     }
-  }, [session, status, dispatch, router, isInitialized, users.length, currentPage, pageSize]);
+  }, [
+    session,
+    status,
+    dispatch,
+    router,
+    isInitialized,
+    users.length,
+    currentPage,
+    pageSize,
+  ]);
 
   const handleDeleteUser = useCallback(
     async (userId: string) => {
@@ -153,7 +162,7 @@ export default function AdminUsersPage() {
           setError(errorData.message || "Nie udało się usunąć użytkownika");
         }
       } catch (error) {
-        if (error instanceof Error && error.name === 'AbortError') {
+        if (error instanceof Error && error.name === "AbortError") {
           setError(
             "Operacja usuwania przekroczyła limit czasu. Spróbuj ponownie później."
           );
