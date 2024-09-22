@@ -10,18 +10,9 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 // Importy lokalne
 import { passwordSchema } from "../../schemas/passwordSchema";
+import { resetPasswordSchema } from "../../schemas/authSchemas";
 
 import LoadingSpinner from "@/components/LoadingSpinner";
-
-const resetPasswordSchema = z
-  .object({
-    password: passwordSchema,
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Hasła nie są identyczne",
-    path: ["confirmPassword"],
-  });
 
 export default function ResetPassword() {
   const [password, setPassword] = useState("");

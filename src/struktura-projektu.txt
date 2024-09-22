@@ -1,9 +1,9 @@
-Aktualna struktura projektu (78 plików)
+Aktualna struktura projektu (81 plików)
 
 Statystyki projektu:
-Całkowity rozmiar: 0.90 MB
-Całkowita liczba linii kodu: 7796
-Typy plików: {".local":1,".json":3,".ts":29,".mjs":3,"":1,".png":2,".txt":2,".md":1,".tsx":32,".ico":1,".css":1,".js":1,".tsbuildinfo":1}
+Całkowity rozmiar: 0.91 MB
+Całkowita liczba linii kodu: 8287
+Typy plików: {".local":1,".json":3,".ts":30,".mjs":3,"":1,".png":2,".txt":2,".md":1,".tsx":34,".ico":1,".css":1,".js":1,".tsbuildinfo":1}
 
 Struktura plików projektu:
 ├── .env.local (.local, 0.80 KB)
@@ -25,7 +25,7 @@ Struktura plików projektu:
 │   │   │   └── page.tsx (.tsx, 0.15 KB)
 │   │   ├── admin/
 │   │   │   ├── music/
-│   │   │   │   └── page.tsx (.tsx, 2.45 KB)
+│   │   │   │   └── page.tsx (.tsx, 2.49 KB)
 │   │   │   ├── page.tsx (.tsx, 11.24 KB)
 │   │   │   └── users/
 │   │   │       └── page.tsx (.tsx, 11.35 KB)
@@ -47,7 +47,7 @@ Struktura plików projektu:
 │   │   ├── globals.css (.css, 0.59 KB)
 │   │   ├── jobs/
 │   │   │   └── page.tsx (.tsx, 0.11 KB)
-│   │   ├── layout.tsx (.tsx, 1.98 KB)
+│   │   ├── layout.tsx (.tsx, 0.93 KB)
 │   │   ├── login/
 │   │   │   └── page.tsx (.tsx, 11.88 KB)
 │   │   ├── mentorship/
@@ -55,9 +55,9 @@ Struktura plików projektu:
 │   │   ├── muzyka/
 │   │   │   ├── components/
 │   │   │   │   ├── index.ts (.ts, 0.06 KB)
-│   │   │   │   └── MusicPlayer.tsx (.tsx, 10.67 KB)
-│   │   │   ├── page.tsx (.tsx, 3.88 KB)
-│   │   │   └── types.ts (.ts, 0.10 KB)
+│   │   │   │   └── MusicPlayer.tsx (.tsx, 24.14 KB)
+│   │   │   ├── page.tsx (.tsx, 5.47 KB)
+│   │   │   └── types.ts (.ts, 0.16 KB)
 │   │   ├── page.tsx (.tsx, 1.96 KB)
 │   │   ├── polityka-prywatnosci-baciata-pl/
 │   │   │   └── page.tsx (.tsx, 3.02 KB)
@@ -77,8 +77,10 @@ Struktura plików projektu:
 │   ├── components/
 │   │   ├── AdminCard.tsx (.tsx, 0.61 KB)
 │   │   ├── AdminLayout.tsx (.tsx, 1.19 KB)
+│   │   ├── ClientLayout.tsx (.tsx, 0.89 KB)
+│   │   ├── ClientProviders.tsx (.tsx, 0.35 KB)
 │   │   ├── LoadingSpinner.tsx (.tsx, 0.56 KB)
-│   │   └── NavContent.tsx (.tsx, 2.12 KB)
+│   │   └── NavContent.tsx (.tsx, 2.28 KB)
 │   ├── contexts/
 │   │   └── AuthContext.tsx (.tsx, 1.18 KB)
 │   ├── global.d.ts (.ts, 0.16 KB)
@@ -104,6 +106,7 @@ Struktura plików projektu:
 │   │   │   ├── register.ts (.ts, 3.79 KB)
 │   │   │   ├── resend-verification.ts (.ts, 2.39 KB)
 │   │   │   ├── reset-password.ts (.ts, 2.80 KB)
+│   │   │   ├── submit-song.ts (.ts, 1.27 KB)
 │   │   │   ├── users/
 │   │   │   │   ├── me.ts (.ts, 1.56 KB)
 │   │   │   │   └── update-profile.ts (.ts, 3.01 KB)
@@ -120,7 +123,7 @@ Struktura plików projektu:
 │   │   │   ├── authSlice.ts (.ts, 0.82 KB)
 │   │   │   └── types.ts (.ts, 0.12 KB)
 │   │   └── store.ts (.ts, 0.39 KB)
-│   ├── struktura-projektu.txt (.txt, 5.35 KB)
+│   ├── struktura-projektu.txt (.txt, 5.86 KB)
 │   ├── types/
 │   │   └── next-auth.d.ts (.ts, 0.62 KB)
 │   └── utils/
@@ -128,4 +131,4 @@ Struktura plików projektu:
 │       └── projectAnalyzer.js (.js, 36.79 KB)
 ├── tailwind.config.ts (.ts, 0.83 KB)
 ├── tsconfig.json (.json, 1.03 KB)
-└── tsconfig.tsbuildinfo (.tsbuildinfo, 235.50 KB)
+└── tsconfig.tsbuildinfo (.tsbuildinfo, 236.85 KB)

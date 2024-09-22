@@ -18,12 +18,7 @@ import { z } from "zod";
 // Importy lokalne
 import { useAuth } from "../../contexts/AuthContext";
 import LoadingSpinner from "@/components/LoadingSpinner";
-
-// Schema walidacji formularza logowania
-const loginSchema = z.object({
-  email: z.string().email("Nieprawidłowy adres email"),
-  password: z.string().min(1, "Hasło jest wymagane"),
-});
+import { loginSchema } from "../../schemas/authSchemas";
 
 function isWebView() {
   return (

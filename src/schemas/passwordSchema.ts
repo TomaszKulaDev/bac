@@ -1,3 +1,4 @@
+// src/schemas/passwordSchema.ts
 import { z } from "zod";
 
 const commonWords = ["password", "qwerty", "admin", "user", "login"];

@@ -1,3 +1,4 @@
+// src/app/register/page.tsx
 "use client";
 
 import { useState, useEffect, useCallback, useMemo } from "react";
@@ -8,34 +9,7 @@ import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import Head from "next/head";
-
-const registerSchemaBase = z.object({
-  name: z
-    .string()
-    .min(1, "Imię jest wymagane")
-    .max(20, "Imię nie może być dłuższe niż 20 znaków"),
-  email: z.string().email("Nieprawidłowy adres email"),
-  password: passwordSchema,
-  confirmPassword: z.string(),
-  agreeToTerms: z.boolean(),
-});
-
-const registerSchema = registerSchemaBase
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Hasła nie są identyczne",
-    path: ["confirmPassword"],
-  })
-  .refine((data) => data.agreeToTerms, {
-    message: "Musisz zaakceptować politykę prywatności",
-    path: ["agreeToTerms"],
-  })
-  .refine(
-    (data) => !data.password.toLowerCase().includes(data.name.toLowerCase()),
-    {
-      message: "Hasło nie może zawierać Twojego imienia",
-      path: ["password"],
-    }
-  );
+import { registerSchema } from "../../schemas/authSchemas";
 
 export default function Register() {
   const description =
@@ -62,13 +36,17 @@ export default function Register() {
   }, []);
 
   const validateField = useCallback(
-    (field: keyof typeof registerSchemaBase.shape, value: string | boolean) => {
+    (field: keyof z.infer<typeof registerSchema>, value: string | boolean) => {
       try {
-        registerSchemaBase.shape[field].parse(value);
+        const schema = z.object({ [field]: z.any() }).parse({ [field]: value });
+        registerSchema.parse(schema);
         setErrors((prev) => ({ ...prev, [field]: "" }));
       } catch (error) {
         if (error instanceof z.ZodError) {
-          setErrors((prev) => ({ ...prev, [field]: error.errors[0].message }));
+          const fieldError = error.errors.find((err) => err.path[0] === field);
+          if (fieldError) {
+            setErrors((prev) => ({ ...prev, [field]: fieldError.message }));
+          }
         }
       }
     },
@@ -79,7 +57,7 @@ export default function Register() {
     const { name, value, type, checked } = e.target;
     if (type === "checkbox") {
       setAgreeToTerms(checked);
-      validateField("agreeToTerms", checked);
+      validateField(name as keyof z.infer<typeof registerSchema>, checked);
     } else {
       switch (name) {
         case "name":
@@ -95,7 +73,7 @@ export default function Register() {
           setConfirmPassword(value);
           break;
       }
-      validateField(name as keyof typeof registerSchemaBase.shape, value);
+      validateField(name as keyof z.infer<typeof registerSchema>, value);
     }
   };
 
@@ -184,9 +162,10 @@ export default function Register() {
       email.length > 0 &&
       password.length > 0 &&
       confirmPassword.length > 0 &&
-      agreeToTerms
+      agreeToTerms &&
+      Object.keys(errors).length === 0
     );
-  }, [name, email, password, confirmPassword, agreeToTerms]);
+  }, [name, email, password, confirmPassword, agreeToTerms, errors]);
 
   return (
     <>
@@ -319,6 +298,7 @@ export default function Register() {
                 "email"
               )}`}
               placeholder="twoj@email.com"
+              autoComplete="username"
             />
             {errors.email && (
               <p className="text-red-600 text-sm mt-2">{errors.email}</p>
@@ -337,6 +317,7 @@ export default function Register() {
                   "password"
                 )}`}
                 placeholder="Twoje hasło"
+                autoComplete="new-password"
               />
               <button
                 type="button"
@@ -439,7 +420,7 @@ export default function Register() {
                   <path
                     className="opacity-75"
                     fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647.81-.62z"
                   ></path>
                 </svg>
                 Rejestrowanie...

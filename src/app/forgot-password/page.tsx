@@ -4,6 +4,7 @@ import { useState } from "react";
 import { z } from "zod";
 import Link from "next/link";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import { emailSchema } from "../../schemas/authSchemas";
 
 const forgotPasswordSchema = z.object({
   email: z.string().email("Nieprawidłowy adres email"),
@@ -17,18 +18,12 @@ export default function ForgotPassword() {
 
   const validateForm = () => {
     try {
-      forgotPasswordSchema.parse({ email });
+      emailSchema.parse(email);
       setErrors({});
       return true;
     } catch (error) {
       if (error instanceof z.ZodError) {
-        const newErrors: { [key: string]: string } = {};
-        error.errors.forEach((err) => {
-          if (err.path) {
-            newErrors[err.path[0]] = err.message;
-          }
-        });
-        setErrors(newErrors);
+        setErrors({ email: error.errors[0].message });
       }
       return false;
     }
