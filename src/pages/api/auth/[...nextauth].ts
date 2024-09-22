@@ -33,33 +33,35 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        console.log("NextAuth: Authorizing user");
+        console.log("Authorize function started");
         if (!credentials) {
-          console.log("NextAuth: No credentials provided");
+          console.log("No credentials provided");
           return null;
         }
 
         await connectToDatabase();
+        console.log("Connected to database");
 
         const { email, password } = credentials;
+        console.log("Searching for user with email:", email);
         const user = await User.findOne({ email });
-        console.log("NextAuth: User found:", user ? "Yes" : "No");
-        console.log("NextAuth: User found:", user ? "Yes" : "No");
+        console.log("User found:", user ? "Yes" : "No");
 
         if (!user) {
-          console.log("NextAuth: User not found");
+          console.log("User not found");
           return null;
         }
 
-        console.log("NextAuth: Comparing passwords");
+        console.log("Comparing passwords");
         const isValidPassword = await bcrypt.compare(password, user.password);
+        console.log("Password valid:", isValidPassword);
 
         if (!isValidPassword) {
-          console.log("NextAuth: Invalid credentials");
+          console.log("Invalid credentials");
           return null;
         }
 
-        console.log("NextAuth: Authentication successful");
+        console.log("Authentication successful");
         return {
           id: user._id.toString(),
           name: user.name,
@@ -83,17 +85,30 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
     signIn: async ({ user, account, profile, email }) => {
+      console.log("SignIn callback started");
+      console.log("User:", user);
+      console.log("Account:", account);
+      console.log("Profile:", profile);
+      console.log("Email:", email);
+
       if (account?.provider === "google" && profile) {
+        console.log("Google sign-in detected");
         await connectToDatabase();
+        console.log("Connected to database");
+
         const existingUser = await User.findOne({ email: user.email });
+        console.log("Existing user:", existingUser);
+
         if (existingUser) {
-          // Aktualizuj istniejącego użytkownika o dane Google
+          console.log("Updating existing user");
           existingUser.googleId = profile.sub;
           existingUser.provider = existingUser.provider ? 'both' : 'google';
+          console.log("Updated user:", existingUser);
           await existingUser.save();
+          console.log("User saved successfully");
           return true;
         } else {
-          // Tworzenie nowego użytkownika, jeśli nie istnieje
+          console.log("Creating new user");
           const newUser = new User({
             name: user.name,
             email: user.email,
@@ -103,10 +118,14 @@ export const authOptions: NextAuthOptions = {
             role: "user",
             password: await bcrypt.hash(Math.random().toString(36).slice(-8), 10),
           });
+          console.log("New user:", newUser);
           await newUser.save();
+          console.log("New user saved successfully");
         }
+        console.log("Google sign-in completed successfully");
         return true;
       }
+      console.log("SignIn callback completed");
       return true;
     },
   },
