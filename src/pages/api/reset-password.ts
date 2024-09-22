@@ -27,6 +27,10 @@ export default async function handler(
     const { token } = req.query;
     const { password } = req.body;
 
+    // Dodatkowe logi do sprawdzenia tokena
+    console.log("Received token:", token);
+    console.log("Token type:", typeof token);
+
     // Sprawdzanie, czy token jest prawidłowy
     if (!token || typeof token !== "string") {
       return res
@@ -49,8 +53,14 @@ export default async function handler(
     const user = await User.findOne({
       resetPasswordToken: token,
     });
-    console.log("Search criteria:", { resetPasswordToken: token });
-    console.log("Found user:", user);
+    console.log("Kryteria wyszukiwania:", { resetPasswordToken: token });
+    console.log("Znaleziony użytkownik:", user ? 'Tak' : 'Nie');
+    if (user) {
+      console.log("ID użytkownika:", user._id);
+      console.log("Email użytkownika:", user.email);
+      console.log("Token resetowania hasła użytkownika:", user.resetPasswordToken);
+      console.log("Data wygaśnięcia tokena:", user.resetPasswordExpires);
+    }
 
     // Sprawdzanie, czy użytkownik został znaleziony
     if (!user) {
