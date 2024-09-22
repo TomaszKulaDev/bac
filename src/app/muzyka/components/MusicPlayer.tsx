@@ -50,6 +50,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
   });
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
+  const [adBlockerDetected, setAdBlockerDetected] = useState(false);
 
   const opts: YouTubeProps["opts"] = {
     width: "100%",
@@ -137,7 +138,12 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
   const songScores = useMemo(() => localSongs.map(song => song.score).join(','), [localSongs]);
 
   useEffect(() => {
-    sortSongs();
+    try {
+      sortSongs();
+    } catch (error) {
+      console.error("Błąd podczas sortowania piosenek:", error);
+      setError("Wystąpił problem z sortowaniem piosenek. Spróbuj odświeżyć stronę.");
+    }
   }, [songScores, sortSongs]);
 
   const onReady = (event: { target: any }) => {
@@ -147,9 +153,11 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
 
   const onError = (event: { data: number }) => {
     console.error("Błąd YouTube:", event.data);
-    setError(
-      "Wystąpił błąd podczas ładowania filmu. Sprawdź swoje ustawienia prywatności lub blokery reklam."
-    );
+    let errorMessage = "Wystąpił błąd podczas ładowania filmu.";
+    if (adBlockerDetected) {
+      errorMessage += " Sprawdź swoje ustawienia prywatności lub blokery reklam.";
+    }
+    setError(errorMessage);
   };
 
   const updatePlayerDimensions = useCallback(() => {
@@ -165,7 +173,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
 
   useEffect(() => {
     updatePlayerDimensions();
-    window.addEventListener("resize", updatePlayerDimensions);
+    window.addEventListener("resize", updatePlayerDimensions, { passive: true });
     return () => window.removeEventListener("resize", updatePlayerDimensions);
   }, [updatePlayerDimensions]);
 
@@ -281,6 +289,18 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
     </div>
   );
 
+  useEffect(() => {
+    const checkAdBlocker = async () => {
+      try {
+        const response = await fetch('https://www.youtube.com/favicon.ico', { mode: 'no-cors' });
+        setAdBlockerDetected(false);
+      } catch {
+        setAdBlockerDetected(true);
+      }
+    };
+    checkAdBlocker();
+  }, []);
+
   return (
     <div className="music-player bg-white shadow-lg min-h-screen flex flex-col w-full">
       <div className="playlist-header bg-gradient-to-r from-purple-500 to-pink-500 text-white p-6 shadow-md">
@@ -333,8 +353,9 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
                     <Image
                       src={getYouTubeThumbnail(song.youtubeId)}
                       alt={song.title}
-                      layout="fill"
-                      objectFit="cover"
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      style={{ objectFit: 'cover' }}
                       className="rounded"
                     />
                   </div>
@@ -571,6 +592,11 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
         />
       )}
       {showErrorMessage && <ErrorMessage />}
+      {adBlockerDetected && (
+        <div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4" role="alert">
+          <p>Wykryto bloker reklam. Może to wpływać na działanie odtwarzacza. Rozważ wyłączenie blokera dla tej strony.</p>
+        </div>
+      )}
     </div>
   );
 };
