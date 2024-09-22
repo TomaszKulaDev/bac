@@ -94,6 +94,44 @@ export const authOptions: NextAuthOptions = {
       }
       return session;
     },
+    async signIn({ user, account, profile }) {
+      console.log("SignIn callback started");
+      console.log("User:", user);
+      console.log("Account:", account);
+      console.log("Profile:", profile);
+
+      if (account?.provider === "google") {
+        try {
+          await connectToDatabase();
+          const existingUser = await User.findOne({ email: user.email });
+          
+          if (existingUser) {
+            console.log("Existing user found:", existingUser);
+            // Aktualizuj istniejącego użytkownika
+            existingUser.googleId = profile?.sub;
+            existingUser.name = user.name;
+            await existingUser.save();
+            console.log("User updated successfully");
+          } else {
+            console.log("Creating new user");
+            const newUser = new User({
+              name: user.name,
+              email: user.email,
+              googleId: profile?.sub,
+              isVerified: true,
+              role: "user",
+            });
+            await newUser.save();
+            console.log("New user created successfully");
+          }
+          return true;
+        } catch (error) {
+          console.error("Error in signIn callback:", error);
+          return false;
+        }
+      }
+      return true;
+    },
   },
 };
 
