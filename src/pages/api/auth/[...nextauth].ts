@@ -82,6 +82,17 @@ export const authOptions: NextAuthOptions = {
       }
       return session;
     },
+    signIn: async ({ user, account, profile }) => {
+      if (account?.provider === "google") {
+        const existingUser = await User.findOne({ email: user.email });
+        if (existingUser && !existingUser.provider) {
+          // Jeśli użytkownik istnieje, ale nie ma ustawionego providera, aktualizujemy go
+          existingUser.provider = "google";
+          await existingUser.save();
+        }
+      }
+      return true;
+    },
   },
   events: {
     async signIn({ user, account, profile, isNewUser }) {
