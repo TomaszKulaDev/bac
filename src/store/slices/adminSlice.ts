@@ -25,18 +25,27 @@ const initialState: AdminState = {
 export const fetchUsers = createAsyncThunk(
   "admin/fetchUsers",
   async ({ page, pageSize }: { page: number; pageSize: number }) => {
-    const response = await fetch(
-      `/api/admin/users?page=${page}&pageSize=${pageSize}`
-    );
-    const data = await response.json();
-    return {
-      users: data.users.map((user: any) => ({
-        ...user,
-        isVerified: user.isVerified || false
-      })),
-      totalUsers: data.totalUsers,
-      currentPage: data.currentPage
-    };
+    try {
+      const response = await fetch(
+        `/api/admin/users?page=${page}&pageSize=${pageSize}`
+      );
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+      }
+      const data = await response.json();
+      return {
+        users: data.users.map((user: any) => ({
+          ...user,
+          isVerified: user.isVerified || false
+        })),
+        totalUsers: data.totalUsers,
+        currentPage: data.currentPage
+      };
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      throw error;
+    }
   }
 );
 

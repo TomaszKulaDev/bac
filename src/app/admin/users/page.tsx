@@ -94,11 +94,22 @@ export default function AdminUsersPage() {
   );
 
   useEffect(() => {
-    if (
-      session?.user?.role === "admin" &&
-      !isInitialized &&
-      users.length === 0
-    ) {
+    console.log("Session status:", status);
+    console.log("Session user:", session?.user);
+    console.log("Is initialized:", isInitialized);
+    console.log("Users length:", users.length);
+
+    if (status === "loading") {
+      return;
+    }
+
+    if (session?.user?.role !== "admin") {
+      console.log("Redirecting to login - not admin");
+      router.push("/login");
+      return;
+    }
+
+    if (!isInitialized && users.length === 0) {
       console.log("Fetching users");
       if (!isConnected()) {
         connectToDatabase();
@@ -106,6 +117,7 @@ export default function AdminUsersPage() {
       dispatch(fetchUsers({ page: currentPage, pageSize }))
         .unwrap()
         .then(() => {
+          console.log("Users fetched successfully");
           setIsLoading(false);
           setIsInitialized(true);
         })
@@ -114,18 +126,8 @@ export default function AdminUsersPage() {
           setError("Nie udało się pobrać listy użytkowników");
           setIsLoading(false);
         });
-    } else if (session?.user?.role !== "admin") {
-      router.push("/login");
     }
-  }, [
-    session,
-    dispatch,
-    router,
-    isInitialized,
-    users.length,
-    currentPage,
-    pageSize,
-  ]);
+  }, [session, status, dispatch, router, isInitialized, users.length, currentPage, pageSize]);
 
   const handleDeleteUser = useCallback(
     async (userId: string) => {
