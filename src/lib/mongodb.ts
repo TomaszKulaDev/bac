@@ -31,13 +31,23 @@ const opts = {
   maxPoolSize: 10,
 };
 
+let isConnecting = false;
+
 async function connectToDatabase(): Promise<typeof mongoose> {
   if (cached.conn) {
     return cached.conn;
   }
 
   if (!cached.promise) {
-    cached.promise = connectWithRetry();
+    if (!isConnecting) {
+      isConnecting = true;
+      cached.promise = connectWithRetry().finally(() => {
+        isConnecting = false;
+      });
+    } else {
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      return connectToDatabase();
+    }
   }
 
   try {
@@ -61,7 +71,11 @@ async function disconnectFromDatabase(): Promise<void> {
 
 async function connectWithRetry(retries = 5): Promise<typeof mongoose> {
   try {
-    return await mongoose.connect(MONGODB_URI, opts);
+    if (mongoose.connection.readyState === 1) {
+      return mongoose;
+    }
+    await mongoose.connect(MONGODB_URI);
+    return mongoose;
   } catch (err) {
     if (retries > 0) {
       console.log(`Ponowna próba połączenia z MongoDB. Pozostało prób: ${retries}`);
