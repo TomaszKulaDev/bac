@@ -15,13 +15,13 @@ const userSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
-    password: { type: String },
-    image: { type: String },
+    password: { type: String, required: true },
+    role: { type: String, default: "user" },
     isVerified: { type: Boolean, default: false },
+    googleId: { type: String }, // Dodaj to pole
+    provider: { type: String }, // Dodaj to pole, jeśli jeszcze nie istnieje
+    image: { type: String },
     verificationToken: { type: String },
-    provider: { type: String },
-    role: { type: String, enum: ["user", "admin"], default: "user" },
-    googleId: { type: String },
   },
   {
     timestamps: true,
