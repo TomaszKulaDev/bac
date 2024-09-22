@@ -24,11 +24,9 @@ import {
   FaMinus,
 } from "react-icons/fa";
 import Image from "next/image";
-import { Song } from "../types";
-
-interface MusicPlayerProps {
-  songs: Song[];
-}
+import { MusicPlayerProps, Song } from "../types";
+import VotingButtons from "./VotingButtons";
+import FavoriteButton from "./FavoriteButton";
 
 const getYouTubeThumbnail = (youtubeId: string) => {
   return `https://img.youtube.com/vi/${youtubeId}/0.jpg`;
@@ -42,7 +40,9 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
   const [visibleSongs, setVisibleSongs] = useState(7);
   const initialVisibleSongs = 7;
   const songsPerLoad = 10;
-  const [localSongs, setLocalSongs] = useState<Song[]>(songs);
+  const [localSongs, setLocalSongs] = useState<Song[]>(
+    songs.map((song) => ({ ...song, userVote: null }))
+  );
   const [player, setPlayer] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
   const [playerDimensions, setPlayerDimensions] = useState({
@@ -58,6 +58,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [adBlockerDetected, setAdBlockerDetected] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true); // Tymczasowo ustawione na false
 
   const opts: YouTubeProps["opts"] = {
     width: "100%",
@@ -103,17 +104,40 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
     setIsLoading(true);
   };
 
-  const handleVote = (songId: string, voteType: "up" | "down") => {
+  const handleVote = (songId: string, voteType: "up" | "down" | null) => {
     setLocalSongs((prevSongs) =>
-      prevSongs.map((song) =>
-        song.id === songId
-          ? {
-              ...song,
-              votes: song.votes + (voteType === "up" ? 1 : -1),
-              score: song.score + (voteType === "up" ? 1 : -1),
+      prevSongs.map((song) => {
+        if (song.id === songId) {
+          const currentVote = song.userVote;
+          let newVotes = song.votes;
+          let newScore = song.score;
+
+          if (voteType === null) {
+            // Cofnij głos
+            newVotes -= currentVote === "up" ? 1 : -1;
+            newScore -= currentVote === "up" ? 1 : -1;
+          } else if (currentVote === voteType) {
+            // Nie rób nic, jeśli użytkownik próbuje zagłosować tak samo jak wcześniej
+            return song;
+          } else {
+            // Zmień głos lub dodaj nowy
+            newVotes += voteType === "up" ? 1 : -1;
+            newScore += voteType === "up" ? 1 : -1;
+            if (currentVote) {
+              newVotes -= currentVote === "up" ? 1 : -1;
+              newScore -= currentVote === "up" ? 1 : -1;
             }
-          : song
-      )
+          }
+
+          return {
+            ...song,
+            votes: newVotes,
+            score: newScore,
+            userVote: voteType,
+          };
+        }
+        return song;
+      })
     );
   };
 
@@ -275,7 +299,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth="2"
-                  d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"
+                  d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"
                 ></path>
               </svg>
             </div>
@@ -342,6 +366,11 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
       </div>
     </div>
   );
+
+  const showLoginModal = () => {
+    // Tutaj dodaj logikę wyświetlania modalu logowania
+    console.log("Pokazuję modal logowania");
+  };
 
   useEffect(() => {
     const checkAdBlocker = async () => {
@@ -580,40 +609,16 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
                 className="w-full h-full"
               />
             </div>
-            <div className="flex justify-center items-center space-x-4 mt-4 mb-4">
-              <button
-                onClick={() =>
-                  handleVote(localSongs[currentSongIndex].id, "up")
-                }
-                className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-full hover:from-purple-600 hover:to-pink-600 transition duration-300"
-              >
-                <FaThumbsUp className="inline mr-2" />
-                {localSongs[currentSongIndex].votes > 0
-                  ? localSongs[currentSongIndex].votes
-                  : 0}
-              </button>
-              <button
-                onClick={() => toggleFavorite(localSongs[currentSongIndex].id)}
-                className={`${
-                  localSongs[currentSongIndex].isFavorite
-                    ? "bg-gradient-to-r from-pink-500 to-purple-500"
-                    : "bg-gray-300"
-                } text-white px-4 py-2 rounded-full hover:from-pink-600 hover:to-purple-600 transition duration-300`}
-              >
-                <FaHeart className="inline" />
-              </button>
-              <button
-                onClick={() =>
-                  handleVote(localSongs[currentSongIndex].id, "down")
-                }
-                className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-full hover:from-purple-600 hover:to-pink-600 transition duration-300"
-              >
-                <FaThumbsDown className="inline mr-2" />
-                {localSongs[currentSongIndex].votes < 0
-                  ? Math.abs(localSongs[currentSongIndex].votes)
-                  : 0}
-              </button>
-            </div>
+            <VotingButtons
+              songId={localSongs[currentSongIndex].id}
+              votes={localSongs[currentSongIndex].votes}
+              isFavorite={localSongs[currentSongIndex].isFavorite}
+              isLoggedIn={isLoggedIn}
+              userVote={localSongs[currentSongIndex].userVote}
+              onVote={handleVote}
+              onToggleFavorite={toggleFavorite}
+              onShowLoginModal={showLoginModal}
+            />
             <div className="flex justify-center items-center space-x-4 mt-4">
               <button
                 onClick={previousSong}
