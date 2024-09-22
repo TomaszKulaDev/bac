@@ -18,6 +18,7 @@ import { debounce } from "lodash";
 import { connectToDatabase, isConnected } from "@/lib/mongodb";
 
 interface User {
+  _id: string;
   id: string;
   name: string;
   email: string;
@@ -34,14 +35,14 @@ interface UserRowProps {
 const UserRow: React.FC<UserRowProps> = React.memo(
   ({ user, onUpdateRole, onDeleteUser }) => {
     return (
-      <tr key={user.id} className="border-b hover:bg-gray-50">
-        <td className="p-3 text-gray-700">{user.id}</td>
+      <tr key={user._id} className="border-b hover:bg-gray-50">
+        <td className="p-3 text-gray-700">{user._id}</td>
         <td className="p-3 text-gray-700">{user.name}</td>
         <td className="p-3 text-gray-700">{user.email}</td>
         <td className="p-3">
           <select
             value={user.role}
-            onChange={(e) => onUpdateRole(user.id, e.target.value)}
+            onChange={(e) => onUpdateRole(user._id, e.target.value)}
             className="border rounded p-1 text-gray-700"
           >
             <option value="user">Użytkownik</option>
@@ -50,7 +51,7 @@ const UserRow: React.FC<UserRowProps> = React.memo(
         </td>
         <td className="p-3">
           <button
-            onClick={() => onDeleteUser(user.id)}
+            onClick={() => onDeleteUser(user._id)}
             className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition duration-300"
           >
             Usuń
@@ -145,16 +146,9 @@ export default function AdminUsersPage() {
         return;
       }
       try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 sekund timeout
-
         const response = await fetch(`/api/admin/users/${userId}`, {
           method: "DELETE",
-          signal: controller.signal,
         });
-
-        clearTimeout(timeoutId);
-
         if (response.ok) {
           dispatch(fetchUsers({ page: currentPage, pageSize }));
         } else {
@@ -162,14 +156,8 @@ export default function AdminUsersPage() {
           setError(errorData.message || "Nie udało się usunąć użytkownika");
         }
       } catch (error) {
-        if (error instanceof Error && error.name === "AbortError") {
-          setError(
-            "Operacja usuwania przekroczyła limit czasu. Spróbuj ponownie później."
-          );
-        } else {
-          console.error("Error deleting user:", error);
-          setError("Wystąpił błąd podczas usuwania użytkownika");
-        }
+        console.error("Error deleting user:", error);
+        setError("Wystąpił błąd podczas usuwania użytkownika");
       }
     },
     [dispatch, currentPage, pageSize]
@@ -343,7 +331,7 @@ export default function AdminUsersPage() {
             <tbody>
               {users.map((user: User) => (
                 <UserRow
-                  key={user.id}
+                  key={user._id}
                   user={user}
                   onUpdateRole={handleUpdateRole}
                   onDeleteUser={handleDeleteUser}

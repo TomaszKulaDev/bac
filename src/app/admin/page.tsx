@@ -14,7 +14,7 @@ import AdminLayout from "@/components/AdminLayout";
 import { useRouter } from "next/navigation";
 
 interface User {
-  _id: string;
+  _id?: string;
   id: string;
   name: string;
   email: string;
@@ -297,10 +297,11 @@ export default function AdminUsersPage() {
             <tbody>
               {users.map((user: User) => (
                 <UserRow
-                  key={user._id}
+                  key={user.id}
                   user={{
                     ...user,
-                    id: user._id.toString()
+                    _id: user.id, // Dodajemy _id
+                    id: user.id
                   }}
                   onUpdateRole={handleUpdateRole}
                   onDeleteUser={handleDeleteUser}
