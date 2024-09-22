@@ -85,6 +85,9 @@ export default function Login() {
           }
         });
         setErrors(newErrors);
+      } else {
+        console.error("Unexpected error during form validation:", error);
+        setErrors({ form: "Wystąpił nieoczekiwany błąd. Spróbuj ponownie." });
       }
       return false;
     }

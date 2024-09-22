@@ -13,10 +13,10 @@ import {
   createUser,
 } from "../../../store/slices/adminSlice";
 import LoadingSpinner from "@/components/LoadingSpinner";
-import AdminLayout from '@/components/AdminLayout';
-import { useSession } from 'next-auth/react';
-import { debounce } from 'lodash';
-import { connectToDatabase, isConnected } from '@/lib/mongodb';
+import AdminLayout from "@/components/AdminLayout";
+import { useSession } from "next-auth/react";
+import { debounce } from "lodash";
+import { connectToDatabase, isConnected } from "@/lib/mongodb";
 
 interface User {
   id: string;
@@ -89,10 +89,17 @@ export default function AdminUsersPage() {
   const [pageSize, setPageSize] = useState(10);
   const [isInitialized, setIsInitialized] = useState(false);
 
-  const fetchParams = useMemo(() => ({ page: currentPage, pageSize }), [currentPage, pageSize]);
+  const fetchParams = useMemo(
+    () => ({ page: currentPage, pageSize }),
+    [currentPage, pageSize]
+  );
 
   useEffect(() => {
-    if (session?.user?.role === 'admin' && !isInitialized && users.length === 0) {
+    if (
+      session?.user?.role === "admin" &&
+      !isInitialized &&
+      users.length === 0
+    ) {
       console.log("Fetching users");
       if (!isConnected()) {
         connectToDatabase();
@@ -108,32 +115,46 @@ export default function AdminUsersPage() {
           setError("Nie udało się pobrać listy użytkowników");
           setIsLoading(false);
         });
-    } else if (session?.user?.role !== 'admin') {
+    } else if (session?.user?.role !== "admin") {
       router.push("/login");
     }
-  }, [session, dispatch, router, isInitialized, users.length, currentPage, pageSize]);
+  }, [
+    session,
+    dispatch,
+    router,
+    isInitialized,
+    users.length,
+    currentPage,
+    pageSize,
+  ]);
 
-  const handleDeleteUser = useCallback(async (userId: string) => {
-    if (!userId) {
-      console.error("Invalid userId:", userId);
-      return;
-    }
-    try {
-      const response = await fetch(`/api/admin/users/${userId}`, {
-        method: "DELETE",
-      });
-      if (response.ok) {
-        // Odśwież listę użytkowników
-        dispatch(fetchUsers({ page: currentPage, pageSize }));
-      } else {
-        const errorData = await response.json();
-        setError(errorData.message || "Nie udało się usunąć użytkownika");
+  const handleDeleteUser = useCallback(
+    async (userId: string) => {
+      if (!userId) {
+        console.error("Invalid userId:", userId);
+        return;
       }
-    } catch (error) {
-      console.error("Error deleting user:", error);
-      setError("Wystąpił błąd podczas usuwania użytkownika");
-    }
-  }, [dispatch, currentPage, pageSize]);
+      try {
+        const response = await fetch(`/api/admin/users/${userId}`, {
+          method: "DELETE",
+        });
+        if (response.ok) {
+          dispatch(fetchUsers({ page: currentPage, pageSize }));
+        } else if (response.status === 504) {
+          setError(
+            "Przekroczono limit czasu żądania. Spróbuj ponownie później."
+          );
+        } else {
+          const errorData = await response.json();
+          setError(errorData.message || "Nie udało się usunąć użytkownika");
+        }
+      } catch (error) {
+        console.error("Error deleting user:", error);
+        setError("Wystąpił błąd podczas usuwania użytkownika");
+      }
+    },
+    [dispatch, currentPage, pageSize]
+  );
 
   const handleUpdateRole = useCallback(
     (userId: string, newRole: string) => {
@@ -159,19 +180,22 @@ export default function AdminUsersPage() {
       });
   };
 
-  const handlePageChange = useCallback((newPage: number) => {
-    if (newPage !== currentPage) {
-      setIsLoading(true);
-      dispatch(fetchUsers({ page: newPage, pageSize }))
-        .unwrap()
-        .then(() => setIsLoading(false))
-        .catch((error) => {
-          console.error("Error fetching users:", error);
-          setError("Nie udało się pobrać listy użytkowników");
-          setIsLoading(false);
-        });
-    }
-  }, [dispatch, pageSize, currentPage]);
+  const handlePageChange = useCallback(
+    (newPage: number) => {
+      if (newPage !== currentPage) {
+        setIsLoading(true);
+        dispatch(fetchUsers({ page: newPage, pageSize }))
+          .unwrap()
+          .then(() => setIsLoading(false))
+          .catch((error) => {
+            console.error("Error fetching users:", error);
+            setError("Nie udało się pobrać listy użytkowników");
+            setIsLoading(false);
+          });
+      }
+    },
+    [dispatch, pageSize, currentPage]
+  );
 
   if (isLoading) {
     return <LoadingSpinner />;
@@ -249,6 +273,7 @@ export default function AdminUsersPage() {
                   setNewUser({ ...newUser, password: e.target.value })
                 }
                 required
+                autoComplete="new-password"
               />
             </div>
             <div>
