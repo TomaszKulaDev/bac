@@ -8,6 +8,8 @@ import { connectToDatabase } from "../../../lib/mongodb";
 import User from "@/models/User"; // Zakładając, że masz model User
 import bcrypt from "bcryptjs";
 import { NextAuthOptions } from "next-auth";
+import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
+import clientPromise from "@/lib/mongodb";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -69,43 +71,24 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async jwt({ token, user }) {
-      console.log("NextAuth: JWT callback");
       if (user) {
-        console.log("NextAuth: Adding user data to token", user);
-        token.role = (user as any).role || "user";
+        token.role = (user as any).role;
       }
       return token;
     },
-    async session({ session, token, user }) {
-      if (session?.user) {
-        session.user.id = token.sub || "";
-        const dbUser = await User.findOne({ email: session.user.email });
-        if (dbUser) {
-          session.user.role = dbUser.role;
-        }
+    async session({ session, token }) {
+      if (session.user) {
+        (session.user as any).role = token.role as string;
       }
       return session;
     },
-    async signIn({ user, account }) {
-      if (account?.provider === "google") {
-        await connectToDatabase();
-        const existingUser = await User.findOne({ email: user.email });
-        if (!existingUser) {
-          const newUser = new User({
-            name: user.name,
-            email: user.email,
-            role: "user",
-            isVerified: true,
-          });
-          await newUser.save();
-        }
-      }
-      return true;
+  },
+  events: {
+    async signIn({ user, account, profile, isNewUser }) {
+      console.log("User signed in:", user);
     },
   },
-  pages: {
-    signIn: "/login",
-  },
+  adapter: MongoDBAdapter(clientPromise),
   session: {
     strategy: "jwt",
   },

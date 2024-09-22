@@ -1,6 +1,7 @@
 // src/lib/mongodb.ts
 
 import mongoose from "mongoose";
+import { MongoClient } from 'mongodb';
 
 const MONGODB_URI =
   process.env.MONGODB_URI || "mongodb://localhost:27017/myapp";
@@ -76,3 +77,14 @@ function isConnected(): boolean {
 }
 
 export { connectToDatabase, disconnectFromDatabase, isConnected };
+
+const clientPromise: Promise<MongoClient> = new Promise((resolve, reject) => {
+  connectToDatabase()
+    .then((mongoose) => {
+      const client = mongoose.connection.getClient() as unknown as MongoClient;
+      resolve(client);
+    })
+    .catch(reject);
+});
+
+export default clientPromise;
