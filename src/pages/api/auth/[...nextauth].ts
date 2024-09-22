@@ -84,14 +84,13 @@ export const authOptions: NextAuthOptions = {
     },
     signIn: async ({ user, account, profile, email }) => {
       if (account?.provider === "google" && profile) {
+        await connectToDatabase();
         const existingUser = await User.findOne({ email: user.email });
         if (existingUser) {
-          if (!existingUser.googleId) {
-            // Jeśli użytkownik istnieje, ale nie ma powiązanego konta Google
-            existingUser.googleId = profile.sub;
-            existingUser.provider = "google";
-            await existingUser.save();
-          }
+          // Aktualizuj istniejącego użytkownika o dane Google
+          existingUser.googleId = profile.sub;
+          existingUser.provider = "google";
+          await existingUser.save();
           return true;
         } else {
           // Tworzenie nowego użytkownika, jeśli nie istnieje
@@ -102,11 +101,11 @@ export const authOptions: NextAuthOptions = {
             provider: "google",
             isVerified: true,
             role: "user",
-            password: await bcrypt.hash(Math.random().toString(36).slice(-8), 10), // Generowanie losowego hasła
+            password: await bcrypt.hash(Math.random().toString(36).slice(-8), 10),
           });
           await newUser.save();
-          return true;
         }
+        return true;
       }
       return true;
     },
