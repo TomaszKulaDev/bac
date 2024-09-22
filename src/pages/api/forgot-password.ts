@@ -74,6 +74,7 @@ export default async function handler(
     await user.save();
     console.log("User after save:", user);
     console.log("Saved reset token:", user.resetPasswordToken);
+    console.log("User saved with reset token:", user.resetPasswordToken);
 
     // Tworzenie URL do resetowania hasła
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://www.baciata.pl";

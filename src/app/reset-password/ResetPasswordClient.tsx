@@ -24,6 +24,10 @@ const resetPasswordSchema = z
   });
 
 export default function ResetPassword() {
+  const router = useRouter();
+  const token = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('token') : null;
+  console.log("Received token:", token);
+
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -31,9 +35,7 @@ export default function ResetPassword() {
   const [message, setMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const router = useRouter();
   const searchParams = useSearchParams();
-  const token = searchParams ? searchParams.get("token") : null;
 
   useEffect(() => {
     if (!token) {
@@ -77,6 +79,9 @@ export default function ResetPassword() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ password }),
       });
+
+      const responseData = await response.json();
+      console.log("Server response:", responseData);
 
       if (response.ok) {
         setMessage("Hasło zostało zresetowane pomyślnie");
