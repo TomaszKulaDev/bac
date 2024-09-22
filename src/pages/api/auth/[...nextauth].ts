@@ -1,3 +1,11 @@
+import { DefaultUser } from "next-auth";
+
+declare module "next-auth" {
+  interface User extends DefaultUser {
+    role?: string;
+  }
+}
+
 // src/pages/api/auth/[...nextauth].ts
 
 import NextAuth from "next-auth";
@@ -12,6 +20,7 @@ import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
 import clientPromise from "@/lib/mongodb";
 
 export const authOptions: NextAuthOptions = {
+  adapter: MongoDBAdapter(clientPromise),
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -33,7 +42,6 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        console.log("Authorize function started");
         if (!credentials) {
           console.log("No credentials provided");
           return null;
@@ -74,71 +82,19 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.role = (user as any).role;
+        token.id = user.id;
+        token.role = user.role;
       }
       return token;
     },
     async session({ session, token }) {
       if (session.user) {
-        (session.user as any).role = token.role as string;
+        session.user.id = token.id as string;
+        session.user.role = token.role as string;
       }
       return session;
     },
-    signIn: async ({ user, account, profile, email }) => {
-      console.log("SignIn callback started");
-      console.log("User:", user);
-      console.log("Account:", account);
-      console.log("Profile:", profile);
-      console.log("Email:", email);
-
-      if (account?.provider === "google" && profile) {
-        console.log("Google sign-in detected");
-        await connectToDatabase();
-        console.log("Connected to database");
-
-        const existingUser = await User.findOne({ email: user.email });
-        console.log("Existing user:", existingUser);
-
-        if (existingUser) {
-          console.log("Updating existing user");
-          existingUser.googleId = profile.sub;
-          existingUser.provider = existingUser.provider ? 'both' : 'google';
-          console.log("Updated user:", existingUser);
-          await existingUser.save();
-          console.log("User saved successfully");
-          return true;
-        } else {
-          console.log("Creating new user");
-          const newUser = new User({
-            name: user.name,
-            email: user.email,
-            googleId: profile.sub,
-            provider: 'google',
-            isVerified: true,
-            role: "user",
-            password: await bcrypt.hash(Math.random().toString(36).slice(-8), 10),
-          });
-          console.log("New user:", newUser);
-          await newUser.save();
-          console.log("New user saved successfully");
-        }
-        console.log("Google sign-in completed successfully");
-        return true;
-      }
-      console.log("SignIn callback completed");
-      return true;
-    },
   },
-  events: {
-    async signIn({ user, account, profile, isNewUser }) {
-      console.log("User signed in:", user);
-    },
-  },
-  adapter: MongoDBAdapter(clientPromise),
-  session: {
-    strategy: "jwt",
-  },
-  secret: process.env.NEXTAUTH_SECRET,
 };
 
 export default NextAuth(authOptions);

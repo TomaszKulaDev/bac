@@ -172,7 +172,7 @@ export default function Login() {
   };
 
   const handleGoogleLogin = () => {
-    signIn("google", { callbackUrl: "/" });
+    signIn('google', { callbackUrl: "/" });
   };
 
   return (
