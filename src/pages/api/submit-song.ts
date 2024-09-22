@@ -8,7 +8,11 @@ function isValidYoutubeLink(url: string): boolean {
 }
 
 // Dodatkowe funkcje walidacyjne
-function isValidLength(str: string, minLength: number, maxLength: number): boolean {
+function isValidLength(
+  str: string,
+  minLength: number,
+  maxLength: number
+): boolean {
   return str.length >= minLength && str.length <= maxLength;
 }
 
@@ -23,8 +27,8 @@ function isWithinSubmissionLimit(userId: string): Promise<boolean> {
 }
 
 function containsProfanity(str: string): boolean {
-  const profanityList = ['wulgaryzm1', 'wulgaryzm2']; // Rozszerz tę listę
-  return profanityList.some(word => str.toLowerCase().includes(word));
+  const profanityList = ["wulgaryzm1", "wulgaryzm2"]; // Rozszerz tę listę
+  return profanityList.some((word) => str.toLowerCase().includes(word));
 }
 
 // Główna funkcja obsługująca żądanie zgłoszenia utworu
@@ -41,27 +45,53 @@ export default async function handler(
     const { title, artist, youtubeLink, userId } = req.body;
 
     if (!title || !artist || !youtubeLink) {
-      return res.status(400).json({ message: "Wszystkie pola są wymagane" });
+      return res
+        .status(400)
+        .json({ message: "Proszę wypełnić wszystkie pola, aby zgłosić utwór" });
     }
 
     if (!isValidLength(title, 1, 100) || !isValidLength(artist, 1, 100)) {
-      return res.status(400).json({ message: "Tytuł i wykonawca muszą mieć od 1 do 100 znaków" });
+      return res
+        .status(400)
+        .json({
+          message:
+            "Tytuł i wykonawca powinny mieć od 1 do 100 znaków. Proszę sprawdzić i spróbować ponownie.",
+        });
     }
 
     if (!isValidYoutubeLink(youtubeLink)) {
-      return res.status(400).json({ message: "Nieprawidłowy link do YouTube" });
+      return res
+        .status(400)
+        .json({
+          message:
+            "Link do YouTube jest nieprawidłowy. Proszę sprawdzić i spróbować ponownie.",
+        });
     }
 
     if (containsProfanity(title) || containsProfanity(artist)) {
-      return res.status(400).json({ message: "Tytuł lub wykonawca zawiera niedozwolone słowa" });
+      return res
+        .status(400)
+        .json({
+          message:
+            "Tytuł lub wykonawca zawiera słowa, które nie są dozwolone. Proszę spróbować ponownie z innymi słowami.",
+        });
     }
 
     if (!(await isUniqueSubmission(title, artist))) {
-      return res.status(400).json({ message: "Ten utwór został już zgłoszony" });
+      return res
+        .status(400)
+        .json({
+          message:
+            "Ten utwór został już zgłoszony. Dziękujemy za Twoje zaangażowanie! Może spróbujesz zgłosić inny utwór?",
+        });
     }
 
     if (!(await isWithinSubmissionLimit(userId))) {
-      return res.status(400).json({ message: "Przekroczono limit zgłoszeń" });
+      return res
+        .status(400)
+        .json({
+          message: "Przekroczyłeś limit zgłoszeń. Spróbuj ponownie później.",
+        });
     }
 
     // Konfiguracja transportera do wysyłania e-maili za pomocą Gmaila
