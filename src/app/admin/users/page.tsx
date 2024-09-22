@@ -9,7 +9,6 @@ import { AppDispatch, RootState } from "../../../store/store";
 import {
   fetchUsers,
   updateUserRole,
-  addUser,
   createUser,
 } from "../../../store/slices/adminSlice";
 import LoadingSpinner from "@/components/LoadingSpinner";
@@ -179,21 +178,7 @@ export default function AdminUsersPage() {
   const handleCreateUser = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch("/api/admin/users", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newUser),
-      });
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(
-          errorData.message || "Nie udało się utworzyć nowego użytkownika"
-        );
-      }
-      const data = await response.json();
-      dispatch(addUser(data.user));
+      const response = await dispatch(createUser(newUser)).unwrap();
       setNewUser({ name: "", email: "", password: "", role: "user" });
       setError(null);
     } catch (error: any) {
