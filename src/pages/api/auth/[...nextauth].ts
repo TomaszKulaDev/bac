@@ -82,11 +82,12 @@ export const authOptions: NextAuthOptions = {
       }
       return session;
     },
-    signIn: async ({ user, account, profile }) => {
+    signIn: async ({ user, account, profile, email }) => {
       if (account?.provider === "google" && profile) {
         const existingUser = await User.findOne({ email: user.email });
         if (existingUser) {
           if (!existingUser.googleId) {
+            // Jeśli użytkownik istnieje, ale nie ma powiązanego konta Google
             existingUser.googleId = profile.sub;
             existingUser.provider = "google";
             await existingUser.save();
@@ -99,8 +100,8 @@ export const authOptions: NextAuthOptions = {
             email: user.email,
             googleId: profile.sub,
             provider: "google",
-            isVerified: true, // Zakładamy, że konta Google są zweryfikowane
-            role: "user", // Domyślna rola
+            isVerified: true,
+            role: "user",
           });
           await newUser.save();
           return true;
