@@ -8,8 +8,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../../../store/store";
 import {
   fetchUsers,
-  deleteUser,
   updateUserRole,
+  addUser,
   createUser,
 } from "../../../store/slices/adminSlice";
 import LoadingSpinner from "@/components/LoadingSpinner";
@@ -110,7 +110,7 @@ export default function AdminUsersPage() {
           setIsLoading(false);
           setIsInitialized(true);
         })
-        .catch((error) => {
+        .catch((error: Error) => {
           console.error("Error fetching users:", error);
           setError("Nie udało się pobrać listy użytkowników");
           setIsLoading(false);
@@ -135,22 +135,31 @@ export default function AdminUsersPage() {
         return;
       }
       try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 sekund timeout
+
         const response = await fetch(`/api/admin/users/${userId}`, {
           method: "DELETE",
+          signal: controller.signal,
         });
+
+        clearTimeout(timeoutId);
+
         if (response.ok) {
           dispatch(fetchUsers({ page: currentPage, pageSize }));
-        } else if (response.status === 504) {
-          setError(
-            "Przekroczono limit czasu żądania. Spróbuj ponownie później."
-          );
         } else {
           const errorData = await response.json();
           setError(errorData.message || "Nie udało się usunąć użytkownika");
         }
       } catch (error) {
-        console.error("Error deleting user:", error);
-        setError("Wystąpił błąd podczas usuwania użytkownika");
+        if (error instanceof Error && error.name === 'AbortError') {
+          setError(
+            "Operacja usuwania przekroczyła limit czasu. Spróbuj ponownie później."
+          );
+        } else {
+          console.error("Error deleting user:", error);
+          setError("Wystąpił błąd podczas usuwania użytkownika");
+        }
       }
     },
     [dispatch, currentPage, pageSize]
@@ -167,17 +176,33 @@ export default function AdminUsersPage() {
     [dispatch]
   );
 
-  const handleCreateUser = (e: React.FormEvent) => {
+  const handleCreateUser = async (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(createUser(newUser))
-      .unwrap()
-      .then(() => {
-        setNewUser({ name: "", email: "", password: "", role: "user" });
-        setError(null);
-      })
-      .catch((error) => {
-        setError("Nie udało się utworzyć nowego użytkownika: " + error.message);
+    try {
+      const response = await fetch("/api/admin/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newUser),
       });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(
+          errorData.message || "Nie udało się utworzyć nowego użytkownika"
+        );
+      }
+      const data = await response.json();
+      dispatch(addUser(data.user));
+      setNewUser({ name: "", email: "", password: "", role: "user" });
+      setError(null);
+    } catch (error: any) {
+      console.error("Error creating user:", error);
+      setError(
+        "Nie udało się utworzyć nowego użytkownika: " +
+          (error.message || "Nieznany błąd")
+      );
+    }
   };
 
   const handlePageChange = useCallback(
