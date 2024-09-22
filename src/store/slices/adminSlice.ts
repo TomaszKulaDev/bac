@@ -2,6 +2,7 @@
 
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 
+// Definicja interfejsu użytkownika
 interface User {
   id: string;
   name: string;
@@ -10,18 +11,21 @@ interface User {
   isVerified: boolean;
 }
 
+// Definicja stanu dla admina
 interface AdminState {
   users: User[];
   totalUsers: number;
   currentPage: number;
 }
 
+// Inicjalny stan dla admina
 const initialState: AdminState = {
   users: [],
   totalUsers: 0,
   currentPage: 1,
 };
 
+// Asynchroniczna akcja do pobierania użytkowników
 export const fetchUsers = createAsyncThunk(
   "admin/fetchUsers",
   async ({ page, pageSize }: { page: number; pageSize: number }) => {
@@ -40,6 +44,7 @@ export const fetchUsers = createAsyncThunk(
   }
 );
 
+// Asynchroniczna akcja do usuwania użytkownika
 export const deleteUser = createAsyncThunk(
   "admin/deleteUser",
   async (userId: string) => {
@@ -49,6 +54,7 @@ export const deleteUser = createAsyncThunk(
   }
 );
 
+// Asynchroniczna akcja do aktualizacji roli użytkownika
 export const updateUserRole = createAsyncThunk(
   "admin/updateUserRole",
   async ({ userId, newRole }: { userId: string; newRole: string }) => {
@@ -63,6 +69,7 @@ export const updateUserRole = createAsyncThunk(
   }
 );
 
+// Asynchroniczna akcja do tworzenia nowego użytkownika
 export const createUser = createAsyncThunk(
   'admin/createUser',
   async (userData: Partial<User>, { dispatch }) => {
@@ -82,10 +89,12 @@ export const createUser = createAsyncThunk(
   }
 );
 
+// Tworzenie slice dla admina
 const adminSlice = createSlice({
   name: "admin",
   initialState,
   reducers: {
+    // Akcja do dodawania użytkownika
     addUser: (state, action: PayloadAction<User>) => {
       state.users.unshift(action.payload);
       state.totalUsers += 1;
@@ -93,6 +102,7 @@ const adminSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      // Obsługa zakończonego sukcesem pobierania użytkowników
       .addCase(
         fetchUsers.fulfilled,
         (
@@ -108,15 +118,19 @@ const adminSlice = createSlice({
           state.currentPage = action.payload.currentPage;
         }
       )
+      // Obsługa błędu podczas pobierania użytkowników
       .addCase(fetchUsers.rejected, (state, action) => {
         console.error("Błąd podczas pobierania użytkowników:", action.error);
       })
+      // Obsługa zakończonego sukcesem usuwania użytkownika
       .addCase(deleteUser.fulfilled, (state, action: PayloadAction<string>) => {
         state.users = state.users.filter((user) => user.id !== action.payload);
       })
+      // Obsługa błędu podczas usuwania użytkownika
       .addCase(deleteUser.rejected, (state, action) => {
         console.error("Błąd podczas usuwania użytkownika:", action.error);
       })
+      // Obsługa zakończonej sukcesem aktualizacji roli użytkownika
       .addCase(
         updateUserRole.fulfilled,
         (state, action: PayloadAction<User>) => {
@@ -128,20 +142,24 @@ const adminSlice = createSlice({
           }
         }
       )
+      // Obsługa błędu podczas aktualizacji roli użytkownika
       .addCase(updateUserRole.rejected, (state, action) => {
         console.error(
           "Błąd podczas aktualizacji roli użytkownika:",
           action.error
         );
       })
+      // Obsługa zakończonego sukcesem tworzenia nowego użytkownika
       .addCase(createUser.fulfilled, (state, action: PayloadAction<User>) => {
         state.users.push(action.payload);
         state.totalUsers += 1;
       })
+      // Obsługa błędu podczas tworzenia nowego użytkownika
       .addCase(createUser.rejected, (state, action) => {
         console.error("Błąd podczas tworzenia użytkownika:", action.error);
       });
   },
 });
 
+// Eksportowanie reducer'a slice'a admina
 export default adminSlice.reducer;
