@@ -66,11 +66,9 @@ export default async function handler(
 
     // Generowanie tokena do resetowania hasła
     const resetToken = crypto.randomBytes(32).toString("hex");
-    console.log("Wygenerowany token:", resetToken);
-    console.log("Typ wygenerowanego tokenu:", typeof resetToken);
-    console.log("Długość wygenerowanego tokenu:", resetToken.length);
     user.resetPasswordToken = resetToken;
     user.resetPasswordExpires = Date.now() + 3600000 * 24; // Token ważny przez 24 godziny
+    user.lastResetTokenRequest = new Date();
     await user.save();
 
     console.log("User before save:", user);

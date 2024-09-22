@@ -64,6 +64,10 @@ export default async function handler(
       console.log("Nie znaleziono użytkownika z podanym tokenem");
     }
 
+    // Znalezienie wszystkich użytkowników z tokenami resetowania hasła
+    const allUsersWithTokens = await User.find({ resetPasswordToken: { $exists: true } }, 'email resetPasswordToken resetPasswordExpires lastResetTokenRequest');
+    console.log("Wszyscy użytkownicy z tokenami resetowania hasła:", allUsersWithTokens);
+
     // Sprawdzanie, czy użytkownik został znaleziony
     if (!user) {
       console.log("Token not found");
@@ -85,6 +89,10 @@ export default async function handler(
     user.resetPasswordToken = undefined; // Usunięcie tokenu po użyciu
     user.resetPasswordExpires = undefined; // Usunięcie daty ważności tokenu
     await user.save();
+
+    const savedUser = await User.findOne({ email: user.email });
+    console.log("Użytkownik po zapisaniu:", savedUser);
+    console.log("Token resetowania hasła po zapisaniu:", savedUser.resetPasswordToken);
 
     console.log("Password reset successfully for user:", user.email);
     res.status(200).json({ message: "Hasło zostało pomyślnie zresetowane" });
