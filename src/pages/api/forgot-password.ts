@@ -70,6 +70,8 @@ export default async function handler(
     user.resetPasswordExpires = Date.now() + 3600000; // Token ważny przez 1 godzinę
     await user.save();
 
+    console.log("Saved reset token:", user.resetPasswordToken);
+
     // Tworzenie URL do resetowania hasła
     const baseUrl =
       process.env.NEXT_PUBLIC_APP_URL || "https://bac-eta.vercel.app";

@@ -10,8 +10,8 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  console.log("Token received:", req.query.token);
-  console.log("Password received:", req.body.password);
+  console.log("Otrzymany token:", req.query.token);
+  console.log("Otrzymane hasło:", req.body.password);
 
   // Sprawdzanie, czy metoda żądania to POST
   if (req.method !== "POST") {
@@ -76,12 +76,12 @@ export default async function handler(
         return res
           .status(503)
           .json({ message: "Błąd bazy danych. Spróbuj ponownie później." });
-      // Obsługa błędów walidacji
+        // Obsługa błędów walidacji
       } else if (error.name === "ValidationError") {
         return res
           .status(400)
           .json({ message: "Nieprawidłowe dane wejściowe." });
-      // Obsługa błędów związanych z duplikatami kluczy
+        // Obsługa błędów związanych z duplikatami kluczy
       } else if (error.message.includes("E11000 duplicate key error")) {
         return res
           .status(409)

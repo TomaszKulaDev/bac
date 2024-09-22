@@ -71,6 +71,7 @@ export default function ResetPassword() {
     }
 
     try {
+      console.log("Sending reset request with token:", token);
       const response = await fetch(`/api/reset-password?token=${token}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
