@@ -1,7 +1,6 @@
 // src/pages/api/forgot-password.ts
 
-// src/pages/api/forgot-password.ts
-
+// Importowanie wymaganych modułów i typów
 import type { NextApiRequest, NextApiResponse } from "next";
 import { connectToDatabase } from "@/lib/mongodb";
 import User from "@/models/User";
@@ -9,34 +8,43 @@ import nodemailer from "nodemailer";
 import crypto from "crypto";
 import { z } from "zod";
 
+// Schemat walidacji adresu e-mail
 const emailSchema = z.string().email("Nieprawidłowy adres email");
 
+// Główna funkcja obsługująca żądanie resetowania hasła
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  // Sprawdzanie, czy metoda żądania to POST
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Metoda niedozwolona" });
   }
 
   try {
+    // Łączenie z bazą danych
     await connectToDatabase();
 
+    // Pobieranie adresu e-mail z ciała żądania
     const { email } = req.body;
 
+    // Walidacja adresu e-mail
     const emailValidationResult = emailSchema.safeParse(email);
     if (!emailValidationResult.success) {
       return res.status(400).json({ message: emailValidationResult.error.errors[0].message });
     }
 
+    // Wyszukiwanie użytkownika na podstawie adresu e-mail
     const user = await User.findOne({ email });
 
+    // Sprawdzanie, czy użytkownik został znaleziony
     if (!user) {
       return res
         .status(400)
         .json({ message: "Nie znaleziono użytkownika z tym adresem e-mail" });
     }
 
+    // Sprawdzanie, czy użytkownik jest zweryfikowany
     if (!user.isVerified) {
       return res.status(400).json({
         message:
@@ -44,6 +52,7 @@ export default async function handler(
       });
     }
 
+    // Sprawdzanie, czy link do resetowania hasła został już wysłany
     if (
       user.resetPasswordToken &&
       user.resetPasswordExpires &&
@@ -55,11 +64,13 @@ export default async function handler(
       });
     }
 
+    // Generowanie tokena do resetowania hasła
     const resetToken = crypto.randomBytes(32).toString("hex");
     user.resetPasswordToken = resetToken;
     user.resetPasswordExpires = Date.now() + 3600000; // Token ważny przez 1 godzinę
     await user.save();
 
+    // Tworzenie URL do resetowania hasła
     const baseUrl =
       process.env.NEXT_PUBLIC_APP_URL || "https://bac-eta.vercel.app";
     const resetUrl = `${baseUrl}/reset-password?token=${resetToken}`;
@@ -67,6 +78,7 @@ export default async function handler(
     console.log("Base URL:", baseUrl);
     console.log("Reset URL:", resetUrl);
 
+    // Konfiguracja transportera do wysyłania e-maili za pomocą Gmaila
     const transporter = nodemailer.createTransport({
       service: "Gmail",
       auth: {
@@ -75,6 +87,7 @@ export default async function handler(
       },
     });
 
+    // Opcje e-maila, który ma zostać wysłany
     const mailOptions = {
       from: process.env.GMAIL_USER,
       to: user.email,
@@ -88,8 +101,10 @@ export default async function handler(
       `,
     };
 
+    // Wysyłanie e-maila z linkiem do resetowania hasła
     await transporter.sendMail(mailOptions);
 
+    // Wysyłanie odpowiedzi o pomyślnym wysłaniu e-maila
     res
       .status(200)
       .json({ message: "Link do resetowania hasła został wysłany" });
@@ -97,14 +112,17 @@ export default async function handler(
     console.error("Błąd podczas resetowania hasła:", error);
 
     if (error instanceof Error) {
+      // Obsługa błędów bazy danych
       if (error.name === "MongoError") {
         return res
           .status(503)
           .json({ message: "Błąd bazy danych. Spróbuj ponownie później." });
+      // Obsługa błędów walidacji
       } else if (error.name === "ValidationError") {
         return res
           .status(400)
           .json({ message: "Nieprawidłowe dane wejściowe." });
+      // Obsługa błędów związanych z wysyłaniem e-maila
       } else if (error.message === "Nodemailer error") {
         return res
           .status(502)
@@ -114,6 +132,7 @@ export default async function handler(
       }
     }
 
+    // Obsługa nieoczekiwanych błędów
     res
       .status(500)
       .json({

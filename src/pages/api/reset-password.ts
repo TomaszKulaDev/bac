@@ -5,6 +5,7 @@ import User from "@/models/User";
 import bcrypt from "bcryptjs";
 import { validatePassword } from "@/schemas/passwordSchema";
 
+// Główna funkcja obsługująca żądanie resetowania hasła
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -12,27 +13,33 @@ export default async function handler(
   console.log("Token received:", req.query.token);
   console.log("Password received:", req.body.password);
 
+  // Sprawdzanie, czy metoda żądania to POST
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Metoda niedozwolona" });
   }
 
   try {
+    // Łączenie z bazą danych
     await connectToDatabase();
     console.log("Connected to database");
 
+    // Pobieranie tokena i hasła z zapytania
     const { token } = req.query;
     const { password } = req.body;
 
+    // Sprawdzanie, czy token jest prawidłowy
     if (!token || typeof token !== "string") {
       return res
         .status(400)
         .json({ message: "Token jest wymagany i musi być ciągiem znaków" });
     }
 
+    // Sprawdzanie, czy hasło zostało podane
     if (!password) {
       return res.status(400).json({ message: "Hasło jest wymagane" });
     }
 
+    // Walidacja hasła
     const passwordValidationError = validatePassword(password);
     if (passwordValidationError) {
       return res.status(400).json({ message: passwordValidationError });
@@ -45,6 +52,7 @@ export default async function handler(
     });
     console.log("Found user:", user);
 
+    // Sprawdzanie, czy użytkownik został znaleziony
     if (!user) {
       return res
         .status(400)
@@ -63,20 +71,24 @@ export default async function handler(
   } catch (error) {
     console.error("Reset password error:", error);
     if (error instanceof Error) {
+      // Obsługa błędów bazy danych
       if (error.name === "MongoError") {
         return res
           .status(503)
           .json({ message: "Błąd bazy danych. Spróbuj ponownie później." });
+      // Obsługa błędów walidacji
       } else if (error.name === "ValidationError") {
         return res
           .status(400)
           .json({ message: "Nieprawidłowe dane wejściowe." });
+      // Obsługa błędów związanych z duplikatami kluczy
       } else if (error.message.includes("E11000 duplicate key error")) {
         return res
           .status(409)
           .json({ message: "Konflikt danych. Spróbuj ponownie później." });
       }
     }
+    // Ogólna obsługa błędów
     res.status(500).json({
       message: "Nie udało się zresetować hasła. Spróbuj ponownie później.",
     });

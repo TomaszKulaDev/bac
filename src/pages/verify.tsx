@@ -4,29 +4,36 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 
 export default function VerifyPage() {
+  // Stan przechowujący status weryfikacji
   const [status, setStatus] = useState<string | null>(null);
+  // Stan przechowujący informację o sukcesie weryfikacji
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const router = useRouter();
-  const { token } = router.query;
+  const { token } = router.query; // Pobieranie tokena z query parametru
 
   useEffect(() => {
     if (token) {
+      // Wysyłanie żądania do API w celu weryfikacji konta
       fetch(`/api/verify?token=${token}`)
         .then((res) => res.json())
         .then((data) => {
           if (data.message === "Account verified successfully") {
+            // Jeśli weryfikacja zakończyła się sukcesem
             setIsSuccess(true);
             setStatus("Hurra! Twoje konto zostało pomyślnie zweryfikowane! 🎉");
           } else {
+            // Jeśli weryfikacja nie powiodła się
             setStatus("Weryfikacja nie powiodła się: " + data.message);
           }
         })
         .catch((error) => {
+          // Obsługa błędów podczas żądania
           setStatus("Wystąpił błąd: " + error.message);
         });
     }
-  }, [token]);
+  }, [token]); // Efekt uruchamiany przy zmianie tokena
 
+  // Komponent wyświetlający wiadomość o sukcesie weryfikacji
   const successMessage = (
     <>
       <h1 className="text-2xl font-bold mb-4">
@@ -56,12 +63,12 @@ export default function VerifyPage() {
       <div className="bg-white p-6 rounded shadow-md w-full max-w-md text-center">
         {status ? (
           isSuccess ? (
-            successMessage
+            successMessage // Wyświetlanie wiadomości o sukcesie weryfikacji
           ) : (
-            <p className="text-red-500">{status}</p>
+            <p className="text-red-500">{status}</p> // Wyświetlanie wiadomości o niepowodzeniu weryfikacji
           )
         ) : (
-          <p>Weryfikacja w toku...</p>
+          <p>Weryfikacja w toku...</p> // Wyświetlanie wiadomości o trwającej weryfikacji
         )}
       </div>
     </div>

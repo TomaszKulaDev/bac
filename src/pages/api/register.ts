@@ -7,39 +7,52 @@ import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import { validatePassword } from "@/schemas/passwordSchema";
 
+// Główna funkcja obsługująca żądanie rejestracji użytkownika
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  // Sprawdzanie, czy metoda żądania to POST
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Metoda niedozwolona" });
   }
 
   try {
+    // Łączenie z bazą danych
     await connectToDatabase();
 
+    // Pobieranie danych z ciała żądania
     const { email, password, name } = req.body;
 
+    // Sprawdzanie, czy wszystkie wymagane dane zostały podane
     if (!name || !email || !password) {
       return res
         .status(400)
         .json({ message: "Imię, email i hasło są wymagane" });
     }
 
+    // Walidacja hasła
     const passwordValidationError = validatePassword(password);
     if (passwordValidationError) {
       return res.status(400).json({ message: passwordValidationError });
     }
 
+    // Sprawdzanie, czy użytkownik o podanym adresie email już istnieje
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(409).json({ message: "Użytkownik już istnieje" });
     }
 
+    // Generowanie tokena weryfikacyjnego
     const verificationToken = crypto.randomBytes(32).toString("hex");
+
+    // Przycinanie hasła do maksymalnej długości 72 znaków
     const trimmedPassword = password.slice(0, 72);
+
+    // Hashowanie hasła
     const hashedPassword = await bcrypt.hash(trimmedPassword, 10);
 
+    // Tworzenie nowego użytkownika
     const newUser = new User({
       email,
       password: hashedPassword,
@@ -48,20 +61,23 @@ export default async function handler(
       isVerified: false,
     });
 
+    // Zapisywanie nowego użytkownika w bazie danych
     await newUser.save();
 
+    // Konfiguracja transportera do wysyłania e-maili za pomocą Gmaila
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: process.env.GMAIL_USER,
-        pass: process.env.GMAIL_PASS,
+        user: process.env.GMAIL_USER, // Użytkownik Gmaila
+        pass: process.env.GMAIL_PASS, // Hasło do Gmaila
       },
     });
 
+    // Opcje e-maila, który ma zostać wysłany
     const mailOptions = {
-      from: "noreply@yourdomain.com",
-      to: newUser.email,
-      subject: "Witamy w społeczności Baciata! Potwierdź swoje konto",
+      from: "noreply@yourdomain.com", // Nadawca e-maila
+      to: newUser.email, // Odbiorca e-maila
+      subject: "Witamy w społeczności Baciata! Potwierdź swoje konto", // Temat e-maila
       html: `
         <h1>Witaj ${newUser.name}! 🎉</h1>
         <p>Cieszymy się, że dołączasz do naszej tanecznej społeczności Baciaty! Jesteś o krok od odkrycia świata pełnego rytmu, pasji i nowych przyjaźni.</p>
@@ -74,28 +90,35 @@ export default async function handler(
       `,
     };
 
+    // Wysyłanie e-maila za pomocą transportera
     await transporter.sendMail(mailOptions);
 
+    // Wysyłanie odpowiedzi o pomyślnej rejestracji użytkownika
     res
       .status(201)
       .json({ message: "User registered. Please verify your email." });
   } catch (error) {
+    // Obsługa błędów podczas rejestracji
     console.error("Registration error:", error);
     if (error instanceof Error) {
+      // Obsługa błędów bazy danych
       if (error.name === "MongoError") {
         return res
           .status(503)
           .json({ message: "Błąd bazy danych. Spróbuj ponownie później." });
+      // Obsługa błędów walidacji
       } else if (error.name === "ValidationError") {
         return res
           .status(400)
           .json({ message: "Nieprawidłowe dane wejściowe." });
+      // Obsługa błędów związanych z duplikatami kluczy
       } else if (error.message.includes("E11000 duplicate key error")) {
         return res.status(409).json({
           message: "Użytkownik o podanym adresie email już istnieje.",
         });
       }
     }
+    // Obsługa nieoczekiwanych błędów
     res.status(500).json({
       message:
         "Wystąpił nieoczekiwany błąd podczas rejestracji. Spróbuj ponownie później.",
