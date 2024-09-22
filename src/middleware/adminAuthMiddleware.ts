@@ -8,10 +8,13 @@ export default async function adminAuthMiddleware(
   next: () => void
 ) {
   const session = await getServerSession(req, res, authOptions);
+  console.log("Session in adminAuthMiddleware:", session);
 
   if (!session || session.user.role !== "admin") {
+    console.log("Unauthorized access attempt");
     return res.status(403).json({ message: "Brak uprawnień" });
   }
 
+  console.log("Admin authorized");
   await next();
 }

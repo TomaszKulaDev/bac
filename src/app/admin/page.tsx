@@ -14,6 +14,7 @@ import AdminLayout from "@/components/AdminLayout";
 import { useRouter } from "next/navigation";
 
 interface User {
+  _id?: string;
   id: string;
   name: string;
   email: string;
@@ -30,7 +31,7 @@ interface UserRowProps {
 const UserRow: React.FC<UserRowProps> = React.memo(
   ({ user, onUpdateRole, onDeleteUser }) => {
     return (
-      <tr key={user.id} className="border-b hover:bg-gray-50">
+      <tr key={user._id} className="border-b hover:bg-gray-50">
         <td className="p-3 text-gray-700">{user.id}</td>
         <td className="p-3 text-gray-700">{user.name}</td>
         <td className="p-3 text-gray-700">{user.email}</td>
@@ -297,7 +298,11 @@ export default function AdminUsersPage() {
               {users.map((user: User) => (
                 <UserRow
                   key={user.id}
-                  user={user}
+                  user={{
+                    ...user,
+                    _id: user.id, // Dodajemy _id
+                    id: user.id
+                  }}
                   onUpdateRole={handleUpdateRole}
                   onDeleteUser={handleDeleteUser}
                 />
