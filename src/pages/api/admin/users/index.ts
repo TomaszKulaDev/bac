@@ -12,7 +12,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     await adminAuthMiddleware(req, res, async () => {
       console.log("Middleware administratora przeszedł pomyślnie");
       try {
-        await connectToDatabase();
+        const connection = await connectToDatabase();
         console.log("Połączono z bazą danych");
 
         if (req.method === 'GET') {
@@ -22,10 +22,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             const pageSize = parseInt(req.query.pageSize as string) || 10;
             const skip = (page - 1) * pageSize;
 
-            const users = await User.find().skip(skip).limit(pageSize).lean();
-            const totalUsers = await User.countDocuments();
+            const [users, totalUsers] = await Promise.all([
+              User.find().select('-password').skip(skip).limit(pageSize).lean(),
+              User.countDocuments()
+            ]);
 
-            console.log("Użytkownicy pobrani pomyślnie");
+            console.log(`Pobrano ${users.length} użytkowników`);
             res.status(200).json({ users, totalUsers, currentPage: page });
           } catch (error) {
             console.error('Błąd podczas pobierania użytkowników:', error);

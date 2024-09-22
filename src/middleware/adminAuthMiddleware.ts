@@ -7,11 +7,15 @@ export default async function adminAuthMiddleware(
   res: NextApiResponse,
   next: () => void
 ) {
+  console.log("Rozpoczęcie weryfikacji uprawnień administratora");
   const session = await getServerSession(req, res, authOptions);
+  console.log("Sesja użytkownika:", session);
 
   if (!session || session.user.role !== "admin") {
+    console.log("Brak uprawnień administratora");
     return res.status(403).json({ message: "Brak uprawnień" });
   }
 
+  console.log("Uprawnienia administratora zweryfikowane pomyślnie");
   await next();
 }

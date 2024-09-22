@@ -32,18 +32,21 @@ const opts = {
 
 async function connectToDatabase(): Promise<typeof mongoose> {
   if (cached.conn) {
+    console.log('Używanie istniejącego połączenia z MongoDB');
     return cached.conn;
   }
 
   if (!cached.promise) {
+    console.log('Inicjowanie nowego połączenia z MongoDB');
     cached.promise = connectWithRetry();
   }
 
   try {
     cached.conn = await cached.promise;
+    console.log('Połączenie z MongoDB ustanowione pomyślnie');
   } catch (e) {
     cached.promise = null;
-    console.error("Nie udało się połączyć z MongoDB", e);
+    console.error('Nie udało się połączyć z MongoDB', e);
     throw e;
   }
 
@@ -60,15 +63,17 @@ async function disconnectFromDatabase(): Promise<void> {
 
 async function connectWithRetry(retries = 5): Promise<typeof mongoose> {
   try {
-    return await mongoose.connect(MONGODB_URI, opts);
+    console.log(`Próba połączenia z MongoDB. Pozostało prób: ${retries}`);
+    const connection = await mongoose.connect(MONGODB_URI, opts);
+    console.log('Połączenie z MongoDB ustanowione');
+    return connection;
   } catch (err) {
     if (retries > 0) {
-      console.log(
-        `Ponowna próba połączenia z MongoDB. Pozostało prób: ${retries}`
-      );
-      await new Promise((resolve) => setTimeout(resolve, 5000));
+      console.log(`Ponowna próba połączenia z MongoDB. Pozostało prób: ${retries - 1}`);
+      await new Promise(resolve => setTimeout(resolve, 5000));
       return connectWithRetry(retries - 1);
     }
+    console.error('Wyczerpano wszystkie próby połączenia z MongoDB');
     throw err;
   }
 }
