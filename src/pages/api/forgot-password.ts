@@ -66,6 +66,9 @@ export default async function handler(
 
     // Generowanie tokena do resetowania hasła
     const resetToken = crypto.randomBytes(32).toString("hex");
+    console.log("Wygenerowany token:", resetToken);
+    console.log("Typ wygenerowanego tokenu:", typeof resetToken);
+    console.log("Długość wygenerowanego tokenu:", resetToken.length);
     user.resetPasswordToken = resetToken;
     user.resetPasswordExpires = Date.now() + 3600000 * 24; // Token ważny przez 24 godziny
     await user.save();
@@ -113,6 +116,10 @@ export default async function handler(
     res
       .status(200)
       .json({ message: "Link do resetowania hasła został wysłany" });
+
+    // Dodatkowe logi do sprawdzenia wszystkich użytkowników z tokenami resetowania hasła
+    const allUsersWithResetTokens = await User.find({ resetPasswordToken: { $exists: true } }, 'email resetPasswordToken resetPasswordExpires');
+    console.log("Wszyscy użytkownicy z tokenami resetowania hasła:", allUsersWithResetTokens);
   } catch (error) {
     console.error("Błąd podczas resetowania hasła:", error);
 

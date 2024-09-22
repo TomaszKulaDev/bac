@@ -51,15 +51,17 @@ export default async function handler(
 
     // Znalezienie użytkownika na podstawie tokenu
     const user = await User.findOne({
-      resetPasswordToken: token,
+      resetPasswordToken: token.toString(),
     });
-    console.log("Kryteria wyszukiwania:", { resetPasswordToken: token });
+    console.log("Kryteria wyszukiwania:", { resetPasswordToken: token.toString() });
     console.log("Znaleziony użytkownik:", user ? 'Tak' : 'Nie');
     if (user) {
       console.log("ID użytkownika:", user._id);
       console.log("Email użytkownika:", user.email);
       console.log("Token resetowania hasła użytkownika:", user.resetPasswordToken);
       console.log("Data wygaśnięcia tokena:", user.resetPasswordExpires);
+    } else {
+      console.log("Nie znaleziono użytkownika z podanym tokenem");
     }
 
     // Sprawdzanie, czy użytkownik został znaleziony
