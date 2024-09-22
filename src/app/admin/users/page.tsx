@@ -146,17 +146,30 @@ export default function AdminUsersPage() {
     [dispatch]
   );
 
-  const handleCreateUser = (e: React.FormEvent) => {
+  const handleCreateUser = async (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(createUser(newUser))
-      .unwrap()
-      .then(() => {
+    try {
+      const response = await fetch('/api/admin/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newUser),
+      });
+
+      if (response.ok) {
+        const createdUser = await response.json();
+        dispatch(createUser(createdUser.user));
         setNewUser({ name: "", email: "", password: "", role: "user" });
         setError(null);
-      })
-      .catch((error) => {
-        setError("Nie udało się utworzyć nowego użytkownika: " + error.message);
-      });
+      } else {
+        const errorData = await response.json();
+        setError(errorData.message || "Nie udało się utworzyć nowego użytkownika");
+      }
+    } catch (error) {
+      console.error("Error creating user:", error);
+      setError("Wystąpił błąd podczas tworzenia użytkownika");
+    }
   };
 
   const handlePageChange = useCallback((newPage: number) => {
