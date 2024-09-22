@@ -85,10 +85,25 @@ export const authOptions: NextAuthOptions = {
     signIn: async ({ user, account, profile }) => {
       if (account?.provider === "google") {
         const existingUser = await User.findOne({ email: user.email });
-        if (existingUser && !existingUser.provider) {
-          // Jeśli użytkownik istnieje, ale nie ma ustawionego providera, aktualizujemy go
-          existingUser.provider = "google";
-          await existingUser.save();
+        if (existingUser) {
+          if (!existingUser.googleId) {
+            existingUser.googleId = profile.sub;
+            existingUser.provider = "google";
+            await existingUser.save();
+          }
+          return true;
+        } else {
+          // Tworzenie nowego użytkownika, jeśli nie istnieje
+          const newUser = new User({
+            name: user.name,
+            email: user.email,
+            googleId: profile.sub,
+            provider: "google",
+            isVerified: true, // Zakładamy, że konta Google są zweryfikowane
+            role: "user", // Domyślna rola
+          });
+          await newUser.save();
+          return true;
         }
       }
       return true;
