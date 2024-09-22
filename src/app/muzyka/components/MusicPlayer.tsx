@@ -2,7 +2,13 @@
 
 "use client";
 
-import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+} from "react";
 import YouTube, { YouTubeProps } from "react-youtube";
 import {
   FaPlay,
@@ -104,7 +110,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
           ? {
               ...song,
               votes: song.votes + (voteType === "up" ? 1 : -1),
-              score: song.score + (voteType === "up" ? 1 : -1)
+              score: song.score + (voteType === "up" ? 1 : -1),
             }
           : song
       )
@@ -132,18 +138,25 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
   const sortSongs = useCallback(() => {
     setLocalSongs((prevSongs) => {
       const sortedSongs = [...prevSongs].sort((a, b) => b.score - a.score);
-      return JSON.stringify(sortedSongs) !== JSON.stringify(prevSongs) ? sortedSongs : prevSongs;
+      return JSON.stringify(sortedSongs) !== JSON.stringify(prevSongs)
+        ? sortedSongs
+        : prevSongs;
     });
   }, []);
 
-  const songScores = useMemo(() => localSongs.map(song => song.score).join(','), [localSongs]);
+  const songScores = useMemo(
+    () => localSongs.map((song) => song.score).join(","),
+    [localSongs]
+  );
 
   useEffect(() => {
     try {
       sortSongs();
     } catch (error) {
       console.error("Błąd podczas sortowania piosenek:", error);
-      setError("Wystąpił problem z sortowaniem piosenek. Spróbuj odświeżyć stronę.");
+      setError(
+        "Wystąpił problem z sortowaniem piosenek. Spróbuj odświeżyć stronę."
+      );
     }
   }, [songScores, sortSongs]);
 
@@ -156,7 +169,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
     console.error("Błąd YouTube:", event.data);
     let errorMessage = "Wystąpił błąd podczas ładowania filmu.";
     if (adBlockerDetected) {
-      errorMessage += " Sprawdź swoje ustawienia prywatności lub blokery reklam.";
+      errorMessage +=
+        " Sprawdź swoje ustawienia prywatności lub blokery reklam.";
     }
     setError(errorMessage);
   };
@@ -174,7 +188,9 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
 
   useEffect(() => {
     updatePlayerDimensions();
-    window.addEventListener("resize", updatePlayerDimensions, { passive: true });
+    window.addEventListener("resize", updatePlayerDimensions, {
+      passive: true,
+    });
     return () => window.removeEventListener("resize", updatePlayerDimensions);
   }, [updatePlayerDimensions]);
 
@@ -188,12 +204,12 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('Formularz został wysłany');
+    console.log("Formularz został wysłany");
     try {
-      const response = await fetch('/api/submit-song', {
-        method: 'POST',
+      const response = await fetch("/api/submit-song", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
@@ -201,12 +217,12 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
       if (response.ok) {
         setShowSuccessMessage(true);
         setShowContactForm(false);
-        setFormData({ title: '', artist: '', youtubeLink: '' });
+        setFormData({ title: "", artist: "", youtubeLink: "" });
       } else {
-        throw new Error('Wystąpił błąd podczas wysyłania formularza');
+        throw new Error("Wystąpił błąd podczas wysyłania formularza");
       }
     } catch (error) {
-      console.error('Błąd:', error);
+      console.error("Błąd:", error);
       setShowErrorMessage(true);
     }
   };
@@ -221,41 +237,62 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
   }, [showSuccessMessage]);
 
   function SuccessMessage({ onClose }: { onClose: () => void }) {
-    console.log('SuccessMessage został wyrenderowany');
+    console.log("SuccessMessage został wyrenderowany");
     useEffect(() => {
       const handleKeyDown = (event: KeyboardEvent) => {
-        if (event.key === 'Escape') {
+        if (event.key === "Escape") {
           onClose();
         }
       };
 
-      document.addEventListener('keydown', handleKeyDown);
+      document.addEventListener("keydown", handleKeyDown);
 
       return () => {
-        document.removeEventListener('keydown', handleKeyDown);
+        document.removeEventListener("keydown", handleKeyDown);
       };
     }, [onClose]);
 
     return (
-      <div 
+      <div
         className="fixed inset-0 flex items-center justify-center z-[9999] bg-black bg-opacity-50"
         onClick={onClose}
         style={{ zIndex: 9999 }}
       >
-        <div className="bg-white rounded-lg p-8 max-w-md w-full shadow-xl" onClick={(e) => e.stopPropagation()}>
+        <div
+          className="bg-white rounded-lg p-8 max-w-md w-full shadow-xl"
+          onClick={(e) => e.stopPropagation()}
+        >
           <div className="text-center">
             <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-4">
-              <svg className="h-8 w-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>
+              <svg
+                className="h-8 w-8 text-green-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"
+                ></path>
               </svg>
             </div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-2">Świetnie! 🎉</h3>
-            <p className="text-lg text-gray-600 mb-4">Twój utwór został dodany do naszej playlisty do rozpatrzenia. Dzięki za podzielenie się muzyką!</p>
-            <p className="text-md text-gray-500 mb-6">Kto wie, może wkrótce usłyszymy go na parkiecie? 💃🕺</p>
+            <h3 className="text-2xl font-bold text-gray-900 mb-2">
+              Świetnie! 🎉
+            </h3>
+            <p className="text-lg text-gray-600 mb-4">
+              Twój utwór został dodany do naszej playlisty do rozpatrzenia.
+              Dzięki za podzielenie się muzyką!
+            </p>
+            <p className="text-md text-gray-500 mb-6">
+              Kto wie, może wkrótce usłyszymy go na parkiecie? 💃🕺
+            </p>
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                console.log('Przycisk zamykający został kliknięty');
+                console.log("Przycisk zamykający został kliknięty");
                 onClose();
               }}
               className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:text-sm transition duration-300 z-50"
@@ -273,12 +310,28 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
       <div className="bg-white rounded-lg p-8 max-w-md w-full shadow-xl">
         <div className="text-center">
           <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
-            <svg className="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+            <svg
+              className="h-6 w-6 text-red-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M6 18L18 6M6 6l12 12"
+              ></path>
             </svg>
           </div>
-          <h3 className="text-lg font-medium text-gray-900 mb-2">Wystąpił błąd</h3>
-          <p className="text-sm text-gray-500 mb-4">Przepraszamy, nie udało się wysłać formularza. Spróbuj ponownie później.</p>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">
+            Wystąpił błąd
+          </h3>
+          <p className="text-sm text-gray-500 mb-4">
+            Przepraszamy, nie udało się wysłać formularza. Spróbuj ponownie
+            później.
+          </p>
           <button
             onClick={() => setShowErrorMessage(false)}
             className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:text-sm"
@@ -293,7 +346,9 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
   useEffect(() => {
     const checkAdBlocker = async () => {
       try {
-        const response = await fetch('https://www.youtube.com/favicon.ico', { mode: 'no-cors' });
+        const response = await fetch("https://www.youtube.com/favicon.ico", {
+          mode: "no-cors",
+        });
         setAdBlockerDetected(false);
       } catch {
         setAdBlockerDetected(true);
@@ -358,7 +413,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
                       alt={song.title}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      style={{ objectFit: 'cover' }}
+                      style={{ objectFit: "cover" }}
                       className="rounded"
                     />
                   </div>
@@ -402,7 +457,9 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
                 {showContactForm ? (
                   <div className="w-full p-6 bg-gradient-to-r from-red-500 to-pink-600 text-white rounded-lg shadow-lg">
                     <div className="flex justify-between items-center mb-4">
-                      <h2 className="text-2xl font-bold">Zgłoś nowy utwór</h2>
+                      <h2 className="text-2xl font-bold">
+                        Podziel się swoją muzyką!
+                      </h2>
                       <button
                         onClick={() => setShowContactForm(false)}
                         className="text-white hover:text-gray-200 transition duration-300"
@@ -486,7 +543,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
                     onClick={() => setShowContactForm(true)}
                   >
                     <FaMusic className="mr-2" />
-                    Na liście nie ma Twojego ulubionego kawałka? Zgłoś go!
+                    Brakuje Twojego ulubionego utworu? Daj nam znać!
                   </button>
                 )}
               </>
@@ -587,17 +644,23 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
         </div>
       </div>
       {showSuccessMessage && (
-        <SuccessMessage 
+        <SuccessMessage
           onClose={() => {
             setShowSuccessMessage(false);
-            console.log('SuccessMessage został zamknięty');
-          }} 
+            console.log("SuccessMessage został zamknięty");
+          }}
         />
       )}
       {showErrorMessage && <ErrorMessage />}
       {adBlockerDetected && (
-        <div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4" role="alert">
-          <p>Wykryto bloker reklam. Może to wpływać na działanie odtwarzacza. Rozważ wyłączenie blokera dla tej strony.</p>
+        <div
+          className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4"
+          role="alert"
+        >
+          <p>
+            Wykryto bloker reklam. Może to wpływać na działanie odtwarzacza.
+            Rozważ wyłączenie blokera dla tej strony.
+          </p>
         </div>
       )}
     </div>
