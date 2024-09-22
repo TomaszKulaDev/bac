@@ -76,8 +76,7 @@ export default async function handler(
     console.log("Saved reset token:", user.resetPasswordToken);
 
     // Tworzenie URL do resetowania hasła
-    const baseUrl =
-      process.env.NEXT_PUBLIC_APP_URL || "https://bac-eta.vercel.app";
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://www.baciata.pl";
     const resetUrl = `${baseUrl}/reset-password?token=${resetToken}`;
 
     console.log("Base URL:", baseUrl);
