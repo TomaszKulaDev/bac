@@ -48,15 +48,24 @@ export default async function handler(
     // Znalezienie użytkownika na podstawie tokenu
     const user = await User.findOne({
       resetPasswordToken: token,
-      resetPasswordExpires: { $gt: Date.now() }, // Sprawdzenie czy token nie wygasł
+      resetPasswordExpires: { $gt: Date.now() },
     });
+    console.log("Search criteria:", { resetPasswordToken: token, resetPasswordExpires: { $gt: Date.now() } });
     console.log("Found user:", user);
 
     // Sprawdzanie, czy użytkownik został znaleziony
     if (!user) {
+      console.log("Token not found or expired");
       return res
         .status(400)
         .json({ message: "Nieprawidłowy lub wygasły token" });
+    }
+
+    if (user.resetPasswordExpires < Date.now()) {
+      console.log("Token expired");
+      return res
+        .status(400)
+        .json({ message: "Token wygasł" });
     }
 
     // Hashowanie nowego hasła
