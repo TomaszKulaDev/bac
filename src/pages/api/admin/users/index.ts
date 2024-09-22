@@ -59,7 +59,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             email,
             password: hashedPassword,
             role,
-            isVerified: true, // Zakładamy, że użytkownik utworzony przez admina jest od razu zweryfikowany
+            isVerified: true, // Zakładamydddddd, że użytkownik utworzony przez admina jest od razu zweryfikowany
           });
 
           await newUser.save();
