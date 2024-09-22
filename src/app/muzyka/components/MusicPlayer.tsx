@@ -27,7 +27,7 @@ import Image from "next/image";
 import { MusicPlayerProps, Song } from "../types";
 import VotingButtons from "./VotingButtons";
 import FavoriteButton from "./FavoriteButton";
-
+import LoginModal from "./LoginModal";
 const getYouTubeThumbnail = (youtubeId: string) => {
   return `https://img.youtube.com/vi/${youtubeId}/0.jpg`;
 };
@@ -58,7 +58,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [adBlockerDetected, setAdBlockerDetected] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(true); // Tymczasowo ustawione na false
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // jesli jest na false to wywala modal.
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   const opts: YouTubeProps["opts"] = {
     width: "100%",
@@ -367,9 +368,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
     </div>
   );
 
-  const showLoginModal = () => {
-    // Tutaj dodaj logikę wyświetlania modalu logowania
-    console.log("Pokazuję modal logowania");
+  const handleShowLoginModal = () => {
+    setShowLoginModal(true);
   };
 
   useEffect(() => {
@@ -617,7 +617,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
               userVote={localSongs[currentSongIndex].userVote}
               onVote={handleVote}
               onToggleFavorite={toggleFavorite}
-              onShowLoginModal={showLoginModal}
+              onShowLoginModal={handleShowLoginModal}
             />
             <div className="flex justify-center items-center space-x-4 mt-4">
               <button
@@ -657,6 +657,9 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
         />
       )}
       {showErrorMessage && <ErrorMessage />}
+      {showLoginModal && (
+        <LoginModal onClose={() => setShowLoginModal(false)} />
+      )}
       {adBlockerDetected && (
         <div
           className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4"
