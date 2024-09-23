@@ -466,26 +466,24 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
                 onToggleFavorite={toggleFavorite}
                 onShowLoginModal={handleShowLoginModal}
               />
-              <div className="flex justify-between items-center">
+              <div className="flex justify-between items-center mt-4">
                 <button
                   onClick={previousSong}
-                  className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 px-4 clip-path-prev text-sm font-semibold shadow-md hover:from-purple-600 hover:to-pink-600 transition duration-300 flex items-center justify-center"
+                  className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white py-2 px-3 rounded-full text-xs sm:text-sm font-semibold shadow-md hover:from-purple-600 hover:to-pink-600 transition duration-300 flex items-center justify-center overflow-hidden"
                 >
-                  <FaChevronUp className="mr-2" />
-                  Poprzedni
+                  <FaChevronUp className="mr-1 text-xs sm:text-sm" /> Poprzedni
                 </button>
                 <button
                   onClick={togglePlayback}
-                  className="mx-1 bg-gradient-to-r from-pink-500 to-purple-500 text-white p-4 rounded-full shadow-md hover:from-pink-600 hover:to-purple-600 transition duration-300 text-xl flex items-center justify-center w-20 h-20 transform hover:rotate-12"
+                  className="mx-2 w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-full shadow-md hover:from-pink-600 hover:to-purple-600 transition duration-300 flex items-center justify-center"
                 >
-                  {isPlaying ? <FaPause /> : <FaPlay />}
+                  {isPlaying ? <FaPause className="text-lg sm:text-xl" /> : <FaPlay className="text-lg sm:text-xl ml-0.5" />}
                 </button>
                 <button
                   onClick={nextSong}
-                  className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 px-4 clip-path-next text-sm font-semibold shadow-md hover:from-purple-600 hover:to-pink-600 transition duration-300 flex items-center justify-center"
+                  className="flex-1 bg-gradient-to-r from-pink-500 to-purple-500 text-white py-2 px-3 rounded-full text-xs sm:text-sm font-semibold shadow-md hover:from-pink-600 hover:to-purple-600 transition duration-300 flex items-center justify-center overflow-hidden"
                 >
-                  Następny
-                  <FaChevronDown className="ml-2" />
+                  Następny <FaChevronDown className="ml-1 text-xs sm:text-sm" />
                 </button>
               </div>
             </div>
