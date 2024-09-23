@@ -27,13 +27,25 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({
   return (
     <button
       onClick={handleClick}
-      className={`${
-        isFavorite
-          ? "bg-gradient-to-r from-pink-500 to-purple-500"
-          : "bg-gray-300"
-      } text-white px-4 py-2 rounded-full hover:from-pink-600 hover:to-purple-600 transition duration-300`}
+      className={`w-16 h-16 
+        bg-gradient-to-r from-purple-500 to-pink-500 
+        text-white 
+        rounded-full 
+        shadow-lg 
+        hover:from-purple-600 hover:to-pink-600 
+        hover:shadow-xl
+        transition-all duration-300 
+        flex items-center justify-center 
+        transform hover:scale-110 hover:rotate-12
+        ${isFavorite ? 'ring-4 ring-pink-300 ring-opacity-50' : ''}
+      `}
     >
-      <FaHeart className="inline" />
+      <FaHeart 
+        className={`text-2xl 
+          ${isFavorite ? 'text-white' : 'text-purple-200'}
+          transition-colors duration-300
+        `} 
+      />
     </button>
   );
 };

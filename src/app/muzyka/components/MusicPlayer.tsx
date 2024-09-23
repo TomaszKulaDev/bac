@@ -23,6 +23,9 @@ import {
   FaChevronDown,
   FaChevronUp,
   FaMinus,
+  FaStepBackward,
+  FaStepForward,
+  FaList,
 } from "react-icons/fa";
 import Image from "next/image";
 import { MusicPlayerProps, Song } from "../types";
@@ -402,11 +405,11 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
     const handleResize = () => {
       setIsSmallScreen(window.innerWidth < 768);
     };
-    
+
     handleResize();
-    window.addEventListener('resize', handleResize);
-    
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   return (
@@ -452,41 +455,47 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
                 className="w-full h-full"
               />
             </div>
-            <VotingButtons
-              songId={localSongs[currentSongIndex].id}
-              votes={localSongs[currentSongIndex].votes}
-              isFavorite={localSongs[currentSongIndex].isFavorite}
-              isLoggedIn={isLoggedIn}
-              userVote={localSongs[currentSongIndex].userVote}
-              onVote={handleVote}
-              onToggleFavorite={toggleFavorite}
-              onShowLoginModal={handleShowLoginModal}
-            />
-            <div className="flex justify-center items-center space-x-2 mt-4">
-              <button
-                onClick={previousSong}
-                className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-2 py-1 rounded-full hover:from-purple-600 hover:to-pink-600 transition duration-300 text-xs md:text-sm md:px-4 md:py-2"
-              >
-                <FaArrowUp className="mr-1 inline" />
-                Poprzedni
-              </button>
-              <button
-                onClick={togglePlayback}
-                className="bg-gradient-to-r from-pink-500 to-purple-500 text-white p-3 rounded-full hover:from-pink-600 hover:to-purple-600 transition duration-300 text-lg"
-              >
-                {isPlaying ? <FaPause /> : <FaPlay />}
-              </button>
-              <button
-                onClick={nextSong}
-                className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-2 py-1 rounded-full hover:from-purple-600 hover:to-pink-600 transition duration-300 text-xs md:text-sm md:px-4 md:py-2"
-              >
-                Następny
-                <FaArrowDown className="ml-2 inline" />
-              </button>
+            <div className="flex flex-col space-y-4 mt-4 px-4">
+              <VotingButtons
+                songId={localSongs[currentSongIndex].id}
+                votes={localSongs[currentSongIndex].votes}
+                isFavorite={localSongs[currentSongIndex].isFavorite}
+                isLoggedIn={isLoggedIn}
+                userVote={localSongs[currentSongIndex].userVote}
+                onVote={handleVote}
+                onToggleFavorite={toggleFavorite}
+                onShowLoginModal={handleShowLoginModal}
+              />
+              <div className="flex justify-between items-center">
+                <button
+                  onClick={previousSong}
+                  className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 px-4 clip-path-prev text-sm font-semibold shadow-md hover:from-purple-600 hover:to-pink-600 transition duration-300 flex items-center justify-center"
+                >
+                  <FaChevronUp className="mr-2" />
+                  Poprzedni
+                </button>
+                <button
+                  onClick={togglePlayback}
+                  className="mx-1 bg-gradient-to-r from-pink-500 to-purple-500 text-white p-4 rounded-full shadow-md hover:from-pink-600 hover:to-purple-600 transition duration-300 text-xl flex items-center justify-center w-20 h-20 transform hover:rotate-12"
+                >
+                  {isPlaying ? <FaPause /> : <FaPlay />}
+                </button>
+                <button
+                  onClick={nextSong}
+                  className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 px-4 clip-path-next text-sm font-semibold shadow-md hover:from-purple-600 hover:to-pink-600 transition duration-300 flex items-center justify-center"
+                >
+                  Następny
+                  <FaChevronDown className="ml-2" />
+                </button>
+              </div>
             </div>
           </div>
           <div className="p-6">
-            <h1> Sekcja Komentarzy</h1>
+            <div className="md:hidden">
+              <h1 className="border-2 border-purple-500 p-4 rounded-lg text-center text-sm">
+                Miejsce pod reklamę na telefony
+              </h1>
+            </div>
             {/* Tutaj możesz dodać dodatkową zawartość, która będzie przewijana pod odtwarzaczem */}
           </div>
         </div>

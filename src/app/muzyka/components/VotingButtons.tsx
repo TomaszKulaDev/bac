@@ -38,15 +38,15 @@ const VotingButtons: React.FC<VotingButtonsProps> = ({
   };
 
   return (
-    <div className="flex justify-center items-center space-x-4 mt-4 mb-4">
+    <div className="flex justify-between items-center w-full max-w-md mx-auto mb-4 space-x-2">
       <button
         onClick={() => handleVote('down')}
-        className={`bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-full hover:from-purple-600 hover:to-pink-600 transition duration-300 ${
+        className={`flex-1 bg-gradient-to-r from-purple-500 to-indigo-500 text-white py-3 px-4 rounded text-sm font-semibold shadow-md hover:from-purple-600 hover:to-indigo-600 transition duration-300 ${
           userVote === 'down' ? 'ring-2 ring-red-500' : ''
         }`}
       >
         <FaThumbsDown className={`inline mr-2 ${userVote === 'down' ? 'text-red-300' : ''}`} />
-        {votes < 0 ? Math.abs(votes) : 0}
+        Nie lubię {votes < 0 ? `(${Math.abs(votes)})` : ''}
       </button>
       <FavoriteButton
         songId={songId}
@@ -57,12 +57,12 @@ const VotingButtons: React.FC<VotingButtonsProps> = ({
       />
       <button
         onClick={() => handleVote('up')}
-        className={`bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-full hover:from-purple-600 hover:to-pink-600 transition duration-300 ${
+        className={`flex-1 bg-gradient-to-r from-indigo-500 to-pink-500 text-white py-3 px-4 rounded text-sm font-semibold shadow-md hover:from-indigo-600 hover:to-pink-600 transition duration-300 ${
           userVote === 'up' ? 'ring-2 ring-blue-500' : ''
         }`}
       >
-        <FaThumbsUp className={`inline mr-2 ${userVote === 'up' ? 'text-blue-300' : ''}`} />
-        {votes > 0 ? votes : 0}
+        Lubię <FaThumbsUp className={`inline ml-2 ${userVote === 'up' ? 'text-blue-300' : ''}`} />
+        {votes > 0 ? ` (${votes})` : ''}
       </button>
     </div>
   );
