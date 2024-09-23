@@ -9,7 +9,6 @@ const MusicPlayer = dynamic(
   }
 );
 
-
 const songs = [
   {
     id: "1",
@@ -19,6 +18,7 @@ const songs = [
     score: 0,
     votes: 0,
     isFavorite: false,
+    userVote: null, // Dodajemy domyślną wartość userVote
   },
   {
     id: "2",
@@ -28,6 +28,7 @@ const songs = [
     score: 0,
     votes: 0,
     isFavorite: false,
+    userVote: null, // Dodajemy domyślną wartość userVote
   },
   {
     id: "3",
@@ -37,6 +38,7 @@ const songs = [
     score: 0,
     votes: 0,
     isFavorite: false,
+    userVote: null, // Dodajemy domyślną wartość userVote
   },
   {
     id: "4",
@@ -46,6 +48,7 @@ const songs = [
     score: 0,
     votes: 0,
     isFavorite: false,
+    userVote: null, // Dodajemy domyślną wartość userVote
   },
   {
     id: "5",
@@ -55,6 +58,7 @@ const songs = [
     score: 0,
     votes: 0,
     isFavorite: false,
+    userVote: null, // Dodajemy domyślną wartość userVote
   },
   {
     id: "6",
@@ -64,6 +68,7 @@ const songs = [
     score: 0,
     votes: 0,
     isFavorite: false,
+    userVote: null, // Dodajemy domyślną wartość userVote
   },
   {
     id: "7",
@@ -73,6 +78,7 @@ const songs = [
     score: 0,
     votes: 0,
     isFavorite: false,
+    userVote: null, // Dodajemy domyślną wartość userVote
   },
   {
     id: "8",
@@ -82,6 +88,7 @@ const songs = [
     score: 0,
     votes: 0,
     isFavorite: false,
+    userVote: null, // Dodajemy domyślną wartość userVote
   },
   {
     id: "9",
@@ -91,6 +98,7 @@ const songs = [
     score: 0,
     votes: 0,
     isFavorite: false,
+    userVote: null, // Dodajemy domyślną wartość userVote
   },
   {
     id: "10",
@@ -100,6 +108,7 @@ const songs = [
     score: 0,
     votes: 0,
     isFavorite: false,
+    userVote: null, // Dodajemy domyślną wartość userVote
   },
   {
     id: "11",
@@ -109,6 +118,7 @@ const songs = [
     score: 0,
     votes: 0,
     isFavorite: false,
+    userVote: null, // Dodajemy domyślną wartość userVote
   },
   {
     id: "12",
@@ -118,6 +128,7 @@ const songs = [
     score: 0,
     votes: 0,
     isFavorite: false,
+    userVote: null, // Dodajemy domyślną wartość userVote
   },
   {
     id: "13",
@@ -127,6 +138,7 @@ const songs = [
     score: 0,
     votes: 0,
     isFavorite: false,
+    userVote: null, // Dodajemy domyślną wartość userVote
   },
   {
     id: "14",
@@ -136,6 +148,7 @@ const songs = [
     score: 0,
     votes: 0,
     isFavorite: false,
+    userVote: null, // Dodajemy domyślną wartość userVote
   },
   {
     id: "15",
@@ -145,6 +158,7 @@ const songs = [
     score: 0,
     votes: 0,
     isFavorite: false,
+    userVote: null, // Dodajemy domyślną wartość userVote
   },
   {
     id: "16",
@@ -154,6 +168,7 @@ const songs = [
     score: 0,
     votes: 0,
     isFavorite: false,
+    userVote: null, // Dodajemy domyślną wartość userVote
   },
   {
     id: "17",
@@ -163,6 +178,7 @@ const songs = [
     score: 0,
     votes: 0,
     isFavorite: false,
+    userVote: null, // Dodajemy domyślną wartość userVote
   },
   {
     id: "18",
@@ -172,6 +188,7 @@ const songs = [
     score: 0,
     votes: 0,
     isFavorite: false,
+    userVote: null, // Dodajemy domyślną wartość userVote
   },
   {
     id: "19",
@@ -181,6 +198,7 @@ const songs = [
     score: 0,
     votes: 0,
     isFavorite: false,
+    userVote: null, // Dodajemy domyślną wartość userVote
   },
   {
     id: "20",
@@ -190,6 +208,7 @@ const songs = [
     score: 0,
     votes: 0,
     isFavorite: false,
+    userVote: null, // Dodajemy domyślną wartość userVote
   },
   {
     id: "21",
@@ -199,6 +218,7 @@ const songs = [
     score: 0,
     votes: 0,
     isFavorite: false,
+    userVote: null, // Dodajemy domyślną wartość userVote
   },
   {
     id: "22",
@@ -208,6 +228,7 @@ const songs = [
     score: 0,
     votes: 0,
     isFavorite: false,
+    userVote: null, // Dodajemy domyślną wartość userVote
   },
   {
     id: "23",
@@ -217,6 +238,7 @@ const songs = [
     score: 0,
     votes: 0,
     isFavorite: false,
+    userVote: null, // Dodajemy domyślną wartość userVote
   },
   {
     id: "24",
@@ -226,6 +248,7 @@ const songs = [
     score: 0,
     votes: 0,
     isFavorite: false,
+    userVote: null, // Dodajemy domyślną wartość userVote
   },
   {
     id: "25",
@@ -235,6 +258,7 @@ const songs = [
     score: 0,
     votes: 0,
     isFavorite: false,
+    userVote: null, // Dodajemy domyślną wartość userVote
   },
   {
     id: "26",
@@ -244,6 +268,7 @@ const songs = [
     score: 0,
     votes: 0,
     isFavorite: false,
+    userVote: null, // Dodajemy domyślną wartość userVote
   },
   {
     id: "27",
@@ -253,6 +278,7 @@ const songs = [
     score: 0,
     votes: 0,
     isFavorite: false,
+    userVote: null, // Dodajemy domyślną wartość userVote
   },
   {
     id: "28",
@@ -262,6 +288,7 @@ const songs = [
     score: 0,
     votes: 0,
     isFavorite: false,
+    userVote: null, // Dodajemy domyślną wartość userVote
   },
   {
     id: "29",
@@ -271,6 +298,7 @@ const songs = [
     score: 0,
     votes: 0,
     isFavorite: false,
+    userVote: null, // Dodajemy domyślną wartość userVote
   },
   {
     id: "30",
@@ -280,6 +308,7 @@ const songs = [
     score: 0,
     votes: 0,
     isFavorite: false,
+    userVote: null, // Dodajemy domyślną wartość userVote
   },
 ];
 
