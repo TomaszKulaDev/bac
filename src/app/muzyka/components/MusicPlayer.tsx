@@ -9,6 +9,7 @@ import React, {
   useCallback,
   useMemo,
 } from "react";
+import { useSelector } from "react-redux";
 import YouTube, { YouTubeProps } from "react-youtube";
 import {
   FaPlay,
@@ -28,14 +29,17 @@ import { MusicPlayerProps, Song } from "../types";
 import VotingButtons from "./VotingButtons";
 import FavoriteButton from "./FavoriteButton";
 import LoginModal from "./LoginModal";
-import { useSelector } from "react-redux";
+import { RootState } from "../../../store/store";
 
 const getYouTubeThumbnail = (youtubeId: string) => {
   return `https://img.youtube.com/vi/${youtubeId}/0.jpg`;
 };
 
 const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
-  const isLoggedIn = useSelector((state: any) => state.auth.isLoggedIn);
+  const isLoggedIn = useSelector(
+    (state: RootState) => state.auth.isAuthenticated
+  );
+
   const [currentSongIndex, setCurrentSongIndex] = useState<number>(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -117,14 +121,11 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
             let newScore = song.score;
 
             if (voteType === null) {
-              // Cofnij głos
               newVotes -= currentVote === "up" ? 1 : -1;
               newScore -= currentVote === "up" ? 1 : -1;
             } else if (currentVote === voteType) {
-              // Nie rób nic, jeśli użytkownik próbuje zagłosować tak samo jak wcześniej
               return song;
             } else {
-              // Zmień głos lub dodaj nowy
               newVotes += voteType === "up" ? 1 : -1;
               newScore += voteType === "up" ? 1 : -1;
               if (currentVote) {
@@ -149,11 +150,15 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
   };
 
   const toggleFavorite = (songId: string) => {
-    setLocalSongs((prevSongs) =>
-      prevSongs.map((song) =>
-        song.id === songId ? { ...song, isFavorite: !song.isFavorite } : song
-      )
-    );
+    if (isLoggedIn) {
+      setLocalSongs((prevSongs) =>
+        prevSongs.map((song) =>
+          song.id === songId ? { ...song, isFavorite: !song.isFavorite } : song
+        )
+      );
+    } else {
+      setShowLoginModal(true);
+    }
   };
 
   const loadMoreSongs = () => {

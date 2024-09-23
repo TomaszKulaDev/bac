@@ -1,43 +1,43 @@
 // src/store/slices/authSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-// Interfejs reprezentujący stan uwierzytelniania
+
+// Modyfikacja interfejsu AuthState
 interface AuthState {
-  // Flaga wskazująca, czy użytkownik jest uwierzytelniony
   isAuthenticated: boolean;
-  // Obiekt reprezentujący dane użytkownika
   user: {
-    id: string; // ID użytkownika
-    email: string | null | undefined; // Email użytkownika, może być null lub undefined
-    name: string | null | undefined; // Nazwa użytkownika, może być null lub undefined
-    role: string | null | undefined; // Rola użytkownika, może być null lub undefined
-  } | null; // Użytkownik może być null, jeśli nie jest uwierzytelniony
+    id: string;
+    email: string | null | undefined;
+    name: string | null | undefined;
+    role: string | null | undefined;
+    // Dodajemy pole image, które może być obecne w sesji Next.js Auth
+    image?: string | null;
+  } | null;
 }
 
-// Początkowy stan uwierzytelniania
 const initialState: AuthState = {
-  isAuthenticated: false, // Domyślnie użytkownik nie jest uwierzytelniony
-  user: null, // Brak danych użytkownika w początkowym stanie
+  isAuthenticated: false,
+  user: null,
 };
 
-// Tworzenie slice dla uwierzytelniania
 const authSlice = createSlice({
-  name: "auth", // Nazwa slice
-  initialState, // Początkowy stan
+  name: "auth",
+  initialState,
   reducers: {
-    // Akcja logowania
     login: (state, action: PayloadAction<{ user: AuthState["user"] }>) => {
-      state.isAuthenticated = true; // Ustawienie flagi uwierzytelnienia na true
-      state.user = action.payload.user; // Ustawienie danych użytkownika
+      state.isAuthenticated = true;
+      state.user = action.payload.user;
     },
-    // Akcja wylogowania
     logout: (state) => {
-      state.isAuthenticated = false; // Ustawienie flagi uwierzytelnienia na false
-      state.user = null; // Wyczyszczenie danych użytkownika
+      state.isAuthenticated = false;
+      state.user = null;
+    },
+    // Nowa akcja do aktualizacji stanu na podstawie sesji
+    updateSession: (state, action: PayloadAction<AuthState>) => {
+      state.isAuthenticated = action.payload.isAuthenticated;
+      state.user = action.payload.user;
     },
   },
 });
 
-// Eksportowanie akcji logowania i wylogowania
-export const { login, logout } = authSlice.actions;
-// Eksportowanie reduktora slice
+export const { login, logout, updateSession } = authSlice.actions;
 export default authSlice.reducer;
