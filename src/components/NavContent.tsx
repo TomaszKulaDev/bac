@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
 import { logout, login } from "../store/slices/authSlice";
 import { RootState } from "../store/slices/types";
+import { FaMusic } from "react-icons/fa"; // Dodaj import ikony
 
 export function NavContent() {
   const [isLoading, setIsLoading] = useState(true);
@@ -55,7 +56,13 @@ export function NavContent() {
       <div className="text-2xl font-bold">
         <Link href="/">MyApp</Link>
       </div>
-      <ul className="flex space-x-4">
+      <ul className="flex space-x-4 items-center"> {/* Dodano items-center */}
+        <li>
+          <Link href="/muzyka" className="flex items-center hover:text-gray-300">
+            <FaMusic className="mr-1" />
+            Muzyka
+          </Link>
+        </li>
         {isAuthenticated && user ? (
           <>
             <li>
