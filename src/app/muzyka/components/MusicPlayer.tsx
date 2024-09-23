@@ -66,6 +66,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [adBlockerDetected, setAdBlockerDetected] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
 
   const opts: YouTubeProps["opts"] = {
     width: "100%",
@@ -397,6 +398,17 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
     checkAdBlocker();
   }, []);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSmallScreen(window.innerWidth < 768);
+    };
+    
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <div className="music-player bg-white shadow-lg min-h-screen flex flex-col w-full max-w-6xl mx-auto">
       <div className="playlist-header bg-gradient-to-r from-purple-500 to-pink-500 text-white p-4 shadow-md">
@@ -419,7 +431,66 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
         </div>
       </div>
       <div className="flex flex-col md:flex-row flex-grow">
-        <div className="song-list md:w-2/5 border-r border-gray-200 overflow-y-auto">
+        <div className="md:order-2 md:w-3/5 flex flex-col">
+          <div className="sticky top-0 bg-white z-10 p-4">
+            <div
+              className="youtube-player mb-4"
+              style={{
+                width: playerDimensions.width,
+                height: playerDimensions.height,
+              }}
+            >
+              {error && <div className="error-message">{error}</div>}
+              <YouTube
+                videoId={localSongs[currentSongIndex].youtubeId}
+                opts={opts}
+                onReady={onReady}
+                onError={onError}
+                onPlay={() => setIsPlaying(true)}
+                onPause={() => setIsPlaying(false)}
+                onEnd={nextSong}
+                className="w-full h-full"
+              />
+            </div>
+            <VotingButtons
+              songId={localSongs[currentSongIndex].id}
+              votes={localSongs[currentSongIndex].votes}
+              isFavorite={localSongs[currentSongIndex].isFavorite}
+              isLoggedIn={isLoggedIn}
+              userVote={localSongs[currentSongIndex].userVote}
+              onVote={handleVote}
+              onToggleFavorite={toggleFavorite}
+              onShowLoginModal={handleShowLoginModal}
+            />
+            <div className="flex justify-center items-center space-x-2 mt-4">
+              <button
+                onClick={previousSong}
+                className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-2 py-1 rounded-full hover:from-purple-600 hover:to-pink-600 transition duration-300 text-xs md:text-sm md:px-4 md:py-2"
+              >
+                <FaArrowUp className="mr-1 inline" />
+                Poprzedni
+              </button>
+              <button
+                onClick={togglePlayback}
+                className="bg-gradient-to-r from-pink-500 to-purple-500 text-white p-3 rounded-full hover:from-pink-600 hover:to-purple-600 transition duration-300 text-lg"
+              >
+                {isPlaying ? <FaPause /> : <FaPlay />}
+              </button>
+              <button
+                onClick={nextSong}
+                className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-2 py-1 rounded-full hover:from-purple-600 hover:to-pink-600 transition duration-300 text-xs md:text-sm md:px-4 md:py-2"
+              >
+                Następny
+                <FaArrowDown className="ml-2 inline" />
+              </button>
+            </div>
+          </div>
+          <div className="p-6">
+            <h1> Sekcja Komentarzy</h1>
+            {/* Tutaj możesz dodać dodatkową zawartość, która będzie przewijana pod odtwarzaczem */}
+          </div>
+        </div>
+        <div className="song-list md:order-1 md:w-2/5 border-r border-gray-200 overflow-y-auto">
           {localSongs.slice(0, visibleSongs).map((song, index) => (
             <React.Fragment key={song.id}>
               <div
@@ -598,65 +669,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
                 </button>
               )
             ))}
-        </div>
-        <div className="md:w-3/5 flex flex-col">
-          <div className="sticky top-0 bg-white z-10 p-6">
-            <div
-              className="youtube-player mb-4"
-              style={{
-                width: playerDimensions.width,
-                height: playerDimensions.height,
-              }}
-            >
-              {error && <div className="error-message">{error}</div>}
-              <YouTube
-                videoId={localSongs[currentSongIndex].youtubeId}
-                opts={opts}
-                onReady={onReady}
-                onError={onError}
-                onPlay={() => setIsPlaying(true)}
-                onPause={() => setIsPlaying(false)}
-                onEnd={nextSong}
-                className="w-full h-full"
-              />
-            </div>
-            <VotingButtons
-              songId={localSongs[currentSongIndex].id}
-              votes={localSongs[currentSongIndex].votes}
-              isFavorite={localSongs[currentSongIndex].isFavorite}
-              isLoggedIn={isLoggedIn}
-              userVote={localSongs[currentSongIndex].userVote}
-              onVote={handleVote}
-              onToggleFavorite={toggleFavorite}
-              onShowLoginModal={handleShowLoginModal}
-            />
-            <div className="flex justify-center items-center space-x-2 mt-4">
-              <button
-                onClick={previousSong}
-                className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-full hover:from-purple-600 hover:to-pink-600 transition duration-300 text-sm"
-              >
-                <FaArrowUp className="mr-1 inline" />
-                Poprzedni
-              </button>
-              <button
-                onClick={togglePlayback}
-                className="bg-gradient-to-r from-pink-500 to-purple-500 text-white p-3 rounded-full hover:from-pink-600 hover:to-purple-600 transition duration-300 text-lg"
-              >
-                {isPlaying ? <FaPause /> : <FaPlay />}
-              </button>
-              <button
-                onClick={nextSong}
-                className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-full hover:from-purple-600 hover:to-pink-600 transition duration-300 text-sm"
-              >
-                Następny
-                <FaArrowDown className="ml-2 inline" />
-              </button>
-            </div>
-          </div>
-          <div className="p-6">
-            <h1> Sekcja Komentarzy</h1>
-            {/* Tutaj możesz dodać dodatkową zawartość, która będzie przewijana pod odtwarzaczem */}
-          </div>
         </div>
       </div>
       {showSuccessMessage && (
