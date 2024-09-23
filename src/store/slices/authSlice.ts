@@ -1,7 +1,5 @@
 // src/store/slices/authSlice.ts
-
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
 // Interfejs reprezentujący stan uwierzytelniania
 interface AuthState {
   // Flaga wskazująca, czy użytkownik jest uwierzytelniony

@@ -1,17 +1,17 @@
-Aktualna struktura projektu (78 plików)
+Aktualna struktura projektu (84 plików)
 
 Statystyki projektu:
-Całkowity rozmiar: 0.90 MB
-Całkowita liczba linii kodu: 7796
-Typy plików: {".local":1,".json":3,".ts":29,".mjs":3,"":1,".png":2,".txt":2,".md":1,".tsx":32,".ico":1,".css":1,".js":1,".tsbuildinfo":1}
+Całkowity rozmiar: 0.94 MB
+Całkowita liczba linii kodu: 8851
+Typy plików: {".local":1,".json":3,".ts":30,".mjs":3,"":1,".png":2,".txt":2,".md":1,".tsx":37,".ico":1,".css":1,".js":1,".tsbuildinfo":1}
 
 Struktura plików projektu:
-├── .env.local (.local, 0.80 KB)
+├── .env.local (.local, 0.40 KB)
 ├── .eslintrc.json (.json, 0.04 KB)
 ├── next-env.d.ts (.ts, 0.26 KB)
-├── next.config.mjs (.mjs, 0.45 KB)
-├── package.json (.json, 1.34 KB)
-├── postcss.config.mjs (.mjs, 0.13 KB)
+├── next.config.mjs (.mjs, 1.34 KB)
+├── package.json (.json, 1.42 KB)
+├── postcss.config.mjs (.mjs, 0.14 KB)
 ├── public/
 │   ├── ahrefs_d85ffff89e918b07d8b246df19f86794dc2181db1f3f8f4647c3a4ca10177f28 (, 0.09 KB)
 │   ├── default-avatar.png (.png, 422.36 KB)
@@ -25,10 +25,10 @@ Struktura plików projektu:
 │   │   │   └── page.tsx (.tsx, 0.15 KB)
 │   │   ├── admin/
 │   │   │   ├── music/
-│   │   │   │   └── page.tsx (.tsx, 2.45 KB)
-│   │   │   ├── page.tsx (.tsx, 11.24 KB)
+│   │   │   │   └── page.tsx (.tsx, 2.49 KB)
+│   │   │   ├── page.tsx (.tsx, 11.71 KB)
 │   │   │   └── users/
-│   │   │       └── page.tsx (.tsx, 11.35 KB)
+│   │   │       └── page.tsx (.tsx, 12.35 KB)
 │   │   ├── blog/
 │   │   │   └── page.tsx (.tsx, 0.11 KB)
 │   │   ├── community/
@@ -47,27 +47,30 @@ Struktura plików projektu:
 │   │   ├── globals.css (.css, 0.59 KB)
 │   │   ├── jobs/
 │   │   │   └── page.tsx (.tsx, 0.11 KB)
-│   │   ├── layout.tsx (.tsx, 1.98 KB)
+│   │   ├── layout.tsx (.tsx, 0.93 KB)
 │   │   ├── login/
-│   │   │   └── page.tsx (.tsx, 11.88 KB)
+│   │   │   └── page.tsx (.tsx, 7.91 KB)
 │   │   ├── mentorship/
 │   │   │   └── page.tsx (.tsx, 0.12 KB)
 │   │   ├── muzyka/
 │   │   │   ├── components/
+│   │   │   │   ├── FavoriteButton.tsx (.tsx, 0.92 KB)
 │   │   │   │   ├── index.ts (.ts, 0.06 KB)
-│   │   │   │   └── MusicPlayer.tsx (.tsx, 10.67 KB)
-│   │   │   ├── page.tsx (.tsx, 3.88 KB)
-│   │   │   └── types.ts (.ts, 0.10 KB)
+│   │   │   │   ├── LoginModal.tsx (.tsx, 1.60 KB)
+│   │   │   │   ├── MusicPlayer.tsx (.tsx, 24.91 KB)
+│   │   │   │   └── VotingButtons.tsx (.tsx, 2.17 KB)
+│   │   │   ├── page.tsx (.tsx, 7.31 KB)
+│   │   │   └── types.ts (.ts, 0.31 KB)
 │   │   ├── page.tsx (.tsx, 1.96 KB)
 │   │   ├── polityka-prywatnosci-baciata-pl/
 │   │   │   └── page.tsx (.tsx, 3.02 KB)
 │   │   ├── profile/
 │   │   │   └── page.tsx (.tsx, 8.01 KB)
 │   │   ├── register/
-│   │   │   └── page.tsx (.tsx, 16.13 KB)
+│   │   │   └── page.tsx (.tsx, 12.63 KB)
 │   │   ├── reset-password/
 │   │   │   ├── page.tsx (.tsx, 0.24 KB)
-│   │   │   └── ResetPasswordClient.tsx (.tsx, 7.14 KB)
+│   │   │   └── ResetPasswordClient.tsx (.tsx, 7.39 KB)
 │   │   ├── subscription/
 │   │   │   └── page.tsx (.tsx, 0.12 KB)
 │   │   ├── users/
@@ -77,55 +80,58 @@ Struktura plików projektu:
 │   ├── components/
 │   │   ├── AdminCard.tsx (.tsx, 0.61 KB)
 │   │   ├── AdminLayout.tsx (.tsx, 1.19 KB)
+│   │   ├── ClientLayout.tsx (.tsx, 0.89 KB)
+│   │   ├── ClientProviders.tsx (.tsx, 0.35 KB)
 │   │   ├── LoadingSpinner.tsx (.tsx, 0.56 KB)
-│   │   └── NavContent.tsx (.tsx, 2.12 KB)
+│   │   └── NavContent.tsx (.tsx, 2.28 KB)
 │   ├── contexts/
 │   │   └── AuthContext.tsx (.tsx, 1.18 KB)
-│   ├── global.d.ts (.ts, 0.16 KB)
+│   ├── global.d.ts (.ts, 0.67 KB)
 │   ├── hooks/
 │   │   └── useUserProfile.ts (.ts, 1.67 KB)
 │   ├── lib/
 │   │   ├── authMiddleware.ts (.ts, 0.52 KB)
-│   │   └── mongodb.ts (.ts, 1.80 KB)
+│   │   └── mongodb.ts (.ts, 2.48 KB)
 │   ├── middleware/
-│   │   └── adminAuthMiddleware.ts (.ts, 0.50 KB)
+│   │   └── adminAuthMiddleware.ts (.ts, 0.64 KB)
 │   ├── models/
-│   │   └── User.ts (.ts, 0.89 KB)
+│   │   └── User.ts (.ts, 0.98 KB)
 │   ├── pages/
 │   │   ├── api/
 │   │   │   ├── admin/
 │   │   │   │   └── users/
-│   │   │   │       ├── index.ts (.ts, 1.64 KB)
-│   │   │   │       └── [userId].ts (.ts, 0.33 KB)
+│   │   │   │       ├── index.ts (.ts, 3.06 KB)
+│   │   │   │       └── [userId].ts (.ts, 2.52 KB)
 │   │   │   ├── auth/
-│   │   │   │   └── [...nextauth].ts (.ts, 3.44 KB)
-│   │   │   ├── forgot-password.ts (.ts, 3.63 KB)
-│   │   │   ├── login.ts (.ts, 3.41 KB)
-│   │   │   ├── register.ts (.ts, 3.79 KB)
-│   │   │   ├── resend-verification.ts (.ts, 2.39 KB)
-│   │   │   ├── reset-password.ts (.ts, 2.80 KB)
+│   │   │   │   └── [...nextauth].ts (.ts, 2.47 KB)
+│   │   │   ├── forgot-password.ts (.ts, 5.27 KB)
+│   │   │   ├── login.ts (.ts, 4.04 KB)
+│   │   │   ├── register.ts (.ts, 4.93 KB)
+│   │   │   ├── resend-verification.ts (.ts, 3.42 KB)
+│   │   │   ├── reset-password.ts (.ts, 4.61 KB)
+│   │   │   ├── submit-song.ts (.ts, 4.30 KB)
 │   │   │   ├── users/
 │   │   │   │   ├── me.ts (.ts, 1.56 KB)
 │   │   │   │   └── update-profile.ts (.ts, 3.01 KB)
-│   │   │   └── verify.ts (.ts, 1.28 KB)
-│   │   ├── sitemap.xml.ts (.ts, 0.90 KB)
-│   │   └── verify.tsx (.tsx, 2.21 KB)
+│   │   │   └── verify.ts (.ts, 1.62 KB)
+│   │   ├── sitemap.xml.ts (.ts, 1.35 KB)
+│   │   └── verify.tsx (.tsx, 2.84 KB)
 │   ├── schemas/
-│   │   └── passwordSchema.ts (.ts, 2.54 KB)
+│   │   └── passwordSchema.ts (.ts, 3.49 KB)
 │   ├── scripts/
 │   │   └── analyzeProject.mjs (.mjs, 0.21 KB)
 │   ├── store/
 │   │   ├── slices/
-│   │   │   ├── adminSlice.ts (.ts, 4.03 KB)
-│   │   │   ├── authSlice.ts (.ts, 0.82 KB)
-│   │   │   └── types.ts (.ts, 0.12 KB)
-│   │   └── store.ts (.ts, 0.39 KB)
-│   ├── struktura-projektu.txt (.txt, 5.35 KB)
+│   │   │   ├── adminSlice.ts (.ts, 6.56 KB)
+│   │   │   ├── authSlice.ts (.ts, 1.71 KB)
+│   │   │   └── types.ts (.ts, 0.42 KB)
+│   │   └── store.ts (.ts, 0.69 KB)
+│   ├── struktura-projektu.txt (.txt, 5.86 KB)
 │   ├── types/
-│   │   └── next-auth.d.ts (.ts, 0.62 KB)
+│   │   └── next-auth.d.ts (.ts, 1.12 KB)
 │   └── utils/
 │       ├── projectAnalyzer.d.ts (.ts, 0.15 KB)
 │       └── projectAnalyzer.js (.js, 36.79 KB)
-├── tailwind.config.ts (.ts, 0.83 KB)
-├── tsconfig.json (.json, 1.03 KB)
-└── tsconfig.tsbuildinfo (.tsbuildinfo, 235.50 KB)
+├── tailwind.config.ts (.ts, 1.36 KB)
+├── tsconfig.json (.json, 1.84 KB)
+└── tsconfig.tsbuildinfo (.tsbuildinfo, 236.06 KB)

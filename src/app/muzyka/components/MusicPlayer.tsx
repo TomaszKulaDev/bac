@@ -28,12 +28,15 @@ import { MusicPlayerProps, Song } from "../types";
 import VotingButtons from "./VotingButtons";
 import FavoriteButton from "./FavoriteButton";
 import LoginModal from "./LoginModal";
+import { useSelector } from "react-redux";
+
 const getYouTubeThumbnail = (youtubeId: string) => {
   return `https://img.youtube.com/vi/${youtubeId}/0.jpg`;
 };
 
 const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
-  const [currentSongIndex, setCurrentSongIndex] = useState(0);
+  const isLoggedIn = useSelector((state: any) => state.auth.isLoggedIn);
+  const [currentSongIndex, setCurrentSongIndex] = useState<number>(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const playerRef = useRef<any>(null);
@@ -58,7 +61,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [adBlockerDetected, setAdBlockerDetected] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // jesli jest na false to wywala modal.
   const [showLoginModal, setShowLoginModal] = useState(false);
 
   const opts: YouTubeProps["opts"] = {
@@ -106,40 +108,44 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
   };
 
   const handleVote = (songId: string, voteType: "up" | "down" | null) => {
-    setLocalSongs((prevSongs) =>
-      prevSongs.map((song) => {
-        if (song.id === songId) {
-          const currentVote = song.userVote;
-          let newVotes = song.votes;
-          let newScore = song.score;
+    if (isLoggedIn) {
+      setLocalSongs((prevSongs) =>
+        prevSongs.map((song) => {
+          if (song.id === songId) {
+            const currentVote = song.userVote;
+            let newVotes = song.votes;
+            let newScore = song.score;
 
-          if (voteType === null) {
-            // Cofnij głos
-            newVotes -= currentVote === "up" ? 1 : -1;
-            newScore -= currentVote === "up" ? 1 : -1;
-          } else if (currentVote === voteType) {
-            // Nie rób nic, jeśli użytkownik próbuje zagłosować tak samo jak wcześniej
-            return song;
-          } else {
-            // Zmień głos lub dodaj nowy
-            newVotes += voteType === "up" ? 1 : -1;
-            newScore += voteType === "up" ? 1 : -1;
-            if (currentVote) {
+            if (voteType === null) {
+              // Cofnij głos
               newVotes -= currentVote === "up" ? 1 : -1;
               newScore -= currentVote === "up" ? 1 : -1;
+            } else if (currentVote === voteType) {
+              // Nie rób nic, jeśli użytkownik próbuje zagłosować tak samo jak wcześniej
+              return song;
+            } else {
+              // Zmień głos lub dodaj nowy
+              newVotes += voteType === "up" ? 1 : -1;
+              newScore += voteType === "up" ? 1 : -1;
+              if (currentVote) {
+                newVotes -= currentVote === "up" ? 1 : -1;
+                newScore -= currentVote === "up" ? 1 : -1;
+              }
             }
-          }
 
-          return {
-            ...song,
-            votes: newVotes,
-            score: newScore,
-            userVote: voteType,
-          };
-        }
-        return song;
-      })
-    );
+            return {
+              ...song,
+              votes: newVotes,
+              score: newScore,
+              userVote: voteType,
+            };
+          }
+          return song;
+        })
+      );
+    } else {
+      setShowLoginModal(true);
+    }
   };
 
   const toggleFavorite = (songId: string) => {
