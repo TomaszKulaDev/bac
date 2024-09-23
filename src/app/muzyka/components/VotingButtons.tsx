@@ -45,8 +45,9 @@ const VotingButtons: React.FC<VotingButtonsProps> = ({
           userVote === 'down' ? 'ring-2 ring-red-500' : ''
         }`}
       >
-        <FaThumbsDown className={`inline mr-2 ${userVote === 'down' ? 'text-red-300' : ''}`} />
-        Nie lubię {votes < 0 ? `(${Math.abs(votes)})` : ''}
+        <FaThumbsDown className={`inline ${userVote === 'down' ? 'text-red-300' : ''}`} />
+        <span className="ml-2 hidden sm:inline">Nie lubię</span>
+        {votes < 0 && <span className="ml-1">({Math.abs(votes)})</span>}
       </button>
       <FavoriteButton
         songId={songId}
@@ -61,8 +62,9 @@ const VotingButtons: React.FC<VotingButtonsProps> = ({
           userVote === 'up' ? 'ring-2 ring-blue-500' : ''
         }`}
       >
-        Lubię <FaThumbsUp className={`inline ml-2 ${userVote === 'up' ? 'text-blue-300' : ''}`} />
-        {votes > 0 ? ` (${votes})` : ''}
+        <span className="hidden sm:inline">Lubię </span>
+        <FaThumbsUp className={`inline ${userVote === 'up' ? 'text-blue-300' : ''}`} />
+        {votes > 0 && <span className="ml-1">({votes})</span>}
       </button>
     </div>
   );
