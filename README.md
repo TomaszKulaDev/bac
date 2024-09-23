@@ -39,4 +39,4 @@ Dodany skrypt do analizy struktury projektu:
 
 ```bash
 npm run analyze
-```
+``````
