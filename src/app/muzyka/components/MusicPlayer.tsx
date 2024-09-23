@@ -510,13 +510,11 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
                   setIsLoading(true);
                 }}
               >
-                <div className="flex items-center">
-                  <div className="w-8 h-8 mr-2 flex items-center justify-center bg-gray-200 rounded-full">
-                    <span className="text-gray-600 font-semibold">
-                      {index + 1}
-                    </span>
+                <div className="flex items-center flex-grow min-w-0">
+                  <div className="w-8 h-8 mr-2 flex-shrink-0 flex items-center justify-center bg-gray-200 rounded-full">
+                    <span className="text-gray-600 font-semibold">{index + 1}</span>
                   </div>
-                  <div className="mx-2">
+                  <div className="mx-2 flex-shrink-0">
                     {song.votes > 0 ? (
                       <FaArrowUp className="text-green-500 text-2xl" />
                     ) : song.votes < 0 ? (
@@ -525,7 +523,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
                       <FaMinus className="text-gray-500 text-2xl" />
                     )}
                   </div>
-                  <div className="w-12 h-12 mr-4 relative">
+                  <div className="w-12 h-12 mr-4 relative flex-shrink-0">
                     <Image
                       src={getYouTubeThumbnail(song.youtubeId)}
                       alt={song.title}
@@ -535,12 +533,12 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
                       className="rounded"
                     />
                   </div>
-                  <div>
-                    <h3 className="font-semibold">{song.title}</h3>
-                    <p className="text-sm text-gray-600">{song.artist}</p>
+                  <div className="min-w-0 flex-grow">
+                    <h3 className="font-semibold truncate">{song.title}</h3>
+                    <p className="text-sm text-gray-600 truncate">{song.artist}</p>
                   </div>
                 </div>
-                <div className="ml-auto">
+                <div className="ml-auto flex-shrink-0">
                   {currentSongIndex === index && isPlaying ? (
                     <FaMusic className="text-blue-500 text-xl transition-colors duration-300" />
                   ) : (
