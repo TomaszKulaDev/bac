@@ -1,25 +1,17 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import { NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/mongodb";
 import User from "@/models/User";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
 
 // Główna funkcja obsługująca żądanie ponownego wysłania e-maila weryfikacyjnego
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  // Sprawdzanie, czy metoda żądania to POST
-  if (req.method !== "POST") {
-    return res.status(405).json({ message: "Metoda niedozwolona" });
-  }
-
+export async function POST(request: Request) {
   // Pobieranie adresu e-mail z ciała żądania
-  const { email } = req.body;
+  const { email } = await request.json();
 
   // Sprawdzanie, czy adres e-mail został podany
   if (!email) {
-    return res.status(400).json({ message: "Adres e-mail jest wymagany" });
+    return NextResponse.json({ message: "Adres e-mail jest wymagany" }, { status: 400 });
   }
 
   try {
@@ -31,12 +23,12 @@ export default async function handler(
 
     // Sprawdzanie, czy użytkownik został znaleziony
     if (!user) {
-      return res.status(404).json({ message: "Użytkownik nie znaleziony" });
+      return NextResponse.json({ message: "Użytkownik nie znaleziony" }, { status: 404 });
     }
 
     // Sprawdzanie, czy użytkownik jest już zweryfikowany
     if (user.isVerified) {
-      return res.status(400).json({ message: "Użytkownik jest już zweryfikowany" });
+      return NextResponse.json({ message: "Użytkownik jest już zweryfikowany" }, { status: 400 });
     }
 
     // Generowanie nowego tokena weryfikacyjnego
@@ -72,12 +64,10 @@ export default async function handler(
     await transporter.sendMail(mailOptions);
 
     // Wysyłanie odpowiedzi o pomyślnym wysłaniu e-maila weryfikacyjnego
-    res.status(200).json({ message: "E-mail weryfikacyjny został ponownie wysłany pomyślnie" });
+    return NextResponse.json({ message: "E-mail weryfikacyjny został ponownie wysłany pomyślnie" });
   } catch (error) {
     // Obsługa błędów podczas wysyłania e-maila weryfikacyjnego
     console.error("Błąd ponownego wysyłania e-maila weryfikacyjnego:", error);
-    res
-      .status(500)
-      .json({ message: "Nie udało się ponownie wysłać e-maila weryfikacyjnego", error });
+    return NextResponse.json({ message: "Nie udało się ponownie wysłać e-maila weryfikacyjnego", error }, { status: 500 });
   }
 }

@@ -1,4 +1,4 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
 // Funkcja walidacyjna do sprawdzania poprawności linku do YouTube
@@ -32,66 +32,64 @@ function containsProfanity(str: string): boolean {
 }
 
 // Główna funkcja obsługująca żądanie zgłoszenia utworu
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  // Sprawdzanie, czy metoda żądania to POST
-  if (req.method !== "POST") {
-    return res.status(405).json({ message: "Metoda niedozwolona" });
-  }
-
+export async function POST(request: Request) {
   try {
-    const { title, artist, youtubeLink, userId } = req.body;
+    const { title, artist, youtubeLink, userId } = await request.json();
 
     if (!title || !artist || !youtubeLink) {
-      return res
-        .status(400)
-        .json({ message: "Proszę wypełnić wszystkie pola, aby zgłosić utwór" });
+      return NextResponse.json(
+        { message: "Proszę wypełnić wszystkie pola, aby zgłosić utwór" },
+        { status: 400 }
+      );
     }
 
     if (!isValidLength(title, 1, 100) || !isValidLength(artist, 1, 100)) {
-      return res
-        .status(400)
-        .json({
+      return NextResponse.json(
+        {
           message:
             "Tytuł i wykonawca powinny mieć od 1 do 100 znaków. Proszę sprawdzić i spróbować ponownie.",
-        });
+        },
+        { status: 400 }
+      );
     }
 
     if (!isValidYoutubeLink(youtubeLink)) {
-      return res
-        .status(400)
-        .json({
+      return NextResponse.json(
+        {
           message:
             "Link do YouTube jest nieprawidłowy. Proszę sprawdzić i spróbować ponownie.",
-        });
+        },
+        { status: 400 }
+      );
     }
 
     if (containsProfanity(title) || containsProfanity(artist)) {
-      return res
-        .status(400)
-        .json({
+      return NextResponse.json(
+        {
           message:
             "Tytuł lub wykonawca zawiera słowa, które nie są dozwolone. Proszę spróbować ponownie z innymi słowami.",
-        });
+        },
+        { status: 400 }
+      );
     }
 
     if (!(await isUniqueSubmission(title, artist))) {
-      return res
-        .status(400)
-        .json({
+      return NextResponse.json(
+        {
           message:
             "Ten utwór został już zgłoszony. Dziękujemy za Twoje zaangażowanie! Może spróbujesz zgłosić inny utwór?",
-        });
+        },
+        { status: 400 }
+      );
     }
 
     if (!(await isWithinSubmissionLimit(userId))) {
-      return res
-        .status(400)
-        .json({
+      return NextResponse.json(
+        {
           message: "Przekroczyłeś limit zgłoszeń. Spróbuj ponownie później.",
-        });
+        },
+        { status: 400 }
+      );
     }
 
     // Konfiguracja transportera do wysyłania e-maili za pomocą Gmaila
@@ -120,12 +118,13 @@ export default async function handler(
     await transporter.sendMail(mailOptions);
 
     // Wysyłanie odpowiedzi o pomyślnym wysłaniu e-maila
-    res.status(200).json({ message: "E-mail został wysłany pomyślnie" });
+    return NextResponse.json({ message: "E-mail został wysłany pomyślnie" });
   } catch (error) {
     // Obsługa błędów podczas wysyłania e-maila
     console.error("Błąd wysyłania e-maila:", error);
-    res
-      .status(500)
-      .json({ message: "Wystąpił błąd podczas wysyłania e-maila" });
+    return NextResponse.json(
+      { message: "Wystąpił błąd podczas wysyłania e-maila" },
+      { status: 500 }
+    );
   }
 }

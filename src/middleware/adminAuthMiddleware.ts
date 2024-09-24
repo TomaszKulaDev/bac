@@ -1,20 +1,19 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "../pages/api/auth/[...nextauth]";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 export default async function adminAuthMiddleware(
-  req: NextApiRequest,
-  res: NextApiResponse,
-  next: () => void
+  request: Request,
+  handler: () => Promise<NextResponse>
 ) {
-  const session = await getServerSession(req, res, authOptions);
+  const session = await getServerSession(authOptions);
   console.log("Session in adminAuthMiddleware:", session);
 
   if (!session || session.user.role !== "admin") {
     console.log("Unauthorized access attempt");
-    return res.status(403).json({ message: "Brak uprawnień" });
+    return NextResponse.json({ message: "Brak uprawnień" }, { status: 403 });
   }
 
   console.log("Admin authorized");
-  await next();
+  return handler();
 }

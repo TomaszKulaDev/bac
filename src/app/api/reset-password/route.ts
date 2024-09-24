@@ -1,31 +1,22 @@
-// src/pages/api/reset-password.ts
-import type { NextApiRequest, NextApiResponse } from "next";
+import { NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/mongodb";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
 import { validatePassword } from "@/schemas/passwordSchema";
 
 // Główna funkcja obsługująca żądanie resetowania hasła
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  console.log("Otrzymany token:", req.query.token);
-  console.log("Otrzymane hasło:", req.body.password);
-
-  // Sprawdzanie, czy metoda żądania to POST
-  if (req.method !== "POST") {
-    return res.status(405).json({ message: "Metoda niedozwolona" });
-  }
+export async function POST(request: Request) {
+  console.log("Otrzymany token:", request.url.split('?token=')[1]);
+  const { password } = await request.json();
+  console.log("Otrzymane hasło:", password);
 
   try {
     // Łączenie z bazą danych
     await connectToDatabase();
     console.log("Connected to database");
 
-    // Pobieranie tokena i hasła z zapytania
-    const { token } = req.query;
-    const { password } = req.body;
+    // Pobieranie tokena z URL i hasła z ciała żądania
+    const token = request.url.split('?token=')[1];
 
     // Dodatkowe logi do sprawdzenia tokena
     console.log("Received token:", token);
@@ -33,54 +24,74 @@ export default async function handler(
 
     // Sprawdzanie, czy token jest prawidłowy
     if (!token || typeof token !== "string") {
-      return res
-        .status(400)
-        .json({ message: "Token jest wymagany i musi być ciągiem znaków" });
+      return NextResponse.json(
+        { message: "Token jest wymagany i musi być ciągiem znaków" },
+        { status: 400 }
+      );
     }
 
     // Sprawdzanie, czy hasło zostało podane
     if (!password) {
-      return res.status(400).json({ message: "Hasło jest wymagane" });
+      return NextResponse.json(
+        { message: "Hasło jest wymagane" },
+        { status: 400 }
+      );
     }
 
     // Walidacja hasła
     const passwordValidationError = validatePassword(password);
     if (passwordValidationError) {
-      return res.status(400).json({ message: passwordValidationError });
+      return NextResponse.json(
+        { message: passwordValidationError },
+        { status: 400 }
+      );
     }
 
     // Znalezienie użytkownika na podstawie tokenu
     const user = await User.findOne({
       resetPasswordToken: token.toString(),
     });
-    console.log("Kryteria wyszukiwania:", { resetPasswordToken: token.toString() });
-    console.log("Znaleziony użytkownik:", user ? 'Tak' : 'Nie');
+    console.log("Kryteria wyszukiwania:", {
+      resetPasswordToken: token.toString(),
+    });
+    console.log("Znaleziony użytkownik:", user ? "Tak" : "Nie");
     if (user) {
       console.log("ID użytkownika:", user._id);
       console.log("Email użytkownika:", user.email);
-      console.log("Token resetowania hasła użytkownika:", user.resetPasswordToken);
+      console.log(
+        "Token resetowania hasła użytkownika:",
+        user.resetPasswordToken
+      );
       console.log("Data wygaśnięcia tokena:", user.resetPasswordExpires);
     } else {
       console.log("Nie znaleziono użytkownika z podanym tokenem");
     }
 
     // Znalezienie wszystkich użytkowników z tokenami resetowania hasła
-    const allUsersWithTokens = await User.find({ resetPasswordToken: { $exists: true } }, 'email resetPasswordToken resetPasswordExpires lastResetTokenRequest');
-    console.log("Wszyscy użytkownicy z tokenami resetowania hasła:", allUsersWithTokens);
+    const allUsersWithTokens = await User.find(
+      { resetPasswordToken: { $exists: true } },
+      "email resetPasswordToken resetPasswordExpires lastResetTokenRequest"
+    );
+    console.log(
+      "Wszyscy użytkownicy z tokenami resetowania hasła:",
+      allUsersWithTokens
+    );
 
     // Sprawdzanie, czy użytkownik został znaleziony
     if (!user) {
       console.log("Token not found");
-      return res
-        .status(400)
-        .json({ message: "Nieprawidłowy token" });
+      return NextResponse.json(
+        { message: "Nieprawidłowy token" },
+        { status: 400 }
+      );
     }
 
     if (user.resetPasswordExpires < Date.now()) {
       console.log("Token expired");
-      return res
-        .status(400)
-        .json({ message: "Token wygasł" });
+      return NextResponse.json(
+        { message: "Token wygasł" },
+        { status: 400 }
+      );
     }
 
     // Hashowanie nowego hasła
@@ -92,33 +103,45 @@ export default async function handler(
 
     const savedUser = await User.findOne({ email: user.email });
     console.log("Użytkownik po zapisaniu:", savedUser);
-    console.log("Token resetowania hasła po zapisaniu:", savedUser.resetPasswordToken);
+    console.log(
+      "Token resetowania hasła po zapisaniu:",
+      savedUser.resetPasswordToken
+    );
 
     console.log("Password reset successfully for user:", user.email);
-    res.status(200).json({ message: "Hasło zostało pomyślnie zresetowane" });
+    return NextResponse.json(
+      { message: "Hasło zostało pomyślnie zresetowane" },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Reset password error:", error);
     if (error instanceof Error) {
       // Obsługa błędów bazy danych
       if (error.name === "MongoError") {
-        return res
-          .status(503)
-          .json({ message: "Błąd bazy danych. Spróbuj ponownie później." });
+        return NextResponse.json(
+          { message: "Błąd bazy danych. Spróbuj ponownie później." },
+          { status: 503 }
+        );
         // Obsługa błędów walidacji
       } else if (error.name === "ValidationError") {
-        return res
-          .status(400)
-          .json({ message: "Nieprawidłowe dane wejściowe." });
+        return NextResponse.json(
+          { message: "Nieprawidłowe dane wejściowe." },
+          { status: 400 }
+        );
         // Obsługa błędów związanych z duplikatami kluczy
       } else if (error.message.includes("E11000 duplicate key error")) {
-        return res
-          .status(409)
-          .json({ message: "Konflikt danych. Spróbuj ponownie później." });
+        return NextResponse.json(
+          { message: "Konflikt danych. Spróbuj ponownie później." },
+          { status: 409 }
+        );
       }
     }
     // Ogólna obsługa błędów
-    res.status(500).json({
-      message: "Nie udało się zresetować hasła. Spróbuj ponownie później.",
-    });
+    return NextResponse.json(
+      {
+        message: "Nie udało się zresetować hasła. Spróbuj ponownie później.",
+      },
+      { status: 500 }
+    );
   }
 }

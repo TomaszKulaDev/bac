@@ -1,7 +1,7 @@
-// src/pages/verify.tsx
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { NextResponse } from "next/server";
 
 export default function VerifyPage() {
   // Stan przechowujący status weryfikacji

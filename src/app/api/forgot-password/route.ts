@@ -1,7 +1,5 @@
-// src/pages/api/forgot-password.ts
-
 // Importowanie wymaganych modułów i typów
-import type { NextApiRequest, NextApiResponse } from "next";
+import { NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/mongodb";
 import User from "@/models/User";
 import nodemailer from "nodemailer";
@@ -12,26 +10,18 @@ import { z } from "zod";
 const emailSchema = z.string().email("Nieprawidłowy adres email");
 
 // Główna funkcja obsługująca żądanie resetowania hasła
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  // Sprawdzanie, czy metoda żądania to POST
-  if (req.method !== "POST") {
-    return res.status(405).json({ message: "Metoda niedozwolona" });
-  }
-
+export async function POST(request: Request) {
   try {
     // Łączenie z bazą danych
     await connectToDatabase();
 
     // Pobieranie adresu e-mail z ciała żądania
-    const { email } = req.body;
+    const { email } = await request.json();
 
     // Walidacja adresu e-mail
     const emailValidationResult = emailSchema.safeParse(email);
     if (!emailValidationResult.success) {
-      return res.status(400).json({ message: emailValidationResult.error.errors[0].message });
+      return NextResponse.json({ message: emailValidationResult.error.errors[0].message }, { status: 400 });
     }
 
     // Wyszukiwanie użytkownika na podstawie adresu e-mail
@@ -39,17 +29,14 @@ export default async function handler(
 
     // Sprawdzanie, czy użytkownik został znaleziony
     if (!user) {
-      return res
-        .status(400)
-        .json({ message: "Nie znaleziono użytkownika z tym adresem e-mail" });
+      return NextResponse.json({ message: "Nie znaleziono użytkownika z tym adresem e-mail" }, { status: 400 });
     }
 
     // Sprawdzanie, czy użytkownik jest zweryfikowany
     if (!user.isVerified) {
-      return res.status(400).json({
-        message:
-          "Konto nie zostało jeszcze zweryfikowane. Sprawdź swoją skrzynkę e-mail.",
-      });
+      return NextResponse.json({
+        message: "Konto nie zostało jeszcze zweryfikowane. Sprawdź swoją skrzynkę e-mail.",
+      }, { status: 400 });
     }
 
     // Sprawdzanie, czy link do resetowania hasła został już wysłany
@@ -58,10 +45,9 @@ export default async function handler(
       user.resetPasswordExpires &&
       user.resetPasswordExpires > Date.now()
     ) {
-      return res.status(400).json({
-        message:
-          "Link do resetowania hasła został już wysłany. Sprawdź swoją skrzynkę e-mail lub spróbuj ponownie później.",
-      });
+      return NextResponse.json({
+        message: "Link do resetowania hasła został już wysłany. Sprawdź swoją skrzynkę e-mail lub spróbuj ponownie później.",
+      }, { status: 400 });
     }
 
     // Generowanie tokena do resetowania hasła
@@ -111,9 +97,7 @@ export default async function handler(
     await transporter.sendMail(mailOptions);
 
     // Wysyłanie odpowiedzi o pomyślnym wysłaniu e-maila
-    res
-      .status(200)
-      .json({ message: "Link do resetowania hasła został wysłany" });
+    return NextResponse.json({ message: "Link do resetowania hasła został wysłany" }, { status: 200 });
 
     // Dodatkowe logi do sprawdzenia wszystkich użytkowników z tokenami resetowania hasła
     const allUsersWithResetTokens = await User.find({ resetPasswordToken: { $exists: true } }, 'email resetPasswordToken resetPasswordExpires');
@@ -124,29 +108,21 @@ export default async function handler(
     if (error instanceof Error) {
       // Obsługa błędów bazy danych
       if (error.name === "MongoError") {
-        return res
-          .status(503)
-          .json({ message: "Błąd bazy danych. Spróbuj ponownie później." });
+        return NextResponse.json({ message: "Błąd bazy danych. Spróbuj ponownie później." }, { status: 503 });
       // Obsługa błędów walidacji
       } else if (error.name === "ValidationError") {
-        return res
-          .status(400)
-          .json({ message: "Nieprawidłowe dane wejściowe." });
+        return NextResponse.json({ message: "Nieprawidłowe dane wejściowe." }, { status: 400 });
       // Obsługa błędów związanych z wysyłaniem e-maila
       } else if (error.message === "Nodemailer error") {
-        return res
-          .status(502)
-          .json({
-            message: "Nie udało się wysłać e-maila. Spróbuj ponownie później.",
-          });
+        return NextResponse.json({
+          message: "Nie udało się wysłać e-maila. Spróbuj ponownie później.",
+        }, { status: 502 });
       }
     }
 
     // Obsługa nieoczekiwanych błędów
-    res
-      .status(500)
-      .json({
-        message: "Wystąpił nieoczekiwany błąd. Spróbuj ponownie później.",
-      });
+    return NextResponse.json({
+      message: "Wystąpił nieoczekiwany błąd. Spróbuj ponownie później.",
+    }, { status: 500 });
   }
 }

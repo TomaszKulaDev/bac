@@ -1,8 +1,6 @@
-// src/pages/api/auth/[...nextauth].ts
-
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { connectToDatabase } from "../../../lib/mongodb";
+import { connectToDatabase } from "@/lib/mongodb";
 import User from "@/models/User"; // Zakładając, że masz model User
 import bcrypt from "bcryptjs";
 import { NextAuthOptions } from "next-auth";
@@ -32,7 +30,6 @@ export const authOptions: NextAuthOptions = {
 
         const { email, password } = credentials;
         const user = await User.findOne({ email });
-        console.log("NextAuth: User found:", user ? "Yes" : "No");
         console.log("NextAuth: User found:", user ? "Yes" : "No");
 
         if (!user) {
@@ -84,4 +81,5 @@ export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
 };
 
-export default NextAuth(authOptions);
+const handler = NextAuth(authOptions);
+export { handler as GET, handler as POST };

@@ -1,46 +1,44 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import { NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/mongodb";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
 import nodemailer from "nodemailer";
 import crypto from "crypto";
-import jwt from "jsonwebtoken";
 import { validatePassword } from "@/schemas/passwordSchema";
 
 // Główna funkcja obsługująca żądanie rejestracji użytkownika
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  // Sprawdzanie, czy metoda żądania to POST
-  if (req.method !== "POST") {
-    return res.status(405).json({ message: "Metoda niedozwolona" });
-  }
-
+export async function POST(request: Request) {
   try {
     // Łączenie z bazą danych
     await connectToDatabase();
 
     // Pobieranie danych z ciała żądania
-    const { email, password, name } = req.body;
+    const { email, password, name } = await request.json();
 
     // Sprawdzanie, czy wszystkie wymagane dane zostały podane
     if (!name || !email || !password) {
-      return res
-        .status(400)
-        .json({ message: "Imię, email i hasło są wymagane" });
+      return NextResponse.json(
+        { message: "Imię, email i hasło są wymagane" },
+        { status: 400 }
+      );
     }
 
     // Walidacja hasła
     const passwordValidationError = validatePassword(password);
     if (passwordValidationError) {
-      return res.status(400).json({ message: passwordValidationError });
+      return NextResponse.json(
+        { message: passwordValidationError },
+        { status: 400 }
+      );
     }
 
     // Sprawdzanie, czy użytkownik o podanym adresie email już istnieje
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(409).json({ message: "Użytkownik już istnieje" });
+      return NextResponse.json(
+        { message: "Użytkownik już istnieje" },
+        { status: 409 }
+      );
     }
 
     // Generowanie tokena weryfikacyjnego
@@ -94,34 +92,41 @@ export default async function handler(
     await transporter.sendMail(mailOptions);
 
     // Wysyłanie odpowiedzi o pomyślnej rejestracji użytkownika
-    res
-      .status(201)
-      .json({ message: "User registered. Please verify your email." });
+    return NextResponse.json(
+      { message: "User registered. Please verify your email." },
+      { status: 201 }
+    );
   } catch (error) {
     // Obsługa błędów podczas rejestracji
     console.error("Registration error:", error);
     if (error instanceof Error) {
       // Obsługa błędów bazy danych
       if (error.name === "MongoError") {
-        return res
-          .status(503)
-          .json({ message: "Błąd bazy danych. Spróbuj ponownie później." });
+        return NextResponse.json(
+          { message: "Błąd bazy danych. Spróbuj ponownie później." },
+          { status: 503 }
+        );
       // Obsługa błędów walidacji
       } else if (error.name === "ValidationError") {
-        return res
-          .status(400)
-          .json({ message: "Nieprawidłowe dane wejściowe." });
+        return NextResponse.json(
+          { message: "Nieprawidłowe dane wejściowe." },
+          { status: 400 }
+        );
       // Obsługa błędów związanych z duplikatami kluczy
       } else if (error.message.includes("E11000 duplicate key error")) {
-        return res.status(409).json({
-          message: "Użytkownik o podanym adresie email już istnieje.",
-        });
+        return NextResponse.json(
+          { message: "Użytkownik o podanym adresie email już istnieje." },
+          { status: 409 }
+        );
       }
     }
     // Obsługa nieoczekiwanych błędów
-    res.status(500).json({
-      message:
-        "Wystąpił nieoczekiwany błąd podczas rejestracji. Spróbuj ponownie później.",
-    });
+    return NextResponse.json(
+      {
+        message:
+          "Wystąpił nieoczekiwany błąd podczas rejestracji. Spróbuj ponownie później.",
+      },
+      { status: 500 }
+    );
   }
 }

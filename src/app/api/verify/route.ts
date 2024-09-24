@@ -1,23 +1,20 @@
-// src/pages/api/verify.ts
-
-import type { NextApiRequest, NextApiResponse } from "next";
+import { NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/mongodb";
 import User from "@/models/User";
 
 // Główna funkcja obsługująca żądanie weryfikacji
-export default async function verifyHandler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export async function GET(request: Request) {
   // Pobieranie tokena z zapytania
-  const { token } = req.query;
+  const { searchParams } = new URL(request.url);
+  const token = searchParams.get("token");
 
   // Sprawdzanie, czy token jest prawidłowy
   if (!token || typeof token !== "string") {
     console.error("Invalid token:", token);
-    return res
-      .status(400)
-      .json({ message: "Token is required and must be a string" });
+    return NextResponse.json(
+      { message: "Token is required and must be a string" },
+      { status: 400 }
+    );
   }
 
   try {
@@ -29,7 +26,10 @@ export default async function verifyHandler(
     const user = await User.findOne({ verificationToken: token });
     if (!user) {
       console.error("User not found or token expired:", token);
-      return res.status(400).json({ message: "Invalid or expired token" });
+      return NextResponse.json(
+        { message: "Invalid or expired token" },
+        { status: 400 }
+      );
     }
 
     // Aktualizacja statusu użytkownika na zweryfikowany
@@ -39,10 +39,13 @@ export default async function verifyHandler(
     console.log("User verified successfully:", user.email);
 
     // Wysyłanie odpowiedzi o pomyślnej weryfikacji
-    res.status(200).json({ message: "Account verified successfully" });
+    return NextResponse.json({ message: "Account verified successfully" });
   } catch (error) {
     // Obsługa błędów podczas weryfikacji
     console.error("Verification failed: ", error);
-    res.status(500).json({ message: "Verification failed", error });
+    return NextResponse.json(
+      { message: "Verification failed", error },
+      { status: 500 }
+    );
   }
 }

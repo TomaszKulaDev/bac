@@ -1,4 +1,4 @@
-import { GetServerSideProps } from "next";
+import { NextResponse } from "next/server";
 
 // Funkcja generująca mapę strony w formacie XML
 function generateSiteMap(routes: string[]): string {
@@ -17,8 +17,8 @@ function generateSiteMap(routes: string[]): string {
   `;
 }
 
-// Funkcja getServerSideProps generuje mapę strony po stronie serwera
-export const getServerSideProps: GetServerSideProps = async ({ res }) => {
+// Funkcja generująca mapę strony po stronie serwera
+export async function GET() {
   // Lista tras do uwzględnienia w mapie strony
   const routes = [
     "/",
@@ -33,16 +33,12 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
   const sitemap = generateSiteMap(routes);
 
   // Ustawienie nagłówka odpowiedzi na "text/xml"
-  res.setHeader("Content-Type", "text/xml");
-  // Zapisanie mapy strony do odpowiedzi
-  res.write(sitemap);
-  // Zakończenie odpowiedzi
-  res.end();
+  const headers = new Headers();
+  headers.set("Content-Type", "text/xml");
 
-  return {
-    props: {},
-  };
-};
+  // Zwrócenie odpowiedzi z mapą strony
+  return new NextResponse(sitemap, { headers });
+}
 
 // Komponent Sitemap jest pusty, ponieważ mapa strony jest generowana po stronie serwera
 export default function Sitemap() {
