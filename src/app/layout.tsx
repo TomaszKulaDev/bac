@@ -13,6 +13,48 @@
 // Importujemy komponent Provider z react-redux, który dostarcza kontekst dla Redux store
 // Importujemy store z Redux Toolkit, który jest głównym storem aplikacji
 // AuthSync jest komponentem, który synchronizuje stan autoryzacji z Redux store
+// Czegp uzywamy w projekcie.
+// "dependencies": {
+//   "@next-auth/mongodb-adapter": "^1.1.3",
+//   "@reduxjs/toolkit": "^2.2.7",
+//   "@tailwindcss/aspect-ratio": "^0.4.2",
+//   "@types/lodash": "^4.17.7",
+//   "@types/mongoose": "^5.11.96",
+//   "@vercel/speed-insights": "^1.0.12",
+//   "bcryptjs": "^2.4.3",
+//   "dotenv": "^16.4.5",
+//   "express-rate-limit": "^7.4.0",
+//   "jsonwebtoken": "^9.0.2",
+//   "lodash": "^4.17.21",
+//   "mongoose": "^8.5.4",
+//   "next": "14.2.6",
+//   "next-auth": "^4.24.7",
+//   "nodemailer": "^6.9.14",
+//   "react": "^18",
+//   "react-dom": "^18",
+//   "react-icons": "^5.3.0",
+//   "react-redux": "^9.1.2",
+//   "react-youtube": "^10.1.0",
+//   "zod": "^3.23.8"
+// },
+// "devDependencies": {
+//   "@types/bcryptjs": "^2.4.6",
+//   "@types/jsonwebtoken": "^9.0.6",
+//   "@types/next-auth": "^3.13.0",
+//   "@types/node": "^20.16.5",
+//   "@types/nodemailer": "^6.4.15",
+//   "@types/react": "^18",
+//   "@types/react-dom": "^18",
+//   "@types/youtube": "^0.1.0",
+//   "@types/youtube-player": "^5.5.11",
+//   "eslint": "^8",
+//   "eslint-config-next": "14.2.6",
+//   "postcss": "^8",
+//   "tailwindcss": "^3.4.1",
+//   "ts-node": "^10.9.2",
+//   "typescript": "^5.6.2"
+// }
+
 
 //src/app/layout.tsx
 // Importujemy globalne style CSS, które będą miały zastosowanie do całej aplikacji

@@ -1,14 +1,7 @@
-Aktualna struktura projektu (84 plików)
-
-Statystyki projektu:
-Całkowity rozmiar: 0.94 MB
-Całkowita liczba linii kodu: 8851
-Typy plików: {".local":1,".json":3,".ts":30,".mjs":3,"":1,".png":2,".txt":2,".md":1,".tsx":37,".ico":1,".css":1,".js":1,".tsbuildinfo":1}
-
 Struktura plików projektu:
 ├── .env.local (.local, 0.40 KB)
 ├── .eslintrc.json (.json, 0.04 KB)
-├── next-env.d.ts (.ts, 0.26 KB)
+├── next-env.d.ts (.ts, 0.20 KB)
 ├── next.config.mjs (.mjs, 1.34 KB)
 ├── package.json (.json, 1.42 KB)
 ├── postcss.config.mjs (.mjs, 0.14 KB)
@@ -18,7 +11,7 @@ Struktura plików projektu:
 │   ├── images/
 │   │   └── open-in-browser.png (.png, 36.73 KB)
 │   └── robots.txt (.txt, 0.07 KB)
-├── README.md (.md, 1.46 KB)
+├── README.md (.md, 1.47 KB)
 ├── src/
 │   ├── app/
 │   │   ├── accommodations/
@@ -29,6 +22,35 @@ Struktura plików projektu:
 │   │   │   ├── page.tsx (.tsx, 11.71 KB)
 │   │   │   └── users/
 │   │   │       └── page.tsx (.tsx, 12.35 KB)
+│   │   ├── api/
+│   │   │   ├── admin/
+│   │   │   │   └── users/
+│   │   │   │       ├── route.ts (.ts, 2.72 KB)
+│   │   │   │       └── [userId]/
+│   │   │   │           └── route.ts (.ts, 2.50 KB)
+│   │   │   ├── auth/
+│   │   │   │   └── [...nextauth]/
+│   │   │   │       ├── authOptions.ts (.ts, 2.14 KB)
+│   │   │   │       └── route.ts (.ts, 0.16 KB)
+│   │   │   ├── forgot-password/
+│   │   │   │   └── route.ts (.ts, 5.02 KB)
+│   │   │   ├── login/
+│   │   │   │   └── route.ts (.ts, 3.74 KB)
+│   │   │   ├── register/
+│   │   │   │   └── route.ts (.ts, 4.93 KB)
+│   │   │   ├── resend-verification/
+│   │   │   │   └── route.ts (.ts, 3.27 KB)
+│   │   │   ├── reset-password/
+│   │   │   │   └── route.ts (.ts, 4.81 KB)
+│   │   │   ├── submit-song/
+│   │   │   │   └── route.ts (.ts, 4.25 KB)
+│   │   │   ├── users/
+│   │   │   │   ├── me/
+│   │   │   │   │   └── route.ts (.ts, 1.41 KB)
+│   │   │   │   └── update-profile/
+│   │   │   │       └── route.ts (.ts, 2.99 KB)
+│   │   │   └── verify/
+│   │   │       └── route.ts (.ts, 1.69 KB)
 │   │   ├── blog/
 │   │   │   └── page.tsx (.tsx, 0.11 KB)
 │   │   ├── community/
@@ -47,18 +69,18 @@ Struktura plików projektu:
 │   │   ├── globals.css (.css, 0.59 KB)
 │   │   ├── jobs/
 │   │   │   └── page.tsx (.tsx, 0.11 KB)
-│   │   ├── layout.tsx (.tsx, 0.93 KB)
+│   │   ├── layout.tsx (.tsx, 3.13 KB)
 │   │   ├── login/
 │   │   │   └── page.tsx (.tsx, 7.91 KB)
 │   │   ├── mentorship/
 │   │   │   └── page.tsx (.tsx, 0.12 KB)
 │   │   ├── muzyka/
 │   │   │   ├── components/
-│   │   │   │   ├── FavoriteButton.tsx (.tsx, 0.92 KB)
+│   │   │   │   ├── FavoriteButton.tsx (.tsx, 1.25 KB)
 │   │   │   │   ├── index.ts (.ts, 0.06 KB)
 │   │   │   │   ├── LoginModal.tsx (.tsx, 1.60 KB)
-│   │   │   │   ├── MusicPlayer.tsx (.tsx, 24.91 KB)
-│   │   │   │   └── VotingButtons.tsx (.tsx, 2.17 KB)
+│   │   │   │   ├── MusicPlayer.tsx (.tsx, 26.25 KB)
+│   │   │   │   └── VotingButtons.tsx (.tsx, 2.44 KB)
 │   │   │   ├── page.tsx (.tsx, 7.31 KB)
 │   │   │   └── types.ts (.ts, 0.31 KB)
 │   │   ├── page.tsx (.tsx, 1.96 KB)
@@ -71,51 +93,36 @@ Struktura plików projektu:
 │   │   ├── reset-password/
 │   │   │   ├── page.tsx (.tsx, 0.24 KB)
 │   │   │   └── ResetPasswordClient.tsx (.tsx, 7.39 KB)
+│   │   ├── sitemap.xml.ts (.ts, 1.27 KB)
 │   │   ├── subscription/
 │   │   │   └── page.tsx (.tsx, 0.12 KB)
 │   │   ├── users/
 │   │   │   └── page.tsx (.tsx, 0.10 KB)
+│   │   ├── verify/
+│   │   │   ├── page.tsx (.tsx, 0.42 KB)
+│   │   │   └── VerifyComponent.tsx (.tsx, 2.86 KB)
 │   │   └── warunki-korzystania-z-uslugi-baciata-pl/
 │   │       └── page.tsx (.tsx, 2.39 KB)
 │   ├── components/
 │   │   ├── AdminCard.tsx (.tsx, 0.61 KB)
 │   │   ├── AdminLayout.tsx (.tsx, 1.19 KB)
+│   │   ├── AuthSync.tsx (.tsx, 2.33 KB)
 │   │   ├── ClientLayout.tsx (.tsx, 0.89 KB)
 │   │   ├── ClientProviders.tsx (.tsx, 0.35 KB)
 │   │   ├── LoadingSpinner.tsx (.tsx, 0.56 KB)
-│   │   └── NavContent.tsx (.tsx, 2.28 KB)
+│   │   └── NavContent.tsx (.tsx, 2.58 KB)
 │   ├── contexts/
 │   │   └── AuthContext.tsx (.tsx, 1.18 KB)
 │   ├── global.d.ts (.ts, 0.67 KB)
 │   ├── hooks/
 │   │   └── useUserProfile.ts (.ts, 1.67 KB)
 │   ├── lib/
-│   │   ├── authMiddleware.ts (.ts, 0.52 KB)
+│   │   ├── authMiddleware.ts (.ts, 0.53 KB)
 │   │   └── mongodb.ts (.ts, 2.48 KB)
 │   ├── middleware/
 │   │   └── adminAuthMiddleware.ts (.ts, 0.64 KB)
 │   ├── models/
 │   │   └── User.ts (.ts, 0.98 KB)
-│   ├── pages/
-│   │   ├── api/
-│   │   │   ├── admin/
-│   │   │   │   └── users/
-│   │   │   │       ├── index.ts (.ts, 3.06 KB)
-│   │   │   │       └── [userId].ts (.ts, 2.52 KB)
-│   │   │   ├── auth/
-│   │   │   │   └── [...nextauth].ts (.ts, 2.47 KB)
-│   │   │   ├── forgot-password.ts (.ts, 5.27 KB)
-│   │   │   ├── login.ts (.ts, 4.04 KB)
-│   │   │   ├── register.ts (.ts, 4.93 KB)
-│   │   │   ├── resend-verification.ts (.ts, 3.42 KB)
-│   │   │   ├── reset-password.ts (.ts, 4.61 KB)
-│   │   │   ├── submit-song.ts (.ts, 4.30 KB)
-│   │   │   ├── users/
-│   │   │   │   ├── me.ts (.ts, 1.56 KB)
-│   │   │   │   └── update-profile.ts (.ts, 3.01 KB)
-│   │   │   └── verify.ts (.ts, 1.62 KB)
-│   │   ├── sitemap.xml.ts (.ts, 1.35 KB)
-│   │   └── verify.tsx (.tsx, 2.84 KB)
 │   ├── schemas/
 │   │   └── passwordSchema.ts (.ts, 3.49 KB)
 │   ├── scripts/
@@ -123,10 +130,10 @@ Struktura plików projektu:
 │   ├── store/
 │   │   ├── slices/
 │   │   │   ├── adminSlice.ts (.ts, 6.56 KB)
-│   │   │   ├── authSlice.ts (.ts, 1.71 KB)
+│   │   │   ├── authSlice.ts (.ts, 1.21 KB)
 │   │   │   └── types.ts (.ts, 0.42 KB)
 │   │   └── store.ts (.ts, 0.69 KB)
-│   ├── struktura-projektu.txt (.txt, 5.86 KB)
+│   ├── struktura-projektu.txt (.txt, 6.23 KB)
 │   ├── types/
 │   │   └── next-auth.d.ts (.ts, 1.12 KB)
 │   └── utils/
@@ -134,4 +141,4 @@ Struktura plików projektu:
 │       └── projectAnalyzer.js (.js, 36.79 KB)
 ├── tailwind.config.ts (.ts, 1.36 KB)
 ├── tsconfig.json (.json, 1.84 KB)
-└── tsconfig.tsbuildinfo (.tsbuildinfo, 236.06 KB)
+└── tsconfig.tsbuildinfo (.tsbuildinfo, 240.90 KB)
