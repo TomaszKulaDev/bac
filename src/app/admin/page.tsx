@@ -70,6 +70,7 @@ UserRow.displayName = "UserRow";
 export default function AdminUsersPage() {
   const dispatch = useDispatch<AppDispatch>();
   const user = useSelector((state: RootState) => state.auth.user);
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
   const { users, totalUsers, currentPage } = useSelector(
     (state: RootState) => state.admin
   );
@@ -150,7 +151,7 @@ export default function AdminUsersPage() {
         })
         .catch((error) => {
           console.error("Error fetching users:", error);
-          setError("Nie udało się pobrać listy użytkowników");
+          setError("Nie udało się pobrać listy użytkowników: " + error.message);
           setIsLoading(false);
         });
     }
@@ -159,8 +160,8 @@ export default function AdminUsersPage() {
   const fetchParams = useMemo(() => ({ page: currentPage, pageSize }), [currentPage, pageSize]);
 
   useEffect(() => {
-    if (!user || user.role !== "admin") {
-      console.log("Redirecting to login - no user or not admin");
+    if (!user || user.role !== "admin" || !isAuthenticated) {
+      console.log("Redirecting to login - no user or not admin or not authenticated");
       router.push("/login");
     } else if (!dataFetchedRef.current) {
       console.log("Fetching users");
@@ -177,7 +178,7 @@ export default function AdminUsersPage() {
           setIsLoading(false);
         });
     }
-  }, [user, dispatch, router, fetchParams]);
+  }, [user, isAuthenticated, dispatch, router, fetchParams]);
 
   useEffect(() => {
     if (users.length > 0) {

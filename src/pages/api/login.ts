@@ -40,6 +40,7 @@ export default async function handler(
     // Walidacja danych logowania
     const validationResult = loginSchema.safeParse({ email, password });
     if (!validationResult.success) {
+      console.log("Validation failed:", validationResult.error.errors);
       return res
         .status(400)
         .json({ message: validationResult.error.errors[0].message });
