@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../store/slices/authSlice";
 import { RootState } from "../store/slices/types";
 import { FaMusic } from "react-icons/fa";
+import { store } from "../store/store";
 
 export function NavContent() {
   const [isLoading, setIsLoading] = useState(true);
@@ -21,6 +22,7 @@ export function NavContent() {
   const handleLogout = () => {
     console.log("Logout initiated");
     dispatch(logout());
+    console.log("State after logout:", store.getState()); // Dodanie logu stanu Redux po wylogowaniu
     router.push("/");
     console.log("Logout completed");
   };
