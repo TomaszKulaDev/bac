@@ -1,15 +1,15 @@
+"use client";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { NextResponse } from "next/server";
 
 export default function VerifyPage() {
   // Stan przechowujący status weryfikacji
   const [status, setStatus] = useState<string | null>(null);
   // Stan przechowujący informację o sukcesie weryfikacji
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
-  const router = useRouter();
-  const { token } = router.query; // Pobieranie tokena z query parametru
+  const searchParams = useSearchParams();
+  const token = searchParams.get("token"); // Pobieranie tokena z query parametru
 
   useEffect(() => {
     if (token) {
