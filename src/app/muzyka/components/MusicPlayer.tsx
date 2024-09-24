@@ -70,6 +70,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
   const [adBlockerDetected, setAdBlockerDetected] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
+  const [isPlayerReady, setIsPlayerReady] = useState(false);
 
   const opts: YouTubeProps["opts"] = {
     width: "100%",
@@ -95,7 +96,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
   };
 
   const togglePlayback = useCallback(() => {
-    if (player) {
+    if (player && isPlayerReady) {
       if (isPlaying) {
         player.pauseVideo();
       } else {
@@ -103,7 +104,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
       }
       setIsPlaying(!isPlaying);
     }
-  }, [player, isPlaying]);
+  }, [player, isPlaying, isPlayerReady]);
 
   const nextSong = () => {
     if (currentSongIndex < localSongs.length - 1) {
@@ -202,6 +203,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
 
   const onReady = (event: { target: any }) => {
     setPlayer(event.target);
+    setIsPlayerReady(true);
     setError(null);
   };
 
