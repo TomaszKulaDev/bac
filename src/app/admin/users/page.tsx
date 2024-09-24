@@ -191,14 +191,18 @@ export default function AdminUsersPage() {
   }, [dispatch, pageSize, currentPage]);
 
   useEffect(() => {
-    if (session?.user?.role === 'admin') {
+    if (session?.user?.role === 'admin' && !isLoading) {
       dispatch(fetchUsers({ page: currentPage, pageSize }))
         .unwrap()
         .then((fetchedData) => {
           setLocalUsers(fetchedData.users);
+        })
+        .catch((error) => {
+          console.error("Error fetching users:", error);
+          setError("Nie udało się pobrać listy użytkowników");
         });
     }
-  }, [dispatch, currentPage, pageSize, session?.user?.role]);
+  }, [dispatch, currentPage, pageSize, session?.user?.role, isLoading]);
 
   if (isLoading) {
     return <LoadingSpinner />;

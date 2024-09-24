@@ -101,6 +101,10 @@ const adminSlice = createSlice({
       state.users.unshift(action.payload); // Dodawanie nowego użytkownika na początek listy
       state.totalUsers += 1; // Zwiększanie całkowitej liczby użytkowników
     },
+    // Akcja do czyszczenia stanu admina
+    clearAdminState: (state) => {
+      return initialState;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -164,4 +168,5 @@ const adminSlice = createSlice({
 });
 
 // Eksportowanie reducer'a slice'a admina
+export const { clearAdminState } = adminSlice.actions;
 export default adminSlice.reducer;

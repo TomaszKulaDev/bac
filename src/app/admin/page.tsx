@@ -161,10 +161,8 @@ export default function AdminUsersPage() {
 
   useEffect(() => {
     if (!user || user.role !== "admin" || !isAuthenticated) {
-      console.log("Redirecting to login - no user or not admin or not authenticated");
       router.push("/login");
-    } else if (!dataFetchedRef.current) {
-      console.log("Fetching users");
+    } else if (!dataFetchedRef.current && !isLoading) {
       dispatch(fetchUsers(fetchParams))
         .unwrap()
         .then(() => {
@@ -178,7 +176,7 @@ export default function AdminUsersPage() {
           setIsLoading(false);
         });
     }
-  }, [user, isAuthenticated, dispatch, router, fetchParams]);
+  }, [user, isAuthenticated, dispatch, router, fetchParams, isLoading]);
 
   useEffect(() => {
     if (users.length > 0) {

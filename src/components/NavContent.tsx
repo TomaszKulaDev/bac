@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../store/slices/authSlice";
+import { clearAdminState } from "../store/slices/adminSlice";
 import { RootState } from "../store/slices/types";
 import { FaMusic } from "react-icons/fa";
 import { store } from "../store/store";
@@ -20,11 +21,9 @@ export function NavContent() {
   const user = useSelector((state: RootState) => state.auth.user);
 
   const handleLogout = () => {
-    console.log("Logout initiated");
     dispatch(logout());
-    console.log("State after logout:", store.getState()); // Dodanie logu stanu Redux po wylogowaniu
-    router.push("/");
-    console.log("Logout completed");
+    dispatch(clearAdminState());
+    router.push('/login');
   };
 
   useEffect(() => {
