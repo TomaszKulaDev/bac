@@ -471,9 +471,10 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
               <div className="flex justify-between items-center mt-4">
                 <button
                   onClick={previousSong}
-                  className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white py-2 px-3 rounded-full text-xs sm:text-sm font-semibold shadow-md hover:from-purple-600 hover:to-pink-600 transition duration-300 flex items-center justify-center overflow-hidden"
+                  className="flex-1 bg-gradient-to-r from-purple-500 to-indigo-500 text-white py-3 px-4 rounded text-sm font-semibold shadow-md hover:from-purple-600 hover:to-indigo-600 transition duration-300"
                 >
-                  <FaChevronUp className="mr-1 text-xs sm:text-sm" /> Poprzedni
+                  <FaChevronUp className="inline mr-2" />
+                  <span className="hidden sm:inline">Poprzedni</span>
                 </button>
                 <button
                   onClick={togglePlayback}
@@ -483,9 +484,10 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
                 </button>
                 <button
                   onClick={nextSong}
-                  className="flex-1 bg-gradient-to-r from-pink-500 to-purple-500 text-white py-2 px-3 rounded-full text-xs sm:text-sm font-semibold shadow-md hover:from-pink-600 hover:to-purple-600 transition duration-300 flex items-center justify-center overflow-hidden"
+                  className="flex-1 bg-gradient-to-r from-indigo-500 to-pink-500 text-white py-3 px-4 rounded text-sm font-semibold shadow-md hover:from-indigo-600 hover:to-pink-600 transition duration-300"
                 >
-                  Następny <FaChevronDown className="ml-1 text-xs sm:text-sm" />
+                  <span className="hidden sm:inline">Następny</span>
+                  <FaChevronDown className="inline ml-2" />
                 </button>
               </div>
             </div>
@@ -704,5 +706,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
     </div>
   );
 };
+
 
 export default MusicPlayer;
