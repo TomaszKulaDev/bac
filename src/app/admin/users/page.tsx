@@ -95,11 +95,10 @@ export default function AdminUsersPage() {
   const fetchParams = useMemo(() => ({ page: currentPage, pageSize }), [currentPage, pageSize]);
 
   useEffect(() => {
-    if (session?.user?.role === 'admin' && !isInitialized && users.length === 0) {
+    if (status === "loading") return;
+    
+    if (session?.user?.role === 'admin' && !isInitialized) {
       console.log("Fetching users");
-      if (!isConnected()) {
-        connectToDatabase();
-      }
       dispatch(fetchUsers({ page: currentPage, pageSize }))
         .unwrap()
         .then(() => {
@@ -111,10 +110,10 @@ export default function AdminUsersPage() {
           setError("Nie udało się pobrać listy użytkowników");
           setIsLoading(false);
         });
-    } else if (session?.user?.role !== 'admin') {
+    } else if (!session || session.user?.role !== 'admin') {
       router.push("/login");
     }
-  }, [session, dispatch, router, isInitialized, users.length, currentPage, pageSize]);
+  }, [session, status, dispatch, router, isInitialized, currentPage, pageSize]);
 
   const handleDeleteUser = useCallback(async (userId: string) => {
     if (!userId) {

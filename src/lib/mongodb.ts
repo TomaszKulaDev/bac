@@ -71,10 +71,9 @@ async function disconnectFromDatabase(): Promise<void> {
 
 async function connectWithRetry(retries = 5): Promise<typeof mongoose> {
   try {
-    if (mongoose.connection.readyState === 1) {
-      return mongoose;
+    if (!mongoose.connection || mongoose.connection.readyState === 0) {
+      await mongoose.connect(MONGODB_URI);
     }
-    await mongoose.connect(MONGODB_URI);
     return mongoose;
   } catch (err) {
     if (retries > 0) {
