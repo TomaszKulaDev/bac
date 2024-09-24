@@ -1,3 +1,4 @@
+// src/components/NavContent.tsx
 "use client";
 
 import { useState, useEffect } from "react";
@@ -29,7 +30,27 @@ export function NavContent() {
   }, []);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <nav className="flex justify-between items-center p-4 bg-gray-800 text-white">
+        <div className="text-2xl font-bold">
+          <Link href="/">MyApp</Link>
+        </div>
+        <ul className="flex space-x-4 items-center">
+          <li>
+            <Link href="/muzyka" className="flex items-center hover:text-gray-300">
+              <FaMusic className="mr-1" />
+              Muzyka
+            </Link>
+          </li>
+          <li>
+            <Link href="/login">Zaloguj</Link>
+          </li>
+          <li>
+            <Link href="/register">Zarejestruj się</Link>
+          </li>
+        </ul>
+      </nav>
+    );
   }
 
   return (
