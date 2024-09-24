@@ -1,5 +1,20 @@
-//src/app/layout.tsx
+// Next.js version: 14.2.6
+// Używamy App Router
+// Używamy NextAuth do autoryzacji
+// Używamy Tailwind CSS do stylowania
+// Używamy React do tworzenia interfejsu użytkownika
+// Używamy Next.js do tworzenia stron
+// Używamy Redux Toolkit do zarządzania stanem aplikacji
+// Używamy ClientProviders do dostarczenia kontekstu dla klienta
+// Używamy ClientLayout do ustawienia układu strony
+// Używamy NavContent do nawigacji
+// Używamy AuthSync do synchronizacji stanu autoryzacji
+// Importujemy komponent SessionProvider z next-auth/react, który dostarcza kontekst dla sesji użytkownika
+// Importujemy komponent Provider z react-redux, który dostarcza kontekst dla Redux store
+// Importujemy store z Redux Toolkit, który jest głównym storem aplikacji
+// AuthSync jest komponentem, który synchronizuje stan autoryzacji z Redux store
 
+//src/app/layout.tsx
 // Importujemy globalne style CSS, które będą miały zastosowanie do całej aplikacji
 import "./globals.css";
 // Importujemy komponent ClientLayout, który będzie używany do układu strony
