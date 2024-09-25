@@ -1,12 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./slices/authSlice";
 import adminReducer from './slices/adminSlice';
+import songsReducer from './slices/features/songsSlice';
 
 // Konfiguracja głównego store Redux
 export const store = configureStore({
   reducer: {
     auth: authReducer, // Reducer odpowiedzialny za uwierzytelnianie
     admin: adminReducer, // Reducer odpowiedzialny za zarządzanie użytkownikami przez admina
+    songs: songsReducer,
     // inne reducery mogą być dodane tutaj...
   },
 });

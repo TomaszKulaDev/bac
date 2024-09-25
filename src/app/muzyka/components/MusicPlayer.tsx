@@ -2,13 +2,7 @@
 
 "use client";
 
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useCallback,
-  useMemo,
-} from "react";
+import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { useSelector } from "react-redux";
 import YouTube, { YouTubeProps } from "react-youtube";
 import {
@@ -28,31 +22,37 @@ import {
   FaList,
 } from "react-icons/fa";
 import Image from "next/image";
-import { MusicPlayerProps, Song } from "../types";
+import { Song } from "../types";
 import VotingButtons from "./VotingButtons";
 import FavoriteButton from "./FavoriteButton";
 import LoginModal from "./LoginModal";
 import { RootState } from "../../../store/store";
+import SongList from "./SongList";
 
 const getYouTubeThumbnail = (youtubeId: string) => {
   return `https://img.youtube.com/vi/${youtubeId}/0.jpg`;
 };
 
-const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
+const MusicPlayer: React.FC = () => {
+  const songs = useSelector((state: RootState) => state.songs.songs);
+  const [localSongs, setLocalSongs] = useState<Song[]>([]);
+
+  useEffect(() => {
+    setLocalSongs(songs);
+  }, [songs]);
+
+  const [currentSongIndex, setCurrentSongIndex] = useState(0);
+
   const isLoggedIn = useSelector(
     (state: RootState) => state.auth.isAuthenticated
   );
 
-  const [currentSongIndex, setCurrentSongIndex] = useState<number>(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const playerRef = useRef<any>(null);
   const [visibleSongs, setVisibleSongs] = useState(7);
   const initialVisibleSongs = 7;
   const songsPerLoad = 10;
-  const [localSongs, setLocalSongs] = useState<Song[]>(
-    songs.map((song) => ({ ...song, userVote: null }))
-  );
   const [player, setPlayer] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
   const [playerDimensions, setPlayerDimensions] = useState({
@@ -446,237 +446,82 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
               }}
             >
               {error && <div className="error-message">{error}</div>}
-              <YouTube
-                videoId={localSongs[currentSongIndex].youtubeId}
-                opts={opts}
-                onReady={onReady}
-                onError={onError}
-                onPlay={() => setIsPlaying(true)}
-                onPause={() => setIsPlaying(false)}
-                onEnd={nextSong}
-                className="w-full h-full"
-              />
-            </div>
-            <div className="flex flex-col space-y-4 mt-4 px-4">
-              <VotingButtons
-                songId={localSongs[currentSongIndex].id}
-                votes={localSongs[currentSongIndex].votes}
-                isFavorite={localSongs[currentSongIndex].isFavorite}
-                isLoggedIn={isLoggedIn}
-                userVote={localSongs[currentSongIndex].userVote}
-                onVote={handleVote}
-                onToggleFavorite={toggleFavorite}
-                onShowLoginModal={handleShowLoginModal}
-              />
-              <div className="flex justify-between items-center mt-4">
-                <button
-                  onClick={previousSong}
-                  className="flex-1 bg-gradient-to-r from-purple-500 to-indigo-500 text-white py-3 px-4 rounded text-xs sm:text-sm font-semibold shadow-md hover:from-purple-600 hover:to-indigo-600 transition duration-300 flex items-center justify-center"
-                >
-                  <FaChevronUp className="mr-1 text-xs sm:text-sm" /> Poprzedni
-                </button>
-                <button
-                  onClick={togglePlayback}
-                  className="mx-2 w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-full shadow-md hover:from-pink-600 hover:to-purple-600 transition duration-300 flex items-center justify-center"
-                >
-                  {isPlaying ? <FaPause className="text-lg sm:text-xl" /> : <FaPlay className="text-lg sm:text-xl ml-0.5" />}
-                </button>
-                <button
-                  onClick={nextSong}
-                  className="flex-1 bg-gradient-to-r from-indigo-500 to-pink-500 text-white py-3 px-4 rounded text-xs sm:text-sm font-semibold shadow-md hover:from-indigo-600 hover:to-pink-600 transition duration-300 flex items-center justify-center"
-                >
-                  Następny <FaChevronDown className="ml-1 text-xs sm:text-sm" />
-                </button>
-              </div>
-            </div>
-          </div>
-          <div className="p-6">
-            <div className="md:hidden">
-              <h1 className="border-2 border-purple-500 p-4 rounded-lg text-center text-sm">
-                Miejsce pod reklamę na telefony
-              </h1>
-            </div>
-            {/* Tutaj możesz dodać dodatkową zawartość, która będzie przewijana pod odtwarzaczem */}
-          </div>
-        </div>
-        <div className="song-list md:order-1 md:w-2/5 border-r border-gray-200 overflow-y-auto">
-          {localSongs.slice(0, visibleSongs).map((song, index) => (
-            <React.Fragment key={song.id}>
-              <div
-                className={`song-item p-4 cursor-pointer hover:bg-gray-100 transition duration-300 ease-in-out ${
-                  currentSongIndex === index ? "bg-gray-200" : ""
-                } flex items-center`}
-                onClick={() => {
-                  setCurrentSongIndex(index);
-                  setIsPlaying(true);
-                  setIsLoading(true);
-                }}
-              >
-                <div className="flex items-center flex-grow min-w-0">
-                  <div className="w-8 h-8 mr-2 flex-shrink-0 flex items-center justify-center bg-gray-200 rounded-full">
-                    <span className="text-gray-600 font-semibold">{index + 1}</span>
-                  </div>
-                  <div className="mx-2 flex-shrink-0">
-                    {song.votes > 0 ? (
-                      <FaArrowUp className="text-green-500 text-2xl" />
-                    ) : song.votes < 0 ? (
-                      <FaArrowDown className="text-red-500 text-2xl" />
-                    ) : (
-                      <FaMinus className="text-gray-500 text-2xl" />
+              {localSongs.length > 0 && (
+                <>
+                  <YouTube
+                    videoId={localSongs[currentSongIndex]?.youtubeId}
+                    opts={opts}
+                    onReady={onReady}
+                    onError={onError}
+                    onPlay={() => setIsPlaying(true)}
+                    onPause={() => setIsPlaying(false)}
+                    onEnd={nextSong}
+                    className="w-full h-full"
+                  />
+                  <div className="flex flex-col space-y-4 mt-4 px-4">
+                    {localSongs[currentSongIndex] && (
+                      <VotingButtons
+                        songId={localSongs[currentSongIndex].id}
+                        votes={localSongs[currentSongIndex].votes}
+                        isFavorite={localSongs[currentSongIndex].isFavorite}
+                        isLoggedIn={isLoggedIn}
+                        userVote={localSongs[currentSongIndex].userVote}
+                        onVote={handleVote}
+                        onToggleFavorite={toggleFavorite}
+                        onShowLoginModal={handleShowLoginModal}
+                      />
                     )}
-                  </div>
-                  <div className="w-12 h-12 mr-4 relative flex-shrink-0">
-                    <Image
-                      src={getYouTubeThumbnail(song.youtubeId)}
-                      alt={song.title}
-                      fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      style={{ objectFit: "cover" }}
-                      className="rounded"
-                    />
-                  </div>
-                  <div className="min-w-0 flex-grow">
-                    <h3 className="font-semibold truncate">{song.title}</h3>
-                    <p className="text-sm text-gray-600 truncate">{song.artist}</p>
-                  </div>
-                </div>
-                <div className="ml-auto flex-shrink-0">
-                  {currentSongIndex === index && isPlaying ? (
-                    <FaMusic className="text-blue-500 text-xl transition-colors duration-300" />
-                  ) : (
-                    <FaPlay className="text-gray-500 text-xl hover:text-blue-500 transition-colors duration-300" />
-                  )}
-                </div>
-              </div>
-              {(index + 1) % 10 === 0 &&
-                index + 1 < visibleSongs &&
-                index + 1 !== localSongs.length && (
-                  <button
-                    className="w-full p-2 bg-gray-100 text-blue-500 hover:bg-gray-200 transition duration-300 flex items-center justify-center text-sm"
-                    onClick={collapseSongList}
-                  >
-                    <FaChevronUp className="mr-2" />
-                    Zwiń listę
-                  </button>
-                )}
-            </React.Fragment>
-          ))}
-          {localSongs.length > initialVisibleSongs &&
-            (visibleSongs < localSongs.length ? (
-              <>
-                <button
-                  className="w-full p-4 bg-gray-100 text-blue-500 hover:bg-gray-200 transition duration-300 flex items-center justify-center"
-                  onClick={loadMoreSongs}
-                >
-                  <FaChevronDown className="mr-2" />
-                  Zobacz więcej (
-                  {Math.min(songsPerLoad, localSongs.length - visibleSongs)})
-                </button>
-                {showContactForm ? (
-                  <div className="w-full p-6 bg-gradient-to-r from-red-500 to-pink-600 text-white rounded-lg shadow-lg">
-                    <div className="flex justify-between items-center mb-4">
-                      <h2 className="text-2xl font-bold">
-                        Podziel się swoją muzyką!
-                      </h2>
+                    <div className="flex justify-between items-center mt-4">
                       <button
-                        onClick={() => setShowContactForm(false)}
-                        className="text-white hover:text-gray-200 transition duration-300"
+                        onClick={previousSong}
+                        className="flex-1 bg-gradient-to-r from-purple-500 to-indigo-500 text-white py-3 px-4 rounded text-xs sm:text-sm font-semibold shadow-md hover:from-purple-600 hover:to-indigo-600 transition duration-300 flex items-center justify-center"
                       >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-6 w-6"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M6 18L18 6M6 6l12 12"
-                          />
-                        </svg>
+                        <FaChevronUp className="mr-1 text-xs sm:text-sm" /> Poprzedni
+                      </button>
+                      <button
+                        onClick={togglePlayback}
+                        className="mx-2 w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-full shadow-md hover:from-pink-600 hover:to-purple-600 transition duration-300 flex items-center justify-center"
+                      >
+                        {isPlaying ? (
+                          <FaPause className="text-lg sm:text-xl" />
+                        ) : (
+                          <FaPlay className="text-lg sm:text-xl ml-0.5" />
+                        )}
+                      </button>
+                      <button
+                        onClick={nextSong}
+                        className="flex-1 bg-gradient-to-r from-indigo-500 to-pink-500 text-white py-3 px-4 rounded text-xs sm:text-sm font-semibold shadow-md hover:from-indigo-600 hover:to-pink-600 transition duration-300 flex items-center justify-center"
+                      >
+                        Następny <FaChevronDown className="ml-1 text-xs sm:text-sm" />
                       </button>
                     </div>
-                    <form onSubmit={handleSubmit} className="space-y-4">
-                      <div>
-                        <label
-                          htmlFor="title"
-                          className="block text-sm font-medium mb-1"
-                        >
-                          Tytuł utworu
-                        </label>
-                        <input
-                          type="text"
-                          name="title"
-                          value={formData.title}
-                          onChange={handleInputChange}
-                          placeholder="Wpisz tytuł utworu"
-                          className="w-full p-2 rounded-md text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-400"
-                        />
-                      </div>
-                      <div>
-                        <label
-                          htmlFor="artist"
-                          className="block text-sm font-medium mb-1"
-                        >
-                          Wykonawca
-                        </label>
-                        <input
-                          type="text"
-                          name="artist"
-                          value={formData.artist}
-                          onChange={handleInputChange}
-                          placeholder="Wpisz nazwę wykonawcy"
-                          className="w-full p-2 rounded-md text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-400"
-                        />
-                      </div>
-                      <div>
-                        <label
-                          htmlFor="youtubeLink"
-                          className="block text-sm font-medium mb-1"
-                        >
-                          Link do YouTube
-                        </label>
-                        <input
-                          type="text"
-                          name="youtubeLink"
-                          value={formData.youtubeLink}
-                          onChange={handleInputChange}
-                          placeholder="https://www.youtube.com/watch?v=..."
-                          className="w-full p-2 rounded-md text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-400"
-                        />
-                      </div>
-                      <button
-                        type="submit"
-                        className="w-full bg-white text-red-500 font-bold py-2 px-4 rounded-md hover:bg-red-100 transition duration-300 focus:outline-none focus:ring-2 focus:ring-red-400 sm:text-sm"
-                      >
-                        WYŚLIJ
-                      </button>
-                    </form>
                   </div>
-                ) : (
-                  <button
-                    className="w-full p-4 bg-gradient-to-r from-red-500 to-pink-600 text-white font-bold rounded-lg shadow-md hover:from-red-600 hover:to-pink-700 transition duration-300 flex items-center justify-center"
-                    onClick={() => setShowContactForm(true)}
-                  >
-                    <FaMusic className="mr-2" />
-                    Brakuje Twojego ulubionego utworu? Daj nam znać!
-                  </button>
-                )}
-              </>
-            ) : (
-              visibleSongs > initialVisibleSongs && (
-                <button
-                  className="w-full p-4 bg-gray-100 text-blue-500 hover:bg-gray-200 transition duration-300 flex items-center justify-center"
-                  onClick={collapseSongList}
-                >
-                  <FaChevronUp className="mr-2" />
-                  Zwiń listę
-                </button>
-              )
-            ))}
+                </>
+              )}
+            </div>
+            <div className="p-6">
+              <div className="md:hidden">
+                <h1 className="border-2 border-purple-500 p-4 rounded-lg text-center text-sm">
+                  Miejsce pod reklamę na telefony
+                </h1>
+              </div>
+              {/* Tutaj możesz dodać dodatkową zawartość, która będzie przewijana pod odtwarzaczem */}
+            </div>
+          </div>
         </div>
+        <SongList
+          songs={localSongs}
+          visibleSongs={visibleSongs}
+          currentSongIndex={currentSongIndex}
+          isPlaying={isPlaying}
+          onSongSelect={(index) => {
+            setCurrentSongIndex(index);
+            setIsPlaying(true);
+            setIsLoading(true);
+          }}
+          onLoadMore={loadMoreSongs}
+          onCollapse={collapseSongList}
+        />
       </div>
       {showSuccessMessage && (
         <SuccessMessage
@@ -704,6 +549,5 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs }) => {
     </div>
   );
 };
-
 
 export default MusicPlayer;

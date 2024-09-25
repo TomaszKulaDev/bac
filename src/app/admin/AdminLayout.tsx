@@ -1,3 +1,4 @@
+// src
 import React from "react";
 import Link from "next/link";
 
@@ -20,12 +21,14 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
             href="/admin/events"
             className="block py-2 px-4 text-gray-700 hover:bg-gray-200"
           >
-            Muzyka
+            Wydarzenia
           </Link>
           <Link
-            href="/admin/muzyka"
+            href="/admin/music"
             className="block py-2 px-4 text-gray-700 hover:bg-gray-200"
-          ></Link>
+          >
+            Muzyka
+          </Link>
         </nav>
       </aside>
       <main className="flex-1 p-10">{children}</main>

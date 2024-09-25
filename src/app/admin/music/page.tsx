@@ -1,38 +1,36 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import AddSongForm from "./components/AddSongForm";
+import { RootState } from "@/store/store";
+import { addSong, deleteSong } from "@/store/slices/features/songsSlice";
+import { Song } from "@/app/muzyka/types";
 
 const AdminMusicPage = () => {
-  const [songs, setSongs] = useState([
-    {
-      id: "1",
-      title: "Hey Mama",
-      artist: "David Guetta",
-      youtubeId: "dQw4w9WgXcQ",
-      score: 0,
-    },
-    {
-      id: "2",
-      title: "To Binge",
-      artist: "Gorillaz",
-      youtubeId: "dQw4w9WgXcQ",
-      score: 0,
-    },
-  ]);
+  const songs = useSelector((state: RootState) => state.songs.songs);
+  const dispatch = useDispatch();
+  
+  useEffect(() => {
+    console.log("Aktualny stan piosenek:", songs);
+  }, [songs]);
 
-  const [newSong, setNewSong] = useState({
-    title: "",
-    artist: "",
-    youtubeId: "",
-  });
-
-  const addSong = () => {
-    setSongs([...songs, { id: Date.now().toString(), ...newSong, score: 0 }]);
-    setNewSong({ title: "", artist: "", youtubeId: "" });
+  const handleAddSong = (
+    newSong: Omit<Song, "id" | "votes" | "score" | "isFavorite" | "userVote">
+  ) => {
+    const songToAdd: Song = {
+      ...newSong,
+      id: Date.now().toString(),
+      votes: 0,
+      score: 0,
+      isFavorite: false,
+      userVote: null,
+    };
+    dispatch(addSong(songToAdd));
   };
 
-  const deleteSong = (id: string) => {
-    setSongs(songs.filter((song) => song.id !== id));
+  const handleDeleteSong = (id: string) => {
+    dispatch(deleteSong(id));
   };
 
   return (
@@ -41,49 +39,21 @@ const AdminMusicPage = () => {
         Zarządzanie Muzyką
       </h1>
 
-      <div className="mb-8">
-        <h2 className="text-2xl font-bold mb-4">Dodaj nową piosenkę</h2>
-        <input
-          type="text"
-          placeholder="Tytuł"
-          value={newSong.title}
-          onChange={(e) => setNewSong({ ...newSong, title: e.target.value })}
-          className="mr-2 p-2 border rounded"
-        />
-        <input
-          type="text"
-          placeholder="Artysta"
-          value={newSong.artist}
-          onChange={(e) => setNewSong({ ...newSong, artist: e.target.value })}
-          className="mr-2 p-2 border rounded"
-        />
-        <input
-          type="text"
-          placeholder="YouTube ID"
-          value={newSong.youtubeId}
-          onChange={(e) =>
-            setNewSong({ ...newSong, youtubeId: e.target.value })
-          }
-          className="mr-2 p-2 border rounded"
-        />
-        <button
-          onClick={addSong}
-          className="bg-blue-500 text-white p-2 rounded"
-        >
-          Dodaj
-        </button>
-      </div>
+      <AddSongForm onAddSong={handleAddSong} />
 
       <div>
         <h2 className="text-2xl font-bold mb-4">Lista piosenek</h2>
         {songs.map((song) => (
-          <div key={song.id} className="mb-2">
+          <div
+            key={song.id}
+            className="mb-2 flex items-center justify-between bg-white p-4 rounded-lg shadow"
+          >
             <span>
               {song.title} - {song.artist}
             </span>
             <button
-              onClick={() => deleteSong(song.id)}
-              className="ml-2 bg-red-500 text-white p-1 rounded"
+              onClick={() => handleDeleteSong(song.id)}
+              className="bg-red-500 text-white p-2 rounded hover:bg-red-600 transition duration-300"
             >
               Usuń
             </button>
