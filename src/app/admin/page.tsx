@@ -1,6 +1,13 @@
+// src/app/admin
 "use client";
 
-import React, { useCallback, useEffect, useState, useMemo, useRef } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useState,
+  useMemo,
+  useRef,
+} from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../../store/store";
 import {
@@ -10,7 +17,7 @@ import {
   createUser,
 } from "../../store/slices/adminSlice";
 import LoadingSpinner from "@/components/LoadingSpinner";
-import AdminLayout from "@/components/AdminLayout";
+import AdminLayout from "@/app/admin/AdminLayout";
 import { useRouter } from "next/navigation";
 
 interface User {
@@ -139,24 +146,30 @@ export default function AdminUsersPage() {
     }
   };
 
-  const handlePageChange = useCallback((newPage: number) => {
-    if (newPage !== currentPage) {
-      setIsLoading(true);
-      dispatch(fetchUsers({ page: newPage, pageSize }))
-        .unwrap()
-        .then(() => {
-          setIsLoading(false);
-          dataFetchedRef.current = true;
-        })
-        .catch((error) => {
-          console.error("Error fetching users:", error);
-          setError("Nie udało się pobrać listy użytkowników");
-          setIsLoading(false);
-        });
-    }
-  }, [dispatch, pageSize, currentPage]);
+  const handlePageChange = useCallback(
+    (newPage: number) => {
+      if (newPage !== currentPage) {
+        setIsLoading(true);
+        dispatch(fetchUsers({ page: newPage, pageSize }))
+          .unwrap()
+          .then(() => {
+            setIsLoading(false);
+            dataFetchedRef.current = true;
+          })
+          .catch((error) => {
+            console.error("Error fetching users:", error);
+            setError("Nie udało się pobrać listy użytkowników");
+            setIsLoading(false);
+          });
+      }
+    },
+    [dispatch, pageSize, currentPage]
+  );
 
-  const fetchParams = useMemo(() => ({ page: currentPage, pageSize }), [currentPage, pageSize]);
+  const fetchParams = useMemo(
+    () => ({ page: currentPage, pageSize }),
+    [currentPage, pageSize]
+  );
 
   useEffect(() => {
     if (!user || user.role !== "admin") {
@@ -311,7 +324,7 @@ export default function AdminUsersPage() {
                   user={{
                     ...user,
                     _id: user.id,
-                    id: user.id
+                    id: user.id,
                   }}
                   onUpdateRole={handleUpdateRole}
                   onDeleteUser={handleDeleteUser}
