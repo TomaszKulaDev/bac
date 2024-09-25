@@ -4,17 +4,23 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import MusicPlayer from "./components/MusicPlayer";
-import { setSongs } from "@/store/slices/features/songsSlice";
+import { setSongs, fetchSongs } from "@/store/slices/features/songsSlice";
 import { Song } from "./types";
-import { RootState } from "@/store/store";
+import { RootState, AppDispatch } from "@/store/store";
 
 export default function Muzyka() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const songs = useSelector((state: RootState) => state.songs.songs);
+  const status = useSelector((state: RootState) => state.songs.status);
 
   useEffect(() => {
-    if (songs.length === 0) {
-      // Tylko jeśli nie ma piosenek w stanie, dodaj początkowe
+    if (status === 'idle') {
+      dispatch(fetchSongs());
+    }
+  }, [dispatch, status]);
+
+  useEffect(() => {
+    if (songs.length === 0 && status === 'succeeded') {
       const initialSongs: Song[] = [
         {
           id: "1",
@@ -29,7 +35,7 @@ export default function Muzyka() {
       ];
       dispatch(setSongs(initialSongs));
     }
-  }, [dispatch, songs.length]);
+  }, [dispatch, songs.length, status]);
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">

@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
+import Song from '@/models/Song';
+import { connectToDatabase } from '@/lib/mongodb';
 
 // Funkcja walidacyjna do sprawdzania poprawności linku do YouTube
 function isValidYoutubeLink(url: string): boolean {
@@ -92,39 +94,25 @@ export async function POST(request: Request) {
       );
     }
 
-    // Konfiguracja transportera do wysyłania e-maili za pomocą Gmaila
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.GMAIL_USER, // Użytkownik Gmaila
-        pass: process.env.GMAIL_PASS, // Hasło do Gmaila
-      },
+    await connectToDatabase();
+
+    const newSong = new Song({
+      title,
+      artist,
+      youtubeId: extractYoutubeId(youtubeLink),
     });
 
-    // Opcje e-maila, który ma zostać wysłany
-    const mailOptions = {
-      from: process.env.GMAIL_USER, // Nadawca e-maila
-      to: "baciatapl@gmail.com", // Odbiorca e-maila
-      subject: "Nowe zgłoszenie utworu", // Temat e-maila
-      html: `
-        <h1>Nowy utwór został zgłoszony</h1>
-        <p><strong>Tytuł:</strong> ${title}</p>
-        <p><strong>Wykonawca:</strong> ${artist}</p>
-        <p><strong>Link do YouTube:</strong> <a href="${youtubeLink}">${youtubeLink}</a></p>
-      `, // Treść e-maila w formacie HTML
-    };
+    await newSong.save();
 
-    // Wysyłanie e-maila za pomocą transportera
-    await transporter.sendMail(mailOptions);
-
-    // Wysyłanie odpowiedzi o pomyślnym wysłaniu e-maila
-    return NextResponse.json({ message: "E-mail został wysłany pomyślnie" });
+    return NextResponse.json({ message: "Utwór został pomyślnie dodany" }, { status: 201 });
   } catch (error) {
-    // Obsługa błędów podczas wysyłania e-maila
-    console.error("Błąd wysyłania e-maila:", error);
-    return NextResponse.json(
-      { message: "Wystąpił błąd podczas wysyłania e-maila" },
-      { status: 500 }
-    );
+    console.error("Błąd podczas dodawania utworu:", error);
+    return NextResponse.json({ message: "Wystąpił błąd podczas dodawania utworu" }, { status: 500 });
   }
+}
+
+function extractYoutubeId(url: string): string {
+  const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+  const match = url.match(regex);
+  return match ? match[1] : '';
 }

@@ -4,33 +4,35 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import AddSongForm from "./components/AddSongForm";
 import { RootState } from "@/store/store";
-import { addSong, deleteSong } from "@/store/slices/features/songsSlice";
+import { fetchSongs, addSong, deleteSong, setSongs } from "@/store/slices/features/songsSlice";
 import { Song } from "@/app/muzyka/types";
+import { AppDispatch } from "@/store/store";
 
 const AdminMusicPage = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const songs = useSelector((state: RootState) => state.songs.songs);
-  const dispatch = useDispatch();
-  
-  useEffect(() => {
-    console.log("Aktualny stan piosenek:", songs);
-  }, [songs]);
+  const status = useSelector((state: RootState) => state.songs.status);
 
-  const handleAddSong = (
-    newSong: Omit<Song, "id" | "votes" | "score" | "isFavorite" | "userVote">
-  ) => {
-    const songToAdd: Song = {
-      ...newSong,
-      id: Date.now().toString(),
-      votes: 0,
-      score: 0,
-      isFavorite: false,
-      userVote: null,
-    };
-    dispatch(addSong(songToAdd));
+  useEffect(() => {
+    if (status === 'idle') {
+      dispatch(fetchSongs());
+    }
+  }, [status, dispatch]);
+
+  const handleAddSong = async (newSong: Omit<Song, "id" | "votes" | "score" | "isFavorite" | "userVote">) => {
+    try {
+      await dispatch(addSong(newSong)).unwrap();
+    } catch (error) {
+      console.error("Błąd podczas dodawania utworu:", error);
+    }
   };
 
-  const handleDeleteSong = (id: string) => {
-    dispatch(deleteSong(id));
+  const handleDeleteSong = async (id: string) => {
+    try {
+      await dispatch(deleteSong(id)).unwrap();
+    } catch (error) {
+      console.error("Błąd podczas usuwania utworu:", error);
+    }
   };
 
   return (
