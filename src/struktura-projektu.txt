@@ -1,3 +1,10 @@
+Aktualna struktura projektu (92 plików)
+
+Statystyki projektu:
+Całkowity rozmiar: 0.95 MB
+Całkowita liczba linii kodu: 8994
+Typy plików: {".local":1,".json":3,".ts":33,".mjs":3,"":1,".png":2,".txt":2,".md":1,".tsx":42,".ico":1,".css":1,".js":1,".tsbuildinfo":1}
+
 Struktura plików projektu:
 ├── .env.local (.local, 0.40 KB)
 ├── .eslintrc.json (.json, 0.04 KB)
@@ -17,11 +24,14 @@ Struktura plików projektu:
 │   │   ├── accommodations/
 │   │   │   └── page.tsx (.tsx, 0.15 KB)
 │   │   ├── admin/
+│   │   │   ├── AdminLayout.tsx (.tsx, 1.00 KB)
 │   │   │   ├── music/
-│   │   │   │   └── page.tsx (.tsx, 2.49 KB)
-│   │   │   ├── page.tsx (.tsx, 11.71 KB)
+│   │   │   │   ├── components/
+│   │   │   │   │   └── AddSongForm.tsx (.tsx, 5.25 KB)
+│   │   │   │   └── page.tsx (.tsx, 2.10 KB)
+│   │   │   ├── page.tsx (.tsx, 11.80 KB)
 │   │   │   └── users/
-│   │   │       └── page.tsx (.tsx, 12.35 KB)
+│   │   │       └── page.tsx (.tsx, 12.54 KB)
 │   │   ├── api/
 │   │   │   ├── admin/
 │   │   │   │   └── users/
@@ -43,7 +53,7 @@ Struktura plików projektu:
 │   │   │   ├── reset-password/
 │   │   │   │   └── route.ts (.ts, 4.81 KB)
 │   │   │   ├── submit-song/
-│   │   │   │   └── route.ts (.ts, 4.25 KB)
+│   │   │   │   └── route.ts (.ts, 3.68 KB)
 │   │   │   ├── users/
 │   │   │   │   ├── me/
 │   │   │   │   │   └── route.ts (.ts, 1.41 KB)
@@ -69,20 +79,22 @@ Struktura plików projektu:
 │   │   ├── globals.css (.css, 0.59 KB)
 │   │   ├── jobs/
 │   │   │   └── page.tsx (.tsx, 0.11 KB)
-│   │   ├── layout.tsx (.tsx, 3.13 KB)
+│   │   ├── layout.tsx (.tsx, 4.36 KB)
 │   │   ├── login/
 │   │   │   └── page.tsx (.tsx, 7.91 KB)
 │   │   ├── mentorship/
 │   │   │   └── page.tsx (.tsx, 0.12 KB)
 │   │   ├── muzyka/
 │   │   │   ├── components/
+│   │   │   │   ├── AddSongForm.tsx (.tsx, 1.75 KB)
 │   │   │   │   ├── FavoriteButton.tsx (.tsx, 1.25 KB)
 │   │   │   │   ├── index.ts (.ts, 0.06 KB)
 │   │   │   │   ├── LoginModal.tsx (.tsx, 1.60 KB)
-│   │   │   │   ├── MusicPlayer.tsx (.tsx, 26.25 KB)
-│   │   │   │   └── VotingButtons.tsx (.tsx, 2.44 KB)
-│   │   │   ├── page.tsx (.tsx, 7.31 KB)
-│   │   │   └── types.ts (.ts, 0.31 KB)
+│   │   │   │   ├── MusicPlayer.tsx (.tsx, 19.14 KB)
+│   │   │   │   ├── SongList.tsx (.tsx, 3.85 KB)
+│   │   │   │   └── VotingButtons.tsx (.tsx, 2.42 KB)
+│   │   │   ├── page.tsx (.tsx, 1.31 KB)
+│   │   │   └── types.ts (.ts, 0.29 KB)
 │   │   ├── page.tsx (.tsx, 1.96 KB)
 │   │   ├── polityka-prywatnosci-baciata-pl/
 │   │   │   └── page.tsx (.tsx, 3.02 KB)
@@ -105,10 +117,9 @@ Struktura plików projektu:
 │   │       └── page.tsx (.tsx, 2.39 KB)
 │   ├── components/
 │   │   ├── AdminCard.tsx (.tsx, 0.61 KB)
-│   │   ├── AdminLayout.tsx (.tsx, 1.19 KB)
 │   │   ├── AuthSync.tsx (.tsx, 2.33 KB)
 │   │   ├── ClientLayout.tsx (.tsx, 0.89 KB)
-│   │   ├── ClientProviders.tsx (.tsx, 0.35 KB)
+│   │   ├── ClientProviders.tsx (.tsx, 0.38 KB)
 │   │   ├── LoadingSpinner.tsx (.tsx, 0.56 KB)
 │   │   └── NavContent.tsx (.tsx, 2.58 KB)
 │   ├── contexts/
@@ -122,6 +133,7 @@ Struktura plików projektu:
 │   ├── middleware/
 │   │   └── adminAuthMiddleware.ts (.ts, 0.64 KB)
 │   ├── models/
+│   │   ├── Song.ts (.ts, 0.49 KB)
 │   │   └── User.ts (.ts, 0.98 KB)
 │   ├── schemas/
 │   │   └── passwordSchema.ts (.ts, 3.49 KB)
@@ -131,9 +143,11 @@ Struktura plików projektu:
 │   │   ├── slices/
 │   │   │   ├── adminSlice.ts (.ts, 6.56 KB)
 │   │   │   ├── authSlice.ts (.ts, 1.21 KB)
+│   │   │   ├── features/
+│   │   │   │   └── songsSlice.ts (.ts, 2.07 KB)
 │   │   │   └── types.ts (.ts, 0.42 KB)
-│   │   └── store.ts (.ts, 0.69 KB)
-│   ├── struktura-projektu.txt (.txt, 6.23 KB)
+│   │   └── store.ts (.ts, 0.77 KB)
+│   ├── struktura-projektu.txt (.txt, 6.62 KB)
 │   ├── types/
 │   │   └── next-auth.d.ts (.ts, 1.12 KB)
 │   └── utils/

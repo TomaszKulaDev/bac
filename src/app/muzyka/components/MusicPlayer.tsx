@@ -2,6 +2,7 @@
 
 "use client";
 
+
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { useSelector } from "react-redux";
 import YouTube, { YouTubeProps } from "react-youtube";
@@ -45,11 +46,13 @@ const MusicPlayer: React.FC = () => {
     setLocalSongs(songs);
   }, [songs]);
 
+
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
 
   const isLoggedIn = useSelector(
     (state: RootState) => state.auth.isAuthenticated
   );
+
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -192,6 +195,7 @@ const MusicPlayer: React.FC = () => {
     });
   }, []);
 
+
   const songScores = useMemo(
     () => localSongs.map((song) => song.score).join(","),
     [localSongs]
@@ -251,16 +255,27 @@ const MusicPlayer: React.FC = () => {
     }));
   };
 
+  const extractYoutubeId = (url: string): string | null => {
+    const match = url.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=|embed\/|v\/|shorts\/)?([a-zA-Z0-9_-]{11})(\S*)?$/);
+    return match ? match[1] : null;
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Formularz został wysłany");
     try {
+      const youtubeId = extractYoutubeId(formData.youtubeLink);
+      const youtubeLink = youtubeId ? `https://www.youtube.com/watch?v=${youtubeId}` : formData.youtubeLink;
+      
       const response = await fetch("/api/submit-song", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          youtubeLink,
+        }),
       });
 
       if (response.ok) {
@@ -268,7 +283,8 @@ const MusicPlayer: React.FC = () => {
         setShowContactForm(false);
         setFormData({ title: "", artist: "", youtubeLink: "" });
       } else {
-        throw new Error("Wystąpił błąd podczas wysyłania formularza");
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Wystąpił błąd podczas wysyłania formularza");
       }
     } catch (error) {
       console.error("Błąd:", error);
@@ -324,7 +340,7 @@ const MusicPlayer: React.FC = () => {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth="2"
-                  d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"
+                  d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3 2 1.343 2 3 2 3 .895 3 2zM9 10l12-3"
                 ></path>
               </svg>
             </div>
@@ -436,6 +452,24 @@ const MusicPlayer: React.FC = () => {
       onCollapse={collapseSongList}
     />
   ), [localSongs, visibleSongs, currentSongIndex, isPlaying, loadMoreSongs]);
+
+  useEffect(() => {
+    const fetchSongs = async () => {
+      try {
+        const response = await fetch('/api/songs');
+        if (response.ok) {
+          const songs = await response.json();
+          setLocalSongs(songs);
+        } else {
+          throw new Error('Nie udało się pobrać piosenek');
+        }
+      } catch (error) {
+        console.error("Błąd podczas pobierania utworów:", error);
+        setLocalSongs([]);
+      }
+    };
+    fetchSongs();
+  }, []);
 
   return (
     <div className="music-player bg-white shadow-lg min-h-screen flex flex-col w-full max-w-6xl mx-auto">
@@ -560,5 +594,6 @@ const MusicPlayer: React.FC = () => {
     </div>
   );
 };
+
 
 export default MusicPlayer;

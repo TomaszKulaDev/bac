@@ -6,9 +6,8 @@ interface AddSongFormProps {
 }
 
 const extractYoutubeId = (url: string): string | null => {
-  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-  const match = url.match(regExp);
-  return (match && match[2].length === 11) ? match[2] : null;
+  const match = url.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=|embed\/|v\/|shorts\/)?([a-zA-Z0-9_-]{11})(\S*)?$/);
+  return match ? match[1] : null;
 };
 
 const AddSongForm: React.FC<AddSongFormProps> = ({ onAddSong }) => {
@@ -21,11 +20,12 @@ const AddSongForm: React.FC<AddSongFormProps> = ({ onAddSong }) => {
     title: '',
     artist: '',
     youtubeId: '',
+    submit: ''
   });
 
   const validateForm = () => {
     let isValid = true;
-    const newErrors = { title: '', artist: '', youtubeId: '' };
+    const newErrors = { title: '', artist: '', youtubeId: '', submit: '' };
 
     if (!newSong.title.trim()) {
       newErrors.title = 'Tytuł jest wymagany';
@@ -36,27 +36,45 @@ const AddSongForm: React.FC<AddSongFormProps> = ({ onAddSong }) => {
       isValid = false;
     }
     if (!newSong.youtubeId.trim()) {
-      newErrors.youtubeId = 'YouTube ID jest wymagane';
+      newErrors.youtubeId = 'Link do YouTube jest wymagany';
       isValid = false;
-    } else if (!/^[a-zA-Z0-9_-]{11}$/.test(newSong.youtubeId)) {
-      const extractedId = extractYoutubeId(newSong.youtubeId);
-      if (extractedId) {
-        setNewSong(prev => ({ ...prev, youtubeId: extractedId }));
-      } else {
-        newErrors.youtubeId = 'Nieprawidłowy format YouTube ID lub linku';
-        isValid = false;
-      }
     }
 
     setErrors(newErrors);
     return isValid;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      onAddSong(newSong);
-      setNewSong({ title: '', artist: '', youtubeId: '' });
+      try {
+        const response = await fetch("/api/submit-song", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            title: newSong.title,
+            artist: newSong.artist,
+            youtubeId: newSong.youtubeId,
+            userId: "admin"
+          }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          onAddSong(data.song);
+          setNewSong({ title: "", artist: "", youtubeId: "" });
+          setErrors({ title: '', artist: '', youtubeId: '', submit: '' });
+        } else {
+          console.error("Błąd podczas dodawania utworu:", data);
+          setErrors(prev => ({ ...prev, submit: data.message || "Wystąpił błąd podczas dodawania utworu" }));
+        }
+      } catch (error) {
+        console.error("Błąd podczas dodawania utworu:", error);
+        setErrors(prev => ({ ...prev, submit: "Wystąpił błąd podczas dodawania utworu" }));
+      }
     }
   };
 
@@ -115,8 +133,7 @@ const AddSongForm: React.FC<AddSongFormProps> = ({ onAddSong }) => {
               value={newSong.youtubeId}
               onChange={(e) => {
                 const input = e.target.value;
-                const youtubeId = extractYoutubeId(input);
-                setNewSong({ ...newSong, youtubeId: youtubeId || input });
+                setNewSong({ ...newSong, youtubeId: input });
               }}
               className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               required

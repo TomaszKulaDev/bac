@@ -39,26 +39,18 @@ async function connectToDatabase(): Promise<typeof mongoose> {
   }
 
   if (!cached.promise) {
-    if (!isConnecting) {
-      isConnecting = true;
-      cached.promise = connectWithRetry().finally(() => {
-        isConnecting = false;
-      });
-    } else {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      return connectToDatabase();
-    }
+    cached.promise = mongoose.connect(MONGODB_URI, opts);
   }
 
   try {
     cached.conn = await cached.promise;
+    console.log('Połączono z bazą danych MongoDB');
+    return cached.conn;
   } catch (e) {
     cached.promise = null;
-    console.error('Nie udało się połączyć z MongoDB', e);
+    console.error('Błąd połączenia z bazą danych:', e);
     throw e;
   }
-
-  return cached.conn;
 }
 
 async function disconnectFromDatabase(): Promise<void> {
@@ -102,3 +94,4 @@ const clientPromise: Promise<MongoClient> = new Promise((resolve, reject) => {
 });
 
 export default clientPromise;
+

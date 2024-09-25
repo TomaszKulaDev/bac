@@ -14,14 +14,13 @@ const AdminMusicPage = () => {
   const status = useSelector((state: RootState) => state.songs.status);
 
   useEffect(() => {
-    if (status === 'idle') {
-      dispatch(fetchSongs());
-    }
-  }, [status, dispatch]);
+    dispatch(fetchSongs());
+  }, [dispatch]);
 
   const handleAddSong = async (newSong: Omit<Song, "id" | "votes" | "score" | "isFavorite" | "userVote">) => {
     try {
       await dispatch(addSong(newSong)).unwrap();
+      dispatch(fetchSongs());
     } catch (error) {
       console.error("Błąd podczas dodawania utworu:", error);
     }
@@ -35,13 +34,17 @@ const AdminMusicPage = () => {
     }
   };
 
+  const refreshSongs = () => {
+    dispatch(fetchSongs());
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 p-8">
       <h1 className="text-4xl font-bold text-blue-500 mb-8">
         Zarządzanie Muzyką
       </h1>
 
-      <AddSongForm onAddSong={handleAddSong} />
+      <AddSongForm onAddSong={refreshSongs} />
 
       <div>
         <h2 className="text-2xl font-bold mb-4">Lista piosenek</h2>

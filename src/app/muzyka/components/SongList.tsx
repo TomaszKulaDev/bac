@@ -30,7 +30,7 @@ const SongList: React.FC<SongListProps> = ({
   onLoadMore,
   onCollapse,
 }) => {
-  console.log("Piosenki w SongList:", songs);
+  console.log('Piosenki w SongList:', songs);
   const getYouTubeThumbnail = (youtubeId: string) => {
     return `https://img.youtube.com/vi/${youtubeId}/0.jpg`;
   };
