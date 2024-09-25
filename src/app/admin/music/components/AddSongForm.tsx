@@ -5,6 +5,12 @@ interface AddSongFormProps {
   onAddSong: (song: { title: string; artist: string; youtubeId: string }) => void;
 }
 
+const extractYoutubeId = (url: string): string | null => {
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+  const match = url.match(regExp);
+  return (match && match[2].length === 11) ? match[2] : null;
+};
+
 const AddSongForm: React.FC<AddSongFormProps> = ({ onAddSong }) => {
   const [newSong, setNewSong] = useState({
     title: '',
@@ -33,8 +39,13 @@ const AddSongForm: React.FC<AddSongFormProps> = ({ onAddSong }) => {
       newErrors.youtubeId = 'YouTube ID jest wymagane';
       isValid = false;
     } else if (!/^[a-zA-Z0-9_-]{11}$/.test(newSong.youtubeId)) {
-      newErrors.youtubeId = 'Nieprawidłowy format YouTube ID';
-      isValid = false;
+      const extractedId = extractYoutubeId(newSong.youtubeId);
+      if (extractedId) {
+        setNewSong(prev => ({ ...prev, youtubeId: extractedId }));
+      } else {
+        newErrors.youtubeId = 'Nieprawidłowy format YouTube ID lub linku';
+        isValid = false;
+      }
     }
 
     setErrors(newErrors);
@@ -102,7 +113,11 @@ const AddSongForm: React.FC<AddSongFormProps> = ({ onAddSong }) => {
               type="text"
               placeholder="Np. dQw4w9WgXcQ"
               value={newSong.youtubeId}
-              onChange={(e) => setNewSong({ ...newSong, youtubeId: e.target.value })}
+              onChange={(e) => {
+                const input = e.target.value;
+                const youtubeId = extractYoutubeId(input);
+                setNewSong({ ...newSong, youtubeId: youtubeId || input });
+              }}
               className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               required
               aria-label="YouTube ID"
