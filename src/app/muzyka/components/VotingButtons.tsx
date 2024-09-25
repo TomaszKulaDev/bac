@@ -26,12 +26,10 @@ const VotingButtons: React.FC<VotingButtonsProps> = ({
   const handleVote = (voteType: 'up' | 'down') => {
     if (isLoggedIn) {
       if (userVote === voteType) {
-        // Cofnij głos
-        onVote(songId, null);
-      } else {
-        // Dodaj lub zmień głos
-        onVote(songId, voteType);
+        // Użytkownik próbuje zagłosować ponownie w ten sam sposób
+        return;
       }
+      onVote(songId, voteType);
     } else {
       onShowLoginModal();
     }

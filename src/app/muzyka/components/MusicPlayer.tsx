@@ -33,6 +33,10 @@ const getYouTubeThumbnail = (youtubeId: string) => {
   return `https://img.youtube.com/vi/${youtubeId}/0.jpg`;
 };
 
+const calculateScore = (votes: number, isFavorite: boolean) => {
+  return votes + (isFavorite ? 1 : 0);
+};
+
 const MusicPlayer: React.FC = () => {
   const songs = useSelector((state: RootState) => state.songs.songs);
   const [localSongs, setLocalSongs] = useState<Song[]>([]);
@@ -116,43 +120,46 @@ const MusicPlayer: React.FC = () => {
     setIsLoading(true);
   };
 
-  const handleVote = (songId: string, voteType: "up" | "down" | null) => {
-    if (isLoggedIn) {
-      setLocalSongs((prevSongs) =>
-        prevSongs.map((song) => {
-          if (song.id === songId) {
-            const currentVote = song.userVote;
-            let newVotes = song.votes;
-            let newScore = song.score;
-
-            if (voteType === null) {
-              newVotes -= currentVote === "up" ? 1 : -1;
-              newScore -= currentVote === "up" ? 1 : -1;
-            } else if (currentVote === voteType) {
-              return song;
-            } else {
-              newVotes += voteType === "up" ? 1 : -1;
-              newScore += voteType === "up" ? 1 : -1;
-              if (currentVote) {
-                newVotes -= currentVote === "up" ? 1 : -1;
-                newScore -= currentVote === "up" ? 1 : -1;
-              }
-            }
-
-            return {
-              ...song,
-              votes: newVotes,
-              score: newScore,
-              userVote: voteType,
-            };
-          }
-          return song;
-        })
-      );
-    } else {
+  const handleVote = useCallback((songId: string, voteType: "up" | "down" | null) => {
+    if (!isLoggedIn) {
       setShowLoginModal(true);
+      return;
     }
-  };
+
+    setLocalSongs((prevSongs) =>
+      prevSongs.map((song) => {
+        if (song.id === songId) {
+          let voteChange = 0;
+          let newUserVote = voteType;
+
+          if (song.userVote === voteType) {
+            // Cofnięcie głosu
+            voteChange = voteType === "up" ? -1 : 1;
+            newUserVote = null;
+          } else if (voteType === null) {
+            // Nie powinno się zdarzyć, ale na wszelki wypadek
+            voteChange = song.userVote === "up" ? -1 : song.userVote === "down" ? 1 : 0;
+            newUserVote = null;
+          } else {
+            // Zmiana głosu lub nowy głos
+            voteChange = voteType === "up" ? 1 : -1;
+            if (song.userVote) {
+              voteChange *= 2; // Zmiana z down na up lub odwrotnie
+            }
+          }
+
+          const newVotes = song.votes + voteChange;
+          return {
+            ...song,
+            votes: newVotes,
+            score: calculateScore(newVotes, song.isFavorite),
+            userVote: newUserVote,
+          };
+        }
+        return song;
+      })
+    );
+  }, [isLoggedIn]);
 
   const toggleFavorite = (songId: string) => {
     if (isLoggedIn) {
@@ -166,11 +173,11 @@ const MusicPlayer: React.FC = () => {
     }
   };
 
-  const loadMoreSongs = () => {
+  const loadMoreSongs = useCallback(() => {
     setVisibleSongs((prevVisible) =>
       Math.min(prevVisible + songsPerLoad, localSongs.length)
     );
-  };
+  }, [songsPerLoad, localSongs.length]);
 
   const collapseSongList = () => {
     setVisibleSongs(initialVisibleSongs);
@@ -191,15 +198,15 @@ const MusicPlayer: React.FC = () => {
   );
 
   useEffect(() => {
-    try {
-      sortSongs();
-    } catch (error) {
-      console.error("Błąd podczas sortowania piosenek:", error);
-      setError(
-        "Wystąpił problem z sortowaniem piosenek. Spróbuj odświeżyć stronę."
-      );
+    if (localSongs.length > 0) {
+      try {
+        sortSongs();
+      } catch (error) {
+        console.error("Błąd podczas sortowania piosenek:", error);
+        setError("Wystąpił problem z sortowaniem piosenek. Spróbuj odświeżyć stronę.");
+      }
     }
-  }, [songScores, sortSongs]);
+  }, [songScores, sortSongs, localSongs.length]);
 
   const onReady = (event: { target: any }) => {
     setPlayer(event.target);
@@ -414,6 +421,22 @@ const MusicPlayer: React.FC = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  const memoizedSongList = useMemo(() => (
+    <SongList
+      songs={localSongs}
+      visibleSongs={visibleSongs}
+      currentSongIndex={currentSongIndex}
+      isPlaying={isPlaying}
+      onSongSelect={(index) => {
+        setCurrentSongIndex(index);
+        setIsPlaying(true);
+        setIsLoading(true);
+      }}
+      onLoadMore={loadMoreSongs}
+      onCollapse={collapseSongList}
+    />
+  ), [localSongs, visibleSongs, currentSongIndex, isPlaying, loadMoreSongs]);
+
   return (
     <div className="music-player bg-white shadow-lg min-h-screen flex flex-col w-full max-w-6xl mx-auto">
       <div className="playlist-header bg-gradient-to-r from-purple-500 to-pink-500 text-white p-4 shadow-md">
@@ -509,19 +532,7 @@ const MusicPlayer: React.FC = () => {
             </div>
           </div>
         </div>
-        <SongList
-          songs={localSongs}
-          visibleSongs={visibleSongs}
-          currentSongIndex={currentSongIndex}
-          isPlaying={isPlaying}
-          onSongSelect={(index) => {
-            setCurrentSongIndex(index);
-            setIsPlaying(true);
-            setIsLoading(true);
-          }}
-          onLoadMore={loadMoreSongs}
-          onCollapse={collapseSongList}
-        />
+        {memoizedSongList}
       </div>
       {showSuccessMessage && (
         <SuccessMessage
