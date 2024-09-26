@@ -15,6 +15,9 @@ export async function GET() {
     return NextResponse.json(songs);
   } catch (error) {
     console.error("Błąd podczas pobierania piosenek:", error);
-    return NextResponse.json({ error: "Wystąpił błąd podczas pobierania piosenek" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Wystąpił błąd podczas pobierania piosenek", details: error instanceof Error ? error.message : 'Unknown error' },
+      { status: 500 }
+    );
   }
 }

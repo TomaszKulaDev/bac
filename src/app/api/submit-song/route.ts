@@ -35,6 +35,10 @@ function containsProfanity(str: string): boolean {
 // Główna funkcja obsługująca żądanie zgłoszenia utworu
 export async function POST(request: Request) {
   try {
+    const db = await connectToDatabase();
+    if (!db) {
+      throw new Error("Nie udało się połączyć z bazą danych");
+    }
     console.log("POST /api/submit-song: Start");
     const { title, artist, youtubeLink } = await request.json();
     console.log("POST /api/submit-song: Received data", { title, artist, youtubeLink });
@@ -57,13 +61,13 @@ export async function POST(request: Request) {
       );
     }
 
-    await connectToDatabase();
-    console.log("POST /api/submit-song: Connected to database");
-
     const newSong = new Song({
       title,
       artist,
       youtubeId,
+      votes: 0,
+      score: 0,
+      isFavorite: false
     });
 
     await newSong.save();
@@ -73,7 +77,7 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("Błąd podczas zgłaszania utworu:", error);
     return NextResponse.json(
-      { message: "Wystąpił błąd podczas zgłaszania utworu" },
+      { error: "Wystąpił błąd podczas zgłaszania utworu", details: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     );
   }

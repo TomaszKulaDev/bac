@@ -68,6 +68,9 @@ async function connectToDatabase(): Promise<typeof mongoose> {
 
   try {
     cached.conn = await cached.promise;
+    if (!cached.conn) {
+      throw new Error("Połączenie nie zostało ustanowione");
+    }
   } catch (e) {
     console.error('Nie udało się połączyć z MongoDB', e);
     throw e;
