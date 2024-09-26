@@ -20,7 +20,8 @@ const AdminMusicPage = () => {
         try {
           const response = await fetch('/api/songs');
           if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            const errorData = await response.json();
+            throw new Error(`HTTP error! status: ${response.status}, message: ${errorData.error}`);
           }
           const fetchedSongs = await response.json();
           console.log("AdminMusicPage fetchSongs: Songs fetched", fetchedSongs);

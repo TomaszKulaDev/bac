@@ -36,8 +36,8 @@ let isConnecting = false;
 async function connectWithRetry(retries = 5): Promise<typeof mongoose> {
   console.log(`connectWithRetry: Próba połączenia. Pozostało prób: ${retries}`);
   try {
-    if (!mongoose.connection || mongoose.connection.readyState !== 1) {
-      await mongoose.connect(MONGODB_URI);
+    if (mongoose.connection.readyState !== 1) {
+      await mongoose.connect(MONGODB_URI, opts);
     }
     console.log("connectWithRetry: Połączono z MongoDB");
     return mongoose;
@@ -45,7 +45,7 @@ async function connectWithRetry(retries = 5): Promise<typeof mongoose> {
     console.error('Błąd połączenia z MongoDB:', err);
     if (retries > 0) {
       console.log(`Ponowna próba połączenia z MongoDB. Pozostało prób: ${retries - 1}`);
-      await new Promise(resolve => setTimeout(resolve, 5000)); // Czekaj 5 sekund przed ponowną próbą
+      await new Promise(resolve => setTimeout(resolve, 5000));
       return connectWithRetry(retries - 1);
     }
     throw err;
