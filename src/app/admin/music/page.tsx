@@ -16,11 +16,12 @@ const AdminMusicPage = () => {
   useEffect(() => {
     const fetchSongs = async () => {
       console.log("AdminMusicPage fetchSongs: Start");
-      if (songs.length === 0) {
+      if (songs.length === 0 && typeof window !== 'undefined') {
         try {
-          await connectToDatabase();
-          console.log("AdminMusicPage fetchSongs: Connected to database");
           const response = await fetch('/api/songs');
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
           const fetchedSongs = await response.json();
           console.log("AdminMusicPage fetchSongs: Songs fetched", fetchedSongs);
           const formattedSongs: Song[] = fetchedSongs.map((song: any) => ({
