@@ -2,24 +2,24 @@ import React, { useState } from 'react';
 import { FaMusic, FaUser, FaYoutube } from 'react-icons/fa';
 
 interface AddSongFormProps {
-  onAddSong: (song: { title: string; artist: string; youtubeId: string }) => void;
+  onAddSong: (song: { title: string; artist: string; youtubeLink: string }) => void;
 }
 
 const AddSongForm: React.FC<AddSongFormProps> = ({ onAddSong }) => {
   const [newSong, setNewSong] = useState({
     title: '',
     artist: '',
-    youtubeId: '',
+    youtubeLink: '',
   });
   const [errors, setErrors] = useState({
     title: '',
     artist: '',
-    youtubeId: '',
+    youtubeLink: '',
   });
 
   const validateForm = () => {
     let isValid = true;
-    const newErrors = { title: '', artist: '', youtubeId: '' };
+    const newErrors = { title: '', artist: '', youtubeLink: '' };
 
     if (!newSong.title.trim()) {
       newErrors.title = 'Tytuł jest wymagany';
@@ -29,11 +29,11 @@ const AddSongForm: React.FC<AddSongFormProps> = ({ onAddSong }) => {
       newErrors.artist = 'Artysta jest wymagany';
       isValid = false;
     }
-    if (!newSong.youtubeId.trim()) {
-      newErrors.youtubeId = 'YouTube ID jest wymagane';
+    if (!newSong.youtubeLink.trim()) {
+      newErrors.youtubeLink = 'Link do YouTube jest wymagany';
       isValid = false;
-    } else if (!/^[a-zA-Z0-9_-]{11}$/.test(newSong.youtubeId)) {
-      newErrors.youtubeId = 'Nieprawidłowy format YouTube ID';
+    } else if (!/^https:\/\/www\.youtube\.com\/watch\?v=[a-zA-Z0-9_-]{11}$/.test(newSong.youtubeLink)) {
+      newErrors.youtubeLink = 'Nieprawidłowy format linku do YouTube';
       isValid = false;
     }
 
@@ -45,7 +45,7 @@ const AddSongForm: React.FC<AddSongFormProps> = ({ onAddSong }) => {
     e.preventDefault();
     if (validateForm()) {
       onAddSong(newSong);
-      setNewSong({ title: '', artist: '', youtubeId: '' });
+      setNewSong({ title: '', artist: '', youtubeLink: '' });
     }
   };
 
@@ -92,24 +92,24 @@ const AddSongForm: React.FC<AddSongFormProps> = ({ onAddSong }) => {
           {errors.artist && <p className="text-red-500 text-xs mt-1">{errors.artist}</p>}
         </div>
         <div>
-          <label htmlFor="youtubeId" className="block text-sm font-medium text-gray-700 mb-1">
-            YouTube ID
+          <label htmlFor="youtubeLink" className="block text-sm font-medium text-gray-700 mb-1">
+            Link do YouTube
           </label>
           <div className="relative">
             <FaYoutube className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
             <input
-              id="youtubeId"
+              id="youtubeLink"
               type="text"
-              placeholder="Np. dQw4w9WgXcQ"
-              value={newSong.youtubeId}
-              onChange={(e) => setNewSong({ ...newSong, youtubeId: e.target.value })}
+              placeholder="Np. https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+              value={newSong.youtubeLink}
+              onChange={(e) => setNewSong({ ...newSong, youtubeLink: e.target.value })}
               className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               required
-              aria-label="YouTube ID"
-              title="ID filmu YouTube (11 znaków po 'v=' w adresie URL)"
+              aria-label="Link do YouTube"
+              title="Pełny link do filmu YouTube"
             />
           </div>
-          {errors.youtubeId && <p className="text-red-500 text-xs mt-1">{errors.youtubeId}</p>}
+          {errors.youtubeLink && <p className="text-red-500 text-xs mt-1">{errors.youtubeLink}</p>}
         </div>
         <button
           type="submit"

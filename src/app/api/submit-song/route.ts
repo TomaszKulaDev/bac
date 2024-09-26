@@ -36,13 +36,23 @@ function containsProfanity(str: string): boolean {
 export async function POST(request: Request) {
   try {
     console.log("POST /api/submit-song: Start");
-    const { title, artist, youtubeId } = await request.json();
-    console.log("POST /api/submit-song: Received data", { title, artist, youtubeId });
+    const { title, artist, youtubeLink } = await request.json();
+    console.log("POST /api/submit-song: Received data", { title, artist, youtubeLink });
 
-    if (!title || !artist || !youtubeId) {
+    if (!title || !artist || !youtubeLink) {
       console.log("POST /api/submit-song: Missing fields");
       return NextResponse.json(
         { message: "Proszę wypełnić wszystkie pola, aby zgłosić utwór" },
+        { status: 400 }
+      );
+    }
+
+    // Wyodrębnij youtubeId z youtubeLink
+    const youtubeId = youtubeLink.split('v=')[1];
+    if (!youtubeId) {
+      console.log("POST /api/submit-song: Invalid YouTube link");
+      return NextResponse.json(
+        { message: "Nieprawidłowy link do YouTube" },
         { status: 400 }
       );
     }

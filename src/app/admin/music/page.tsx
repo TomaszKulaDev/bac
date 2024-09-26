@@ -43,12 +43,13 @@ const AdminMusicPage = () => {
     fetchSongs();
   }, [dispatch, songs.length]);
 
-  const handleAddSong = async (newSong: { title: string; artist: string; youtubeId: string }) => {
+  const handleAddSong = async (newSong: { title: string; artist: string; youtubeLink: string }) => {
+    const youtubeId = newSong.youtubeLink.split('v=')[1];
     const song: Song = {
       id: '', // Możesz wygenerować unikalne ID tutaj
       title: newSong.title,
       artist: newSong.artist,
-      youtubeId: newSong.youtubeId,
+      youtubeId: youtubeId,
       votes: 0,
       score: 0,
       isFavorite: false,
@@ -58,7 +59,7 @@ const AdminMusicPage = () => {
     const songForApi = {
       title: newSong.title,
       artist: newSong.artist,
-      youtubeLink: `https://www.youtube.com/watch?v=${newSong.youtubeId}`,
+      youtubeLink: newSong.youtubeLink,
       userId: 'someUserId', // Dodaj odpowiedni userId, jeśli jest wymagany
     };
 
@@ -74,6 +75,7 @@ const AdminMusicPage = () => {
       });
 
       if (response.ok) {
+        console.log("Piosenka dodana pomyślnie");
         dispatch(addSong(song));
       } else {
         const errorData = await response.json();

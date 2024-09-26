@@ -264,6 +264,7 @@ const MusicPlayer: React.FC = () => {
       });
 
       if (response.ok) {
+        console.log("Formularz wysłany pomyślnie");
         setShowSuccessMessage(true);
         setShowContactForm(false);
         setFormData({ title: "", artist: "", youtubeLink: "" });
