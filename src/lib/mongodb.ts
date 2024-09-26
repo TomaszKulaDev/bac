@@ -1,7 +1,7 @@
 // src/lib/mongodb.ts
 
 import mongoose from "mongoose";
-import { MongoClient } from 'mongodb';
+import { MongoClient } from "mongodb";
 
 const MONGODB_URI =
   process.env.MONGODB_URI || "mongodb://localhost:27017/myapp";
@@ -42,10 +42,12 @@ async function connectWithRetry(retries = 5): Promise<typeof mongoose> {
     console.log("connectWithRetry: Połączono z MongoDB");
     return mongoose;
   } catch (err) {
-    console.error('Błąd połączenia z MongoDB:', err);
+    console.error("Błąd połączenia z MongoDB:", err);
     if (retries > 0) {
-      console.log(`Ponowna próba połączenia z MongoDB. Pozostało prób: ${retries - 1}`);
-      await new Promise(resolve => setTimeout(resolve, 5000));
+      console.log(
+        `Ponowna próba połączenia z MongoDB. Pozostało prób: ${retries - 1}`
+      );
+      await new Promise((resolve) => setTimeout(resolve, 5000));
       return connectWithRetry(retries - 1);
     }
     throw err;
@@ -72,7 +74,7 @@ async function connectToDatabase(): Promise<typeof mongoose> {
       throw new Error("Połączenie nie zostało ustanowione");
     }
   } catch (e) {
-    console.error('Nie udało się połączyć z MongoDB', e);
+    console.error("Nie udało się połączyć z MongoDB", e);
     cached.promise = null; // Resetuj promise, aby umożliwić ponowne próby
     throw e;
   }
@@ -89,7 +91,11 @@ async function disconnectFromDatabase(): Promise<void> {
   }
 }
 
-export { connectToDatabase, disconnectFromDatabase };
+function isConnected() {
+  return mongoose.connection.readyState === 1;
+}
+
+export { connectToDatabase, disconnectFromDatabase, isConnected };
 
 const clientPromise: Promise<MongoClient> = new Promise((resolve, reject) => {
   connectToDatabase()
