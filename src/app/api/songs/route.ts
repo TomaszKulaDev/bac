@@ -12,7 +12,8 @@ export async function GET() {
     }
     try {
       const songs = await Song.find().lean();
-      console.log("GET /api/songs: Songs fetched", songs);
+      console.log("GET /api/songs: Number of songs fetched", songs.length);
+      console.log("GET /api/songs: Songs fetched", JSON.stringify(songs));
       return NextResponse.json(songs);
     } catch (dbError) {
       console.error("Błąd podczas pobierania piosenek z bazy danych:", dbError);

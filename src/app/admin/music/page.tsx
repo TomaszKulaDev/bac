@@ -33,7 +33,8 @@ const AdminMusicPage = () => {
             );
           }
           const fetchedSongs = await response.json();
-          console.log("AdminMusicPage fetchSongs: Songs fetched", fetchedSongs);
+          console.log("AdminMusicPage fetchSongs: Number of songs fetched", fetchedSongs.length);
+          console.log("AdminMusicPage fetchSongs: Songs fetched", JSON.stringify(fetchedSongs));
           const formattedSongs: Song[] = fetchedSongs.map((song: any) => ({
             id: song._id.toString(),
             title: song.title,

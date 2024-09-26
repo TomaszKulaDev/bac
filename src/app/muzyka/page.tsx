@@ -8,6 +8,13 @@ import { setSongs } from "@/store/slices/features/songsSlice";
 import { Song } from "./types";
 import { RootState } from "@/store/store";
 
+/**
+ * Komponent Muzyka jest odpowiedzialny za wyświetlanie strony z muzyką.
+ * 
+ * - Pobiera listę piosenek z API i zapisuje je w stanie Redux.
+ * - Wyświetla komunikat ładowania, dopóki piosenki nie zostaną pobrane.
+ * - Po załadowaniu piosenek, wyświetla odtwarzacz muzyki.
+ */
 export default function Muzyka() {
   const dispatch = useDispatch();
   const songs = useSelector((state: RootState) => state.songs.songs);
@@ -54,7 +61,7 @@ export default function Muzyka() {
   return (
     <div className="min-h-screen bg-gray-100 p-8">
       <h1 className="text-4xl font-bold text-blue-500 mb-8">Muzyka</h1>
-      <MusicPlayer />
+      <MusicPlayer /> {/* Ta linia odpowiada za wyświetlanie muzyki */}
     </div>
   );
 }
