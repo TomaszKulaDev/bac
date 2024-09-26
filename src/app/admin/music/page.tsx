@@ -62,6 +62,8 @@ const AdminMusicPage = () => {
       userId: 'someUserId', // Dodaj odpowiedni userId, jeśli jest wymagany
     };
 
+    console.log("Dodawanie piosenki:", songForApi);
+
     try {
       const response = await fetch('/api/submit-song', {
         method: 'POST',

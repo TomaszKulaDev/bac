@@ -253,7 +253,7 @@ const MusicPlayer: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Formularz został wysłany");
+    console.log("Formularz został wysłany", formData);
     try {
       const response = await fetch("/api/submit-song", {
         method: "POST",
@@ -268,7 +268,8 @@ const MusicPlayer: React.FC = () => {
         setShowContactForm(false);
         setFormData({ title: "", artist: "", youtubeLink: "" });
       } else {
-        throw new Error("Wystąpił błąd podczas wysyłania formularza");
+        const errorData = await response.json();
+        console.error("Wystąpił błąd podczas wysyłania formularza:", errorData);
       }
     } catch (error) {
       console.error("Błąd:", error);

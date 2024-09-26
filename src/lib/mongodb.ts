@@ -33,6 +33,27 @@ const opts = {
 
 let isConnecting = false;
 
+async function connectWithRetry(retries = 5): Promise<typeof mongoose> {
+  console.log(`connectWithRetry: Attempting to connect. Retries left: ${retries}`);
+  try {
+    if (mongoose.connection && mongoose.connection.readyState === 1) {
+      console.log("connectWithRetry: Already connected");
+      return mongoose;
+    }
+    await mongoose.connect(MONGODB_URI, opts);
+    console.log("connectWithRetry: Connected to MongoDB");
+    return mongoose;
+  } catch (err) {
+    if (retries > 0) {
+      console.log(`Ponowna próba połączenia z MongoDB. Pozostało prób: ${retries}`);
+      await new Promise(resolve => setTimeout(resolve, 5000));
+      return connectWithRetry(retries - 1);
+    }
+    console.error("connectWithRetry: Failed to connect to MongoDB", err);
+    throw err;
+  }
+}
+
 async function connectToDatabase(): Promise<typeof mongoose> {
   console.log("connectToDatabase: Start");
   if (cached.conn) {
@@ -72,32 +93,7 @@ async function disconnectFromDatabase(): Promise<void> {
   }
 }
 
-async function connectWithRetry(retries = 5): Promise<typeof mongoose> {
-  console.log(`connectWithRetry: Attempting to connect. Retries left: ${retries}`);
-  try {
-    if (mongoose.connection.readyState === 1) {
-      console.log("connectWithRetry: Already connected");
-      return mongoose;
-    }
-    await mongoose.connect(MONGODB_URI);
-    console.log("connectWithRetry: Connected to MongoDB");
-    return mongoose;
-  } catch (err) {
-    if (retries > 0) {
-      console.log(`Ponowna próba połączenia z MongoDB. Pozostało prób: ${retries}`);
-      await new Promise(resolve => setTimeout(resolve, 5000));
-      return connectWithRetry(retries - 1);
-    }
-    console.error("connectWithRetry: Failed to connect to MongoDB", err);
-    throw err;
-  }
-}
-
-function isConnected(): boolean {
-  return mongoose.connection.readyState === 1;
-}
-
-export { connectToDatabase, disconnectFromDatabase, isConnected };
+export { connectToDatabase, disconnectFromDatabase };
 
 const clientPromise: Promise<MongoClient> = new Promise((resolve, reject) => {
   connectToDatabase()
