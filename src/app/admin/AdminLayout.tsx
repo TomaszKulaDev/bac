@@ -12,16 +12,10 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
       <aside className="w-64 bg-white shadow-md">
         <nav className="mt-5">
           <Link
-            href="/admin/users"
+            href="/admin"
             className="block py-2 px-4 text-gray-700 hover:bg-gray-200"
           >
             Użytkownicy
-          </Link>
-          <Link
-            href="/admin/events"
-            className="block py-2 px-4 text-gray-700 hover:bg-gray-200"
-          >
-            Wydarzenia
           </Link>
           <Link
             href="/admin/music"

@@ -14,6 +14,7 @@ import { Song } from "@/app/muzyka/types";
 import { connectToDatabase } from "@/lib/mongodb";
 import SongList from "./components/SongList";
 import Link from 'next/link';
+import AdminLayout from "../AdminLayout";
 
 const AdminMusicPage = () => {
   const dispatch = useDispatch();
@@ -122,18 +123,17 @@ const AdminMusicPage = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-3xl font-bold">
-          Panel administracyjny - Muzyka
-        </h1>
-        <Link href="/admin" className="text-blue-500 hover:text-blue-700 transition duration-300">
-          Powrót do panelu admina
-        </Link>
+    <AdminLayout>
+      <div className="container mx-auto p-4">
+        <div className="flex justify-between items-center mb-4">
+          <h1 className="text-3xl font-bold">
+            Panel administracyjny - Muzyka
+          </h1>
+        </div>
+        <AddSongForm onAddSong={handleAddSong} />
+        <SongList songs={songs} onDelete={handleDeleteSong} />
       </div>
-      <AddSongForm onAddSong={handleAddSong} />
-      <SongList songs={songs} onDelete={handleDeleteSong} />
-    </div>
+    </AdminLayout>
   );
 };
 
