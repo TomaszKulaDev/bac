@@ -34,7 +34,9 @@ const opts = {
 let isConnecting = false;
 
 async function connectToDatabase(): Promise<typeof mongoose> {
+  console.log("connectToDatabase: Start");
   if (cached.conn) {
+    console.log("connectToDatabase: Using cached connection");
     return cached.conn;
   }
 
@@ -58,6 +60,7 @@ async function connectToDatabase(): Promise<typeof mongoose> {
     throw e;
   }
 
+  console.log("connectToDatabase: Connection established");
   return cached.conn;
 }
 
@@ -70,11 +73,14 @@ async function disconnectFromDatabase(): Promise<void> {
 }
 
 async function connectWithRetry(retries = 5): Promise<typeof mongoose> {
+  console.log(`connectWithRetry: Attempting to connect. Retries left: ${retries}`);
   try {
     if (mongoose.connection.readyState === 1) {
+      console.log("connectWithRetry: Already connected");
       return mongoose;
     }
     await mongoose.connect(MONGODB_URI);
+    console.log("connectWithRetry: Connected to MongoDB");
     return mongoose;
   } catch (err) {
     if (retries > 0) {
@@ -82,6 +88,7 @@ async function connectWithRetry(retries = 5): Promise<typeof mongoose> {
       await new Promise(resolve => setTimeout(resolve, 5000));
       return connectWithRetry(retries - 1);
     }
+    console.error("connectWithRetry: Failed to connect to MongoDB", err);
     throw err;
   }
 }

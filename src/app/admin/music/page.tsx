@@ -4,62 +4,88 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import AddSongForm from "./components/AddSongForm";
 import { RootState } from "@/store/store";
-import { addSong, deleteSong } from "@/store/slices/features/songsSlice";
-import { Song } from "@/app/muzyka/types";
+import { addSong, deleteSong, setSongs } from "@/store/slices/features/songsSlice";
+import { Song as SongModel } from '@/models/Song';
+import { Song } from '@/app/muzyka/types';
+import { connectToDatabase } from '@/lib/mongodb';
 
 const AdminMusicPage = () => {
-  const songs = useSelector((state: RootState) => state.songs.songs);
   const dispatch = useDispatch();
-  
-  useEffect(() => {
-    console.log("Aktualny stan piosenek:", songs);
-  }, [songs]);
+  const songs = useSelector((state: RootState) => state.songs.songs);
 
-  const handleAddSong = (
-    newSong: Omit<Song, "id" | "votes" | "score" | "isFavorite" | "userVote">
-  ) => {
-    const songToAdd: Song = {
-      ...newSong,
-      id: Date.now().toString(),
+  useEffect(() => {
+    const fetchSongs = async () => {
+      console.log("AdminMusicPage fetchSongs: Start");
+      if (songs.length === 0) {
+        try {
+          await connectToDatabase();
+          console.log("AdminMusicPage fetchSongs: Connected to database");
+          const response = await fetch('/api/songs');
+          const fetchedSongs = await response.json();
+          console.log("AdminMusicPage fetchSongs: Songs fetched", fetchedSongs);
+          const formattedSongs: Song[] = fetchedSongs.map((song: any) => ({
+            id: song._id.toString(),
+            title: song.title,
+            artist: song.artist,
+            youtubeId: song.youtubeId,
+            votes: song.votes,
+            score: song.score,
+            isFavorite: song.isFavorite,
+            userVote: null,
+          }));
+          dispatch(setSongs(formattedSongs));
+        } catch (error) {
+          console.error("AdminMusicPage fetchSongs: Błąd podczas pobierania piosenek:", error);
+        }
+      }
+    };
+
+    fetchSongs();
+  }, [dispatch, songs.length]);
+
+  const handleAddSong = async (newSong: { title: string; artist: string; youtubeId: string }) => {
+    const song: Song = {
+      id: '', // Możesz wygenerować unikalne ID tutaj
+      title: newSong.title,
+      artist: newSong.artist,
+      youtubeId: newSong.youtubeId,
       votes: 0,
       score: 0,
       isFavorite: false,
       userVote: null,
     };
-    dispatch(addSong(songToAdd));
-  };
 
-  const handleDeleteSong = (id: string) => {
-    dispatch(deleteSong(id));
+    const songForApi = {
+      title: newSong.title,
+      artist: newSong.artist,
+      youtubeLink: `https://www.youtube.com/watch?v=${newSong.youtubeId}`,
+      userId: 'someUserId', // Dodaj odpowiedni userId, jeśli jest wymagany
+    };
+
+    try {
+      const response = await fetch('/api/submit-song', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(songForApi),
+      });
+
+      if (response.ok) {
+        dispatch(addSong(song));
+      } else {
+        const errorData = await response.json();
+        console.error('Błąd podczas dodawania piosenki:', errorData);
+      }
+    } catch (error) {
+      console.error('Błąd podczas dodawania piosenki:', error);
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
-      <h1 className="text-4xl font-bold text-blue-500 mb-8">
-        Zarządzanie Muzyką
-      </h1>
-
+    <div>
+      <h1>Admin Music Page</h1>
       <AddSongForm onAddSong={handleAddSong} />
-
-      <div>
-        <h2 className="text-2xl font-bold mb-4">Lista piosenek</h2>
-        {songs.map((song) => (
-          <div
-            key={song.id}
-            className="mb-2 flex items-center justify-between bg-white p-4 rounded-lg shadow"
-          >
-            <span>
-              {song.title} - {song.artist}
-            </span>
-            <button
-              onClick={() => handleDeleteSong(song.id)}
-              className="bg-red-500 text-white p-2 rounded hover:bg-red-600 transition duration-300"
-            >
-              Usuń
-            </button>
-          </div>
-        ))}
-      </div>
     </div>
   );
 };

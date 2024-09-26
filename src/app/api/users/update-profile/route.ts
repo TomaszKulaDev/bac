@@ -14,9 +14,12 @@ const updateProfileSchema = z.object({
 });
 
 export async function GET(request: Request) {
+  console.log("GET request received");
   await connectToDatabase();
+  console.log("Connected to database");
 
   const session = await getServerSession(authOptions);
+  console.log("Session:", session);
 
   if (!session) {
     return NextResponse.json(

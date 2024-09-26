@@ -28,6 +28,7 @@ export const authOptions: NextAuthOptions = {
         }
 
         await connectToDatabase();
+        console.log("NextAuth: Connected to database");
 
         const { email, password } = credentials;
         const user = await User.findOne({ email });
@@ -40,6 +41,7 @@ export const authOptions: NextAuthOptions = {
 
         console.log("NextAuth: Comparing passwords");
         const isValidPassword = await bcrypt.compare(password, user.password);
+        console.log("NextAuth: Password valid:", isValidPassword);
 
         if (!isValidPassword) {
           console.log("NextAuth: Invalid credentials");
