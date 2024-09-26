@@ -5,8 +5,11 @@ import { Song } from '@/models/Song';
 export async function GET() {
   console.log("GET /api/songs: Start");
   try {
-    await connectToDatabase();
+    const db = await connectToDatabase();
     console.log("GET /api/songs: Connected to database");
+    if (!db) {
+      throw new Error("Nie udało się połączyć z bazą danych");
+    }
     const songs = await Song.find().lean();
     console.log("GET /api/songs: Songs fetched", songs);
     return NextResponse.json(songs);

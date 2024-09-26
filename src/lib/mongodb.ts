@@ -34,14 +34,12 @@ const opts = {
 let isConnecting = false;
 
 async function connectWithRetry(retries = 5): Promise<typeof mongoose> {
-  console.log(`connectWithRetry: Attempting to connect. Retries left: ${retries}`);
+  console.log(`connectWithRetry: Próba połączenia. Pozostało prób: ${retries}`);
   try {
-    if (mongoose.connection && mongoose.connection.readyState === 1) {
-      console.log("connectWithRetry: Already connected");
-      return mongoose;
+    if (mongoose.connection.readyState !== 1) {
+      await mongoose.connect(MONGODB_URI);
     }
-    await mongoose.connect(MONGODB_URI, opts);
-    console.log("connectWithRetry: Connected to MongoDB");
+    console.log("connectWithRetry: Połączono z MongoDB");
     return mongoose;
   } catch (err) {
     if (retries > 0) {
@@ -49,7 +47,7 @@ async function connectWithRetry(retries = 5): Promise<typeof mongoose> {
       await new Promise(resolve => setTimeout(resolve, 5000));
       return connectWithRetry(retries - 1);
     }
-    console.error("connectWithRetry: Failed to connect to MongoDB", err);
+    console.error("connectWithRetry: Nie udało się połączyć z MongoDB", err);
     throw err;
   }
 }
@@ -57,31 +55,25 @@ async function connectWithRetry(retries = 5): Promise<typeof mongoose> {
 async function connectToDatabase(): Promise<typeof mongoose> {
   console.log("connectToDatabase: Start");
   if (cached.conn) {
-    console.log("connectToDatabase: Using cached connection");
+    console.log("connectToDatabase: Używanie zapisanego połączenia");
     return cached.conn;
   }
 
   if (!cached.promise) {
-    if (!isConnecting) {
-      isConnecting = true;
-      cached.promise = connectWithRetry().finally(() => {
-        isConnecting = false;
-      });
-    } else {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      return connectToDatabase();
-    }
+    cached.promise = connectWithRetry().catch((err) => {
+      cached.promise = null;
+      throw err;
+    });
   }
 
   try {
     cached.conn = await cached.promise;
   } catch (e) {
-    cached.promise = null;
     console.error('Nie udało się połączyć z MongoDB', e);
     throw e;
   }
 
-  console.log("connectToDatabase: Connection established");
+  console.log("connectToDatabase: Połączenie ustanowione");
   return cached.conn;
 }
 

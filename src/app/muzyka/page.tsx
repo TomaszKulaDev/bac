@@ -19,8 +19,6 @@ export default function Muzyka() {
       console.log("fetchSongs: Start");
       if (songs.length === 0) {
         try {
-          await connectToDatabase();
-          console.log("fetchSongs: Connected to database");
           const response = await fetch('/api/songs');
           const fetchedSongs = await response.json();
           console.log("fetchSongs: Songs fetched", fetchedSongs);
