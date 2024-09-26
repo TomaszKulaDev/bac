@@ -22,7 +22,7 @@ interface SongListProps {
 }
 
 const SongList: React.FC<SongListProps> = ({
-  songs,
+  songs = [],
   visibleSongs,
   currentSongIndex,
   isPlaying,

@@ -1,25 +1,25 @@
 // src/app/muzyka/page.tsx
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import MusicPlayer from "./components/MusicPlayer";
 import { setSongs } from "@/store/slices/features/songsSlice";
 import { Song } from "./types";
 import { RootState } from "@/store/store";
-import { connectToDatabase } from '@/lib/mongodb';
 
 export default function Muzyka() {
   const dispatch = useDispatch();
   const songs = useSelector((state: RootState) => state.songs.songs);
   const [isLoading, setIsLoading] = useState(true);
+  const songsLoadedRef = useRef(false);
 
   useEffect(() => {
     const fetchSongs = async () => {
       console.log("fetchSongs: Start");
-      if (songs.length === 0) {
+      if (songs.length === 0 && !songsLoadedRef.current) {
         try {
-          const response = await fetch('/api/songs');
+          const response = await fetch("/api/songs");
           const fetchedSongs = await response.json();
           console.log("fetchSongs: Songs fetched", fetchedSongs);
           const formattedSongs: Song[] = fetchedSongs.map((song: any) => ({
@@ -33,6 +33,7 @@ export default function Muzyka() {
             userVote: null,
           }));
           dispatch(setSongs(formattedSongs));
+          songsLoadedRef.current = true;
         } catch (error) {
           console.error("Błąd podczas pobierania piosenek:", error);
         } finally {
