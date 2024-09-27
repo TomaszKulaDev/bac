@@ -29,8 +29,6 @@ import {
 } from "react-icons/fa";
 import Image from "next/image";
 import { Song } from "../types";
-import FavoriteButton from "./FavoriteButton";
-import LoginModal from "./LoginModal";
 import { RootState } from "../../../store/store";
 import SongList from "./SongList";
 
@@ -446,29 +444,6 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
         </div>
         {memoizedSongList}
       </div>
-      {showSuccessMessage && (
-        <SuccessMessage
-          onClose={() => {
-            setShowSuccessMessage(false);
-            console.log("SuccessMessage został zamknięty");
-          }}
-        />
-      )}
-      {showErrorMessage && <ErrorMessage />}
-      {showLoginModal && (
-        <LoginModal onClose={() => setShowLoginModal(false)} />
-      )}
-      {adBlockerDetected && (
-        <div
-          className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4"
-          role="alert"
-        >
-          <p>
-            Wykryto bloker reklam. Może to wpływać na działanie odtwarzacza.
-            Rozważ wyłączenie blokera dla tej strony.
-          </p>
-        </div>
-      )}
     </div>
   );
 };
