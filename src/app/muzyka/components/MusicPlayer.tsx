@@ -2,7 +2,13 @@
 
 "use client";
 
-import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+} from "react";
 import { useSelector } from "react-redux";
 import YouTube, { YouTubeProps } from "react-youtube";
 import {
@@ -113,58 +119,78 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
     setIsLoading(true);
   };
 
-  const handleVote = useCallback((songId: string, voteType: "up" | "down" | null) => {
-    if (!isLoggedIn) {
-      setShowLoginModal(true);
-      return;
-    }
-
-    setLocalSongs((prevSongs: Song[]) =>
-      prevSongs.map((song: Song) => {
-        if (song._id === songId) {
-          let voteChange = 0;
-          let newUserVote = voteType;
-
-          if (song.userVote === voteType) {
-            // Cofnięcie głosu
-            voteChange = voteType === "up" ? -1 : 1;
-            newUserVote = null;
-          } else if (voteType === null) {
-            // Nie powinno się zdarzyć, ale na wszelki wypadek
-            voteChange = song.userVote === "up" ? -1 : song.userVote === "down" ? 1 : 0;
-            newUserVote = null;
-          } else {
-            // Zmiana głosu lub nowy głos
-            voteChange = voteType === "up" ? 1 : -1;
-            if (song.userVote) {
-              voteChange *= 2; // Zmiana z down na up lub odwrotnie
-            }
-          }
-
-          const newVotes = song.votes + voteChange;
-          return {
-            ...song,
-            votes: newVotes,
-            score: calculateScore(newVotes, song.isFavorite),
-            userVote: newUserVote,
-          };
-        }
-        return song;
-      })
-    );
-  }, [isLoggedIn]);
-
-  const toggleFavorite = (songId: string) => {
-    if (isLoggedIn) {
-      setLocalSongs((prevSongs: Song[]) =>
-        prevSongs.map((song: Song) =>
-          song._id === songId ? { ...song, isFavorite: !song.isFavorite } : song
-        )
+  const handleVote = useCallback(
+    (songId: string, voteType: "up" | "down" | null) => {
+      console.log(
+        `Głosowanie - ID piosenki: ${songId}, Typ głosu: ${voteType}`
       );
-    } else {
-      setShowLoginModal(true);
-    }
-  };
+      if (!isLoggedIn) {
+        setShowLoginModal(true);
+        return;
+      }
+
+      setLocalSongs((prevSongs: Song[]) =>
+        prevSongs.map((song: Song) => {
+          if (song._id === songId) {
+            let voteChange = 0;
+            let newUserVote = voteType;
+
+            console.log(
+              `Przed aktualizacją - Piosenka: ${song.title}, Obecne głosy: ${song.votes}, Obecny userVote: ${song.userVote}`
+            );
+
+            if (song.userVote === voteType) {
+              // Cofnięcie głosu
+              voteChange = voteType === "up" ? -1 : 1;
+              newUserVote = null;
+            } else if (voteType === null) {
+              // Nie powinno się zdarzyć, ale na wszelki wypadek
+              voteChange =
+                song.userVote === "up" ? -1 : song.userVote === "down" ? 1 : 0;
+              newUserVote = null;
+            } else {
+              // Zmiana głosu lub nowy głos
+              voteChange = voteType === "up" ? 1 : -1;
+              if (song.userVote) {
+                voteChange *= 2; // Zmiana z down na up lub odwrotnie
+              }
+            }
+
+            const newVotes = song.votes + voteChange;
+            console.log(
+              `Po aktualizacji - Piosenka: ${song.title}, Nowe głosy: ${newVotes}, Nowy userVote: ${newUserVote}`
+            );
+            return {
+              ...song,
+              votes: newVotes,
+              score: calculateScore(newVotes, song.isFavorite),
+              userVote: newUserVote,
+            };
+          }
+          return song;
+        })
+      );
+      console.log("Stan localSongs po aktualizacji:", localSongs);
+    },
+    [isLoggedIn, localSongs]
+  );
+
+  const toggleFavorite = useCallback(
+    (songId: string) => {
+      if (isLoggedIn) {
+        setLocalSongs((prevSongs: Song[]) =>
+          prevSongs.map((song: Song) =>
+            song._id === songId
+              ? { ...song, isFavorite: !song.isFavorite }
+              : song
+          )
+        );
+      } else {
+        setShowLoginModal(true);
+      }
+    },
+    [isLoggedIn]
+  );
 
   const loadMoreSongs = useCallback(() => {
     setVisibleSongs((prevVisible) =>
@@ -196,7 +222,9 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
         sortSongs();
       } catch (error) {
         console.error("Błąd podczas sortowania piosenek:", error);
-        setError("Wystąpił problem z sortowaniem piosenek. Spróbuj odświeżyć stronę.");
+        setError(
+          "Wystąpił problem z sortowaniem piosenek. Spróbuj odświeżyć stronę."
+        );
       }
     }
   }, [songScores, sortSongs, songs.length]);
@@ -216,7 +244,8 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
     console.error("Błąd YouTube:", event.data);
     let errorMessage = "Wystąpił błąd podczas ładowania filmu.";
     if (adBlockerDetected) {
-      errorMessage += " Sprawdź swoje ustawienia prywatności lub blokery reklam.";
+      errorMessage +=
+        " Sprawdź swoje ustawienia prywatności lub blokery reklam.";
     }
     setError(errorMessage);
   };
@@ -420,21 +449,32 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const memoizedSongList = useMemo(() => (
-    <SongList
-      songs={localSongs}
-      visibleSongs={visibleSongs}
-      currentSongIndex={currentSongIndex}
-      isPlaying={isPlaying}
-      onSongSelect={(index) => {
-        setCurrentSongIndex(index);
-        setIsPlaying(true);
-        setIsLoading(true);
-      }}
-      onLoadMore={loadMoreSongs}
-      onCollapse={collapseSongList}
-    />
-  ), [localSongs, visibleSongs, currentSongIndex, isPlaying, loadMoreSongs]);
+  const memoizedSongList = useMemo(
+    () => (
+      <SongList
+        songs={localSongs}
+        visibleSongs={visibleSongs}
+        currentSongIndex={currentSongIndex}
+        isPlaying={isPlaying}
+        onSongSelect={(index) => {
+          setCurrentSongIndex(index);
+          setIsPlaying(true);
+          setIsLoading(true);
+        }}
+        onLoadMore={loadMoreSongs}
+        onCollapse={collapseSongList}
+      />
+    ),
+    [
+      localSongs,
+      visibleSongs,
+      currentSongIndex,
+      isPlaying,
+      loadMoreSongs,
+    ]
+  );
+
+  console.log("ID aktualnej piosenki:", songs[currentSongIndex]?._id);
 
   return (
     <div className="music-player bg-white shadow-lg min-h-screen flex flex-col w-full max-w-6xl mx-auto">
@@ -498,7 +538,8 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
                         onClick={previousSong}
                         className="flex-1 bg-gradient-to-r from-purple-500 to-indigo-500 text-white py-3 px-4 rounded text-xs sm:text-sm font-semibold shadow-md hover:from-purple-600 hover:to-indigo-600 transition duration-300 flex items-center justify-center"
                       >
-                        <FaChevronUp className="mr-1 text-xs sm:text-sm" /> Poprzedni
+                        <FaChevronUp className="mr-1 text-xs sm:text-sm" />{" "}
+                        Poprzedni
                       </button>
                       <button
                         onClick={togglePlayback}
@@ -514,7 +555,8 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
                         onClick={nextSong}
                         className="flex-1 bg-gradient-to-r from-indigo-500 to-pink-500 text-white py-3 px-4 rounded text-xs sm:text-sm font-semibold shadow-md hover:from-indigo-600 hover:to-pink-600 transition duration-300 flex items-center justify-center"
                       >
-                        Następny <FaChevronDown className="ml-1 text-xs sm:text-sm" />
+                        Następny{" "}
+                        <FaChevronDown className="ml-1 text-xs sm:text-sm" />
                       </button>
                     </div>
                   </div>
