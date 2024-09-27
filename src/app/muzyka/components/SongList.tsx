@@ -49,15 +49,6 @@ const SongList: React.FC<SongListProps> = ({
               <div className="w-8 h-8 mr-2 flex-shrink-0 flex items-center justify-center bg-gray-200 rounded-full">
                 <span className="text-gray-600 font-semibold">{index + 1}</span>
               </div>
-              <div className="mx-2 flex-shrink-0">
-                {song.votes > 0 ? (
-                  <FaArrowUp className="text-green-500 text-2xl" />
-                ) : song.votes < 0 ? (
-                  <FaArrowDown className="text-red-500 text-2xl" />
-                ) : (
-                  <FaMinus className="text-gray-500 text-2xl" />
-                )}
-              </div>
               <div className="w-12 h-12 mr-4 relative flex-shrink-0">
                 <Image
                   src={getYouTubeThumbnail(song.youtubeId)}
