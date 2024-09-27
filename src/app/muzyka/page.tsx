@@ -17,7 +17,8 @@ export default function Muzyka() {
   useEffect(() => {
     const fetchSongs = async () => {
       console.log("fetchSongs: Start");
-      if (songs.length === 0 && !songsLoadedRef.current) {
+      if (songs.length === 0) {
+        setIsLoading(true);
         try {
           const response = await fetch("/api/songs");
           const fetchedSongs = await response.json();
@@ -33,7 +34,6 @@ export default function Muzyka() {
             userVote: null,
           }));
           dispatch(setSongs(formattedSongs));
-          songsLoadedRef.current = true;
         } catch (error) {
           console.error("Błąd podczas pobierania piosenek:", error);
         } finally {

@@ -23,7 +23,7 @@ const AdminMusicPage = () => {
   useEffect(() => {
     const fetchSongs = async () => {
       console.log("AdminMusicPage fetchSongs: Start");
-      if (songs.length === 0 && typeof window !== "undefined") {
+      if (songs.length === 0) {
         try {
           const response = await fetch("/api/songs");
           if (!response.ok) {
