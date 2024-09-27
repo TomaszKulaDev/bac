@@ -38,7 +38,7 @@ const SongList: React.FC<SongListProps> = ({
   return (
     <div className="song-list md:order-1 md:w-2/5 border-r border-gray-200 overflow-y-auto">
       {songs.slice(0, visibleSongs).map((song, index) => (
-        <React.Fragment key={song.id}>
+        <React.Fragment key={song._id}>
           <div
             className={`song-item p-4 cursor-pointer hover:bg-gray-100 transition duration-300 ease-in-out ${
               currentSongIndex === index ? "bg-gray-200" : ""

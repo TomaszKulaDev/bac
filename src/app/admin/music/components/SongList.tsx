@@ -1,5 +1,5 @@
 import React from "react";
-import { Song } from "@/app/muzyka/types";
+import { Song } from '@/app/muzyka/types';
 
 interface SongListProps {
   songs: Song[];
@@ -29,7 +29,14 @@ const SongList: React.FC<SongListProps> = ({ songs, onDelete }) => {
               <td className="py-2 px-2 text-sm text-gray-900">{song.youtubeId}</td>
               <td className="py-2 px-2 text-sm text-gray-900">
                 <button
-                  onClick={() => onDelete(song.id)}
+                  onClick={() => {
+                    console.log("Pełny obiekt piosenki:", song);
+                    if (song.id) {
+                      onDelete(song.id);
+                    } else {
+                      console.error("Błąd: Brak ID piosenki", song);
+                    }
+                  }}
                   className="bg-red-500 text-white py-1 px-2 rounded-full hover:bg-red-600 transition duration-300"
                 >
                   Usuń

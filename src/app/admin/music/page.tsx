@@ -8,24 +8,29 @@ import {
   addSong,
   deleteSong,
   setSongs,
-  fetchSongs
+  fetchSongs,
 } from "@/store/slices/features/songsSlice";
 import { Song as SongModel } from "@/models/Song";
 import { Song } from "@/app/muzyka/types";
 import { connectToDatabase } from "@/lib/mongodb";
 import SongList from "./components/SongList";
-import Link from 'next/link';
+import Link from "next/link";
 import AdminLayout from "../AdminLayout";
 
 const AdminMusicPage = () => {
   const dispatch = useDispatch();
-  const { songs, status, error } = useSelector((state: RootState) => state.songs);
+  const { songs, status, error } = useSelector(
+    (state: RootState) => state.songs
+  );
 
   useEffect(() => {
-    if (status === 'idle') {
-      dispatch(fetchSongs() as any);
-    }
-  }, [status, dispatch]);
+    console.log("Pobieranie piosenek...");
+    dispatch(fetchSongs() as any);
+  }, [dispatch]);
+
+  useEffect(() => {
+    console.log("Aktualny stan piosenek:", songs);
+  }, [songs]);
 
   const handleAddSong = async (newSong: {
     title: string;
@@ -34,7 +39,7 @@ const AdminMusicPage = () => {
   }) => {
     const youtubeId = newSong.youtubeLink.split("v=")[1];
     const song: Song = {
-      id: "", // Możesz wygenerować unikalne ID tutaj
+      _id: "", // To pole zostanie nadpisane przez bazę danych
       title: newSong.title,
       artist: newSong.artist,
       youtubeId: youtubeId,
@@ -77,6 +82,11 @@ const AdminMusicPage = () => {
 
   const handleDeleteSong = async (id: string) => {
     try {
+      console.log("Próba usunięcia piosenki o ID:", id);
+      if (!id) {
+        console.error("Błąd: Brak ID piosenki");
+        return;
+      }
       const response = await fetch(`/api/songs/${id}`, {
         method: "DELETE",
       });
@@ -94,11 +104,11 @@ const AdminMusicPage = () => {
     }
   };
 
-  if (status === 'loading') {
+  if (status === "loading") {
     return <div>Ładowanie...</div>;
   }
 
-  if (status === 'failed') {
+  if (status === "failed") {
     return <div>Błąd: {error}</div>;
   }
 
@@ -106,9 +116,7 @@ const AdminMusicPage = () => {
     <AdminLayout>
       <div className="container mx-auto p-4">
         <div className="flex justify-between items-center mb-4">
-          <h1 className="text-3xl font-bold">
-            Panel administracyjny - Muzyka
-          </h1>
+          <h1 className="text-3xl font-bold">Panel administracyjny - Muzyka</h1>
         </div>
         <AddSongForm onAddSong={handleAddSong} />
         <SongList songs={songs} onDelete={handleDeleteSong} />

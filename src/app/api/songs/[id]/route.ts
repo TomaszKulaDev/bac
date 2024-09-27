@@ -6,22 +6,20 @@ export async function DELETE(
   request: Request,
   { params }: { params: { id: string } }
 ) {
-  console.log("DELETE /api/songs/[id]: Start");
   try {
     const db = await connectToDatabase();
-    console.log("DELETE /api/songs/[id]: Connected to database");
     if (!db) {
       throw new Error("Nie udało się połączyć z bazą danych");
     }
 
     const { id } = params;
+    console.log("DELETE /api/songs/[id]: Attempting to delete song with ID:", id);
+
     const result = await Song.findByIdAndDelete(id);
+    console.log("Delete operation result:", result);
 
     if (!result) {
-      return NextResponse.json(
-        { error: "Nie znaleziono piosenki o podanym ID" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Piosenka nie została znaleziona" }, { status: 404 });
     }
 
     console.log("DELETE /api/songs/[id]: Song deleted", id);
@@ -29,10 +27,7 @@ export async function DELETE(
   } catch (error) {
     console.error("Błąd podczas usuwania piosenki:", error);
     return NextResponse.json(
-      {
-        error: "Wystąpił błąd podczas usuwania piosenki",
-        details: error instanceof Error ? error.message : "Unknown error",
-      },
+      { error: "Wystąpił błąd podczas usuwania piosenki" },
       { status: 500 }
     );
   }

@@ -121,7 +121,7 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
 
     setLocalSongs((prevSongs: Song[]) =>
       prevSongs.map((song: Song) => {
-        if (song.id === songId) {
+        if (song._id === songId) {
           let voteChange = 0;
           let newUserVote = voteType;
 
@@ -158,7 +158,7 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
     if (isLoggedIn) {
       setLocalSongs((prevSongs: Song[]) =>
         prevSongs.map((song: Song) =>
-          song.id === songId ? { ...song, isFavorite: !song.isFavorite } : song
+          song._id === songId ? { ...song, isFavorite: !song.isFavorite } : song
         )
       );
     } else {
@@ -483,11 +483,11 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
                   <div className="flex flex-col space-y-4 mt-4 px-4">
                     {songs[currentSongIndex] && (
                       <VotingButtons
-                        songId={songs[currentSongIndex].id}
+                        songId={songs[currentSongIndex]._id}
                         votes={songs[currentSongIndex].votes}
                         isFavorite={songs[currentSongIndex].isFavorite}
                         isLoggedIn={isLoggedIn}
-                        userVote={songs[currentSongIndex].userVote}
+                        userVote={songs[currentSongIndex].userVote ?? null}
                         onVote={handleVote}
                         onToggleFavorite={toggleFavorite}
                         onShowLoginModal={handleShowLoginModal}

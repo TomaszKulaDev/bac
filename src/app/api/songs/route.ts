@@ -12,8 +12,15 @@ export async function GET() {
     }
     try {
       const songs = await Song.find().lean();
-      console.log("GET /api/songs: Songs fetched", songs);
-      return NextResponse.json(songs);
+      const mappedSongs = songs.map(song => {
+        const songObj = song as any;
+        return {
+          ...songObj,
+          id: songObj._id ? songObj._id.toString() : undefined
+        };
+      });
+      console.log("GET /api/songs: Songs fetched", mappedSongs);
+      return NextResponse.json(mappedSongs);
     } catch (dbError) {
       console.error("Błąd podczas pobierania piosenek z bazy danych:", dbError);
       return NextResponse.json(

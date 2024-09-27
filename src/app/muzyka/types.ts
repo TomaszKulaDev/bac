@@ -1,13 +1,13 @@
 export interface Song {
-  // istniejące właściwości
-  id: string;
+  _id: string;
+  id?: string;
   title: string;
   artist: string;
   youtubeId: string;
   votes: number;
   score: number;
   isFavorite: boolean;
-  // nowa właściwość
+  __v?: number;
   userVote: "up" | "down" | null;
 }
 
