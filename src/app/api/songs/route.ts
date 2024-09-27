@@ -20,7 +20,12 @@ export async function GET() {
         };
       });
       console.log("GET /api/songs: Songs fetched", mappedSongs);
-      return NextResponse.json(mappedSongs);
+      return new NextResponse(JSON.stringify(mappedSongs), {
+        headers: {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'no-store, max-age=0'
+        }
+      });
     } catch (dbError) {
       console.error("Błąd podczas pobierania piosenek z bazy danych:", dbError);
       return NextResponse.json(

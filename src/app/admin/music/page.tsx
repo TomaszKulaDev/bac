@@ -63,6 +63,7 @@ const AdminMusicPage = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          'Cache-Control': 'no-cache'
         },
         body: JSON.stringify(songForApi),
       });
@@ -70,7 +71,7 @@ const AdminMusicPage = () => {
       if (response.ok) {
         console.log("Piosenka dodana pomyślnie");
         dispatch(addSong(song));
-        dispatch(fetchSongs() as any);
+        await dispatch(fetchSongs() as any);
       } else {
         const errorData = await response.json();
         console.error("Błąd podczas dodawania piosenki:", errorData);
@@ -89,12 +90,15 @@ const AdminMusicPage = () => {
       }
       const response = await fetch(`/api/songs/${id}`, {
         method: "DELETE",
+        headers: {
+          'Cache-Control': 'no-cache'
+        }
       });
 
       if (response.ok) {
         console.log("Piosenka usunięta pomyślnie");
         dispatch(deleteSong(id));
-        dispatch(fetchSongs() as any);
+        await dispatch(fetchSongs() as any);
       } else {
         const errorData = await response.json();
         console.error("Błąd podczas usuwania piosenki:", errorData);
