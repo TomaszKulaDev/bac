@@ -1,9 +1,4 @@
 "use client";
-
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import AddSongForm from "./components/AddSongForm";
-import { RootState } from "@/store/store";
 import {
   addSong,
   deleteSong,
@@ -16,16 +11,20 @@ import { connectToDatabase } from "@/lib/mongodb";
 import SongList from "./components/SongList";
 import Link from "next/link";
 import AdminLayout from "../AdminLayout";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState, AppDispatch } from "@/store/store";
+import AddSongForm from "./components/AddSongForm";
 
 const AdminMusicPage = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { songs, status, error } = useSelector(
     (state: RootState) => state.songs
   );
 
   useEffect(() => {
     console.log("Pobieranie piosenek...");
-    dispatch(fetchSongs() as any);
+    dispatch(fetchSongs());
   }, [dispatch]);
 
   useEffect(() => {
@@ -37,44 +36,28 @@ const AdminMusicPage = () => {
     artist: string;
     youtubeLink: string;
   }) => {
-    const youtubeId = newSong.youtubeLink.split("v=")[1];
-    const song: Song = {
-      _id: "", // To pole zostanie nadpisane przez bazę danych
-      title: newSong.title,
-      artist: newSong.artist,
-      youtubeId: youtubeId,
-      votes: 0,
-      score: 0,
-      isFavorite: false,
-      userVote: null,
-    };
-
-    const songForApi = {
-      title: newSong.title,
-      artist: newSong.artist,
-      youtubeLink: newSong.youtubeLink,
-      userId: "someUserId", // Dodaj odpowiedni userId, jeśli jest wymagany
-    };
-
-    console.log("Dodawanie piosenki:", songForApi);
-
     try {
-      const response = await fetch("/api/submit-song", {
-        method: "POST",
+      console.log("Dodawanie piosenki:", newSong);
+      const response = await fetch('/api/songs', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
-          'Cache-Control': 'no-cache'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(songForApi),
+        body: JSON.stringify(newSong),
       });
 
-      if (response.ok) {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log("Odpowiedź serwera:", result);
+
+      if (result.success) {
         console.log("Piosenka dodana pomyślnie");
-        dispatch(addSong(song));
-        await dispatch(fetchSongs() as any);
+        await dispatch(fetchSongs());
       } else {
-        const errorData = await response.json();
-        console.error("Błąd podczas dodawania piosenki:", errorData);
+        console.error("Błąd podczas dodawania piosenki:", result.error);
       }
     } catch (error) {
       console.error("Błąd podczas dodawania piosenki:", error);
@@ -84,24 +67,25 @@ const AdminMusicPage = () => {
   const handleDeleteSong = async (id: string) => {
     try {
       console.log("Próba usunięcia piosenki o ID:", id);
-      if (!id) {
-        console.error("Błąd: Brak ID piosenki");
-        return;
-      }
       const response = await fetch(`/api/songs/${id}`, {
-        method: "DELETE",
+        method: 'DELETE',
         headers: {
-          'Cache-Control': 'no-cache'
-        }
+          'Content-Type': 'application/json',
+        },
       });
 
-      if (response.ok) {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log("Odpowiedź serwera:", result);
+
+      if (result.success) {
         console.log("Piosenka usunięta pomyślnie");
-        dispatch(deleteSong(id));
-        await dispatch(fetchSongs() as any);
+        await dispatch(fetchSongs());
       } else {
-        const errorData = await response.json();
-        console.error("Błąd podczas usuwania piosenki:", errorData);
+        console.error("Błąd podczas usuwania piosenki:", result.error);
       }
     } catch (error) {
       console.error("Błąd podczas usuwania piosenki:", error);
