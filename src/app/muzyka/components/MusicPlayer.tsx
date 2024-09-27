@@ -23,7 +23,6 @@ import {
 } from "react-icons/fa";
 import Image from "next/image";
 import { Song } from "../types";
-import VotingButtons from "./VotingButtons";
 import FavoriteButton from "./FavoriteButton";
 import LoginModal from "./LoginModal";
 import { RootState } from "../../../store/store";
@@ -112,47 +111,6 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
     setIsPlaying(true);
     setIsLoading(true);
   };
-
-  const handleVote = useCallback((songId: string, voteType: "up" | "down" | null) => {
-    if (!isLoggedIn) {
-      setShowLoginModal(true);
-      return;
-    }
-
-    setLocalSongs((prevSongs: Song[]) =>
-      prevSongs.map((song: Song) => {
-        if (song._id === songId) {
-          let voteChange = 0;
-          let newUserVote = voteType;
-
-          if (song.userVote === voteType) {
-            // Cofnięcie głosu
-            voteChange = voteType === "up" ? -1 : 1;
-            newUserVote = null;
-          } else if (voteType === null) {
-            // Nie powinno się zdarzyć, ale na wszelki wypadek
-            voteChange = song.userVote === "up" ? -1 : song.userVote === "down" ? 1 : 0;
-            newUserVote = null;
-          } else {
-            // Zmiana głosu lub nowy głos
-            voteChange = voteType === "up" ? 1 : -1;
-            if (song.userVote) {
-              voteChange *= 2; // Zmiana z down na up lub odwrotnie
-            }
-          }
-
-          const newVotes = song.votes + voteChange;
-          return {
-            ...song,
-            votes: newVotes,
-            score: calculateScore(newVotes, song.isFavorite),
-            userVote: newUserVote,
-          };
-        }
-        return song;
-      })
-    );
-  }, [isLoggedIn]);
 
   const toggleFavorite = (songId: string) => {
     if (isLoggedIn) {
@@ -481,18 +439,6 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
                     className="w-full h-full"
                   />
                   <div className="flex flex-col space-y-4 mt-4 px-4">
-                    {songs[currentSongIndex] && (
-                      <VotingButtons
-                        songId={songs[currentSongIndex]._id}
-                        votes={songs[currentSongIndex].votes}
-                        isFavorite={songs[currentSongIndex].isFavorite}
-                        isLoggedIn={isLoggedIn}
-                        userVote={songs[currentSongIndex].userVote ?? null}
-                        onVote={handleVote}
-                        onToggleFavorite={toggleFavorite}
-                        onShowLoginModal={handleShowLoginModal}
-                      />
-                    )}
                     <div className="flex justify-between items-center mt-4">
                       <button
                         onClick={previousSong}
