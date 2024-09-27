@@ -1,3 +1,4 @@
+// src/store/slices/features/songsSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Song } from '@/app/muzyka/types';
 
