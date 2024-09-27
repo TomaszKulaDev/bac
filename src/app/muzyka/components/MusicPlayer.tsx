@@ -2,7 +2,13 @@
 
 "use client";
 
-import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+} from "react";
 import { useSelector } from "react-redux";
 import YouTube, { YouTubeProps } from "react-youtube";
 import {
@@ -112,18 +118,6 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
     setIsLoading(true);
   };
 
-  const toggleFavorite = (songId: string) => {
-    if (isLoggedIn) {
-      setLocalSongs((prevSongs: Song[]) =>
-        prevSongs.map((song: Song) =>
-          song._id === songId ? { ...song, isFavorite: !song.isFavorite } : song
-        )
-      );
-    } else {
-      setShowLoginModal(true);
-    }
-  };
-
   const loadMoreSongs = useCallback(() => {
     setVisibleSongs((prevVisible) =>
       Math.min(prevVisible + songsPerLoad, songs.length)
@@ -133,31 +127,6 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
   const collapseSongList = () => {
     setVisibleSongs(initialVisibleSongs);
   };
-
-  const sortSongs = useCallback(() => {
-    setLocalSongs((prevSongs: Song[]) => {
-      const sortedSongs = [...prevSongs].sort((a, b) => b.score - a.score);
-      return JSON.stringify(sortedSongs) !== JSON.stringify(prevSongs)
-        ? sortedSongs
-        : prevSongs;
-    });
-  }, []);
-
-  const songScores = useMemo(
-    () => songs.map((song) => song.score).join(","),
-    [songs]
-  );
-
-  useEffect(() => {
-    if (songs.length > 0) {
-      try {
-        sortSongs();
-      } catch (error) {
-        console.error("Błąd podczas sortowania piosenek:", error);
-        setError("Wystąpił problem z sortowaniem piosenek. Spróbuj odświeżyć stronę.");
-      }
-    }
-  }, [songScores, sortSongs, songs.length]);
 
   const onReady = (event: { target: any }) => {
     if (event.target) {
@@ -174,7 +143,8 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
     console.error("Błąd YouTube:", event.data);
     let errorMessage = "Wystąpił błąd podczas ładowania filmu.";
     if (adBlockerDetected) {
-      errorMessage += " Sprawdź swoje ustawienia prywatności lub blokery reklam.";
+      errorMessage +=
+        " Sprawdź swoje ustawienia prywatności lub blokery reklam.";
     }
     setError(errorMessage);
   };
@@ -378,21 +348,24 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const memoizedSongList = useMemo(() => (
-    <SongList
-      songs={localSongs}
-      visibleSongs={visibleSongs}
-      currentSongIndex={currentSongIndex}
-      isPlaying={isPlaying}
-      onSongSelect={(index) => {
-        setCurrentSongIndex(index);
-        setIsPlaying(true);
-        setIsLoading(true);
-      }}
-      onLoadMore={loadMoreSongs}
-      onCollapse={collapseSongList}
-    />
-  ), [localSongs, visibleSongs, currentSongIndex, isPlaying, loadMoreSongs]);
+  const memoizedSongList = useMemo(
+    () => (
+      <SongList
+        songs={localSongs}
+        visibleSongs={visibleSongs}
+        currentSongIndex={currentSongIndex}
+        isPlaying={isPlaying}
+        onSongSelect={(index) => {
+          setCurrentSongIndex(index);
+          setIsPlaying(true);
+          setIsLoading(true);
+        }}
+        onLoadMore={loadMoreSongs}
+        onCollapse={collapseSongList}
+      />
+    ),
+    [localSongs, visibleSongs, currentSongIndex, isPlaying, loadMoreSongs]
+  );
 
   return (
     <div className="music-player bg-white shadow-lg min-h-screen flex flex-col w-full max-w-6xl mx-auto">
@@ -444,7 +417,8 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
                         onClick={previousSong}
                         className="flex-1 bg-gradient-to-r from-purple-500 to-indigo-500 text-white py-3 px-4 rounded text-xs sm:text-sm font-semibold shadow-md hover:from-purple-600 hover:to-indigo-600 transition duration-300 flex items-center justify-center"
                       >
-                        <FaChevronUp className="mr-1 text-xs sm:text-sm" /> Poprzedni
+                        <FaChevronUp className="mr-1 text-xs sm:text-sm" />{" "}
+                        Poprzedni
                       </button>
                       <button
                         onClick={togglePlayback}
@@ -460,20 +434,13 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
                         onClick={nextSong}
                         className="flex-1 bg-gradient-to-r from-indigo-500 to-pink-500 text-white py-3 px-4 rounded text-xs sm:text-sm font-semibold shadow-md hover:from-indigo-600 hover:to-pink-600 transition duration-300 flex items-center justify-center"
                       >
-                        Następny <FaChevronDown className="ml-1 text-xs sm:text-sm" />
+                        Następny{" "}
+                        <FaChevronDown className="ml-1 text-xs sm:text-sm" />
                       </button>
                     </div>
                   </div>
                 </>
               )}
-            </div>
-            <div className="p-6">
-              <div className="md:hidden">
-                <h1 className="border-2 border-purple-500 p-4 rounded-lg text-center text-sm">
-                  Miejsce pod reklamę na telefony
-                </h1>
-              </div>
-              {/* Tutaj możesz dodać dodatkową zawartość, która będzie przewijana pod odtwarzaczem */}
             </div>
           </div>
         </div>
