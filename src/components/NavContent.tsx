@@ -68,6 +68,13 @@ export function NavContent() {
             <li>
               <Link href="/profile">Profil</Link>
             </li>
+            {user.role === 'admin' && (
+              <li>
+                <Link href="/admin" className="text-yellow-400 hover:text-yellow-300">
+                  Panel Admin
+                </Link>
+              </li>
+            )}
             <li>
               <button onClick={handleLogout}>Wyloguj</button>
             </li>
