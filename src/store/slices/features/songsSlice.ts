@@ -14,6 +14,15 @@ export const fetchSongs = createAsyncThunk(
   }
 );
 
+export const deleteSongAndRefetch = createAsyncThunk(
+  'songs/deleteSongAndRefetch',
+  async (id: string, { dispatch }) => {
+    const response = await fetch(`/api/songs/${id}`, { method: 'DELETE' });
+    if (!response.ok) throw new Error('Failed to delete song');
+    await dispatch(fetchSongs());
+  }
+);
+
 const songsSlice = createSlice({
   name: 'songs',
   initialState: {
@@ -30,6 +39,9 @@ const songsSlice = createSlice({
     },
     setSongs: (state, action: PayloadAction<Song[]>) => {
       state.songs = action.payload;
+    },
+    removeSong: (state, action: PayloadAction<string>) => {
+      state.songs = state.songs.filter(song => song.id !== action.payload);
     }
   },
   extraReducers: (builder) => {

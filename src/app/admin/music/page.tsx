@@ -4,6 +4,7 @@ import {
   deleteSong,
   setSongs,
   fetchSongs,
+  deleteSongAndRefetch
 } from "@/store/slices/features/songsSlice";
 import { Song as SongModel } from "@/models/Song";
 import { Song } from "@/app/muzyka/types";
@@ -47,7 +48,8 @@ const AdminMusicPage = () => {
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorData = await response.json();
+        throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
       }
 
       const result = await response.json();
@@ -55,7 +57,7 @@ const AdminMusicPage = () => {
 
       if (result.success) {
         console.log("Piosenka dodana pomyślnie");
-        await dispatch(fetchSongs());
+        dispatch(fetchSongs());
       } else {
         console.error("Błąd podczas dodawania piosenki:", result.error);
       }
@@ -66,27 +68,8 @@ const AdminMusicPage = () => {
 
   const handleDeleteSong = async (id: string) => {
     try {
-      console.log("Próba usunięcia piosenki o ID:", id);
-      const response = await fetch(`/api/songs/${id}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const result = await response.json();
-      console.log("Odpowiedź serwera:", result);
-
-      if (result.success) {
-        console.log("Piosenka usunięta pomyślnie");
-        await dispatch(fetchSongs());
-      } else {
-        console.error("Błąd podczas usuwania piosenki:", result.error);
-      }
+      await dispatch(deleteSongAndRefetch(id));
+      console.log("Piosenka usunięta pomyślnie");
     } catch (error) {
       console.error("Błąd podczas usuwania piosenki:", error);
     }
