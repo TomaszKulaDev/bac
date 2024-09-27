@@ -9,7 +9,7 @@ export default function VerifyComponent() {
   // Stan przechowujący informację o sukcesie weryfikacji
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const searchParams = useSearchParams();
-  const token = searchParams.get("token"); // Pobieranie tokena z query parametru
+  const token = searchParams?.get("token") ?? null; // Pobieranie tokena z query parametru
 
   useEffect(() => {
     if (token) {

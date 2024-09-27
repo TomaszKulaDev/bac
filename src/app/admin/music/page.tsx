@@ -8,6 +8,7 @@ import {
   addSong,
   deleteSong,
   setSongs,
+  fetchSongs
 } from "@/store/slices/features/songsSlice";
 import { Song as SongModel } from "@/models/Song";
 import { Song } from "@/app/muzyka/types";
@@ -18,44 +19,13 @@ import AdminLayout from "../AdminLayout";
 
 const AdminMusicPage = () => {
   const dispatch = useDispatch();
-  const songs = useSelector((state: RootState) => state.songs.songs);
+  const { songs, status, error } = useSelector((state: RootState) => state.songs);
 
   useEffect(() => {
-    const fetchSongs = async () => {
-      console.log("AdminMusicPage fetchSongs: Start");
-      if (songs.length === 0) {
-        try {
-          const response = await fetch("/api/songs");
-          if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(
-              `HTTP error! status: ${response.status}, message: ${errorData.error}`
-            );
-          }
-          const fetchedSongs = await response.json();
-          console.log("AdminMusicPage fetchSongs: Songs fetched", fetchedSongs);
-          const formattedSongs: Song[] = fetchedSongs.map((song: any) => ({
-            id: song._id.toString(),
-            title: song.title,
-            artist: song.artist,
-            youtubeId: song.youtubeId,
-            votes: song.votes,
-            score: song.score,
-            isFavorite: song.isFavorite,
-            userVote: null,
-          }));
-          dispatch(setSongs(formattedSongs));
-        } catch (error) {
-          console.error(
-            "AdminMusicPage fetchSongs: Błąd podczas pobierania piosenek:",
-            error
-          );
-        }
-      }
-    };
-
-    fetchSongs();
-  }, [dispatch, songs.length]);
+    if (status === 'idle') {
+      dispatch(fetchSongs() as any);
+    }
+  }, [status, dispatch]);
 
   const handleAddSong = async (newSong: {
     title: string;
@@ -95,6 +65,7 @@ const AdminMusicPage = () => {
       if (response.ok) {
         console.log("Piosenka dodana pomyślnie");
         dispatch(addSong(song));
+        dispatch(fetchSongs() as any);
       } else {
         const errorData = await response.json();
         console.error("Błąd podczas dodawania piosenki:", errorData);
@@ -113,6 +84,7 @@ const AdminMusicPage = () => {
       if (response.ok) {
         console.log("Piosenka usunięta pomyślnie");
         dispatch(deleteSong(id));
+        dispatch(fetchSongs() as any);
       } else {
         const errorData = await response.json();
         console.error("Błąd podczas usuwania piosenki:", errorData);
@@ -121,6 +93,14 @@ const AdminMusicPage = () => {
       console.error("Błąd podczas usuwania piosenki:", error);
     }
   };
+
+  if (status === 'loading') {
+    return <div>Ładowanie...</div>;
+  }
+
+  if (status === 'failed') {
+    return <div>Błąd: {error}</div>;
+  }
 
   return (
     <AdminLayout>

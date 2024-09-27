@@ -37,20 +37,12 @@ const calculateScore = (votes: number, isFavorite: boolean) => {
   return votes + (isFavorite ? 1 : 0);
 };
 
-const MusicPlayer: React.FC = () => {
-  const songs = useSelector((state: RootState) => state.songs.songs);
-  const [localSongs, setLocalSongs] = useState<Song[]>([]);
-
-  useEffect(() => {
-    setLocalSongs(songs);
-  }, [songs]);
-
-  const [currentSongIndex, setCurrentSongIndex] = useState(0);
-
+const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
   const isLoggedIn = useSelector(
     (state: RootState) => state.auth.isAuthenticated
   );
 
+  const [currentSongIndex, setCurrentSongIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const playerRef = useRef<any>(null);
@@ -75,6 +67,7 @@ const MusicPlayer: React.FC = () => {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [isPlayerReady, setIsPlayerReady] = useState(false);
+  const [localSongs, setLocalSongs] = useState<Song[]>(songs);
 
   const opts: YouTubeProps["opts"] = {
     width: "100%",
@@ -93,7 +86,7 @@ const MusicPlayer: React.FC = () => {
     if (currentSongIndex > 0) {
       setCurrentSongIndex(currentSongIndex - 1);
     } else {
-      setCurrentSongIndex(localSongs.length - 1);
+      setCurrentSongIndex(songs.length - 1);
     }
     setIsPlaying(true);
     setIsLoading(true);
@@ -111,7 +104,7 @@ const MusicPlayer: React.FC = () => {
   }, [player, isPlaying, isPlayerReady]);
 
   const nextSong = () => {
-    if (currentSongIndex < localSongs.length - 1) {
+    if (currentSongIndex < songs.length - 1) {
       setCurrentSongIndex(currentSongIndex + 1);
     } else {
       setCurrentSongIndex(0);
@@ -126,8 +119,8 @@ const MusicPlayer: React.FC = () => {
       return;
     }
 
-    setLocalSongs((prevSongs) =>
-      prevSongs.map((song) => {
+    setLocalSongs((prevSongs: Song[]) =>
+      prevSongs.map((song: Song) => {
         if (song.id === songId) {
           let voteChange = 0;
           let newUserVote = voteType;
@@ -163,8 +156,8 @@ const MusicPlayer: React.FC = () => {
 
   const toggleFavorite = (songId: string) => {
     if (isLoggedIn) {
-      setLocalSongs((prevSongs) =>
-        prevSongs.map((song) =>
+      setLocalSongs((prevSongs: Song[]) =>
+        prevSongs.map((song: Song) =>
           song.id === songId ? { ...song, isFavorite: !song.isFavorite } : song
         )
       );
@@ -175,16 +168,16 @@ const MusicPlayer: React.FC = () => {
 
   const loadMoreSongs = useCallback(() => {
     setVisibleSongs((prevVisible) =>
-      Math.min(prevVisible + songsPerLoad, localSongs.length)
+      Math.min(prevVisible + songsPerLoad, songs.length)
     );
-  }, [songsPerLoad, localSongs.length]);
+  }, [songsPerLoad, songs.length]);
 
   const collapseSongList = () => {
     setVisibleSongs(initialVisibleSongs);
   };
 
   const sortSongs = useCallback(() => {
-    setLocalSongs((prevSongs) => {
+    setLocalSongs((prevSongs: Song[]) => {
       const sortedSongs = [...prevSongs].sort((a, b) => b.score - a.score);
       return JSON.stringify(sortedSongs) !== JSON.stringify(prevSongs)
         ? sortedSongs
@@ -193,12 +186,12 @@ const MusicPlayer: React.FC = () => {
   }, []);
 
   const songScores = useMemo(
-    () => localSongs.map((song) => song.score).join(","),
-    [localSongs]
+    () => songs.map((song) => song.score).join(","),
+    [songs]
   );
 
   useEffect(() => {
-    if (localSongs.length > 0) {
+    if (songs.length > 0) {
       try {
         sortSongs();
       } catch (error) {
@@ -206,20 +199,24 @@ const MusicPlayer: React.FC = () => {
         setError("Wystąpił problem z sortowaniem piosenek. Spróbuj odświeżyć stronę.");
       }
     }
-  }, [songScores, sortSongs, localSongs.length]);
+  }, [songScores, sortSongs, songs.length]);
 
   const onReady = (event: { target: any }) => {
-    setPlayer(event.target);
-    setIsPlayerReady(true);
-    setError(null);
+    if (event.target) {
+      setPlayer(event.target);
+      setIsPlayerReady(true);
+      setError(null);
+    } else {
+      console.error("Nie można zainicjalizować odtwarzacza YouTube");
+      setError("Nie można załadować odtwarzacza YouTube");
+    }
   };
 
   const onError = (event: { data: number }) => {
     console.error("Błąd YouTube:", event.data);
     let errorMessage = "Wystąpił błąd podczas ładowania filmu.";
     if (adBlockerDetected) {
-      errorMessage +=
-        " Sprawdź swoje ustawienia prywatności lub blokery reklam.";
+      errorMessage += " Sprawdź swoje ustawienia prywatności lub blokery reklam.";
     }
     setError(errorMessage);
   };
@@ -448,7 +445,7 @@ const MusicPlayer: React.FC = () => {
             <div>
               <h1 className="text-2xl font-bold">Bachata Top Playlist 2024</h1>
               <p className="text-xs opacity-75">
-                {localSongs.length} utworów • Zaktualizowano:{" "}
+                {songs.length} utworów • Zaktualizowano:{" "}
                 {new Date().toLocaleDateString()}
               </p>
             </div>
@@ -471,10 +468,10 @@ const MusicPlayer: React.FC = () => {
               }}
             >
               {error && <div className="error-message">{error}</div>}
-              {localSongs.length > 0 && (
+              {songs.length > 0 && (
                 <>
                   <YouTube
-                    videoId={localSongs[currentSongIndex]?.youtubeId}
+                    videoId={songs[currentSongIndex]?.youtubeId}
                     opts={opts}
                     onReady={onReady}
                     onError={onError}
@@ -484,13 +481,13 @@ const MusicPlayer: React.FC = () => {
                     className="w-full h-full"
                   />
                   <div className="flex flex-col space-y-4 mt-4 px-4">
-                    {localSongs[currentSongIndex] && (
+                    {songs[currentSongIndex] && (
                       <VotingButtons
-                        songId={localSongs[currentSongIndex].id}
-                        votes={localSongs[currentSongIndex].votes}
-                        isFavorite={localSongs[currentSongIndex].isFavorite}
+                        songId={songs[currentSongIndex].id}
+                        votes={songs[currentSongIndex].votes}
+                        isFavorite={songs[currentSongIndex].isFavorite}
                         isLoggedIn={isLoggedIn}
-                        userVote={localSongs[currentSongIndex].userVote}
+                        userVote={songs[currentSongIndex].userVote}
                         onVote={handleVote}
                         onToggleFavorite={toggleFavorite}
                         onShowLoginModal={handleShowLoginModal}

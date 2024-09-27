@@ -11,4 +11,6 @@ export interface Song {
   userVote: "up" | "down" | null;
 }
 
-export interface MusicPlayerProps {}
+export interface MusicPlayerProps {
+  songs: Song[];
+}
