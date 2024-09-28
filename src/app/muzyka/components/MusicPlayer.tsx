@@ -405,36 +405,36 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
                     onEnd={nextSong}
                     className="w-full h-full"
                   />
-                  <div className="flex flex-col space-y-4 mt-4 px-4">
-                    <div className="flex justify-between items-center mt-4">
-                      <button
-                        onClick={previousSong}
-                        className="flex-1 bg-gradient-to-r from-purple-500 to-indigo-500 text-white py-3 px-4 rounded text-xs sm:text-sm font-semibold shadow-md hover:from-purple-600 hover:to-indigo-600 transition duration-300 flex items-center justify-center"
-                      >
-                        <FaChevronUp className="mr-1 text-xs sm:text-sm" />{" "}
-                        Poprzedni
-                      </button>
-                      <button
-                        onClick={togglePlayback}
-                        className="mx-2 w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-full shadow-md hover:from-pink-600 hover:to-purple-600 transition duration-300 flex items-center justify-center"
-                      >
-                        {isPlaying ? (
-                          <FaPause className="text-lg sm:text-xl" />
-                        ) : (
-                          <FaPlay className="text-lg sm:text-xl ml-0.5" />
-                        )}
-                      </button>
-                      <button
-                        onClick={nextSong}
-                        className="flex-1 bg-gradient-to-r from-indigo-500 to-pink-500 text-white py-3 px-4 rounded text-xs sm:text-sm font-semibold shadow-md hover:from-indigo-600 hover:to-pink-600 transition duration-300 flex items-center justify-center"
-                      >
-                        Następny{" "}
-                        <FaChevronDown className="ml-1 text-xs sm:text-sm" />
-                      </button>
-                    </div>
-                  </div>
                 </>
               )}
+            </div>
+            <div className="flex flex-col space-y-4 mt-4 px-4">
+              <div className="flex justify-between items-center mt-4">
+                <button
+                  onClick={previousSong}
+                  className="flex-1 bg-gradient-to-r from-purple-500 to-indigo-500 text-white py-3 px-4 rounded text-xs sm:text-sm font-semibold shadow-md hover:from-purple-600 hover:to-indigo-600 transition duration-300 flex items-center justify-center"
+                >
+                  <FaChevronUp className="mr-1 text-xs sm:text-sm" />{" "}
+                  Poprzedni
+                </button>
+                <button
+                  onClick={togglePlayback}
+                  className="mx-2 w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-full shadow-md hover:from-pink-600 hover:to-purple-600 transition duration-300 flex items-center justify-center"
+                >
+                  {isPlaying ? (
+                    <FaPause className="text-lg sm:text-xl" />
+                  ) : (
+                    <FaPlay className="text-lg sm:text-xl ml-0.5" />
+                  )}
+                </button>
+                <button
+                  onClick={nextSong}
+                  className="flex-1 bg-gradient-to-r from-indigo-500 to-pink-500 text-white py-3 px-4 rounded text-xs sm:text-sm font-semibold shadow-md hover:from-indigo-600 hover:to-pink-600 transition duration-300 flex items-center justify-center"
+                >
+                  Następny{" "}
+                  <FaChevronDown className="ml-1 text-xs sm:text-sm" />
+                </button>
+              </div>
             </div>
           </div>
         </div>
