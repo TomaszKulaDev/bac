@@ -11,7 +11,7 @@ import BoxOfSongs from "./components/BoxOfSongs";
 
 export default function Muzyka() {
   const dispatch = useDispatch();
-  const { songs, status, error } = useSelector(
+  const { songs, status, error, currentSongIndex } = useSelector(
     (state: RootState) => state.songs
   );
 
@@ -32,7 +32,7 @@ export default function Muzyka() {
   return (
     <div className="min-h-screen bg-gray-100 p-8">
       <h1 className="text-4xl font-bold text-blue-500 mb-8">Muzyka</h1>
-      <BoxOfSongs songs={songs.slice(0, 12)} />
+      <BoxOfSongs songs={songs} currentSongIndex={currentSongIndex} />
       {songs.length > 0 ? (
         <MusicPlayer songs={songs} />
       ) : (
