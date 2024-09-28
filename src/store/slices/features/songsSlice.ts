@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction, createAction } from '@reduxjs/toolkit';
 import { Song } from '@/app/muzyka/types';
 
 export const fetchSongs = createAsyncThunk(
@@ -23,12 +23,15 @@ export const deleteSongAndRefetch = createAsyncThunk(
   }
 );
 
+export const setCurrentSongIndex = createAction<number>('songs/setCurrentSongIndex');
+
 const songsSlice = createSlice({
   name: 'songs',
   initialState: {
     songs: [] as Song[],
     status: 'idle',
-    error: null as string | null
+    error: null as string | null,
+    currentSongIndex: 0
   },
   reducers: {
     addSong: (state, action: PayloadAction<Song>) => {
@@ -61,6 +64,9 @@ const songsSlice = createSlice({
       .addCase(fetchSongs.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message || null;
+      })
+      .addCase(setCurrentSongIndex, (state, action) => {
+        state.currentSongIndex = action.payload;
       });
   }
 });

@@ -2,6 +2,7 @@
 
 "use client";
 
+
 import React, {
   useState,
   useEffect,
@@ -9,7 +10,7 @@ import React, {
   useCallback,
   useMemo,
 } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import YouTube, { YouTubeProps } from "react-youtube";
 import {
   FaPlay,
@@ -31,17 +32,22 @@ import Image from "next/image";
 import { Song } from "../types";
 import { RootState } from "../../../store/store";
 import SongList from "./SongList";
+import { setCurrentSongIndex } from '@/store/slices/features/songsSlice';
 
 const getYouTubeThumbnail = (youtubeId: string) => {
   return `https://img.youtube.com/vi/${youtubeId}/0.jpg`;
 };
 
+
 const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
+  const dispatch = useDispatch();
+  const currentSongIndex = useSelector((state: RootState) => state.songs.currentSongIndex);
+
   const isLoggedIn = useSelector(
     (state: RootState) => state.auth.isAuthenticated
   );
 
-  const [currentSongIndex, setCurrentSongIndex] = useState(0);
+
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const playerRef = useRef<any>(null);
@@ -76,6 +82,7 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
     },
   };
 
+
   const onPlayerReady = (event: any) => {
     playerRef.current = event.target;
     setIsLoading(false);
@@ -83,9 +90,9 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
 
   const previousSong = () => {
     if (currentSongIndex > 0) {
-      setCurrentSongIndex(currentSongIndex - 1);
+      dispatch(setCurrentSongIndex(currentSongIndex - 1));
     } else {
-      setCurrentSongIndex(songs.length - 1);
+      dispatch(setCurrentSongIndex(songs.length - 1));
     }
     setIsPlaying(true);
     setIsLoading(true);
@@ -104,9 +111,9 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
 
   const nextSong = () => {
     if (currentSongIndex < songs.length - 1) {
-      setCurrentSongIndex(currentSongIndex + 1);
+      dispatch(setCurrentSongIndex(currentSongIndex + 1));
     } else {
-      setCurrentSongIndex(0);
+      dispatch(setCurrentSongIndex(0));
     }
     setIsPlaying(true);
     setIsLoading(true);
@@ -121,6 +128,7 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
   const collapseSongList = () => {
     setVisibleSongs(initialVisibleSongs);
   };
+
 
   const onReady = (event: { target: any }) => {
     if (event.target) {
@@ -181,6 +189,7 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
         },
         body: JSON.stringify(formData),
       });
+
 
       if (response.ok) {
         console.log("Formularz wysłany pomyślnie");
@@ -350,7 +359,7 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
         currentSongIndex={currentSongIndex}
         isPlaying={isPlaying}
         onSongSelect={(index) => {
-          setCurrentSongIndex(index);
+          dispatch(setCurrentSongIndex(index));
           setIsPlaying(true);
           setIsLoading(true);
         }}
@@ -358,8 +367,31 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
         onCollapse={collapseSongList}
       />
     ),
-    [localSongs, visibleSongs, currentSongIndex, isPlaying, loadMoreSongs]
+    [localSongs, visibleSongs, currentSongIndex, isPlaying, loadMoreSongs, dispatch]
   );
+
+  useEffect(() => {
+    if (player && isPlayerReady && songs.length > 0 && songs[currentSongIndex]) {
+      setIsPlaying(true);
+      setIsLoading(true);
+      try {
+        player.loadVideoById(songs[currentSongIndex].youtubeId);
+      } catch (error) {
+        console.error("Błąd podczas ładowania filmu:", error);
+        setError("Nie można załadować wybranego utworu");
+      }
+    } else if (songs.length === 0) {
+      setError("Brak dostępnych piosenek");
+    } else if (!player || !isPlayerReady) {
+      setError("Odtwarzacz nie jest gotowy");
+    }
+  }, [songs, currentSongIndex, player, isPlayerReady]);
+
+  useEffect(() => {
+    if (currentSongIndex >= songs.length && songs.length > 0) {
+      setCurrentSongIndex(0);
+    }
+  }, [songs.length, currentSongIndex]);
 
   return (
     <div className="music-player bg-white shadow-lg min-h-screen flex flex-col w-full max-w-6xl mx-auto">
@@ -443,5 +475,6 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
     </div>
   );
 };
+
 
 export default MusicPlayer;
