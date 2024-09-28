@@ -55,9 +55,6 @@ export async function POST(request: Request) {
       title,
       artist,
       youtubeId,
-      votes: 0,
-      score: 0,
-      isFavorite: false
     });
 
     await newSong.save();

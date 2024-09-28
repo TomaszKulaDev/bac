@@ -56,10 +56,6 @@ const songsSlice = createSlice({
           title: song.title,
           artist: song.artist,
           youtubeId: song.youtubeId,
-          votes: song.votes,
-          score: song.score,
-          isFavorite: song.isFavorite,
-          userVote: null,
         }));
       })
       .addCase(fetchSongs.rejected, (state, action) => {

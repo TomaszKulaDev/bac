@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { connectToDatabase } from '@/lib/mongodb';
-import { Song } from '@/models/Song';
+import { connectToDatabase } from "@/lib/mongodb";
+import { Song } from "@/models/Song";
 
 // Funkcja walidacyjna do sprawdzania poprawności linku do YouTube
 function isValidYoutubeLink(url: string): boolean {
@@ -41,7 +41,11 @@ export async function POST(request: Request) {
     }
     console.log("POST /api/submit-song: Start");
     const { title, artist, youtubeLink } = await request.json();
-    console.log("POST /api/submit-song: Received data", { title, artist, youtubeLink });
+    console.log("POST /api/submit-song: Received data", {
+      title,
+      artist,
+      youtubeLink,
+    });
 
     if (!title || !artist || !youtubeLink) {
       console.log("POST /api/submit-song: Missing fields");
@@ -52,7 +56,7 @@ export async function POST(request: Request) {
     }
 
     // Wyodrębnij youtubeId z youtubeLink
-    const youtubeId = youtubeLink.split('v=')[1];
+    const youtubeId = youtubeLink.split("v=")[1];
     if (!youtubeId) {
       console.log("POST /api/submit-song: Invalid YouTube link");
       return NextResponse.json(
@@ -65,9 +69,6 @@ export async function POST(request: Request) {
       title,
       artist,
       youtubeId,
-      votes: 0,
-      score: 0,
-      isFavorite: false
     });
 
     await newSong.save();
@@ -77,7 +78,10 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("Błąd podczas zgłaszania utworu:", error);
     return NextResponse.json(
-      { error: "Wystąpił błąd podczas zgłaszania utworu", details: error instanceof Error ? error.message : 'Unknown error' },
+      {
+        error: "Wystąpił błąd podczas zgłaszania utworu",
+        details: error instanceof Error ? error.message : "Unknown error",
+      },
       { status: 500 }
     );
   }

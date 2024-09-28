@@ -36,10 +36,6 @@ const getYouTubeThumbnail = (youtubeId: string) => {
   return `https://img.youtube.com/vi/${youtubeId}/0.jpg`;
 };
 
-const calculateScore = (votes: number, isFavorite: boolean) => {
-  return votes + (isFavorite ? 1 : 0);
-};
-
 const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
   const isLoggedIn = useSelector(
     (state: RootState) => state.auth.isAuthenticated
