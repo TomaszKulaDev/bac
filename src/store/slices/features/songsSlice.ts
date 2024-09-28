@@ -35,13 +35,13 @@ const songsSlice = createSlice({
       state.songs.push(action.payload);
     },
     deleteSong: (state, action: PayloadAction<string>) => {
-      state.songs = state.songs.filter(song => song.id !== action.payload);
+      state.songs = state.songs.filter(song => song._id !== action.payload);
     },
     setSongs: (state, action: PayloadAction<Song[]>) => {
       state.songs = action.payload;
     },
     removeSong: (state, action: PayloadAction<string>) => {
-      state.songs = state.songs.filter(song => song.id !== action.payload);
+      state.songs = state.songs.filter(song => song._id !== action.payload);
     }
   },
   extraReducers: (builder) => {
