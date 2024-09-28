@@ -31,6 +31,9 @@ const SongList: React.FC<SongListProps> = ({
   onCollapse,
 }) => {
   console.log("Piosenki w SongList:", songs);
+  songs.forEach((song, index) => {
+    console.log(`Piosenka ${index + 1}:`, song._id ? `ID: ${song._id}` : 'Brak ID');
+  });
   const getYouTubeThumbnail = (youtubeId: string) => {
     return `https://img.youtube.com/vi/${youtubeId}/0.jpg`;
   };
@@ -38,7 +41,7 @@ const SongList: React.FC<SongListProps> = ({
   return (
     <div className="song-list md:order-1 md:w-2/5 border-r border-gray-200 overflow-y-auto">
       {songs.slice(0, visibleSongs).map((song, index) => (
-        <React.Fragment key={song._id}>
+        <React.Fragment key={song._id || `song-${index}`}>
           <div
             className={`song-item p-4 cursor-pointer hover:bg-gray-100 transition duration-300 ease-in-out ${
               currentSongIndex === index ? "bg-gray-200" : ""
@@ -75,13 +78,15 @@ const SongList: React.FC<SongListProps> = ({
           {(index + 1) % 10 === 0 &&
             index + 1 < visibleSongs &&
             index + 1 !== songs.length && (
-              <button
-                className="w-full p-2 bg-gray-100 text-blue-500 hover:bg-gray-200 transition duration-300 flex items-center justify-center text-sm"
-                onClick={onCollapse}
-              >
-                <FaChevronUp className="mr-2" />
-                Zwiń listę
-              </button>
+              <React.Fragment key={`collapse-${song._id || index}`}>
+                <button
+                  className="w-full p-2 bg-gray-100 text-blue-500 hover:bg-gray-200 transition duration-300 flex items-center justify-center text-sm"
+                  onClick={onCollapse}
+                >
+                  <FaChevronUp className="mr-2" />
+                  Zwiń listę
+                </button>
+              </React.Fragment>
             )}
         </React.Fragment>
       ))}

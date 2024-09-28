@@ -30,6 +30,9 @@ const AdminMusicPage = () => {
 
   useEffect(() => {
     console.log("Aktualny stan piosenek:", songs);
+    songs.forEach((song, index) => {
+      console.log(`Piosenka ${index + 1} w AdminMusicPage:`, song.id ? `ID: ${song.id}` : 'Brak ID', 'Indeks:', index);
+    });
   }, [songs]);
 
   const handleAddSong = async (newSong: {
