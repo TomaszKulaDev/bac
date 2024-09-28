@@ -131,7 +131,7 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
 
 
   const onReady = (event: { target: any }) => {
-    if (event.target) {
+    if (event.target && typeof event.target.loadVideoById === 'function') {
       setPlayer(event.target);
       setIsPlayerReady(true);
       setError(null);
