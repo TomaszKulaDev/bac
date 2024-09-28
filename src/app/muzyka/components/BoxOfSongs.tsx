@@ -1,16 +1,19 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
 import Image from "next/image";
 import { Song } from "../types";
-import { useDispatch } from 'react-redux';
-import { setCurrentSongIndex } from '@/store/slices/features/songsSlice';
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { useDispatch } from "react-redux";
+import { setCurrentSongIndex } from "@/store/slices/features/songsSlice";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 interface BoxOfSongsProps {
   songs: Song[];
   currentSongIndex: number;
 }
 
-const BoxOfSongs: React.FC<BoxOfSongsProps> = ({ songs, currentSongIndex }) => {
+const BoxOfSongs: React.FC<BoxOfSongsProps> = ({
+  songs = [],
+  currentSongIndex,
+}) => {
   const dispatch = useDispatch();
   const [offset, setOffset] = useState(0);
 
@@ -22,9 +25,9 @@ const BoxOfSongs: React.FC<BoxOfSongsProps> = ({ songs, currentSongIndex }) => {
     setOffset((prevOffset) => (prevOffset + 1) % songs.length);
   }, [songs.length]);
 
-  const prevSlide = () => {
+  const prevSlide = useCallback(() => {
     setOffset((prevOffset) => (prevOffset - 1 + songs.length) % songs.length);
-  };
+  }, [songs.length]);
 
   useEffect(() => {
     const interval = setInterval(nextSlide, 3000);
@@ -32,40 +35,60 @@ const BoxOfSongs: React.FC<BoxOfSongsProps> = ({ songs, currentSongIndex }) => {
   }, [nextSlide]);
 
   const visibleSongs = useMemo(() => {
-    return [...songs.slice(offset), ...songs.slice(0, offset)].slice(0, 12);
+    const totalSongs = songs.length;
+    return Array.from(
+      { length: 14 },
+      (_, i) => songs[(offset + i) % totalSongs]
+    ).filter((song) => song !== undefined);
   }, [songs, offset]);
+
+  console.log("Current Song Index:", currentSongIndex);
 
   return (
     <div className="mb-8 p-4 border-2 border-blue-500 rounded-lg overflow-hidden relative">
       <h2 className="text-2xl font-bold text-gray-800 mb-4">
         Wszystkie piosenki
       </h2>
-      <div className="flex items-center">
-        <button onClick={prevSlide} className="p-2 bg-gray-200 rounded-full mr-2">
+      <div className="relative">
+        <button
+          onClick={prevSlide}
+          className="absolute left-0 top-1/2 transform -translate-y-1/2 p-2 bg-gray-200 rounded-full z-10"
+        >
           <FaChevronLeft />
         </button>
-        <div className="flex gap-4 transition-transform duration-1000 ease-in-out overflow-hidden" style={{ transform: `translateX(-${offset * 88}px)` }}>
-          {visibleSongs.map((song, index) => (
-            <div
-              key={song._id}
-              className={`w-20 h-20 flex-shrink-0 relative rounded-lg overflow-hidden border-2 ${
-                (index + offset) % songs.length === currentSongIndex
-                  ? 'border-green-500 shadow-lg'
-                  : 'border-purple-300'
-              } cursor-pointer transition-transform hover:scale-105`}
-              onClick={() => handleSongSelect((index + offset) % songs.length)}
-            >
-              <Image
-                src={`https://img.youtube.com/vi/${song.youtubeId}/0.jpg`}
-                alt={song.title}
-                layout="fill"
-                objectFit="cover"
-              />
-              <SongTooltip song={song} />
-            </div>
-          ))}
+        <div className="overflow-hidden">
+          <div
+            className="flex gap-4 transition-transform duration-1000 ease-in-out"
+            style={{ transform: `translateX(-${offset * 88}px)` }}
+          >
+            {visibleSongs.map(
+              (song, index) =>
+                song && (
+                  <div
+                    key={song._id}
+                    className={`w-20 h-20 flex-shrink-0 relative rounded-lg overflow-hidden border-2 ${
+                      (index + offset) % songs.length === currentSongIndex
+                        ? "border-green-500 shadow-lg scale-110 z-10"
+                        : "border-purple-300"
+                    } cursor-pointer transition-transform hover:scale-105`}
+                    onClick={() => handleSongSelect(songs.indexOf(song))}
+                  >
+                    <Image
+                      src={`https://img.youtube.com/vi/${song.youtubeId}/0.jpg`}
+                      alt={song.title}
+                      layout="fill"
+                      objectFit="cover"
+                    />
+                    <SongTooltip song={song} />
+                  </div>
+                )
+            )}
+          </div>
         </div>
-        <button onClick={nextSlide} className="p-2 bg-gray-200 rounded-full ml-2">
+        <button
+          onClick={nextSlide}
+          className="absolute right-0 top-1/2 transform -translate-y-1/2 p-2 bg-gray-200 rounded-full z-10"
+        >
           <FaChevronRight />
         </button>
       </div>
