@@ -1,10 +1,10 @@
 export interface Song {
   _id: string;
-  id?: string;
   title: string;
   artist: string;
   youtubeId: string;
-  __v?: number;
+  next: string | null; // ID następnej piosenki
+  prev: string | null; // ID poprzedniej piosenki
 }
 
 export interface MusicPlayerProps {

@@ -1,4 +1,3 @@
-// src
 import React from "react";
 import Image from "next/image";
 import {
@@ -20,6 +19,8 @@ interface SongListProps {
   onSongSelect: (index: number) => void;
   onLoadMore: () => void;
   onCollapse: () => void;
+  onMoveUp: (id: string) => void;
+  onMoveDown: (id: string) => void;
 }
 
 const SongList: React.FC<SongListProps> = ({
@@ -30,6 +31,8 @@ const SongList: React.FC<SongListProps> = ({
   onSongSelect,
   onLoadMore,
   onCollapse,
+  onMoveUp,
+  onMoveDown,
 }) => {
   console.log("Piosenki w SongList:", songs);
   songs.forEach((song, index) => {
@@ -42,7 +45,7 @@ const SongList: React.FC<SongListProps> = ({
   return (
     <div className="song-list md:order-1 md:w-2/5 border-r border-gray-200 overflow-y-auto">
       {songs.slice(0, visibleSongs).map((song, index) => (
-        <React.Fragment key={song._id || `song-${index}`}>
+        <React.Fragment key={song._id}>
           <div
             className={`song-item p-4 cursor-pointer hover:bg-gray-100 transition duration-300 ease-in-out ${
               currentSongIndex === index ? "bg-gray-200" : ""
@@ -68,7 +71,13 @@ const SongList: React.FC<SongListProps> = ({
                 <p className="text-sm text-gray-600 truncate">{song.artist}</p>
               </div>
             </div>
-            <div className="ml-auto flex-shrink-0">
+            <div className="ml-auto flex-shrink-0 flex">
+              <button onClick={() => onMoveUp(song._id)} className="mr-2">
+                <FaArrowUp className="text-gray-500 hover:text-blue-500" />
+              </button>
+              <button onClick={() => onMoveDown(song._id)} className="mr-2">
+                <FaArrowDown className="text-gray-500 hover:text-blue-500" />
+              </button>
               {currentSongIndex === index && isPlaying ? (
                 <FaMusic className="text-blue-500 text-xl transition-colors duration-300" />
               ) : (

@@ -342,6 +342,14 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  const handleSongSelect = useCallback((index: number) => {
+    setCurrentSongIndex(index);
+    if (player) {
+      player.loadVideoById(songs[index].youtubeId);
+      setIsPlaying(true);
+    }
+  }, [player, songs]);
+
   const memoizedSongList = useMemo(
     () => (
       <SongList
@@ -349,16 +357,14 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
         visibleSongs={visibleSongs}
         currentSongIndex={currentSongIndex}
         isPlaying={isPlaying}
-        onSongSelect={(index) => {
-          setCurrentSongIndex(index);
-          setIsPlaying(true);
-          setIsLoading(true);
-        }}
+        onSongSelect={handleSongSelect}
         onLoadMore={loadMoreSongs}
         onCollapse={collapseSongList}
+        onMoveUp={() => {}} // Tymczasowo pusta funkcja
+        onMoveDown={() => {}} // Tymczasowo pusta funkcja
       />
     ),
-    [localSongs, visibleSongs, currentSongIndex, isPlaying, loadMoreSongs]
+    [localSongs, visibleSongs, currentSongIndex, isPlaying, handleSongSelect, loadMoreSongs]
   );
 
   return (

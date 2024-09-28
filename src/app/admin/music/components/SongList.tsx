@@ -1,13 +1,14 @@
-//ponowny test
 import React from "react";
 import { Song } from '@/app/muzyka/types';
 
 interface SongListProps {
   songs: Song[];
   onDelete: (id: string) => void;
+  onMoveUp: (id: string) => void;
+  onMoveDown: (id: string) => void;
 }
 
-const SongList: React.FC<SongListProps> = ({ songs, onDelete }) => {
+const SongList: React.FC<SongListProps> = ({ songs, onDelete, onMoveUp, onMoveDown }) => {
   return (
     <div className="mt-8">
       <h2 className="text-2xl font-bold mb-4 text-gray-800">Lista utworów</h2>
@@ -23,21 +24,26 @@ const SongList: React.FC<SongListProps> = ({ songs, onDelete }) => {
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
           {songs.map((song, index) => (
-            <tr key={song.id} className="hover:bg-gray-50 transition duration-150 ease-in-out">
+            <tr key={song._id} className="hover:bg-gray-50 transition duration-150 ease-in-out">
               <td className="py-2 px-2 text-sm text-gray-900">{index + 1}</td>
               <td className="py-2 px-2 text-sm text-gray-900">{song.title}</td>
               <td className="py-2 px-2 text-sm text-gray-900">{song.artist}</td>
               <td className="py-2 px-2 text-sm text-gray-900">{song.youtubeId}</td>
               <td className="py-2 px-2 text-sm text-gray-900">
                 <button
-                  onClick={() => {
-                    console.log("Pełny obiekt piosenki:", song);
-                    if (song.id) {
-                      onDelete(song.id);
-                    } else {
-                      console.error("Błąd: Brak ID piosenki", song);
-                    }
-                  }}
+                  onClick={() => onMoveUp(song._id)}
+                  className="bg-blue-500 text-white py-1 px-2 rounded-full hover:bg-blue-600 transition duration-300 mr-2"
+                >
+                  ↑
+                </button>
+                <button
+                  onClick={() => onMoveDown(song._id)}
+                  className="bg-blue-500 text-white py-1 px-2 rounded-full hover:bg-blue-600 transition duration-300 mr-2"
+                >
+                  ↓
+                </button>
+                <button
+                  onClick={() => onDelete(song._id)}
                   className="bg-red-500 text-white py-1 px-2 rounded-full hover:bg-red-600 transition duration-300"
                 >
                   Usuń

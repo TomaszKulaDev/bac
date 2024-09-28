@@ -31,7 +31,7 @@ const AdminMusicPage = () => {
   useEffect(() => {
     console.log("Aktualny stan piosenek:", songs);
     songs.forEach((song, index) => {
-      console.log(`Piosenka ${index + 1} w AdminMusicPage:`, song.id ? `ID: ${song.id}` : 'Brak ID', 'Indeks:', index);
+      console.log(`Piosenka ${index + 1} w AdminMusicPage:`, song._id ? `ID: ${song._id}` : 'Brak ID', 'Indeks:', index);
     });
   }, [songs]);
 
@@ -78,6 +78,14 @@ const AdminMusicPage = () => {
     }
   };
 
+  const handleMoveUp = (id: string) => {
+    // Implementacja przeniesienia piosenki w górę
+  };
+
+  const handleMoveDown = (id: string) => {
+    // Implementacja przeniesienia piosenki w dół
+  };
+
   if (status === "loading") {
     return <div>Ładowanie...</div>;
   }
@@ -93,7 +101,7 @@ const AdminMusicPage = () => {
           <h1 className="text-3xl font-bold">Panel administracyjny - Muzyka</h1>
         </div>
         <AddSongForm onAddSong={handleAddSong} />
-        <SongList songs={songs} onDelete={handleDeleteSong} />
+        <SongList songs={songs} onDelete={handleDeleteSong} onMoveUp={handleMoveUp} onMoveDown={handleMoveDown} />
       </div>
     </AdminLayout>
   );
