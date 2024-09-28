@@ -58,18 +58,18 @@ const BoxOfSongs: React.FC<BoxOfSongsProps> = ({
         </button>
         <div className="overflow-hidden">
           <div
-            className="flex gap-4 transition-transform duration-1000 ease-in-out"
-            style={{ transform: `translateX(-${offset * 88}px)` }}
+            className="flex gap-2 transition-transform duration-1000 ease-in-out"
+            style={{ transform: `translateX(${offset * 120}px)` }}
           >
             {visibleSongs.map(
               (song, index) =>
                 song && (
                   <div
                     key={song._id}
-                    className={`w-20 h-20 flex-shrink-0 relative rounded-lg overflow-hidden border-2 ${
+                    className={`w-28 h-28 flex-shrink-0 relative rounded-lg overflow-hidden ${
                       (index + offset) % songs.length === currentSongIndex
-                        ? "border-green-500 shadow-lg scale-110 z-10"
-                        : "border-purple-300"
+                        ? "border-4 border-yellow-400 shadow-lg scale-110 z-10"
+                        : "border-2 border-purple-300"
                     } cursor-pointer transition-transform hover:scale-105`}
                     onClick={() => handleSongSelect(songs.indexOf(song))}
                   >
