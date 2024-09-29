@@ -22,9 +22,12 @@ const BoxOfSongs: React.FC<BoxOfSongsProps> = ({
 
   const visibleSongsCount = 14;
 
-  const handleSongSelect = useCallback((index: number) => {
-    dispatch(setCurrentSongIndex(index));
-  }, [dispatch]);
+  const handleSongSelect = useCallback(
+    (index: number) => {
+      dispatch(setCurrentSongIndex(index));
+    },
+    [dispatch]
+  );
 
   const nextSlide = useCallback(() => {
     setOffset((prevOffset) => (prevOffset + 1) % songs.length);
@@ -69,7 +72,9 @@ const BoxOfSongs: React.FC<BoxOfSongsProps> = ({
         </h2>
         <div className="flex items-center space-x-4">
           <div className="flex items-center">
-            <span className="mr-2 text-sm font-medium text-gray-700">Auto:</span>
+            <span className="mr-2 text-sm font-medium text-gray-700">
+              Auto:
+            </span>
             <Switch
               onChange={toggleAutoPlay}
               checked={isAutoPlay}
@@ -114,12 +119,22 @@ const BoxOfSongs: React.FC<BoxOfSongsProps> = ({
             </button>
           </>
         )}
-        <div className={`overflow-hidden ${showAllSongs ? 'h-96 overflow-y-auto' : ''}`}>
+        <div
+          className={`overflow-hidden ${
+            showAllSongs ? "h-96 overflow-y-auto" : ""
+          }`}
+        >
           <div
             className={`flex gap-6 ${
-              showAllSongs ? 'flex-wrap justify-center' : 'transition-transform duration-1000 ease-in-out'
+              showAllSongs
+                ? "flex-wrap justify-center"
+                : "transition-transform duration-1000 ease-in-out"
             }`}
-            style={showAllSongs ? {} : { transform: `translateX(-${offset * 124}px)` }}  // Zaktualizowano offset
+            style={
+              showAllSongs
+                ? {}
+                : { transform: `translateX(-${offset * 124}px)` }
+            } // Zaktualizowano offset
           >
             {visibleSongs.map((song) => (
               <SongThumbnail
@@ -144,39 +159,43 @@ interface SongThumbnailProps {
   showAllSongs: boolean;
 }
 
-const SongThumbnail: React.FC<SongThumbnailProps> = React.memo(({ song, isActive, onClick, showAllSongs }) => (
-  <div
-    className={`relative w-28 h-28 flex items-center justify-center transition-all duration-300 ease-in-out`}
-    onClick={onClick}
-  >
+const SongThumbnail: React.FC<SongThumbnailProps> = React.memo(
+  ({ song, isActive, onClick, showAllSongs }) => (
     <div
-      className={`rounded-lg overflow-hidden ${
-        isActive
-          ? "w-24 h-24 z-10 active-thumbnail"
-          : "w-28 h-28 border border-gray-700"
-      } cursor-pointer group transition-all duration-300 ease-in-out`}
+      className={`relative w-28 h-28 flex items-center justify-center transition-all duration-300 ease-in-out`}
+      onClick={onClick}
     >
-      <div className="relative w-full h-full">
-        <Image
-          src={`https://img.youtube.com/vi/${song.youtubeId}/0.jpg`}
-          alt={song.title}
-          layout="fill"
-          objectFit="cover"
-        />
-        <div 
-          className={`absolute inset-0 bg-gradient-to-t from-black to-transparent 
-          ${isActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'} 
+      <div
+        className={`rounded-lg overflow-hidden ${
+          isActive
+            ? "w-24 h-24 z-10 active-thumbnail"
+            : "w-28 h-28 border border-gray-700"
+        } cursor-pointer group transition-all duration-300 ease-in-out`}
+      >
+        <div className="relative w-full h-full">
+          <Image
+            src={`https://img.youtube.com/vi/${song.youtubeId}/0.jpg`}
+            alt={song.title}
+            layout="fill"
+            objectFit="cover"
+          />
+          <div
+            className={`absolute inset-0 bg-gradient-to-t from-black to-transparent 
+          ${isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"} 
           transition-opacity duration-300 flex flex-col justify-end p-2`}
-        >
-          <h3 className="text-xs font-semibold text-white truncate">{song.title}</h3>
-          <p className="text-xs text-gray-300 truncate">{song.artist}</p>
+          >
+            <h3 className="text-xs font-semibold text-white truncate">
+              {song.title}
+            </h3>
+            <p className="text-xs text-gray-300 truncate">{song.artist}</p>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-));
+  )
+);
 
-SongThumbnail.displayName = 'SongThumbnail';
+SongThumbnail.displayName = "SongThumbnail";
 
 const SongTooltip: React.FC<{ song: Song }> = ({ song }) => (
   <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 bg-black text-white p-2 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300">

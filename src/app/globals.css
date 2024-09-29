@@ -31,3 +31,12 @@ body {
     text-wrap: balance;
   }
 }
+
+html, body {
+  background-color: white !important;
+}
+
+.music-page {
+  background-color: white;
+  min-height: 100vh;
+}

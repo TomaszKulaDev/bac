@@ -9,7 +9,7 @@ interface FeatureCardProps {
 
 export default function Home(): React.ReactElement {
   return (
-    <div className="min-h-screen bg-indigo-100">
+    <div style={{backgroundColor: 'white', minHeight: '100vh'}}>
       <main className="container mx-auto px-4 py-16">
         <h1 className="text-5xl font-bold text-center text-indigo-800 mb-8">
           Baciata.pl

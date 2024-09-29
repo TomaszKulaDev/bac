@@ -55,7 +55,6 @@
 //   "typescript": "^5.6.2"
 // }
 
-
 //src/app/layout.tsx
 // Importujemy globalne style CSS, które będą miały zastosowanie do całej aplikacji
 import "./globals.css";
@@ -90,7 +89,7 @@ export default function RootLayout({
     // Ustawiamy język dokumentu na polski
     <html lang="pl">
       {/* Ustawiamy klasę czcionki Inter i kolor tekstu na szary */}
-      <body className={`${inter.className} text-gray-800`}>
+      <body className={`${inter.className} bg-global-white`}>
         {/* Owijamy aplikację w ClientProviders, aby dostarczyć kontekst dla klienta */}
         <ClientProviders>
           {/* Synchronizujemy stan autoryzacji za pomocą komponentu AuthSync */}

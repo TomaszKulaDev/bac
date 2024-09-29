@@ -27,6 +27,11 @@ const config: Config = {
           '100%': { opacity: '1', transform: 'translateY(0)' }, // Końcowy stan animacji
         },
       },
+      // Dodanie własnej klasy utility dla białego tła
+      backgroundColor: {
+        'global-white': '#ffffff',
+        'music-page': 'white',
+      },
     },
   },
   // Wtyczki Tailwind CSS
