@@ -73,13 +73,15 @@ const BoxOfSongs: React.FC<BoxOfSongsProps> = ({
             <Switch
               onChange={toggleAutoPlay}
               checked={isAutoPlay}
-              onColor="#86d3ff"
-              onHandleColor="#2693e6"
+              onColor="#1DB954"
+              offColor="#282828"
+              onHandleColor="#FFFFFF"
+              offHandleColor="#FFFFFF"
               handleDiameter={24}
               uncheckedIcon={false}
               checkedIcon={false}
               boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
-              activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
+              activeBoxShadow="0px 0px 1px 8px rgba(29, 185, 84, 0.2)"
               height={20}
               width={48}
               className="react-switch"
@@ -87,7 +89,7 @@ const BoxOfSongs: React.FC<BoxOfSongsProps> = ({
           </div>
           <button
             onClick={toggleSongDisplay}
-            className="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-md shadow-md hover:from-blue-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-300 ease-in-out text-sm font-medium"
+            className="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full shadow-md hover:from-purple-600 hover:to-pink-600 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-opacity-50 transition-all duration-300 ease-in-out text-sm font-medium"
           >
             {showAllSongs ? "Pokaż wybrane" : "Pokaż wszystkie"}
           </button>
@@ -98,14 +100,14 @@ const BoxOfSongs: React.FC<BoxOfSongsProps> = ({
           <>
             <button
               onClick={prevSlide}
-              className="absolute left-0 top-1/2 transform -translate-y-1/2 p-2 bg-gray-200 rounded-full z-10 hover:bg-gray-300 transition-colors"
+              className="absolute left-0 top-1/2 transform -translate-y-1/2 p-2 bg-blue-500 text-white rounded-full z-10 hover:bg-blue-600 transition-colors"
               aria-label="Poprzedni slajd"
             >
               <FaChevronLeft />
             </button>
             <button
               onClick={nextSlide}
-              className="absolute right-0 top-1/2 transform -translate-y-1/2 p-2 bg-gray-200 rounded-full z-10 hover:bg-gray-300 transition-colors"
+              className="absolute right-0 top-1/2 transform -translate-y-1/2 p-2 bg-blue-500 text-white rounded-full z-10 hover:bg-blue-600 transition-colors"
               aria-label="Następny slajd"
             >
               <FaChevronRight />
