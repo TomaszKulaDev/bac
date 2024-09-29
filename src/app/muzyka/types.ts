@@ -4,6 +4,7 @@ export interface Song {
   title: string;
   artist: string;
   youtubeId: string;
+  createdAt: Date; // Dodajemy pole createdAt
   __v?: number;
 }
 

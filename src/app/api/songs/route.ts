@@ -55,6 +55,7 @@ export async function POST(request: Request) {
       title,
       artist,
       youtubeId,
+      createdAt: new Date() // Dodajemy datę utworzenia
     });
 
     await newSong.save();
