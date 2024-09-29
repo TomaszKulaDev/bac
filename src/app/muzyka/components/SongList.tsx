@@ -64,7 +64,7 @@ const SongList: React.FC<SongListProps> = ({
                 />
               </div>
               <div className="min-w-0 flex-grow">
-                <h3 className="font-semibold truncate">{song.title}</h3>
+                <h3 className="font-semibold truncate text-gray-800">{song.title}</h3>
                 <p className="text-sm text-gray-600 truncate">{song.artist}</p>
               </div>
             </div>
