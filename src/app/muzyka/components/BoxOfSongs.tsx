@@ -130,18 +130,7 @@ const BoxOfSongs: React.FC<BoxOfSongsProps> = ({
             showAllSongs ? "h-96 overflow-y-auto" : ""
           }`}
         >
-          <div
-            className={`flex gap-6 ${
-              showAllSongs
-                ? "flex-wrap justify-center"
-                : "transition-transform duration-1000 ease-in-out"
-            }`}
-            style={
-              showAllSongs
-                ? {}
-                : { transform: `translateX(-${offset * 124}px)` }
-            }
-          >
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
             {visibleSongs.map((song) => (
               <SongThumbnail
                 key={song._id}

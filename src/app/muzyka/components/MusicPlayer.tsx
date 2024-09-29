@@ -28,6 +28,8 @@ import {
   FaStepBackward,
   FaStepForward,
   FaList,
+  FaExpand,
+  FaCompress,
 } from "react-icons/fa";
 import Image from "next/image";
 import { Song } from "../types";
@@ -75,6 +77,7 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [isPlayerReady, setIsPlayerReady] = useState(false);
   const [localSongs, setLocalSongs] = useState<Song[]>(songs);
+  const [isMinimalistic, setIsMinimalistic] = useState(false);
 
   const opts: YouTubeProps["opts"] = {
     width: "100%",
@@ -374,6 +377,7 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
         }}
         onLoadMore={loadMoreSongs}
         onCollapse={collapseSongList}
+        isPopularList={false}
       />
     ),
     [localSongs, visibleSongs, currentSongIndex, isPlaying, loadMoreSongs, dispatch]
@@ -402,6 +406,10 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
       setCurrentSongIndex(0);
     }
   }, [songs.length, currentSongIndex]);
+
+  const toggleMinimalisticMode = () => {
+    setIsMinimalistic(!isMinimalistic);
+  };
 
   return (
     <div className="music-player bg-white shadow-lg min-h-screen flex flex-col w-full max-w-6xl mx-auto">

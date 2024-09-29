@@ -1,5 +1,5 @@
 // src
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import Image from "next/image";
 import {
   FaArrowUp,
@@ -21,8 +21,8 @@ interface SongListProps {
   onSongSelect: (index: number) => void;
   onLoadMore: () => void;
   onCollapse: () => void;
+  isPopularList: boolean;
 }
-
 
 const SongList: React.FC<SongListProps> = ({
   songs = [],
@@ -32,13 +32,40 @@ const SongList: React.FC<SongListProps> = ({
   onSongSelect,
   onLoadMore,
   onCollapse,
+  isPopularList,
 }) => {
-  const sortedSongs = useMemo(() => {
-    return [...songs].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-  }, [songs]);
+  const [sortBy, setSortBy] = useState<'title' | 'artist' | 'date'>('date');
+  const [filterText, setFilterText] = useState('');
 
-  console.log("Piosenki w SongList:", sortedSongs);
-  sortedSongs.forEach((song, index) => {
+  const sortedAndFilteredSongs = useMemo(() => {
+    let result = [...songs];
+    
+    // Filtrowanie
+    if (filterText) {
+      result = result.filter(song => 
+        song.title.toLowerCase().includes(filterText.toLowerCase()) ||
+        song.artist.toLowerCase().includes(filterText.toLowerCase())
+      );
+    }
+    
+    // Sortowanie
+    result.sort((a, b) => {
+      switch (sortBy) {
+        case 'title':
+          return a.title.localeCompare(b.title);
+        case 'artist':
+          return a.artist.localeCompare(b.artist);
+        case 'date':
+        default:
+          return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      }
+    });
+    
+    return result;
+  }, [songs, sortBy, filterText]);
+
+  console.log("Piosenki w SongList:", sortedAndFilteredSongs);
+  sortedAndFilteredSongs.forEach((song, index) => {
     console.log(`Piosenka ${index + 1}:`, song._id ? `ID: ${song._id}` : 'Brak ID', 'Data utworzenia:', song.createdAt);
   });
   const getYouTubeThumbnail = (youtubeId: string) => {
@@ -46,72 +73,61 @@ const SongList: React.FC<SongListProps> = ({
   };
 
   return (
-    <div className="song-list md:order-1 md:w-2/5 border-r border-gray-200 overflow-y-auto">
-      {sortedSongs.slice(0, visibleSongs).map((song, index) => (
-        <React.Fragment key={song._id || `song-${index}`}>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: index * 0.05 }}
-            className={`song-item p-4 cursor-pointer hover:bg-gray-100 transition duration-300 ease-in-out ${
-              currentSongIndex === index ? "bg-gray-200" : ""
-            } flex items-center`}
-            onClick={() => onSongSelect(index)}
-          >
-            <div className="flex items-center flex-grow min-w-0">
-              <div className="w-8 h-8 mr-2 flex-shrink-0 flex items-center justify-center bg-gray-200 rounded-full">
-                <span className="text-gray-600 font-semibold">{index + 1}</span>
-              </div>
-              <div className="w-12 h-12 mr-4 relative flex-shrink-0">
-                <Image
-                  src={getYouTubeThumbnail(song.youtubeId)}
-                  alt={song.title}
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  style={{ objectFit: "cover" }}
-                  className="rounded"
-                />
-              </div>
-              <div className="min-w-0 flex-grow">
-                <h3 className="font-semibold truncate text-gray-800">{song.title}</h3>
-                <p className="text-sm text-gray-600 truncate">{song.artist}</p>
-              </div>
-            </div>
-            <div className="ml-auto flex-shrink-0">
-              {currentSongIndex === index && isPlaying ? (
-                <FaMusic className="text-blue-500 text-xl transition-colors duration-300" />
-              ) : (
-                <FaPlay className="text-gray-500 text-xl hover:text-blue-500 transition-colors duration-300" />
-              )}
-            </div>
-          </motion.div>
-          {(index + 1) % 10 === 0 &&
-            index + 1 < visibleSongs &&
-            index + 1 !== sortedSongs.length && (
-              <React.Fragment key={`collapse-${song._id || index}`}>
-                <button
-                  className="w-full p-2 bg-gray-100 text-blue-500 hover:bg-gray-200 transition duration-300 flex items-center justify-center text-sm"
-                  onClick={onCollapse}
-                >
-                  <FaChevronUp className="mr-2" />
-                  Zwiń listę
-                </button>
-              </React.Fragment>
-            )}
-        </React.Fragment>
-      ))}
-      {sortedSongs.length > visibleSongs && (
-        <button
-          className="w-full p-4 bg-gray-100 text-blue-500 hover:bg-gray-200 transition duration-300 flex items-center justify-center"
-          onClick={onLoadMore}
+    <div className={`song-list ${isPopularList ? 'popular-list' : 'full-list'}`}>
+      <div className="mb-4">
+        <input
+          type="text"
+          placeholder="Filtruj utwory..."
+          value={filterText}
+          onChange={(e) => setFilterText(e.target.value)}
+          className="p-2 border rounded w-full mb-2 text-gray-800 placeholder-gray-500"
+        />
+        <select
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value as 'title' | 'artist' | 'date')}
+          className="p-2 border rounded w-full text-gray-800"
         >
-          <FaChevronDown className="mr-2" />
-          Zobacz więcej
+          <option value="date">Sortuj po dacie</option>
+          <option value="title">Sortuj po tytule</option>
+          <option value="artist">Sortuj po artyście</option>
+        </select>
+      </div>
+      {sortedAndFilteredSongs.slice(0, visibleSongs).map((song, index) => (
+        <div
+          key={song._id || `song-${index}`}
+          className={`flex items-center p-2 hover:bg-gray-100 cursor-pointer ${
+            currentSongIndex === index ? "bg-gray-200" : ""
+          }`}
+          onClick={() => onSongSelect(index)}
+        >
+          <div className="w-10 h-10 mr-3 relative flex-shrink-0">
+            <Image
+              src={getYouTubeThumbnail(song.youtubeId)}
+              alt={song.title}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              style={{ objectFit: "cover" }}
+              className="rounded"
+            />
+          </div>
+          <div className="flex-grow min-w-0">
+            <h3 className="font-semibold truncate text-sm">{song.title}</h3>
+            <p className="text-xs text-gray-600 truncate">{song.artist}</p>
+          </div>
+          {!isPopularList && (
+            <div className="text-xs text-gray-500">
+              {new Date(song.createdAt).toLocaleDateString()}
+            </div>
+          )}
+        </div>
+      ))}
+      {!isPopularList && visibleSongs < songs.length && (
+        <button onClick={onLoadMore} className="w-full py-2 text-blue-600 hover:bg-gray-100">
+          Załaduj więcej
         </button>
       )}
     </div>
   );
 };
-
 
 export default SongList;
