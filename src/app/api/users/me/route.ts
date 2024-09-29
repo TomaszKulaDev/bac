@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
@@ -5,17 +7,16 @@ import { connectToDatabase } from "@/lib/mongodb";
 import User from "@/models/User";
 
 export async function GET(request: Request) {
-  console.log("Handler invoked");
-
+  console.log("GET /api/users/me: Start");
   try {
     await connectToDatabase();
-    console.log("Connected to database");
+    console.log("GET /api/users/me: Connected to database");
 
     const session = await getServerSession(authOptions);
-    console.log("Session:", session);
+    console.log("GET /api/users/me: Session:", session);
 
     if (!session || !session.user) {
-      console.log("User not authenticated");
+      console.log("GET /api/users/me: User not authenticated");
       return NextResponse.json(
         { message: "User not authenticated" },
         { status: 401 }
@@ -39,7 +40,7 @@ export async function GET(request: Request) {
       { status: 200 }
     );
   } catch (error) {
-    console.error("Fetching user data error:", error);
+    console.error("GET /api/users/me: Error", error);
     return NextResponse.json(
       { message: "Failed to fetch user data", error },
       { status: 500 }

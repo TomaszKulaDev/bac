@@ -8,7 +8,7 @@ export async function GET() {
     const db = await connectToDatabase();
     console.log("GET /api/songs: Connected to database");
 
-    const songs = await Song.find({}).lean();
+    const songs = await Song.find({}).sort({ createdAt: -1 }).lean();
     console.log("GET /api/songs: Songs fetched", songs);
 
     return new NextResponse(JSON.stringify(songs), {
