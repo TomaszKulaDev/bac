@@ -55,7 +55,7 @@ export async function POST(request: Request) {
       title,
       artist,
       youtubeId,
-      // createdAt: new Date() // Data jest tworzona przez baze mongodb nie ma potrzeby dodawać tego ponownie.
+      // Data jest tworzona przez baze mongodb src/models/song.ts nie ma potrzeby dodawać tego ponownie.
     });
 
     await newSong.save();
