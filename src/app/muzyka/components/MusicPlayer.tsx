@@ -38,6 +38,8 @@ import SongList from "./SongList";
 import { setCurrentSongIndex } from '@/store/slices/features/songsSlice';
 import Link from "next/link";
 
+
+
 const getYouTubeThumbnail = (youtubeId: string) => {
   return `https://img.youtube.com/vi/${youtubeId}/0.jpg`;
 };
@@ -51,6 +53,8 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
   const isLoggedIn = useSelector(
     (state: RootState) => state.auth.isAuthenticated
   );
+
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
 
 
   const [isPlaying, setIsPlaying] = useState(false);
@@ -378,22 +382,17 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
     setIsMinimalistic(!isMinimalistic);
   };
 
-  const savePlaylist = useCallback((playlistId?: string) => {
+  const savePlaylist = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
     if (!isAuthenticated) {
       setShowLoginPrompt(true);
       return;
     }
-    if (playlistId) {
-      // Logika dodawania aktualnego utworu do istniejącej playlisty
-      console.log(`Dodawanie utworu do playlisty o ID: ${playlistId}`);
-    } else {
-      // Logika tworzenia nowej playlisty z aktualnym utworem
-      const playlistName = prompt("Podaj nazwę nowej playlisty:");
-      if (playlistName) {
-        const newPlaylist = { id: Date.now().toString(), name: playlistName };
-        setUserPlaylists(prevPlaylists => [...prevPlaylists, newPlaylist]);
-        console.log(`Utworzono nową playlistę: ${playlistName}`);
-      }
+    // Logika tworzenia nowej playlisty z aktualnym utworem
+    const playlistName = prompt("Podaj nazwę nowej playlisty:");
+    if (playlistName) {
+      const newPlaylist = { id: Date.now().toString(), name: playlistName };
+      setUserPlaylists(prevPlaylists => [...prevPlaylists, newPlaylist]);
+      console.log(`Utworzono nową playlistę: ${playlistName}`);
     }
   }, [isAuthenticated]);
 
@@ -404,7 +403,6 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
     }
     const playlistName = prompt("Podaj nazwę nowej playlisty:");
     if (playlistName) {
-      // Tutaj dodaj logikę tworzenia nowej playlisty w bazie danych
       const newPlaylist = { id: Date.now().toString(), name: playlistName };
       setUserPlaylists(prevPlaylists => [...prevPlaylists, newPlaylist]);
     }
