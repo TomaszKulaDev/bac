@@ -114,12 +114,12 @@ const BoxOfSongs: React.FC<BoxOfSongsProps> = ({
             </button>
           </>
         )}
-        <div className={`overflow-hidden ${showAllSongs ? 'h-96' : ''}`}>
+        <div className={`overflow-hidden ${showAllSongs ? 'h-96 overflow-y-auto' : ''}`}>
           <div
-            className={`flex gap-2 transition-transform duration-1000 ease-in-out ${
-              showAllSongs ? 'flex-wrap justify-center' : ''
+            className={`flex gap-6 ${
+              showAllSongs ? 'flex-wrap justify-center' : 'transition-transform duration-1000 ease-in-out'
             }`}
-            style={showAllSongs ? {} : { transform: `translateX(-${offset * 120}px)` }}
+            style={showAllSongs ? {} : { transform: `translateX(-${offset * 124}px)` }}  // Zaktualizowano offset
           >
             {visibleSongs.map((song) => (
               <SongThumbnail
@@ -146,22 +146,33 @@ interface SongThumbnailProps {
 
 const SongThumbnail: React.FC<SongThumbnailProps> = React.memo(({ song, isActive, onClick, showAllSongs }) => (
   <div
-    className={`w-28 h-28 flex-shrink-0 relative rounded-lg overflow-hidden ${
-      isActive
-        ? "border-4 border-yellow-400 shadow-lg scale-110 z-10"
-        : "border-2 border-purple-300"
-    } cursor-pointer transition-transform hover:scale-105 ${
-      showAllSongs ? 'm-2' : ''
-    }`}
+    className={`relative w-28 h-28 flex items-center justify-center transition-all duration-300 ease-in-out`}
     onClick={onClick}
   >
-    <Image
-      src={`https://img.youtube.com/vi/${song.youtubeId}/0.jpg`}
-      alt={song.title}
-      layout="fill"
-      objectFit="cover"
-    />
-    <SongTooltip song={song} />
+    <div
+      className={`rounded-lg overflow-hidden ${
+        isActive
+          ? "w-24 h-24 z-10 active-thumbnail"
+          : "w-28 h-28 border border-gray-700"
+      } cursor-pointer group transition-all duration-300 ease-in-out`}
+    >
+      <div className="relative w-full h-full">
+        <Image
+          src={`https://img.youtube.com/vi/${song.youtubeId}/0.jpg`}
+          alt={song.title}
+          layout="fill"
+          objectFit="cover"
+        />
+        <div 
+          className={`absolute inset-0 bg-gradient-to-t from-black to-transparent 
+          ${isActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'} 
+          transition-opacity duration-300 flex flex-col justify-end p-2`}
+        >
+          <h3 className="text-xs font-semibold text-white truncate">{song.title}</h3>
+          <p className="text-xs text-gray-300 truncate">{song.artist}</p>
+        </div>
+      </div>
+    </div>
   </div>
 ));
 
