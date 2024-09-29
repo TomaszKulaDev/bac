@@ -5,11 +5,13 @@ import { useDispatch } from "react-redux";
 import { setCurrentSongIndex } from "@/store/slices/features/songsSlice";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import Switch from "react-switch";
+import { motion } from "framer-motion";
 
 interface BoxOfSongsProps {
   songs: Song[];
   currentSongIndex: number;
 }
+
 
 const BoxOfSongs: React.FC<BoxOfSongsProps> = ({
   songs = [],
@@ -28,6 +30,7 @@ const BoxOfSongs: React.FC<BoxOfSongsProps> = ({
     },
     [dispatch]
   );
+
 
   const nextSlide = useCallback(() => {
     setOffset((prevOffset) => (prevOffset + 1) % songs.length);
@@ -64,6 +67,7 @@ const BoxOfSongs: React.FC<BoxOfSongsProps> = ({
     setIsAutoPlay((prev) => !prev);
   }, []);
 
+
   return (
     <div className="mb-8 p-4 border-2 border-blue-500 rounded-lg overflow-hidden relative">
       <div className="flex justify-between items-center mb-4">
@@ -92,12 +96,14 @@ const BoxOfSongs: React.FC<BoxOfSongsProps> = ({
               className="react-switch"
             />
           </div>
-          <button
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={toggleSongDisplay}
-            className="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full shadow-md hover:from-purple-600 hover:to-pink-600 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-opacity-50 transition-all duration-300 ease-in-out text-sm font-medium"
+            className="px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-500 text-white rounded-full shadow-md hover:from-purple-700 hover:to-pink-600 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-opacity-50 transition-all duration-300 ease-in-out text-sm font-medium"
           >
             {showAllSongs ? "Pokaż wybrane" : "Pokaż wszystkie"}
-          </button>
+          </motion.button>
         </div>
       </div>
       <div className="relative">
@@ -134,7 +140,7 @@ const BoxOfSongs: React.FC<BoxOfSongsProps> = ({
               showAllSongs
                 ? {}
                 : { transform: `translateX(-${offset * 124}px)` }
-            } // Zaktualizowano offset
+            }
           >
             {visibleSongs.map((song) => (
               <SongThumbnail
@@ -152,6 +158,8 @@ const BoxOfSongs: React.FC<BoxOfSongsProps> = ({
   );
 };
 
+
+
 interface SongThumbnailProps {
   song: Song;
   isActive: boolean;
@@ -161,7 +169,9 @@ interface SongThumbnailProps {
 
 const SongThumbnail: React.FC<SongThumbnailProps> = React.memo(
   ({ song, isActive, onClick, showAllSongs }) => (
-    <div
+    <motion.div
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
       className={`relative w-28 h-28 flex items-center justify-center transition-all duration-300 ease-in-out`}
       onClick={onClick}
     >
@@ -191,7 +201,7 @@ const SongThumbnail: React.FC<SongThumbnailProps> = React.memo(
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   )
 );
 

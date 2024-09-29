@@ -3,6 +3,7 @@
 "use client";
 
 
+
 import React, {
   useState,
   useEffect,
@@ -37,6 +38,7 @@ import { setCurrentSongIndex } from '@/store/slices/features/songsSlice';
 const getYouTubeThumbnail = (youtubeId: string) => {
   return `https://img.youtube.com/vi/${youtubeId}/0.jpg`;
 };
+
 
 
 const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
@@ -83,10 +85,12 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
   };
 
 
+
   const onPlayerReady = (event: any) => {
     playerRef.current = event.target;
     setIsLoading(false);
   };
+
 
   const previousSong = () => {
     if (currentSongIndex > 0) {
@@ -97,6 +101,7 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
     setIsPlaying(true);
     setIsLoading(true);
   };
+
 
   const togglePlayback = useCallback(() => {
     if (player && isPlayerReady) {
@@ -118,6 +123,7 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
     setIsPlaying(true);
     setIsLoading(true);
   };
+
 
   const loadMoreSongs = useCallback(() => {
     setVisibleSongs((prevVisible) =>
@@ -141,6 +147,7 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
     }
   };
 
+
   const onError = (event: { data: number }) => {
     console.error("Błąd YouTube:", event.data);
     let errorMessage = "Wystąpił błąd podczas ładowania filmu.";
@@ -162,6 +169,7 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
     }
   }, []);
 
+
   useEffect(() => {
     updatePlayerDimensions();
     window.addEventListener("resize", updatePlayerDimensions, {
@@ -169,6 +177,7 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
     });
     return () => window.removeEventListener("resize", updatePlayerDimensions);
   }, [updatePlayerDimensions]);
+
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -370,6 +379,7 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
     [localSongs, visibleSongs, currentSongIndex, isPlaying, loadMoreSongs, dispatch]
   );
 
+
   useEffect(() => {
     if (player && isPlayerReady && songs.length > 0 && songs[currentSongIndex]) {
       setIsPlaying(true);
@@ -475,6 +485,7 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
     </div>
   );
 };
+
 
 
 export default MusicPlayer;

@@ -11,6 +11,7 @@ import {
   FaChevronUp,
 } from "react-icons/fa";
 import { Song } from "../types";
+import { motion } from "framer-motion";
 
 interface SongListProps {
   songs: Song[];
@@ -21,6 +22,7 @@ interface SongListProps {
   onLoadMore: () => void;
   onCollapse: () => void;
 }
+
 
 const SongList: React.FC<SongListProps> = ({
   songs = [],
@@ -47,7 +49,10 @@ const SongList: React.FC<SongListProps> = ({
     <div className="song-list md:order-1 md:w-2/5 border-r border-gray-200 overflow-y-auto">
       {sortedSongs.slice(0, visibleSongs).map((song, index) => (
         <React.Fragment key={song._id || `song-${index}`}>
-          <div
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: index * 0.05 }}
             className={`song-item p-4 cursor-pointer hover:bg-gray-100 transition duration-300 ease-in-out ${
               currentSongIndex === index ? "bg-gray-200" : ""
             } flex items-center`}
@@ -79,7 +84,7 @@ const SongList: React.FC<SongListProps> = ({
                 <FaPlay className="text-gray-500 text-xl hover:text-blue-500 transition-colors duration-300" />
               )}
             </div>
-          </div>
+          </motion.div>
           {(index + 1) % 10 === 0 &&
             index + 1 < visibleSongs &&
             index + 1 !== sortedSongs.length && (
@@ -107,5 +112,6 @@ const SongList: React.FC<SongListProps> = ({
     </div>
   );
 };
+
 
 export default SongList;
