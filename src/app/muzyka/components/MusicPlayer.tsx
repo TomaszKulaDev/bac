@@ -36,6 +36,7 @@ import { Song } from "../types";
 import { RootState } from "../../../store/store";
 import SongList from "./SongList";
 import { setCurrentSongIndex } from '@/store/slices/features/songsSlice';
+import Link from "next/link";
 
 const getYouTubeThumbnail = (youtubeId: string) => {
   return `https://img.youtube.com/vi/${youtubeId}/0.jpg`;
@@ -78,6 +79,8 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
   const [isPlayerReady, setIsPlayerReady] = useState(false);
   const [localSongs, setLocalSongs] = useState<Song[]>(songs);
   const [isMinimalistic, setIsMinimalistic] = useState(false);
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+  const [userPlaylists, setUserPlaylists] = useState<{ id: string; name: string }[]>([]);
 
   const opts: YouTubeProps["opts"] = {
     width: "100%",
@@ -363,53 +366,96 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const memoizedSongList = useMemo(
-    () => (
-      <SongList
-        songs={localSongs}
-        visibleSongs={visibleSongs}
-        currentSongIndex={currentSongIndex}
-        isPlaying={isPlaying}
-        onSongSelect={(index) => {
-          dispatch(setCurrentSongIndex(index));
-          setIsPlaying(true);
-          setIsLoading(true);
-        }}
-        onLoadMore={loadMoreSongs}
-        onCollapse={collapseSongList}
-        isPopularList={false}
-      />
-    ),
-    [localSongs, visibleSongs, currentSongIndex, isPlaying, loadMoreSongs, dispatch]
-  );
+  const MemoizedSongList = React.memo(SongList);
 
-
-  useEffect(() => {
-    if (player && isPlayerReady && songs.length > 0 && songs[currentSongIndex]) {
-      setIsPlaying(true);
-      setIsLoading(true);
-      try {
-        player.loadVideoById(songs[currentSongIndex].youtubeId);
-      } catch (error) {
-        console.error("Błąd podczas ładowania filmu:", error);
-        setError("Nie można załadować wybranego utworu");
-      }
-    } else if (songs.length === 0) {
-      setError("Brak dostępnych piosenek");
-    } else if (!player || !isPlayerReady) {
-      setError("Odtwarzacz nie jest gotowy");
-    }
-  }, [songs, currentSongIndex, player, isPlayerReady]);
-
-  useEffect(() => {
-    if (currentSongIndex >= songs.length && songs.length > 0) {
-      setCurrentSongIndex(0);
-    }
-  }, [songs.length, currentSongIndex]);
+  const handleSongSelect = useCallback((index: number) => {
+    dispatch(setCurrentSongIndex(index));
+    setIsPlaying(true);
+    setIsLoading(true);
+  }, [dispatch]);
 
   const toggleMinimalisticMode = () => {
     setIsMinimalistic(!isMinimalistic);
   };
+
+  const savePlaylist = useCallback((playlistId?: string) => {
+    if (!isAuthenticated) {
+      setShowLoginPrompt(true);
+      return;
+    }
+    if (playlistId) {
+      // Logika dodawania aktualnego utworu do istniejącej playlisty
+      console.log(`Dodawanie utworu do playlisty o ID: ${playlistId}`);
+    } else {
+      // Logika tworzenia nowej playlisty z aktualnym utworem
+      const playlistName = prompt("Podaj nazwę nowej playlisty:");
+      if (playlistName) {
+        const newPlaylist = { id: Date.now().toString(), name: playlistName };
+        setUserPlaylists(prevPlaylists => [...prevPlaylists, newPlaylist]);
+        console.log(`Utworzono nową playlistę: ${playlistName}`);
+      }
+    }
+  }, [isAuthenticated]);
+
+  const createNewPlaylist = useCallback(() => {
+    if (!isAuthenticated) {
+      setShowLoginPrompt(true);
+      return;
+    }
+    const playlistName = prompt("Podaj nazwę nowej playlisty:");
+    if (playlistName) {
+      // Tutaj dodaj logikę tworzenia nowej playlisty w bazie danych
+      const newPlaylist = { id: Date.now().toString(), name: playlistName };
+      setUserPlaylists(prevPlaylists => [...prevPlaylists, newPlaylist]);
+    }
+  }, [isAuthenticated]);
+
+  const UserPlaylists = () => (
+    <div className="mt-4">
+      <h3 className="text-xl font-semibold mb-2">Twoje playlisty</h3>
+      {userPlaylists.length === 0 ? (
+        <p>Nie masz jeszcze żadnych playlist.</p>
+      ) : (
+        <ul>
+          {userPlaylists.map(playlist => (
+            <li key={playlist.id} className="mb-2">
+              <button className="text-left hover:text-purple-600 transition duration-300">
+                {playlist.name}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+      <button
+        onClick={createNewPlaylist}
+        className="mt-2 bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 transition duration-300"
+      >
+        Utwórz nową playlistę
+      </button>
+    </div>
+  );
+
+  const LoginPrompt = () => (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white p-6 rounded-lg shadow-xl">
+        <h2 className="text-xl font-bold mb-4">Zaloguj się, aby zapisać playlistę</h2>
+        <p className="mb-4">Musisz być zalogowany, aby zapisać swoją playlistę.</p>
+        <div className="flex justify-end">
+          <button
+            onClick={() => setShowLoginPrompt(false)}
+            className="bg-gray-300 text-gray-800 px-4 py-2 rounded mr-2 hover:bg-gray-400 transition duration-300"
+          >
+            Anuluj
+          </button>
+          <Link href="/login">
+            <button className="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 transition duration-300">
+              Zaloguj się
+            </button>
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <div className="music-player bg-white shadow-lg min-h-screen flex flex-col w-full max-w-6xl mx-auto">
@@ -420,12 +466,17 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
             <div>
               <h1 className="text-2xl font-bold">Bachata Top Playlist 2024</h1>
               <p className="text-xs opacity-75">
-                {songs.length} utworów • Zaktualizowano:{" "}
-                {new Date().toLocaleDateString()}
+                {songs.length} utworów • Zaktualizowano: {new Date().toLocaleDateString()}
               </p>
             </div>
           </div>
-          <div className="hidden md:block">
+          <div className="hidden md:flex space-x-2">
+            <button 
+              onClick={savePlaylist}
+              className="bg-white text-purple-500 px-4 py-2 rounded-full hover:bg-opacity-90 transition duration-300"
+            >
+              Zapisz playlistę
+            </button>
             <button className="bg-white text-purple-500 px-4 py-2 rounded-full hover:bg-opacity-90 transition duration-300">
               Udostępnij playlistę
             </button>
@@ -488,8 +539,18 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
             </div>
           </div>
         </div>
-        {memoizedSongList}
+        <MemoizedSongList
+          songs={songs}
+          visibleSongs={visibleSongs}
+          currentSongIndex={currentSongIndex}
+          isPlaying={isPlaying}
+          onSongSelect={handleSongSelect}
+          onLoadMore={loadMoreSongs}
+          onCollapse={() => setVisibleSongs(initialVisibleSongs)}
+          isPopularList={false}
+        />
       </div>
+      {showLoginPrompt && <LoginPrompt />}
     </div>
   );
 };
