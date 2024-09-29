@@ -50,7 +50,7 @@ const AddSongForm: React.FC<AddSongFormProps> = ({ onAddSong }) => {
   };
 
   return (
-    <div className="bg-white shadow-md rounded-lg p-6 mb-8">
+    <div className="bg-gray-100 shadow-md rounded-lg p-6 mb-8">
       <h2 className="text-2xl font-bold mb-6 text-gray-800">Dodaj nową piosenkę</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
@@ -58,14 +58,14 @@ const AddSongForm: React.FC<AddSongFormProps> = ({ onAddSong }) => {
             Tytuł
           </label>
           <div className="relative">
-            <FaMusic className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <FaMusic className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
             <input
               id="title"
               type="text"
               placeholder="Np. Bohemian Rhapsody"
               value={newSong.title}
               onChange={(e) => setNewSong({ ...newSong, title: e.target.value })}
-              className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full pl-10 pr-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-800"
               required
               aria-label="Tytuł piosenki"
             />
@@ -77,14 +77,14 @@ const AddSongForm: React.FC<AddSongFormProps> = ({ onAddSong }) => {
             Artysta
           </label>
           <div className="relative">
-            <FaUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <FaUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
             <input
               id="artist"
               type="text"
               placeholder="Np. Queen"
               value={newSong.artist}
               onChange={(e) => setNewSong({ ...newSong, artist: e.target.value })}
-              className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full pl-10 pr-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-800"
               required
               aria-label="Nazwa artysty"
             />
@@ -96,14 +96,14 @@ const AddSongForm: React.FC<AddSongFormProps> = ({ onAddSong }) => {
             Link do YouTube
           </label>
           <div className="relative">
-            <FaYoutube className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <FaYoutube className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
             <input
               id="youtubeLink"
               type="text"
               placeholder="Np. https://www.youtube.com/watch?v=dQw4w9WgXcQ"
               value={newSong.youtubeLink}
               onChange={(e) => setNewSong({ ...newSong, youtubeLink: e.target.value })}
-              className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full pl-10 pr-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-800"
               required
               aria-label="Link do YouTube"
               title="Pełny link do filmu YouTube"
