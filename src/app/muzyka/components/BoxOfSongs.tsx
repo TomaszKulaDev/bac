@@ -100,14 +100,14 @@ const BoxOfSongs: React.FC<BoxOfSongsProps> = ({
           <>
             <button
               onClick={prevSlide}
-              className="absolute left-0 top-1/2 transform -translate-y-1/2 p-2 bg-blue-500 text-white rounded-full z-10 hover:bg-blue-600 transition-colors"
+              className="absolute left-0 top-1/2 transform -translate-y-1/2 p-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full z-10 hover:from-purple-600 hover:to-pink-600 transition-all duration-300 ease-in-out"
               aria-label="Poprzedni slajd"
             >
               <FaChevronLeft />
             </button>
             <button
               onClick={nextSlide}
-              className="absolute right-0 top-1/2 transform -translate-y-1/2 p-2 bg-blue-500 text-white rounded-full z-10 hover:bg-blue-600 transition-colors"
+              className="absolute right-0 top-1/2 transform -translate-y-1/2 p-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full z-10 hover:from-purple-600 hover:to-pink-600 transition-all duration-300 ease-in-out"
               aria-label="Następny slajd"
             >
               <FaChevronRight />
