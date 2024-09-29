@@ -4,6 +4,7 @@ import { Song } from "../types";
 import { useDispatch } from "react-redux";
 import { setCurrentSongIndex } from "@/store/slices/features/songsSlice";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import Switch from "react-switch";
 
 interface BoxOfSongsProps {
   songs: Song[];
@@ -17,10 +18,13 @@ const BoxOfSongs: React.FC<BoxOfSongsProps> = ({
   const dispatch = useDispatch();
   const [offset, setOffset] = useState(0);
   const [showAllSongs, setShowAllSongs] = useState(false);
+  const [isAutoPlay, setIsAutoPlay] = useState(true);
 
-  const handleSongSelect = (index: number) => {
+  const visibleSongsCount = 14;
+
+  const handleSongSelect = useCallback((index: number) => {
     dispatch(setCurrentSongIndex(index));
-  };
+  }, [dispatch]);
 
   const nextSlide = useCallback(() => {
     setOffset((prevOffset) => (prevOffset + 1) % songs.length);
@@ -31,27 +35,31 @@ const BoxOfSongs: React.FC<BoxOfSongsProps> = ({
   }, [songs.length]);
 
   useEffect(() => {
-    const interval = setInterval(nextSlide, 3000);
+    let interval: NodeJS.Timeout;
+    if (isAutoPlay && !showAllSongs) {
+      interval = setInterval(nextSlide, 3000);
+    }
     return () => clearInterval(interval);
-  }, [nextSlide]);
+  }, [nextSlide, isAutoPlay, showAllSongs]);
 
   const visibleSongs = useMemo(() => {
     if (showAllSongs) {
       return songs;
     }
-    const totalSongs = songs.length;
     return Array.from(
-      { length: 14 },
-      (_, i) => songs[(offset + i) % totalSongs]
-    ).filter((song) => song !== undefined);
+      { length: visibleSongsCount },
+      (_, i) => songs[(offset + i) % songs.length]
+    ).filter(Boolean);
   }, [songs, offset, showAllSongs]);
 
-  const toggleSongDisplay = () => {
-    setShowAllSongs(!showAllSongs);
-    setOffset(0); // Resetuj offset przy przełączaniu
-  };
+  const toggleSongDisplay = useCallback(() => {
+    setShowAllSongs((prev) => !prev);
+    setOffset(0);
+  }, []);
 
-  console.log("Current Song Index:", currentSongIndex);
+  const toggleAutoPlay = useCallback(() => {
+    setIsAutoPlay((prev) => !prev);
+  }, []);
 
   return (
     <div className="mb-8 p-4 border-2 border-blue-500 rounded-lg overflow-hidden relative">
@@ -59,25 +67,46 @@ const BoxOfSongs: React.FC<BoxOfSongsProps> = ({
         <h2 className="text-2xl font-bold text-gray-800">
           {showAllSongs ? "Wszystkie piosenki" : "Wybrane piosenki"}
         </h2>
-        <button
-          onClick={toggleSongDisplay}
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
-        >
-          {showAllSongs ? "Pokaż wybrane" : "Pokaż wszystkie"}
-        </button>
+        <div className="flex items-center space-x-4">
+          <div className="flex items-center">
+            <span className="mr-2 text-sm font-medium text-gray-700">Auto:</span>
+            <Switch
+              onChange={toggleAutoPlay}
+              checked={isAutoPlay}
+              onColor="#86d3ff"
+              onHandleColor="#2693e6"
+              handleDiameter={24}
+              uncheckedIcon={false}
+              checkedIcon={false}
+              boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
+              activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
+              height={20}
+              width={48}
+              className="react-switch"
+            />
+          </div>
+          <button
+            onClick={toggleSongDisplay}
+            className="px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-md shadow-md hover:from-blue-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-300 ease-in-out text-sm font-medium"
+          >
+            {showAllSongs ? "Pokaż wybrane" : "Pokaż wszystkie"}
+          </button>
+        </div>
       </div>
       <div className="relative">
         {!showAllSongs && (
           <>
             <button
               onClick={prevSlide}
-              className="absolute left-0 top-1/2 transform -translate-y-1/2 p-2 bg-gray-200 rounded-full z-10"
+              className="absolute left-0 top-1/2 transform -translate-y-1/2 p-2 bg-gray-200 rounded-full z-10 hover:bg-gray-300 transition-colors"
+              aria-label="Poprzedni slajd"
             >
               <FaChevronLeft />
             </button>
             <button
               onClick={nextSlide}
-              className="absolute right-0 top-1/2 transform -translate-y-1/2 p-2 bg-gray-200 rounded-full z-10"
+              className="absolute right-0 top-1/2 transform -translate-y-1/2 p-2 bg-gray-200 rounded-full z-10 hover:bg-gray-300 transition-colors"
+              aria-label="Następny slajd"
             >
               <FaChevronRight />
             </button>
@@ -90,26 +119,14 @@ const BoxOfSongs: React.FC<BoxOfSongsProps> = ({
             }`}
             style={showAllSongs ? {} : { transform: `translateX(-${offset * 120}px)` }}
           >
-            {visibleSongs.map((song, index) => (
-              <div
+            {visibleSongs.map((song) => (
+              <SongThumbnail
                 key={song._id}
-                className={`w-28 h-28 flex-shrink-0 relative rounded-lg overflow-hidden ${
-                  songs.indexOf(song) === currentSongIndex
-                    ? "border-4 border-yellow-400 shadow-lg scale-110 z-10"
-                    : "border-2 border-purple-300"
-                } cursor-pointer transition-transform hover:scale-105 ${
-                  showAllSongs ? 'm-2' : ''
-                }`}
+                song={song}
+                isActive={songs.indexOf(song) === currentSongIndex}
                 onClick={() => handleSongSelect(songs.indexOf(song))}
-              >
-                <Image
-                  src={`https://img.youtube.com/vi/${song.youtubeId}/0.jpg`}
-                  alt={song.title}
-                  layout="fill"
-                  objectFit="cover"
-                />
-                <SongTooltip song={song} />
-              </div>
+                showAllSongs={showAllSongs}
+              />
             ))}
           </div>
         </div>
@@ -118,6 +135,36 @@ const BoxOfSongs: React.FC<BoxOfSongsProps> = ({
   );
 };
 
+interface SongThumbnailProps {
+  song: Song;
+  isActive: boolean;
+  onClick: () => void;
+  showAllSongs: boolean;
+}
+
+const SongThumbnail: React.FC<SongThumbnailProps> = React.memo(({ song, isActive, onClick, showAllSongs }) => (
+  <div
+    className={`w-28 h-28 flex-shrink-0 relative rounded-lg overflow-hidden ${
+      isActive
+        ? "border-4 border-yellow-400 shadow-lg scale-110 z-10"
+        : "border-2 border-purple-300"
+    } cursor-pointer transition-transform hover:scale-105 ${
+      showAllSongs ? 'm-2' : ''
+    }`}
+    onClick={onClick}
+  >
+    <Image
+      src={`https://img.youtube.com/vi/${song.youtubeId}/0.jpg`}
+      alt={song.title}
+      layout="fill"
+      objectFit="cover"
+    />
+    <SongTooltip song={song} />
+  </div>
+));
+
+SongThumbnail.displayName = 'SongThumbnail';
+
 const SongTooltip: React.FC<{ song: Song }> = ({ song }) => (
   <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 bg-black text-white p-2 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300">
     <p>{song.title}</p>
@@ -125,4 +172,4 @@ const SongTooltip: React.FC<{ song: Song }> = ({ song }) => (
   </div>
 );
 
-export default BoxOfSongs;
+export default React.memo(BoxOfSongs);
