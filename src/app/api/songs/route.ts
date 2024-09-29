@@ -1,6 +1,6 @@
-import { NextResponse } from 'next/server';
-import { connectToDatabase } from '@/lib/mongodb';
-import { Song } from '@/models/Song';
+import { NextResponse } from "next/server";
+import { connectToDatabase } from "@/lib/mongodb";
+import { Song } from "@/models/Song";
 
 export async function GET() {
   console.log("GET /api/songs: Start");
@@ -14,15 +14,15 @@ export async function GET() {
     return new NextResponse(JSON.stringify(songs), {
       status: 200,
       headers: {
-        'Content-Type': 'application/json',
-        'Cache-Control': 'no-store, max-age=0',
+        "Content-Type": "application/json",
+        "Cache-Control": "no-store, max-age=0",
       },
     });
   } catch (error) {
     console.error("GET /api/songs: Error", error);
     return new NextResponse(
       JSON.stringify({ error: "Internal Server Error" }),
-      { status: 500, headers: { 'Content-Type': 'application/json' } }
+      { status: 500, headers: { "Content-Type": "application/json" } }
     );
   }
 }
@@ -43,7 +43,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const youtubeId = youtubeLink.split('v=')[1];
+    const youtubeId = youtubeLink.split("v=")[1];
     if (!youtubeId) {
       return NextResponse.json(
         { error: "Nieprawidłowy link do YouTube" },
@@ -55,12 +55,15 @@ export async function POST(request: Request) {
       title,
       artist,
       youtubeId,
-      createdAt: new Date() // Dodajemy datę utworzenia
+      // createdAt: new Date() // Data jest tworzona przez baze mongodb nie ma potrzeby dodawać tego ponownie.
     });
 
     await newSong.save();
 
-    return NextResponse.json({ success: true, message: "Piosenka dodana pomyślnie" });
+    return NextResponse.json({
+      success: true,
+      message: "Piosenka dodana pomyślnie",
+    });
   } catch (error) {
     console.error("Błąd podczas dodawania piosenki:", error);
     return NextResponse.json(
