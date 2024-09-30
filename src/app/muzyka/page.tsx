@@ -39,59 +39,39 @@ const MusicPage: React.FC = () => {
   return (
     <div className="music-page bg-gray-100 min-h-screen flex flex-col">
       <BaciataRisingBanner />
-      <div className="flex-grow flex flex-col lg:flex-row px-4 gap-6">
-        <div className="lg:w-1/4 space-y-6">
-          <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">Ostatnio odtworzone</h2>
-            <RecentlyPlayedList songs={recentlyPlayedSongs} />
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Lewa kolumna */}
+          <div className="lg:w-2/3 space-y-6">
+            <MusicPlayer songs={songs} />
+            <SimilarSongs currentSong={songs[currentSongIndex]} />
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">Statystyki odtwarzania</h2>
+              <PlaybackStatistics />
+            </div>
           </div>
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Popularne utwory</h2>
-            <SongList 
-              songs={songs.slice(0, 5)} // Wyświetlamy tylko 5 najpopularniejszych utworów
-              visibleSongs={5}
-              currentSongIndex={currentSongIndex}
-              isPlaying={false}
-              onSongSelect={(index) => dispatch(setCurrentSongIndex(index))}
-              onLoadMore={() => {}}
-              onCollapse={() => {}}
-              isPopularList={true}
-            />
-          </div>
-        </div>
-        <div className="lg:w-2/4 space-y-6">
-          {songs.length > 0 ? (
-            <>
-              <MusicPlayer songs={songs} />
-              <SimilarSongs currentSong={songs[currentSongIndex]} />
-            </>
-          ) : (
-            <p className="text-center text-gray-500 mt-8">Ładowanie piosenek...</p>
-          )}
-        </div>
-        <div className="lg:w-1/4 space-y-6">
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Lista utworów</h2>
-            <SongList 
-              songs={songs}
-              visibleSongs={songs.length}
-              currentSongIndex={currentSongIndex}
-              isPlaying={false}
-              onSongSelect={(index) => dispatch(setCurrentSongIndex(index))}
-              onLoadMore={() => {}}
-              onCollapse={() => {}}
-              isPopularList={false}
-            />
-          </div>
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Twoje playlisty</h2>
-            <CreatePlaylist songs={songs} />
+
+          {/* Prawa kolumna */}
+          <div className="lg:w-1/3 space-y-6">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">Lista utworów</h2>
+              <SongList 
+                songs={songs}
+                visibleSongs={songs.length}
+                currentSongIndex={currentSongIndex}
+                isPlaying={false}
+                onSongSelect={(index) => dispatch(setCurrentSongIndex(index))}
+                onLoadMore={() => {}}
+                onCollapse={() => {}}
+                isPopularList={false}
+              />
+            </div>
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">Twoje playlisty</h2>
+              <CreatePlaylist songs={songs} />
+            </div>
           </div>
         </div>
-      </div>
-      <div className="mt-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">Statystyki odtwarzania</h2>
-        <PlaybackStatistics />
       </div>
     </div>
   );
