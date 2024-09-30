@@ -1,7 +1,7 @@
 // src/app/muzyka/page.tsx
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import MusicPlayer from "./components/MusicPlayer";
 import { fetchSongs, setCurrentSongIndex } from "@/store/slices/features/songsSlice";
@@ -22,6 +22,11 @@ const MusicPage: React.FC = () => {
   );
 
   const [recentlyPlayedSongs, setRecentlyPlayedSongs] = useState<Song[]>([]);
+
+  const handleAddToPlaylist = useCallback((songId: string) => {
+    // Tu dodaj logikę dodawania utworu do playlisty
+    console.log(`Dodano utwór ${songId} do playlisty`);
+  }, []);
 
   useEffect(() => {
     if (status === "idle") {
@@ -64,6 +69,7 @@ const MusicPage: React.FC = () => {
                 onLoadMore={() => {}}
                 onCollapse={() => {}}
                 isPopularList={false}
+                onAddToPlaylist={handleAddToPlaylist}
               />
             </div>
             <div>

@@ -9,6 +9,9 @@ import {
   FaMusic,
   FaChevronDown,
   FaChevronUp,
+  FaPlus,
+  FaListUl,
+  FaBookmark
 } from "react-icons/fa";
 import { Song } from "../types";
 import { motion } from "framer-motion";
@@ -22,7 +25,9 @@ interface SongListProps {
   onLoadMore: () => void;
   onCollapse: () => void;
   isPopularList: boolean;
+  onAddToPlaylist: (songId: string) => void;
 }
+
 
 const SongList: React.FC<SongListProps> = ({
   songs = [],
@@ -33,6 +38,7 @@ const SongList: React.FC<SongListProps> = ({
   onLoadMore,
   onCollapse,
   isPopularList,
+  onAddToPlaylist,
 }) => {
   const [sortBy, setSortBy] = useState<'title' | 'artist' | 'date'>('date');
   const [filterText, setFilterText] = useState('');
@@ -93,33 +99,42 @@ const SongList: React.FC<SongListProps> = ({
         </select>
       </div>
       {sortedAndFilteredSongs.slice(0, visibleSongs).map((song, index) => (
-        <div
-          key={song._id || `song-${index}`}
-          className={`flex items-center p-2 hover:bg-gray-100 cursor-pointer ${
-            currentSongIndex === index ? "bg-gray-200" : ""
+        <li 
+          key={song._id} 
+          className={`flex items-center justify-between p-2 hover:bg-gray-100 cursor-pointer ${
+            index === currentSongIndex ? 'bg-purple-100 border-l-4 border-purple-500' : ''
           }`}
           onClick={() => onSongSelect(index)}
         >
-          <div className="w-10 h-10 mr-3 relative flex-shrink-0">
-            <Image
-              src={getYouTubeThumbnail(song.youtubeId)}
-              alt={song.title}
-              fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              style={{ objectFit: "cover" }}
-              className="rounded"
-            />
-          </div>
-          <div className="flex-grow min-w-0">
-            <h3 className="font-semibold truncate text-sm">{song.title}</h3>
-            <p className="text-xs text-gray-600 truncate">{song.artist}</p>
-          </div>
-          {!isPopularList && (
-            <div className="text-xs text-gray-500">
-              {new Date(song.createdAt).toLocaleDateString()}
+          <div className="flex items-center flex-grow">
+            <div className="w-10 h-10 mr-3 relative flex-shrink-0">
+              <Image
+                src={getYouTubeThumbnail(song.youtubeId)}
+                alt={song.title}
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                style={{ objectFit: "cover" }}
+                className="rounded"
+              />
             </div>
-          )}
-        </div>
+            <div className="flex-grow min-w-0">
+              <h3 className={`font-semibold truncate text-sm ${
+                index === currentSongIndex ? 'text-purple-700' : 'text-gray-800'
+              }`}>{song.title}</h3>
+              <p className="text-xs text-gray-600 truncate">{song.artist}</p>
+            </div>
+          </div>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onAddToPlaylist(song._id);
+            }}
+            className="ml-2 text-gray-500 hover:text-purple-500 transition duration-300"
+            title="Dodaj do playlisty"
+          >
+            <FaBookmark />
+          </button>
+        </li>
       ))}
       {!isPopularList && visibleSongs < songs.length && (
         <button onClick={onLoadMore} className="w-full py-2 text-blue-600 hover:bg-gray-100">
@@ -129,5 +144,6 @@ const SongList: React.FC<SongListProps> = ({
     </div>
   );
 };
+
 
 export default SongList;

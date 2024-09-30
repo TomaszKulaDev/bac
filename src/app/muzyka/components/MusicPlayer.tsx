@@ -4,6 +4,7 @@
 
 
 
+
 import React, {
   useState,
   useEffect,
@@ -30,6 +31,7 @@ import {
   FaList,
   FaExpand,
   FaCompress,
+  FaPlus,
 } from "react-icons/fa";
 import Image from "next/image";
 import { Song } from "../types";
@@ -40,9 +42,12 @@ import Link from "next/link";
 
 
 
+
+
 const getYouTubeThumbnail = (youtubeId: string) => {
   return `https://img.youtube.com/vi/${youtubeId}/0.jpg`;
 };
+
 
 
 
@@ -53,6 +58,7 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
   const isLoggedIn = useSelector(
     (state: RootState) => state.auth.isAuthenticated
   );
+
 
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
 
@@ -85,6 +91,8 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
   const [isMinimalistic, setIsMinimalistic] = useState(false);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   const [userPlaylists, setUserPlaylists] = useState<{ id: string; name: string }[]>([]);
+  const [showPlaylistModal, setShowPlaylistModal] = useState(false);
+  const [selectedSongId, setSelectedSongId] = useState<string | null>(null);
 
   const opts: YouTubeProps["opts"] = {
     width: "100%",
@@ -210,6 +218,7 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
       });
 
 
+
       if (response.ok) {
         console.log("Formularz wysłany pomyślnie");
         setShowSuccessMessage(true);
@@ -303,6 +312,7 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
     );
   }
 
+
   const ErrorMessage = () => (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
       <div className="bg-white rounded-lg p-8 max-w-md w-full shadow-xl">
@@ -359,6 +369,7 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
     checkAdBlocker();
   }, []);
 
+
   useEffect(() => {
     const handleResize = () => {
       setIsSmallScreen(window.innerWidth < 768);
@@ -381,6 +392,7 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
   const toggleMinimalisticMode = () => {
     setIsMinimalistic(!isMinimalistic);
   };
+
 
   const savePlaylist = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
     if (!isAuthenticated) {
@@ -454,6 +466,68 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
       </div>
     </div>
   );
+
+  const handleAddToPlaylist = useCallback((songId: string) => {
+    setSelectedSongId(songId);
+    setShowPlaylistModal(true);
+  }, []);
+
+  const handleClosePlaylistModal = useCallback(() => {
+    setShowPlaylistModal(false);
+    setSelectedSongId(null);
+  }, []);
+
+
+  const handleAddSongToPlaylist = useCallback((playlistId: string) => {
+    if (selectedSongId) {
+      // Tu dodaj logikę dodawania utworu do playlisty
+      console.log(`Dodano utwór ${selectedSongId} do playlisty ${playlistId}`);
+      handleClosePlaylistModal();
+    }
+  }, [selectedSongId, handleClosePlaylistModal]);
+
+  const PlaylistModal: React.FC<{
+    isOpen: boolean;
+    onClose: () => void;
+    playlists: { id: string; name: string }[];
+    onAddToPlaylist: (playlistId: string) => void;
+    onCreateNewPlaylist: () => void;
+  }> = ({ isOpen, onClose, playlists, onAddToPlaylist, onCreateNewPlaylist }) => {
+    if (!isOpen) return null;
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="bg-white p-6 rounded-lg shadow-xl">
+          <h2 className="text-xl font-bold mb-4">Wybierz playlistę</h2>
+          <ul>
+            {playlists.map(playlist => (
+              <li key={playlist.id} className="mb-2">
+                <button
+                  onClick={() => onAddToPlaylist(playlist.id)}
+                  className="w-full text-left hover:bg-gray-100 p-2 rounded"
+                >
+                  {playlist.name}
+                </button>
+              </li>
+            ))}
+          </ul>
+          <button
+            onClick={onCreateNewPlaylist}
+            className="mt-4 bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 transition duration-300"
+          >
+            Utwórz nową playlistę
+          </button>
+          <button
+            onClick={onClose}
+            className="mt-2 bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 transition duration-300"
+          >
+            Anuluj
+          </button>
+        </div>
+      </div>
+    );
+  };
+
 
   return (
     <div className="music-player bg-white shadow-lg min-h-screen flex flex-col w-full max-w-6xl mx-auto">
@@ -544,11 +618,19 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
           isPlaying={isPlaying}
           onSongSelect={handleSongSelect}
           onLoadMore={loadMoreSongs}
-          onCollapse={() => setVisibleSongs(initialVisibleSongs)}
+          onCollapse={collapseSongList}
           isPopularList={false}
+          onAddToPlaylist={handleAddToPlaylist}
         />
       </div>
       {showLoginPrompt && <LoginPrompt />}
+      <PlaylistModal
+        isOpen={showPlaylistModal}
+        onClose={handleClosePlaylistModal}
+        playlists={userPlaylists}
+        onAddToPlaylist={handleAddSongToPlaylist}
+        onCreateNewPlaylist={createNewPlaylist}
+      />
     </div>
   );
 };
