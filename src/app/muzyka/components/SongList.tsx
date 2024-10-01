@@ -75,12 +75,11 @@ const SongList: React.FC<SongListProps> = ({
   console.log("Piosenki w SongList:", sortedAndFilteredSongs);
   sortedAndFilteredSongs.forEach((song, index) => {
     console.log(
-      `Piosenka ${index + 1}:`,
-      song._id ? `ID: ${song._id}` : "Brak ID",
-      "Data utworzenia:",
-      song.createdAt
+      `Piosenka ${index + 1}: ID: ${song.id || song._id}, Data utworzenia: ${song.createdAt}`
     );
   });
+
+  console.log("Pełna struktura piosenek:", JSON.stringify(sortedAndFilteredSongs, null, 2));
 
   return (
     <div

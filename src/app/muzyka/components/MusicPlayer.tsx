@@ -51,7 +51,11 @@ const getYouTubeThumbnail = (youtubeId: string) => {
 
 
 
-const MusicPlayer: React.FC<{ songs: Song[], onCreatePlaylist: (name: string) => void }> = ({ songs, onCreatePlaylist }) => {
+const MusicPlayer: React.FC<{ 
+  songs: Song[], 
+  onCreatePlaylist: (name: string, selectedSongs: string[]) => void,
+  onAddToPlaylist: (songId: string) => void
+}> = ({ songs, onCreatePlaylist, onAddToPlaylist }) => {
   const dispatch = useDispatch();
   const currentSongIndex = useSelector((state: RootState) => state.songs.currentSongIndex);
 
@@ -419,11 +423,10 @@ const MusicPlayer: React.FC<{ songs: Song[], onCreatePlaylist: (name: string) =>
     // Logika tworzenia nowej playlisty z aktualnym utworem
     const playlistName = prompt("Podaj nazwę nowej playlisty:");
     if (playlistName) {
-      const newPlaylist = { id: Date.now().toString(), name: playlistName };
-      setUserPlaylists(prevPlaylists => [...prevPlaylists, newPlaylist]);
+      onCreatePlaylist(playlistName, []);
       console.log(`Utworzono nową playlistę: ${playlistName}`);
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, onCreatePlaylist]);
 
 
   const UserPlaylists = () => (
@@ -445,7 +448,7 @@ const MusicPlayer: React.FC<{ songs: Song[], onCreatePlaylist: (name: string) =>
       <button
         onClick={() => {
           const name = prompt("Podaj nazwę nowej playlisty:");
-          if (name) onCreatePlaylist(name);
+          if (name) onCreatePlaylist(name, []);
         }}
         className="mt-2 bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 transition duration-300"
       >
@@ -493,11 +496,12 @@ const MusicPlayer: React.FC<{ songs: Song[], onCreatePlaylist: (name: string) =>
 
   const handleAddSongToPlaylist = useCallback((playlistId: string) => {
     if (selectedSongId) {
+      console.log(`Dodawanie utworu ${selectedSongId} do playlisty ${playlistId}`);
       // Tu dodaj logikę dodawania utworu do playlisty
-      console.log(`Dodano utwór ${selectedSongId} do playlisty ${playlistId}`);
+      handleAddToPlaylist(selectedSongId);
       handleClosePlaylistModal();
     }
-  }, [selectedSongId, handleClosePlaylistModal]);
+  }, [selectedSongId, handleClosePlaylistModal, handleAddToPlaylist]);
 
 
   const PlaylistModal: React.FC<{
@@ -611,7 +615,7 @@ const MusicPlayer: React.FC<{ songs: Song[], onCreatePlaylist: (name: string) =>
   const handleCreatePlaylist = () => {
     const name = prompt("Podaj nazwę nowej playlisty:");
     if (name) {
-      onCreatePlaylist(name);
+      onCreatePlaylist(name, []);
     }
   };
 

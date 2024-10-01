@@ -38,9 +38,10 @@ const CreatePlaylist: React.FC<CreatePlaylistProps> = ({
 }) => {
   const [playlistName, setPlaylistName] = useState("");
   const [selectedSongs, setSelectedSongs] = useState<Set<string>>(new Set());
-  const [selectedPlaylist, setSelectedPlaylist] = useState<string>("");
+  const [selectedPlaylist, setSelectedPlaylist] = useState('');
 
-  console.log("Songs in CreatePlaylist:", songs);
+  console.log("Songs in CreatePlaylist:", songs.map(song => ({ id: song.id, _id: song._id })));
+  console.log("Selected songs:", Array.from(selectedSongs));
 
   console.log("Unique song IDs:", new Set(songs.map(song => song._id)).size);
 
@@ -68,6 +69,13 @@ const CreatePlaylist: React.FC<CreatePlaylistProps> = ({
       return newSet;
     });
   }, []);
+
+  const handleAddToPlaylist = () => {
+    console.log("Dodawanie piosenek do playlisty:", selectedPlaylist, Array.from(selectedSongs));
+    onAddToExistingPlaylist(selectedPlaylist, Array.from(selectedSongs));
+    setSelectedSongs(new Set());
+    setSelectedPlaylist('');
+  };
 
   return (
     <div className="bg-white p-4 rounded-lg shadow">
