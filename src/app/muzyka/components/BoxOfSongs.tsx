@@ -6,12 +6,12 @@ import { setCurrentSongIndex } from "@/store/slices/features/songsSlice";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import Switch from "react-switch";
 import { motion } from "framer-motion";
+import { getYouTubeThumbnail } from '../utils/youtube';
 
 interface BoxOfSongsProps {
   songs: Song[];
   currentSongIndex: number;
 }
-
 
 const BoxOfSongs: React.FC<BoxOfSongsProps> = ({
   songs = [],
@@ -30,7 +30,6 @@ const BoxOfSongs: React.FC<BoxOfSongsProps> = ({
     },
     [dispatch]
   );
-
 
   const nextSlide = useCallback(() => {
     setOffset((prevOffset) => (prevOffset + 1) % songs.length);
@@ -66,7 +65,6 @@ const BoxOfSongs: React.FC<BoxOfSongsProps> = ({
   const toggleAutoPlay = useCallback(() => {
     setIsAutoPlay((prev) => !prev);
   }, []);
-
 
   return (
     <div className="mb-8 p-4 border-2 border-blue-500 rounded-lg overflow-hidden relative">
@@ -147,8 +145,6 @@ const BoxOfSongs: React.FC<BoxOfSongsProps> = ({
   );
 };
 
-
-
 interface SongThumbnailProps {
   song: Song;
   isActive: boolean;
@@ -173,7 +169,7 @@ const SongThumbnail: React.FC<SongThumbnailProps> = React.memo(
       >
         <div className="relative w-full h-full">
           <Image
-            src={`https://img.youtube.com/vi/${song.youtubeId}/0.jpg`}
+            src={getYouTubeThumbnail(song.youtubeId)}
             alt={song.title}
             layout="fill"
             objectFit="cover"

@@ -1,4 +1,3 @@
-// src
 import React, { useMemo, useState } from "react";
 import Image from "next/image";
 import {
@@ -15,6 +14,7 @@ import {
 } from "react-icons/fa";
 import { Song } from "../types";
 import { motion } from "framer-motion";
+import { getYouTubeThumbnail } from "../utils/youtube";
 
 interface SongListProps {
   songs: Song[];
@@ -81,9 +81,6 @@ const SongList: React.FC<SongListProps> = ({
       song.createdAt
     );
   });
-  const getYouTubeThumbnail = (youtubeId: string) => {
-    return `https://img.youtube.com/vi/${youtubeId}/0.jpg`;
-  };
 
   return (
     <div

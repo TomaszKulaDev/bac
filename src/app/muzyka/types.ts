@@ -13,7 +13,7 @@ export interface Song {
   createdAt: Date;
   __v?: number;
 }
+
 export interface MusicPlayerProps {
   songs: Song[];
 }
-
