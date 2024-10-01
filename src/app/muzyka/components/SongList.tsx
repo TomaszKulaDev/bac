@@ -120,8 +120,8 @@ const SongList: React.FC<SongListProps> = ({
               <Image
                 src={getYouTubeThumbnail(song.youtubeId)}
                 alt={song.title}
-                fill
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                width={40}
+                height={40}
                 style={{ objectFit: "cover" }}
                 className="rounded"
               />
