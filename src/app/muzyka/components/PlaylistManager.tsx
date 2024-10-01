@@ -6,9 +6,10 @@ interface PlaylistManagerProps {
   songs: Song[];
   onDeletePlaylist: (playlistId: string) => void;
   onRenamePlaylist: (playlistId: string, newName: string) => void;
+  onRemoveSongFromPlaylist: (playlistId: string, songId: string) => void;
 }
 
-const PlaylistManager: React.FC<PlaylistManagerProps> = ({ playlists, songs, onDeletePlaylist, onRenamePlaylist }) => {
+const PlaylistManager: React.FC<PlaylistManagerProps> = ({ playlists, songs, onDeletePlaylist, onRenamePlaylist, onRemoveSongFromPlaylist }) => {
   const [expandedPlaylist, setExpandedPlaylist] = useState<string | null>(null);
 
   const getSongDetails = (songId: string): Song | undefined => {
@@ -53,7 +54,12 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({ playlists, songs, onD
                 return songDetails ? (
                   <li key={songId} className="text-sm flex justify-between items-center">
                     <span>{songDetails.title} - {songDetails.artist}</span>
-                    <button className="text-red-500 hover:text-red-700 text-xs">Usuń</button>
+                    <button 
+                      onClick={() => onRemoveSongFromPlaylist(playlist.id, songId)}
+                      className="text-red-500 hover:text-red-700 text-xs"
+                    >
+                      Usuń
+                    </button>
                   </li>
                 ) : (
                   <li key={songId} className="text-sm text-red-500">

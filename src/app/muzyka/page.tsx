@@ -64,6 +64,17 @@ const MusicPage: React.FC = () => {
     []
   );
 
+  const handleRemoveSongFromPlaylist = useCallback((playlistId: string, songId: string) => {
+    setPlaylists((prevPlaylists) =>
+      prevPlaylists.map((playlist) =>
+        playlist.id === playlistId
+          ? { ...playlist, songs: playlist.songs.filter((id) => id !== songId) }
+          : playlist
+      )
+    );
+    // TODO: Zaimplementuj logikę aktualizacji playlisty w bazie danych
+  }, []);
+
   useEffect(() => {
     if (status === "idle") {
       dispatch(fetchSongs() as any);
@@ -127,6 +138,7 @@ const MusicPage: React.FC = () => {
                   );
                   // TODO: Zaimplementuj logikę aktualizacji nazwy playlisty w bazie danych
                 }}
+                onRemoveSongFromPlaylist={handleRemoveSongFromPlaylist}
               />
             </div>
             <div>
