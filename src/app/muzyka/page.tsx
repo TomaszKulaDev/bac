@@ -170,22 +170,6 @@ const MusicPage: React.FC = () => {
                 onRemoveSongFromPlaylist={handleRemoveSongFromPlaylist}
               />
             </div>
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                Lista utworów
-              </h2>
-              <SongList
-                songs={songs}
-                visibleSongs={songs.length}
-                currentSongIndex={currentSongIndex}
-                isPlaying={false}
-                onSongSelect={(index) => dispatch(setCurrentSongIndex(index))}
-                onLoadMore={() => {}}
-                onCollapse={() => {}}
-                isPopularList={false}
-                onAddToPlaylist={handleAddToPlaylist}
-              />
-            </div>
           </div>
         </div>
       </div>
