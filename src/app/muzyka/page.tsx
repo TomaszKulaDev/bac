@@ -29,18 +29,15 @@ const MusicPage: React.FC = () => {
 
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
 
-  const handleCreatePlaylist = useCallback(
-    (name: string, selectedSongs: string[]) => {
-      const newPlaylist: Playlist = {
-        id: Date.now().toString(),
-        name,
-        songs: selectedSongs,
-      };
-      setPlaylists((prevPlaylists) => [...prevPlaylists, newPlaylist]);
-      // TODO: Zaimplementuj logikę zapisywania playlisty w bazie danych
-    },
-    []
-  );
+  const handleCreatePlaylist = useCallback((name: string) => {
+    const newPlaylist: Playlist = {
+      id: Date.now().toString(),
+      name,
+      songs: []
+    };
+    setPlaylists(prevPlaylists => [...prevPlaylists, newPlaylist]);
+    // TODO: Zaimplementuj logikę zapisywania playlisty w bazie danych
+  }, []);
 
   const handleAddToPlaylist = useCallback((songId: string) => {
     // Tu dodaj logikę dodawania utworu do playlisty
@@ -99,7 +96,7 @@ const MusicPage: React.FC = () => {
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Lewa kolumna */}
           <div className="lg:w-2/3 space-y-6">
-            <MusicPlayer songs={songs} />
+            <MusicPlayer songs={songs} onCreatePlaylist={handleCreatePlaylist} />
             <SimilarSongs currentSong={songs[currentSongIndex] || null} />
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-4">

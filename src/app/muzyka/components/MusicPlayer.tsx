@@ -51,7 +51,7 @@ const getYouTubeThumbnail = (youtubeId: string) => {
 
 
 
-const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
+const MusicPlayer: React.FC<{ songs: Song[], onCreatePlaylist: (name: string) => void }> = ({ songs, onCreatePlaylist }) => {
   const dispatch = useDispatch();
   const currentSongIndex = useSelector((state: RootState) => state.songs.currentSongIndex);
 
@@ -443,7 +443,10 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
         </ul>
       )}
       <button
-        onClick={createNewPlaylist}
+        onClick={() => {
+          const name = prompt("Podaj nazwę nowej playlisty:");
+          if (name) onCreatePlaylist(name);
+        }}
         className="mt-2 bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 transition duration-300"
       >
         Utwórz nową playlistę
@@ -605,18 +608,12 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
     }
   }, [currentPlaylist]);
 
-  const createNewPlaylist = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
+  const handleCreatePlaylist = () => {
     const name = prompt("Podaj nazwę nowej playlisty:");
     if (name) {
-      const newPlaylist: Playlist = {
-        id: Date.now().toString(),
-        name,
-        songs: []
-      };
-      setPlaylists(prevPlaylists => [...prevPlaylists, newPlaylist]);
+      onCreatePlaylist(name);
     }
-  }, []);
+  };
 
 
 
@@ -720,7 +717,7 @@ const MusicPlayer: React.FC<{ songs: Song[] }> = ({ songs }) => {
         onClose={handleClosePlaylistModal}
         playlists={playlists}
         onAddToPlaylist={handleAddSongToPlaylist}
-        onCreateNewPlaylist={createNewPlaylist}
+        onCreateNewPlaylist={handleCreatePlaylist}
         onEditPlaylistName={editPlaylistName}
         onDeletePlaylist={deletePlaylist}
       />
