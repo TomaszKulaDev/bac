@@ -1,6 +1,7 @@
 // src/app/muzyka/page.tsx
 "use client";
 
+
 import { useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import MusicPlayer from "./components/MusicPlayer";
@@ -25,6 +26,7 @@ const MusicPage: React.FC = () => {
     (state: RootState) => state.songs
   );
 
+
   const [recentlyPlayedSongs, setRecentlyPlayedSongs] = useState<Song[]>([]);
 
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
@@ -45,10 +47,12 @@ const MusicPage: React.FC = () => {
     // TODO: Zaimplementuj logikę zapisywania playlisty w bazie danych
   }, []);
 
+
   const handleAddToPlaylist = useCallback((songId: string) => {
     // Tu dodaj logikę dodawania utworu do playlisty
     console.log(`Dodano utwór ${songId} do playlisty`);
   }, []);
+
 
   const handleAddToExistingPlaylist = useCallback(
     (playlistId: string, selectedSongs: string[]) => {
@@ -79,6 +83,7 @@ const MusicPage: React.FC = () => {
     );
     // TODO: Zaimplementuj logikę aktualizacji playlisty w bazie danych
   }, []);
+
 
   useEffect(() => {
     if (status === "idle") {
@@ -137,7 +142,7 @@ const MusicPage: React.FC = () => {
           <div className="lg:w-1/3 space-y-6">
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                Zarządzaj playlistami
+                Utwórz nową playlistę
               </h2>
               <CreatePlaylist
                 songs={songs}
@@ -188,6 +193,7 @@ const MusicPage: React.FC = () => {
     </div>
   );
 };
+
 
 const PlaylistList: React.FC<{ playlists: Playlist[] }> = ({ playlists }) => {
   return (
