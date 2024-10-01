@@ -11,7 +11,7 @@ import {
   FaChevronUp,
   FaPlus,
   FaListUl,
-  FaBookmark
+  FaBookmark,
 } from "react-icons/fa";
 import { Song } from "../types";
 import { motion } from "framer-motion";
@@ -28,7 +28,6 @@ interface SongListProps {
   onAddToPlaylist: (songId: string) => void;
 }
 
-
 const SongList: React.FC<SongListProps> = ({
   songs = [],
   visibleSongs,
@@ -40,46 +39,56 @@ const SongList: React.FC<SongListProps> = ({
   isPopularList,
   onAddToPlaylist,
 }) => {
-  const [sortBy, setSortBy] = useState<'title' | 'artist' | 'date'>('date');
-  const [filterText, setFilterText] = useState('');
+  const [sortBy, setSortBy] = useState<"title" | "artist" | "date">("date");
+  const [filterText, setFilterText] = useState("");
 
   const sortedAndFilteredSongs = useMemo(() => {
     let result = [...songs];
-    
+
     // Filtrowanie
     if (filterText) {
-      result = result.filter(song => 
-        song.title.toLowerCase().includes(filterText.toLowerCase()) ||
-        song.artist.toLowerCase().includes(filterText.toLowerCase())
+      result = result.filter(
+        (song) =>
+          song.title.toLowerCase().includes(filterText.toLowerCase()) ||
+          song.artist.toLowerCase().includes(filterText.toLowerCase())
       );
     }
-    
+
     // Sortowanie
     result.sort((a, b) => {
       switch (sortBy) {
-        case 'title':
+        case "title":
           return a.title.localeCompare(b.title);
-        case 'artist':
+        case "artist":
           return a.artist.localeCompare(b.artist);
-        case 'date':
+        case "date":
         default:
-          return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+          return (
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
       }
     });
-    
+
     return result;
   }, [songs, sortBy, filterText]);
 
   console.log("Piosenki w SongList:", sortedAndFilteredSongs);
   sortedAndFilteredSongs.forEach((song, index) => {
-    console.log(`Piosenka ${index + 1}:`, song._id ? `ID: ${song._id}` : 'Brak ID', 'Data utworzenia:', song.createdAt);
+    console.log(
+      `Piosenka ${index + 1}:`,
+      song._id ? `ID: ${song._id}` : "Brak ID",
+      "Data utworzenia:",
+      song.createdAt
+    );
   });
   const getYouTubeThumbnail = (youtubeId: string) => {
     return `https://img.youtube.com/vi/${youtubeId}/0.jpg`;
   };
 
   return (
-    <div className={`song-list ${isPopularList ? 'popular-list' : 'full-list'}`}>
+    <div
+      className={`song-list ${isPopularList ? "popular-list" : "full-list"}`}
+    >
       <div className="mb-4">
         <input
           type="text"
@@ -90,7 +99,9 @@ const SongList: React.FC<SongListProps> = ({
         />
         <select
           value={sortBy}
-          onChange={(e) => setSortBy(e.target.value as 'title' | 'artist' | 'date')}
+          onChange={(e) =>
+            setSortBy(e.target.value as "title" | "artist" | "date")
+          }
           className="p-2 border rounded w-full text-gray-800"
         >
           <option value="date">Sortuj po dacie</option>
@@ -99,10 +110,12 @@ const SongList: React.FC<SongListProps> = ({
         </select>
       </div>
       {sortedAndFilteredSongs.slice(0, visibleSongs).map((song, index) => (
-        <li 
-          key={song._id} 
+        <li
+          key={song._id || song.id}
           className={`flex items-center justify-between p-2 hover:bg-gray-100 cursor-pointer ${
-            index === currentSongIndex ? 'bg-purple-100 border-l-4 border-purple-500' : ''
+            index === currentSongIndex
+              ? "bg-purple-100 border-l-4 border-purple-500"
+              : ""
           }`}
           onClick={() => onSongSelect(index)}
         >
@@ -118,9 +131,15 @@ const SongList: React.FC<SongListProps> = ({
               />
             </div>
             <div className="flex-grow min-w-0">
-              <h3 className={`font-semibold truncate text-sm ${
-                index === currentSongIndex ? 'text-purple-700' : 'text-gray-800'
-              }`}>{song.title}</h3>
+              <h3
+                className={`font-semibold truncate text-sm ${
+                  index === currentSongIndex
+                    ? "text-purple-700"
+                    : "text-gray-800"
+                }`}
+              >
+                {song.title}
+              </h3>
               <p className="text-xs text-gray-600 truncate">{song.artist}</p>
             </div>
           </div>
@@ -137,13 +156,15 @@ const SongList: React.FC<SongListProps> = ({
         </li>
       ))}
       {!isPopularList && visibleSongs < songs.length && (
-        <button onClick={onLoadMore} className="w-full py-2 text-blue-600 hover:bg-gray-100">
+        <button
+          onClick={onLoadMore}
+          className="w-full py-2 text-blue-600 hover:bg-gray-100"
+        >
           Załaduj więcej
         </button>
       )}
     </div>
   );
 };
-
 
 export default SongList;
