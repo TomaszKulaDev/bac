@@ -103,6 +103,12 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs, onCreatePlaylist, onAd
   const [selectedSongId, setSelectedSongId] = useState<string | null>(null);
   const [currentPlaylist, setCurrentPlaylist] = useState<Playlist | null>(null);
 
+  const setPlaylistsRef = useRef(setPlaylists);
+
+  useEffect(() => {
+    setPlaylistsRef.current = setPlaylists;
+  }, [setPlaylists]);
+
   const opts: YouTubeProps["opts"] = {
     width: "100%",
     height: "100%",
@@ -587,7 +593,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs, onCreatePlaylist, onAd
 
 
   const addSongToPlaylist = useCallback((playlistId: string, songId: string) => {
-    setPlaylists(prevPlaylists => prevPlaylists.map(playlist => {
+    setPlaylistsRef.current(prevPlaylists => prevPlaylists.map(playlist => {
       if (playlist.id === playlistId) {
         return { ...playlist, songs: [...playlist.songs, songId] };
       }
@@ -597,7 +603,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs, onCreatePlaylist, onAd
 
 
   const removeSongFromPlaylist = useCallback((playlistId: string, songId: string) => {
-    setPlaylists(prevPlaylists => prevPlaylists.map(playlist => {
+    setPlaylistsRef.current(prevPlaylists => prevPlaylists.map(playlist => {
       if (playlist.id === playlistId) {
         return { ...playlist, songs: playlist.songs.filter(id => id !== songId) };
       }
@@ -606,7 +612,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs, onCreatePlaylist, onAd
   }, []);
 
   const editPlaylistName = useCallback((playlistId: string, newName: string) => {
-    setPlaylists(prevPlaylists => prevPlaylists.map(playlist => {
+    setPlaylistsRef.current(prevPlaylists => prevPlaylists.map(playlist => {
       if (playlist.id === playlistId) {
         return { ...playlist, name: newName };
       }
@@ -615,7 +621,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs, onCreatePlaylist, onAd
   }, []);
 
   const deletePlaylist = useCallback((playlistId: string) => {
-    setPlaylists(prevPlaylists => prevPlaylists.filter(playlist => playlist.id !== playlistId));
+    setPlaylistsRef.current(prevPlaylists => prevPlaylists.filter(playlist => playlist.id !== playlistId));
     if (currentPlaylist?.id === playlistId) {
       setCurrentPlaylist(null);
     }
