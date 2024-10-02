@@ -26,10 +26,11 @@ const MusicPage: React.FC = () => {
     (state: RootState) => state.songs
   );
 
-
   const [recentlyPlayedSongs, setRecentlyPlayedSongs] = useState<Song[]>([]);
 
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
+
+  const [expandedPlaylist, setExpandedPlaylist] = useState<string | null>(null);
 
   const handleCreatePlaylist = useCallback((name: string, selectedSongs: string[] = []) => {
     console.log("Tworzenie nowej playlisty:", name);
@@ -175,6 +176,7 @@ const MusicPage: React.FC = () => {
                   // TODO: Zaimplementuj logikę aktualizacji nazwy playlisty w bazie danych
                 }}
                 onRemoveSongFromPlaylist={handleRemoveSongFromPlaylist}
+                onAddSongToPlaylist={handleAddToPlaylist}
               />
             </div>
           </div>

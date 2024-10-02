@@ -60,6 +60,7 @@ interface MusicPlayerProps {
 }
 
 const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs, onCreatePlaylist, onAddToPlaylist, playlists, setPlaylists }) => {
+  const [expandedPlaylist, setExpandedPlaylist] = useState<string | null>(null);
   const dispatch = useDispatch();
   const currentSongIndex = useSelector((state: RootState) => state.songs.currentSongIndex);
 
@@ -491,14 +492,34 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs, onCreatePlaylist, onAd
 
 
   const handleAddToPlaylist = useCallback((songId: string) => {
-    const playlist123 = playlists.find(playlist => playlist.name === "123");
-    if (playlist123) {
-      onAddToPlaylist(playlist123.id, songId);
-      console.log(`Dodano utwór ${songId} do playlisty 123`);
-    } else {
-      console.log("Nie znaleziono playlisty o nazwie 123");
+    if (playlists.length === 0) {
+      console.log("Nie masz jeszcze żadnych playlist.");
       // Tutaj możesz dodać powiadomienie dla użytkownika
+      return;
     }
+
+    let selectedPlaylistId;
+    if (playlists.length === 1) {
+      selectedPlaylistId = playlists[0].id; // Wybierz pierwszą playlistę z listy
+    } else {
+      const playlistNames = playlists.map((playlist, index) => `${index + 1}. ${playlist.name}`).join("\n");
+      const selectedPlaylistIndex = prompt(`Wybierz playlistę:\n${playlistNames}`);
+      if (selectedPlaylistIndex) {
+        const index = parseInt(selectedPlaylistIndex) - 1;
+        if (index >= 0 && index < playlists.length) {
+          selectedPlaylistId = playlists[index].id;
+        } else {
+          console.log("Nieprawidłowy wybór playlisty.");
+          return;
+        }
+      } else {
+        console.log("Anulowano wybór playlisty.");
+        return;
+      }
+    }
+
+    onAddToPlaylist(selectedPlaylistId, songId);
+    console.log(`Dodano utwór ${songId} do playlisty ${selectedPlaylistId}`);
   }, [playlists, onAddToPlaylist]);
 
 
@@ -634,7 +655,14 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs, onCreatePlaylist, onAd
     }
   };
 
-
+  const handleAddSongToExpandedPlaylist = useCallback((songId: string) => {
+    if (expandedPlaylist) {
+      onAddToPlaylist(expandedPlaylist, songId);
+    } else {
+      console.log("Najpierw rozwiń playlistę, do której chcesz dodać utwór.");
+      // Możesz tutaj dodać powiadomienie dla użytkownika
+    }
+  }, [expandedPlaylist, onAddToPlaylist]);
 
   return (
     <div className="music-player bg-white shadow-lg min-h-screen flex flex-col w-full max-w-6xl mx-auto">
@@ -727,7 +755,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs, onCreatePlaylist, onAd
           onLoadMore={loadMoreSongs}
           onCollapse={collapseSongList}
           isPopularList={false}
-          onAddToPlaylist={handleAddToPlaylist}
+          onAddToPlaylist={handleAddSongToExpandedPlaylist}
         />
       </div>
       {showLoginPrompt && <LoginPrompt />}

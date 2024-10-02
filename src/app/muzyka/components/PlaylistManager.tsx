@@ -9,6 +9,7 @@ interface PlaylistManagerProps {
   onDeletePlaylist: (playlistId: string) => void;
   onRenamePlaylist: (playlistId: string, newName: string) => void;
   onRemoveSongFromPlaylist: (playlistId: string, songId: string) => void;
+  onAddSongToPlaylist: (playlistId: string, songId: string) => void;
 }
 
 const PlaylistManager: React.FC<PlaylistManagerProps> = ({
@@ -17,11 +18,20 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
   onDeletePlaylist,
   onRenamePlaylist,
   onRemoveSongFromPlaylist,
+  onAddSongToPlaylist,
 }) => {
   const [expandedPlaylist, setExpandedPlaylist] = useState<string | null>(null);
 
   const getSongDetails = (songId: string): Song | undefined => {
     return songs.find((song) => song._id === songId || song.id === songId);
+  };
+
+  const handleAddSongToExpandedPlaylist = (songId: string) => {
+    if (expandedPlaylist) {
+      onAddSongToPlaylist(expandedPlaylist, songId);
+    } else {
+      alert("Najpierw rozwiń playlistę, do której chcesz dodać utwór.");
+    }
   };
 
   return (
@@ -32,11 +42,11 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
             <span className="font-semibold text-lg">{playlist.name}</span>
             <div className="space-x-2">
               <button
-                onClick={() =>
-                  setExpandedPlaylist(
-                    expandedPlaylist === playlist.id ? null : playlist.id
-                  )
-                }
+                onClick={() => {
+                  const newExpandedPlaylist = expandedPlaylist === playlist.id ? null : playlist.id;
+                  setExpandedPlaylist(newExpandedPlaylist);
+                  setExpandedPlaylist(newExpandedPlaylist);
+                }}
                 className="text-purple-500 hover:text-purple-700"
               >
                 {expandedPlaylist === playlist.id ? "Zwiń" : "Rozwiń"}
@@ -66,43 +76,47 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
           </p>
           {expandedPlaylist === playlist.id && (
             <ul className="mt-2 space-y-2">
-              {playlist.songs.map((songId: string) => {
-                const songDetails = getSongDetails(songId);
-                return songDetails ? (
+              {songs.map((song) => {
+                const isInPlaylist = playlist.songs.includes(song.id);
+                return (
                   <li
-                    key={songId}
+                    key={song.id}
                     className="flex items-center justify-between bg-gray-50 p-3 rounded-md"
                   >
                     <div className="flex items-center">
                       <Image
-                        src={getYouTubeThumbnail(songDetails.youtubeId)}
-                        alt={songDetails.title}
+                        src={getYouTubeThumbnail(song.youtubeId)}
+                        alt={song.title}
                         width={60}
                         height={60}
                         className="object-cover rounded mr-4"
                       />
                       <div>
-                        <p className="font-semibold">{songDetails.title}</p>
+                        <p className="font-semibold">{song.title}</p>
                         <p className="text-sm text-gray-600">
-                          {songDetails.artist}
+                          {song.artist}
                         </p>
                       </div>
                     </div>
-                    <button
-                      onClick={() =>
-                        onRemoveSongFromPlaylist(playlist.id, songId)
-                      }
-                      className="text-red-500 hover:text-red-700 text-xs"
-                    >
-                      Usuń
-                    </button>
-                  </li>
-                ) : (
-                  <li
-                    key={songId}
-                    className="text-sm text-red-500 bg-gray-50 p-2 rounded-md"
-                  >
-                    Utwór niedostępny
+                    {isInPlaylist ? (
+                      <button
+                        onClick={() =>
+                          onRemoveSongFromPlaylist(playlist.id, song.id)
+                        }
+                        className="text-red-500 hover:text-red-700 text-xs"
+                      >
+                        Usuń
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() =>
+                          onAddSongToPlaylist(playlist.id, song.id)
+                        }
+                        className="text-purple-500 hover:text-purple-700 text-xs"
+                      >
+                        Dodaj
+                      </button>
+                    )}
                   </li>
                 );
               })}
