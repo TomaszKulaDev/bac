@@ -593,33 +593,33 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs, onCreatePlaylist, onAd
       }
       return playlist;
     }));
-  }, [setPlaylists]);
+  }, []);
 
 
   const removeSongFromPlaylist = useCallback((playlistId: string, songId: string) => {
-    setPlaylists((prevPlaylists: Playlist[]) => prevPlaylists.map((playlist: Playlist) => {
+    setPlaylists(prevPlaylists => prevPlaylists.map(playlist => {
       if (playlist.id === playlistId) {
         return { ...playlist, songs: playlist.songs.filter(id => id !== songId) };
       }
       return playlist;
     }));
-  }, [setPlaylists]);
+  }, []);
 
   const editPlaylistName = useCallback((playlistId: string, newName: string) => {
-    setPlaylists((prevPlaylists: Playlist[]) => prevPlaylists.map((playlist: Playlist) => {
+    setPlaylists(prevPlaylists => prevPlaylists.map(playlist => {
       if (playlist.id === playlistId) {
         return { ...playlist, name: newName };
       }
       return playlist;
     }));
-  }, [setPlaylists]);
+  }, []);
 
   const deletePlaylist = useCallback((playlistId: string) => {
-    setPlaylists((prevPlaylists: Playlist[]) => prevPlaylists.filter((playlist: Playlist) => playlist.id !== playlistId));
+    setPlaylists(prevPlaylists => prevPlaylists.filter(playlist => playlist.id !== playlistId));
     if (currentPlaylist?.id === playlistId) {
       setCurrentPlaylist(null);
     }
-  }, [currentPlaylist, setPlaylists]);
+  }, [currentPlaylist]);
 
   const handleCreatePlaylist = () => {
     const name = prompt("Podaj nazwę nowej playlisty:");
