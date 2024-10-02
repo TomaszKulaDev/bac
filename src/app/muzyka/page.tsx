@@ -48,11 +48,16 @@ const MusicPage: React.FC = () => {
   }, []);
 
 
-  const handleAddToPlaylist = useCallback((songId: string) => {
-    // Tu dodaj logikę dodawania utworu do playlisty
-    console.log(`Dodano utwór ${songId} do playlisty`);
+  const handleAddToPlaylist = useCallback((playlistId: string, songId: string) => {
+    setPlaylists(prevPlaylists => prevPlaylists.map(playlist => {
+      if (playlist.id === playlistId) {
+        return { ...playlist, songs: [...new Set([...playlist.songs, songId])] };
+      }
+      return playlist;
+    }));
+    console.log(`Dodano utwór ${songId} do playlisty ${playlistId}`);
+    // TODO: Zaimplementuj logikę aktualizacji playlisty w bazie danych
   }, []);
-
 
   const handleAddToExistingPlaylist = useCallback(
     (playlistId: string, selectedSongs: string[]) => {
@@ -124,10 +129,12 @@ const MusicPage: React.FC = () => {
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Lewa kolumna */}
           <div className="lg:w-2/3 space-y-6">
-            <MusicPlayer 
-              songs={songs} 
+            <MusicPlayer
+              songs={songs}
               onCreatePlaylist={handleCreatePlaylist}
               onAddToPlaylist={handleAddToPlaylist}
+              playlists={playlists}
+              setPlaylists={setPlaylists}
             />
             <SimilarSongs currentSong={songs[currentSongIndex] || null} />
             <div>

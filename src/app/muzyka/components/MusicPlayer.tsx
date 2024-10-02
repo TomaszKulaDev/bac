@@ -51,11 +51,15 @@ const getYouTubeThumbnail = (youtubeId: string) => {
 
 
 
-const MusicPlayer: React.FC<{ 
-  songs: Song[], 
-  onCreatePlaylist: (name: string, selectedSongs: string[]) => void,
-  onAddToPlaylist: (songId: string) => void
-}> = ({ songs, onCreatePlaylist, onAddToPlaylist }) => {
+interface MusicPlayerProps {
+  songs: Song[];
+  onCreatePlaylist: (name: string, selectedSongs: string[]) => void;
+  onAddToPlaylist: (playlistId: string, songId: string) => void;
+  playlists: Playlist[];
+  setPlaylists: React.Dispatch<React.SetStateAction<Playlist[]>>;
+}
+
+const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs, onCreatePlaylist, onAddToPlaylist, playlists, setPlaylists }) => {
   const dispatch = useDispatch();
   const currentSongIndex = useSelector((state: RootState) => state.songs.currentSongIndex);
 
@@ -97,7 +101,6 @@ const MusicPlayer: React.FC<{
   const [userPlaylists, setUserPlaylists] = useState<{ id: string; name: string }[]>([]);
   const [showPlaylistModal, setShowPlaylistModal] = useState(false);
   const [selectedSongId, setSelectedSongId] = useState<string | null>(null);
-  const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [currentPlaylist, setCurrentPlaylist] = useState<Playlist | null>(null);
 
   const opts: YouTubeProps["opts"] = {
@@ -482,9 +485,15 @@ const MusicPlayer: React.FC<{
 
 
   const handleAddToPlaylist = useCallback((songId: string) => {
-    setSelectedSongId(songId);
-    setShowPlaylistModal(true);
-  }, []);
+    const playlist123 = playlists.find(playlist => playlist.name === "123");
+    if (playlist123) {
+      onAddToPlaylist(playlist123.id, songId);
+      console.log(`Dodano utwór ${songId} do playlisty 123`);
+    } else {
+      console.log("Nie znaleziono playlisty o nazwie 123");
+      // Tutaj możesz dodać powiadomienie dla użytkownika
+    }
+  }, [playlists, onAddToPlaylist]);
 
 
   const handleClosePlaylistModal = useCallback(() => {
@@ -588,7 +597,7 @@ const MusicPlayer: React.FC<{
 
 
   const removeSongFromPlaylist = useCallback((playlistId: string, songId: string) => {
-    setPlaylists(prevPlaylists => prevPlaylists.map(playlist => {
+    setPlaylists((prevPlaylists: Playlist[]) => prevPlaylists.map((playlist: Playlist) => {
       if (playlist.id === playlistId) {
         return { ...playlist, songs: playlist.songs.filter(id => id !== songId) };
       }
@@ -597,7 +606,7 @@ const MusicPlayer: React.FC<{
   }, []);
 
   const editPlaylistName = useCallback((playlistId: string, newName: string) => {
-    setPlaylists(prevPlaylists => prevPlaylists.map(playlist => {
+    setPlaylists((prevPlaylists: Playlist[]) => prevPlaylists.map((playlist: Playlist) => {
       if (playlist.id === playlistId) {
         return { ...playlist, name: newName };
       }
@@ -606,7 +615,7 @@ const MusicPlayer: React.FC<{
   }, []);
 
   const deletePlaylist = useCallback((playlistId: string) => {
-    setPlaylists(prevPlaylists => prevPlaylists.filter(playlist => playlist.id !== playlistId));
+    setPlaylists((prevPlaylists: Playlist[]) => prevPlaylists.filter((playlist: Playlist) => playlist.id !== playlistId));
     if (currentPlaylist?.id === playlistId) {
       setCurrentPlaylist(null);
     }
