@@ -144,7 +144,9 @@ const MusicPage: React.FC = () => {
                 onCreatePlaylist={handleCreatePlaylist}
                 existingPlaylists={playlists}
                 onAddToExistingPlaylist={handleAddToExistingPlaylist}
+                // {TODO Napraw funkcje onAddToExistingPlaylist={handleAddToExistingPlaylist} sprawdz czu działa*/}
               />
+              
               <PlaylistManager
                 playlists={playlists}
                 songs={songs}
@@ -164,6 +166,7 @@ const MusicPage: React.FC = () => {
                 }}
                 onRemoveSongFromPlaylist={handleRemoveSongFromPlaylist}
               />
+              <PlaylistList playlists={playlists} />
             </div>
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-4">
@@ -184,7 +187,6 @@ const MusicPage: React.FC = () => {
           </div>
         </div>
       </div>
-      <PlaylistList playlists={playlists} />
     </div>
   );
 };
