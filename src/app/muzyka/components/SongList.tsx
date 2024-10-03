@@ -25,7 +25,7 @@ interface SongListProps {
   onLoadMore: () => void;
   onCollapse: () => void;
   isPopularList: boolean;
-  onAddToPlaylist: (songId: string) => void;
+
   onCreatePlaylist: () => void;
 }
 
@@ -38,7 +38,6 @@ const SongList: React.FC<SongListProps> = ({
   onLoadMore,
   onCollapse,
   isPopularList,
-  onAddToPlaylist,
   onCreatePlaylist,
 }) => {
   const [sortBy, setSortBy] = useState<"title" | "artist" | "date">("date");

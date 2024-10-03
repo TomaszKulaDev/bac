@@ -52,11 +52,6 @@ const MusicPage: React.FC = () => {
     }
   }, [handleCreatePlaylist]);
 
-  const handleAddToPlaylist = useCallback((songId: string) => {
-    // Tu dodaj logikę dodawania utworu do playlisty
-    console.log(`Dodano utwór ${songId} do playlisty`);
-  }, []);
-
   const handleAddToExistingPlaylist = useCallback(
     (playlistId: string, selectedSongs: string[]) => {
       console.log("handleAddToExistingPlaylist - playlistId:", playlistId);
@@ -129,7 +124,8 @@ const MusicPage: React.FC = () => {
             <MusicPlayer 
               songs={songs} 
               onCreatePlaylist={handleCreatePlaylist}
-              onAddToPlaylist={handleAddToPlaylist}
+              // Usuń tę linię
+              // onAddToPlaylist={handleAddToPlaylist}
             />
             <SimilarSongs currentSong={songs[currentSongIndex] || null} />
             <div>
@@ -189,7 +185,6 @@ const MusicPage: React.FC = () => {
                 onLoadMore={() => {}}
                 onCollapse={() => {}}
                 isPopularList={false}
-                onAddToPlaylist={handleAddToPlaylist}
               />
             </div>
           </div>
