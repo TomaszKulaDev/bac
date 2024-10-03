@@ -1,9 +1,5 @@
 // src/components/MusicPlayer.tsx
-
 "use client";
-
-
-
 
 import React, {
   useState,
@@ -482,6 +478,7 @@ const MusicPlayer: React.FC<{
 
 
   const handleAddToPlaylist = useCallback((songId: string) => {
+    console.log("handleAddToPlaylist called with songId:", songId); // Dodany console.log
     setSelectedSongId(songId);
     setShowPlaylistModal(true);
   }, []);
@@ -515,6 +512,8 @@ const MusicPlayer: React.FC<{
   }> = ({ isOpen, onClose, playlists, onAddToPlaylist, onCreateNewPlaylist, onEditPlaylistName, onDeletePlaylist }) => {
     const [editingPlaylistId, setEditingPlaylistId] = useState<string | null>(null);
     const [newPlaylistName, setNewPlaylistName] = useState("");
+
+    console.log("PlaylistModal rendered. isOpen:", isOpen); // Dodany console.log
 
     if (!isOpen) return null;
 
@@ -566,7 +565,10 @@ const MusicPlayer: React.FC<{
             Utwórz nową playlistę
           </button>
           <button
-            onClick={onClose}
+            onClick={() => {
+              console.log("Zamknij button clicked"); // Dodany console.log
+              onClose();
+            }}
             className="mt-2 bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 transition duration-300"
           >
             Zamknij
@@ -612,10 +614,11 @@ const MusicPlayer: React.FC<{
     }
   }, [currentPlaylist]);
 
-  const handleCreatePlaylist = () => {
+  const handleCreateEmptyPlaylist = () => {
     const name = prompt("Podaj nazwę nowej playlisty:");
     if (name) {
-      onCreatePlaylist(name, []);
+      onCreatePlaylist(name, []); // Tworzy pustą playlistę
+      setShowPlaylistModal(false); // Zamyka modal po utworzeniu playlisty
     }
   };
 
@@ -713,6 +716,7 @@ const MusicPlayer: React.FC<{
           onCollapse={collapseSongList}
           isPopularList={false}
           onAddToPlaylist={handleAddToPlaylist}
+          onCreatePlaylist={() => setShowPlaylistModal(true)} // Dodaj tę linię
         />
       </div>
       {showLoginPrompt && <LoginPrompt />}
@@ -721,7 +725,7 @@ const MusicPlayer: React.FC<{
         onClose={handleClosePlaylistModal}
         playlists={playlists}
         onAddToPlaylist={handleAddSongToPlaylist}
-        onCreateNewPlaylist={handleCreatePlaylist}
+        onCreateNewPlaylist={handleCreateEmptyPlaylist}
         onEditPlaylistName={editPlaylistName}
         onDeletePlaylist={deletePlaylist}
       />

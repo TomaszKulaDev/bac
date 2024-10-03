@@ -45,6 +45,13 @@ const MusicPage: React.FC = () => {
     // TODO: Zaimplementuj logikę zapisywania playlisty w bazie danych
   }, []);
 
+  const handleCreateEmptyPlaylist = useCallback(() => {
+    const name = prompt("Podaj nazwę nowej playlisty:");
+    if (name) {
+      handleCreatePlaylist(name, []);
+    }
+  }, [handleCreatePlaylist]);
+
   const handleAddToPlaylist = useCallback((songId: string) => {
     // Tu dodaj logikę dodawania utworu do playlisty
     console.log(`Dodano utwór ${songId} do playlisty`);
@@ -174,6 +181,7 @@ const MusicPage: React.FC = () => {
               </h2>
               <SongList
                 songs={songs}
+                onCreatePlaylist={handleCreateEmptyPlaylist}
                 visibleSongs={songs.length}
                 currentSongIndex={currentSongIndex}
                 isPlaying={false}

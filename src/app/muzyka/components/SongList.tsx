@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useState, useMemo } from "react";
 import Image from "next/image";
 import {
   FaArrowUp,
@@ -26,6 +26,7 @@ interface SongListProps {
   onCollapse: () => void;
   isPopularList: boolean;
   onAddToPlaylist: (songId: string) => void;
+  onCreatePlaylist: () => void;
 }
 
 const SongList: React.FC<SongListProps> = ({
@@ -38,6 +39,7 @@ const SongList: React.FC<SongListProps> = ({
   onCollapse,
   isPopularList,
   onAddToPlaylist,
+  onCreatePlaylist,
 }) => {
   const [sortBy, setSortBy] = useState<"title" | "artist" | "date">("date");
   const [filterText, setFilterText] = useState("");
@@ -75,30 +77,44 @@ const SongList: React.FC<SongListProps> = ({
   console.log("Piosenki w SongList:", sortedAndFilteredSongs);
   sortedAndFilteredSongs.forEach((song, index) => {
     console.log(
-      `Piosenka ${index + 1}: ID: ${song.id || song._id}, Data utworzenia: ${song.createdAt}`
+      `Piosenka ${index + 1}: ID: ${song.id || song._id}, Data utworzenia: ${
+        song.createdAt
+      }`
     );
   });
 
-  console.log("Pełna struktura piosenek:", JSON.stringify(sortedAndFilteredSongs, null, 2));
+  console.log(
+    "Pełna struktura piosenek:",
+    JSON.stringify(sortedAndFilteredSongs, null, 2)
+  );
 
   return (
     <div
       className={`song-list ${isPopularList ? "popular-list" : "full-list"}`}
     >
+      <div className="mb-4 flex items-center justify-between">
+        <button
+          onClick={onCreatePlaylist}
+          className="bg-purple-500 text-white px-4 py-2 rounded-full flex items-center hover:bg-purple-600 transition duration-300"
+        >
+          <FaPlus className="mr-2" />
+          Utwórz nową playlistę
+        </button>
+      </div>
       <div className="mb-4">
         <input
           type="text"
           placeholder="Filtruj utwory..."
           value={filterText}
           onChange={(e) => setFilterText(e.target.value)}
-          className="p-2 border rounded w-full mb-2 text-gray-800 placeholder-gray-500"
+          className="p-2 border rounded w-full mb-2"
         />
         <select
           value={sortBy}
           onChange={(e) =>
             setSortBy(e.target.value as "title" | "artist" | "date")
           }
-          className="p-2 border rounded w-full text-gray-800"
+          className="p-2 border rounded w-full"
         >
           <option value="date">Sortuj po dacie</option>
           <option value="title">Sortuj po tytule</option>
@@ -139,16 +155,6 @@ const SongList: React.FC<SongListProps> = ({
               <p className="text-xs text-gray-600 truncate">{song.artist}</p>
             </div>
           </div>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onAddToPlaylist(song._id);
-            }}
-            className="ml-2 text-gray-500 hover:text-purple-500 transition duration-300"
-            title="Dodaj do playlisty"
-          >
-            <FaBookmark />
-          </button>
         </li>
       ))}
       {!isPopularList && visibleSongs < songs.length && (
