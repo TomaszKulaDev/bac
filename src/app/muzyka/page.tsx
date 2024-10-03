@@ -29,21 +29,24 @@ const MusicPage: React.FC = () => {
 
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
 
-  const handleCreatePlaylist = useCallback((name: string, selectedSongs: string[] = []) => {
-    console.log("Tworzenie nowej playlisty:", name);
-    console.log("Wybrane utwory:", selectedSongs);
-    const newPlaylist: Playlist = {
-      id: Date.now().toString(),
-      name,
-      songs: selectedSongs
-    };
-    setPlaylists(prevPlaylists => {
-      const updatedPlaylists = [...prevPlaylists, newPlaylist];
-      console.log("Zaktualizowane playlisty:", updatedPlaylists);
-      return updatedPlaylists;
-    });
-    // TODO: Zaimplementuj logikę zapisywania playlisty w bazie danych
-  }, []);
+  const handleCreatePlaylist = useCallback(
+    (name: string, selectedSongs: string[] = []) => {
+      console.log("Tworzenie nowej playlisty:", name);
+      console.log("Wybrane utwory:", selectedSongs);
+      const newPlaylist: Playlist = {
+        id: Date.now().toString(),
+        name,
+        songs: selectedSongs,
+      };
+      setPlaylists((prevPlaylists) => {
+        const updatedPlaylists = [...prevPlaylists, newPlaylist];
+        console.log("Zaktualizowane playlisty:", updatedPlaylists);
+        return updatedPlaylists;
+      });
+      // TODO: Zaimplementuj logikę zapisywania playlisty w bazie danych
+    },
+    []
+  );
 
   const handleCreateEmptyPlaylist = useCallback(() => {
     const name = prompt("Podaj nazwę nowej playlisty:");
@@ -55,7 +58,10 @@ const MusicPage: React.FC = () => {
   const handleAddToExistingPlaylist = useCallback(
     (playlistId: string, selectedSongs: string[]) => {
       console.log("handleAddToExistingPlaylist - playlistId:", playlistId);
-      console.log("handleAddToExistingPlaylist - selectedSongs:", selectedSongs);
+      console.log(
+        "handleAddToExistingPlaylist - selectedSongs:",
+        selectedSongs
+      );
       setPlaylists((prevPlaylists) =>
         prevPlaylists.map((playlist) =>
           playlist.id === playlistId
@@ -71,16 +77,22 @@ const MusicPage: React.FC = () => {
     []
   );
 
-  const handleRemoveSongFromPlaylist = useCallback((playlistId: string, songId: string) => {
-    setPlaylists((prevPlaylists) =>
-      prevPlaylists.map((playlist) =>
-        playlist.id === playlistId
-          ? { ...playlist, songs: playlist.songs.filter((id) => id !== songId) }
-          : playlist
-      )
-    );
-    // TODO: Zaimplementuj logikę aktualizacji playlisty w bazie danych
-  }, []);
+  const handleRemoveSongFromPlaylist = useCallback(
+    (playlistId: string, songId: string) => {
+      setPlaylists((prevPlaylists) =>
+        prevPlaylists.map((playlist) =>
+          playlist.id === playlistId
+            ? {
+                ...playlist,
+                songs: playlist.songs.filter((id) => id !== songId),
+              }
+            : playlist
+        )
+      );
+      // TODO: Zaimplementuj logikę aktualizacji playlisty w bazie danych
+    },
+    []
+  );
 
   useEffect(() => {
     if (status === "idle") {
@@ -88,9 +100,9 @@ const MusicPage: React.FC = () => {
         if (action.payload) {
           const mappedSongs = action.payload.map((song: any) => ({
             ...song,
-            id: song._id
+            id: song._id,
           }));
-          dispatch({ type: 'songs/setSongs', payload: mappedSongs });
+          dispatch({ type: "songs/setSongs", payload: mappedSongs });
         }
       });
     }
@@ -112,7 +124,10 @@ const MusicPage: React.FC = () => {
   }
 
   console.log("Playlists przed renderowaniem:", playlists);
-  console.log("Songs przed renderowaniem:", songs.map(song => ({ id: song.id, _id: song._id })));
+  console.log(
+    "Songs przed renderowaniem:",
+    songs.map((song) => ({ id: song.id, _id: song._id }))
+  );
 
   return (
     <div className="music-page bg-gray-100 min-h-screen flex flex-col">
@@ -121,8 +136,8 @@ const MusicPage: React.FC = () => {
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Lewa kolumna */}
           <div className="lg:w-2/3 space-y-6">
-            <MusicPlayer 
-              songs={songs} 
+            <MusicPlayer
+              songs={songs}
               onCreatePlaylist={handleCreatePlaylist}
               // Usuń tę linię
               // onAddToPlaylist={handleAddToPlaylist}
@@ -149,7 +164,7 @@ const MusicPage: React.FC = () => {
                 onAddToExistingPlaylist={handleAddToExistingPlaylist}
                 // {TODO Napraw funkcje onAddToExistingPlaylist={handleAddToExistingPlaylist} sprawdz czu działa*/}
               />
-              
+
               <PlaylistManager
                 playlists={playlists}
                 songs={songs}
@@ -198,10 +213,12 @@ const PlaylistList: React.FC<{ playlists: Playlist[] }> = ({ playlists }) => {
   return (
     <div>
       <h2 className="text-2xl font-bold text-gray-900 mb-4">Playlisty:</h2>
-      {playlists.map(playlist => (
+      {playlists.map((playlist) => (
         <div key={playlist.id} className="mb-4 p-4 bg-white rounded shadow">
           <h3 className="text-xl font-semibold">{playlist.name}</h3>
-          <p className="text-gray-600">Liczba utworów: {playlist.songs.length}</p>
+          <p className="text-gray-600">
+            Liczba utworów: {playlist.songs.length}
+          </p>
         </div>
       ))}
     </div>
