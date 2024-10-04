@@ -139,8 +139,6 @@ const MusicPage: React.FC = () => {
             <MusicPlayer
               songs={songs}
               onCreatePlaylist={handleCreatePlaylist}
-              // Usuń tę linię
-              // onAddToPlaylist={handleAddToPlaylist}
             />
             <SimilarSongs currentSong={songs[currentSongIndex] || null} />
             <div>
@@ -157,13 +155,12 @@ const MusicPage: React.FC = () => {
               <h2 className="text-2xl font-bold text-gray-900 mb-4">
                 Zarządzaj playlistami
               </h2>
-              <CreatePlaylist
+              {/* <CreatePlaylist
                 songs={songs}
                 onCreatePlaylist={handleCreatePlaylist}
                 existingPlaylists={playlists}
                 onAddToExistingPlaylist={handleAddToExistingPlaylist}
-                // {TODO Napraw funkcje onAddToExistingPlaylist={handleAddToExistingPlaylist} sprawdz czu działa*/}
-              />
+              /> Zastanówmy sie czy potrzebujemy tego modułu w takiej nie intuicyjnej formie tworzenia playlist*/}
 
               <PlaylistManager
                 playlists={playlists}
@@ -184,9 +181,9 @@ const MusicPage: React.FC = () => {
                 }}
                 onRemoveSongFromPlaylist={handleRemoveSongFromPlaylist}
               />
-              <PlaylistList playlists={playlists} />
+              {/* <PlaylistList playlists={playlists} /> Zastanówmy sie czy potrzebujemy tej listy.*/}
             </div>
-            <div>
+            {/* <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-4">
                 Lista utworów
               </h2>
@@ -200,27 +197,11 @@ const MusicPage: React.FC = () => {
                 onLoadMore={() => {}}
                 onCollapse={() => {}}
                 isPopularList={false}
-              />
-            </div>
+              /> Zastanówmy sie czy potrzebujemy tej listy.
+            </div> */}
           </div>
         </div>
       </div>
-    </div>
-  );
-};
-
-const PlaylistList: React.FC<{ playlists: Playlist[] }> = ({ playlists }) => {
-  return (
-    <div>
-      <h2 className="text-2xl font-bold text-gray-900 mb-4">Playlisty:</h2>
-      {playlists.map((playlist) => (
-        <div key={playlist.id} className="mb-4 p-4 bg-white rounded shadow">
-          <h3 className="text-xl font-semibold">{playlist.name}</h3>
-          <p className="text-gray-600">
-            Liczba utworów: {playlist.songs.length}
-          </p>
-        </div>
-      ))}
     </div>
   );
 };
