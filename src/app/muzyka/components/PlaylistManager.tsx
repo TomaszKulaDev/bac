@@ -9,6 +9,7 @@ interface PlaylistManagerProps {
   onDeletePlaylist: (playlistId: string) => void;
   onRenamePlaylist: (playlistId: string, newName: string) => void;
   onRemoveSongFromPlaylist: (playlistId: string, songId: string) => void;
+  onExpandPlaylist: (playlistId: string | null) => void;
 }
 
 const PlaylistManager: React.FC<PlaylistManagerProps> = ({
@@ -17,6 +18,7 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
   onDeletePlaylist,
   onRenamePlaylist,
   onRemoveSongFromPlaylist,
+  onExpandPlaylist,
 }) => {
   const [expandedPlaylist, setExpandedPlaylist] = useState<string | null>(null);
 
@@ -32,11 +34,11 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
             <span className="font-semibold text-lg">{playlist.name}</span>
             <div className="space-x-2">
               <button
-                onClick={() =>
-                  setExpandedPlaylist(
-                    expandedPlaylist === playlist.id ? null : playlist.id
-                  )
-                }
+                onClick={() => {
+                  const newExpandedId = expandedPlaylist === playlist.id ? null : playlist.id;
+                  setExpandedPlaylist(newExpandedId);
+                  onExpandPlaylist(newExpandedId);
+                }}
                 className="text-purple-500 hover:text-purple-700"
               >
                 {expandedPlaylist === playlist.id ? "Zwiń" : "Rozwiń"}

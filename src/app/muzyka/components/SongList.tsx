@@ -12,7 +12,7 @@ import {
   FaListUl,
   FaBookmark,
 } from "react-icons/fa";
-import { Song } from "../types";
+import { Song, Playlist } from "../types";
 import { motion } from "framer-motion";
 import { getYouTubeThumbnail } from "../utils/youtube";
 
@@ -27,6 +27,10 @@ interface SongListProps {
   isPopularList: boolean;
 
   onCreatePlaylist: () => void;
+  expandedPlaylistId: string | null;
+  onAddSongToPlaylist: (songId: string, playlistId: string) => void;
+  onCreateEmptyPlaylist: () => void;
+  playlists: Playlist[];
 }
 
 const SongList: React.FC<SongListProps> = ({
@@ -39,6 +43,10 @@ const SongList: React.FC<SongListProps> = ({
   onCollapse,
   isPopularList,
   onCreatePlaylist,
+  expandedPlaylistId,
+  onAddSongToPlaylist,
+  onCreateEmptyPlaylist,
+  playlists,
 }) => {
   const [sortBy, setSortBy] = useState<"title" | "artist" | "date">("date");
   const [filterText, setFilterText] = useState("");
@@ -154,6 +162,25 @@ const SongList: React.FC<SongListProps> = ({
               <p className="text-xs text-gray-600 truncate">{song.artist}</p>
             </div>
           </div>
+          <button
+            onClick={() => {
+              if (expandedPlaylistId) {
+                onAddSongToPlaylist(song._id || song.id, expandedPlaylistId);
+              } else if (playlists && playlists.length === 0) {
+                onCreateEmptyPlaylist();
+              } else {
+                // TODO: Pokazać modal z wyborem playlisty
+              }
+            }}
+            className="ml-2 text-purple-500 hover:text-purple-700"
+            title={
+              expandedPlaylistId
+                ? `Dodaj do aktualnej playlisty`
+                : "Dodaj do playlisty"
+            }
+          >
+            <FaPlus />
+          </button>
         </li>
       ))}
       {!isPopularList && visibleSongs < songs.length && (

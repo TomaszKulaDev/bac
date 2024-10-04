@@ -14,9 +14,7 @@ import { useState } from "react";
 import BaciataRisingBanner from "./components/BaciataRisingBanner";
 import SongList from "./components/SongList";
 import RecentlyPlayedList from "./components/RecentlyPlayedList";
-import SimilarSongs from "./components/SimilarSongs";
 import CreatePlaylist from "./components/CreatePlaylist";
-import PlaybackStatistics from "./components/PlaybackStatistics";
 import PlaylistManager from "./components/PlaylistManager";
 
 const MusicPage: React.FC = () => {
@@ -28,6 +26,8 @@ const MusicPage: React.FC = () => {
   const [recentlyPlayedSongs, setRecentlyPlayedSongs] = useState<Song[]>([]);
 
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
+
+  const [expandedPlaylistId, setExpandedPlaylistId] = useState<string | null>(null);
 
   const handleCreatePlaylist = useCallback(
     (name: string, selectedSongs: string[] = []) => {
@@ -56,18 +56,13 @@ const MusicPage: React.FC = () => {
   }, [handleCreatePlaylist]);
 
   const handleAddToExistingPlaylist = useCallback(
-    (playlistId: string, selectedSongs: string[]) => {
-      console.log("handleAddToExistingPlaylist - playlistId:", playlistId);
-      console.log(
-        "handleAddToExistingPlaylist - selectedSongs:",
-        selectedSongs
-      );
+    (songId: string, playlistId: string) => {
       setPlaylists((prevPlaylists) =>
         prevPlaylists.map((playlist) =>
           playlist.id === playlistId
             ? {
                 ...playlist,
-                songs: [...new Set([...playlist.songs, ...selectedSongs])],
+                songs: [...new Set([...playlist.songs, songId])],
               }
             : playlist
         )
@@ -142,12 +137,10 @@ const MusicPage: React.FC = () => {
               // Usuń tę linię
               // onAddToPlaylist={handleAddToPlaylist}
             />
-            <SimilarSongs currentSong={songs[currentSongIndex] || null} />
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-4">
                 Statystyki odtwarzania
               </h2>
-              <PlaybackStatistics />
             </div>
           </div>
 
@@ -183,6 +176,7 @@ const MusicPage: React.FC = () => {
                   // TODO: Zaimplementuj logikę aktualizacji nazwy playlisty w bazie danych
                 }}
                 onRemoveSongFromPlaylist={handleRemoveSongFromPlaylist}
+                onExpandPlaylist={setExpandedPlaylistId}
               />
               <PlaylistList playlists={playlists} />
             </div>
@@ -200,6 +194,10 @@ const MusicPage: React.FC = () => {
                 onLoadMore={() => {}}
                 onCollapse={() => {}}
                 isPopularList={false}
+                expandedPlaylistId={expandedPlaylistId}
+                onAddSongToPlaylist={handleAddToExistingPlaylist}
+                onCreateEmptyPlaylist={handleCreateEmptyPlaylist}
+                playlists={playlists}
               />
             </div>
           </div>

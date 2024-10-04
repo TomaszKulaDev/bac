@@ -91,6 +91,7 @@ const MusicPlayer: React.FC<{
   const [selectedSongId, setSelectedSongId] = useState<string | null>(null);
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [currentPlaylist, setCurrentPlaylist] = useState<Playlist | null>(null);
+  const [expandedPlaylistId, setExpandedPlaylistId] = useState<string | null>(null);
 
   const opts: YouTubeProps["opts"] = {
     width: "100%",
@@ -721,7 +722,11 @@ const MusicPlayer: React.FC<{
           onLoadMore={loadMoreSongs}
           onCollapse={collapseSongList}
           isPopularList={false}
-          onCreatePlaylist={() => setShowPlaylistModal(true)} // Dodaj tę linię
+          onCreatePlaylist={handleCreateEmptyPlaylist}
+          expandedPlaylistId={expandedPlaylistId}
+          onAddSongToPlaylist={handleAddSongToPlaylist}
+          onCreateEmptyPlaylist={handleCreateEmptyPlaylist}
+          playlists={playlists}
         />
       </div>
       {showLoginPrompt && <LoginPrompt />}
