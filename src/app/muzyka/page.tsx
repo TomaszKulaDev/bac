@@ -12,10 +12,8 @@ import { Song, Playlist } from "./types";
 import { RootState } from "@/store/store";
 import { useState } from "react";
 import BaciataRisingBanner from "./components/BaciataRisingBanner";
-import SongList from "./components/SongList";
 import RecentlyPlayedList from "./components/RecentlyPlayedList";
 import CreatePlaylist from "./components/CreatePlaylist";
-import PlaylistManager from "./components/PlaylistManager";
 
 const MusicPage: React.FC = () => {
   const dispatch = useDispatch();
@@ -27,7 +25,9 @@ const MusicPage: React.FC = () => {
 
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
 
-  const [expandedPlaylistId, setExpandedPlaylistId] = useState<string | null>(null);
+  const [expandedPlaylistId, setExpandedPlaylistId] = useState<string | null>(
+    null
+  );
 
   const handleCreatePlaylist = useCallback(
     (name: string, selectedSongs: string[] = []) => {
@@ -150,55 +150,15 @@ const MusicPage: React.FC = () => {
               <h2 className="text-2xl font-bold text-gray-900 mb-4">
                 Zarządzaj playlistami
               </h2>
-              <CreatePlaylist
-                songs={songs}
-                onCreatePlaylist={handleCreatePlaylist}
-                existingPlaylists={playlists}
-                onAddToExistingPlaylist={handleAddToExistingPlaylist}
-                // {TODO Napraw funkcje onAddToExistingPlaylist={handleAddToExistingPlaylist} sprawdz czu działa*/}
-              />
 
-              <PlaylistManager
-                playlists={playlists}
-                songs={songs}
-                onDeletePlaylist={(playlistId: string) => {
-                  setPlaylists((prevPlaylists) =>
-                    prevPlaylists.filter((p) => p.id !== playlistId)
-                  );
-                  // TODO: Zaimplementuj logikę usuwania playlisty z bazy danych
-                }}
-                onRenamePlaylist={(playlistId: string, newName: string) => {
-                  setPlaylists((prevPlaylists) =>
-                    prevPlaylists.map((p) =>
-                      p.id === playlistId ? { ...p, name: newName } : p
-                    )
-                  );
-                  // TODO: Zaimplementuj logikę aktualizacji nazwy playlisty w bazie danych
-                }}
-                onRemoveSongFromPlaylist={handleRemoveSongFromPlaylist}
-                onExpandPlaylist={setExpandedPlaylistId}
-              />
+        
               <PlaylistList playlists={playlists} />
             </div>
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-4">
                 Lista utworów
               </h2>
-              <SongList
-                songs={songs}
-                onCreatePlaylist={handleCreateEmptyPlaylist}
-                visibleSongs={songs.length}
-                currentSongIndex={currentSongIndex}
-                isPlaying={false}
-                onSongSelect={(index) => dispatch(setCurrentSongIndex(index))}
-                onLoadMore={() => {}}
-                onCollapse={() => {}}
-                isPopularList={false}
-                expandedPlaylistId={expandedPlaylistId}
-                onAddSongToPlaylist={handleAddToExistingPlaylist}
-                onCreateEmptyPlaylist={handleCreateEmptyPlaylist}
-                playlists={playlists}
-              />
+            
             </div>
           </div>
         </div>
