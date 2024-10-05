@@ -28,7 +28,7 @@ interface SongListProps {
   isPopularList: boolean;
   expandedPlaylist: string | null;
   setExpandedPlaylist: React.Dispatch<React.SetStateAction<string | null>>;
-  onAddToPlaylist: (songId: string) => void;
+  onAddToPlaylist: (songId: string | string[]) => void;
 }
 
 

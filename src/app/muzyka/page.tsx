@@ -57,15 +57,15 @@ const MusicPage: React.FC = () => {
   }, [handleCreatePlaylist]);
 
   const handleAddToExistingPlaylist = useCallback(
-    (playlistId: string, songId: string) => {
+    (playlistId: string, songIdOrIds: string | string[]) => {
       console.log("handleAddToExistingPlaylist - playlistId:", playlistId);
-      console.log("handleAddToExistingPlaylist - songId:", songId);
+      console.log("handleAddToExistingPlaylist - songIdOrIds:", songIdOrIds);
       setPlaylists((prevPlaylists) =>
         prevPlaylists.map((playlist) =>
           playlist.id === playlistId
             ? {
                 ...playlist,
-                songs: [...new Set([...playlist.songs, songId])],
+                songs: [...new Set([...playlist.songs, ...(Array.isArray(songIdOrIds) ? songIdOrIds : [songIdOrIds])])],
               }
             : playlist
         )
@@ -204,7 +204,7 @@ const MusicPage: React.FC = () => {
                 isPopularList={false}
                 expandedPlaylist={expandedPlaylist}
                 setExpandedPlaylist={setExpandedPlaylist}
-                onAddToPlaylist={handleAddToExistingPlaylist}
+                onAddToPlaylist={(songId) => handleAddToExistingPlaylist(expandedPlaylist!, songId)}
               />
             </div>
           </div>

@@ -5,7 +5,7 @@ interface CreatePlaylistProps {
   songs: Song[];
   onCreatePlaylist: (name: string, selectedSongs: string[]) => void;
   existingPlaylists: { id: string; name: string }[];
-  onAddToExistingPlaylist: (playlistId: string, selectedSongs: string[]) => void;
+  onAddToExistingPlaylist: (playlistId: string, selectedSongs: string | string[]) => void;
 }
 
 interface SongItemProps {
