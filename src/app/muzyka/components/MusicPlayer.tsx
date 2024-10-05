@@ -690,7 +690,13 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs, onCreatePlaylist, onAd
           onCollapse={collapseSongList}
           isPopularList={false}
           onCreatePlaylist={() => setShowPlaylistModal(true)}
-          onAddToPlaylist={handleAddToPlaylist}
+          onAddToPlaylist={(songId) => {
+            if (Array.isArray(songId)) {
+              songId.forEach(id => onAddToPlaylist(expandedPlaylist!, id));
+            } else {
+              onAddToPlaylist(expandedPlaylist!, songId);
+            }
+          }}
           expandedPlaylist={expandedPlaylist}
           setExpandedPlaylist={setExpandedPlaylist}
         />

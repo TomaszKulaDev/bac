@@ -138,7 +138,7 @@ const MusicPage: React.FC = () => {
             <MusicPlayer
               songs={songs}
               onCreatePlaylist={handleCreatePlaylist}
-              onAddToPlaylist={handleAddToExistingPlaylist}
+              onAddToPlaylist={(playlistId, songId) => handleAddToExistingPlaylist(playlistId, songId)}
               expandedPlaylist={expandedPlaylist}
               setExpandedPlaylist={setExpandedPlaylist}
             />
