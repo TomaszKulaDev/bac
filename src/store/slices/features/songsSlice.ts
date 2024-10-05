@@ -6,7 +6,7 @@ export const fetchSongs = createAsyncThunk(
   async () => {
     const response = await fetch('/api/songs');
     const data = await response.json();
-    console.log("Pobrane piosenki:", data);
+    // console.log("Pobrane piosenki:", data);
     return data.map((song: any) => ({
       ...song,
       id: song._id || song.id
