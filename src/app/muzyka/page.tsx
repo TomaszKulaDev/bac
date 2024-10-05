@@ -15,7 +15,6 @@ import BaciataRisingBanner from "./components/BaciataRisingBanner";
 import SongList from "./components/SongList";
 import RecentlyPlayedList from "./components/RecentlyPlayedList";
 import SimilarSongs from "./components/SimilarSongs";
-import CreatePlaylist from "./components/CreatePlaylist";
 import PlaybackStatistics from "./components/PlaybackStatistics";
 import PlaylistManager from "./components/PlaylistManager";
 
@@ -48,7 +47,6 @@ const MusicPage: React.FC = () => {
     []
   );
 
-
   const handleCreateEmptyPlaylist = useCallback(() => {
     const name = prompt("Podaj nazwę nowej playlisty:");
     if (name) {
@@ -65,7 +63,14 @@ const MusicPage: React.FC = () => {
           playlist.id === playlistId
             ? {
                 ...playlist,
-                songs: [...new Set([...playlist.songs, ...(Array.isArray(songIdOrIds) ? songIdOrIds : [songIdOrIds])])],
+                songs: [
+                  ...new Set([
+                    ...playlist.songs,
+                    ...(Array.isArray(songIdOrIds)
+                      ? songIdOrIds
+                      : [songIdOrIds]),
+                  ]),
+                ],
               }
             : playlist
         )
@@ -74,7 +79,6 @@ const MusicPage: React.FC = () => {
     },
     []
   );
-
 
   const handleRemoveSongFromPlaylist = useCallback(
     (playlistId: string, songId: string) => {
@@ -138,7 +142,9 @@ const MusicPage: React.FC = () => {
             <MusicPlayer
               songs={songs}
               onCreatePlaylist={handleCreatePlaylist}
-              onAddToPlaylist={(playlistId, songId) => handleAddToExistingPlaylist(playlistId, songId)}
+              onAddToPlaylist={(playlistId, songId) =>
+                handleAddToExistingPlaylist(playlistId, songId)
+              }
               expandedPlaylist={expandedPlaylist}
               setExpandedPlaylist={setExpandedPlaylist}
             />
@@ -157,14 +163,6 @@ const MusicPage: React.FC = () => {
               <h2 className="text-2xl font-bold text-gray-900 mb-4">
                 Zarządzaj playlistami
               </h2>
-              <CreatePlaylist
-                songs={songs}
-                onCreatePlaylist={handleCreatePlaylist}
-                existingPlaylists={playlists}
-                onAddToExistingPlaylist={handleAddToExistingPlaylist}
-                // {TODO Napraw funkcje onAddToExistingPlaylist={handleAddToExistingPlaylist} sprawdz czu działa*/}
-              />
-
               <PlaylistManager
                 playlists={playlists}
                 songs={songs}
@@ -204,7 +202,9 @@ const MusicPage: React.FC = () => {
                 isPopularList={false}
                 expandedPlaylist={expandedPlaylist}
                 setExpandedPlaylist={setExpandedPlaylist}
-                onAddToPlaylist={(songId) => handleAddToExistingPlaylist(expandedPlaylist!, songId)}
+                onAddToPlaylist={(songId) =>
+                  handleAddToExistingPlaylist(expandedPlaylist!, songId)
+                }
               />
             </div>
           </div>
@@ -213,7 +213,6 @@ const MusicPage: React.FC = () => {
     </div>
   );
 };
-
 
 const PlaylistList: React.FC<{ playlists: Playlist[] }> = ({ playlists }) => {
   return (

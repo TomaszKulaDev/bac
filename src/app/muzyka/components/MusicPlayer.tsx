@@ -702,16 +702,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs, onCreatePlaylist, onAd
         />
       </div>
       {showLoginPrompt && <LoginPrompt />}
-      <PlaylistModal
-        isOpen={showPlaylistModal}
-        onClose={handleClosePlaylistModal}
-        playlists={playlists}
-        onAddToPlaylist={handleAddSongToPlaylist}
-        onCreateNewPlaylist={handleCreateEmptyPlaylist}
-        onEditPlaylistName={editPlaylistName}
-        onDeletePlaylist={deletePlaylist}
-        selectedSongId={selectedSongId}
-      />
     </div>
   );
 };
