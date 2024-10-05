@@ -26,8 +26,8 @@ const MusicPage: React.FC = () => {
   );
 
   const [recentlyPlayedSongs, setRecentlyPlayedSongs] = useState<Song[]>([]);
-
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
+  const [expandedPlaylist, setExpandedPlaylist] = useState<string | null>(null);
 
   const handleCreatePlaylist = useCallback(
     (name: string, selectedSongs: string[] = []) => {
@@ -48,6 +48,7 @@ const MusicPage: React.FC = () => {
     []
   );
 
+
   const handleCreateEmptyPlaylist = useCallback(() => {
     const name = prompt("Podaj nazwę nowej playlisty:");
     if (name) {
@@ -56,18 +57,15 @@ const MusicPage: React.FC = () => {
   }, [handleCreatePlaylist]);
 
   const handleAddToExistingPlaylist = useCallback(
-    (playlistId: string, selectedSongs: string[]) => {
+    (playlistId: string, songId: string) => {
       console.log("handleAddToExistingPlaylist - playlistId:", playlistId);
-      console.log(
-        "handleAddToExistingPlaylist - selectedSongs:",
-        selectedSongs
-      );
+      console.log("handleAddToExistingPlaylist - songId:", songId);
       setPlaylists((prevPlaylists) =>
         prevPlaylists.map((playlist) =>
           playlist.id === playlistId
             ? {
                 ...playlist,
-                songs: [...new Set([...playlist.songs, ...selectedSongs])],
+                songs: [...new Set([...playlist.songs, songId])],
               }
             : playlist
         )
@@ -76,6 +74,7 @@ const MusicPage: React.FC = () => {
     },
     []
   );
+
 
   const handleRemoveSongFromPlaylist = useCallback(
     (playlistId: string, songId: string) => {
@@ -139,8 +138,9 @@ const MusicPage: React.FC = () => {
             <MusicPlayer
               songs={songs}
               onCreatePlaylist={handleCreatePlaylist}
-              // Usuń tę linię
-              // onAddToPlaylist={handleAddToPlaylist}
+              onAddToPlaylist={handleAddToExistingPlaylist}
+              expandedPlaylist={expandedPlaylist}
+              setExpandedPlaylist={setExpandedPlaylist}
             />
             <SimilarSongs currentSong={songs[currentSongIndex] || null} />
             <div>
@@ -168,6 +168,8 @@ const MusicPage: React.FC = () => {
               <PlaylistManager
                 playlists={playlists}
                 songs={songs}
+                expandedPlaylist={expandedPlaylist}
+                setExpandedPlaylist={setExpandedPlaylist}
                 onDeletePlaylist={(playlistId: string) => {
                   setPlaylists((prevPlaylists) =>
                     prevPlaylists.filter((p) => p.id !== playlistId)
@@ -200,6 +202,9 @@ const MusicPage: React.FC = () => {
                 onLoadMore={() => {}}
                 onCollapse={() => {}}
                 isPopularList={false}
+                expandedPlaylist={expandedPlaylist}
+                setExpandedPlaylist={setExpandedPlaylist}
+                onAddToPlaylist={handleAddToExistingPlaylist}
               />
             </div>
           </div>
@@ -208,6 +213,7 @@ const MusicPage: React.FC = () => {
     </div>
   );
 };
+
 
 const PlaylistList: React.FC<{ playlists: Playlist[] }> = ({ playlists }) => {
   return (

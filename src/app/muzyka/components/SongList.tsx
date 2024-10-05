@@ -18,6 +18,7 @@ import { getYouTubeThumbnail } from "../utils/youtube";
 
 interface SongListProps {
   songs: Song[];
+  onCreatePlaylist: () => void;
   visibleSongs: number;
   currentSongIndex: number;
   isPlaying: boolean;
@@ -25,9 +26,11 @@ interface SongListProps {
   onLoadMore: () => void;
   onCollapse: () => void;
   isPopularList: boolean;
-
-  onCreatePlaylist: () => void;
+  expandedPlaylist: string | null;
+  setExpandedPlaylist: React.Dispatch<React.SetStateAction<string | null>>;
+  onAddToPlaylist: (songId: string) => void;
 }
+
 
 const SongList: React.FC<SongListProps> = ({
   songs = [],
@@ -39,6 +42,7 @@ const SongList: React.FC<SongListProps> = ({
   onCollapse,
   isPopularList,
   onCreatePlaylist,
+  onAddToPlaylist,
 }) => {
   const [sortBy, setSortBy] = useState<"title" | "artist" | "date">("date");
   const [filterText, setFilterText] = useState("");
@@ -83,7 +87,7 @@ const SongList: React.FC<SongListProps> = ({
   // });
 
   // console.log(
-  //   "Pełna struktura piosenek:",
+  //   "Pewna struktura piosenek:",
   //   JSON.stringify(sortedAndFilteredSongs, null, 2)
   // );
 
@@ -154,6 +158,14 @@ const SongList: React.FC<SongListProps> = ({
               <p className="text-xs text-gray-600 truncate">{song.artist}</p>
             </div>
           </div>
+          <div className="flex items-center space-x-2">
+            <button
+              onClick={() => onAddToPlaylist(song.id)}
+              className="text-blue-600 hover:text-blue-800"
+            >
+              <FaPlus />
+            </button>
+          </div>
         </li>
       ))}
       {!isPopularList && visibleSongs < songs.length && (
@@ -167,5 +179,7 @@ const SongList: React.FC<SongListProps> = ({
     </div>
   );
 };
+
+
 
 export default SongList;

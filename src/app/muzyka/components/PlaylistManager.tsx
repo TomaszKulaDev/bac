@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Playlist, Song } from "../types";
 import Image from "next/image";
 import { getYouTubeThumbnail } from "../utils/youtube";
@@ -6,6 +6,8 @@ import { getYouTubeThumbnail } from "../utils/youtube";
 interface PlaylistManagerProps {
   playlists: Playlist[];
   songs: Song[];
+  expandedPlaylist: string | null;
+  setExpandedPlaylist: React.Dispatch<React.SetStateAction<string | null>>;
   onDeletePlaylist: (playlistId: string) => void;
   onRenamePlaylist: (playlistId: string, newName: string) => void;
   onRemoveSongFromPlaylist: (playlistId: string, songId: string) => void;
@@ -14,12 +16,12 @@ interface PlaylistManagerProps {
 const PlaylistManager: React.FC<PlaylistManagerProps> = ({
   playlists,
   songs,
+  expandedPlaylist,
+  setExpandedPlaylist,
   onDeletePlaylist,
   onRenamePlaylist,
   onRemoveSongFromPlaylist,
 }) => {
-  const [expandedPlaylist, setExpandedPlaylist] = useState<string | null>(null);
-
   const getSongDetails = (songId: string): Song | undefined => {
     return songs.find((song) => song._id === songId || song.id === songId);
   };

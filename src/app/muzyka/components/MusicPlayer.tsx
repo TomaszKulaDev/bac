@@ -40,18 +40,25 @@ const getYouTubeThumbnail = (youtubeId: string) => {
   return `https://img.youtube.com/vi/${youtubeId}/0.jpg`;
 };
 
-const MusicPlayer: React.FC<{
+interface MusicPlayerProps {
   songs: Song[];
   onCreatePlaylist: (name: string, selectedSongs: string[]) => void;
-}> = ({ songs, onCreatePlaylist }) => {
+  onAddToPlaylist: (playlistId: string, songId: string) => void;
+  expandedPlaylist: string | null;
+  setExpandedPlaylist: React.Dispatch<React.SetStateAction<string | null>>;
+}
+
+const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs, onCreatePlaylist, onAddToPlaylist, expandedPlaylist, setExpandedPlaylist }) => {
   const dispatch = useDispatch();
   const currentSongIndex = useSelector(
     (state: RootState) => state.songs.currentSongIndex
   );
 
+
   const isLoggedIn = useSelector(
     (state: RootState) => state.auth.isAuthenticated
   );
+
 
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated
@@ -91,20 +98,17 @@ const MusicPlayer: React.FC<{
   const [selectedSongId, setSelectedSongId] = useState<string | null>(null);
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [currentPlaylist, setCurrentPlaylist] = useState<Playlist | null>(null);
-
-  const opts: YouTubeProps["opts"] = {
+  const opts: YouTubeProps['opts'] = {
     width: "100%",
     height: "100%",
     playerVars: {
       autoplay: 1,
     },
   };
-
   const onPlayerReady = (event: any) => {
     playerRef.current = event.target;
     setIsLoading(false);
   };
-
   const previousSong = () => {
     if (currentSongIndex > 0) {
       dispatch(setCurrentSongIndex(currentSongIndex - 1));
@@ -114,7 +118,6 @@ const MusicPlayer: React.FC<{
     setIsPlaying(true);
     setIsLoading(true);
   };
-
   const togglePlayback = useCallback(() => {
     if (player && isPlayerReady) {
       if (isPlaying) {
@@ -125,7 +128,6 @@ const MusicPlayer: React.FC<{
       setIsPlaying(!isPlaying);
     }
   }, [player, isPlaying, isPlayerReady]);
-
   const nextSong = () => {
     if (currentSongIndex < songs.length - 1) {
       dispatch(setCurrentSongIndex(currentSongIndex + 1));
@@ -135,17 +137,14 @@ const MusicPlayer: React.FC<{
     setIsPlaying(true);
     setIsLoading(true);
   };
-
   const loadMoreSongs = useCallback(() => {
     setVisibleSongs((prevVisible) =>
       Math.min(prevVisible + songsPerLoad, songs.length)
     );
   }, [songsPerLoad, songs.length]);
-
   const collapseSongList = () => {
     setVisibleSongs(initialVisibleSongs);
   };
-
   const onReady = (event: { target: any }) => {
     if (event.target && typeof event.target.loadVideoById === "function") {
       setPlayer(event.target);
@@ -156,7 +155,6 @@ const MusicPlayer: React.FC<{
       setError("Nie można załadować odtwarzacza YouTube");
     }
   };
-
   const onError = (event: { data: number }) => {
     console.error("Błąd YouTube:", event.data);
     let errorMessage = "Wystąpił błąd podczas ładowania filmu.";
@@ -166,7 +164,6 @@ const MusicPlayer: React.FC<{
     }
     setError(errorMessage);
   };
-
   const updatePlayerDimensions = useCallback(() => {
     const width = window.innerWidth;
     if (width < 640) {
@@ -177,7 +174,6 @@ const MusicPlayer: React.FC<{
       setPlayerDimensions({ width: "100%", height: "360px" });
     }
   }, []);
-
   useEffect(() => {
     updatePlayerDimensions();
     window.addEventListener("resize", updatePlayerDimensions, {
@@ -185,7 +181,6 @@ const MusicPlayer: React.FC<{
     });
     return () => window.removeEventListener("resize", updatePlayerDimensions);
   }, [updatePlayerDimensions]);
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -193,7 +188,6 @@ const MusicPlayer: React.FC<{
       [name]: value,
     }));
   };
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Formularz został wysłany", formData);
@@ -205,7 +199,6 @@ const MusicPlayer: React.FC<{
         },
         body: JSON.stringify(formData),
       });
-
       if (response.ok) {
         console.log("Formularz wysłany pomyślnie");
         setShowSuccessMessage(true);
@@ -220,7 +213,6 @@ const MusicPlayer: React.FC<{
       setShowErrorMessage(true);
     }
   };
-
   useEffect(() => {
     if (showSuccessMessage) {
       const timer = setTimeout(() => {
@@ -229,7 +221,6 @@ const MusicPlayer: React.FC<{
       return () => clearTimeout(timer);
     }
   }, [showSuccessMessage]);
-
   function SuccessMessage({ onClose }: { onClose: () => void }) {
     console.log("SuccessMessage został wyrenderowany");
     useEffect(() => {
@@ -238,14 +229,11 @@ const MusicPlayer: React.FC<{
           onClose();
         }
       };
-
       document.addEventListener("keydown", handleKeyDown);
-
       return () => {
         document.removeEventListener("keydown", handleKeyDown);
       };
     }, [onClose]);
-
     return (
       <div
         className="fixed inset-0 flex items-center justify-center z-[9999] bg-black bg-opacity-50"
@@ -298,7 +286,6 @@ const MusicPlayer: React.FC<{
       </div>
     );
   }
-
   const ErrorMessage = () => (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
       <div className="bg-white rounded-lg p-8 max-w-md w-full shadow-xl">
@@ -336,11 +323,9 @@ const MusicPlayer: React.FC<{
       </div>
     </div>
   );
-
   const handleShowLoginModal = () => {
     setShowLoginModal(true);
   };
-
   useEffect(() => {
     const checkAdBlocker = async () => {
       try {
@@ -354,20 +339,15 @@ const MusicPlayer: React.FC<{
     };
     checkAdBlocker();
   }, []);
-
   useEffect(() => {
     const handleResize = () => {
       setIsSmallScreen(window.innerWidth < 768);
     };
-
     handleResize();
     window.addEventListener("resize", handleResize);
-
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
   const MemoizedSongList = React.memo(SongList);
-
   const handleSongSelect = useCallback(
     (index: number) => {
       dispatch(setCurrentSongIndex(index));
@@ -376,11 +356,9 @@ const MusicPlayer: React.FC<{
     },
     [dispatch]
   );
-
   const toggleMinimalisticMode = () => {
     setIsMinimalistic(!isMinimalistic);
   };
-
   const savePlaylist = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
       if (!isAuthenticated) {
@@ -396,7 +374,6 @@ const MusicPlayer: React.FC<{
     },
     [isAuthenticated, onCreatePlaylist]
   );
-
   const UserPlaylists = () => (
     <div className="mt-4">
       <h3 className="text-xl font-semibold mb-2">Twoje playlisty</h3>
@@ -424,7 +401,6 @@ const MusicPlayer: React.FC<{
       </button>
     </div>
   );
-
   const LoginPrompt = () => (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white p-6 rounded-lg shadow-xl">
@@ -450,20 +426,20 @@ const MusicPlayer: React.FC<{
       </div>
     </div>
   );
-
   const handleAddToPlaylist = useCallback((songId: string) => {
-    console.log("handleAddToPlaylist called with songId:", songId); // Dodany console.log
-    setSelectedSongId(songId);
-    setShowPlaylistModal(true);
-  }, []);
-
+    if (expandedPlaylist) {
+      onAddToPlaylist(expandedPlaylist, songId);
+    } else {
+      setShowPlaylistModal(true);
+      setSelectedSongId(songId);
+    }
+  }, [expandedPlaylist, onAddToPlaylist, setShowPlaylistModal, setSelectedSongId]);
   const handleClosePlaylistModal = useCallback(() => {
     setShowPlaylistModal(false);
     setSelectedSongId(null);
   }, []);
-
   const handleAddSongToPlaylist = useCallback(
-    (playlistId: string) => {
+    (playlistId: string, songId: string) => {
       if (selectedSongId) {
         console.log(
           `Dodawanie utworu ${selectedSongId} do playlisty ${playlistId}`
@@ -475,7 +451,6 @@ const MusicPlayer: React.FC<{
     },
     [selectedSongId, handleClosePlaylistModal, handleAddToPlaylist]
   );
-
   const PlaylistModal: React.FC<{
     isOpen: boolean;
     onClose: () => void;
@@ -484,6 +459,7 @@ const MusicPlayer: React.FC<{
     onCreateNewPlaylist: (event: React.MouseEvent<HTMLButtonElement>) => void;
     onEditPlaylistName: (playlistId: string, newName: string) => void;
     onDeletePlaylist: (playlistId: string) => void;
+    selectedSongId: string | null;
   }> = ({
     isOpen,
     onClose,
@@ -492,16 +468,14 @@ const MusicPlayer: React.FC<{
     onCreateNewPlaylist,
     onEditPlaylistName,
     onDeletePlaylist,
+    selectedSongId,
   }) => {
     const [editingPlaylistId, setEditingPlaylistId] = useState<string | null>(
       null
     );
     const [newPlaylistName, setNewPlaylistName] = useState("");
-
     console.log("PlaylistModal rendered. isOpen:", isOpen); // Dodany console.log
-
     if (!isOpen) return null;
-
     return (
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
         <div className="bg-white p-6 rounded-lg shadow-xl">
@@ -565,7 +539,6 @@ const MusicPlayer: React.FC<{
       </div>
     );
   };
-
   const addSongToPlaylist = useCallback(
     (playlistId: string, songId: string) => {
       setPlaylists((prevPlaylists) =>
@@ -579,7 +552,6 @@ const MusicPlayer: React.FC<{
     },
     []
   );
-
   const removeSongFromPlaylist = useCallback(
     (playlistId: string, songId: string) => {
       setPlaylists((prevPlaylists) =>
@@ -596,7 +568,6 @@ const MusicPlayer: React.FC<{
     },
     []
   );
-
   const editPlaylistName = useCallback(
     (playlistId: string, newName: string) => {
       setPlaylists((prevPlaylists) =>
@@ -610,7 +581,6 @@ const MusicPlayer: React.FC<{
     },
     []
   );
-
   const deletePlaylist = useCallback(
     (playlistId: string) => {
       setPlaylists((prevPlaylists) =>
@@ -622,7 +592,6 @@ const MusicPlayer: React.FC<{
     },
     [currentPlaylist]
   );
-
   const handleCreateEmptyPlaylist = () => {
     const name = prompt("Podaj nazwę nowej playlisty:");
     if (name) {
@@ -630,7 +599,6 @@ const MusicPlayer: React.FC<{
       setShowPlaylistModal(false); // Zamyka modal po utworzeniu playlisty
     }
   };
-
   return (
     <div className="music-player bg-white shadow-lg min-h-screen flex flex-col w-full max-w-6xl mx-auto">
       <div className="playlist-header bg-gradient-to-r from-purple-500 to-pink-500 text-white p-4 shadow-md">
@@ -721,7 +689,10 @@ const MusicPlayer: React.FC<{
           onLoadMore={loadMoreSongs}
           onCollapse={collapseSongList}
           isPopularList={false}
-          onCreatePlaylist={() => setShowPlaylistModal(true)} // Dodaj tę linię
+          onCreatePlaylist={() => setShowPlaylistModal(true)}
+          onAddToPlaylist={handleAddToPlaylist}
+          expandedPlaylist={expandedPlaylist}
+          setExpandedPlaylist={setExpandedPlaylist}
         />
       </div>
       {showLoginPrompt && <LoginPrompt />}
@@ -733,9 +704,12 @@ const MusicPlayer: React.FC<{
         onCreateNewPlaylist={handleCreateEmptyPlaylist}
         onEditPlaylistName={editPlaylistName}
         onDeletePlaylist={deletePlaylist}
+        selectedSongId={selectedSongId}
       />
     </div>
   );
 };
+
+
 
 export default MusicPlayer;
