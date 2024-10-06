@@ -21,6 +21,7 @@ import { Song, Playlist } from "../types";
 import { RootState } from "../../../store/store";
 import SongList from "./SongList";
 import { setCurrentSongIndex } from "@/store/slices/features/songsSlice";
+import { sortSongs } from "../utils/sortUtils";
 
 
 interface MusicPlayerProps {
@@ -74,6 +75,15 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
       autoplay: 1,
     },
   };
+
+  const [sortBy, setSortBy] = useState<"date" | "title" | "artist">("date");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
+  const [filterText, setFilterText] = useState("");
+
+  const onSortChange = useCallback((newSortBy: "date" | "title" | "artist", newSortOrder: "asc" | "desc") => {
+    setSortBy(newSortBy);
+    setSortOrder(newSortOrder);
+  }, []);
 
   // Funkcja wywoływana, gdy odtwarzacz jest gotowy
   const onPlayerReady = (event: any) => {
@@ -297,6 +307,18 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     [currentPlaylist]
   );
 
+  const sortedAndFilteredSongs = useMemo(() => {
+    let result = [...songs];
+    if (filterText) {
+      result = result.filter(
+        (song) =>
+          song.title.toLowerCase().includes(filterText.toLowerCase()) ||
+          song.artist.toLowerCase().includes(filterText.toLowerCase())
+      );
+    }
+    return sortSongs(result, sortBy, sortOrder);
+  }, [songs, sortBy, sortOrder, filterText]);
+
   // Komponent MusicPlayer - główny komponent odtwarzacza muzyki
   return (
     <div className="music-player bg-white shadow-lg min-h-screen flex flex-col w-full max-w-6xl mx-auto">
@@ -368,7 +390,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           </div>
         </div>
         <MemoizedSongList
-          songs={songs}
+          songs={sortedAndFilteredSongs}
           visibleSongs={visibleSongs}
           currentSongIndex={currentSongIndex}
           isPlaying={isPlaying}
@@ -386,6 +408,12 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           }}
           expandedPlaylist={expandedPlaylist}
           setExpandedPlaylist={setExpandedPlaylist}
+          sortBy={sortBy}
+          sortOrder={sortOrder}
+          onSortChange={onSortChange}
+          filterText={filterText}
+          setFilterText={setFilterText}
+          currentSong={songs[currentSongIndex]}
         />
       </div>
       {}

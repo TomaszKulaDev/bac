@@ -25,6 +25,9 @@ const MusicPage: React.FC = () => {
 
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [expandedPlaylist, setExpandedPlaylist] = useState<string | null>(null);
+  const [sortBy, setSortBy] = useState<"date" | "title" | "artist">("date");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
+  const [filterText, setFilterText] = useState("");
 
   const handleCreatePlaylist = useCallback(
     (name: string, selectedSongs: string[] = []) => {
@@ -216,6 +219,15 @@ const MusicPage: React.FC = () => {
                 onAddToPlaylist={(songId) =>
                   handleAddToExistingPlaylist(expandedPlaylist!, songId)
                 }
+                sortBy={sortBy}
+                sortOrder={sortOrder}
+                onSortChange={(newSortBy, newSortOrder) => {
+                  setSortBy(newSortBy);
+                  setSortOrder(newSortOrder);
+                }}
+                filterText={filterText}
+                setFilterText={setFilterText}
+                currentSong={songs[currentSongIndex] || null}
               />
             </div>
           </div>

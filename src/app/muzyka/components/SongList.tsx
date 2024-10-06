@@ -32,6 +32,15 @@ interface SongListProps {
   expandedPlaylist: string | null;
   setExpandedPlaylist: React.Dispatch<React.SetStateAction<string | null>>;
   onAddToPlaylist: (songId: string | string[]) => void;
+  sortBy: "date" | "title" | "artist";
+  sortOrder: "asc" | "desc";
+  onSortChange: (
+    newSortBy: "date" | "title" | "artist",
+    newSortOrder: "asc" | "desc"
+  ) => void;
+  filterText: string;
+  setFilterText: React.Dispatch<React.SetStateAction<string>>;
+  currentSong: Song | null;
 }
 
 const SongList: React.FC<SongListProps> = ({
@@ -45,9 +54,11 @@ const SongList: React.FC<SongListProps> = ({
   isPopularList,
   onCreatePlaylist,
   onAddToPlaylist,
+  sortBy,
+  sortOrder,
+  onSortChange,
+  currentSong,
 }) => {
-  const [sortBy, setSortBy] = useState<"date" | "title" | "artist">("date");
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const [filterText, setFilterText] = useState("");
 
   const sortedAndFilteredSongs = useMemo(() => {
@@ -64,10 +75,9 @@ const SongList: React.FC<SongListProps> = ({
 
   const handleSort = (newSortBy: "date" | "title" | "artist") => {
     if (sortBy === newSortBy) {
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+      onSortChange(newSortBy, sortOrder === "asc" ? "desc" : "asc");
     } else {
-      setSortBy(newSortBy);
-      setSortOrder(newSortBy === "date" ? "desc" : "asc");
+      onSortChange(newSortBy, newSortBy === "date" ? "desc" : "asc");
     }
   };
 
@@ -99,7 +109,9 @@ const SongList: React.FC<SongListProps> = ({
               sortBy === "date" ? "bg-purple-500 text-white" : "bg-gray-200"
             }`}
           >
-            Ostatnio dodane {sortBy === "date" && (sortOrder === "asc" ? <FaSortAmountUp /> : <FaSortAmountDown />)}
+            Ostatnio dodane{" "}
+            {sortBy === "date" &&
+              (sortOrder === "asc" ? <FaSortAmountUp /> : <FaSortAmountDown />)}
           </button>
           <button
             onClick={() => handleSort("title")}
@@ -107,7 +119,9 @@ const SongList: React.FC<SongListProps> = ({
               sortBy === "title" ? "bg-purple-500 text-white" : "bg-gray-200"
             }`}
           >
-            Tytuł {sortBy === "title" && (sortOrder === "asc" ? <FaSortAmountUp /> : <FaSortAmountDown />)}
+            Tytuł{" "}
+            {sortBy === "title" &&
+              (sortOrder === "asc" ? <FaSortAmountUp /> : <FaSortAmountDown />)}
           </button>
           <button
             onClick={() => handleSort("artist")}
@@ -115,15 +129,17 @@ const SongList: React.FC<SongListProps> = ({
               sortBy === "artist" ? "bg-purple-500 text-white" : "bg-gray-200"
             }`}
           >
-            Artysta {sortBy === "artist" && (sortOrder === "asc" ? <FaSortAmountUp /> : <FaSortAmountDown />)}
+            Artysta{" "}
+            {sortBy === "artist" &&
+              (sortOrder === "asc" ? <FaSortAmountUp /> : <FaSortAmountDown />)}
           </button>
         </div>
       </div>
-      {sortedAndFilteredSongs.slice(0, visibleSongs).map((song, index) => (
+      {sortedAndFilteredSongs.map((song) => (
         <li
           key={song._id || song.id}
           className={`flex items-center justify-between p-2 hover:bg-gray-100 cursor-pointer ${
-            index === currentSongIndex
+            song.id === currentSong?.id
               ? "bg-purple-100 border-l-4 border-purple-500"
               : ""
           }`}
@@ -143,7 +159,7 @@ const SongList: React.FC<SongListProps> = ({
             <div className="flex-grow min-w-0">
               <h3
                 className={`font-semibold truncate text-sm ${
-                  index === currentSongIndex
+                  song.id === currentSong?.id
                     ? "text-purple-700"
                     : "text-gray-800"
                 }`}
@@ -155,14 +171,19 @@ const SongList: React.FC<SongListProps> = ({
           </div>
           <div className="flex items-center space-x-2">
             <button
-              onClick={() => onAddToPlaylist(song.id)}
+              onClick={(e) => {
+                e.stopPropagation();
+                onAddToPlaylist(song.id);
+              }}
               className="text-blue-600 hover:text-blue-800"
             >
               <FaPlus />
             </button>
           </div>
           <div className="text-sm text-gray-500">
-            Playlisty: {song.playlists && song.playlists.length > 0 ? song.playlists.join(", ") : "Brak"}
+            Playlisty: {song.playlists && song.playlists.length > 0
+              ? song.playlists.join(", ")
+              : "Brak"}
           </div>
         </li>
       ))}
