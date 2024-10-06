@@ -12,6 +12,7 @@ export interface Song {
   youtubeId: string;
   createdAt: Date;
   __v?: number;
+  playlists: string[]; // Tablica ID playlist, do których należy utwór
 }
 
 export interface MusicPlayerProps {

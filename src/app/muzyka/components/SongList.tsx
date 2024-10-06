@@ -31,7 +31,6 @@ interface SongListProps {
   onAddToPlaylist: (songId: string | string[]) => void;
 }
 
-
 const SongList: React.FC<SongListProps> = ({
   songs = [],
   visibleSongs,
@@ -166,6 +165,9 @@ const SongList: React.FC<SongListProps> = ({
               <FaPlus />
             </button>
           </div>
+          <div className="text-sm text-gray-500">
+            Playlisty: {song.playlists && song.playlists.length > 0 ? song.playlists.join(", ") : "Brak"}
+          </div>
         </li>
       ))}
       {!isPopularList && visibleSongs < songs.length && (
@@ -179,7 +181,5 @@ const SongList: React.FC<SongListProps> = ({
     </div>
   );
 };
-
-
 
 export default SongList;

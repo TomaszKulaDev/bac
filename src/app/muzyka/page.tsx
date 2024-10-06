@@ -3,10 +3,12 @@
 
 import { useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { AppDispatch } from "@/store/store";
 import MusicPlayer from "./components/MusicPlayer";
 import {
   fetchSongs,
   setCurrentSongIndex,
+  updateSongsPlaylists,
 } from "@/store/slices/features/songsSlice";
 import { Song, Playlist } from "./types";
 import { RootState } from "@/store/store";
@@ -16,7 +18,7 @@ import SongList from "./components/SongList";
 import PlaylistManager from "./components/PlaylistManager";
 
 const MusicPage: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { songs, status, error, currentSongIndex } = useSelector(
     (state: RootState) => state.songs
   );
@@ -71,9 +73,18 @@ const MusicPage: React.FC = () => {
             : playlist
         )
       );
-      // TODO: Zaimplementuj logikę aktualizacji playlisty w bazie danych
+      
+      const songIds = Array.isArray(songIdOrIds) ? songIdOrIds : [songIdOrIds];
+      dispatch(updateSongsPlaylists({ songIds, playlistId }))
+        .unwrap()
+        .then(() => {
+          console.log("Playlists updated successfully");
+        })
+        .catch((error: unknown) => {
+          console.error("Failed to update playlists:", error);
+        });
     },
-    []
+    [dispatch]
   );
 
   const handleRemoveSongFromPlaylist = useCallback(
