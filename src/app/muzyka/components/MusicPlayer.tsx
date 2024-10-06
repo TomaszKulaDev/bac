@@ -14,32 +14,14 @@ import {
   FaPlay,
   FaPause,
   FaMusic,
-  FaArrowUp,
-  FaArrowDown,
-  FaThumbsUp,
-  FaThumbsDown,
-  FaHeart,
   FaChevronDown,
   FaChevronUp,
-  FaMinus,
-  FaStepBackward,
-  FaStepForward,
-  FaList,
-  FaExpand,
-  FaCompress,
-  FaPlus,
 } from "react-icons/fa";
-import Image from "next/image";
 import { Song, Playlist } from "../types";
 import { RootState } from "../../../store/store";
 import SongList from "./SongList";
 import { setCurrentSongIndex } from "@/store/slices/features/songsSlice";
-import Link from "next/link";
 
-// Funkcja do pobierania miniaturki z YouTube
-const getYouTubeThumbnail = (youtubeId: string) => {
-  return `https://img.youtube.com/vi/${youtubeId}/0.jpg`;
-};
 
 interface MusicPlayerProps {
   songs: Song[];
@@ -75,26 +57,14 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     width: "100%",
     height: "300px",
   });
-  const [showContactForm, setShowContactForm] = useState(false);
-  const [formData, setFormData] = useState({
-    title: "",
-    artist: "",
-    youtubeLink: "",
-  });
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-  const [showErrorMessage, setShowErrorMessage] = useState(false);
-  const [adBlockerDetected, setAdBlockerDetected] = useState(false);
-  const [showLoginModal, setShowLoginModal] = useState(false);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const [isPlayerReady, setIsPlayerReady] = useState(false);
-  const [localSongs, setLocalSongs] = useState<Song[]>(songs);
   const [isMinimalistic, setIsMinimalistic] = useState(false);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   const [userPlaylists, setUserPlaylists] = useState<
     { id: string; name: string }[]
   >([]);
-  const [showPlaylistModal, setShowPlaylistModal] = useState(false);
-  const [selectedSongId, setSelectedSongId] = useState<string | null>(null);
+ 
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [currentPlaylist, setCurrentPlaylist] = useState<Playlist | null>(null);
   const opts: YouTubeProps["opts"] = {
@@ -169,17 +139,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     }
   };
 
-  // Funkcja wywoływana w przypadku błędu odtwarzacza
-  const onError = (event: { data: number }) => {
-    console.error("Błąd YouTube:", event.data);
-    let errorMessage = "Wystąpił błąd podczas ładowania filmu.";
-    if (adBlockerDetected) {
-      errorMessage +=
-        " Sprawdź swoje ustawienia prywatności lub blokery reklam.";
-    }
-    setError(errorMessage);
-  };
-
   // Funkcja do aktualizacji wymiarów odtwarzacza
   const updatePlayerDimensions = useCallback(() => {
     const width = window.innerWidth;
@@ -200,158 +159,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     });
     return () => window.removeEventListener("resize", updatePlayerDimensions);
   }, [updatePlayerDimensions]);
-
-  // Funkcja do obsługi zmiany wartości w formularzu
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-  // Funkcja do obsługi wysyłania formularza
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log("Formularz został wysłany", formData);
-    try {
-      const response = await fetch("/api/submit-song", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-      if (response.ok) {
-        console.log("Formularz wysłany pomyślnie");
-        setShowSuccessMessage(true);
-        setShowContactForm(false);
-        setFormData({ title: "", artist: "", youtubeLink: "" });
-      } else {
-        const errorData = await response.json();
-        console.error("Wystąpił błąd podczas wysyłania formularza:", errorData);
-      }
-    } catch (error) {
-      console.error("Błąd:", error);
-      setShowErrorMessage(true);
-    }
-  };
-
-  // Efekt do automatycznego zamykania komunikatu sukcesu po 5 sekundach
-  useEffect(() => {
-    if (showSuccessMessage) {
-      const timer = setTimeout(() => {
-        setShowSuccessMessage(false);
-      }, 5000); // Zamknij komunikat po 5 sekundach
-      return () => clearTimeout(timer);
-    }
-  }, [showSuccessMessage]);
-
-  // Komponent komunikatu sukcesu
-  function SuccessMessage({ onClose }: { onClose: () => void }) {
-    console.log("SuccessMessage został wyrenderowany");
-    useEffect(() => {
-      const handleKeyDown = (event: KeyboardEvent) => {
-        if (event.key === "Escape") {
-          onClose();
-        }
-      };
-      document.addEventListener("keydown", handleKeyDown);
-      return () => {
-        document.removeEventListener("keydown", handleKeyDown);
-      };
-    }, [onClose]);
-    return (
-      <div
-        className="fixed inset-0 flex items-center justify-center z-[9999] bg-black bg-opacity-50"
-        onClick={onClose}
-        style={{ zIndex: 9999 }}
-      >
-        <div
-          className="bg-white rounded-lg p-8 max-w-md w-full shadow-xl"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <div className="text-center">
-            <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-4">
-              <svg
-                className="h-8 w-8 text-green-600"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"
-                ></path>
-              </svg>
-            </div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-2">
-              Świetnie! 🎉
-            </h3>
-            <p className="text-lg text-gray-600 mb-4">
-              Twój utwór został dodany do naszej playlisty do rozpatrzenia.
-              Dzięki za podzielenie się muzyką!
-            </p>
-            <p className="text-md text-gray-500 mb-6">
-              Kto wie, może wkrótce usłyszymy go na parkiecie? 💃🕺
-            </p>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                console.log("Przycisk zamykający został kliknięty");
-                onClose();
-              }}
-              className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:text-sm transition duration-300 z-50"
-            >
-              Super, wracam do przeglądania!
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // Komponent komunikatu błędu
-  const ErrorMessage = () => (
-    <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-      <div className="bg-white rounded-lg p-8 max-w-md w-full shadow-xl">
-        <div className="text-center">
-          <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
-            <svg
-              className="h-6 w-6 text-red-600"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M6 18L18 6M6 6l12 12"
-              ></path>
-            </svg>
-          </div>
-          <h3 className="text-lg font-medium text-gray-900 mb-2">
-            Wystąpił błąd
-          </h3>
-          <p className="text-sm text-gray-500 mb-4">
-            Przepraszamy, nie udało się wysłać formularza. Spróbuj ponownie
-            później.
-          </p>
-          <button
-            onClick={() => setShowErrorMessage(false)}
-            className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:text-sm"
-          >
-            Zamknij
-          </button>
-        </div>
-      </div>
-    </div>
-  );
 
   // Efekt do sprawdzania, czy ekran jest mały
   useEffect(() => {
@@ -414,124 +221,10 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     (songId: string) => {
       if (expandedPlaylist) {
         onAddToPlaylist(expandedPlaylist, songId);
-      } else {
-        setShowPlaylistModal(true);
-        setSelectedSongId(songId);
       }
     },
-    [expandedPlaylist, onAddToPlaylist, setShowPlaylistModal, setSelectedSongId]
+    [expandedPlaylist, onAddToPlaylist]
   );
-
-  // Funkcja do zamykania modalu playlisty
-  const handleClosePlaylistModal = useCallback(() => {
-    setShowPlaylistModal(false);
-    setSelectedSongId(null);
-  }, []);
-
-  // Funkcja do dodawania utworu do wybranej playlisty
-  const handleAddSongToPlaylist = useCallback(
-    (playlistId: string, songId: string) => {
-      if (selectedSongId) {
-        console.log(
-          `Dodawanie utworu ${selectedSongId} do playlisty ${playlistId}`
-        );
-        // Tu dodaj logikę dodawania utworu do playlisty
-        handleAddToPlaylist(selectedSongId);
-        handleClosePlaylistModal();
-      }
-    },
-    [selectedSongId, handleClosePlaylistModal, handleAddToPlaylist]
-  );
-
-  // Komponent modalu playlisty
-  const PlaylistModal: React.FC<{
-    isOpen: boolean;
-    onClose: () => void;
-    playlists: Playlist[];
-    onAddToPlaylist: (playlistId: string, songId: string) => void;
-    onCreateNewPlaylist: (event: React.MouseEvent<HTMLButtonElement>) => void;
-    onEditPlaylistName: (playlistId: string, newName: string) => void;
-    onDeletePlaylist: (playlistId: string) => void;
-    selectedSongId: string | null;
-  }> = ({
-    isOpen,
-    onClose,
-    playlists,
-    onAddToPlaylist,
-    onCreateNewPlaylist,
-    onEditPlaylistName,
-    onDeletePlaylist,
-    selectedSongId,
-  }) => {
-    const [editingPlaylistId, setEditingPlaylistId] = useState<string | null>(
-      null
-    );
-    const [newPlaylistName, setNewPlaylistName] = useState("");
-    console.log("PlaylistModal rendered. isOpen:", isOpen); // Dodany console.log
-    if (!isOpen) return null;
-    return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div className="bg-white p-6 rounded-lg shadow-xl">
-          <h2 className="text-xl font-bold mb-4">Zarządzaj playlistami</h2>
-          <ul>
-            {playlists.map((playlist) => (
-              <li
-                key={playlist.id}
-                className="mb-2 flex items-center justify-between"
-              >
-                {editingPlaylistId === playlist.id ? (
-                  <input
-                    type="text"
-                    value={newPlaylistName}
-                    onChange={(e) => setNewPlaylistName(e.target.value)}
-                    onBlur={() => {
-                      onEditPlaylistName(playlist.id, newPlaylistName);
-                      setEditingPlaylistId(null);
-                    }}
-                    className="border rounded px-2 py-1"
-                  />
-                ) : (
-                  <span>{playlist.name}</span>
-                )}
-                <div>
-                  <button
-                    onClick={() => {
-                      setEditingPlaylistId(playlist.id);
-                      setNewPlaylistName(playlist.name);
-                    }}
-                    className="text-blue-500 hover:text-blue-700 mr-2"
-                  >
-                    Edytuj
-                  </button>
-                  <button
-                    onClick={() => onDeletePlaylist(playlist.id)}
-                    className="text-red-500 hover:text-red-700"
-                  >
-                    Usuń
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ul>
-          <button
-            onClick={onCreateNewPlaylist}
-            className="mt-4 bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 transition duration-300"
-          >
-            Utwórz nową playlistę
-          </button>
-          <button
-            onClick={() => {
-              console.log("Zamknij button clicked"); // Dodany console.log
-              onClose();
-            }}
-            className="mt-2 bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 transition duration-300"
-          >
-            Zamknij
-          </button>
-        </div>
-      </div>
-    );
-  };
 
   // Funkcja do dodawania utworu do playlisty
   const addSongToPlaylist = useCallback(
@@ -581,7 +274,14 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     []
   );
 
-  // Funkcja do usuwania playlisty
+  // Funkcja do tworzenia pustej playlisty
+  const handleCreateEmptyPlaylist = () => {
+    const name = prompt("Podaj nazwę nowej playlisty:");
+    if (name) {
+      onCreatePlaylist(name, []);
+    }
+  };
+
   const deletePlaylist = useCallback(
     (playlistId: string) => {
       setPlaylists((prevPlaylists) =>
@@ -594,14 +294,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     [currentPlaylist]
   );
 
-  // Funkcja do tworzenia pustej playlisty
-  const handleCreateEmptyPlaylist = () => {
-    const name = prompt("Podaj nazwę nowej playlisty:");
-    if (name) {
-      onCreatePlaylist(name, []); // Tworzy pustą playlistę
-      setShowPlaylistModal(false); // Zamyka modal po utworzeniu playlisty
-    }
-  };
   // Komponent MusicPlayer - główny komponent odtwarzacza muzyki
   return (
     <div className="music-player bg-white shadow-lg min-h-screen flex flex-col w-full max-w-6xl mx-auto">
@@ -636,7 +328,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                     videoId={songs[currentSongIndex]?.youtubeId}
                     opts={opts}
                     onReady={onReady}
-                    onError={onError}
                     onPlay={() => setIsPlaying(true)}
                     onPause={() => setIsPlaying(false)}
                     onEnd={nextSong}
@@ -682,7 +373,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           onLoadMore={loadMoreSongs}
           onCollapse={collapseSongList}
           isPopularList={false}
-          onCreatePlaylist={() => setShowPlaylistModal(true)}
+          onCreatePlaylist={handleCreateEmptyPlaylist}
           onAddToPlaylist={(songId) => {
             if (Array.isArray(songId)) {
               songId.forEach((id) => onAddToPlaylist(expandedPlaylist!, id));

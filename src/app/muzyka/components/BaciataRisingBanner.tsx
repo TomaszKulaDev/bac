@@ -10,12 +10,11 @@ const BaciataRisingBanner: React.FC = () => {
           </h2>
         </div>
         <h1 className="text-5xl font-black text-center leading-tight tracking-[0.1em] animate-fade-in-up">
-          Z MIŁOŚCI DO MUZYKI.
+          NAJLEPSZE BACIATKI
         </h1>
       </div>
     </div>
   );
 };
-
 
 export default BaciataRisingBanner;

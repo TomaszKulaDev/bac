@@ -13,9 +13,6 @@ import { RootState } from "@/store/store";
 import { useState } from "react";
 import BaciataRisingBanner from "./components/BaciataRisingBanner";
 import SongList from "./components/SongList";
-import RecentlyPlayedList from "./components/RecentlyPlayedList";
-import SimilarSongs from "./components/SimilarSongs";
-import PlaybackStatistics from "./components/PlaybackStatistics";
 import PlaylistManager from "./components/PlaylistManager";
 
 const MusicPage: React.FC = () => {
@@ -24,7 +21,6 @@ const MusicPage: React.FC = () => {
     (state: RootState) => state.songs
   );
 
-  const [recentlyPlayedSongs, setRecentlyPlayedSongs] = useState<Song[]>([]);
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [expandedPlaylist, setExpandedPlaylist] = useState<string | null>(null);
 
@@ -148,12 +144,10 @@ const MusicPage: React.FC = () => {
               expandedPlaylist={expandedPlaylist}
               setExpandedPlaylist={setExpandedPlaylist}
             />
-            <SimilarSongs currentSong={songs[currentSongIndex] || null} />
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-4">
                 Statystyki odtwarzania
               </h2>
-              <PlaybackStatistics />
             </div>
           </div>
 
@@ -184,7 +178,6 @@ const MusicPage: React.FC = () => {
                 }}
                 onRemoveSongFromPlaylist={handleRemoveSongFromPlaylist}
               />
-              <PlaylistList playlists={playlists} />
             </div>
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-4">
@@ -210,22 +203,6 @@ const MusicPage: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
-  );
-};
-
-const PlaylistList: React.FC<{ playlists: Playlist[] }> = ({ playlists }) => {
-  return (
-    <div>
-      <h2 className="text-2xl font-bold text-gray-900 mb-4">Playlisty:</h2>
-      {playlists.map((playlist) => (
-        <div key={playlist.id} className="mb-4 p-4 bg-white rounded shadow">
-          <h3 className="text-xl font-semibold">{playlist.name}</h3>
-          <p className="text-gray-600">
-            Liczba utworów: {playlist.songs.length}
-          </p>
-        </div>
-      ))}
     </div>
   );
 };
