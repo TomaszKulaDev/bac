@@ -23,7 +23,6 @@ import SongList from "./SongList";
 import { setCurrentSongIndex } from "@/store/slices/features/songsSlice";
 import { sortSongs } from "../utils/sortUtils";
 
-
 interface MusicPlayerProps {
   songs: Song[];
   onCreatePlaylist: (name: string, selectedSongs: string[]) => void;
@@ -41,8 +40,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   setExpandedPlaylist,
 }) => {
   const dispatch = useDispatch();
-  const currentSongIndex = useSelector(
-    (state: RootState) => state.songs.currentSongIndex
+  const currentSong = useSelector(
+    (state: RootState) => state.songs.songs[state.songs.currentSongIndex]
   );
 
   // Stan odtwarzania
@@ -65,7 +64,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   const [userPlaylists, setUserPlaylists] = useState<
     { id: string; name: string }[]
   >([]);
- 
+
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [currentPlaylist, setCurrentPlaylist] = useState<Playlist | null>(null);
   const opts: YouTubeProps["opts"] = {
@@ -80,10 +79,13 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const [filterText, setFilterText] = useState("");
 
-  const onSortChange = useCallback((newSortBy: "date" | "title" | "artist", newSortOrder: "asc" | "desc") => {
-    setSortBy(newSortBy);
-    setSortOrder(newSortOrder);
-  }, []);
+  const onSortChange = useCallback(
+    (newSortBy: "date" | "title" | "artist", newSortOrder: "asc" | "desc") => {
+      setSortBy(newSortBy);
+      setSortOrder(newSortOrder);
+    },
+    []
+  );
 
   // Funkcja wywoływana, gdy odtwarzacz jest gotowy
   const onPlayerReady = (event: any) => {
@@ -93,10 +95,27 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
 
   // Funkcja do odtwarzania poprzedniego utworu
   const previousSong = () => {
-    if (currentSongIndex > 0) {
-      dispatch(setCurrentSongIndex(currentSongIndex - 1));
+    const currentIndex = sortedAndFilteredSongs.findIndex(
+      (song) => song.id === currentSong.id
+    );
+    if (currentIndex > 0) {
+      dispatch(
+        setCurrentSongIndex(
+          songs.findIndex(
+            (song) => song.id === sortedAndFilteredSongs[currentIndex - 1].id
+          )
+        )
+      );
     } else {
-      dispatch(setCurrentSongIndex(songs.length - 1));
+      dispatch(
+        setCurrentSongIndex(
+          songs.findIndex(
+            (song) =>
+              song.id ===
+              sortedAndFilteredSongs[sortedAndFilteredSongs.length - 1].id
+          )
+        )
+      );
     }
     setIsPlaying(true);
     setIsLoading(true);
@@ -116,10 +135,23 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
 
   // Funkcja do odtwarzania następnego utworu
   const nextSong = () => {
-    if (currentSongIndex < songs.length - 1) {
-      dispatch(setCurrentSongIndex(currentSongIndex + 1));
+    const currentIndex = sortedAndFilteredSongs.findIndex(
+      (song) => song.id === currentSong.id
+    );
+    if (currentIndex < sortedAndFilteredSongs.length - 1) {
+      dispatch(
+        setCurrentSongIndex(
+          songs.findIndex(
+            (song) => song.id === sortedAndFilteredSongs[currentIndex + 1].id
+          )
+        )
+      );
     } else {
-      dispatch(setCurrentSongIndex(0));
+      dispatch(
+        setCurrentSongIndex(
+          songs.findIndex((song) => song.id === sortedAndFilteredSongs[0].id)
+        )
+      );
     }
     setIsPlaying(true);
     setIsLoading(true);
@@ -186,7 +218,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   // Funkcja do obsługi wyboru utworu
   const handleSongSelect = useCallback(
     (songId: string) => {
-      const index = songs.findIndex(s => s.id === songId);
+      const index = songs.findIndex((s) => s.id === songId);
       if (index !== -1) {
         dispatch(setCurrentSongIndex(index));
         setIsPlaying(true);
@@ -350,7 +382,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
               {songs.length > 0 && (
                 <>
                   <YouTube
-                    videoId={songs[currentSongIndex]?.youtubeId}
+                    videoId={currentSong?.youtubeId}
                     opts={opts}
                     onReady={onReady}
                     onPlay={() => setIsPlaying(true)}
@@ -392,7 +424,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
         <MemoizedSongList
           songs={sortedAndFilteredSongs}
           visibleSongs={visibleSongs}
-          currentSongIndex={currentSongIndex}
+          currentSong={currentSong}
           isPlaying={isPlaying}
           onSongSelect={handleSongSelect}
           onLoadMore={loadMoreSongs}
@@ -413,7 +445,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           onSortChange={onSortChange}
           filterText={filterText}
           setFilterText={setFilterText}
-          currentSong={songs[currentSongIndex]}
         />
       </div>
       {}

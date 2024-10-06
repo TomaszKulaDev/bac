@@ -78,7 +78,7 @@ const MusicPage: React.FC = () => {
             : playlist
         )
       );
-      
+
       const songIds = Array.isArray(songIdOrIds) ? songIdOrIds : [songIdOrIds];
       dispatch(updateSongsPlaylists({ songIds, playlistId }))
         .unwrap()
@@ -203,10 +203,10 @@ const MusicPage: React.FC = () => {
                 songs={songs}
                 onCreatePlaylist={handleCreateEmptyPlaylist}
                 visibleSongs={songs.length}
-                currentSongIndex={currentSongIndex}
+                currentSong={songs[currentSongIndex]}
                 isPlaying={false}
                 onSongSelect={(songId) => {
-                  const index = songs.findIndex(s => s.id === songId);
+                  const index = songs.findIndex((s) => s.id === songId);
                   if (index !== -1) {
                     dispatch(setCurrentSongIndex(index));
                   }
@@ -227,7 +227,6 @@ const MusicPage: React.FC = () => {
                 }}
                 filterText={filterText}
                 setFilterText={setFilterText}
-                currentSong={songs[currentSongIndex] || null}
               />
             </div>
           </div>

@@ -23,7 +23,6 @@ interface SongListProps {
   songs: Song[];
   onCreatePlaylist: () => void;
   visibleSongs: number;
-  currentSongIndex: number;
   isPlaying: boolean;
   onSongSelect: (songId: string) => void;
   onLoadMore: () => void;
@@ -46,7 +45,6 @@ interface SongListProps {
 const SongList: React.FC<SongListProps> = ({
   songs = [],
   visibleSongs,
-  currentSongIndex,
   isPlaying,
   onSongSelect,
   onLoadMore,
@@ -181,7 +179,8 @@ const SongList: React.FC<SongListProps> = ({
             </button>
           </div>
           <div className="text-sm text-gray-500">
-            Playlisty: {song.playlists && song.playlists.length > 0
+            Playlisty:{" "}
+            {song.playlists && song.playlists.length > 0
               ? song.playlists.join(", ")
               : "Brak"}
           </div>
