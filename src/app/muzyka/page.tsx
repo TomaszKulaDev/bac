@@ -30,8 +30,9 @@ const MusicPage: React.FC = () => {
     (name: string, selectedSongs: string[] = []) => {
       console.log("Tworzenie nowej playlisty:", name);
       console.log("Wybrane utwory:", selectedSongs);
+      const newPlaylistId = Date.now().toString();
       const newPlaylist: Playlist = {
-        id: Date.now().toString(),
+        id: newPlaylistId,
         name,
         songs: selectedSongs,
       };
@@ -40,9 +41,10 @@ const MusicPage: React.FC = () => {
         console.log("Zaktualizowane playlisty:", updatedPlaylists);
         return updatedPlaylists;
       });
+      setExpandedPlaylist(newPlaylistId);
       // TODO: Zaimplementuj logikę zapisywania playlisty w bazie danych
     },
-    []
+    [setExpandedPlaylist]
   );
 
   const handleCreateEmptyPlaylist = useCallback(() => {
