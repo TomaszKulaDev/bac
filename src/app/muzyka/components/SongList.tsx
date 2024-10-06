@@ -11,10 +11,13 @@ import {
   FaPlus,
   FaListUl,
   FaBookmark,
+  FaSortAmountDown,
+  FaSortAmountUp,
 } from "react-icons/fa";
 import { Song } from "../types";
 import { motion } from "framer-motion";
 import { getYouTubeThumbnail } from "../utils/youtube";
+import { sortSongs } from "../utils/sortUtils";
 
 interface SongListProps {
   songs: Song[];
@@ -43,13 +46,12 @@ const SongList: React.FC<SongListProps> = ({
   onCreatePlaylist,
   onAddToPlaylist,
 }) => {
-  const [sortBy, setSortBy] = useState<"title" | "artist" | "date">("date");
+  const [sortBy, setSortBy] = useState<"date" | "title" | "artist">("date");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const [filterText, setFilterText] = useState("");
 
   const sortedAndFilteredSongs = useMemo(() => {
     let result = [...songs];
-
-    // Filtrowanie
     if (filterText) {
       result = result.filter(
         (song) =>
@@ -57,38 +59,17 @@ const SongList: React.FC<SongListProps> = ({
           song.artist.toLowerCase().includes(filterText.toLowerCase())
       );
     }
+    return sortSongs(result, sortBy, sortOrder);
+  }, [songs, sortBy, sortOrder, filterText]);
 
-    // Sortowanie
-    result.sort((a, b) => {
-      switch (sortBy) {
-        case "title":
-          return a.title.localeCompare(b.title);
-        case "artist":
-          return a.artist.localeCompare(b.artist);
-        case "date":
-        default:
-          return (
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-          );
-      }
-    });
-
-    return result;
-  }, [songs, sortBy, filterText]);
-
-  // console.log("Piosenki w SongList:", sortedAndFilteredSongs);
-  // sortedAndFilteredSongs.forEach((song, index) => {
-  //   console.log(
-  //     `Piosenka ${index + 1}: ID: ${song.id || song._id}, Data utworzenia: ${
-  //       song.createdAt
-  //     }`
-  //   );
-  // });
-
-  // console.log(
-  //   "Pewna struktura piosenek:",
-  //   JSON.stringify(sortedAndFilteredSongs, null, 2)
-  // );
+  const handleSort = (newSortBy: "date" | "title" | "artist") => {
+    if (sortBy === newSortBy) {
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      setSortBy(newSortBy);
+      setSortOrder(newSortBy === "date" ? "desc" : "asc");
+    }
+  };
 
   return (
     <div
@@ -111,17 +92,32 @@ const SongList: React.FC<SongListProps> = ({
           onChange={(e) => setFilterText(e.target.value)}
           className="p-2 border rounded w-full mb-2"
         />
-        <select
-          value={sortBy}
-          onChange={(e) =>
-            setSortBy(e.target.value as "title" | "artist" | "date")
-          }
-          className="p-2 border rounded w-full"
-        >
-          <option value="date">Sortuj po dacie</option>
-          <option value="title">Sortuj po tytule</option>
-          <option value="artist">Sortuj po artyście</option>
-        </select>
+        <div className="flex space-x-2 mb-4">
+          <button
+            onClick={() => handleSort("date")}
+            className={`px-3 py-1 rounded ${
+              sortBy === "date" ? "bg-purple-500 text-white" : "bg-gray-200"
+            }`}
+          >
+            Ostatnio dodane {sortBy === "date" && (sortOrder === "asc" ? <FaSortAmountUp /> : <FaSortAmountDown />)}
+          </button>
+          <button
+            onClick={() => handleSort("title")}
+            className={`px-3 py-1 rounded ${
+              sortBy === "title" ? "bg-purple-500 text-white" : "bg-gray-200"
+            }`}
+          >
+            Tytuł {sortBy === "title" && (sortOrder === "asc" ? <FaSortAmountUp /> : <FaSortAmountDown />)}
+          </button>
+          <button
+            onClick={() => handleSort("artist")}
+            className={`px-3 py-1 rounded ${
+              sortBy === "artist" ? "bg-purple-500 text-white" : "bg-gray-200"
+            }`}
+          >
+            Artysta {sortBy === "artist" && (sortOrder === "asc" ? <FaSortAmountUp /> : <FaSortAmountDown />)}
+          </button>
+        </div>
       </div>
       {sortedAndFilteredSongs.slice(0, visibleSongs).map((song, index) => (
         <li
