@@ -36,6 +36,7 @@ import SongList from "./SongList";
 import { setCurrentSongIndex } from "@/store/slices/features/songsSlice";
 import Link from "next/link";
 
+// Funkcja do pobierania miniaturki z YouTube
 const getYouTubeThumbnail = (youtubeId: string) => {
   return `https://img.youtube.com/vi/${youtubeId}/0.jpg`;
 };
@@ -48,22 +49,20 @@ interface MusicPlayerProps {
   setExpandedPlaylist: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
-const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs, onCreatePlaylist, onAddToPlaylist, expandedPlaylist, setExpandedPlaylist }) => {
+// Komponent MusicPlayer
+const MusicPlayer: React.FC<MusicPlayerProps> = ({
+  songs,
+  onCreatePlaylist,
+  onAddToPlaylist,
+  expandedPlaylist,
+  setExpandedPlaylist,
+}) => {
   const dispatch = useDispatch();
   const currentSongIndex = useSelector(
     (state: RootState) => state.songs.currentSongIndex
   );
 
-
-  const isLoggedIn = useSelector(
-    (state: RootState) => state.auth.isAuthenticated
-  );
-
-
-  const isAuthenticated = useSelector(
-    (state: RootState) => state.auth.isAuthenticated
-  );
-
+  // Stan odtwarzania
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const playerRef = useRef<any>(null);
@@ -98,17 +97,21 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs, onCreatePlaylist, onAd
   const [selectedSongId, setSelectedSongId] = useState<string | null>(null);
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [currentPlaylist, setCurrentPlaylist] = useState<Playlist | null>(null);
-  const opts: YouTubeProps['opts'] = {
+  const opts: YouTubeProps["opts"] = {
     width: "100%",
     height: "100%",
     playerVars: {
       autoplay: 1,
     },
   };
+
+  // Funkcja wywoływana, gdy odtwarzacz jest gotowy
   const onPlayerReady = (event: any) => {
     playerRef.current = event.target;
     setIsLoading(false);
   };
+
+  // Funkcja do odtwarzania poprzedniego utworu
   const previousSong = () => {
     if (currentSongIndex > 0) {
       dispatch(setCurrentSongIndex(currentSongIndex - 1));
@@ -118,6 +121,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs, onCreatePlaylist, onAd
     setIsPlaying(true);
     setIsLoading(true);
   };
+
+  // Funkcja do przełączania odtwarzania
   const togglePlayback = useCallback(() => {
     if (player && isPlayerReady) {
       if (isPlaying) {
@@ -128,6 +133,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs, onCreatePlaylist, onAd
       setIsPlaying(!isPlaying);
     }
   }, [player, isPlaying, isPlayerReady]);
+
+  // Funkcja do odtwarzania następnego utworu
   const nextSong = () => {
     if (currentSongIndex < songs.length - 1) {
       dispatch(setCurrentSongIndex(currentSongIndex + 1));
@@ -137,14 +144,20 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs, onCreatePlaylist, onAd
     setIsPlaying(true);
     setIsLoading(true);
   };
+
+  // Funkcja do ładowania większej liczby utworów
   const loadMoreSongs = useCallback(() => {
     setVisibleSongs((prevVisible) =>
       Math.min(prevVisible + songsPerLoad, songs.length)
     );
   }, [songsPerLoad, songs.length]);
+
+  // Funkcja do zwijania listy utworów
   const collapseSongList = () => {
     setVisibleSongs(initialVisibleSongs);
   };
+
+  // Funkcja wywoływana, gdy odtwarzacz jest gotowy
   const onReady = (event: { target: any }) => {
     if (event.target && typeof event.target.loadVideoById === "function") {
       setPlayer(event.target);
@@ -155,6 +168,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs, onCreatePlaylist, onAd
       setError("Nie można załadować odtwarzacza YouTube");
     }
   };
+
+  // Funkcja wywoływana w przypadku błędu odtwarzacza
   const onError = (event: { data: number }) => {
     console.error("Błąd YouTube:", event.data);
     let errorMessage = "Wystąpił błąd podczas ładowania filmu.";
@@ -164,6 +179,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs, onCreatePlaylist, onAd
     }
     setError(errorMessage);
   };
+
+  // Funkcja do aktualizacji wymiarów odtwarzacza
   const updatePlayerDimensions = useCallback(() => {
     const width = window.innerWidth;
     if (width < 640) {
@@ -174,6 +191,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs, onCreatePlaylist, onAd
       setPlayerDimensions({ width: "100%", height: "360px" });
     }
   }, []);
+
+  // Efekt do aktualizacji wymiarów odtwarzacza przy zmianie rozmiaru okna
   useEffect(() => {
     updatePlayerDimensions();
     window.addEventListener("resize", updatePlayerDimensions, {
@@ -181,6 +200,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs, onCreatePlaylist, onAd
     });
     return () => window.removeEventListener("resize", updatePlayerDimensions);
   }, [updatePlayerDimensions]);
+
+  // Funkcja do obsługi zmiany wartości w formularzu
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -188,6 +209,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs, onCreatePlaylist, onAd
       [name]: value,
     }));
   };
+
+  // Funkcja do obsługi wysyłania formularza
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Formularz został wysłany", formData);
@@ -213,6 +236,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs, onCreatePlaylist, onAd
       setShowErrorMessage(true);
     }
   };
+
+  // Efekt do automatycznego zamykania komunikatu sukcesu po 5 sekundach
   useEffect(() => {
     if (showSuccessMessage) {
       const timer = setTimeout(() => {
@@ -221,6 +246,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs, onCreatePlaylist, onAd
       return () => clearTimeout(timer);
     }
   }, [showSuccessMessage]);
+
+  // Komponent komunikatu sukcesu
   function SuccessMessage({ onClose }: { onClose: () => void }) {
     console.log("SuccessMessage został wyrenderowany");
     useEffect(() => {
@@ -286,6 +313,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs, onCreatePlaylist, onAd
       </div>
     );
   }
+
+  // Komponent komunikatu błędu
   const ErrorMessage = () => (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
       <div className="bg-white rounded-lg p-8 max-w-md w-full shadow-xl">
@@ -323,22 +352,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs, onCreatePlaylist, onAd
       </div>
     </div>
   );
-  const handleShowLoginModal = () => {
-    setShowLoginModal(true);
-  };
-  useEffect(() => {
-    const checkAdBlocker = async () => {
-      try {
-        const response = await fetch("https://www.youtube.com/favicon.ico", {
-          mode: "no-cors",
-        });
-        setAdBlockerDetected(false);
-      } catch {
-        setAdBlockerDetected(true);
-      }
-    };
-    checkAdBlocker();
-  }, []);
+
+  // Efekt do sprawdzania, czy ekran jest mały
   useEffect(() => {
     const handleResize = () => {
       setIsSmallScreen(window.innerWidth < 768);
@@ -347,7 +362,11 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs, onCreatePlaylist, onAd
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  // Zapamiętana lista utworów
   const MemoizedSongList = React.memo(SongList);
+
+  // Funkcja do obsługi wyboru utworu
   const handleSongSelect = useCallback(
     (index: number) => {
       dispatch(setCurrentSongIndex(index));
@@ -356,24 +375,13 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs, onCreatePlaylist, onAd
     },
     [dispatch]
   );
+
+  // Funkcja do przełączania trybu minimalistycznego
   const toggleMinimalisticMode = () => {
     setIsMinimalistic(!isMinimalistic);
   };
-  const savePlaylist = useCallback(
-    (event: React.MouseEvent<HTMLButtonElement>) => {
-      if (!isAuthenticated) {
-        setShowLoginPrompt(true);
-        return;
-      }
-      // Logika tworzenia nowej playlisty z aktualnym utworem
-      const playlistName = prompt("Podaj nazwę nowej playlisty:");
-      if (playlistName) {
-        onCreatePlaylist(playlistName, []);
-        console.log(`Utworzono nową playlistę: ${playlistName}`);
-      }
-    },
-    [isAuthenticated, onCreatePlaylist]
-  );
+
+  // Komponent listy playlist użytkownika
   const UserPlaylists = () => (
     <div className="mt-4">
       <h3 className="text-xl font-semibold mb-2">Twoje playlisty</h3>
@@ -401,43 +409,26 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs, onCreatePlaylist, onAd
       </button>
     </div>
   );
-  const LoginPrompt = () => (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded-lg shadow-xl">
-        <h2 className="text-xl font-bold mb-4">
-          Zaloguj się, aby zapisać playlistę
-        </h2>
-        <p className="mb-4">
-          Musisz być zalogowany, aby zapisać swoją playlistę.
-        </p>
-        <div className="flex justify-end">
-          <button
-            onClick={() => setShowLoginPrompt(false)}
-            className="bg-gray-300 text-gray-800 px-4 py-2 rounded mr-2 hover:bg-gray-400 transition duration-300"
-          >
-            Anuluj
-          </button>
-          <Link href="/login">
-            <button className="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 transition duration-300">
-              Zaloguj się
-            </button>
-          </Link>
-        </div>
-      </div>
-    </div>
+  // Funkcja do dodawania utworu do playlisty
+  const handleAddToPlaylist = useCallback(
+    (songId: string) => {
+      if (expandedPlaylist) {
+        onAddToPlaylist(expandedPlaylist, songId);
+      } else {
+        setShowPlaylistModal(true);
+        setSelectedSongId(songId);
+      }
+    },
+    [expandedPlaylist, onAddToPlaylist, setShowPlaylistModal, setSelectedSongId]
   );
-  const handleAddToPlaylist = useCallback((songId: string) => {
-    if (expandedPlaylist) {
-      onAddToPlaylist(expandedPlaylist, songId);
-    } else {
-      setShowPlaylistModal(true);
-      setSelectedSongId(songId);
-    }
-  }, [expandedPlaylist, onAddToPlaylist, setShowPlaylistModal, setSelectedSongId]);
+
+  // Funkcja do zamykania modalu playlisty
   const handleClosePlaylistModal = useCallback(() => {
     setShowPlaylistModal(false);
     setSelectedSongId(null);
   }, []);
+
+  // Funkcja do dodawania utworu do wybranej playlisty
   const handleAddSongToPlaylist = useCallback(
     (playlistId: string, songId: string) => {
       if (selectedSongId) {
@@ -451,6 +442,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs, onCreatePlaylist, onAd
     },
     [selectedSongId, handleClosePlaylistModal, handleAddToPlaylist]
   );
+
+  // Komponent modalu playlisty
   const PlaylistModal: React.FC<{
     isOpen: boolean;
     onClose: () => void;
@@ -539,6 +532,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs, onCreatePlaylist, onAd
       </div>
     );
   };
+
+  // Funkcja do dodawania utworu do playlisty
   const addSongToPlaylist = useCallback(
     (playlistId: string, songId: string) => {
       setPlaylists((prevPlaylists) =>
@@ -552,6 +547,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs, onCreatePlaylist, onAd
     },
     []
   );
+
+  // Funkcja do usuwania utworu z playlisty
   const removeSongFromPlaylist = useCallback(
     (playlistId: string, songId: string) => {
       setPlaylists((prevPlaylists) =>
@@ -568,6 +565,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs, onCreatePlaylist, onAd
     },
     []
   );
+
+  // Funkcja do edytowania nazwy playlisty
   const editPlaylistName = useCallback(
     (playlistId: string, newName: string) => {
       setPlaylists((prevPlaylists) =>
@@ -581,6 +580,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs, onCreatePlaylist, onAd
     },
     []
   );
+
+  // Funkcja do usuwania playlisty
   const deletePlaylist = useCallback(
     (playlistId: string) => {
       setPlaylists((prevPlaylists) =>
@@ -592,6 +593,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs, onCreatePlaylist, onAd
     },
     [currentPlaylist]
   );
+
+  // Funkcja do tworzenia pustej playlisty
   const handleCreateEmptyPlaylist = () => {
     const name = prompt("Podaj nazwę nowej playlisty:");
     if (name) {
@@ -599,6 +602,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs, onCreatePlaylist, onAd
       setShowPlaylistModal(false); // Zamyka modal po utworzeniu playlisty
     }
   };
+  // Komponent MusicPlayer - główny komponent odtwarzacza muzyki
   return (
     <div className="music-player bg-white shadow-lg min-h-screen flex flex-col w-full max-w-6xl mx-auto">
       <div className="playlist-header bg-gradient-to-r from-purple-500 to-pink-500 text-white p-4 shadow-md">
@@ -612,17 +616,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs, onCreatePlaylist, onAd
                 {new Date().toLocaleDateString()}
               </p>
             </div>
-          </div>
-          <div className="hidden md:flex space-x-2">
-            <button
-              onClick={savePlaylist}
-              className="bg-white text-purple-500 px-4 py-2 rounded-full hover:bg-opacity-90 transition duration-300"
-            >
-              Zapisz playlistę
-            </button>
-            <button className="bg-white text-purple-500 px-4 py-2 rounded-full hover:bg-opacity-90 transition duration-300">
-              Udostępnij playlistę
-            </button>
           </div>
         </div>
       </div>
@@ -692,7 +685,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs, onCreatePlaylist, onAd
           onCreatePlaylist={() => setShowPlaylistModal(true)}
           onAddToPlaylist={(songId) => {
             if (Array.isArray(songId)) {
-              songId.forEach(id => onAddToPlaylist(expandedPlaylist!, id));
+              songId.forEach((id) => onAddToPlaylist(expandedPlaylist!, id));
             } else {
               onAddToPlaylist(expandedPlaylist!, songId);
             }
@@ -701,11 +694,9 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ songs, onCreatePlaylist, onAd
           setExpandedPlaylist={setExpandedPlaylist}
         />
       </div>
-      {showLoginPrompt && <LoginPrompt />}
+      {}
     </div>
   );
 };
-
-
 
 export default MusicPlayer;
