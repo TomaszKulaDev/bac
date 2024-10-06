@@ -175,12 +175,15 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
 
   // Funkcja do obsługi wyboru utworu
   const handleSongSelect = useCallback(
-    (index: number) => {
-      dispatch(setCurrentSongIndex(index));
-      setIsPlaying(true);
-      setIsLoading(true);
+    (songId: string) => {
+      const index = songs.findIndex(s => s.id === songId);
+      if (index !== -1) {
+        dispatch(setCurrentSongIndex(index));
+        setIsPlaying(true);
+        setIsLoading(true);
+      }
     },
-    [dispatch]
+    [dispatch, songs]
   );
 
   // Funkcja do przełączania trybu minimalistycznego

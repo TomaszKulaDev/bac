@@ -202,7 +202,12 @@ const MusicPage: React.FC = () => {
                 visibleSongs={songs.length}
                 currentSongIndex={currentSongIndex}
                 isPlaying={false}
-                onSongSelect={(index) => dispatch(setCurrentSongIndex(index))}
+                onSongSelect={(songId) => {
+                  const index = songs.findIndex(s => s.id === songId);
+                  if (index !== -1) {
+                    dispatch(setCurrentSongIndex(index));
+                  }
+                }}
                 onLoadMore={() => {}}
                 onCollapse={() => {}}
                 isPopularList={false}

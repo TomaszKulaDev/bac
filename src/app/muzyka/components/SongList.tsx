@@ -25,7 +25,7 @@ interface SongListProps {
   visibleSongs: number;
   currentSongIndex: number;
   isPlaying: boolean;
-  onSongSelect: (index: number) => void;
+  onSongSelect: (songId: string) => void;
   onLoadMore: () => void;
   onCollapse: () => void;
   isPopularList: boolean;
@@ -127,7 +127,7 @@ const SongList: React.FC<SongListProps> = ({
               ? "bg-purple-100 border-l-4 border-purple-500"
               : ""
           }`}
-          onClick={() => onSongSelect(index)}
+          onClick={() => onSongSelect(song.id)}
         >
           <div className="flex items-center flex-grow">
             <div className="w-10 h-10 mr-3 relative flex-shrink-0">
