@@ -165,6 +165,18 @@ const SongList: React.FC<SongListProps> = ({
                 {song.title}
               </h3>
               <p className="text-xs text-gray-600 truncate">{song.artist}</p>
+              {song.playlists && song.playlists.length > 0 && (
+                <div className="flex flex-wrap mt-1">
+                  {song.playlists.map((playlist) => (
+                    <span
+                      key={playlist}
+                      className="bg-green-500 text-white text-xs px-2 py-0.5 rounded mr-1 mb-1"
+                    >
+                      {playlist}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
           <div className="flex items-center space-x-2">
@@ -177,12 +189,6 @@ const SongList: React.FC<SongListProps> = ({
             >
               <FaPlus />
             </button>
-          </div>
-          <div className="text-sm text-gray-500">
-            Playlisty:{" "}
-            {song.playlists && song.playlists.length > 0
-              ? song.playlists.join(", ")
-              : "Brak"}
           </div>
         </li>
       ))}

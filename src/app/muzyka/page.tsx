@@ -61,6 +61,9 @@ const MusicPage: React.FC = () => {
     (playlistId: string, songIdOrIds: string | string[]) => {
       console.log("handleAddToExistingPlaylist - playlistId:", playlistId);
       console.log("handleAddToExistingPlaylist - songIdOrIds:", songIdOrIds);
+      
+      const playlistName = playlists.find(p => p.id === playlistId)?.name || '';
+      
       setPlaylists((prevPlaylists) =>
         prevPlaylists.map((playlist) =>
           playlist.id === playlistId
@@ -80,7 +83,7 @@ const MusicPage: React.FC = () => {
       );
 
       const songIds = Array.isArray(songIdOrIds) ? songIdOrIds : [songIdOrIds];
-      dispatch(updateSongsPlaylists({ songIds, playlistId }))
+      dispatch(updateSongsPlaylists({ songIds, playlistId, playlistName }))
         .unwrap()
         .then(() => {
           console.log("Playlists updated successfully");
@@ -89,7 +92,7 @@ const MusicPage: React.FC = () => {
           console.error("Failed to update playlists:", error);
         });
     },
-    [dispatch]
+    [dispatch, playlists]
   );
 
   const handleRemoveSongFromPlaylist = useCallback(

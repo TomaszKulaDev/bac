@@ -28,9 +28,9 @@ export const setCurrentSongIndex = createAction<number>('songs/setCurrentSongInd
 
 export const updateSongsPlaylists = createAsyncThunk(
   'songs/updatePlaylists',
-  async ({ songIds, playlistId }: { songIds: string[], playlistId: string }, { getState }) => {
+  async ({ songIds, playlistId, playlistName }: { songIds: string[], playlistId: string, playlistName: string }, { getState }) => {
     const state = getState() as RootState;
-    return { songIds, playlistId };
+    return { songIds, playlistId, playlistName };
   }
 );
 
@@ -78,10 +78,13 @@ const songsSlice = createSlice({
         state.currentSongIndex = action.payload;
       })
       .addCase(updateSongsPlaylists.fulfilled, (state, action) => {
-        const { songIds, playlistId } = action.payload;
+        const { songIds, playlistId, playlistName } = action.payload;
         state.songs = state.songs.map(song => 
           songIds.includes(song.id) 
-            ? { ...song, playlists: [...new Set([...(song.playlists || []), playlistId])] }
+            ? { 
+                ...song, 
+                playlists: [...new Set([...(song.playlists || []), playlistName])]
+              }
             : song
         );
       });
