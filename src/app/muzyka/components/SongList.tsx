@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import Image from "next/image";
 import {
   FaArrowUp,
@@ -29,7 +29,7 @@ interface SongListProps {
   isPopularList: boolean;
   expandedPlaylist: string | null;
   setExpandedPlaylist: React.Dispatch<React.SetStateAction<string | null>>;
-  onAddToPlaylist: (songId: string | string[]) => void;
+  onAddToPlaylist: (songId: string) => void;
   sortBy: "date" | "title" | "artist";
   sortOrder: "asc" | "desc";
   onSortChange: (
@@ -71,13 +71,13 @@ const SongList: React.FC<SongListProps> = ({
     return sortSongs(result, sortBy, sortOrder);
   }, [songs, sortBy, sortOrder, filterText]);
 
-  const handleSort = (newSortBy: "date" | "title" | "artist") => {
+  const handleSort = useCallback((newSortBy: "date" | "title" | "artist") => {
     if (sortBy === newSortBy) {
       onSortChange(newSortBy, sortOrder === "asc" ? "desc" : "asc");
     } else {
       onSortChange(newSortBy, newSortBy === "date" ? "desc" : "asc");
     }
-  };
+  }, [sortBy, sortOrder, onSortChange]);
 
   return (
     <div

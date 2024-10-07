@@ -316,8 +316,16 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   );
 
   const sortedAndFilteredSongs = useMemo(() => {
-    return sortSongs(songs, sortBy, sortOrder);
-  }, [songs, sortBy, sortOrder]);
+    let result = [...songs];
+    if (filterText) {
+      result = result.filter(
+        (song) =>
+          song.title.toLowerCase().includes(filterText.toLowerCase()) ||
+          song.artist.toLowerCase().includes(filterText.toLowerCase())
+      );
+    }
+    return sortSongs(result, sortBy, sortOrder);
+  }, [songs, sortBy, sortOrder, filterText]);
 
   useEffect(() => {
     const allPlaylistNames = playlists.map(p => p.name);
@@ -395,27 +403,33 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
             </div>
           </div>
         </div>
-        <MemoizedSongList
+        <SongList
           songs={sortedAndFilteredSongs}
-          visibleSongs={visibleSongs}
+          visibleSongs={sortedAndFilteredSongs.length}
           currentSong={currentSong}
           isPlaying={isPlaying}
-          onSongSelect={handleSongSelect}
-          onLoadMore={loadMoreSongs}
-          onCollapse={collapseSongList}
-          isPopularList={false}
-          onAddToPlaylist={(songId) => {
-            if (Array.isArray(songId)) {
-              songId.forEach((id) => onAddToPlaylist(expandedPlaylist!, id));
-            } else {
-              onAddToPlaylist(expandedPlaylist!, songId);
+          onSongSelect={(songId) => {
+            const index = songs.findIndex((s) => s.id === songId);
+            if (index !== -1) {
+              dispatch(setCurrentSongIndex(index));
             }
           }}
+          onLoadMore={() => {}}
+          onCollapse={() => {}}
+          isPopularList={false}
           expandedPlaylist={expandedPlaylist}
           setExpandedPlaylist={setExpandedPlaylist}
+          onAddToPlaylist={(songId) => {
+            if (expandedPlaylist) {
+              onAddToPlaylist(expandedPlaylist, songId);
+            }
+          }}
           sortBy={sortBy}
           sortOrder={sortOrder}
-          onSortChange={onSortChange}
+          onSortChange={(newSortBy, newSortOrder) => {
+            setSortBy(newSortBy);
+            setSortOrder(newSortOrder);
+          }}
           filterText={filterText}
           setFilterText={setFilterText}
           isPlaylistExpanded={!!expandedPlaylist}
