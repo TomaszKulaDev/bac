@@ -1,7 +1,7 @@
 // src/app/muzyka/page.tsx
 "use client";
 
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from "@/store/store";
 import MusicPlayer from "./components/MusicPlayer";
@@ -121,6 +121,15 @@ const MusicPage: React.FC = () => {
     [dispatch, playlists]
   );
 
+  const filteredSongs = useMemo(() => {
+    if (!filterText) return songs;
+    return songs.filter(
+      (song) =>
+        song.title.toLowerCase().includes(filterText.toLowerCase()) ||
+        song.artist.toLowerCase().includes(filterText.toLowerCase())
+    );
+  }, [songs, filterText]);
+
   useEffect(() => {
     if (status === "idle") {
       dispatch(fetchSongs() as any).then((action: any) => {
@@ -159,6 +168,15 @@ const MusicPage: React.FC = () => {
   return (
     <div className="music-page bg-gray-100 min-h-screen flex flex-col">
       <BaciataRisingBanner />
+      <div className="container mx-auto px-4 py-4">
+        <input
+          type="text"
+          placeholder="Filtruj utwory..."
+          value={filterText}
+          onChange={(e) => setFilterText(e.target.value)}
+          className="w-full p-2 border rounded mb-4"
+        />
+      </div>
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Lewa kolumna */}
@@ -171,6 +189,8 @@ const MusicPage: React.FC = () => {
               }
               expandedPlaylist={expandedPlaylist}
               setExpandedPlaylist={setExpandedPlaylist}
+              filterText={filterText}
+              setFilterText={setFilterText}
             />
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-4">

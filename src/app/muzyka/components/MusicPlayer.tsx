@@ -30,6 +30,8 @@ interface MusicPlayerProps {
   onAddToPlaylist: (playlistId: string, songId: string) => void;
   expandedPlaylist: string | null;
   setExpandedPlaylist: React.Dispatch<React.SetStateAction<string | null>>;
+  filterText: string;
+  setFilterText: React.Dispatch<React.SetStateAction<string>>;
 }
 
 // Komponent MusicPlayer
@@ -39,6 +41,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   onAddToPlaylist,
   expandedPlaylist,
   setExpandedPlaylist,
+  filterText,
+  setFilterText,
 }) => {
   const dispatch = useDispatch();
   const currentSong = useSelector(
@@ -78,7 +82,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
 
   const [sortBy, setSortBy] = useState<"date" | "title" | "artist">("date");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
-  const [filterText, setFilterText] = useState("");
 
   const onSortChange = useCallback(
     (newSortBy: "date" | "title" | "artist", newSortOrder: "asc" | "desc") => {
@@ -313,16 +316,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   );
 
   const sortedAndFilteredSongs = useMemo(() => {
-    let result = [...songs];
-    if (filterText) {
-      result = result.filter(
-        (song) =>
-          song.title.toLowerCase().includes(filterText.toLowerCase()) ||
-          song.artist.toLowerCase().includes(filterText.toLowerCase())
-      );
-    }
-    return sortSongs(result, sortBy, sortOrder);
-  }, [songs, sortBy, sortOrder, filterText]);
+    return sortSongs(songs, sortBy, sortOrder);
+  }, [songs, sortBy, sortOrder]);
 
   useEffect(() => {
     const allPlaylistNames = playlists.map(p => p.name);

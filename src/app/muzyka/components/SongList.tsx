@@ -58,9 +58,9 @@ const SongList: React.FC<SongListProps> = ({
   onSortChange,
   currentSong,
   isPlaylistExpanded,
+  filterText,
+  setFilterText,
 }) => {
-  const [filterText, setFilterText] = useState("");
-
   const sortedAndFilteredSongs = useMemo(() => {
     let result = [...songs];
     if (filterText) {
@@ -86,13 +86,6 @@ const SongList: React.FC<SongListProps> = ({
       className={`song-list ${isPopularList ? "popular-list" : "full-list"}`}
     >
       <div className="mb-4">
-        <input
-          type="text"
-          placeholder="Filtruj utwory..."
-          value={filterText}
-          onChange={(e) => setFilterText(e.target.value)}
-          className="p-2 border rounded w-full mb-2"
-        />
         <div className="flex space-x-2 mb-4">
           <button
             onClick={() => handleSort("date")}
