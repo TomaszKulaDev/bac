@@ -128,15 +128,13 @@ const SongList: React.FC<SongListProps> = ({
       </div>
       {sortedAndFilteredSongs.map((song) => (
         <li
-          key={song._id || song.id}
-          className={`flex items-center justify-between p-2 hover:bg-gray-100 cursor-pointer ${
-            song.id === currentSong?.id
-              ? "bg-purple-100 border-l-4 border-purple-500"
-              : ""
-          }`}
+          key={song.id}
+          className={`flex items-center justify-between p-2 ${
+            song.id === currentSong?.id ? "bg-purple-100" : "hover:bg-gray-100"
+          } transition-colors duration-200 rounded-md`}
           onClick={() => onSongSelect(song.id)}
         >
-          <div className="flex items-center flex-grow">
+          <div className="flex items-center flex-grow min-w-0 mr-2">
             <div className="w-10 h-10 mr-3 relative flex-shrink-0">
               <Image
                 src={getYouTubeThumbnail(song.youtubeId)}
@@ -147,47 +145,47 @@ const SongList: React.FC<SongListProps> = ({
                 className="rounded"
               />
             </div>
-            <div className="flex-grow min-w-0">
-              <h3
-                className={`font-semibold truncate text-sm ${
-                  song.id === currentSong?.id
-                    ? "text-purple-700"
-                    : "text-gray-800"
-                }`}
-              >
-                {song.title}
-              </h3>
+            <div className="flex-grow min-w-0 mr-2">
+              <h3 className="font-semibold truncate text-sm">{song.title}</h3>
               <p className="text-xs text-gray-600 truncate">{song.artist}</p>
               {song.playlists && song.playlists.length > 0 && (
                 <div className="flex flex-wrap mt-1">
-                  {song.playlists.map((playlist) => (
+                  {song.playlists.slice(0, 3).map((playlist) => (
                     <span
                       key={playlist}
-                      className="bg-green-500 text-white text-xs px-2 py-0.5 rounded mr-1 mb-1"
+                      className="bg-green-500 text-white text-xs px-1 py-0.5 rounded mr-1 mb-1"
                     >
-                      {playlist}
+                      {playlist.length > 10
+                        ? playlist.slice(0, 10) + "..."
+                        : playlist}
                     </span>
                   ))}
+                  {song.playlists.length > 3 && (
+                    <span className="text-xs text-gray-500">
+                      +{song.playlists.length - 3}
+                    </span>
+                  )}
                 </div>
               )}
             </div>
           </div>
-          <div className="flex items-center space-x-2">
-            <button
-              onClick={() => onAddToPlaylist(song.id)}
-              disabled={!isPlaylistExpanded}
-              className={`text-green-500 hover:text-green-700 ${
-                !isPlaylistExpanded ? "opacity-50 cursor-not-allowed" : ""
-              }`}
-              title={
-                isPlaylistExpanded
-                  ? "Dodaj do playlisty"
-                  : "Rozwiń playlistę, aby dodać utwór"
-              }
-            >
-              +
-            </button>
-          </div>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onAddToPlaylist(song.id);
+            }}
+            disabled={!isPlaylistExpanded}
+            className={`text-green-500 hover:text-green-700 ${
+              !isPlaylistExpanded ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            title={
+              isPlaylistExpanded
+                ? "Dodaj do playlisty"
+                : "Rozwiń playlistę, aby dodać utwór"
+            }
+          >
+            +
+          </button>
         </li>
       ))}
       {!isPopularList && visibleSongs < songs.length && (
