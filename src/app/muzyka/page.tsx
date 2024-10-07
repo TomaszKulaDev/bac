@@ -165,7 +165,7 @@ const MusicPage: React.FC = () => {
           <div className="lg:w-2/3 space-y-6">
             <MusicPlayer
               songs={songs}
-              onCreatePlaylist={handleCreatePlaylist}
+              onCreatePlaylist={handleCreateEmptyPlaylist}
               onAddToPlaylist={(playlistId, songId) =>
                 handleAddToExistingPlaylist(playlistId, songId)
               }
@@ -190,6 +190,7 @@ const MusicPage: React.FC = () => {
                 songs={songs}
                 expandedPlaylist={expandedPlaylist}
                 setExpandedPlaylist={setExpandedPlaylist}
+                onCreatePlaylist={handleCreatePlaylist}
                 onDeletePlaylist={(playlistId: string) => {
                   const playlistToDelete = playlists.find(p => p.id === playlistId);
                   if (playlistToDelete) {
@@ -224,7 +225,6 @@ const MusicPage: React.FC = () => {
               </h2>
               <SongList
                 songs={songs}
-                onCreatePlaylist={handleCreateEmptyPlaylist}
                 visibleSongs={songs.length}
                 currentSong={songs[currentSongIndex]}
                 isPlaying={false}

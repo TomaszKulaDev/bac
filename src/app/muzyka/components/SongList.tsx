@@ -21,7 +21,7 @@ import { sortSongs } from "../utils/sortUtils";
 
 interface SongListProps {
   songs: Song[];
-  onCreatePlaylist: () => void;
+  // Usuń linię: onCreatePlaylist: () => void;
   visibleSongs: number;
   isPlaying: boolean;
   onSongSelect: (songId: string) => void;
@@ -45,13 +45,13 @@ interface SongListProps {
 
 const SongList: React.FC<SongListProps> = ({
   songs = [],
+  // Usuń linię: onCreatePlaylist,
   visibleSongs,
   isPlaying,
   onSongSelect,
   onLoadMore,
   onCollapse,
   isPopularList,
-  onCreatePlaylist,
   onAddToPlaylist,
   sortBy,
   sortOrder,
@@ -85,15 +85,6 @@ const SongList: React.FC<SongListProps> = ({
     <div
       className={`song-list ${isPopularList ? "popular-list" : "full-list"}`}
     >
-      <div className="mb-4 flex items-center justify-between">
-        <button
-          onClick={onCreatePlaylist}
-          className="bg-purple-500 text-white px-4 py-2 rounded-full flex items-center hover:bg-purple-600 transition duration-300"
-        >
-          <FaPlus className="mr-2" />
-          Utwórz nową playlistę
-        </button>
-      </div>
       <div className="mb-4">
         <input
           type="text"
@@ -185,8 +176,14 @@ const SongList: React.FC<SongListProps> = ({
             <button
               onClick={() => onAddToPlaylist(song.id)}
               disabled={!isPlaylistExpanded}
-              className={`text-green-500 hover:text-green-700 ${!isPlaylistExpanded ? 'opacity-50 cursor-not-allowed' : ''}`}
-              title={isPlaylistExpanded ? "Dodaj do playlisty" : "Rozwiń playlistę, aby dodać utwór"}
+              className={`text-green-500 hover:text-green-700 ${
+                !isPlaylistExpanded ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              title={
+                isPlaylistExpanded
+                  ? "Dodaj do playlisty"
+                  : "Rozwiń playlistę, aby dodać utwór"
+              }
             >
               +
             </button>

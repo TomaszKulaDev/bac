@@ -234,34 +234,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     setIsMinimalistic(!isMinimalistic);
   };
 
-  // Komponent listy playlist użytkownika
-  const UserPlaylists = () => (
-    <div className="mt-4">
-      <h3 className="text-xl font-semibold mb-2">Twoje playlisty</h3>
-      {userPlaylists.length === 0 ? (
-        <p>Nie masz jeszcze żadnych playlist.</p>
-      ) : (
-        <ul>
-          {userPlaylists.map((playlist) => (
-            <li key={playlist.id} className="mb-2">
-              <button className="text-left hover:text-purple-600 transition duration-300">
-                {playlist.name}
-              </button>
-            </li>
-          ))}
-        </ul>
-      )}
-      <button
-        onClick={() => {
-          const name = prompt("Podaj nazwę nowej playlisty:");
-          if (name) onCreatePlaylist(name, []);
-        }}
-        className="mt-2 bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 transition duration-300"
-      >
-        Utwórz nową playlistę
-      </button>
-    </div>
-  );
   // Funkcja do dodawania utworu do playlisty
   const handleAddToPlaylist = useCallback(
     (songId: string) => {
@@ -436,7 +408,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           onLoadMore={loadMoreSongs}
           onCollapse={collapseSongList}
           isPopularList={false}
-          onCreatePlaylist={handleCreateEmptyPlaylist}
           onAddToPlaylist={(songId) => {
             if (Array.isArray(songId)) {
               songId.forEach((id) => onAddToPlaylist(expandedPlaylist!, id));
