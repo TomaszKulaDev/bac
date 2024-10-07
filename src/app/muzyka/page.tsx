@@ -191,9 +191,20 @@ const MusicPage: React.FC = () => {
                 expandedPlaylist={expandedPlaylist}
                 setExpandedPlaylist={setExpandedPlaylist}
                 onDeletePlaylist={(playlistId: string) => {
-                  setPlaylists((prevPlaylists) =>
-                    prevPlaylists.filter((p) => p.id !== playlistId)
-                  );
+                  const playlistToDelete = playlists.find(p => p.id === playlistId);
+                  if (playlistToDelete) {
+                    setPlaylists((prevPlaylists) =>
+                      prevPlaylists.filter((p) => p.id !== playlistId)
+                    );
+                    
+                    // Aktualizacja stanu piosenek
+                    dispatch(updateSongsPlaylists({
+                      songIds: playlistToDelete.songs,
+                      playlistId,
+                      playlistName: playlistToDelete.name,
+                      remove: true
+                    }));
+                  }
                   // TODO: Zaimplementuj logikę usuwania playlisty z bazy danych
                 }}
                 onRenamePlaylist={(playlistId: string, newName: string) => {

@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction, createAction } from '@reduxjs/toolkit';
 import { Song } from '@/app/muzyka/types';
-import { RootState } from '@/store/store'; // Dodaj ten import
+import { RootState, AppDispatch } from '@/store/store'; // Dodaj ten import
 
 export const fetchSongs = createAsyncThunk(
   'songs/fetchSongs',
@@ -31,6 +31,13 @@ export const updateSongsPlaylists = createAsyncThunk(
   async (payload: { songIds: string[]; playlistId: string; playlistName: string; remove?: boolean }, thunkAPI) => {
     // implementacja
     return payload;
+  }
+);
+
+export const syncSongsWithPlaylists = createAsyncThunk<string[], string[], { dispatch: AppDispatch }>(
+  'songs/syncWithPlaylists',
+  async (playlistNames: string[], thunkAPI) => {
+    return playlistNames;
   }
 );
 
@@ -84,11 +91,18 @@ const songsSlice = createSlice({
             ? { 
                 ...song, 
                 playlists: remove 
-                  ? (song.playlists || []).filter(p => p !== playlistName)
+                  ? song.playlists.filter(p => p !== playlistName)
                   : [...new Set([...(song.playlists || []), playlistName])]
               }
             : song
         );
+      })
+      .addCase(syncSongsWithPlaylists.fulfilled, (state, action) => {
+        const validPlaylistNames = action.payload;
+        state.songs = state.songs.map(song => ({
+          ...song,
+          playlists: song.playlists ? song.playlists.filter(p => validPlaylistNames.includes(p)) : []
+        }));
       });
   }
 });

@@ -9,6 +9,7 @@ import React, {
   useMemo,
 } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { AnyAction } from "@reduxjs/toolkit";
 import YouTube, { YouTubeProps } from "react-youtube";
 import {
   FaPlay,
@@ -20,7 +21,7 @@ import {
 import { Song, Playlist } from "../types";
 import { RootState } from "../../../store/store";
 import SongList from "./SongList";
-import { setCurrentSongIndex } from "@/store/slices/features/songsSlice";
+import { setCurrentSongIndex, syncSongsWithPlaylists } from "@/store/slices/features/songsSlice";
 import { sortSongs } from "../utils/sortUtils";
 
 interface MusicPlayerProps {
@@ -350,6 +351,11 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     }
     return sortSongs(result, sortBy, sortOrder);
   }, [songs, sortBy, sortOrder, filterText]);
+
+  useEffect(() => {
+    const allPlaylistNames = playlists.map(p => p.name);
+    dispatch(syncSongsWithPlaylists(allPlaylistNames) as unknown as AnyAction);
+  }, [playlists, dispatch]);
 
   // Komponent MusicPlayer - główny komponent odtwarzacza muzyki
   return (
