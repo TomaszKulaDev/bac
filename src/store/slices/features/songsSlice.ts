@@ -27,10 +27,10 @@ export const deleteSongAndRefetch = createAsyncThunk(
 export const setCurrentSongIndex = createAction<number>('songs/setCurrentSongIndex');
 
 export const updateSongsPlaylists = createAsyncThunk(
-  'songs/updatePlaylists',
-  async ({ songIds, playlistId, playlistName }: { songIds: string[], playlistId: string, playlistName: string }, { getState }) => {
-    const state = getState() as RootState;
-    return { songIds, playlistId, playlistName };
+  'songs/updateSongsPlaylists',
+  async (payload: { songIds: string[]; playlistId: string; playlistName: string; remove?: boolean }, thunkAPI) => {
+    // implementacja
+    return payload;
   }
 );
 
@@ -78,12 +78,14 @@ const songsSlice = createSlice({
         state.currentSongIndex = action.payload;
       })
       .addCase(updateSongsPlaylists.fulfilled, (state, action) => {
-        const { songIds, playlistId, playlistName } = action.payload;
+        const { songIds, playlistId, playlistName, remove } = action.payload;
         state.songs = state.songs.map(song => 
           songIds.includes(song.id) 
             ? { 
                 ...song, 
-                playlists: [...new Set([...(song.playlists || []), playlistName])]
+                playlists: remove 
+                  ? (song.playlists || []).filter(p => p !== playlistName)
+                  : [...new Set([...(song.playlists || []), playlistName])]
               }
             : song
         );

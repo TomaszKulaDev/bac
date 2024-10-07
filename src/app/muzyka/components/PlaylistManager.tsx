@@ -91,9 +91,10 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
                       </div>
                     </div>
                     <button
-                      onClick={() =>
-                        onRemoveSongFromPlaylist(playlist.id, songId)
-                      }
+                      onClick={() => {
+                        const playlistName = playlist.name;
+                        onRemoveSongFromPlaylist(playlist.id, songId);
+                      }}
                       className="text-red-500 hover:text-red-700 text-xs"
                     >
                       Usuń

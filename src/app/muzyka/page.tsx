@@ -108,8 +108,17 @@ const MusicPage: React.FC = () => {
         )
       );
       // TODO: Zaimplementuj logikę aktualizacji playlisty w bazie danych
+      const playlistName = playlists.find(p => p.id === playlistId)?.name || '';
+      dispatch(updateSongsPlaylists({ songIds: [songId], playlistId, playlistName, remove: true }))
+        .unwrap()
+        .then(() => {
+          console.log("Song removed from playlist successfully");
+        })
+        .catch((error: unknown) => {
+          console.error("Failed to remove song from playlist:", error);
+        });
     },
-    []
+    [dispatch, playlists]
   );
 
   useEffect(() => {
