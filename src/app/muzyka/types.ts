@@ -21,4 +21,5 @@ export interface MusicPlayerProps {
   onAddToPlaylist: (playlistId: string, songId: string) => void;
   expandedPlaylist: string | null;
   setExpandedPlaylist: React.Dispatch<React.SetStateAction<string | null>>;
+  isPlaylistExpanded: boolean;
 }

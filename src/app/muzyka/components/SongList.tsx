@@ -40,6 +40,7 @@ interface SongListProps {
   filterText: string;
   setFilterText: React.Dispatch<React.SetStateAction<string>>;
   currentSong: Song | null;
+  isPlaylistExpanded: boolean;
 }
 
 const SongList: React.FC<SongListProps> = ({
@@ -56,6 +57,7 @@ const SongList: React.FC<SongListProps> = ({
   sortOrder,
   onSortChange,
   currentSong,
+  isPlaylistExpanded,
 }) => {
   const [filterText, setFilterText] = useState("");
 
@@ -181,13 +183,12 @@ const SongList: React.FC<SongListProps> = ({
           </div>
           <div className="flex items-center space-x-2">
             <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onAddToPlaylist(song.id);
-              }}
-              className="text-blue-600 hover:text-blue-800"
+              onClick={() => onAddToPlaylist(song.id)}
+              disabled={!isPlaylistExpanded}
+              className={`text-green-500 hover:text-green-700 ${!isPlaylistExpanded ? 'opacity-50 cursor-not-allowed' : ''}`}
+              title={isPlaylistExpanded ? "Dodaj do playlisty" : "Rozwiń playlistę, aby dodać utwór"}
             >
-              <FaPlus />
+              +
             </button>
           </div>
         </li>

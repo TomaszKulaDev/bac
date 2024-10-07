@@ -445,6 +445,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           onSortChange={onSortChange}
           filterText={filterText}
           setFilterText={setFilterText}
+          isPlaylistExpanded={!!expandedPlaylist}
         />
       </div>
       {}

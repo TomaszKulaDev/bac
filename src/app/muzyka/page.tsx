@@ -230,6 +230,7 @@ const MusicPage: React.FC = () => {
                 }}
                 filterText={filterText}
                 setFilterText={setFilterText}
+                isPlaylistExpanded={!!expandedPlaylist}
               />
             </div>
           </div>
