@@ -326,16 +326,15 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
 
   // Komponent MusicPlayer - główny komponent odtwarzacza muzyki
   return (
-    <div className="music-player bg-white shadow-lg min-h-screen flex flex-col w-full max-w-6xl mx-auto">
-      <div className="playlist-header bg-gradient-to-r from-purple-500 to-pink-500 text-white p-4 shadow-md">
+    <div className="music-player bg-gradient-to-br from-purple-100 to-pink-100 shadow-lg min-h-screen flex flex-col w-full max-w-6xl mx-auto">
+      <div className="playlist-header bg-gradient-to-r from-purple-600 to-pink-600 text-white p-6 shadow-md">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
-            <FaMusic className="text-4xl mr-4" />
+            <FaMusic className="text-5xl mr-4" />
             <div>
-              <h1 className="text-2xl font-bold">Bachata Top Playlist 2024</h1>
-              <p className="text-xs opacity-75">
-                {songs.length} utworów • Zaktualizowano:{" "}
-                {new Date().toLocaleDateString()}
+              <h1 className="text-3xl font-bold">Bachata Top Playlist 2024</h1>
+              <p className="text-sm opacity-75">
+                {songs.length} utworów • Zaktualizowano: {new Date().toLocaleDateString()}
               </p>
             </div>
           </div>
@@ -343,52 +342,54 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
       </div>
       <div className="flex flex-col md:flex-row flex-grow">
         <div className="md:order-2 md:w-3/5 flex flex-col">
-          <div className="sticky top-0 bg-white z-10 p-4">
+          <div className="sticky top-0 bg-white z-10 p-6 shadow-md">
             <div
-              className="youtube-player mb-4"
+              className="youtube-player mb-6 rounded-lg overflow-hidden"
               style={{
                 width: playerDimensions.width,
                 height: playerDimensions.height,
               }}
             >
-              {error && <div className="error-message">{error}</div>}
+              {error && <div className="error-message bg-red-100 text-red-700 p-4 rounded">{error}</div>}
               {songs.length > 0 && (
-                <>
-                  <YouTube
-                    videoId={currentSong?.youtubeId}
-                    opts={opts}
-                    onReady={onReady}
-                    onPlay={() => setIsPlaying(true)}
-                    onPause={() => setIsPlaying(false)}
-                    onEnd={nextSong}
-                    className="w-full h-full"
-                  />
-                </>
+                <YouTube
+                  videoId={currentSong?.youtubeId}
+                  opts={opts}
+                  onReady={onReady}
+                  onPlay={() => setIsPlaying(true)}
+                  onPause={() => setIsPlaying(false)}
+                  onEnd={nextSong}
+                  className="w-full h-full"
+                />
               )}
             </div>
-            <div className="flex flex-col space-y-4 mt-4 px-4">
+            <div className="flex flex-col space-y-4 mt-6">
+              <div className="text-center">
+                <h2 className="text-2xl font-bold text-gray-800">{currentSong?.title}</h2>
+                <p className="text-lg text-gray-600">{currentSong?.artist}</p>
+              </div>
               <div className="flex justify-between items-center mt-4">
                 <button
                   onClick={previousSong}
-                  className="flex-1 bg-gradient-to-r from-purple-500 to-indigo-500 text-white py-3 px-4 rounded text-xs sm:text-sm font-semibold shadow-md hover:from-purple-600 hover:to-indigo-600 transition duration-300 flex items-center justify-center"
+                  className="flex-1 bg-gradient-to-r from-purple-500 to-indigo-500 text-white py-3 px-6 rounded-full text-sm font-semibold shadow-md hover:from-purple-600 hover:to-indigo-600 transition duration-300 flex items-center justify-center"
                 >
-                  <FaChevronUp className="mr-1 text-xs sm:text-sm" /> Poprzedni
+                  <FaChevronUp className="mr-2" /> Poprzedni
                 </button>
                 <button
                   onClick={togglePlayback}
-                  className="mx-2 w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-full shadow-md hover:from-pink-600 hover:to-purple-600 transition duration-300 flex items-center justify-center"
+                  className="mx-4 w-16 h-16 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-full shadow-md hover:from-pink-600 hover:to-purple-600 transition duration-300 flex items-center justify-center"
                 >
                   {isPlaying ? (
-                    <FaPause className="text-lg sm:text-xl" />
+                    <FaPause className="text-2xl" />
                   ) : (
-                    <FaPlay className="text-lg sm:text-xl ml-0.5" />
+                    <FaPlay className="text-2xl ml-1" />
                   )}
                 </button>
                 <button
                   onClick={nextSong}
-                  className="flex-1 bg-gradient-to-r from-indigo-500 to-pink-500 text-white py-3 px-4 rounded text-xs sm:text-sm font-semibold shadow-md hover:from-indigo-600 hover:to-pink-600 transition duration-300 flex items-center justify-center"
+                  className="flex-1 bg-gradient-to-r from-indigo-500 to-pink-500 text-white py-3 px-6 rounded-full text-sm font-semibold shadow-md hover:from-indigo-600 hover:to-pink-600 transition duration-300 flex items-center justify-center"
                 >
-                  Następny <FaChevronDown className="ml-1 text-xs sm:text-sm" />
+                  Następny <FaChevronDown className="ml-2" />
                 </button>
               </div>
             </div>
@@ -420,7 +421,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           isPlaylistExpanded={!!expandedPlaylist}
         />
       </div>
-      {}
     </div>
   );
 };
