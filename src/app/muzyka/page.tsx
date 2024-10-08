@@ -16,6 +16,7 @@ import { useState } from "react";
 import BaciataRisingBanner from "./components/BaciataRisingBanner";
 import SongList from "./components/SongList";
 import PlaylistManager from "./components/PlaylistManager";
+import Toast from './components/Toast';
 
 const MusicPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -28,6 +29,7 @@ const MusicPage: React.FC = () => {
   const [sortBy, setSortBy] = useState<"date" | "title" | "artist">("date");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const [filterText, setFilterText] = useState("");
+  const [showNotification, setShowNotification] = useState(false);
 
   const handleCreatePlaylist = useCallback(
     (name: string, selectedSongs: string[] = []) => {
@@ -62,6 +64,8 @@ const MusicPage: React.FC = () => {
       const playlist = playlists.find(p => p.id === playlistId);
       if (!playlist) {
         console.error("Próba dodania utworu do nieistniejącej playlisty");
+        setShowNotification(true);
+        setTimeout(() => setShowNotification(false), 3000);
         return;
       }
       
@@ -282,6 +286,9 @@ const MusicPage: React.FC = () => {
           </div>
         </div>
       </div>
+      {showNotification && (
+        <Toast message="Nie można dodać utworu do nieistniejącej playlisty." />
+      )}
     </div>
   );
 };

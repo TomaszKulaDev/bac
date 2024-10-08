@@ -18,6 +18,7 @@ import { Song } from "../types";
 import { motion } from "framer-motion";
 import { getYouTubeThumbnail } from "../utils/youtube";
 import { sortSongs } from "../utils/sortUtils";
+import Toast from './Toast';
 
 interface SongListProps {
   songs: Song[];
@@ -61,6 +62,8 @@ const SongList: React.FC<SongListProps> = ({
   filterText,
   setFilterText,
 }) => {
+  const [showNotification, setShowNotification] = useState(false);
+
   const sortedAndFilteredSongs = useMemo(() => {
     let result = [...songs];
     if (filterText) {
@@ -73,13 +76,16 @@ const SongList: React.FC<SongListProps> = ({
     return sortSongs(result, sortBy, sortOrder);
   }, [songs, sortBy, sortOrder, filterText]);
 
-  const handleSort = useCallback((newSortBy: "date" | "title" | "artist") => {
-    if (sortBy === newSortBy) {
-      onSortChange(newSortBy, sortOrder === "asc" ? "desc" : "asc");
-    } else {
-      onSortChange(newSortBy, newSortBy === "date" ? "desc" : "asc");
-    }
-  }, [sortBy, sortOrder, onSortChange]);
+  const handleSort = useCallback(
+    (newSortBy: "date" | "title" | "artist") => {
+      if (sortBy === newSortBy) {
+        onSortChange(newSortBy, sortOrder === "asc" ? "desc" : "asc");
+      } else {
+        onSortChange(newSortBy, newSortBy === "date" ? "desc" : "asc");
+      }
+    },
+    [sortBy, sortOrder, onSortChange]
+  );
 
   return (
     <div
@@ -175,11 +181,18 @@ const SongList: React.FC<SongListProps> = ({
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                onAddToPlaylist(song.id);
+                if (!isPlaylistExpanded || !expandedPlaylist) {
+                  setShowNotification(true);
+                  setTimeout(() => setShowNotification(false), 3000);
+                } else {
+                  onAddToPlaylist(song.id);
+                }
               }}
               disabled={!isPlaylistExpanded || !expandedPlaylist}
               className={`text-green-500 hover:text-green-700 transition-colors duration-200 ${
-                !isPlaylistExpanded || !expandedPlaylist ? "opacity-50 cursor-not-allowed" : ""
+                !isPlaylistExpanded || !expandedPlaylist
+                  ? "opacity-50 cursor-not-allowed"
+                  : ""
               }`}
               title={
                 isPlaylistExpanded && expandedPlaylist
@@ -203,6 +216,9 @@ const SongList: React.FC<SongListProps> = ({
         >
           Załaduj więcej
         </motion.button>
+      )}
+      {showNotification && (
+        <Toast message="Najpierw stwórz lub wybierz playlistę, aby dodać do niej utwór." />
       )}
     </div>
   );
