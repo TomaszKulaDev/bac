@@ -16,7 +16,7 @@ import { useState } from "react";
 import BaciataRisingBanner from "./components/BaciataRisingBanner";
 import SongList from "./components/SongList";
 import PlaylistManager from "./components/PlaylistManager";
-import Toast from './components/Toast';
+import Toast from "./components/Toast";
 
 const MusicPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -61,19 +61,20 @@ const MusicPage: React.FC = () => {
 
   const handleAddToExistingPlaylist = useCallback(
     (playlistId: string, songIdOrIds: string | string[]) => {
-      const playlist = playlists.find(p => p.id === playlistId);
+      const playlist = playlists.find((p) => p.id === playlistId);
       if (!playlist) {
         console.error("Próba dodania utworu do nieistniejącej playlisty");
         setShowNotification(true);
         setTimeout(() => setShowNotification(false), 3000);
         return;
       }
-      
+
       console.log("handleAddToExistingPlaylist - playlistId:", playlistId);
       console.log("handleAddToExistingPlaylist - songIdOrIds:", songIdOrIds);
-      
-      const playlistName = playlists.find(p => p.id === playlistId)?.name || '';
-      
+
+      const playlistName =
+        playlists.find((p) => p.id === playlistId)?.name || "";
+
       setPlaylists((prevPlaylists) =>
         prevPlaylists.map((playlist) =>
           playlist.id === playlistId
@@ -118,8 +119,16 @@ const MusicPage: React.FC = () => {
         )
       );
       // TODO: Zaimplementuj logikę aktualizacji playlisty w bazie danych
-      const playlistName = playlists.find(p => p.id === playlistId)?.name || '';
-      dispatch(updateSongsPlaylists({ songIds: [songId], playlistId, playlistName, remove: true }))
+      const playlistName =
+        playlists.find((p) => p.id === playlistId)?.name || "";
+      dispatch(
+        updateSongsPlaylists({
+          songIds: [songId],
+          playlistId,
+          playlistName,
+          remove: true,
+        })
+      )
         .unwrap()
         .then(() => {
           console.log("Song removed from playlist successfully");
@@ -222,19 +231,23 @@ const MusicPage: React.FC = () => {
                 setExpandedPlaylist={setExpandedPlaylist}
                 onCreatePlaylist={handleCreatePlaylist}
                 onDeletePlaylist={(playlistId: string) => {
-                  const playlistToDelete = playlists.find(p => p.id === playlistId);
+                  const playlistToDelete = playlists.find(
+                    (p) => p.id === playlistId
+                  );
                   if (playlistToDelete) {
                     setPlaylists((prevPlaylists) =>
                       prevPlaylists.filter((p) => p.id !== playlistId)
                     );
-                    
+
                     // Aktualizacja stanu piosenek
-                    dispatch(updateSongsPlaylists({
-                      songIds: playlistToDelete.songs,
-                      playlistId,
-                      playlistName: playlistToDelete.name,
-                      remove: true
-                    }));
+                    dispatch(
+                      updateSongsPlaylists({
+                        songIds: playlistToDelete.songs,
+                        playlistId,
+                        playlistName: playlistToDelete.name,
+                        remove: true,
+                      })
+                    );
                   }
                   // TODO: Zaimplementuj logikę usuwania playlisty z bazy danych
                 }}
@@ -287,7 +300,7 @@ const MusicPage: React.FC = () => {
         </div>
       </div>
       {showNotification && (
-        <Toast message="Nie można dodać utworu do nieistniejącej playlisty." />
+        <Toast message="Najpierw stwórz lub wybierz playlistę, aby dodać do niej utwór." />
       )}
     </div>
   );
