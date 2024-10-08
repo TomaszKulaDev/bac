@@ -13,6 +13,8 @@ import {
   FaBookmark,
   FaSortAmountDown,
   FaSortAmountUp,
+  FaHeart,
+  FaThumbsUp,
 } from "react-icons/fa";
 import { Song } from "../types";
 import { motion } from "framer-motion";
@@ -178,30 +180,59 @@ const SongList: React.FC<SongListProps> = ({
                 )}
               </div>
             </div>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                if (!isPlaylistExpanded || !expandedPlaylist) {
-                  setShowNotification(true);
-                  setTimeout(() => setShowNotification(false), 3000);
-                } else {
-                  onAddToPlaylist(song.id);
+            <div className="flex items-center space-x-2">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  // Tutaj dodaj logikę dla zakładki
+                }}
+                className="text-gray-500 hover:text-blue-500 transition-colors duration-200"
+              >
+                <FaBookmark className="text-xl" />
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  // Tutaj dodaj logikę dla serduszka
+                }}
+                className="text-gray-500 hover:text-red-500 transition-colors duration-200"
+              >
+                <FaHeart className="text-xl" />
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  // Tutaj dodaj logikę dla lajka
+                }}
+                className="text-gray-500 hover:text-green-500 transition-colors duration-200"
+              >
+                <FaThumbsUp className="text-xl" />
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (!isPlaylistExpanded || !expandedPlaylist) {
+                    setShowNotification(true);
+                    setTimeout(() => setShowNotification(false), 3000);
+                  } else {
+                    onAddToPlaylist(song.id);
+                  }
+                }}
+                disabled={!isPlaylistExpanded || !expandedPlaylist}
+                className={`text-green-500 hover:text-green-700 transition-colors duration-200 ${
+                  !isPlaylistExpanded || !expandedPlaylist
+                    ? "opacity-50 cursor-not-allowed"
+                    : ""
+                }`}
+                title={
+                  isPlaylistExpanded && expandedPlaylist
+                    ? "Dodaj do playlisty"
+                    : "Rozwiń playlistę, aby dodać utwór"
                 }
-              }}
-              disabled={!isPlaylistExpanded || !expandedPlaylist}
-              className={`text-green-500 hover:text-green-700 transition-colors duration-200 ${
-                !isPlaylistExpanded || !expandedPlaylist
-                  ? "opacity-50 cursor-not-allowed"
-                  : ""
-              }`}
-              title={
-                isPlaylistExpanded && expandedPlaylist
-                  ? "Dodaj do playlisty"
-                  : "Rozwiń playlistę, aby dodać utwór"
-              }
-            >
-              <FaPlus className="text-xl" />
-            </button>
+              >
+                <FaPlus className="text-xl" />
+              </button>
+            </div>
           </motion.li>
         ))}
       </motion.ul>
