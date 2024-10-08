@@ -207,8 +207,7 @@ const MusicPage: React.FC = () => {
           />
         )}
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Lewa kolumna */}
-          <div className="lg:w-2/3 space-y-6">
+          <div className="w-full lg:w-2/3 space-y-6">
             <MusicPlayer
               songs={songs}
               onCreatePlaylist={handleCreateEmptyPlaylist}
@@ -228,8 +227,7 @@ const MusicPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Prawa kolumna */}
-          <div className="lg:w-1/3 space-y-6">
+          <div className="w-full lg:w-1/3 space-y-6">
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-4">
                 Zarządzaj playlistami
@@ -270,41 +268,6 @@ const MusicPage: React.FC = () => {
                   // TODO: Zaimplementuj logikę aktualizacji nazwy playlisty w bazie danych
                 }}
                 onRemoveSongFromPlaylist={handleRemoveSongFromPlaylist}
-              />
-            </div>
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                Lista utworów
-              </h2>
-              <SongList
-                songs={songs}
-                visibleSongs={songs.length}
-                currentSong={songs[currentSongIndex]}
-                isPlaying={false}
-                onSongSelect={(songId) => {
-                  const index = songs.findIndex((s) => s.id === songId);
-                  if (index !== -1) {
-                    dispatch(setCurrentSongIndex(index));
-                  }
-                }}
-                onLoadMore={() => {}}
-                onCollapse={() => {}}
-                isPopularList={false}
-                expandedPlaylist={expandedPlaylist}
-                setExpandedPlaylist={setExpandedPlaylist}
-                onAddToPlaylist={(songId) =>
-                  handleAddToExistingPlaylist(expandedPlaylist!, songId)
-                }
-                sortBy={sortBy}
-                sortOrder={sortOrder}
-                onSortChange={(newSortBy, newSortOrder) => {
-                  setSortBy(newSortBy);
-                  setSortOrder(newSortOrder);
-                }}
-                filterText={filterText}
-                setFilterText={setFilterText}
-                isPlaylistExpanded={!!expandedPlaylist}
-                showSearch={!isMobile}
               />
             </div>
           </div>
