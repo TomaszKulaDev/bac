@@ -20,7 +20,7 @@ import { Song } from "../types";
 import { motion } from "framer-motion";
 import { getYouTubeThumbnail } from "../utils/youtube";
 import { sortSongs } from "../utils/sortUtils";
-import Toast from './Toast';
+import Toast from "./Toast";
 
 interface SongListProps {
   songs: Song[];
@@ -184,15 +184,6 @@ const SongList: React.FC<SongListProps> = ({
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  // Tutaj dodaj logikę dla zakładki
-                }}
-                className="text-gray-500 hover:text-blue-500 transition-colors duration-200"
-              >
-                <FaBookmark className="text-xl" />
-              </button>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
                   // Tutaj dodaj logikę dla serduszka
                 }}
                 className="text-gray-500 hover:text-red-500 transition-colors duration-200"
@@ -219,7 +210,7 @@ const SongList: React.FC<SongListProps> = ({
                   }
                 }}
                 disabled={!isPlaylistExpanded || !expandedPlaylist}
-                className={`text-green-500 hover:text-green-700 transition-colors duration-200 ${
+                className={`text-gray-500 hover:text-blue-500 transition-colors duration-200 ${
                   !isPlaylistExpanded || !expandedPlaylist
                     ? "opacity-50 cursor-not-allowed"
                     : ""
@@ -230,7 +221,7 @@ const SongList: React.FC<SongListProps> = ({
                     : "Rozwiń playlistę, aby dodać utwór"
                 }
               >
-                <FaPlus className="text-xl" />
+                <FaBookmark className="text-xl" />
               </button>
             </div>
           </motion.li>
