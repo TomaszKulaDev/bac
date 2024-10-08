@@ -50,6 +50,8 @@ const SongList: React.FC<SongListProps> = ({
   onLoadMore,
   onCollapse,
   isPopularList,
+  expandedPlaylist,
+  setExpandedPlaylist,
   onAddToPlaylist,
   sortBy,
   sortOrder,
@@ -175,12 +177,12 @@ const SongList: React.FC<SongListProps> = ({
                 e.stopPropagation();
                 onAddToPlaylist(song.id);
               }}
-              disabled={!isPlaylistExpanded}
+              disabled={!isPlaylistExpanded || !expandedPlaylist}
               className={`text-green-500 hover:text-green-700 transition-colors duration-200 ${
-                !isPlaylistExpanded ? "opacity-50 cursor-not-allowed" : ""
+                !isPlaylistExpanded || !expandedPlaylist ? "opacity-50 cursor-not-allowed" : ""
               }`}
               title={
-                isPlaylistExpanded
+                isPlaylistExpanded && expandedPlaylist
                   ? "Dodaj do playlisty"
                   : "Rozwiń playlistę, aby dodać utwór"
               }

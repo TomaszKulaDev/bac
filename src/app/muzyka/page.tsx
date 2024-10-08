@@ -59,6 +59,12 @@ const MusicPage: React.FC = () => {
 
   const handleAddToExistingPlaylist = useCallback(
     (playlistId: string, songIdOrIds: string | string[]) => {
+      const playlist = playlists.find(p => p.id === playlistId);
+      if (!playlist) {
+        console.error("Próba dodania utworu do nieistniejącej playlisty");
+        return;
+      }
+      
       console.log("handleAddToExistingPlaylist - playlistId:", playlistId);
       console.log("handleAddToExistingPlaylist - songIdOrIds:", songIdOrIds);
       
