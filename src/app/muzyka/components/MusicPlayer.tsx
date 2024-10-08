@@ -26,7 +26,6 @@ import { sortSongs } from "../utils/sortUtils";
 
 interface MusicPlayerProps {
   songs: Song[];
-  onCreatePlaylist: (name: string, selectedSongs: string[]) => void;
   onAddToPlaylist: (playlistId: string, songId: string) => void;
   expandedPlaylist: string | null;
   setExpandedPlaylist: React.Dispatch<React.SetStateAction<string | null>>;
@@ -38,7 +37,6 @@ interface MusicPlayerProps {
 // Komponent MusicPlayer
 const MusicPlayer: React.FC<MusicPlayerProps> = ({
   songs,
-  onCreatePlaylist,
   onAddToPlaylist,
   expandedPlaylist,
   setExpandedPlaylist,
@@ -297,14 +295,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     []
   );
 
-  // Funkcja do tworzenia pustej playlisty
-  const handleCreateEmptyPlaylist = () => {
-    const name = prompt("Podaj nazwę nowej playlisty:");
-    if (name) {
-      onCreatePlaylist(name, []);
-    }
-  };
-
   const deletePlaylist = useCallback(
     (playlistId: string) => {
       setPlaylists((prevPlaylists) =>
@@ -403,16 +393,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                 </button>
               </div>
             </div>
-            {isMobile && (
-              <div className="mt-4 mb-2 px-4">
-                <button
-                  onClick={handleCreateEmptyPlaylist}
-                  className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-2 px-4 rounded-full text-sm font-semibold shadow-md hover:from-purple-600 hover:to-pink-600 transition duration-300"
-                >
-                  Utwórz nową playlistę
-                </button>
-              </div>
-            )}
           </div>
         </div>
         <SongList
@@ -448,17 +428,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           showSearch={isMobile}
         />
       </div>
-      {isMobile && (
-        <div className="mb-4">
-          <input
-            type="text"
-            placeholder="Filtruj utwory..."
-            value={filterText}
-            onChange={(e) => setFilterText(e.target.value)}
-            className="w-full p-2 border rounded"
-          />
-        </div>
-      )}
     </div>
   );
 };
