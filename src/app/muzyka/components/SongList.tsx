@@ -15,9 +15,6 @@ import {
   FaSortAmountUp,
   FaHeart,
   FaThumbsUp,
-  FaClock,
-  FaFont,
-  FaMicrophone,
 } from "react-icons/fa";
 import { Song } from "../types";
 import { motion } from "framer-motion";
@@ -46,6 +43,7 @@ interface SongListProps {
   setFilterText: React.Dispatch<React.SetStateAction<string>>;
   currentSong: Song | null;
   isPlaylistExpanded: boolean;
+  showSearch: boolean;
 }
 
 const SongList: React.FC<SongListProps> = ({
@@ -66,6 +64,7 @@ const SongList: React.FC<SongListProps> = ({
   isPlaylistExpanded,
   filterText,
   setFilterText,
+  showSearch,
 }) => {
   const [showNotification, setShowNotification] = useState(false);
 
@@ -93,30 +92,44 @@ const SongList: React.FC<SongListProps> = ({
   );
 
   return (
-    <div
-      className={`song-list ${isPopularList ? "popular-list" : "full-list"}`}
-    >
+    <div className="song-list bg-white rounded-lg shadow-md p-4">
+      {showSearch && (
+        <div className="mb-4">
+          <input
+            type="text"
+            placeholder="Filtruj utwory..."
+            value={filterText}
+            onChange={(e) => setFilterText(e.target.value)}
+            className="w-full p-2 border rounded"
+          />
+        </div>
+      )}
       <div className="mb-4">
-        <div className="flex flex-wrap justify-start items-center gap-2 mb-4 bg-gray-100 p-4 rounded-lg shadow-sm">
-          {[
-            { key: "date", label: "Ostatnio dodane", icon: FaClock },
-            { key: "title", label: "Tytuł", icon: FaFont },
-            { key: "artist", label: "Artysta", icon: FaMicrophone },
-          ].map(({ key, label, icon: Icon }) => (
+        <div className="flex space-x-2 mb-4">
+          {["date", "title", "artist"].map((sortOption) => (
             <button
-              key={key}
-              onClick={() => handleSort(key as "date" | "title" | "artist")}
-              className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 ease-in-out ${
-                sortBy === key
-                  ? "bg-purple-600 text-white shadow-md"
-                  : "bg-white text-gray-700 hover:bg-gray-200"
+              key={sortOption}
+              onClick={() =>
+                handleSort(sortOption as "date" | "title" | "artist")
+              }
+              className={`px-3 py-1 rounded-full transition-colors duration-200 ${
+                sortBy === sortOption
+                  ? "bg-purple-500 text-white"
+                  : "bg-gray-200 hover:bg-gray-300"
               }`}
             >
-              <Icon className="text-lg" />
-              <span>{label}</span>
-              {sortBy === key && (
+              {sortOption === "date"
+                ? "Ostatnio dodane"
+                : sortOption === "title"
+                ? "Tytuł"
+                : "Artysta"}
+              {sortBy === sortOption && (
                 <span className="ml-1">
-                  {sortOrder === "asc" ? <FaArrowUp /> : <FaArrowDown />}
+                  {sortOrder === "asc" ? (
+                    <FaSortAmountUp />
+                  ) : (
+                    <FaSortAmountDown />
+                  )}
                 </span>
               )}
             </button>

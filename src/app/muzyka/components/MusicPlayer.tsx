@@ -32,6 +32,7 @@ interface MusicPlayerProps {
   setExpandedPlaylist: React.Dispatch<React.SetStateAction<string | null>>;
   filterText: string;
   setFilterText: React.Dispatch<React.SetStateAction<string>>;
+  isMobile: boolean;
 }
 
 // Komponent MusicPlayer
@@ -43,6 +44,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   setExpandedPlaylist,
   filterText,
   setFilterText,
+  isMobile,
 }) => {
   const dispatch = useDispatch();
   const currentSong = useSelector(
@@ -335,13 +337,13 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   // Komponent MusicPlayer - główny komponent odtwarzacza muzyki
   return (
     <div className="music-player bg-gradient-to-br from-purple-100 to-pink-100 shadow-lg min-h-screen flex flex-col w-full max-w-6xl mx-auto">
-      <div className="playlist-header bg-gradient-to-r from-purple-600 to-pink-600 text-white p-6 shadow-md">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center">
-            <FaMusic className="text-5xl mr-4" />
+      <div className="playlist-header bg-gradient-to-r from-purple-600 to-pink-600 text-white p-4 md:p-6 shadow-md">
+        <div className="flex flex-col md:flex-row items-center justify-between">
+          <div className="flex items-center mb-2 md:mb-0">
+            <FaMusic className="text-3xl md:text-5xl mr-2 md:mr-4" />
             <div>
-              <h1 className="text-3xl font-bold">Bachata Top Playlist 2024</h1>
-              <p className="text-sm opacity-75">
+              <h1 className="text-xl md:text-3xl font-bold">Bachata Top Playlist 2024</h1>
+              <p className="text-xs md:text-sm opacity-75">
                 {songs.length} utworów • Zaktualizowano: {new Date().toLocaleDateString()}
               </p>
             </div>
@@ -433,6 +435,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           filterText={filterText}
           setFilterText={setFilterText}
           isPlaylistExpanded={!!expandedPlaylist}
+          showSearch={true}
         />
       </div>
     </div>

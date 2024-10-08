@@ -7,11 +7,12 @@ import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
 import { logout, login } from "../store/slices/authSlice";
 import { RootState } from "../store/slices/types";
-import { FaMusic, FaUser, FaCaretDown } from "react-icons/fa";
+import { FaMusic, FaUser, FaCaretDown, FaBars } from "react-icons/fa";
 
 export function NavContent() {
   const [isLoading, setIsLoading] = useState(true);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { data: session, status } = useSession();
   const router = useRouter();
   const dispatch = useDispatch();
@@ -66,12 +67,17 @@ export function NavContent() {
     <nav className="bg-gray-800 text-white shadow-md">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center py-4">
-          <Link href="/" className="text-2xl font-bold flex items-center">
+          <Link href="/" className="text-xl font-bold flex items-center">
             <FaMusic className="mr-2" />
             Baciata.pl
           </Link>
-          <div className="flex items-center space-x-4">
-            <Link href="/muzyka" className="hover:text-gray-300 transition duration-150 ease-in-out">
+          <div className="md:hidden">
+            <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+              <FaBars />
+            </button>
+          </div>
+          <div className={`md:flex items-center space-x-4 ${isMobileMenuOpen ? 'block' : 'hidden'}`}>
+            <Link href="/muzyka" className="block py-2 hover:text-gray-300 transition duration-150 ease-in-out">
               Muzyka
             </Link>
             {isAuthenticated && user ? (

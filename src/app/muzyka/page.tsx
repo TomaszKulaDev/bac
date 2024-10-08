@@ -1,7 +1,7 @@
 // src/app/muzyka/page.tsx
 "use client";
 
-import { useEffect, useCallback, useMemo } from "react";
+import { useEffect, useCallback, useMemo, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from "@/store/store";
 import MusicPlayer from "./components/MusicPlayer";
@@ -12,7 +12,6 @@ import {
 } from "@/store/slices/features/songsSlice";
 import { Song, Playlist } from "./types";
 import { RootState } from "@/store/store";
-import { useState } from "react";
 import BaciataRisingBanner from "./components/BaciataRisingBanner";
 import SongList from "./components/SongList";
 import PlaylistManager from "./components/PlaylistManager";
@@ -30,6 +29,7 @@ const MusicPage: React.FC = () => {
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const [filterText, setFilterText] = useState("");
   const [showNotification, setShowNotification] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   const handleCreatePlaylist = useCallback(
     (name: string, selectedSongs: string[] = []) => {
@@ -167,6 +167,15 @@ const MusicPage: React.FC = () => {
     console.log("Stan playlist po aktualizacji:", playlists);
   }, [playlists]);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   if (status === "loading") {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -187,16 +196,16 @@ const MusicPage: React.FC = () => {
   return (
     <div className="music-page bg-gray-100 min-h-screen flex flex-col">
       <BaciataRisingBanner />
-      <div className="container mx-auto px-4 py-4">
-        <input
-          type="text"
-          placeholder="Filtruj utwory..."
-          value={filterText}
-          onChange={(e) => setFilterText(e.target.value)}
-          className="w-full p-2 border rounded mb-4"
-        />
-      </div>
       <div className="container mx-auto px-4 py-8">
+        {!isMobile && (
+          <input
+            type="text"
+            placeholder="Filtruj utwory..."
+            value={filterText}
+            onChange={(e) => setFilterText(e.target.value)}
+            className="w-full p-2 border rounded mb-4"
+          />
+        )}
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Lewa kolumna */}
           <div className="lg:w-2/3 space-y-6">
@@ -210,6 +219,7 @@ const MusicPage: React.FC = () => {
               setExpandedPlaylist={setExpandedPlaylist}
               filterText={filterText}
               setFilterText={setFilterText}
+              isMobile={isMobile}
             />
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-4">
@@ -294,6 +304,7 @@ const MusicPage: React.FC = () => {
                 filterText={filterText}
                 setFilterText={setFilterText}
                 isPlaylistExpanded={!!expandedPlaylist}
+                showSearch={!isMobile}
               />
             </div>
           </div>
