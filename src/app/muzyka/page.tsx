@@ -263,6 +263,7 @@ const MusicPage: React.FC = () => {
                   // TODO: Zaimplementuj logikę aktualizacji nazwy playlisty w bazie danych
                 }}
                 onRemoveSongFromPlaylist={handleRemoveSongFromPlaylist}
+                isMobile={isMobile}
               />
             </div>
           </div>

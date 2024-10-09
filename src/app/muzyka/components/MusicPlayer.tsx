@@ -397,6 +397,14 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
             </div>
           </div>
         </div>
+        {isMobile && (
+          <button
+            onClick={() => onCreatePlaylist("", [])}
+            className="w-full bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 transition duration-300 mb-4"
+          >
+            + Utwórz nową playlistę
+          </button>
+        )}
         <SongList
           songs={sortedAndFilteredSongs}
           visibleSongs={sortedAndFilteredSongs.length}
