@@ -1,9 +1,18 @@
+<<<<<<< HEAD
 import React from "react";
 import { MusicPlayerProps } from "../../types";
 import SongList from "../SongList";
 import YouTube from "react-youtube";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
+=======
+import React from 'react';
+import { MusicPlayerProps } from '../../types';
+import SongList from '../SongList';
+import YouTube from 'react-youtube';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
+>>>>>>> 5bca33d3a89e693186dc477b3dcca5b0f99f2514
 
 const MusicPlayerMobile: React.FC<MusicPlayerProps> = ({
   songs,
@@ -14,9 +23,13 @@ const MusicPlayerMobile: React.FC<MusicPlayerProps> = ({
   setFilterText,
   onCreatePlaylist,
 }) => {
+<<<<<<< HEAD
   const currentSong = useSelector(
     (state: RootState) => state.songs.songs[state.songs.currentSongIndex]
   );
+=======
+  const currentSong = useSelector((state: RootState) => state.songs.songs[state.songs.currentSongIndex]);
+>>>>>>> 5bca33d3a89e693186dc477b3dcca5b0f99f2514
 
   const handleAddToPlaylist = (songId: string) => {
     if (expandedPlaylist) {
@@ -31,8 +44,13 @@ const MusicPlayerMobile: React.FC<MusicPlayerProps> = ({
           <YouTube
             videoId={currentSong.youtubeId}
             opts={{
+<<<<<<< HEAD
               width: "100%",
               height: "200px",
+=======
+              width: '100%',
+              height: '200px',
+>>>>>>> 5bca33d3a89e693186dc477b3dcca5b0f99f2514
               playerVars: {
                 autoplay: 1,
               },
