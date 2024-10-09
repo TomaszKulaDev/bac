@@ -22,4 +22,7 @@ export interface MusicPlayerProps {
   expandedPlaylist: string | null;
   setExpandedPlaylist: React.Dispatch<React.SetStateAction<string | null>>;
   isPlaylistExpanded: boolean;
+  filterText: string;
+  setFilterText: React.Dispatch<React.SetStateAction<string>>;
+  isMobile: boolean;
 }
