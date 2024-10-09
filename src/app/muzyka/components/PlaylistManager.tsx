@@ -33,11 +33,18 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
       <button
         onClick={() => {
           const name = prompt("Podaj nazwę nowej playlisty:");
-          if (name) onCreatePlaylist(name, []);
+          if (name) {
+            const playlistExists = playlists.some(playlist => playlist.name.toLowerCase() === name.toLowerCase());
+            if (playlistExists) {
+              alert("Playlista o takiej nazwie już istnieje. Wybierz inną nazwę.");
+            } else {
+              onCreatePlaylist(name, []);
+            }
+          }
         }}
         className="w-full bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 transition duration-300 mb-4"
       >
-        + 123Utwórz nową playlistę
+        + Utwórz nową playlistę
       </button>
       {playlists.map((playlist) => (
         <div key={playlist.id} className="bg-white p-4 rounded-lg shadow-md">
