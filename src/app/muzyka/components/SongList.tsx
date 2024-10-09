@@ -175,7 +175,7 @@ const SongList: React.FC<SongListProps> = ({
                     {song.playlists.slice(0, 3).map((playlist) => (
                       <span
                         key={playlist}
-                        className="bg-green-500 text-white text-xs px-1 py-0.5 rounded mr-1 mb-1"
+                        className="bg-blue-500 text-white text-xs px-1 py-0.5 rounded mr-1 mb-1"
                       >
                         {playlist.length > 10
                           ? playlist.slice(0, 10) + "..."
