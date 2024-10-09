@@ -12,6 +12,7 @@ interface PlaylistManagerProps {
   onRenamePlaylist: (playlistId: string, newName: string) => void;
   onRemoveSongFromPlaylist: (playlistId: string, songId: string) => void;
   onCreatePlaylist: (name: string, selectedSongs: string[]) => void;
+  isMobile: boolean;
 }
 
 const PlaylistManager: React.FC<PlaylistManagerProps> = ({
@@ -23,6 +24,7 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
   onRenamePlaylist,
   onRemoveSongFromPlaylist,
   onCreatePlaylist,
+  isMobile,
 }) => {
   const getSongDetails = (songId: string): Song | undefined => {
     return songs.find((song) => song._id === songId || song.id === songId);
@@ -30,15 +32,17 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
 
   return (
     <div className="space-y-4 mt-6 mb-8">
-      <button
-        onClick={() => {
-          const name = prompt("Podaj nazwę nowej playlisty:");
-          if (name) onCreatePlaylist(name, []);
-        }}
-        className="w-full bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 transition duration-300 mb-4"
-      >
-        + 123Utwórz nową playlistę
-      </button>
+      {!isMobile && (
+        <button
+          onClick={() => {
+            const name = prompt("Podaj nazwę nowej playlisty:");
+            if (name) onCreatePlaylist(name, []);
+          }}
+          className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-2 px-4 rounded-full text-sm font-semibold shadow-md hover:from-purple-600 hover:to-pink-600 transition duration-300 mb-4"
+        >
+          + Utwórz nową playlistę
+        </button>
+      )}
       {playlists.map((playlist) => (
         <div key={playlist.id} className="bg-white p-4 rounded-lg shadow-md">
           <div className="flex items-center justify-between mb-2">

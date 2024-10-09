@@ -210,7 +210,8 @@ const MusicPage: React.FC = () => {
           <div className="w-full lg:w-2/3 space-y-6">
             <MusicPlayer
               songs={songs}
-              onCreatePlaylist={handleCreateEmptyPlaylist}
+              onCreatePlaylist={handleCreatePlaylist}
+              onCreateEmptyPlaylist={handleCreateEmptyPlaylist}
               onAddToPlaylist={(playlistId, songId) =>
                 handleAddToExistingPlaylist(playlistId, songId)
               }
@@ -220,11 +221,6 @@ const MusicPage: React.FC = () => {
               setFilterText={setFilterText}
               isMobile={isMobile}
             />
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                Statystyki odtwarzania
-              </h2>
-            </div>
           </div>
 
           <div className="w-full lg:w-1/3 space-y-6">
@@ -232,14 +228,6 @@ const MusicPage: React.FC = () => {
               <h2 className="text-2xl font-bold text-gray-900 mb-4">
                 Zarządzaj playlistami
               </h2>
-              {!isMobile && (
-                <button
-                  onClick={handleCreateEmptyPlaylist}
-                  className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-2 px-4 rounded-full text-sm font-semibold shadow-md hover:from-purple-600 hover:to-pink-600 transition duration-300 mb-4"
-                >
-                  + Utwórz nową playlistę
-                </button>
-              )}
               <PlaylistManager
                 playlists={playlists}
                 songs={songs}
@@ -276,6 +264,7 @@ const MusicPage: React.FC = () => {
                   // TODO: Zaimplementuj logikę aktualizacji nazwy playlisty w bazie danych
                 }}
                 onRemoveSongFromPlaylist={handleRemoveSongFromPlaylist}
+                isMobile={isMobile}
               />
             </div>
           </div>
