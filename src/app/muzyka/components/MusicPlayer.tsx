@@ -33,7 +33,6 @@ interface MusicPlayerProps {
   setFilterText: React.Dispatch<React.SetStateAction<string>>;
   isMobile: boolean;
   onCreatePlaylist: (name: string, songs: string[]) => void;
-  onCreateEmptyPlaylist: () => void;
 }
 
 // Komponent MusicPlayer
@@ -46,7 +45,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   setFilterText,
   isMobile,
   onCreatePlaylist,
-  onCreateEmptyPlaylist,
 }) => {
   const dispatch = useDispatch();
   const currentSong = useSelector(
