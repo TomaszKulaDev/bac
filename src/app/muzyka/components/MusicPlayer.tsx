@@ -23,7 +23,6 @@ import { RootState } from "../../../store/store";
 import SongList from "./SongList";
 import { setCurrentSongIndex, syncSongsWithPlaylists } from "@/store/slices/features/songsSlice";
 import { sortSongs } from "../utils/sortUtils";
-import MusicPlayerMobile from './mobile/MusicPlayerMobile';
 
 interface MusicPlayerProps {
   songs: Song[];
