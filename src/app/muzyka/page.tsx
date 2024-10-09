@@ -197,7 +197,7 @@ const MusicPage: React.FC = () => {
     <div className="music-page bg-gray-100 min-h-screen flex flex-col">
       <BaciataRisingBanner />
       <div className="container mx-auto px-4 py-8">
-        {!isMobile && (
+        {!isMobile ? (
           <input
             type="text"
             placeholder="Filtruj utwory..."
@@ -205,6 +205,13 @@ const MusicPage: React.FC = () => {
             onChange={(e) => setFilterText(e.target.value)}
             className="w-full p-2 border rounded mb-4"
           />
+        ) : (
+          <button
+            onClick={handleCreateEmptyPlaylist}
+            className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-2 px-4 rounded-full text-sm font-semibold shadow-md hover:from-purple-600 hover:to-pink-600 transition duration-300 mb-4"
+          >
+            + Utwórz nową playlistę
+          </button>
         )}
         <div className="flex flex-col lg:flex-row gap-8">
           <div className="w-full lg:w-2/3 space-y-6">
