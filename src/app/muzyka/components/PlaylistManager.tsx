@@ -37,9 +37,13 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
           onClick={() => {
             const name = prompt("Podaj nazwę nowej playlisty:");
             if (name) {
-              const playlistExists = playlists.some(playlist => playlist.name.toLowerCase() === name.toLowerCase());
+              const playlistExists = playlists.some(
+                (playlist) => playlist.name.toLowerCase() === name.toLowerCase()
+              );
               if (playlistExists) {
-                alert("Playlista o takiej nazwie już istnieje. Wybierz inną nazwę.");
+                alert(
+                  "Playlista o takiej nazwie już istnieje. Wybierz inną nazwę."
+                );
               } else {
                 onCreatePlaylist(name, []);
               }
@@ -137,7 +141,8 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
       ))}
       {!isMobile && playlists.length >= 2 && (
         <p className="text-sm text-gray-600 mb-4">
-          Osiągnięto limit 2 playlist. Usuń jedną z istniejących, aby utworzyć nową.
+          Osiągnięto limit 2 playlist. Usuń jedną z istniejących, aby utworzyć
+          nową albo wykup premium.
         </p>
       )}
     </div>
