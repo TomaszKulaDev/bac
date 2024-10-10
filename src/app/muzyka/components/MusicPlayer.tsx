@@ -17,11 +17,22 @@ import {
   FaMusic,
   FaChevronDown,
   FaChevronUp,
+  FaRandom,
+  FaStepBackward,
+  FaStepForward,
+  FaRedo,
+  FaRedoAlt,
+  FaRetweet,
+  FaBackward,
+  FaForward,
 } from "react-icons/fa";
-import { Song, Playlist } from "../types";
+import { Song, Playlist, RepeatMode } from "../types";
 import { RootState } from "../../../store/store";
 import SongList from "./SongList";
-import { setCurrentSongIndex, syncSongsWithPlaylists } from "@/store/slices/features/songsSlice";
+import {
+  setCurrentSongIndex,
+  syncSongsWithPlaylists,
+} from "@/store/slices/features/songsSlice";
 import { sortSongs } from "../utils/sortUtils";
 
 interface MusicPlayerProps {
@@ -104,25 +115,25 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     const currentIndex = sortedAndFilteredSongs.findIndex(
       (song) => song.id === currentSong.id
     );
-    if (currentIndex > 0) {
-      dispatch(
-        setCurrentSongIndex(
-          songs.findIndex(
-            (song) => song.id === sortedAndFilteredSongs[currentIndex - 1].id
-          )
-        )
-      );
+    let prevIndex;
+
+    if (repeatMode.song === "on") {
+      prevIndex = currentIndex;
+    } else if (currentIndex > 0) {
+      prevIndex = currentIndex - 1;
+    } else if (repeatMode.playlist === "on") {
+      prevIndex = sortedAndFilteredSongs.length - 1;
     } else {
-      dispatch(
-        setCurrentSongIndex(
-          songs.findIndex(
-            (song) =>
-              song.id ===
-              sortedAndFilteredSongs[sortedAndFilteredSongs.length - 1].id
-          )
-        )
-      );
+      return; // Nie odtwarzaj poprzedniego utworu, jeśli to pierwszy i nie ma powtarzania
     }
+
+    dispatch(
+      setCurrentSongIndex(
+        songs.findIndex(
+          (song) => song.id === sortedAndFilteredSongs[prevIndex].id
+        )
+      )
+    );
     setIsPlaying(true);
     setIsLoading(true);
   };
@@ -144,21 +155,25 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     const currentIndex = sortedAndFilteredSongs.findIndex(
       (song) => song.id === currentSong.id
     );
-    if (currentIndex < sortedAndFilteredSongs.length - 1) {
-      dispatch(
-        setCurrentSongIndex(
-          songs.findIndex(
-            (song) => song.id === sortedAndFilteredSongs[currentIndex + 1].id
-          )
-        )
-      );
+    let nextIndex;
+
+    if (repeatMode.song === "on") {
+      nextIndex = currentIndex;
+    } else if (currentIndex < sortedAndFilteredSongs.length - 1) {
+      nextIndex = currentIndex + 1;
+    } else if (repeatMode.playlist === "on") {
+      nextIndex = 0;
     } else {
-      dispatch(
-        setCurrentSongIndex(
-          songs.findIndex((song) => song.id === sortedAndFilteredSongs[0].id)
-        )
-      );
+      return; // Nie odtwarzaj następnego utworu, jeśli to ostatni i nie ma powtarzania
     }
+
+    dispatch(
+      setCurrentSongIndex(
+        songs.findIndex(
+          (song) => song.id === sortedAndFilteredSongs[nextIndex].id
+        )
+      )
+    );
     setIsPlaying(true);
     setIsLoading(true);
   };
@@ -322,9 +337,34 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   }, [songs, sortBy, sortOrder, filterText]);
 
   useEffect(() => {
-    const allPlaylistNames = playlists.map(p => p.name);
+    const allPlaylistNames = playlists.map((p) => p.name);
     dispatch(syncSongsWithPlaylists(allPlaylistNames) as unknown as AnyAction);
   }, [playlists, dispatch]);
+
+  // Funkcja do mieszania playlisty
+  const shufflePlaylist = () => {
+    const shuffledSongs = [...sortedAndFilteredSongs].sort(
+      () => Math.random() - 0.5
+    );
+    dispatch(
+      setCurrentSongIndex(
+        songs.findIndex((song) => song.id === shuffledSongs[0].id)
+      )
+    );
+  };
+
+  // Funkcja do przełączania trybu powtarzania
+  const [repeatMode, setRepeatMode] = useState<RepeatMode>({
+    playlist: "off",
+    song: "off",
+  });
+
+  const toggleRepeatMode = (mode: "playlist" | "song") => {
+    setRepeatMode((prevMode) => ({
+      ...prevMode,
+      [mode]: prevMode[mode] === "off" ? "on" : "off",
+    }));
+  };
 
   // Komponent MusicPlayer - główny komponent odtwarzacza muzyki
   return (
@@ -334,9 +374,12 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           <div className="flex items-center mb-2 md:mb-0">
             <FaMusic className="text-3xl md:text-5xl mr-2 md:mr-4" />
             <div>
-              <h1 className="text-xl md:text-3xl font-bold">Bachata Top Playlist 2024</h1>
+              <h1 className="text-xl md:text-3xl font-bold">
+                Bachata Top Playlist 2024
+              </h1>
               <p className="text-xs md:text-sm opacity-75">
-                {songs.length} utworów • Zaktualizowano: {new Date().toLocaleDateString()}
+                {songs.length} utworów • Zaktualizowano:{" "}
+                {new Date().toLocaleDateString()}
               </p>
             </div>
           </div>
@@ -352,7 +395,11 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                 height: playerDimensions.height,
               }}
             >
-              {error && <div className="error-message bg-red-100 text-red-700 p-4 rounded">{error}</div>}
+              {error && (
+                <div className="error-message bg-red-100 text-red-700 p-4 rounded">
+                  {error}
+                </div>
+              )}
               {songs.length > 0 && (
                 <YouTube
                   videoId={currentSong?.youtubeId}
@@ -360,38 +407,75 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                   onReady={onReady}
                   onPlay={() => setIsPlaying(true)}
                   onPause={() => setIsPlaying(false)}
-                  onEnd={nextSong}
+                  onEnd={() => {
+                    if (repeatMode.song === "on") {
+                      if (player) {
+                        player.seekTo(0);
+                        player.playVideo();
+                      }
+                    } else {
+                      nextSong();
+                    }
+                  }}
                   className="w-full h-full"
                 />
               )}
             </div>
             <div className="flex flex-col space-y-4 mt-6">
               <div className="text-center">
-                <h2 className="text-2xl font-bold text-gray-800">{currentSong?.title}</h2>
+                <h2 className="text-2xl font-bold text-gray-800">
+                  {currentSong?.title}
+                </h2>
                 <p className="text-lg text-gray-600">{currentSong?.artist}</p>
               </div>
-              <div className="flex justify-between items-center mt-4">
+              <div className="flex justify-center items-center space-x-4 mt-4">
+                <button
+                  onClick={() => toggleRepeatMode("playlist")}
+                  className={`text-gray-600 hover:text-gray-800 ${
+                    repeatMode.playlist === "on" ? "text-purple-500" : ""
+                  }`}
+                  aria-label={`Powtarzaj playlistę: ${
+                    repeatMode.playlist === "on" ? "włączone" : "wyłączone"
+                  }`}
+                  title="Powtarzaj playlistę"
+                >
+                  <FaRedoAlt size={24} />
+                </button>
                 <button
                   onClick={previousSong}
-                  className="flex-1 bg-gradient-to-r from-purple-500 to-indigo-500 text-white py-3 px-6 rounded-full text-sm font-semibold shadow-md hover:from-purple-600 hover:to-indigo-600 transition duration-300 flex items-center justify-center"
+                  className="text-gray-600 hover:text-gray-800"
+                  aria-label="Poprzedni utwór"
+                  title="Poprzedni utwór"
                 >
-                  <FaChevronUp className="mr-2" /> Poprzedni
+                  <FaBackward size={24} className="transform rotate-90" />
                 </button>
                 <button
                   onClick={togglePlayback}
-                  className="mx-4 w-16 h-16 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-full shadow-md hover:from-pink-600 hover:to-purple-600 transition duration-300 flex items-center justify-center"
+                  className="bg-white rounded-full p-4 shadow-lg"
+                  aria-label={isPlaying ? "Pauza" : "Odtwórz"}
+                  title={isPlaying ? "Pauza" : "Odtwórz"}
                 >
-                  {isPlaying ? (
-                    <FaPause className="text-2xl" />
-                  ) : (
-                    <FaPlay className="text-2xl ml-1" />
-                  )}
+                  {isPlaying ? <FaPause size={32} /> : <FaPlay size={32} />}
                 </button>
                 <button
                   onClick={nextSong}
-                  className="flex-1 bg-gradient-to-r from-indigo-500 to-pink-500 text-white py-3 px-6 rounded-full text-sm font-semibold shadow-md hover:from-indigo-600 hover:to-pink-600 transition duration-300 flex items-center justify-center"
+                  className="text-gray-600 hover:text-gray-800"
+                  aria-label="Następny utwór"
+                  title="Następny utwór"
                 >
-                  Następny <FaChevronDown className="ml-2" />
+                  <FaForward size={24} className="transform rotate-90" />
+                </button>
+                <button
+                  onClick={() => toggleRepeatMode("song")}
+                  className={`text-gray-600 hover:text-gray-800 ${
+                    repeatMode.song === "on" ? "text-purple-500" : ""
+                  }`}
+                  aria-label={`Powtarzaj utwór: ${
+                    repeatMode.song === "on" ? "włączone" : "wyłączone"
+                  }`}
+                  title="Powtarzaj utwór"
+                >
+                  <FaRetweet size={24} />
                 </button>
               </div>
             </div>

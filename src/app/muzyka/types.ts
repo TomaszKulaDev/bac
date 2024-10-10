@@ -26,3 +26,8 @@ export interface MusicPlayerProps {
   setFilterText: React.Dispatch<React.SetStateAction<string>>;
   isMobile: boolean;
 }
+
+export interface RepeatMode {
+  playlist: 'off' | 'on';
+  song: 'off' | 'on';
+}
