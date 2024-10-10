@@ -32,7 +32,7 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
 
   return (
     <div className="space-y-4 mt-6 mb-8">
-      {!isMobile && (
+      {!isMobile && playlists.length < 2 && (
         <button
           onClick={() => {
             const name = prompt("Podaj nazwę nowej playlisty:");
@@ -135,6 +135,11 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
           )}
         </div>
       ))}
+      {!isMobile && playlists.length >= 2 && (
+        <p className="text-sm text-gray-600 mb-4">
+          Osiągnięto limit 2 playlist. Usuń jedną z istniejących, aby utworzyć nową.
+        </p>
+      )}
     </div>
   );
 };

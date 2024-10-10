@@ -33,6 +33,11 @@ const MusicPage: React.FC = () => {
 
   const handleCreatePlaylist = useCallback(
     (name: string, selectedSongs: string[] = []) => {
+      if (playlists.length >= 2) {
+        alert("Możesz stworzyć maksymalnie 2 playlisty. Usuń jedną z istniejących playlist, aby utworzyć nową.");
+        return;
+      }
+
       const playlistExists = playlists.some(playlist => playlist.name.toLowerCase() === name.toLowerCase());
       if (playlistExists) {
         alert("Playlista o takiej nazwie już istnieje. Wybierz inną nazwę.");
