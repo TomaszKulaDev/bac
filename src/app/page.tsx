@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FaUser, FaLock, FaShieldAlt } from "react-icons/fa";
+import { FaUser, FaLock, FaShieldAlt, FaMusic } from "react-icons/fa";
 
 interface FeatureCardProps {
   icon: React.ReactNode;
@@ -18,20 +18,31 @@ export default function Home(): React.ReactElement {
           Baciata.pl – Twoja nowa przestrzeń do tańca bachaty!
         </p>
 
-        <div className="grid md:grid-cols-1 gap-8 mb-16">
+        <div className="grid md:grid-cols-2 gap-8 mb-16">
           <FeatureCard
             icon={<FaUser className="text-4xl text-indigo-600" />}
             title="Taniec"
-            description="Dołącz do społeczności Baciata.pl – Odkryj najnowsze trendy w tańcu i muzyce, badz na bieząco z wydarzeniami. Baciata.pl to miejsce, gdzie pasja do tańca łączy ludzi! Dołącz do społeczności Bachaty pełnej energii, dziel się swoimi doświadczeniami i odkrywaj nowe rytmy życia. Razem tworzymy przestrzeń, w której każdy krok ma znaczenie."
+            description="Dołącz do społeczności Baciata.pl – Odkryj najnowsze trendy w tańcu i muzyce, badz na bieząco z wydarzeniami. Baciata.pl to miejsce, gdzie pasja do tańca łączy ludzi!"
+          />
+          <FeatureCard
+            icon={<FaMusic className="text-4xl text-indigo-600" />}
+            title="Muzyka"
+            description="Odkryj bogaty świat muzyki bachaty na Baciata.pl. Słuchaj najnowszych hitów, twórz własne playlisty i ciesz się dźwiękami, które inspirują do tańca."
           />
         </div>
 
-        <div className="text-center">
+        <div className="text-center space-x-4">
           <Link
             href="/register"
-            className="bg-indigo-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-indigo-700 transition duration-300"
+            className="bg-indigo-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-indigo-700 transition duration-300 inline-block"
           >
             Rozpocznij teraz
+          </Link>
+          <Link
+            href="/muzyka"
+            className="bg-purple-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-purple-700 transition duration-300 inline-block"
+          >
+            Odkryj muzykę
           </Link>
         </div>
       </main>

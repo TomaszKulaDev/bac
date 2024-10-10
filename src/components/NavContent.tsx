@@ -66,15 +66,16 @@ export const NavContent: React.FC = React.memo(function NavContent() {
   }
 
   return (
-    <nav className="bg-gray-800 text-white shadow-md relative" role="navigation" aria-label="Menu główne">
-      <div className="container mx-auto px-4 relative">
-        <div className="flex justify-between items-center py-4">
-          <Link href="/" className="text-xl font-bold flex items-center">
-            <FaMusic className="mr-2" />
-            Baciata.pl
-          </Link>
-          <div className="md:hidden">
+    <nav className="bg-gray-800 text-white shadow-md">
+      <div className="container mx-auto px-4">
+        <div className="flex flex-col md:flex-row justify-between items-center py-4">
+          <div className="flex items-center justify-between w-full md:w-auto">
+            <Link href="/" className="text-xl font-bold flex items-center">
+              <FaMusic className="mr-2" />
+              Baciata.pl
+            </Link>
             <button 
+              className="md:hidden"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-expanded={isMobileMenuOpen}
               aria-controls="mobile-menu"
@@ -83,18 +84,21 @@ export const NavContent: React.FC = React.memo(function NavContent() {
               <FaBars />
             </button>
           </div>
-          <div className={`md:flex items-center space-x-4 ${isMobileMenuOpen ? 'flex' : 'hidden'} md:relative absolute top-full left-0 right-0 bg-gray-800 md:bg-transparent p-4 md:p-0 flex-col md:flex-row transition-all duration-300 ease-in-out z-50`}>
-            <Link href="/muzyka" className="block py-2 md:py-0 hover:text-gray-300 transition duration-150 ease-in-out w-full text-center md:text-left md:w-auto mb-2 md:mb-0">
+          <div 
+            id="mobile-menu"
+            className={`${isMobileMenuOpen ? 'flex' : 'hidden'} md:flex flex-col md:flex-row items-center w-full md:w-auto mt-4 md:mt-0 space-y-2 md:space-y-0 md:space-x-4`}
+          >
+            <Link href="/muzyka" className="hover:text-gray-300 transition duration-150 ease-in-out w-full md:w-auto text-center">
               Muzyka
             </Link>
             {isAuthenticated && user ? (
               <UserMenu user={user} onLogout={handleLogout} />
             ) : (
               <>
-                <Link href="/login" className="block py-2 md:inline-block md:py-0 hover:text-gray-300 transition duration-150 ease-in-out w-full text-center md:text-left md:w-auto mb-2 md:mb-0">
+                <Link href="/login" className="hover:text-gray-300 transition duration-150 ease-in-out w-full md:w-auto text-center">
                   Zaloguj
                 </Link>
-                <Link href="/register" className="block py-2 md:inline-block md:py-0 bg-blue-500 hover:bg-blue-600 text-white font-bold px-4 rounded transition duration-150 ease-in-out w-full text-center md:w-auto mt-2 md:mt-0">
+                <Link href="/register" className="bg-blue-500 hover:bg-blue-600 text-white font-bold px-4 py-2 rounded transition duration-150 ease-in-out w-full md:w-auto text-center">
                   Zarejestruj się
                 </Link>
               </>
