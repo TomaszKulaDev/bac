@@ -1,5 +1,6 @@
 "use client";
 
+import React from 'react';
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
@@ -8,22 +9,23 @@ import { useSelector, useDispatch } from "react-redux";
 import { logout, login } from "../store/slices/authSlice";
 import { RootState } from "../store/slices/types";
 import { FaMusic, FaUser, FaCaretDown, FaBars } from "react-icons/fa";
+import { useAuth } from "../hooks/useAuth";
+import { UserMenu } from './UserMenu';
 
-export function NavContent() {
-  const [isLoading, setIsLoading] = useState(true);
+export const NavContent: React.FC = React.memo(function NavContent() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { data: session, status } = useSession();
-  const router = useRouter();
-  const dispatch = useDispatch();
+  const { session, status, handleLogout, syncAuthState } = useAuth();
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
   const user = useSelector((state: RootState) => state.auth.user);
 
-  const handleLogout = async () => {
-    await signOut({ redirect: false });
-    dispatch(logout());
-    router.push("/");
-  };
+  useEffect(() => {
+    syncAuthState();
+  }, [syncAuthState]);
+
+  const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (status === "loading") {
@@ -64,7 +66,7 @@ export function NavContent() {
   }
 
   return (
-    <nav className="bg-gray-800 text-white shadow-md relative">
+    <nav className="bg-gray-800 text-white shadow-md relative" role="navigation" aria-label="Menu główne">
       <div className="container mx-auto px-4 relative">
         <div className="flex justify-between items-center py-4">
           <Link href="/" className="text-xl font-bold flex items-center">
@@ -72,7 +74,12 @@ export function NavContent() {
             Baciata.pl
           </Link>
           <div className="md:hidden">
-            <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+            <button 
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-expanded={isMobileMenuOpen}
+              aria-controls="mobile-menu"
+              aria-label="Otwórz menu mobilne"
+            >
               <FaBars />
             </button>
           </div>
@@ -81,25 +88,7 @@ export function NavContent() {
               Muzyka
             </Link>
             {isAuthenticated && user ? (
-              <div className="relative dropdown-container w-full md:w-auto">
-                <button
-                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                  className="flex items-center space-x-1 hover:text-gray-300 transition duration-150 ease-in-out w-full md:w-auto justify-between md:justify-start py-2 md:py-0"
-                >
-                  <FaUser />
-                  <span>{user.name}</span>
-                  <FaCaretDown className="ml-1" />
-                </button>
-                {isDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-full md:w-48 bg-white rounded-md shadow-lg py-1 z-10">
-                    <Link href="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">Profil</Link>
-                    {user.role === 'admin' && (
-                      <Link href="/admin" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">Panel Admin</Link>
-                    )}
-                    <button onClick={handleLogout} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Wyloguj</button>
-                  </div>
-                )}
-              </div>
+              <UserMenu user={user} onLogout={handleLogout} />
             ) : (
               <>
                 <Link href="/login" className="block py-2 md:inline-block md:py-0 hover:text-gray-300 transition duration-150 ease-in-out w-full text-center md:text-left md:w-auto mb-2 md:mb-0">
@@ -115,4 +104,4 @@ export function NavContent() {
       </div>
     </nav>
   );
-}
+});
