@@ -39,6 +39,11 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
+        if (!user.isVerified) {
+          console.log("NextAuth: User not verified");
+          return null;
+        }
+
         console.log("NextAuth: Comparing passwords");
         const isValidPassword = await bcrypt.compare(password, user.password);
         console.log("NextAuth: Password valid:", isValidPassword);
