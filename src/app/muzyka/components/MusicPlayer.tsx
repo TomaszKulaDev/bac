@@ -433,7 +433,9 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                   <button
                     onClick={() => toggleRepeatMode("playlist")}
                     className={`text-gray-600 hover:text-gray-800 p-3 transition-all duration-150 ease-in-out active:scale-95 ${
-                      repeatMode.playlist === "on" ? "text-purple-500" : ""
+                      repeatMode.playlist === "on"
+                        ? "text-purple-500 bg-purple-100 font-bold"
+                        : ""
                     }`}
                     aria-label={`Powtarzaj playlistę: ${
                       repeatMode.playlist === "on" ? "włączone" : "wyłączone"
@@ -469,7 +471,9 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                   <button
                     onClick={() => toggleRepeatMode("song")}
                     className={`text-gray-600 hover:text-gray-800 p-3 transition-all duration-150 ease-in-out active:scale-95 ${
-                      repeatMode.song === "on" ? "text-purple-500" : ""
+                      repeatMode.song === "on"
+                        ? "text-purple-500 bg-purple-100 font-bold"
+                        : ""
                     }`}
                     aria-label={`Powtarzaj utwór: ${
                       repeatMode.song === "on" ? "włączone" : "wyłączone"
