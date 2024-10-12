@@ -432,10 +432,10 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                 <div className="flex justify-center items-center space-x-4 w-full">
                   <button
                     onClick={() => toggleRepeatMode("playlist")}
-                    className={`text-gray-600 hover:text-gray-800 p-3 transition-all duration-150 ease-in-out active:scale-95 ${
+                    className={`text-gray-600 hover:text-purple-600 p-3 rounded-lg transition-all duration-300 ease-in-out ${
                       repeatMode.playlist === "on"
-                        ? "text-purple-500 bg-purple-100 font-bold"
-                        : ""
+                        ? "bg-purple-500 text-white shadow-md"
+                        : "bg-white hover:bg-purple-100"
                     }`}
                     aria-label={`Powtarzaj playlistę: ${
                       repeatMode.playlist === "on" ? "włączone" : "wyłączone"
@@ -446,7 +446,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                   </button>
                   <button
                     onClick={previousSong}
-                    className="text-gray-600 hover:text-gray-800 p-3 transition-all duration-150 ease-in-out active:scale-95"
+                    className="text-gray-600 hover:text-purple-600 p-3 rounded-lg bg-white hover:bg-purple-100 transition-all duration-300 ease-in-out"
                     aria-label="Poprzedni utwór"
                     title="Poprzedni utwór"
                   >
@@ -462,7 +462,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                   </button>
                   <button
                     onClick={nextSong}
-                    className="text-gray-600 hover:text-gray-800 p-3 transition-all duration-150 ease-in-out active:scale-95"
+                    className="text-gray-600 hover:text-purple-600 p-3 rounded-lg bg-white hover:bg-purple-100 transition-all duration-300 ease-in-out"
                     aria-label="Następny utwór"
                     title="Następny utwór"
                   >
@@ -470,10 +470,10 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                   </button>
                   <button
                     onClick={() => toggleRepeatMode("song")}
-                    className={`text-gray-600 hover:text-gray-800 p-3 transition-all duration-150 ease-in-out active:scale-95 ${
+                    className={`text-gray-600 hover:text-purple-600 p-3 rounded-lg transition-all duration-300 ease-in-out ${
                       repeatMode.song === "on"
-                        ? "text-purple-500 bg-purple-100 font-bold"
-                        : ""
+                        ? "bg-purple-500 text-white shadow-md"
+                        : "bg-white hover:bg-purple-100"
                     }`}
                     aria-label={`Powtarzaj utwór: ${
                       repeatMode.song === "on" ? "włączone" : "wyłączone"
