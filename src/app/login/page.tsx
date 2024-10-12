@@ -143,20 +143,15 @@ export default function Login() {
 
       if (response.status === 403) {
         setErrors({
-          form: "Please verify your email before logging in. Check your inbox or resend verification email.",
+          form: "Proszę zweryfikować swój adres e-mail przed zalogowaniem. Sprawdź swoją skrzynkę pocztową lub wyślij ponownie e-mail weryfikacyjny.",
         });
-        // Pokaż przycisk do ponownego wysłania e-maila weryfikacyjnego
-      } else if (response.status === 401) {
+      } else if (response.status === 401 || response.status === 400) {
         setErrors({
-          form: "Invalid credentials. Please try again.",
+          form: "Nieprawidłowe dane logowania. Spróbuj ponownie.",
         });
-      } else if (response.ok) {
+      } else if (!response.ok) {
         setErrors({
-          form: "Verification email resent. Please check your inbox.",
-        });
-      } else {
-        setErrors({
-          form: `Failed to resend verification email: ${data.message}`,
+          form: `Wystąpił błąd podczas logowania: ${data.message || 'Nieznany błąd'}`,
         });
       }
     } catch (error) {
