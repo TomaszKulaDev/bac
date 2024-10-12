@@ -432,17 +432,17 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                 <div className="flex justify-center items-center space-x-4 w-full">
                   <button
                     onClick={() => toggleRepeatMode("playlist")}
-                    className={`text-gray-600 hover:text-purple-600 p-3 rounded-lg transition-all duration-300 ease-in-out ${
+                    className={`text-gray-600 p-3 rounded-full transition-all duration-300 ease-in-out ${
                       repeatMode.playlist === "on"
-                        ? "bg-purple-500 text-white shadow-md"
-                        : "bg-white hover:bg-purple-100"
+                        ? "bg-gray-100 shadow-inner transform translate-y-px"
+                        : "bg-white hover:bg-gray-50 active:bg-gray-100 active:shadow-inner active:transform active:translate-y-px"
                     }`}
                     aria-label={`Powtarzaj playlistę: ${
                       repeatMode.playlist === "on" ? "włączone" : "wyłączone"
                     }`}
                     title="Powtarzaj playlistę"
                   >
-                    <FaRedoAlt size={28} />
+                    <FaRedoAlt size={28} className={repeatMode.playlist === "on" ? "text-purple-500" : ""} />
                   </button>
                   <button
                     onClick={previousSong}
@@ -470,17 +470,17 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                   </button>
                   <button
                     onClick={() => toggleRepeatMode("song")}
-                    className={`text-gray-600 hover:text-purple-600 p-3 rounded-lg transition-all duration-300 ease-in-out ${
+                    className={`text-gray-600 p-3 rounded-full transition-all duration-300 ease-in-out ${
                       repeatMode.song === "on"
-                        ? "bg-purple-500 text-white shadow-md"
-                        : "bg-white hover:bg-purple-100"
+                        ? "bg-gray-100 shadow-inner transform translate-y-px"
+                        : "bg-white hover:bg-gray-50 active:bg-gray-100 active:shadow-inner active:transform active:translate-y-px"
                     }`}
                     aria-label={`Powtarzaj utwór: ${
                       repeatMode.song === "on" ? "włączone" : "wyłączone"
                     }`}
                     title="Powtarzaj utwór"
                   >
-                    <FaRetweet size={28} />
+                    <FaRetweet size={28} className={repeatMode.song === "on" ? "text-purple-500" : ""} />
                   </button>
                 </div>
               </div>
