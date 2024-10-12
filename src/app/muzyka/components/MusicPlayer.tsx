@@ -446,7 +446,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                   </button>
                   <button
                     onClick={previousSong}
-                    className="text-gray-600 hover:text-purple-600 p-3 rounded-lg bg-white hover:bg-purple-100 transition-all duration-300 ease-in-out"
+                    className="text-gray-600 hover:text-gray-800 p-3 transition-all duration-150 ease-in-out active:scale-95"
                     aria-label="Poprzedni utwór"
                     title="Poprzedni utwór"
                   >
@@ -462,7 +462,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                   </button>
                   <button
                     onClick={nextSong}
-                    className="text-gray-600 hover:text-purple-600 p-3 rounded-lg bg-white hover:bg-purple-100 transition-all duration-300 ease-in-out"
+                    className="text-gray-600 hover:text-gray-800 p-3 transition-all duration-150 ease-in-out active:scale-95"
                     aria-label="Następny utwór"
                     title="Następny utwór"
                   >
