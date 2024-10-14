@@ -149,7 +149,9 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
         dispatch(setCurrentSongIndex(songs.findIndex(s => s.id === prevSongId)));
       }
     } else {
-      // Logika dla odtwarzania bez playlisty (można zostawić obecną implementację)
+      const currentIndex = songs.findIndex(s => s.id === currentSong.id);
+      let prevIndex = (currentIndex - 1 + songs.length) % songs.length;
+      dispatch(setCurrentSongIndex(prevIndex));
     }
     setIsPlaying(true);
     setIsLoading(true);
@@ -179,7 +181,9 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
         dispatch(setCurrentSongIndex(songs.findIndex(s => s.id === nextSongId)));
       }
     } else {
-      // Istniejąca logika dla odtwarzania bez playlisty
+      const currentIndex = songs.findIndex(s => s.id === currentSong.id);
+      let nextIndex = (currentIndex + 1) % songs.length;
+      dispatch(setCurrentSongIndex(nextIndex));
     }
     setIsPlaying(true);
     setIsLoading(true);
