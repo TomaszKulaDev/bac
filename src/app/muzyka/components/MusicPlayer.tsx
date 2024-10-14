@@ -118,28 +118,28 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
 
   // Funkcja do odtwarzania poprzedniego utworu
   const previousSong = () => {
-    const currentIndex = sortedAndFilteredSongs.findIndex(
-      (song) => song.id === currentSong.id
-    );
-    let prevIndex;
+    if (currentPlaylistId) {
+      const currentPlaylist = playlists.find((p: Playlist) => p.id === currentPlaylistId);
+      if (currentPlaylist) {
+        const currentIndex = currentPlaylist.songs.indexOf(currentSong.id);
+        let prevIndex;
 
-    if (repeatMode.song === "on") {
-      prevIndex = currentIndex;
-    } else if (currentIndex > 0) {
-      prevIndex = currentIndex - 1;
-    } else if (repeatMode.playlist === "on") {
-      prevIndex = sortedAndFilteredSongs.length - 1;
+        if (repeatMode.song === "on") {
+          prevIndex = currentIndex;
+        } else if (currentIndex > 0) {
+          prevIndex = currentIndex - 1;
+        } else if (repeatMode.playlist === "on") {
+          prevIndex = currentPlaylist.songs.length - 1;
+        } else {
+          return; // Nie odtwarzaj poprzedniego utworu, jeśli to pierwszy i nie ma powtarzania
+        }
+
+        const prevSongId = currentPlaylist.songs[prevIndex];
+        dispatch(setCurrentSongIndex(songs.findIndex(s => s.id === prevSongId)));
+      }
     } else {
-      return; // Nie odtwarzaj poprzedniego utworu, jeśli to pierwszy i nie ma powtarzania
+      // Logika dla odtwarzania bez playlisty (można zostawić obecną implementację)
     }
-
-    dispatch(
-      setCurrentSongIndex(
-        songs.findIndex(
-          (song) => song.id === sortedAndFilteredSongs[prevIndex].id
-        )
-      )
-    );
     setIsPlaying(true);
     setIsLoading(true);
   };
