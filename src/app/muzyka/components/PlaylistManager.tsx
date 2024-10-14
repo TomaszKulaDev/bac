@@ -2,6 +2,7 @@ import React from "react";
 import { Playlist, Song } from "../types";
 import Image from "next/image";
 import { getYouTubeThumbnail } from "../utils/youtube";
+import { FaPlay } from "react-icons/fa";
 
 interface PlaylistManagerProps {
   playlists: Playlist[];
@@ -13,6 +14,7 @@ interface PlaylistManagerProps {
   onRenamePlaylist: (playlistId: string, newName: string) => void;
   onRemoveSongFromPlaylist: (playlistId: string, songId: string) => void;
   isMobile: boolean;
+  onPlayPlaylist: (playlistId: string) => void;
 }
 
 const PlaylistManager: React.FC<PlaylistManagerProps> = ({
@@ -25,6 +27,7 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
   onRemoveSongFromPlaylist,
   onCreatePlaylist,
   isMobile,
+  onPlayPlaylist,
 }) => {
   const getSongDetails = (songId: string): Song | undefined => {
     return songs.find((song) => song._id === songId || song.id === songId);
@@ -86,6 +89,13 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
                 className="text-red-500 hover:text-red-700"
               >
                 Usuń
+              </button>
+              <button
+                onClick={() => onPlayPlaylist(playlist.id)}
+                className="text-green-500 hover:text-green-700 transition-colors duration-200"
+                title="Odtwórz playlistę"
+              >
+                <FaPlay className="text-xl" />
               </button>
             </div>
           </div>

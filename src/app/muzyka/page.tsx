@@ -30,6 +30,7 @@ const MusicPage: React.FC = () => {
   const [filterText, setFilterText] = useState("");
   const [showNotification, setShowNotification] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [currentPlaylistId, setCurrentPlaylistId] = useState<string | null>(null);
 
   const handleCreatePlaylist = useCallback(
     (name: string, selectedSongs: string[] = []) => {
@@ -216,14 +217,20 @@ const MusicPage: React.FC = () => {
             <MusicPlayer
               songs={songs}
               onCreatePlaylist={handleCreateEmptyPlaylist}
-              onAddToPlaylist={(playlistId, songId) =>
-                handleAddToExistingPlaylist(playlistId, songId)
-              }
+              onAddToPlaylist={handleAddToExistingPlaylist}
               expandedPlaylist={expandedPlaylist}
               setExpandedPlaylist={setExpandedPlaylist}
               filterText={filterText}
               setFilterText={setFilterText}
               isMobile={isMobile}
+              currentPlaylistId={currentPlaylistId}
+              onPlayPlaylist={(playlistId: string) => {
+                setCurrentPlaylistId(playlistId);
+                const playlist = playlists.find(p => p.id === playlistId);
+                if (playlist && playlist.songs.length > 0) {
+                  dispatch(setCurrentSongIndex(songs.findIndex(s => s.id === playlist.songs[0])));
+                }
+              }}
             />
           </div>
 
@@ -246,7 +253,6 @@ const MusicPage: React.FC = () => {
                     setPlaylists((prevPlaylists) =>
                       prevPlaylists.filter((p) => p.id !== playlistId)
                     );
-
                     // Aktualizacja stanu piosenek
                     dispatch(
                       updateSongsPlaylists({
@@ -269,6 +275,13 @@ const MusicPage: React.FC = () => {
                 }}
                 onRemoveSongFromPlaylist={handleRemoveSongFromPlaylist}
                 isMobile={isMobile}
+                onPlayPlaylist={(playlistId: string) => {
+                  setCurrentPlaylistId(playlistId);
+                  const playlist = playlists.find(p => p.id === playlistId);
+                  if (playlist && playlist.songs.length > 0) {
+                    dispatch(setCurrentSongIndex(songs.findIndex(s => s.id === playlist.songs[0])));
+                  }
+                }}
               />
             </div>
           </div>

@@ -25,6 +25,7 @@ export interface MusicPlayerProps {
   filterText: string;
   setFilterText: React.Dispatch<React.SetStateAction<string>>;
   isMobile: boolean;
+  currentPlaylistId: string | null;
 }
 
 export interface RepeatMode {

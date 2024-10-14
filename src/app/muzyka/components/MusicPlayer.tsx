@@ -43,7 +43,9 @@ interface MusicPlayerProps {
   filterText: string;
   setFilterText: React.Dispatch<React.SetStateAction<string>>;
   isMobile: boolean;
-  onCreatePlaylist: (name: string, songs: string[]) => void;
+  onCreatePlaylist: () => void;
+  currentPlaylistId: string | null;
+  onPlayPlaylist: (playlistId: string) => void;
 }
 
 // Komponent MusicPlayer
@@ -56,6 +58,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   setFilterText,
   isMobile,
   onCreatePlaylist,
+  currentPlaylistId,
+  onPlayPlaylist,
 }) => {
   const dispatch = useDispatch();
   const currentSong = useSelector(
@@ -152,28 +156,17 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
 
   // Funkcja do odtwarzania następnego utworu
   const nextSong = () => {
-    const currentIndex = sortedAndFilteredSongs.findIndex(
-      (song) => song.id === currentSong.id
-    );
-    let nextIndex;
-
-    if (repeatMode.song === "on") {
-      nextIndex = currentIndex;
-    } else if (currentIndex < sortedAndFilteredSongs.length - 1) {
-      nextIndex = currentIndex + 1;
-    } else if (repeatMode.playlist === "on") {
-      nextIndex = 0;
+    if (currentPlaylistId) {
+      const currentPlaylist = playlists.find(p => p.id === currentPlaylistId);
+      if (currentPlaylist) {
+        const currentIndex = currentPlaylist.songs.indexOf(currentSong.id);
+        let nextIndex = (currentIndex + 1) % currentPlaylist.songs.length;
+        const nextSongId = currentPlaylist.songs[nextIndex];
+        dispatch(setCurrentSongIndex(songs.findIndex(s => s.id === nextSongId)));
+      }
     } else {
-      return; // Nie odtwarzaj następnego utworu, jeśli to ostatni i nie ma powtarzania
+      // Istniejąca logika dla odtwarzania bez playlisty
     }
-
-    dispatch(
-      setCurrentSongIndex(
-        songs.findIndex(
-          (song) => song.id === sortedAndFilteredSongs[nextIndex].id
-        )
-      )
-    );
     setIsPlaying(true);
     setIsLoading(true);
   };
@@ -384,6 +377,11 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
             </div>
           </div>
         </div>
+        {currentPlaylist && (
+          <div className="text-sm text-white bg-purple-700 px-3 py-1 rounded-full inline-block mt-2">
+            Odtwarzanie: {currentPlaylist.name}
+          </div>
+        )}
       </div>
       <div className="flex flex-col md:flex-row flex-grow">
         <div className="md:order-2 md:w-3/5 flex flex-col">
@@ -489,7 +487,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
         </div>
         {isMobile && (
           <button
-            onClick={() => onCreatePlaylist("", [])}
+            onClick={() => onCreatePlaylist()}
             className="w-full bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 transition duration-300 mb-4"
           >
             + Utwórz nową playlistę
