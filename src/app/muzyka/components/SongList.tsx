@@ -168,8 +168,16 @@ const SongList: React.FC<SongListProps> = ({
                 )}
               </div>
               <div className="flex-grow min-w-0 mr-2">
-                <h3 className="font-semibold truncate text-sm">{song.title}</h3>
-                <p className="text-xs text-gray-600 truncate">{song.artist}</p>
+                <h3 className="font-semibold truncate text-sm">
+                  {song.title.length > 20
+                    ? song.title.slice(0, 31) + "..."
+                    : song.title}
+                </h3>
+                <p className="text-xs text-gray-600 truncate">
+                  {song.artist.length > 20
+                    ? song.artist.slice(0, 31) + "..."
+                    : song.artist}
+                </p>
                 {song.playlists && song.playlists.length > 0 && (
                   <div className="flex flex-wrap mt-1">
                     {song.playlists.slice(0, 3).map((playlist) => (
