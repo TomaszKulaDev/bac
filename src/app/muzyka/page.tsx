@@ -51,14 +51,15 @@ const MusicPage: React.FC = () => {
         return;
       }
 
-      const newPlaylistId = generateUniqueId(); // Funkcja generująca unikalny ID
+      const newPlaylistId = generateUniqueId();
       const newPlaylist: Playlist = {
         id: newPlaylistId,
         name,
         songs: selectedSongs,
       };
       setPlaylists((prevPlaylists) => [...prevPlaylists, newPlaylist]);
-      setCurrentPlaylistId(newPlaylistId); // Automatyczne przełączenie na nową playlistę
+      setCurrentPlaylistId(newPlaylistId);
+      setExpandedPlaylist(newPlaylistId); // Dodajemy tę linię, aby rozwinąć nowo utworzoną playlistę
       // TODO: Zaimplementuj logikę zapisywania playlisty w bazie danych
     },
     [playlists]
