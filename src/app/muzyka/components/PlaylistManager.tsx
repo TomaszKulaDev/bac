@@ -127,7 +127,14 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
                       </div>
                     </div>
                     <button
-                      onClick={() => onAddToPlaylist(playlist.id, song.id)}
+                      onClick={() => {
+                        if (!playlist.songs.includes(song.id)) {
+                          onAddToPlaylist(playlist.id, song.id);
+                        } else {
+                          // Możesz tutaj dodać jakieś powiadomienie, że utwór już istnieje w playliście
+                          console.log("Utwór już istnieje w tej playliście");
+                        }
+                      }}
                       className="text-green-500 hover:text-green-700 text-xs"
                     >
                       Dodaj

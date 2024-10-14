@@ -84,6 +84,13 @@ const MusicPage: React.FC = () => {
         return;
       }
 
+      if (playlist.songs.includes(songId)) {
+        console.log("Utwór już istnieje w tej playliście");
+        setShowNotification(true);
+        setTimeout(() => setShowNotification(false), 3000);
+        return;
+      }
+
       console.log("handleAddToExistingPlaylist - playlistId:", playlistId);
       console.log("handleAddToExistingPlaylist - songId:", songId);
 
