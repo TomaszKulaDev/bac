@@ -46,6 +46,8 @@ interface MusicPlayerProps {
   onCreatePlaylist: () => void;
   currentPlaylistId: string | null;
   onPlayPlaylist: (playlistId: string) => void;
+  playlists: Playlist[];
+  onUpdatePlaylists: (updater: (prevPlaylists: Playlist[]) => Playlist[]) => void;
 }
 
 // Komponent MusicPlayer
@@ -60,6 +62,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   onCreatePlaylist,
   currentPlaylistId,
   onPlayPlaylist,
+  playlists,
+  onUpdatePlaylists,
 }) => {
   const dispatch = useDispatch();
   const currentSong = useSelector(
@@ -87,8 +91,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     { id: string; name: string }[]
   >([]);
 
-  const [playlists, setPlaylists] = useState<Playlist[]>([]);
-  const [currentPlaylist, setCurrentPlaylist] = useState<Playlist | null>(null);
   const opts: YouTubeProps["opts"] = {
     width: "100%",
     height: "100%",
@@ -157,7 +159,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   // Funkcja do odtwarzania następnego utworu
   const nextSong = () => {
     if (currentPlaylistId) {
-      const currentPlaylist = playlists.find(p => p.id === currentPlaylistId);
+      const currentPlaylist = playlists.find((p: Playlist) => p.id === currentPlaylistId);
       if (currentPlaylist) {
         const currentIndex = currentPlaylist.songs.indexOf(currentSong.id);
         let nextIndex = (currentIndex + 1) % currentPlaylist.songs.length;
@@ -260,7 +262,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   // Funkcja do dodawania utworu do playlisty
   const addSongToPlaylist = useCallback(
     (playlistId: string, songId: string) => {
-      setPlaylists((prevPlaylists) =>
+      onUpdatePlaylists((prevPlaylists: Playlist[]) =>
         prevPlaylists.map((playlist) => {
           if (playlist.id === playlistId) {
             return { ...playlist, songs: [...playlist.songs, songId] };
@@ -269,13 +271,13 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
         })
       );
     },
-    []
+    [onUpdatePlaylists]
   );
 
   // Funkcja do usuwania utworu z playlisty
   const removeSongFromPlaylist = useCallback(
     (playlistId: string, songId: string) => {
-      setPlaylists((prevPlaylists) =>
+      onUpdatePlaylists((prevPlaylists: Playlist[]) =>
         prevPlaylists.map((playlist) => {
           if (playlist.id === playlistId) {
             return {
@@ -287,13 +289,13 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
         })
       );
     },
-    []
+    [onUpdatePlaylists]
   );
 
   // Funkcja do edytowania nazwy playlisty
   const editPlaylistName = useCallback(
     (playlistId: string, newName: string) => {
-      setPlaylists((prevPlaylists) =>
+      onUpdatePlaylists((prevPlaylists: Playlist[]) =>
         prevPlaylists.map((playlist) => {
           if (playlist.id === playlistId) {
             return { ...playlist, name: newName };
@@ -302,19 +304,20 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
         })
       );
     },
-    []
+    [onUpdatePlaylists]
   );
 
   const deletePlaylist = useCallback(
     (playlistId: string) => {
-      setPlaylists((prevPlaylists) =>
-        prevPlaylists.filter((playlist) => playlist.id !== playlistId)
+      onUpdatePlaylists((prevPlaylists: Playlist[]) =>
+        prevPlaylists.filter((playlist: Playlist) => playlist.id !== playlistId)
       );
       if (currentPlaylist?.id === playlistId) {
-        setCurrentPlaylist(null);
+        // Tutaj powinniśmy zaktualizować currentPlaylistId w komponencie nadrzędnym
+        onPlayPlaylist('');
       }
     },
-    [currentPlaylist]
+    [onUpdatePlaylists, onPlayPlaylist]
   );
 
   const sortedAndFilteredSongs = useMemo(() => {
@@ -330,9 +333,9 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   }, [songs, sortBy, sortOrder, filterText]);
 
   useEffect(() => {
-    const allPlaylistNames = playlists.map((p) => p.name);
+    const allPlaylistNames = playlists.map((p: Playlist) => p.name);
     dispatch(syncSongsWithPlaylists(allPlaylistNames) as unknown as AnyAction);
-  }, [playlists, dispatch]);
+  }, [dispatch, playlists]);
 
   // Funkcja do mieszania playlisty
   const shufflePlaylist = () => {
@@ -358,6 +361,11 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
       [mode]: prevMode[mode] === "off" ? "on" : "off",
     }));
   };
+
+  const currentPlaylist = useMemo(() => 
+    playlists.find(p => p.id === currentPlaylistId),
+    [playlists, currentPlaylistId]
+  );
 
   // Komponent MusicPlayer - główny komponent odtwarzacza muzyki
   return (

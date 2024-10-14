@@ -26,6 +26,9 @@ export interface MusicPlayerProps {
   setFilterText: React.Dispatch<React.SetStateAction<string>>;
   isMobile: boolean;
   currentPlaylistId: string | null;
+  playlists: Playlist[];
+  onUpdatePlaylists: (updater: (prevPlaylists: Playlist[]) => Playlist[]) => void;
+  onPlayPlaylist: (playlistId: string) => void;
 }
 
 export interface RepeatMode {

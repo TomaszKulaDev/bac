@@ -216,7 +216,7 @@ const MusicPage: React.FC = () => {
           <div className="w-full lg:w-2/3 space-y-6">
             <MusicPlayer
               songs={songs}
-              onCreatePlaylist={handleCreateEmptyPlaylist}
+              onCreatePlaylist={handleCreatePlaylist}
               onAddToPlaylist={handleAddToExistingPlaylist}
               expandedPlaylist={expandedPlaylist}
               setExpandedPlaylist={setExpandedPlaylist}
@@ -224,6 +224,8 @@ const MusicPage: React.FC = () => {
               setFilterText={setFilterText}
               isMobile={isMobile}
               currentPlaylistId={currentPlaylistId}
+              playlists={playlists}
+              onUpdatePlaylists={setPlaylists}
               onPlayPlaylist={(playlistId: string) => {
                 setCurrentPlaylistId(playlistId);
                 const playlist = playlists.find(p => p.id === playlistId);
