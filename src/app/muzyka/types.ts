@@ -17,7 +17,7 @@ export interface Song {
 
 export interface MusicPlayerProps {
   songs: Song[];
-  onCreatePlaylist: (name: string, songs: string[]) => void;
+  onCreatePlaylist: (name: string, selectedSongs?: string[]) => void;
   onAddToPlaylist: (playlistId: string, songId: string) => void;
   expandedPlaylist: string | null;
   setExpandedPlaylist: React.Dispatch<React.SetStateAction<string | null>>;

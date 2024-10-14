@@ -43,7 +43,7 @@ interface MusicPlayerProps {
   filterText: string;
   setFilterText: React.Dispatch<React.SetStateAction<string>>;
   isMobile: boolean;
-  onCreatePlaylist: () => void;
+  onCreatePlaylist: (name: string, selectedSongs?: string[]) => void;
   currentPlaylistId: string | null;
   onPlayPlaylist: (playlistId: string) => void;
   playlists: Playlist[];
@@ -312,12 +312,11 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
       onUpdatePlaylists((prevPlaylists: Playlist[]) =>
         prevPlaylists.filter((playlist: Playlist) => playlist.id !== playlistId)
       );
-      if (currentPlaylist?.id === playlistId) {
-        // Tutaj powinniśmy zaktualizować currentPlaylistId w komponencie nadrzędnym
+      if (currentPlaylistId === playlistId) {
         onPlayPlaylist('');
       }
     },
-    [onUpdatePlaylists, onPlayPlaylist]
+    [onUpdatePlaylists, onPlayPlaylist, currentPlaylistId]
   );
 
   const sortedAndFilteredSongs = useMemo(() => {
@@ -495,7 +494,12 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
         </div>
         {isMobile && (
           <button
-            onClick={() => onCreatePlaylist()}
+            onClick={() => {
+              const name = prompt("Podaj nazwę nowej playlisty:");
+              if (name) {
+                onCreatePlaylist(name);
+              }
+            }}
             className="w-full bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 transition duration-300 mb-4"
           >
             + Utwórz nową playlistę
