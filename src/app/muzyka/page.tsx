@@ -1,6 +1,7 @@
 // src/app/muzyka/page.tsx
 "use client";
 
+
 import { useEffect, useCallback, useMemo, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from "@/store/store";
@@ -17,11 +18,16 @@ import SongList from "./components/SongList";
 import PlaylistManager from "./components/PlaylistManager";
 import Toast from "./components/Toast";
 
+const generateUniqueId = () => {
+  return Date.now().toString(36) + Math.random().toString(36).substr(2);
+};
+
 const MusicPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { songs, status, error, currentSongIndex } = useSelector(
     (state: RootState) => state.songs
   );
+
 
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [expandedPlaylist, setExpandedPlaylist] = useState<string | null>(null);
@@ -45,18 +51,20 @@ const MusicPage: React.FC = () => {
         return;
       }
 
-      const newPlaylistId = Date.now().toString();
+      const newPlaylistId = generateUniqueId(); // Funkcja generująca unikalny ID
       const newPlaylist: Playlist = {
         id: newPlaylistId,
         name,
         songs: selectedSongs,
       };
       setPlaylists((prevPlaylists) => [...prevPlaylists, newPlaylist]);
-      setExpandedPlaylist(newPlaylistId);
+      setCurrentPlaylistId(newPlaylistId); // Automatyczne przełączenie na nową playlistę
       // TODO: Zaimplementuj logikę zapisywania playlisty w bazie danych
     },
-    [playlists, setExpandedPlaylist]
+    [playlists]
   );
+
+
 
   const handleCreateEmptyPlaylist = useCallback(() => {
     const name = prompt("Podaj nazwę nowej playlisty:");
@@ -64,6 +72,7 @@ const MusicPage: React.FC = () => {
       handleCreatePlaylist(name, []);
     }
   }, [handleCreatePlaylist]);
+
 
   const handleAddToExistingPlaylist = useCallback(
     (playlistId: string, songIdOrIds: string | string[]) => {
@@ -99,6 +108,7 @@ const MusicPage: React.FC = () => {
         )
       );
 
+
       const songIds = Array.isArray(songIdOrIds) ? songIdOrIds : [songIdOrIds];
       dispatch(updateSongsPlaylists({ songIds, playlistId, playlistName }))
         .unwrap()
@@ -111,6 +121,8 @@ const MusicPage: React.FC = () => {
     },
     [dispatch, playlists]
   );
+
+
 
   const handleRemoveSongFromPlaylist = useCallback(
     (playlistId: string, songId: string) => {
@@ -146,6 +158,8 @@ const MusicPage: React.FC = () => {
     [dispatch, playlists]
   );
 
+
+
   const filteredSongs = useMemo(() => {
     if (!filterText) return songs;
     return songs.filter(
@@ -169,6 +183,7 @@ const MusicPage: React.FC = () => {
     }
   }, [status, dispatch]);
 
+
   useEffect(() => {
     console.log("Stan playlist po aktualizacji:", playlists);
   }, [playlists]);
@@ -181,6 +196,8 @@ const MusicPage: React.FC = () => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+
 
   if (status === "loading") {
     return (
@@ -198,6 +215,7 @@ const MusicPage: React.FC = () => {
     "Songs przed renderowaniem:",
     songs.map((song) => ({ id: song.id, _id: song._id }))
   );
+
 
   return (
     <div className="music-page bg-gray-100 min-h-screen flex flex-col">
@@ -284,6 +302,7 @@ const MusicPage: React.FC = () => {
                     dispatch(setCurrentSongIndex(songs.findIndex(s => s.id === playlist.songs[0])));
                   }
                 }}
+                currentPlaylistId={currentPlaylistId}
               />
             </div>
           </div>
@@ -295,5 +314,7 @@ const MusicPage: React.FC = () => {
     </div>
   );
 };
+
+
 
 export default MusicPage;

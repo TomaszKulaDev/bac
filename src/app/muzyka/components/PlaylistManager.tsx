@@ -15,7 +15,9 @@ interface PlaylistManagerProps {
   onRemoveSongFromPlaylist: (playlistId: string, songId: string) => void;
   isMobile: boolean;
   onPlayPlaylist: (playlistId: string) => void;
+  currentPlaylistId: string | null;
 }
+
 
 const PlaylistManager: React.FC<PlaylistManagerProps> = ({
   playlists,
@@ -28,10 +30,12 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
   onCreatePlaylist,
   isMobile,
   onPlayPlaylist,
+  currentPlaylistId,
 }) => {
   const getSongDetails = (songId: string): Song | undefined => {
     return songs.find((song) => song._id === songId || song.id === songId);
   };
+
 
   return (
     <div className="space-y-4 mt-6 mb-8">
@@ -58,7 +62,7 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
         </button>
       )}
       {playlists.map((playlist) => (
-        <div key={playlist.id} className="bg-white p-4 rounded-lg shadow-md">
+        <div key={playlist.id} className={`playlist ${playlist.id === currentPlaylistId ? 'active-playlist' : ''} bg-white p-4 rounded-lg shadow-md`}>
           <div className="flex items-center justify-between mb-2">
             <span className="font-semibold text-lg">{playlist.name}</span>
             <div className="space-x-2">
@@ -158,5 +162,6 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
     </div>
   );
 };
+
 
 export default PlaylistManager;
