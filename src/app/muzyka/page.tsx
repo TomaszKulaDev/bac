@@ -58,7 +58,6 @@ const MusicPage: React.FC = () => {
         songs: selectedSongs,
       };
       setPlaylists((prevPlaylists) => [...prevPlaylists, newPlaylist]);
-      setCurrentPlaylistId(newPlaylistId);
       setExpandedPlaylist(newPlaylistId); // Dodajemy tę linię, aby rozwinąć nowo utworzoną playlistę
       // TODO: Zaimplementuj logikę zapisywania playlisty w bazie danych
     },
@@ -304,6 +303,7 @@ const MusicPage: React.FC = () => {
                   }
                 }}
                 currentPlaylistId={currentPlaylistId}
+                onAddToPlaylist={handleAddToExistingPlaylist}
               />
             </div>
           </div>
