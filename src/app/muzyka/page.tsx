@@ -75,7 +75,7 @@ const MusicPage: React.FC = () => {
 
 
   const handleAddToExistingPlaylist = useCallback(
-    (playlistId: string, songIdOrIds: string | string[]) => {
+    (playlistId: string, songId: string) => {
       const playlist = playlists.find((p) => p.id === playlistId);
       if (!playlist) {
         console.error("Próba dodania utworu do nieistniejącej playlisty");
@@ -85,32 +85,22 @@ const MusicPage: React.FC = () => {
       }
 
       console.log("handleAddToExistingPlaylist - playlistId:", playlistId);
-      console.log("handleAddToExistingPlaylist - songIdOrIds:", songIdOrIds);
+      console.log("handleAddToExistingPlaylist - songId:", songId);
 
-      const playlistName =
-        playlists.find((p) => p.id === playlistId)?.name || "";
+      const playlistName = playlist.name;
 
       setPlaylists((prevPlaylists) =>
-        prevPlaylists.map((playlist) =>
-          playlist.id === playlistId
+        prevPlaylists.map((p) =>
+          p.id === playlistId
             ? {
-                ...playlist,
-                songs: [
-                  ...new Set([
-                    ...playlist.songs,
-                    ...(Array.isArray(songIdOrIds)
-                      ? songIdOrIds
-                      : [songIdOrIds]),
-                  ]),
-                ],
+                ...p,
+                songs: [songId, ...p.songs],
               }
-            : playlist
+            : p
         )
       );
 
-
-      const songIds = Array.isArray(songIdOrIds) ? songIdOrIds : [songIdOrIds];
-      dispatch(updateSongsPlaylists({ songIds, playlistId, playlistName }))
+      dispatch(updateSongsPlaylists({ songIds: [songId], playlistId, playlistName }))
         .unwrap()
         .then(() => {
           console.log("Playlists updated successfully");
