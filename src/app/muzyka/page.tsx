@@ -1,7 +1,6 @@
 // src/app/muzyka/page.tsx
 "use client";
 
-
 import { useEffect, useCallback, useMemo, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch } from "@/store/store";
@@ -28,7 +27,6 @@ const MusicPage: React.FC = () => {
     (state: RootState) => state.songs
   );
 
-
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [expandedPlaylist, setExpandedPlaylist] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState<"date" | "title" | "artist">("date");
@@ -36,16 +34,22 @@ const MusicPage: React.FC = () => {
   const [filterText, setFilterText] = useState("");
   const [showNotification, setShowNotification] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [currentPlaylistId, setCurrentPlaylistId] = useState<string | null>(null);
+  const [currentPlaylistId, setCurrentPlaylistId] = useState<string | null>(
+    null
+  );
 
   const handleCreatePlaylist = useCallback(
     (name: string, selectedSongs: string[] = []) => {
       if (playlists.length >= 2) {
-        alert("Możesz stworzyć maksymalnie 2 playlisty. Usuń jedną z istniejących playlist, aby utworzyć nową.");
+        alert(
+          "Możesz stworzyć maksymalnie 2 playlisty. Usuń jedną z istniejących playlist, aby utworzyć nową."
+        );
         return;
       }
 
-      const playlistExists = playlists.some(playlist => playlist.name.toLowerCase() === name.toLowerCase());
+      const playlistExists = playlists.some(
+        (playlist) => playlist.name.toLowerCase() === name.toLowerCase()
+      );
       if (playlistExists) {
         alert("Playlista o takiej nazwie już istnieje. Wybierz inną nazwę.");
         return;
@@ -64,15 +68,12 @@ const MusicPage: React.FC = () => {
     [playlists]
   );
 
-
-
   const handleCreateEmptyPlaylist = useCallback(() => {
     const name = prompt("Podaj nazwę nowej playlisty:");
     if (name) {
       handleCreatePlaylist(name, []);
     }
   }, [handleCreatePlaylist]);
-
 
   const handleAddToExistingPlaylist = useCallback(
     (playlistId: string, songId: string) => {
@@ -107,7 +108,9 @@ const MusicPage: React.FC = () => {
         )
       );
 
-      dispatch(updateSongsPlaylists({ songIds: [songId], playlistId, playlistName }))
+      dispatch(
+        updateSongsPlaylists({ songIds: [songId], playlistId, playlistName })
+      )
         .unwrap()
         .then(() => {
           console.log("Playlists updated successfully");
@@ -118,8 +121,6 @@ const MusicPage: React.FC = () => {
     },
     [dispatch, playlists]
   );
-
-
 
   const handleRemoveSongFromPlaylist = useCallback(
     (playlistId: string, songId: string) => {
@@ -155,8 +156,6 @@ const MusicPage: React.FC = () => {
     [dispatch, playlists]
   );
 
-
-
   const filteredSongs = useMemo(() => {
     if (!filterText) return songs;
     return songs.filter(
@@ -180,7 +179,6 @@ const MusicPage: React.FC = () => {
     }
   }, [status, dispatch]);
 
-
   useEffect(() => {
     console.log("Stan playlist po aktualizacji:", playlists);
   }, [playlists]);
@@ -193,8 +191,6 @@ const MusicPage: React.FC = () => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
-
 
   if (status === "loading") {
     return (
@@ -213,95 +209,104 @@ const MusicPage: React.FC = () => {
     songs.map((song) => ({ id: song.id, _id: song._id }))
   );
 
-
   return (
     <div className="music-page bg-gray-100 min-h-screen flex flex-col">
       <BaciataRisingBanner />
-      <div className="container mx-auto px-4 py-8">
-        {!isMobile && (
-          <input
-            type="text"
-            placeholder="Filtruj utwory..."
-            value={filterText}
-            onChange={(e) => setFilterText(e.target.value)}
-            className="w-full p-2 border rounded mb-4"
-          />
-        )}
-        <div className="flex flex-col lg:flex-row gap-8">
-          <div className="w-full lg:w-2/3 space-y-6">
-            <MusicPlayer
-              songs={songs}
-              onCreatePlaylist={handleCreatePlaylist}
-              onAddToPlaylist={handleAddToExistingPlaylist}
-              expandedPlaylist={expandedPlaylist}
-              setExpandedPlaylist={setExpandedPlaylist}
-              filterText={filterText}
-              setFilterText={setFilterText}
-              isMobile={isMobile}
-              currentPlaylistId={currentPlaylistId}
-              playlists={playlists}
-              onUpdatePlaylists={setPlaylists}
-              onPlayPlaylist={(playlistId: string) => {
-                setCurrentPlaylistId(playlistId);
-                const playlist = playlists.find(p => p.id === playlistId);
-                if (playlist && playlist.songs.length > 0) {
-                  dispatch(setCurrentSongIndex(songs.findIndex(s => s.id === playlist.songs[0])));
-                }
-              }}
+      <div className="w-full">
+        <div className="w-full">
+          {!isMobile && (
+            <input
+              type="text"
+              placeholder="Filtruj utwory..."
+              value={filterText}
+              onChange={(e) => setFilterText(e.target.value)}
+              className="w-full p-2 border rounded mb-4"
             />
-          </div>
-
-          <div className="w-full lg:w-1/3 space-y-6">
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                Zarządzaj playlistami
-              </h2>
-              <PlaylistManager
-                playlists={playlists}
+          )}
+          <div className="flex flex-col lg:flex-row gap-8">
+            <div className="w-full space-y-6">
+              <MusicPlayer
                 songs={songs}
+                onCreatePlaylist={handleCreatePlaylist}
+                onAddToPlaylist={handleAddToExistingPlaylist}
                 expandedPlaylist={expandedPlaylist}
                 setExpandedPlaylist={setExpandedPlaylist}
-                onCreatePlaylist={handleCreatePlaylist}
-                onDeletePlaylist={(playlistId: string) => {
-                  const playlistToDelete = playlists.find(
-                    (p) => p.id === playlistId
-                  );
-                  if (playlistToDelete) {
-                    setPlaylists((prevPlaylists) =>
-                      prevPlaylists.filter((p) => p.id !== playlistId)
-                    );
-                    // Aktualizacja stanu piosenek
-                    dispatch(
-                      updateSongsPlaylists({
-                        songIds: playlistToDelete.songs,
-                        playlistId,
-                        playlistName: playlistToDelete.name,
-                        remove: true,
-                      })
-                    );
-                  }
-                  // TODO: Zaimplementuj logikę usuwania playlisty z bazy danych
-                }}
-                onRenamePlaylist={(playlistId: string, newName: string) => {
-                  setPlaylists((prevPlaylists) =>
-                    prevPlaylists.map((p) =>
-                      p.id === playlistId ? { ...p, name: newName } : p
-                    )
-                  );
-                  // TODO: Zaimplementuj logikę aktualizacji nazwy playlisty w bazie danych
-                }}
-                onRemoveSongFromPlaylist={handleRemoveSongFromPlaylist}
+                filterText={filterText}
+                setFilterText={setFilterText}
                 isMobile={isMobile}
+                currentPlaylistId={currentPlaylistId}
+                playlists={playlists}
+                onUpdatePlaylists={setPlaylists}
                 onPlayPlaylist={(playlistId: string) => {
                   setCurrentPlaylistId(playlistId);
-                  const playlist = playlists.find(p => p.id === playlistId);
+                  const playlist = playlists.find((p) => p.id === playlistId);
                   if (playlist && playlist.songs.length > 0) {
-                    dispatch(setCurrentSongIndex(songs.findIndex(s => s.id === playlist.songs[0])));
+                    dispatch(
+                      setCurrentSongIndex(
+                        songs.findIndex((s) => s.id === playlist.songs[0])
+                      )
+                    );
                   }
                 }}
-                currentPlaylistId={currentPlaylistId}
-                onAddToPlaylist={handleAddToExistingPlaylist}
               />
+            </div>
+
+            <div className="w-full lg:w-1/3 space-y-6">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  Twoje Playlisty
+                </h2>
+                <PlaylistManager
+                  playlists={playlists}
+                  songs={songs}
+                  expandedPlaylist={expandedPlaylist}
+                  setExpandedPlaylist={setExpandedPlaylist}
+                  onCreatePlaylist={handleCreatePlaylist}
+                  onDeletePlaylist={(playlistId: string) => {
+                    const playlistToDelete = playlists.find(
+                      (p) => p.id === playlistId
+                    );
+                    if (playlistToDelete) {
+                      setPlaylists((prevPlaylists) =>
+                        prevPlaylists.filter((p) => p.id !== playlistId)
+                      );
+                      // Aktualizacja stanu piosenek
+                      dispatch(
+                        updateSongsPlaylists({
+                          songIds: playlistToDelete.songs,
+                          playlistId,
+                          playlistName: playlistToDelete.name,
+                          remove: true,
+                        })
+                      );
+                    }
+                    // TODO: Zaimplementuj logikę usuwania playlisty z bazy danych
+                  }}
+                  onRenamePlaylist={(playlistId: string, newName: string) => {
+                    setPlaylists((prevPlaylists) =>
+                      prevPlaylists.map((p) =>
+                        p.id === playlistId ? { ...p, name: newName } : p
+                      )
+                    );
+                    // TODO: Zaimplementuj logikę aktualizacji nazwy playlisty w bazie danych
+                  }}
+                  onRemoveSongFromPlaylist={handleRemoveSongFromPlaylist}
+                  isMobile={isMobile}
+                  onPlayPlaylist={(playlistId: string) => {
+                    setCurrentPlaylistId(playlistId);
+                    const playlist = playlists.find((p) => p.id === playlistId);
+                    if (playlist && playlist.songs.length > 0) {
+                      dispatch(
+                        setCurrentSongIndex(
+                          songs.findIndex((s) => s.id === playlist.songs[0])
+                        )
+                      );
+                    }
+                  }}
+                  currentPlaylistId={currentPlaylistId}
+                  onAddToPlaylist={handleAddToExistingPlaylist}
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -312,7 +317,5 @@ const MusicPage: React.FC = () => {
     </div>
   );
 };
-
-
 
 export default MusicPage;
