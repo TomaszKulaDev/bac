@@ -2,7 +2,7 @@ import React from "react";
 import { Playlist, Song } from "../types";
 import Image from "next/image";
 import { getYouTubeThumbnail } from "../utils/youtube";
-import { FaPlay } from "react-icons/fa";
+import { FaPlay, FaChevronUp, FaChevronDown, FaEdit, FaTrash } from "react-icons/fa";
 
 interface PlaylistManagerProps {
   playlists: Playlist[];
@@ -65,18 +65,24 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
       )}
       {playlists.map((playlist) => (
         <div key={playlist.id} className={`playlist ${playlist.id === currentPlaylistId ? 'active-playlist' : ''} bg-white p-4 rounded-lg shadow-md`}>
-          <div className="flex items-center justify-between mb-2">
-            <span className="font-semibold text-lg">{playlist.name}</span>
-            <div className="space-x-2">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4">
+            <div className="flex items-center mb-2 sm:mb-0">
               <button
-                onClick={() =>
-                  setExpandedPlaylist(
-                    expandedPlaylist === playlist.id ? null : playlist.id
-                  )
-                }
-                className="text-purple-500 hover:text-purple-700"
+                onClick={() => onPlayPlaylist(playlist.id)}
+                className="bg-green-500 hover:bg-green-600 text-white p-3 rounded-full transition-colors duration-200 mr-4"
+                title="Odtwórz playlistę"
               >
-                {expandedPlaylist === playlist.id ? "Zwiń" : "Rozwiń"}
+                <FaPlay className="text-lg" />
+              </button>
+              <span className="font-semibold text-lg">{playlist.name}</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <button
+                onClick={() => setExpandedPlaylist(expandedPlaylist === playlist.id ? null : playlist.id)}
+                className="text-purple-500 hover:text-purple-700 p-2"
+                title={expandedPlaylist === playlist.id ? "Zwiń" : "Rozwiń"}
+              >
+                {expandedPlaylist === playlist.id ? <FaChevronUp /> : <FaChevronDown />}
               </button>
               <button
                 onClick={() => {
@@ -86,22 +92,21 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
                   );
                   if (newName) onRenamePlaylist(playlist.id, newName);
                 }}
-                className="text-blue-500 hover:text-blue-700"
+                className="text-blue-500 hover:text-blue-700 p-2"
+                title="Zmień nazwę"
               >
-                Zmień nazwę
+                <FaEdit />
               </button>
               <button
-                onClick={() => onDeletePlaylist(playlist.id)}
-                className="text-red-500 hover:text-red-700"
+                onClick={() => {
+                  if (window.confirm('Czy na pewno chcesz usunąć tę playlistę?')) {
+                    onDeletePlaylist(playlist.id);
+                  }
+                }}
+                className="text-red-500 hover:text-red-700 p-2"
+                title="Usuń"
               >
-                Usuń
-              </button>
-              <button
-                onClick={() => onPlayPlaylist(playlist.id)}
-                className="text-green-500 hover:text-green-700 transition-colors duration-200"
-                title="Odtwórz playlistę"
-              >
-                <FaPlay className="text-xl" />
+                <FaTrash />
               </button>
             </div>
           </div>
