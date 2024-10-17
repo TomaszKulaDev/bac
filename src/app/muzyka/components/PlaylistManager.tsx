@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Playlist, Song } from "../types";
 import Image from "next/image";
 import { getYouTubeThumbnail } from "../utils/youtube";
-import { FaPlay, FaChevronUp, FaChevronDown, FaEdit, FaTrash } from "react-icons/fa";
+import { FaPlay, FaChevronUp, FaChevronDown, FaEdit, FaTrash, FaPlus } from "react-icons/fa";
 import CreatePlaylistModal from "./CreatePlaylistModal";
 
 interface PlaylistManagerProps {
@@ -47,9 +47,9 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
       {playlists.length < 2 && (
         <button
           onClick={() => setIsModalOpen(true)}
-          className="w-full bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 transition duration-300 mb-4"
+          className="w-full bg-purple-700 text-white px-4 py-2 rounded hover:bg-purple-800 transition duration-300 mb-4"
         >
-          + Utwórz nową playlistę
+          + Utwórz nową<br />playlistę
         </button>
       )}
       {isModalOpen && (
@@ -151,7 +151,7 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
                       key={songId}
                       className="flex items-center justify-between bg-gray-50 p-3 rounded-md"
                     >
-                      <div className="flex items-center">
+                      <div className="flex items-center flex-grow">
                         <Image
                           src={getYouTubeThumbnail(songDetails.youtubeId)}
                           alt={songDetails.title}
@@ -166,15 +166,15 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
                           </p>
                         </div>
                       </div>
-                      <button
-                        onClick={() => {
-                          const playlistName = playlist.name;
-                          onRemoveSongFromPlaylist(playlist.id, songId);
-                        }}
-                        className="text-red-500 hover:text-red-700 text-xs"
-                      >
-                        Usuń
-                      </button>
+                      <div className="flex items-center space-x-2">
+                        <button
+                          onClick={() => onRemoveSongFromPlaylist(playlist.id, songId)}
+                          className="text-red-500 hover:text-red-700 transition-colors duration-200"
+                          aria-label={`Usuń utwór ${songDetails?.title} z playlisty`}
+                        >
+                          <FaTrash className="text-lg" />
+                        </button>
+                      </div>
                     </li>
                   ) : (
                     <li

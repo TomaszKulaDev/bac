@@ -398,7 +398,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
 
   // Komponent MusicPlayer - główny komponent odtwarzacza muzyki
   return (
-    <div className="music-player bg-gradient-to-br from-purple-100 to-pink-100 shadow-lg min-h-screen flex flex-col w-full">
+    <div className="music-player bg-gradient-to-br from-purple-100 to-pink-100 shadow-lg min-h-screen flex flex-col w-full md:px-6 lg:px-8">
       <div className="playlist-header bg-gradient-to-r from-purple-600 to-pink-600 text-white p-4 md:p-6 shadow-md w-full">
         <div className="flex flex-col md:flex-row items-center justify-between">
           <div className="flex items-center mb-2 md:mb-0">
