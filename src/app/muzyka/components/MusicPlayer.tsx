@@ -1,7 +1,6 @@
 // src/components/MusicPlayer.tsx
 "use client";
 
-
 import React, {
   useState,
   useEffect,
@@ -36,7 +35,7 @@ import {
   syncSongsWithPlaylists,
 } from "@/store/slices/features/songsSlice";
 import { sortSongs } from "../utils/sortUtils";
-import CreatePlaylistModal from './CreatePlaylistModal';
+import CreatePlaylistModal from "./CreatePlaylistModal";
 
 interface MusicPlayerProps {
   songs: Song[];
@@ -50,12 +49,12 @@ interface MusicPlayerProps {
   currentPlaylistId: string | null;
   onPlayPlaylist: (playlistId: string) => void;
   playlists: Playlist[];
-  onUpdatePlaylists: (updater: (prevPlaylists: Playlist[]) => Playlist[]) => void;
+  onUpdatePlaylists: (
+    updater: (prevPlaylists: Playlist[]) => Playlist[]
+  ) => void;
   isModalOpen: boolean;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
-
-
 
 // Komponent MusicPlayer
 const MusicPlayer: React.FC<MusicPlayerProps> = ({
@@ -79,8 +78,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     (state: RootState) => state.songs.songs[state.songs.currentSongIndex]
   );
 
-
-
   // Stan odtwarzania
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -102,8 +99,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     { id: string; name: string }[]
   >([]);
 
-
-
   const opts: YouTubeProps["opts"] = {
     width: "100%",
     height: "100%",
@@ -111,8 +106,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
       autoplay: 1,
     },
   };
-
-
 
   const [sortBy, setSortBy] = useState<"date" | "title" | "artist">("date");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
@@ -125,18 +118,18 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     []
   );
 
-
   // Funkcja wywoływana, gdy odtwarzacz jest gotowy
   const onPlayerReady = (event: any) => {
     playerRef.current = event.target;
     setIsLoading(false);
   };
 
-
   // Funkcja do odtwarzania poprzedniego utworu
   const previousSong = () => {
     if (currentPlaylistId) {
-      const currentPlaylist = playlists.find((p: Playlist) => p.id === currentPlaylistId);
+      const currentPlaylist = playlists.find(
+        (p: Playlist) => p.id === currentPlaylistId
+      );
       if (currentPlaylist) {
         const currentIndex = currentPlaylist.songs.indexOf(currentSong.id);
         let prevIndex;
@@ -152,17 +145,18 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
         }
 
         const prevSongId = currentPlaylist.songs[prevIndex];
-        dispatch(setCurrentSongIndex(songs.findIndex(s => s.id === prevSongId)));
+        dispatch(
+          setCurrentSongIndex(songs.findIndex((s) => s.id === prevSongId))
+        );
       }
     } else {
-      const currentIndex = songs.findIndex(s => s.id === currentSong.id);
+      const currentIndex = songs.findIndex((s) => s.id === currentSong.id);
       let prevIndex = (currentIndex - 1 + songs.length) % songs.length;
       dispatch(setCurrentSongIndex(prevIndex));
     }
     setIsPlaying(true);
     setIsLoading(true);
   };
-
 
   // Funkcja do przełączania odtwarzania
   const togglePlayback = useCallback(() => {
@@ -179,22 +173,25 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   // Funkcja do odtwarzania następnego utworu
   const nextSong = () => {
     if (currentPlaylistId) {
-      const currentPlaylist = playlists.find((p: Playlist) => p.id === currentPlaylistId);
+      const currentPlaylist = playlists.find(
+        (p: Playlist) => p.id === currentPlaylistId
+      );
       if (currentPlaylist) {
         const currentIndex = currentPlaylist.songs.indexOf(currentSong.id);
         let nextIndex = (currentIndex + 1) % currentPlaylist.songs.length;
         const nextSongId = currentPlaylist.songs[nextIndex];
-        dispatch(setCurrentSongIndex(songs.findIndex(s => s.id === nextSongId)));
+        dispatch(
+          setCurrentSongIndex(songs.findIndex((s) => s.id === nextSongId))
+        );
       }
     } else {
-      const currentIndex = songs.findIndex(s => s.id === currentSong.id);
+      const currentIndex = songs.findIndex((s) => s.id === currentSong.id);
       let nextIndex = (currentIndex + 1) % songs.length;
       dispatch(setCurrentSongIndex(nextIndex));
     }
     setIsPlaying(true);
     setIsLoading(true);
   };
-
 
   // Funkcja do ładowania większej liczby utworów
   const loadMoreSongs = useCallback(() => {
@@ -208,7 +205,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     setVisibleSongs(initialVisibleSongs);
   };
 
-
   // Funkcja wywoływana, gdy odtwarzacz jest gotowy
   const onReady = (event: { target: any }) => {
     if (event.target && typeof event.target.loadVideoById === "function") {
@@ -221,7 +217,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     }
   };
 
-
   // Funkcja do aktualizacji wymiarów odtwarzacza
   const updatePlayerDimensions = useCallback(() => {
     const width = window.innerWidth;
@@ -233,7 +228,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
       setPlayerDimensions({ width: "100%", height: "360px" });
     }
   }, []);
-
 
   // Efekt do aktualizacji wymiarów odtwarzacza przy zmianie rozmiaru okna
   useEffect(() => {
@@ -254,7 +248,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-
   // Zapamiętana lista utworów
   const MemoizedSongList = React.memo(SongList);
 
@@ -271,7 +264,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     [dispatch, songs]
   );
 
-
   // Funkcja do przełączania trybu minimalistycznego
   const toggleMinimalisticMode = () => {
     setIsMinimalistic(!isMinimalistic);
@@ -287,7 +279,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     [expandedPlaylist, onAddToPlaylist]
   );
 
-
   // Funkcja do dodawania utworu do playlisty
   const addSongToPlaylist = useCallback(
     (playlistId: string, songId: string) => {
@@ -302,7 +293,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     },
     [onUpdatePlaylists]
   );
-
 
   // Funkcja do usuwania utworu z playlisty
   const removeSongFromPlaylist = useCallback(
@@ -321,7 +311,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     },
     [onUpdatePlaylists]
   );
-
 
   // Funkcja do edytowania nazwy playlisty
   const editPlaylistName = useCallback(
@@ -344,7 +333,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
         prevPlaylists.filter((playlist: Playlist) => playlist.id !== playlistId)
       );
       if (currentPlaylistId === playlistId) {
-        onPlayPlaylist('');
+        onPlayPlaylist("");
       }
     },
     [onUpdatePlaylists, onPlayPlaylist, currentPlaylistId]
@@ -379,13 +368,11 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     );
   };
 
-
   // Funkcja do przełączania trybu powtarzania
   const [repeatMode, setRepeatMode] = useState<RepeatMode>({
     playlist: "off",
     song: "off",
   });
-
 
   const toggleRepeatMode = (mode: "playlist" | "song") => {
     setRepeatMode((prevMode) => ({
@@ -394,17 +381,17 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     }));
   };
 
-
-  const currentPlaylist = useMemo(() => 
-    playlists.find(p => p.id === currentPlaylistId),
+  const currentPlaylist = useMemo(
+    () => playlists.find((p) => p.id === currentPlaylistId),
     [playlists, currentPlaylistId]
   );
 
-
   const filteredSongs = useMemo(() => {
     if (currentPlaylistId) {
-      const currentPlaylist = playlists.find(p => p.id === currentPlaylistId);
-      return currentPlaylist ? songs.filter(song => currentPlaylist.songs.includes(song.id)) : [];
+      const currentPlaylist = playlists.find((p) => p.id === currentPlaylistId);
+      return currentPlaylist
+        ? songs.filter((song) => currentPlaylist.songs.includes(song.id))
+        : [];
     }
     return songs;
   }, [currentPlaylistId, playlists, songs]);
@@ -490,7 +477,12 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                     }`}
                     title="Powtarzaj playlistę"
                   >
-                    <FaRedoAlt size={28} className={repeatMode.playlist === "on" ? "text-purple-500" : ""} />
+                    <FaRedoAlt
+                      size={28}
+                      className={
+                        repeatMode.playlist === "on" ? "text-purple-500" : ""
+                      }
+                    />
                   </button>
                   <button
                     onClick={previousSong}
@@ -528,7 +520,12 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                     }`}
                     title="Powtarzaj utwór"
                   >
-                    <FaRetweet size={28} className={repeatMode.song === "on" ? "text-purple-500" : ""} />
+                    <FaRetweet
+                      size={28}
+                      className={
+                        repeatMode.song === "on" ? "text-purple-500" : ""
+                      }
+                    />
                   </button>
                 </div>
               </div>
@@ -555,10 +552,11 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
         )}
         {currentPlaylistId && (
           <button
-            onClick={() => onPlayPlaylist('')}
+            onClick={() => onPlayPlaylist("")}
             className="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300 transition duration-300 mb-4"
           >
-            Powrót do wszystkich utworów
+            Powrót do wszystkich utworów.
+            <br /> Dodaj wiecej ulubinych.
           </button>
         )}
         <SongList
@@ -597,6 +595,5 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     </div>
   );
 };
-
 
 export default MusicPlayer;
