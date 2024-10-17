@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { Playlist, Song } from "../types";
 import Image from "next/image";
 import { getYouTubeThumbnail } from "../utils/youtube";
 import { FaPlay, FaChevronUp, FaChevronDown, FaEdit, FaTrash } from "react-icons/fa";
+import CreatePlaylistModal from "./CreatePlaylistModal";
 
 interface PlaylistManagerProps {
   playlists: Playlist[];
@@ -17,8 +18,9 @@ interface PlaylistManagerProps {
   onPlayPlaylist: (playlistId: string) => void;
   currentPlaylistId: string | null;
   onAddToPlaylist: (playlistId: string, songId: string) => void;
+  setIsModalOpen: (isOpen: boolean) => void;
+  isModalOpen: boolean;
 }
-
 
 const PlaylistManager: React.FC<PlaylistManagerProps> = ({
   playlists,
@@ -33,35 +35,28 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
   onPlayPlaylist,
   currentPlaylistId,
   onAddToPlaylist,
+  setIsModalOpen,
+  isModalOpen,
 }) => {
   const getSongDetails = (songId: string): Song | undefined => {
     return songs.find((song) => song._id === songId || song.id === songId);
   };
 
-
   return (
     <div className="space-y-4 mt-6 mb-8">
-      {!isMobile && playlists.length < 2 && (
+      {playlists.length < 2 && (
         <button
-          onClick={() => {
-            const name = prompt("Podaj nazwę nowej playlisty:");
-            if (name) {
-              const playlistExists = playlists.some(
-                (playlist) => playlist.name.toLowerCase() === name.toLowerCase()
-              );
-              if (playlistExists) {
-                alert(
-                  "Playlista o takiej nazwie już istnieje. Wybierz inną nazwę."
-                );
-              } else {
-                onCreatePlaylist(name, []);
-              }
-            }
-          }}
+          onClick={() => setIsModalOpen(true)}
           className="w-full bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 transition duration-300 mb-4"
         >
           + Utwórz nową playlistę
         </button>
+      )}
+      {isModalOpen && (
+        <CreatePlaylistModal
+          onClose={() => setIsModalOpen(false)}
+          onCreatePlaylist={(name) => onCreatePlaylist(name, [])}
+        />
       )}
       {playlists.map((playlist) => (
         <div key={playlist.id} className={`playlist ${playlist.id === currentPlaylistId ? 'active-playlist' : ''} bg-white p-4 rounded-lg shadow-md`}>
@@ -204,6 +199,5 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
     </div>
   );
 };
-
 
 export default PlaylistManager;

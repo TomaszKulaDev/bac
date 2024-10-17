@@ -37,6 +37,7 @@ const MusicPage: React.FC = () => {
   const [currentPlaylistId, setCurrentPlaylistId] = useState<string | null>(
     null
   );
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleCreatePlaylist = useCallback(
     (name: string, selectedSongs: string[] = []) => {
@@ -248,6 +249,8 @@ const MusicPage: React.FC = () => {
                     );
                   }
                 }}
+                isModalOpen={isModalOpen}
+                setIsModalOpen={setIsModalOpen}
               />
             </div>
 
@@ -257,6 +260,8 @@ const MusicPage: React.FC = () => {
                   Twoje Playlisty
                 </h2>
                 <PlaylistManager
+                  setIsModalOpen={setIsModalOpen}
+                  isModalOpen={isModalOpen}
                   playlists={playlists}
                   songs={songs}
                   expandedPlaylist={expandedPlaylist}

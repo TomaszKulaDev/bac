@@ -26,6 +26,7 @@ import {
   FaRetweet,
   FaBackward,
   FaForward,
+  FaPlus,
 } from "react-icons/fa";
 import { Song, Playlist, RepeatMode } from "../types";
 import { RootState } from "../../../store/store";
@@ -35,6 +36,7 @@ import {
   syncSongsWithPlaylists,
 } from "@/store/slices/features/songsSlice";
 import { sortSongs } from "../utils/sortUtils";
+import CreatePlaylistModal from './CreatePlaylistModal';
 
 interface MusicPlayerProps {
   songs: Song[];
@@ -49,6 +51,8 @@ interface MusicPlayerProps {
   onPlayPlaylist: (playlistId: string) => void;
   playlists: Playlist[];
   onUpdatePlaylists: (updater: (prevPlaylists: Playlist[]) => Playlist[]) => void;
+  isModalOpen: boolean;
+  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 
@@ -67,6 +71,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   onPlayPlaylist,
   playlists,
   onUpdatePlaylists,
+  isModalOpen,
+  setIsModalOpen,
 }) => {
   const dispatch = useDispatch();
   const currentSong = useSelector(
@@ -530,17 +536,22 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           </div>
         </div>
         {isMobile && (
-          <button
-            onClick={() => {
-              const name = prompt("Podaj nazwę nowej playlisty:");
-              if (name) {
-                onCreatePlaylist(name);
-              }
-            }}
-            className="w-full bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 transition duration-300 mb-4"
-          >
-            + Utwórz nową playlistę
-          </button>
+          <>
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="w-full bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 transition duration-300 mb-4 flex items-center justify-center"
+              aria-label="Utwórz nową playlistę"
+              title="Utwórz nową playlistę"
+            >
+              <FaPlus className="mr-2" /> Utwórz nową playlistę
+            </button>
+            {isModalOpen && (
+              <CreatePlaylistModal
+                onClose={() => setIsModalOpen(false)}
+                onCreatePlaylist={onCreatePlaylist}
+              />
+            )}
+          </>
         )}
         {currentPlaylistId && (
           <button
