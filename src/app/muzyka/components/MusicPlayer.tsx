@@ -36,6 +36,7 @@ import {
 } from "@/store/slices/features/songsSlice";
 import { sortSongs } from "../utils/sortUtils";
 import CreatePlaylistModal from "./CreatePlaylistModal";
+import SortControl from "./SortControl";
 
 interface MusicPlayerProps {
   songs: Song[];
@@ -420,6 +421,15 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           </div>
         )}
       </div>
+      <div className="w-full mb-4 bg-gray-100">
+        <SortControl
+          sortBy={sortBy}
+          sortOrder={sortOrder}
+          onSortChange={onSortChange}
+          filterText={filterText}
+          setFilterText={setFilterText}
+        />
+      </div>
       <div className="flex flex-col md:flex-row flex-grow">
         <div className="md:order-2 md:w-3/5 flex flex-col">
           <div className="sticky top-0 bg-white z-10 p-6 shadow-md">
@@ -477,7 +487,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                     }`}
                     title="Powtarzaj playlistę"
                   >
-                    <FaRedoAlt
+                    <FaRedo
                       size={28}
                       className={
                         repeatMode.playlist === "on" ? "text-purple-500" : ""
@@ -556,12 +566,13 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
             className="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300 transition duration-300 mb-4"
           >
             Powrót do wszystkich utworów.
-            <br /> Dodaj wiecej ulubinych.
+            <br /> Dodaj więcej ulubionych.
           </button>
         )}
+
         <SongList
-          songs={filteredSongs}
-          visibleSongs={filteredSongs.length}
+          songs={sortedAndFilteredSongs}
+          visibleSongs={sortedAndFilteredSongs.length}
           currentSong={currentSong}
           isPlaying={isPlaying}
           onSongSelect={(songId) => {
@@ -575,21 +586,14 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           isPopularList={false}
           expandedPlaylist={expandedPlaylist}
           setExpandedPlaylist={setExpandedPlaylist}
-          onAddToPlaylist={(songId) => {
-            if (expandedPlaylist) {
-              onAddToPlaylist(expandedPlaylist, songId);
-            }
-          }}
+          onAddToPlaylist={handleAddToPlaylist}
           sortBy={sortBy}
           sortOrder={sortOrder}
-          onSortChange={(newSortBy, newSortOrder) => {
-            setSortBy(newSortBy);
-            setSortOrder(newSortOrder);
-          }}
+          onSortChange={onSortChange}
           filterText={filterText}
           setFilterText={setFilterText}
           isPlaylistExpanded={!!expandedPlaylist}
-          showSearch={isMobile}
+          showSearch={false}
         />
       </div>
     </div>
