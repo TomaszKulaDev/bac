@@ -62,13 +62,17 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
         <div key={playlist.id} className={`playlist ${playlist.id === currentPlaylistId ? 'active-playlist' : ''} bg-white p-4 rounded-lg shadow-md`}>
           <div className="flex flex-col items-start mb-2">
             <div className="flex items-center w-full justify-between mb-2">
-              <div className="flex items-center">
+              <div className="flex items-center group">
                 <button
                   onClick={() => onPlayPlaylist(playlist.id)}
-                  className="bg-green-500 hover:bg-green-600 text-white p-3 rounded-full transition-colors duration-200 mr-4"
+                  className={`text-gray-600 p-3 rounded-full transition-all duration-300 ease-in-out ${
+                    currentPlaylistId === playlist.id
+                      ? "bg-gray-100 shadow-inner transform translate-y-px"
+                      : "bg-white hover:bg-gray-50 active:bg-gray-100 active:shadow-inner active:transform active:translate-y-px"
+                  }`}
                   title="Odtwórz playlistę"
                 >
-                  <FaPlay className="text-lg" />
+                  <FaPlay className={`text-xl ${currentPlaylistId === playlist.id ? "text-purple-500" : ""}`} />
                 </button>
                 <span className="font-semibold text-lg">{playlist.name}</span>
               </div>
