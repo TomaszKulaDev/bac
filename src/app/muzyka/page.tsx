@@ -215,15 +215,6 @@ const MusicPage: React.FC = () => {
       <BaciataRisingBanner />
       <div className="w-full">
         <div className="w-full">
-          {!isMobile && (
-            <input
-              type="text"
-              placeholder="Filtruj utwory..."
-              value={filterText}
-              onChange={(e) => setFilterText(e.target.value)}
-              className="w-full p-2 border rounded mb-4"
-            />
-          )}
           <div className="flex flex-col lg:flex-row gap-8">
             <div className="w-full space-y-6">
               <MusicPlayer
