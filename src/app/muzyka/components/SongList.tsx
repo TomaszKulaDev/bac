@@ -104,38 +104,7 @@ const SongList: React.FC<SongListProps> = ({
           />
         </div>
       )}
-      <div className="mb-4">
-        <div className="flex space-x-2 mb-4">
-          {["date", "title", "artist"].map((sortOption) => (
-            <button
-              key={sortOption}
-              onClick={() =>
-                handleSort(sortOption as "date" | "title" | "artist")
-              }
-              className={`px-3 py-1 rounded-full transition-colors duration-200 ${
-                sortBy === sortOption
-                  ? "bg-purple-500 text-white"
-                  : "bg-gray-200 hover:bg-gray-300"
-              }`}
-            >
-              {sortOption === "date"
-                ? "Ostatnio dodane"
-                : sortOption === "title"
-                ? "Tytuł"
-                : "Artysta"}
-              {sortBy === sortOption && (
-                <span className="ml-1">
-                  {sortOrder === "asc" ? (
-                    <FaSortAmountUp />
-                  ) : (
-                    <FaSortAmountDown />
-                  )}
-                </span>
-              )}
-            </button>
-          ))}
-        </div>
-      </div>
+   
       <motion.ul layout className="space-y-2">
         {sortedAndFilteredSongs.map((song) => (
           <motion.li

@@ -421,7 +421,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           </div>
         )}
       </div>
-      <div className="w-full mb-4 bg-gray-100">
+      <div className="w-full mb-4">
         <SortControl
           sortBy={sortBy}
           sortOrder={sortOrder}
