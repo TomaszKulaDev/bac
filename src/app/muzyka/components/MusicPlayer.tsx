@@ -341,7 +341,12 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   );
 
   const sortedAndFilteredSongs = useMemo(() => {
-    let result = [...songs];
+    let result = currentPlaylistId
+      ? songs.filter(song => 
+          playlists.find(p => p.id === currentPlaylistId)?.songs.includes(song.id)
+        )
+      : songs;
+
     if (filterText) {
       result = result.filter(
         (song) =>
@@ -350,7 +355,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
       );
     }
     return sortSongs(result, sortBy, sortOrder);
-  }, [songs, sortBy, sortOrder, filterText]);
+  }, [songs, currentPlaylistId, playlists, filterText, sortBy, sortOrder]);
 
   useEffect(() => {
     const allPlaylistNames = playlists.map((p: Playlist) => p.name);
@@ -421,7 +426,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           </div>
         )}
       </div>
-      <div className="w-full mb-4">
+      <div className="w-full mb-4 bg-gray-100">
         <SortControl
           sortBy={sortBy}
           sortOrder={sortOrder}
