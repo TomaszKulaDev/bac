@@ -93,6 +93,49 @@ const SongList: React.FC<SongListProps> = ({
 
   return (
     <div className="song-list bg-white rounded-lg shadow-md p-4">
+      {showSearch && (
+        <div className="mb-4">
+          <input
+            type="text"
+            placeholder="Filtruj utwory..."
+            value={filterText}
+            onChange={(e) => setFilterText(e.target.value)}
+            className="w-full p-2 border rounded"
+          />
+        </div>
+      )}
+      <div className="mb-4">
+        <div className="flex space-x-2 mb-4">
+          {["date", "title", "artist"].map((sortOption) => (
+            <button
+              key={sortOption}
+              onClick={() =>
+                handleSort(sortOption as "date" | "title" | "artist")
+              }
+              className={`px-3 py-1 rounded-full transition-colors duration-200 ${
+                sortBy === sortOption
+                  ? "bg-purple-500 text-white"
+                  : "bg-gray-200 hover:bg-gray-300"
+              }`}
+            >
+              {sortOption === "date"
+                ? "Ostatnio dodane"
+                : sortOption === "title"
+                ? "Tytuł"
+                : "Artysta"}
+              {sortBy === sortOption && (
+                <span className="ml-1">
+                  {sortOrder === "asc" ? (
+                    <FaSortAmountUp />
+                  ) : (
+                    <FaSortAmountDown />
+                  )}
+                </span>
+              )}
+            </button>
+          ))}
+        </div>
+      </div>
       <motion.ul layout className="space-y-2">
         {sortedAndFilteredSongs.map((song) => (
           <motion.li
@@ -178,9 +221,7 @@ const SongList: React.FC<SongListProps> = ({
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  if (!isPlaylistExpanded || !expandedPlaylist) {
-                    setShowNotification(true);
-                    setTimeout(() => setShowNotification(false), 3000);
+                  if (!isPlaylistExpanded || !expandedPlaylist) {      
                   } else {
                     onAddToPlaylist(song.id);
                   }

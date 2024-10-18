@@ -32,12 +32,14 @@ const MusicPage: React.FC = () => {
   const [sortBy, setSortBy] = useState<"date" | "title" | "artist">("date");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const [filterText, setFilterText] = useState("");
-  const [showNotification, setShowNotification] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [currentPlaylistId, setCurrentPlaylistId] = useState<string | null>(
     null
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState<string | null>(
+    null
+  );
 
   const handleCreatePlaylist = useCallback(
     (name: string, selectedSongs: string[] = []) => {
@@ -80,16 +82,17 @@ const MusicPage: React.FC = () => {
     (playlistId: string, songId: string) => {
       const playlist = playlists.find((p) => p.id === playlistId);
       if (!playlist) {
-        console.error("Próba dodania utworu do nieistniejącej playlisty");
-        setShowNotification(true);
-        setTimeout(() => setShowNotification(false), 3000);
+        setNotificationMessage(
+          "Ups! Najpierw utwórz playlistę. Nie możemy dodać utworu do nieistniejącej playlisty - Pamietaj że utwory mozesz tylko do rozwinietych Playlist 😄"
+        );
+
+        setTimeout(() => setNotificationMessage(null), 9000);
         return;
       }
 
       if (playlist.songs.includes(songId)) {
-        console.log("Utwór już istnieje w tej playliście");
-        setShowNotification(true);
-        setTimeout(() => setShowNotification(false), 3000);
+        setNotificationMessage("Utwór już istnieje w tej playliście 😄 ");
+        setTimeout(() => setNotificationMessage(null), 9000);
         return;
       }
 
@@ -307,8 +310,8 @@ const MusicPage: React.FC = () => {
           </div>
         </div>
       </div>
-      {showNotification && (
-        <Toast message="Najpierw stwórz lub wybierz playlistę, aby dodać do niej utwór." />
+      {notificationMessage && (
+        <Toast message={notificationMessage} duration={9000} />
       )}
     </div>
   );
