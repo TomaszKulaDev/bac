@@ -404,27 +404,10 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
 
   // Komponent MusicPlayer - główny komponent odtwarzacza muzyki
   return (
-    <div className="music-player bg-gradient-to-br from-purple-100 to-pink-100 shadow-lg min-h-screen flex flex-col w-full md:px-6 lg:px-8">
-      <div className="playlist-header bg-gradient-to-r from-purple-600 to-pink-600 text-white p-4 md:p-6 shadow-md w-full">
-        <div className="flex flex-col md:flex-row items-center justify-between">
-          <div className="flex items-center mb-2 md:mb-0">
-            <FaMusic className="text-3xl md:text-5xl mr-2 md:mr-4" />
-            <div>
-              <h1 className="text-xl md:text-3xl font-bold">
-                Bachata Top Playlist 2024
-              </h1>
-              <p className="text-xs md:text-sm opacity-75">
-                {songs.length} utworów • Zaktualizowano:{" "}
-                {new Date().toLocaleDateString()}
-              </p>
-            </div>
-          </div>
-        </div>
-        {currentPlaylist && (
-          <div className="text-sm text-white bg-purple-700 px-3 py-1 rounded-full inline-block mt-2">
-            Odtwarzanie: {currentPlaylist.name}
-          </div>
-        )}
+    <div className="max-w-7xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
+      <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-6">
+        <h1 className="text-3xl font-bold text-white">Bachata Top Playlist 2024</h1>
+        <p className="text-white">8 utworów • Zaktualizowano: 18.10.2024</p>
       </div>
       <div className="w-full mb-4 bg-gray-100">
         <SortControl
