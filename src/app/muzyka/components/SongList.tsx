@@ -93,18 +93,6 @@ const SongList: React.FC<SongListProps> = ({
 
   return (
     <div className="song-list bg-white rounded-lg shadow-md p-4">
-      {showSearch && (
-        <div className="mb-4">
-          <input
-            type="text"
-            placeholder="Filtruj utwory..."
-            value={filterText}
-            onChange={(e) => setFilterText(e.target.value)}
-            className="w-full p-2 border rounded"
-          />
-        </div>
-      )}
-   
       <motion.ul layout className="space-y-2">
         {sortedAndFilteredSongs.map((song) => (
           <motion.li
