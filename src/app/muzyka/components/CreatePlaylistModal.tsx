@@ -10,10 +10,34 @@ const CreatePlaylistModal: React.FC<CreatePlaylistModalProps> = ({
   onCreatePlaylist,
 }) => {
   const [playlistName, setPlaylistName] = useState("");
+  const [error, setError] = useState<string | null>(null);
+
+  const validatePlaylistName = (name: string): boolean => {
+    if (name.length < 3) {
+      setError("Nazwa playlisty musi mieć co najmniej 3 znaki.");
+      return false;
+    }
+    if (name.length > 20) {
+      setError("Nazwa playlisty nie może przekraczać 20 znaków.");
+      return false;
+    }
+    if (!/^[a-zA-Z0-9\s-]+$/.test(name)) {
+      setError(
+        "Nazwa playlisty może zawierać tylko litery, cyfry, spacje i myślniki."
+      );
+      return false;
+    }
+    if (name.trim().length === 0) {
+      setError("Nazwa playlisty nie może składać się tylko z białych znaków.");
+      return false;
+    }
+    setError(null);
+    return true;
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (playlistName.trim()) {
+    if (validatePlaylistName(playlistName)) {
       onCreatePlaylist(playlistName.trim());
       onClose();
     }
@@ -29,9 +53,11 @@ const CreatePlaylistModal: React.FC<CreatePlaylistModalProps> = ({
             value={playlistName}
             onChange={(e) => setPlaylistName(e.target.value)}
             placeholder="Nazwa playlisty"
-            className="w-full p-2 border border-gray-300 rounded mb-4"
+            className="w-full p-2 border border-gray-300 rounded mb-2"
             aria-label="Nazwa playlisty"
+            maxLength={50}
           />
+          {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
           <div className="flex justify-end">
             <button
               type="button"
@@ -43,6 +69,7 @@ const CreatePlaylistModal: React.FC<CreatePlaylistModalProps> = ({
             <button
               type="submit"
               className="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600"
+              disabled={!playlistName.trim() || !!error}
             >
               Utwórz
             </button>

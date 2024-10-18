@@ -1,19 +1,18 @@
-Aktualna struktura projektu (95 plików)
+Aktualna struktura projektu (98 plików)
 
 Statystyki projektu:
-Całkowity rozmiar: 0.97 MB
-Całkowita liczba linii kodu: 9414
-Typy plików: {".local":1,".json":3,".ts":37,".mjs":3,"":1,".png":2,".txt":2,".md":1,".tsx":41,".ico":1,".css":1,".js":1,".tsbuildinfo":1}
+Całkowity rozmiar: 0.99 MB
+Całkowita liczba linii kodu: 9999
+Typy plików: {".local":1,".json":3,".ts":38,".mjs":3,".png":2,".txt":2,".md":1,".tsx":44,".ico":1,".css":1,".js":1,".tsbuildinfo":1}
 
 Struktura plików projektu:
 ├── .env.local (.local, 0.40 KB)
 ├── .eslintrc.json (.json, 0.04 KB)
 ├── next-env.d.ts (.ts, 0.20 KB)
-├── next.config.mjs (.mjs, 1.48 KB)
+├── next.config.mjs (.mjs, 1.57 KB)
 ├── package.json (.json, 1.48 KB)
 ├── postcss.config.mjs (.mjs, 0.14 KB)
 ├── public/
-│   ├── ahrefs_d85ffff89e918b07d8b246df19f86794dc2181db1f3f8f4647c3a4ca10177f28 (, 0.09 KB)
 │   ├── default-avatar.png (.png, 422.36 KB)
 │   ├── images/
 │   │   └── open-in-browser.png (.png, 36.73 KB)
@@ -41,12 +40,13 @@ Struktura plików projektu:
 │   │   │   │           └── route.ts (.ts, 2.50 KB)
 │   │   │   ├── auth/
 │   │   │   │   └── [...nextauth]/
-│   │   │   │       ├── authOptions.ts (.ts, 2.27 KB)
+│   │   │   │       ├── authOptions.ts (.ts, 2.39 KB)
 │   │   │   │       └── route.ts (.ts, 0.16 KB)
 │   │   │   ├── forgot-password/
 │   │   │   │   └── route.ts (.ts, 5.02 KB)
 │   │   │   ├── login/
 │   │   │   │   └── route.ts (.ts, 3.71 KB)
+│   │   │   ├── playlists/
 │   │   │   ├── register/
 │   │   │   │   └── route.ts (.ts, 4.93 KB)
 │   │   │   ├── resend-verification/
@@ -87,22 +87,24 @@ Struktura plików projektu:
 │   │   │   └── page.tsx (.tsx, 0.11 KB)
 │   │   ├── layout.tsx (.tsx, 4.36 KB)
 │   │   ├── login/
-│   │   │   └── page.tsx (.tsx, 7.91 KB)
+│   │   │   └── page.tsx (.tsx, 8.22 KB)
 │   │   ├── mentorship/
 │   │   │   └── page.tsx (.tsx, 0.12 KB)
 │   │   ├── muzyka/
 │   │   │   ├── components/
 │   │   │   │   ├── BaciataRisingBanner.tsx (.tsx, 0.67 KB)
+│   │   │   │   ├── CreatePlaylistModal.tsx (.tsx, 1.67 KB)
 │   │   │   │   ├── index.ts (.ts, 0.06 KB)
-│   │   │   │   ├── MusicPlayer.tsx (.tsx, 14.49 KB)
-│   │   │   │   ├── PlaylistManager.tsx (.tsx, 4.71 KB)
-│   │   │   │   └── SongList.tsx (.tsx, 7.00 KB)
-│   │   │   ├── page.tsx (.tsx, 10.04 KB)
-│   │   │   ├── types.ts (.ts, 0.66 KB)
+│   │   │   │   ├── MusicPlayer.tsx (.tsx, 20.40 KB)
+│   │   │   │   ├── PlaylistManager.tsx (.tsx, 8.28 KB)
+│   │   │   │   ├── SongList.tsx (.tsx, 9.08 KB)
+│   │   │   │   └── Toast.tsx (.tsx, 0.89 KB)
+│   │   │   ├── page.tsx (.tsx, 11.38 KB)
+│   │   │   ├── types.ts (.ts, 1.05 KB)
 │   │   │   └── utils/
 │   │   │       ├── sortUtils.ts (.ts, 0.69 KB)
 │   │   │       └── youtube.ts (.ts, 0.12 KB)
-│   │   ├── page.tsx (.tsx, 1.98 KB)
+│   │   ├── page.tsx (.tsx, 2.40 KB)
 │   │   ├── polityka-prywatnosci-baciata-pl/
 │   │   │   └── page.tsx (.tsx, 3.02 KB)
 │   │   ├── privacy-policy/
@@ -130,11 +132,13 @@ Struktura plików projektu:
 │   │   ├── ClientLayout.tsx (.tsx, 0.89 KB)
 │   │   ├── ClientProviders.tsx (.tsx, 0.38 KB)
 │   │   ├── LoadingSpinner.tsx (.tsx, 0.56 KB)
-│   │   └── NavContent.tsx (.tsx, 4.23 KB)
+│   │   ├── NavContent.tsx (.tsx, 4.09 KB)
+│   │   └── UserMenu.tsx (.tsx, 1.75 KB)
 │   ├── contexts/
 │   │   └── AuthContext.tsx (.tsx, 1.18 KB)
 │   ├── global.d.ts (.ts, 0.67 KB)
 │   ├── hooks/
+│   │   ├── useAuth.ts (.ts, 1.16 KB)
 │   │   └── useUserProfile.ts (.ts, 1.67 KB)
 │   ├── lib/
 │   │   ├── authMiddleware.ts (.ts, 0.53 KB)
@@ -156,7 +160,7 @@ Struktura plików projektu:
 │   │   │   │   └── songsSlice.ts (.ts, 3.74 KB)
 │   │   │   └── types.ts (.ts, 0.42 KB)
 │   │   └── store.ts (.ts, 0.77 KB)
-│   ├── struktura-projektu.txt (.txt, 6.62 KB)
+│   ├── struktura-projektu.txt (.txt, 7.69 KB)
 │   ├── types/
 │   │   └── next-auth.d.ts (.ts, 1.12 KB)
 │   └── utils/
@@ -164,4 +168,4 @@ Struktura plików projektu:
 │       └── projectAnalyzer.js (.js, 36.79 KB)
 ├── tailwind.config.ts (.ts, 1.52 KB)
 ├── tsconfig.json (.json, 1.84 KB)
-└── tsconfig.tsbuildinfo (.tsbuildinfo, 245.19 KB)
+└── tsconfig.tsbuildinfo (.tsbuildinfo, 242.56 KB)
