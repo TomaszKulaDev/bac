@@ -74,7 +74,7 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
                 >
                   <FaPlay className={`text-xl ${currentPlaylistId === playlist.id ? "text-purple-500" : ""}`} />
                 </button>
-                <span className="font-semibold text-lg">{playlist.name}</span>
+                <span className="font-semibold text-lg ml-3">{playlist.name}</span>
               </div>
             </div>
             <div className="flex items-center justify-between w-full">
