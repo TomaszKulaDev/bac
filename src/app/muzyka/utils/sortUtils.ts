@@ -15,21 +15,29 @@ export const sortSongs = (
       case "date":
         return new Date(song.createdAt).getTime();
       case "title":
-        return song.title.trim().replace(/^[^a-zA-Z0-9]+/, '').toLowerCase();
       case "artist":
-        return song.artist.trim().replace(/^[^a-zA-Z0-9]+/, '').toLowerCase();
+        return song[sortBy].trim().toLowerCase();
       case "impro":
-        return song.impro ? 1 : 0;
       case "beginnerFriendly":
-        return song.beginnerFriendly ? 1 : 0;
+        return song[sortBy] ? 1 : 0;
       default:
-        return song.title;
+        return song.title.trim().toLowerCase();
     }
   };
 
   return [...songs].sort((a, b) => {
     const aValue = getSortValue(a);
     const bValue = getSortValue(b);
+    
+    if (sortBy === "title" || sortBy === "artist") {
+      const comparison = aValue.localeCompare(bValue, undefined, { sensitivity: 'base' });
+      return sortOrder === "desc" ? comparison : -comparison;
+    }
+    
+    if (typeof aValue === 'string' && typeof bValue === 'string') {
+      const comparison = aValue.localeCompare(bValue, undefined, { sensitivity: 'base' });
+      return sortOrder === "asc" ? comparison : -comparison;
+    }
     
     if (aValue < bValue) return sortOrder === "asc" ? -1 : 1;
     if (aValue > bValue) return sortOrder === "asc" ? 1 : -1;
