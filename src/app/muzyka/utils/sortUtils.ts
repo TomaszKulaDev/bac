@@ -9,34 +9,30 @@ export const sortSongs = (
   sortOrder: SortOrder
 ): Song[] => {
   console.log("Sorting:", { sortBy, sortOrder });
-  return [...songs].sort((a, b) => {
-    let comparison = 0;
+  
+  const getSortValue = (song: Song): any => {
     switch (sortBy) {
       case "date":
-        comparison =
-          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
-        break;
+        return new Date(song.createdAt).getTime();
       case "title":
-        const cleanTitleA = a.title.trim().replace(/^[^a-zA-Z0-9]+/, '');
-        const cleanTitleB = b.title.trim().replace(/^[^a-zA-Z0-9]+/, '');
-        comparison = cleanTitleA.localeCompare(cleanTitleB, undefined, {sensitivity: 'base', ignorePunctuation: true});
-        break;
+        return song.title.trim().replace(/^[^a-zA-Z0-9]+/, '').toLowerCase();
       case "artist":
-        const cleanArtistA = a.artist.trim().replace(/^[^a-zA-Z0-9]+/, '');
-        const cleanArtistB = b.artist.trim().replace(/^[^a-zA-Z0-9]+/, '');
-        comparison = cleanArtistA.localeCompare(cleanArtistB, undefined, {sensitivity: 'base', ignorePunctuation: true});
-        break;
+        return song.artist.trim().replace(/^[^a-zA-Z0-9]+/, '').toLowerCase();
       case "impro":
-        comparison = b.impro === a.impro ? 0 : b.impro ? -1 : 1;
-        break;
+        return song.impro ? 1 : 0;
       case "beginnerFriendly":
-        comparison = b.beginnerFriendly === a.beginnerFriendly ? 0 : b.beginnerFriendly ? -1 : 1;
-        break;
+        return song.beginnerFriendly ? 1 : 0;
+      default:
+        return song.title;
     }
-    console.log(
-      "Sorted result:",
-      songs.map((song) => song.title)
-    );
-    return sortOrder === "asc" ? comparison : -comparison;
+  };
+
+  return [...songs].sort((a, b) => {
+    const aValue = getSortValue(a);
+    const bValue = getSortValue(b);
+    
+    if (aValue < bValue) return sortOrder === "asc" ? -1 : 1;
+    if (aValue > bValue) return sortOrder === "asc" ? 1 : -1;
+    return 0;
   });
 };

@@ -96,6 +96,7 @@ const SongList: React.FC<SongListProps> = ({
   );
 
   const sortedSongs = useMemo(() => {
+    console.log("Recalculating sortedSongs");
     return sortSongs(songs, sortBy, sortOrder);
   }, [songs, sortBy, sortOrder]);
 
@@ -112,6 +113,8 @@ const SongList: React.FC<SongListProps> = ({
   const onSongSelectMemoized = useCallback((songId: string) => {
     onSongSelect(songId);
   }, [onSongSelect]);
+
+  console.log('Songs with dates:', songs.map(song => ({title: song.title, createdAt: song.createdAt})));
 
   return (
     <div className="song-list bg-white rounded-lg shadow-md p-4">
