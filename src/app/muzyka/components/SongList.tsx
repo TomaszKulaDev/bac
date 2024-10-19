@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback, useEffect } from "react";
 import Image from "next/image";
 import {
   FaArrowUp,
@@ -68,17 +68,20 @@ const SongList: React.FC<SongListProps> = ({
 }) => {
   const [showNotification, setShowNotification] = useState(false);
 
+  useEffect(() => {
+    console.log('SongList received new props:', { songs, sortBy, sortOrder });
+  }, [songs, sortBy, sortOrder]);
+
   const sortedAndFilteredSongs = useMemo(() => {
     console.log('Recalculating sortedAndFilteredSongs:', { sortBy, sortOrder });
-    let result = [...songs];
-    if (filterText) {
-      result = result.filter(
-        (song) =>
-          song.title.toLowerCase().includes(filterText.toLowerCase()) ||
-          song.artist.toLowerCase().includes(filterText.toLowerCase())
-      );
-    }
-    return sortSongs(result, sortBy, sortOrder);
+    const sorted = sortSongs(songs, sortBy, sortOrder);
+    return filterText
+      ? sorted.filter(
+          (song) =>
+            song.title.toLowerCase().includes(filterText.toLowerCase()) ||
+            song.artist.toLowerCase().includes(filterText.toLowerCase())
+        )
+      : sorted;
   }, [songs, sortBy, sortOrder, filterText]);
 
   const handleSort = useCallback(
@@ -97,6 +100,18 @@ const SongList: React.FC<SongListProps> = ({
   }, [songs, sortBy, sortOrder]);
 
   console.log('Sorted songs:', sortedAndFilteredSongs.map(song => song.title));
+
+  useEffect(() => {
+    console.log('Rendering songs:', sortedAndFilteredSongs.map(song => ({title: song.title, artist: song.artist})));
+  }, [sortedAndFilteredSongs]);
+
+  useEffect(() => {
+    console.log('sortedAndFilteredSongs changed:', sortedAndFilteredSongs.map(song => song.title));
+  }, [sortedAndFilteredSongs]);
+
+  const onSongSelectMemoized = useCallback((songId: string) => {
+    onSongSelect(songId);
+  }, [onSongSelect]);
 
   return (
     <div className="song-list bg-white rounded-lg shadow-md p-4">
@@ -126,7 +141,7 @@ const SongList: React.FC<SongListProps> = ({
                 ? "bg-purple-100"
                 : "hover:bg-gray-100"
             } transition-colors duration-200 rounded-md cursor-pointer`}
-            onClick={() => onSongSelect(song.id)}
+            onClick={() => onSongSelectMemoized(song.id)}
           >
             <div className="flex items-center flex-grow min-w-0 mr-2">
               <div className="w-12 h-12 mr-3 relative flex-shrink-0">

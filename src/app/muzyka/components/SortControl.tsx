@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaSort, FaSearch } from "react-icons/fa";
 
 interface SortControlProps {
@@ -19,6 +19,10 @@ const SortControl: React.FC<SortControlProps> = ({
   filterText,
   setFilterText,
 }) => {
+  const [lastClickedOption, setLastClickedOption] = useState<string | null>(
+    null
+  );
+
   return (
     <div className="flex flex-col items-center w-full p-3 bg-gray-100 rounded-lg">
       <div className="w-full max-w-md mb-4">
@@ -34,34 +38,41 @@ const SortControl: React.FC<SortControlProps> = ({
         </div>
       </div>
       <div className="flex space-x-2 flex-wrap justify-center">
-        {["date", "title", "artist", "impro", "beginnerFriendly"].map((option) => (
-          <button
-            key={option}
-            onClick={() =>
-              onSortChange(
-                option as "date" | "title" | "artist" | "impro" | "beginnerFriendly",
-                sortOrder === "asc" ? "desc" : "asc"
-              )
-            }
-            className={`px-3 py-1 rounded-full text-sm transition-colors duration-200 flex items-center mb-2 ${
-              sortBy === option
-                ? "bg-purple-500 text-white"
-                : "bg-white hover:bg-gray-200 text-gray-700"
-            }`}
-          >
-            {option === "date"
-              ? "Ostatnio dodane"
-              : option === "title"
-              ? "Tytuł"
-              : option === "artist"
-              ? "Artysta"
-              : option === "impro"
-              ? "Impro"
-              : option === "beginnerFriendly"
-              ? "Dla początkujących"
-              : option}
-          </button>
-        ))}
+        {["date", "title", "artist", "impro", "beginnerFriendly"].map(
+          (option) => (
+            <button
+              key={option}
+              onClick={() => {
+                onSortChange(
+                  option as
+                    | "date"
+                    | "title"
+                    | "artist"
+                    | "impro"
+                    | "beginnerFriendly",
+                  "desc"
+                );
+              }}
+              className={`px-3 py-1 rounded-full text-sm transition-all duration-300 ease-in-out flex items-center mb-2 ${
+                sortBy === option
+                  ? "bg-purple-500 text-white"
+                  : "bg-white hover:bg-gray-50 active:bg-gray-100 active:shadow-inner active:transform active:translate-y-px text-gray-700"
+              }`}
+            >
+              {option === "date"
+                ? "Ostatnio dodane"
+                : option === "title"
+                ? "Tytuł"
+                : option === "artist"
+                ? "Artysta"
+                : option === "impro"
+                ? "Impro"
+                : option === "beginnerFriendly"
+                ? "Dla początkujących"
+                : option}
+            </button>
+          )
+        )}
       </div>
     </div>
   );
