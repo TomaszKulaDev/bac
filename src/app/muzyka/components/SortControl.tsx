@@ -2,10 +2,10 @@ import React from "react";
 import { FaSort, FaSearch } from "react-icons/fa";
 
 interface SortControlProps {
-  sortBy: "date" | "title" | "artist";
+  sortBy: "date" | "title" | "artist" | "impro";
   sortOrder: "asc" | "desc";
   onSortChange: (
-    newSortBy: "date" | "title" | "artist",
+    newSortBy: "date" | "title" | "artist" | "impro",
     newSortOrder: "asc" | "desc"
   ) => void;
   filterText: string;
@@ -34,12 +34,12 @@ const SortControl: React.FC<SortControlProps> = ({
         </div>
       </div>
       <div className="flex space-x-2">
-        {["date", "title", "artist"].map((option) => (
+        {["date", "title", "artist", "impro"].map((option) => (
           <button
             key={option}
             onClick={() =>
               onSortChange(
-                option as "date" | "title" | "artist",
+                option as "date" | "title" | "artist" | "impro",
                 sortOrder === "asc" ? "desc" : "asc"
               )
             }
@@ -53,7 +53,9 @@ const SortControl: React.FC<SortControlProps> = ({
               ? "Ostatnio dodane"
               : option === "title"
               ? "Tytuł"
-              : "Artysta"}
+              : option === "artist"
+              ? "Artysta"
+              : "Impro"}
           </button>
         ))}
       </div>

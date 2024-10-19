@@ -10,6 +10,7 @@ export interface Song {
   title: string;
   artist: string;
   youtubeId: string;
+  impro: boolean;
   createdAt: Date;
   __v?: number;
   playlists: string[]; // Tablica ID playlist, do których należy utwór

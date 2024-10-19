@@ -33,10 +33,10 @@ interface SongListProps {
   expandedPlaylist: string | null;
   setExpandedPlaylist: React.Dispatch<React.SetStateAction<string | null>>;
   onAddToPlaylist: (songId: string) => void;
-  sortBy: "date" | "title" | "artist";
+  sortBy: "date" | "title" | "artist" | "impro";
   sortOrder: "asc" | "desc";
   onSortChange: (
-    newSortBy: "date" | "title" | "artist",
+    newSortBy: "date" | "title" | "artist" | "impro",
     newSortOrder: "asc" | "desc"
   ) => void;
   filterText: string;
@@ -81,7 +81,7 @@ const SongList: React.FC<SongListProps> = ({
   }, [songs, sortBy, sortOrder, filterText]);
 
   const handleSort = useCallback(
-    (newSortBy: "date" | "title" | "artist") => {
+    (newSortBy: "date" | "title" | "artist" | "impro") => {
       if (sortBy === newSortBy) {
         onSortChange(newSortBy, sortOrder === "asc" ? "desc" : "asc");
       } else {

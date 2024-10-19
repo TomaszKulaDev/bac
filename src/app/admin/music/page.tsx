@@ -39,6 +39,7 @@ const AdminMusicPage = () => {
     title: string;
     artist: string;
     youtubeLink: string;
+    impro: boolean;
   }) => {
     try {
       console.log("Dodawanie piosenki:", newSong);

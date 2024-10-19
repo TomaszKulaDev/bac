@@ -8,7 +8,7 @@ export async function GET() {
     const db = await connectToDatabase();
     console.log("GET /api/songs: Connected to database");
 
-    const songs = await Song.find({}).sort({ createdAt: -1 }).lean();
+    const songs = await Song.find({}).select('title artist youtubeId impro createdAt').sort({ createdAt: -1 }).lean();
     // console.log("GET /api/songs: Songs fetched", songs);
 
     return new NextResponse(JSON.stringify(songs), {
@@ -34,7 +34,7 @@ export async function POST(request: Request) {
       throw new Error("Nie udało się połączyć z bazą danych");
     }
 
-    const { title, artist, youtubeLink } = await request.json();
+    const { title, artist, youtubeLink, impro } = await request.json();
 
     if (!title || !artist || !youtubeLink) {
       return NextResponse.json(
@@ -51,14 +51,18 @@ export async function POST(request: Request) {
       );
     }
 
+    console.log("Received impro value:", impro);
+
     const newSong = new Song({
       title,
       artist,
       youtubeId,
-      // Data jest tworzona przez baze mongodb src/models/song.ts nie ma potrzeby dodawać tego ponownie.
+      impro,
     });
 
     await newSong.save();
+
+    console.log("New song object:", newSong);
 
     return NextResponse.json({
       success: true,

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FaMusic, FaUser, FaYoutube } from 'react-icons/fa';
 
 interface AddSongFormProps {
-  onAddSong: (song: { title: string; artist: string; youtubeLink: string }) => void;
+  onAddSong: (song: { title: string; artist: string; youtubeLink: string; impro: boolean }) => void;
 }
 
 const AddSongForm: React.FC<AddSongFormProps> = ({ onAddSong }) => {
@@ -10,6 +10,7 @@ const AddSongForm: React.FC<AddSongFormProps> = ({ onAddSong }) => {
     title: '',
     artist: '',
     youtubeLink: '',
+    impro: false,
   });
   const [errors, setErrors] = useState({
     title: '',
@@ -45,7 +46,7 @@ const AddSongForm: React.FC<AddSongFormProps> = ({ onAddSong }) => {
     e.preventDefault();
     if (validateForm()) {
       onAddSong(newSong);
-      setNewSong({ title: '', artist: '', youtubeLink: '' });
+      setNewSong({ title: '', artist: '', youtubeLink: '', impro: false });
     }
   };
 
@@ -110,6 +111,18 @@ const AddSongForm: React.FC<AddSongFormProps> = ({ onAddSong }) => {
             />
           </div>
           {errors.youtubeLink && <p className="text-red-500 text-xs mt-1">{errors.youtubeLink}</p>}
+        </div>
+        <div className="flex items-center">
+          <input
+            id="impro"
+            type="checkbox"
+            checked={newSong.impro}
+            onChange={(e) => setNewSong({ ...newSong, impro: e.target.checked })}
+            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+          />
+          <label htmlFor="impro" className="ml-2 block text-sm text-gray-900">
+            Impro
+          </label>
         </div>
         <button
           type="submit"
