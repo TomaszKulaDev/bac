@@ -6,6 +6,7 @@ const songSchema = new mongoose.Schema({
   artist: { type: String, required: true },
   youtubeId: { type: String, required: true },
   impro: { type: Boolean, default: false },
+  beginnerFriendly: { type: Boolean, default: false }, // Nowe pole
   createdAt: { type: Date, default: Date.now }
 });
 

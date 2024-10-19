@@ -40,6 +40,7 @@ const AdminMusicPage = () => {
     artist: string;
     youtubeLink: string;
     impro: boolean;
+    beginnerFriendly: boolean; // Nowe pole
   }) => {
     try {
       console.log("Dodawanie piosenki:", newSong);

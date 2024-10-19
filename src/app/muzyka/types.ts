@@ -11,6 +11,7 @@ export interface Song {
   artist: string;
   youtubeId: string;
   impro: boolean;
+  beginnerFriendly: boolean; // Nowe pole
   createdAt: Date;
   __v?: number;
   playlists: string[]; // Tablica ID playlist, do których należy utwór

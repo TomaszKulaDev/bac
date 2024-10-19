@@ -33,10 +33,10 @@ interface SongListProps {
   expandedPlaylist: string | null;
   setExpandedPlaylist: React.Dispatch<React.SetStateAction<string | null>>;
   onAddToPlaylist: (songId: string) => void;
-  sortBy: "date" | "title" | "artist" | "impro";
+  sortBy: "date" | "title" | "artist" | "impro" | "beginnerFriendly";
   sortOrder: "asc" | "desc";
   onSortChange: (
-    newSortBy: "date" | "title" | "artist" | "impro",
+    newSortBy: "date" | "title" | "artist" | "impro" | "beginnerFriendly",
     newSortOrder: "asc" | "desc"
   ) => void;
   filterText: string;
@@ -69,6 +69,7 @@ const SongList: React.FC<SongListProps> = ({
   const [showNotification, setShowNotification] = useState(false);
 
   const sortedAndFilteredSongs = useMemo(() => {
+    console.log('Recalculating sortedAndFilteredSongs:', { sortBy, sortOrder });
     let result = [...songs];
     if (filterText) {
       result = result.filter(
@@ -90,6 +91,12 @@ const SongList: React.FC<SongListProps> = ({
     },
     [sortBy, sortOrder, onSortChange]
   );
+
+  const sortedSongs = useMemo(() => {
+    return sortSongs(songs, sortBy, sortOrder);
+  }, [songs, sortBy, sortOrder]);
+
+  console.log('Sorted songs:', sortedAndFilteredSongs.map(song => song.title));
 
   return (
     <div className="song-list bg-white rounded-lg shadow-md p-4">

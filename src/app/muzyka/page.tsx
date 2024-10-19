@@ -176,7 +176,8 @@ const MusicPage: React.FC = () => {
           const mappedSongs = action.payload.map((song: any) => ({
             ...song,
             id: song._id,
-            impro: song.impro || false, // Dodaj tę linię
+            impro: song.impro || false,
+            beginnerFriendly: song.beginnerFriendly || false, // Dodaj tę linię
           }));
           dispatch({ type: "songs/setSongs", payload: mappedSongs });
         }

@@ -8,8 +8,8 @@ export async function GET() {
     const db = await connectToDatabase();
     console.log("GET /api/songs: Connected to database");
 
-    const songs = await Song.find({}).select('title artist youtubeId impro createdAt').sort({ createdAt: -1 }).lean();
-    // console.log("GET /api/songs: Songs fetched", songs);
+    const songs = await Song.find({}).select('title artist youtubeId impro beginnerFriendly createdAt').sort({ createdAt: -1 }).lean();
+    // console.log("GET /api/songs: Songs fetched", songs); tutaj zawsze jest problem edytuj to zeby dodac nowa opcje sortowania.
 
     return new NextResponse(JSON.stringify(songs), {
       status: 200,
@@ -34,7 +34,7 @@ export async function POST(request: Request) {
       throw new Error("Nie udało się połączyć z bazą danych");
     }
 
-    const { title, artist, youtubeLink, impro } = await request.json();
+    const { title, artist, youtubeLink, impro, beginnerFriendly } = await request.json();
 
     if (!title || !artist || !youtubeLink) {
       return NextResponse.json(
@@ -52,12 +52,14 @@ export async function POST(request: Request) {
     }
 
     console.log("Received impro value:", impro);
+    console.log("Received beginnerFriendly value:", beginnerFriendly);
 
     const newSong = new Song({
       title,
       artist,
       youtubeId,
       impro,
+      beginnerFriendly,
     });
 
     await newSong.save();

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FaMusic, FaUser, FaYoutube } from 'react-icons/fa';
 
 interface AddSongFormProps {
-  onAddSong: (song: { title: string; artist: string; youtubeLink: string; impro: boolean }) => void;
+  onAddSong: (song: { title: string; artist: string; youtubeLink: string; impro: boolean; beginnerFriendly: boolean }) => void;
 }
 
 const AddSongForm: React.FC<AddSongFormProps> = ({ onAddSong }) => {
@@ -11,6 +11,7 @@ const AddSongForm: React.FC<AddSongFormProps> = ({ onAddSong }) => {
     artist: '',
     youtubeLink: '',
     impro: false,
+    beginnerFriendly: false, // Nowe pole
   });
   const [errors, setErrors] = useState({
     title: '',
@@ -46,7 +47,7 @@ const AddSongForm: React.FC<AddSongFormProps> = ({ onAddSong }) => {
     e.preventDefault();
     if (validateForm()) {
       onAddSong(newSong);
-      setNewSong({ title: '', artist: '', youtubeLink: '', impro: false });
+      setNewSong({ title: '', artist: '', youtubeLink: '', impro: false, beginnerFriendly: false });
     }
   };
 
@@ -122,6 +123,18 @@ const AddSongForm: React.FC<AddSongFormProps> = ({ onAddSong }) => {
           />
           <label htmlFor="impro" className="ml-2 block text-sm text-gray-900">
             Impro
+          </label>
+        </div>
+        <div className="flex items-center">
+          <input
+            id="beginnerFriendly"
+            type="checkbox"
+            checked={newSong.beginnerFriendly}
+            onChange={(e) => setNewSong({ ...newSong, beginnerFriendly: e.target.checked })}
+            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+          />
+          <label htmlFor="beginnerFriendly" className="ml-2 block text-sm text-gray-900">
+            Muzyka dla początkujących
           </label>
         </div>
         <button

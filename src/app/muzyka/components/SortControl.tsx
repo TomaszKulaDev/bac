@@ -2,10 +2,10 @@ import React from "react";
 import { FaSort, FaSearch } from "react-icons/fa";
 
 interface SortControlProps {
-  sortBy: "date" | "title" | "artist" | "impro";
+  sortBy: "date" | "title" | "artist" | "impro" | "beginnerFriendly";
   sortOrder: "asc" | "desc";
   onSortChange: (
-    newSortBy: "date" | "title" | "artist" | "impro",
+    newSortBy: "date" | "title" | "artist" | "impro" | "beginnerFriendly",
     newSortOrder: "asc" | "desc"
   ) => void;
   filterText: string;
@@ -33,17 +33,17 @@ const SortControl: React.FC<SortControlProps> = ({
           <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg" />
         </div>
       </div>
-      <div className="flex space-x-2">
-        {["date", "title", "artist", "impro"].map((option) => (
+      <div className="flex space-x-2 flex-wrap justify-center">
+        {["date", "title", "artist", "impro", "beginnerFriendly"].map((option) => (
           <button
             key={option}
             onClick={() =>
               onSortChange(
-                option as "date" | "title" | "artist" | "impro",
+                option as "date" | "title" | "artist" | "impro" | "beginnerFriendly",
                 sortOrder === "asc" ? "desc" : "asc"
               )
             }
-            className={`px-3 py-1 rounded-full text-sm transition-colors duration-200 flex items-center ${
+            className={`px-3 py-1 rounded-full text-sm transition-colors duration-200 flex items-center mb-2 ${
               sortBy === option
                 ? "bg-purple-500 text-white"
                 : "bg-white hover:bg-gray-200 text-gray-700"
@@ -55,7 +55,11 @@ const SortControl: React.FC<SortControlProps> = ({
               ? "Tytuł"
               : option === "artist"
               ? "Artysta"
-              : "Impro"}
+              : option === "impro"
+              ? "Impro"
+              : option === "beginnerFriendly"
+              ? "Dla początkujących"
+              : option}
           </button>
         ))}
       </div>

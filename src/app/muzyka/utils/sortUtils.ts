@@ -1,6 +1,6 @@
 import { Song } from "../types";
 
-type SortBy = "date" | "title" | "artist" | "impro";
+type SortBy = "date" | "title" | "artist" | "impro" | "beginnerFriendly";
 type SortOrder = "asc" | "desc";
 
 export const sortSongs = (
@@ -8,6 +8,7 @@ export const sortSongs = (
   sortBy: SortBy,
   sortOrder: SortOrder
 ): Song[] => {
+  console.log('Sorting:', { sortBy, sortOrder });
   return [...songs].sort((a, b) => {
     let comparison = 0;
     switch (sortBy) {
@@ -22,7 +23,10 @@ export const sortSongs = (
         comparison = a.artist.localeCompare(b.artist);
         break;
       case "impro":
-        comparison = (a.impro === b.impro) ? 0 : a.impro ? -1 : 1;
+        comparison = Number(b.impro) - Number(a.impro);
+        break;
+      case "beginnerFriendly":
+        comparison = Number(b.beginnerFriendly) - Number(a.beginnerFriendly);
         break;
     }
     return sortOrder === "asc" ? comparison : -comparison;

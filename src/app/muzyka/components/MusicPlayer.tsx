@@ -108,16 +108,13 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     },
   };
 
-  const [sortBy, setSortBy] = useState<"date" | "title" | "artist">("date");
+  const [sortBy, setSortBy] = useState<"date" | "title" | "artist" | "impro" | "beginnerFriendly">("date");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
 
-  const onSortChange = useCallback(
-    (newSortBy: "date" | "title" | "artist", newSortOrder: "asc" | "desc") => {
-      setSortBy(newSortBy);
-      setSortOrder(newSortOrder);
-    },
-    []
-  );
+  const onSortChange = (newSortBy: "date" | "title" | "artist" | "impro" | "beginnerFriendly", newSortOrder: "asc" | "desc") => {
+    setSortBy(newSortBy);
+    setSortOrder(newSortOrder);
+  };
 
   // Funkcja wywoływana, gdy odtwarzacz jest gotowy
   const onPlayerReady = (event: any) => {
