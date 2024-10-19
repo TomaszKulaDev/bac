@@ -14,7 +14,7 @@ export const sortSongs = (
     switch (sortBy) {
       case "date":
         comparison =
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
         break;
       case "title":
         const cleanTitleA = a.title.trim().replace(/^[^a-zA-Z0-9]+/, '');
