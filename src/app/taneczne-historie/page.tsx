@@ -84,7 +84,7 @@ const TaneczneHistoriePage: React.FC = () => {
         />
       </div>
 
-      <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-screen-2xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Featured Stories */}
           {featuredStories.length > 0 && (
@@ -149,7 +149,7 @@ const TaneczneHistoriePage: React.FC = () => {
               <textarea
                 value={newStory}
                 onChange={(e) => setNewStory(e.target.value)}
-                placeholder="Podziel się swoją taneczną historią..."
+                placeholder="Podziel się swoją taneczn�� historią..."
                 className="w-full h-32 p-4 rounded-lg shadow-lg resize-none focus:outline-none focus:ring-2 focus:ring-purple-400"
                 maxLength={500}
               ></textarea>
@@ -189,7 +189,7 @@ const TaneczneHistoriePage: React.FC = () => {
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8"
         >
           {stories.map((story, index) => (
             <motion.div
