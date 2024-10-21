@@ -1,13 +1,12 @@
-'use client';
+"use client";
 
 import { useState } from "react";
 import { FaHeart, FaShare } from "react-icons/fa";
 import Image from "next/image";
-import { Carousel } from 'react-responsive-carousel';
+import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import { useDropzone } from 'react-dropzone';
-import { motion } from 'framer-motion';
-import Masonry from 'react-masonry-css';
+import { useDropzone } from "react-dropzone";
+import { motion } from "framer-motion";
 
 interface Story {
   id: number;
@@ -43,8 +42,8 @@ const TaneczneHistoriePage: React.FC = () => {
   };
 
   const handleLike = (storyId: number) => {
-    setStories(prevStories =>
-      prevStories.map(story =>
+    setStories((prevStories) =>
+      prevStories.map((story) =>
         story.id === storyId ? { ...story, likes: story.likes + 1 } : story
       )
     );
@@ -52,7 +51,7 @@ const TaneczneHistoriePage: React.FC = () => {
 
   const { getRootProps, getInputProps } = useDropzone({
     accept: {
-      'image/*': ['.png', '.jpeg', '.jpg'],
+      "image/*": [".png", ".jpeg", ".jpg"],
     },
     onDrop: (acceptedFiles: File[]) => {
       setSelectedImage(acceptedFiles[0]);
@@ -62,36 +61,36 @@ const TaneczneHistoriePage: React.FC = () => {
   const featuredStories = stories.slice(0, 5);
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
       className="min-h-screen bg-gradient-to-br from-purple-500 to-pink-500"
     >
       {/* Hero Image */}
-      <div className="relative">
-        <div className="absolute inset-0">
-          <Image
-            src="/hero-image.jpg"
-            alt="Taneczne Historie"
-            fill
-            className="object-cover"
-            style={{ transform: `translateY(${scrollY * 0.5}px)` }}
-          />
-        </div>
-        <div className="relative z-10 flex items-center justify-center h-96">
-          <h1 className="text-5xl font-bold text-white text-center">
+      <div className="relative h-96">
+        <Image
+          src="/images/hero_img.png"
+          alt="Taneczne Historie"
+          layout="fill"
+          objectFit="cover"
+          priority
+        />
+        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <h1 className="text-4xl md:text-6xl text-white font-bold text-center">
             Taneczne Historie
           </h1>
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 py-12">
+      <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Featured Stories */}
           {featuredStories.length > 0 && (
             <div className="mb-12">
-              <h2 className="text-3xl font-bold text-white mb-4">Polecane historie</h2>
+              <h2 className="text-3xl font-bold text-white mb-4">
+                Polecane historie
+              </h2>
               <Carousel
                 showThumbs={false}
                 showStatus={false}
@@ -102,19 +101,32 @@ const TaneczneHistoriePage: React.FC = () => {
                 swipeable
                 emulateTouch
               >
-                {featuredStories.map(story => (
-                  <div key={story.id} className="bg-white p-6 rounded-lg shadow-lg">
+                {featuredStories.map((story) => (
+                  <div
+                    key={story.id}
+                    className="bg-white p-6 rounded-lg shadow-lg"
+                  >
                     {story.image && (
-                      <Image src={story.image} alt="Historia" width={500} height={300} className="w-full h-64 object-cover mb-4 rounded-lg" />
+                      <Image
+                        src={story.image}
+                        alt="Historia"
+                        width={500}
+                        height={300}
+                        className="w-full h-64 object-cover mb-4 rounded-lg"
+                      />
                     )}
                     <p className="text-gray-800 mb-4">{story.content}</p>
                     <div className="flex justify-end space-x-4">
-                      <button 
+                      <button
                         className="flex items-center text-pink-500 hover:text-pink-600"
                         onClick={() => handleLike(story.id)}
                       >
-                        <FaHeart className={`mr-1 ${story.likes > 0 ? 'text-pink-600' : ''}`} /> 
-                        {story.likes > 0 ? story.likes : 'Lubię to!'}
+                        <FaHeart
+                          className={`mr-1 ${
+                            story.likes > 0 ? "text-pink-600" : ""
+                          }`}
+                        />
+                        {story.likes > 0 ? story.likes : "Lubię to!"}
                       </button>
                       <button className="flex items-center text-purple-500 hover:text-purple-600">
                         <FaShare className="mr-1" /> Udostępnij
@@ -129,7 +141,8 @@ const TaneczneHistoriePage: React.FC = () => {
           {/* Share Your Story */}
           <div>
             <p className="text-xl text-white text-center mb-8">
-              Podziel się swoją wyjątkową taneczną historią z naszą społecznością!
+              Podziel się swoją wyjątkową taneczną historią z naszą
+              społecznością!
             </p>
             <form onSubmit={handleSubmit} className="mb-8">
               <textarea
@@ -139,13 +152,24 @@ const TaneczneHistoriePage: React.FC = () => {
                 className="w-full h-32 p-4 rounded-lg shadow-lg resize-none focus:outline-none focus:ring-2 focus:ring-purple-400"
                 maxLength={500}
               ></textarea>
-              
-              <div {...getRootProps()} className="mt-4 p-4 border-2 border-dashed border-white rounded-lg cursor-pointer">
+
+              <div
+                {...getRootProps()}
+                className="mt-4 p-4 border-2 border-dashed border-white rounded-lg cursor-pointer"
+              >
                 <input {...getInputProps()} />
                 {selectedImage ? (
-                  <Image src={URL.createObjectURL(selectedImage)} alt="Wybrane zdjęcie" width={500} height={300} className="w-full h-48 object-cover rounded-lg" />
+                  <Image
+                    src={URL.createObjectURL(selectedImage)}
+                    alt="Wybrane zdjęcie"
+                    width={500}
+                    height={300}
+                    className="w-full h-48 object-cover rounded-lg"
+                  />
                 ) : (
-                  <p className="text-white text-center">Przeciągnij i upuść zdjęcie lub kliknij, aby wybrać</p>
+                  <p className="text-white text-center">
+                    Przeciągnij i upuść zdjęcie lub kliknij, aby wybrać
+                  </p>
                 )}
               </div>
 
@@ -160,37 +184,56 @@ const TaneczneHistoriePage: React.FC = () => {
         </div>
 
         {/* All Stories */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
         >
-          <Masonry
-            breakpointCols={breakpointColumnsObj}
-            className="my-masonry-grid"
-            columnClassName="my-masonry-grid_column"
-          >
-            {stories.map((story) => (
-              <div key={story.id} className="bg-white p-6 rounded-lg shadow-lg mb-4">
-                {story.image && (
-                  <Image src={story.image} alt="Historia" width={500} height={300} className="w-full h-64 object-cover mb-4 rounded-lg" />
-                )}
+          {stories.map((story, index) => (
+            <motion.div
+              key={story.id}
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className={`bg-white rounded-lg shadow-lg overflow-hidden ${
+                index % 7 === 0 ? 'lg:col-span-2' : ''
+              } ${index % 5 === 0 ? 'lg:row-span-2' : ''}`}
+            >
+              {story.image && (
+                <div className="relative h-64 lg:h-96">
+                  <Image
+                    src={story.image}
+                    alt="Historia"
+                    layout="fill"
+                    objectFit="cover"
+                    className="w-full"
+                  />
+                </div>
+              )}
+              <div className="p-6">
                 <p className="text-gray-800 mb-4">{story.content}</p>
-                <div className="flex justify-end space-x-4">
-                  <button 
-                    className="flex items-center text-pink-500 hover:text-pink-600"
-                    onClick={() => handleLike(story.id)}
-                  >
-                    <FaHeart className={`mr-1 ${story.likes > 0 ? 'text-pink-600' : ''}`} />
-                    {story.likes > 0 ? story.likes : 'Lubię to!'}
-                  </button>
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center space-x-2">
+                    <button
+                      className="flex items-center text-pink-500 hover:text-pink-600"
+                      onClick={() => handleLike(story.id)}
+                    >
+                      <FaHeart
+                        className={`mr-1 ${
+                          story.likes > 0 ? "text-pink-600" : ""
+                        }`}
+                      />
+                      {story.likes > 0 ? story.likes : "Lubię to!"}
+                    </button>
+                  </div>
                   <button className="flex items-center text-purple-500 hover:text-purple-600">
                     <FaShare className="mr-1" /> Udostępnij
                   </button>
                 </div>
               </div>
-            ))}
-          </Masonry>
+            </motion.div>
+          ))}
         </motion.div>
       </div>
     </motion.div>
@@ -198,4 +241,3 @@ const TaneczneHistoriePage: React.FC = () => {
 };
 
 export default TaneczneHistoriePage;
-
