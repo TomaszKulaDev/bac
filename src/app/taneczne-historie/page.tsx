@@ -50,7 +50,9 @@ const TaneczneHistoriePage: React.FC = () => {
   };
 
   const handleDelete = (storyId: number) => {
-    setStories((prevStories) => prevStories.filter((story) => story.id !== storyId));
+    setStories((prevStories) =>
+      prevStories.filter((story) => story.id !== storyId)
+    );
   };
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -72,19 +74,14 @@ const TaneczneHistoriePage: React.FC = () => {
       className="min-h-screen bg-gradient-to-br from-purple-500 to-pink-500"
     >
       {/* Hero Image */}
-      <div className="relative h-96">
+      <div className="relative h-[68vh]">
         <Image
-          src="/images/hero_img.png"
+          src="/images/hero_img.jpg"
           alt="Taneczne Historie"
           layout="fill"
           objectFit="cover"
           priority
         />
-        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <h1 className="text-4xl md:text-6xl text-white font-bold text-center">
-            Taneczne Historie
-          </h1>
-        </div>
       </div>
 
       <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
@@ -201,8 +198,8 @@ const TaneczneHistoriePage: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               className={`bg-white rounded-lg shadow-lg overflow-hidden relative ${
-                index % 7 === 0 ? 'lg:col-span-2' : ''
-              } ${index % 5 === 0 ? 'lg:row-span-2' : ''}`}
+                index % 7 === 0 ? "lg:col-span-2" : ""
+              } ${index % 5 === 0 ? "lg:row-span-2" : ""}`}
             >
               {story.image && (
                 <div className="relative h-64 lg:h-96">
