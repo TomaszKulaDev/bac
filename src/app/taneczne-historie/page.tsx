@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { FaHeart, FaShare } from "react-icons/fa";
+import { FaHeart, FaShare, FaTrash } from "react-icons/fa";
 import Image from "next/image";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
@@ -47,6 +47,10 @@ const TaneczneHistoriePage: React.FC = () => {
         story.id === storyId ? { ...story, likes: story.likes + 1 } : story
       )
     );
+  };
+
+  const handleDelete = (storyId: number) => {
+    setStories((prevStories) => prevStories.filter((story) => story.id !== storyId));
   };
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -196,7 +200,7 @@ const TaneczneHistoriePage: React.FC = () => {
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className={`bg-white rounded-lg shadow-lg overflow-hidden ${
+              className={`bg-white rounded-lg shadow-lg overflow-hidden relative ${
                 index % 7 === 0 ? 'lg:col-span-2' : ''
               } ${index % 5 === 0 ? 'lg:row-span-2' : ''}`}
             >
@@ -211,6 +215,12 @@ const TaneczneHistoriePage: React.FC = () => {
                   />
                 </div>
               )}
+              <button
+                className="absolute top-2 right-2 text-red-500 hover:text-red-600"
+                onClick={() => handleDelete(story.id)}
+              >
+                <FaTrash />
+              </button>
               <div className="p-6">
                 <p className="text-gray-800 mb-4">{story.content}</p>
                 <div className="flex justify-between items-center">
@@ -227,9 +237,11 @@ const TaneczneHistoriePage: React.FC = () => {
                       {story.likes > 0 ? story.likes : "Lubię to!"}
                     </button>
                   </div>
-                  <button className="flex items-center text-purple-500 hover:text-purple-600">
-                    <FaShare className="mr-1" /> Udostępnij
-                  </button>
+                  <div className="flex items-center space-x-2">
+                    <button className="flex items-center text-purple-500 hover:text-purple-600">
+                      <FaShare className="mr-1" /> Udostępnij
+                    </button>
+                  </div>
                 </div>
               </div>
             </motion.div>
