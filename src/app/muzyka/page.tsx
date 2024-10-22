@@ -192,6 +192,16 @@ const MusicPage: React.FC = () => {
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
+      const mainContainer = document.querySelector('.max-w-7xl');
+      if (mainContainer) {
+        if (window.innerWidth < 640) {
+          mainContainer.classList.remove('pb-20');
+          mainContainer.classList.add('pb-32');
+        } else {
+          mainContainer.classList.remove('pb-32');
+          mainContainer.classList.add('pb-20');
+        }
+      }
     };
     handleResize();
     window.addEventListener("resize", handleResize);

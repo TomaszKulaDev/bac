@@ -109,10 +109,15 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     },
   };
 
-  const [sortBy, setSortBy] = useState<"date" | "title" | "artist" | "impro" | "beginnerFriendly">("date");
+  const [sortBy, setSortBy] = useState<
+    "date" | "title" | "artist" | "impro" | "beginnerFriendly"
+  >("date");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
 
-  const onSortChange = (newSortBy: "date" | "title" | "artist" | "impro" | "beginnerFriendly", newSortOrder: "asc" | "desc") => {
+  const onSortChange = (
+    newSortBy: "date" | "title" | "artist" | "impro" | "beginnerFriendly",
+    newSortOrder: "asc" | "desc"
+  ) => {
     setSortBy(newSortBy);
     setSortOrder(newSortOrder);
   };
@@ -210,6 +215,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
       setPlayer(event.target);
       setIsPlayerReady(true);
       setError(null);
+      event.target.setVolume(volume * 100);
     } else {
       console.error("Nie można zainicjalizować odtwarzacza YouTube");
       setError("Nie można załadować odtwarzacza YouTube");
@@ -340,8 +346,10 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
 
   const sortedAndFilteredSongs = useMemo(() => {
     let result = currentPlaylistId
-      ? songs.filter(song => 
-          playlists.find(p => p.id === currentPlaylistId)?.songs.includes(song.id)
+      ? songs.filter((song) =>
+          playlists
+            .find((p) => p.id === currentPlaylistId)
+            ?.songs.includes(song.id)
         )
       : songs;
 
@@ -430,9 +438,11 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
 
   // Komponent MusicPlayer - główny komponent odtwarzacza muzyki
   return (
-    <div className="max-w-7xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
+    <div className="max-w-7xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden pb-20">
       <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-6">
-        <h1 className="text-3xl font-bold text-white">Bachata Top Playlist 2024</h1>
+        <h1 className="text-3xl font-bold text-white">
+          Bachata Top Playlist 2024
+        </h1>
         <p className="text-white">8 utworów • Zaktualizowano: 18.10.2024</p>
       </div>
       <div className="w-full mb-4 bg-gray-100">
@@ -446,9 +456,9 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
       </div>
       <div className="flex flex-col md:flex-row flex-grow">
         <div className="md:order-2 md:w-3/5 flex flex-col">
-          <div className="sticky top-0 bg-white z-10 p-6 shadow-md">
+          <div className="sticky top-0 bg-white z-40 p-6 shadow-md">
             <div
-              className="youtube-player mb-6 rounded-lg overflow-hidden"
+              className="youtube-player mb-6 rounded-lg overflow-hidden relative"
               style={{
                 width: playerDimensions.width,
                 height: playerDimensions.height,

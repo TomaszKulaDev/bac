@@ -51,7 +51,7 @@ const PlaybackBar: React.FC<PlaybackBarProps> = ({
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white shadow-lg p-4">
+    <div className="fixed bottom-0 left-0 right-0 bg-white shadow-lg p-4 z-50">
       <div className="flex items-center justify-between max-w-7xl mx-auto">
         <div className="flex items-center space-x-4">
           <button
