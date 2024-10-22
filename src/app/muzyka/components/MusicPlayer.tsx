@@ -631,6 +631,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
         volume={volume}
         onVolumeChange={handleVolumeChange}
         currentSong={currentSong}
+        repeatMode={repeatMode}
+        onToggleRepeatMode={toggleRepeatMode}
       />
     </div>
   );

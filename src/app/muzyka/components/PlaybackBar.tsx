@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   FaPlay,
   FaPause,
-  FaStepBackward,
-  FaStepForward,
+  FaBackward,
+  FaForward,
   FaVolumeUp,
   FaVolumeMute,
+  FaRedo,
+  FaRetweet,
 } from "react-icons/fa";
 
 interface PlaybackBarProps {
@@ -19,6 +21,8 @@ interface PlaybackBarProps {
   volume: number;
   onVolumeChange: (volume: number) => void;
   currentSong: { title: string; artist: string } | null;
+  repeatMode: { song: "on" | "off"; playlist: "on" | "off" };
+  onToggleRepeatMode: (mode: "song" | "playlist") => void;
 }
 
 const PlaybackBar: React.FC<PlaybackBarProps> = ({
@@ -32,6 +36,8 @@ const PlaybackBar: React.FC<PlaybackBarProps> = ({
   volume,
   onVolumeChange,
   currentSong,
+  repeatMode,
+  onToggleRepeatMode,
 }) => {
   const [isMuted, setIsMuted] = useState(false);
 
@@ -51,36 +57,74 @@ const PlaybackBar: React.FC<PlaybackBarProps> = ({
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white shadow-lg p-4 z-50">
-      <div className="flex items-center justify-between max-w-7xl mx-auto">
-        <div className="flex items-center space-x-4">
+    <div className="fixed bottom-0 left-0 right-0 bg-white shadow-lg p-2 z-50">
+      <div className="flex flex-col items-center justify-between max-w-7xl mx-auto">
+        <div className="flex items-center space-x-2 mb-2">
+          <button
+            onClick={() => onToggleRepeatMode("playlist")}
+            className={`text-gray-600 p-1 rounded-full transition-all duration-300 ease-in-out ${
+              repeatMode.playlist === "on"
+                ? "bg-gray-100 shadow-inner transform translate-y-px"
+                : "bg-white hover:bg-gray-50 active:bg-gray-100 active:shadow-inner active:transform active:translate-y-px"
+            }`}
+            aria-label={`Powtarzaj playlistę: ${
+              repeatMode.playlist === "on" ? "włączone" : "wyłączone"
+            }`}
+            title="Powtarzaj playlistę"
+          >
+            <FaRedo
+              size={16}
+              className={
+                repeatMode.playlist === "on" ? "text-purple-500" : ""
+              }
+            />
+          </button>
           <button
             onClick={onPrevious}
-            className="text-gray-600 hover:text-gray-800"
+            className="text-gray-600 hover:text-gray-800 p-1"
           >
-            <FaStepBackward />
+            <FaBackward size={16} />
           </button>
           <button
             onClick={onTogglePlay}
-            className="text-gray-600 hover:text-gray-800"
+            className="bg-white rounded-full p-2 shadow-md transition-all duration-150 ease-in-out active:scale-95"
           >
-            {isPlaying ? <FaPause /> : <FaPlay />}
+            {isPlaying ? <FaPause size={20} /> : <FaPlay size={20} />}
           </button>
           <button
             onClick={onNext}
-            className="text-gray-600 hover:text-gray-800"
+            className="text-gray-600 hover:text-gray-800 p-1"
           >
-            <FaStepForward />
+            <FaForward size={16} />
+          </button>
+          <button
+            onClick={() => onToggleRepeatMode("song")}
+            className={`text-gray-600 p-1 rounded-full transition-all duration-300 ease-in-out ${
+              repeatMode.song === "on"
+                ? "bg-gray-100 shadow-inner transform translate-y-px"
+                : "bg-white hover:bg-gray-50 active:bg-gray-100 active:shadow-inner active:transform active:translate-y-px"
+            }`}
+            aria-label={`Powtarzaj utwór: ${
+              repeatMode.song === "on" ? "włączone" : "wyłączone"
+            }`}
+            title="Powtarzaj utwór"
+          >
+            <FaRetweet
+              size={16}
+              className={
+                repeatMode.song === "on" ? "text-purple-500" : ""
+              }
+            />
           </button>
         </div>
-        <div className="flex-grow mx-4">
-          <div className="text-sm text-gray-600 mb-1">
+        <div className="flex-grow w-full">
+          <div className="text-xs text-gray-600 mb-1 text-center">
             {currentSong
               ? `${currentSong.title} - ${currentSong.artist}`
               : "Brak odtwarzanego utworu"}
           </div>
           <div className="flex items-center">
-            <span className="text-xs text-gray-500 mr-2">
+            <span className="text-xs text-gray-500 mr-1">
               {formatTime(currentTime)}
             </span>
             <input
@@ -89,19 +133,19 @@ const PlaybackBar: React.FC<PlaybackBarProps> = ({
               max={duration}
               value={currentTime}
               onChange={(e) => onSeek(Number(e.target.value))}
-              className="w-full"
+              className="w-full h-1"
             />
-            <span className="text-xs text-gray-500 ml-2">
+            <span className="text-xs text-gray-500 ml-1">
               {formatTime(duration)}
             </span>
           </div>
         </div>
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-1 mt-2">
           <button
             onClick={handleVolumeToggle}
             className="text-gray-600 hover:text-gray-800"
           >
-            {isMuted || volume === 0 ? <FaVolumeMute /> : <FaVolumeUp />}
+            {isMuted || volume === 0 ? <FaVolumeMute size={16} /> : <FaVolumeUp size={16} />}
           </button>
           <input
             type="range"
@@ -110,7 +154,7 @@ const PlaybackBar: React.FC<PlaybackBarProps> = ({
             step={0.01}
             value={volume}
             onChange={(e) => onVolumeChange(Number(e.target.value))}
-            className="w-20"
+            className="w-16 h-1"
           />
         </div>
       </div>
