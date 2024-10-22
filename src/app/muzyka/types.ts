@@ -15,6 +15,7 @@ export interface Song {
   createdAt: Date;
   __v?: number;
   playlists: string[]; // Tablica ID playlist, do których należy utwór
+  thumbnail?: string;
 }
 
 export interface MusicPlayerProps {

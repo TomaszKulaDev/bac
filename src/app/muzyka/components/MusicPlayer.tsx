@@ -38,6 +38,7 @@ import { sortSongs } from "../utils/sortUtils";
 import CreatePlaylistModal from "./CreatePlaylistModal";
 import SortControl from "./SortControl";
 import PlaybackBar from "./PlaybackBar";
+import { getYouTubeThumbnail } from "../utils/youtube";
 
 interface MusicPlayerProps {
   songs: Song[];
@@ -630,9 +631,15 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
         onSeek={handleSeek}
         volume={volume}
         onVolumeChange={handleVolumeChange}
-        currentSong={currentSong}
+        currentSong={currentSong ? {
+          ...currentSong,
+          thumbnail: currentSong.thumbnail || getYouTubeThumbnail(currentSong.youtubeId)
+        } : null}
         repeatMode={repeatMode}
         onToggleRepeatMode={toggleRepeatMode}
+        onAddToPlaylist={(songId) => handleAddToPlaylist(songId)}
+        onLike={(songId) => {/* Dodaj logikę dla polubienia utworu */}}
+        isLiked={false} // Dodaj logikę sprawdzania, czy utwór jest polubiony
       />
     </div>
   );
