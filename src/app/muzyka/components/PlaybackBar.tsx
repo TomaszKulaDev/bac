@@ -117,13 +117,13 @@ const PlaybackBar: React.FC<PlaybackBarProps> = ({
             />
           </button>
         </div>
-        <div className="flex-grow w-full">
+        <div className="w-full flex flex-col items-center">
           <div className="text-xs text-gray-600 mb-1 text-center">
             {currentSong
               ? `${currentSong.title} - ${currentSong.artist}`
               : "Brak odtwarzanego utworu"}
           </div>
-          <div className="flex items-center">
+          <div className="w-2/3 flex items-center">
             <span className="text-xs text-gray-500 mr-1">
               {formatTime(currentTime)}
             </span>
@@ -140,22 +140,28 @@ const PlaybackBar: React.FC<PlaybackBarProps> = ({
             </span>
           </div>
         </div>
-        <div className="flex items-center space-x-1 mt-2">
-          <button
-            onClick={handleVolumeToggle}
-            className="text-gray-600 hover:text-gray-800"
-          >
-            {isMuted || volume === 0 ? <FaVolumeMute size={16} /> : <FaVolumeUp size={16} />}
-          </button>
-          <input
-            type="range"
-            min={0}
-            max={1}
-            step={0.01}
-            value={volume}
-            onChange={(e) => onVolumeChange(Number(e.target.value))}
-            className="w-16 h-1"
-          />
+        <div className="flex items-center justify-between w-full mt-2">
+          <div className="w-1/3"></div>
+          <div className="w-1/3 flex justify-center">
+            {/* Kontrolki odtwarzania */}
+          </div>
+          <div className="w-1/3 flex justify-end items-center space-x-1">
+            <button
+              onClick={handleVolumeToggle}
+              className="text-gray-600 hover:text-gray-800"
+            >
+              {isMuted || volume === 0 ? <FaVolumeMute size={16} /> : <FaVolumeUp size={16} />}
+            </button>
+            <input
+              type="range"
+              min={0}
+              max={1}
+              step={0.01}
+              value={volume}
+              onChange={(e) => onVolumeChange(Number(e.target.value))}
+              className="w-16 h-1"
+            />
+          </div>
         </div>
       </div>
     </div>
