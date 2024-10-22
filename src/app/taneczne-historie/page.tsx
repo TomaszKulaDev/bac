@@ -15,11 +15,11 @@ interface Story {
   image?: string;
 }
 
-const breakpointColumnsObj = {
-  default: 3,
-  1100: 2,
-  700: 1,
-};
+// const breakpointColumnsObj = {
+//   default: 3,
+//   1100: 2,
+//   700: 1,
+// };
 
 const TaneczneHistoriePage: React.FC = () => {
   const [stories, setStories] = useState<Story[]>([]);

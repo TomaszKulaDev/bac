@@ -1,3 +1,6 @@
+import { config } from 'dotenv';
+config();
+
 /** @type {import('next').NextConfig} */
 // Konfiguracja Next.js
 const nextConfig = {
@@ -52,6 +55,8 @@ const nextConfig = {
       },
     ];
   },
+  poweredByHeader: false,
+  compress: true,
 };
 
 // Eksportowanie konfiguracji Next.js

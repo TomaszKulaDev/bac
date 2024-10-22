@@ -21,7 +21,9 @@
     "paths": {
       "@/*": ["./*"] // Używanie krótszej ścieżki odniesienia, która jest prostsza w użyciu z `baseUrl`.
     },
-    "baseUrl": "./src" // Ustawienie baseUrl na './src', aby ścieżki względne zaczynały się od tego katalogu.
+    "baseUrl": "./src", // Ustawienie baseUrl na './src', aby ścieżki względne zaczynały się od tego katalogu.
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
   },
   "include": [
     "next-env.d.ts", // Plik definicji środowiska Next.js.
