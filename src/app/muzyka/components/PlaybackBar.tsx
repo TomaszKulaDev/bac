@@ -72,23 +72,23 @@ const PlaybackBar: React.FC<PlaybackBarProps> = ({
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white shadow-lg p-2 z-50">
+    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-300 shadow-lg p-2 z-50 h-24" role="region" aria-label="Kontrolki odtwarzacza">
       <div className="flex items-center justify-between max-w-7xl mx-auto">
-        <div className="flex items-center space-x-4 w-1/4">
+        <div className="flex items-center space-x-4 w-1/4" aria-live="polite">
           {currentSong && (
             <>
               <Image
                 src={currentSong.thumbnail}
-                alt="Miniaturka"
+                alt={`Okładka albumu ${currentSong.title}`}
                 width={40}
                 height={40}
                 className="object-cover rounded"
               />
               <div className="flex flex-col">
-                <span className="text-sm font-semibold truncate">
+                <span className="text-sm font-semibold truncate" aria-label="Tytuł utworu">
                   {currentSong.title}
                 </span>
-                <span className="text-xs text-gray-500 truncate">
+                <span className="text-xs text-gray-500 truncate" aria-label="Wykonawca">
                   {currentSong.artist}
                 </span>
               </div>
@@ -103,24 +103,33 @@ const PlaybackBar: React.FC<PlaybackBarProps> = ({
               className={`text-gray-600 hover:text-gray-800 ${
                 repeatMode.playlist === "on" ? "text-purple-500" : ""
               } p-2 transition-all duration-150 ease-in-out active:scale-95 active:bg-gray-200 rounded-full`}
+              aria-label="Powtarzaj playlistę"
+              title="Powtarzaj playlistę"
+              aria-pressed={repeatMode.playlist === "on"}
             >
               <FaRedo size={17} />
             </button>
             <button
               onClick={onPrevious}
               className="text-gray-600 hover:text-gray-800 p-3 transition-all duration-150 ease-in-out active:scale-95 active:bg-gray-200 rounded-full"
+              aria-label="Poprzedni utwór"
+              title="Poprzedni utwór"
             >
               <FaBackward size={28} />
             </button>
             <button
               onClick={onTogglePlay}
               className="text-gray-600 hover:text-gray-800 p-3 transition-all duration-150 ease-in-out active:scale-95 active:bg-gray-200 rounded-full"
+              aria-label={isPlaying ? "Pauza" : "Odtwórz"}
+              title={isPlaying ? "Pauza" : "Odtwórz"}
             >
               {isPlaying ? <FaPause size={32} /> : <FaPlay size={32} />}
             </button>
             <button
               onClick={onNext}
               className="text-gray-600 hover:text-gray-800 p-3 transition-all duration-150 ease-in-out active:scale-95 active:bg-gray-200 rounded-full"
+              aria-label="Następny utwór"
+              title="Następny utwór"
             >
               <FaForward size={28} />
             </button>
@@ -129,6 +138,9 @@ const PlaybackBar: React.FC<PlaybackBarProps> = ({
               className={`text-gray-600 hover:text-gray-800 ${
                 repeatMode.song === "on" ? "text-purple-500" : ""
               } p-2 transition-all duration-150 ease-in-out active:scale-95 active:bg-gray-200 rounded-full`}
+              aria-label="Powtarzaj utwór"
+              title="Powtarzaj utwór"
+              aria-pressed={repeatMode.song === "on"}
             >
               <FaRetweet size={20} />
             </button>
@@ -144,6 +156,12 @@ const PlaybackBar: React.FC<PlaybackBarProps> = ({
               value={currentTime}
               onChange={(e) => onSeek(Number(e.target.value))}
               className="w-full h-1"
+              role="slider"
+              aria-label="Postęp odtwarzania"
+              aria-valuemin={0}
+              aria-valuemax={duration}
+              aria-valuenow={currentTime}
+              aria-valuetext={`${formatTime(currentTime)} z ${formatTime(duration)}`}
             />
             <span className="text-xs text-gray-500 ml-2">
               {formatTime(duration)}
@@ -157,7 +175,7 @@ const PlaybackBar: React.FC<PlaybackBarProps> = ({
               isLiked ? "text-red-500" : ""
             }`}
           >
-            <FaHeart size={16} />
+            <FaHeart size={16} aria-hidden="true" />
           </button>
           <button
             onClick={() => onAddToPlaylist(currentSong?.id || "")}
@@ -183,6 +201,12 @@ const PlaybackBar: React.FC<PlaybackBarProps> = ({
             value={volume}
             onChange={(e) => onVolumeChange(Number(e.target.value))}
             className="w-16 h-1"
+            role="slider"
+            aria-label="Głośność"
+            aria-valuemin={0}
+            aria-valuemax={1}
+            aria-valuenow={volume}
+            aria-valuetext={`${Math.round(volume * 100)}%`}
           />
         </div>
       </div>
