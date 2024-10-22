@@ -10,6 +10,7 @@ import {
   FaRetweet,
   FaHeart,
   FaPlus,
+  FaBookmark,
 } from "react-icons/fa";
 import Image from "next/image";
 
@@ -162,7 +163,7 @@ const PlaybackBar: React.FC<PlaybackBarProps> = ({
             onClick={() => onAddToPlaylist(currentSong?.id || "")}
             className="text-gray-600 hover:text-purple-500"
           >
-            <FaPlus size={16} />
+            <FaBookmark size={16} />
           </button>
           <button
             onClick={handleVolumeToggle}
