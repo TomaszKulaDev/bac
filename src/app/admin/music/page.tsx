@@ -1,16 +1,16 @@
 "use client";
 import {
-  addSong,
-  deleteSong,
-  setSongs,
+  // addSong,
+  // deleteSong,
+  // setSongs,
   fetchSongs,
-  deleteSongAndRefetch
+  deleteSongAndRefetch,
 } from "@/store/slices/features/songsSlice";
-import { Song as SongModel } from "@/models/Song";
-import { Song } from "@/app/muzyka/types";
-import { connectToDatabase } from "@/lib/mongodb";
+// import { Song as SongModel } from "@/models/Song";
+// import { Song } from "@/app/muzyka/types";
+// import { connectToDatabase } from "@/lib/mongodb";
 import SongList from "./components/SongList";
-import Link from "next/link";
+// import Link from "next/link";
 import AdminLayout from "../AdminLayout";
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -31,7 +31,12 @@ const AdminMusicPage = () => {
   useEffect(() => {
     console.log("Aktualny stan piosenek:", songs);
     songs.forEach((song, index) => {
-      console.log(`Piosenka ${index + 1} w AdminMusicPage:`, song.id ? `ID: ${song.id}` : 'Brak ID', 'Indeks:', index);
+      console.log(
+        `Piosenka ${index + 1} w AdminMusicPage:`,
+        song.id ? `ID: ${song.id}` : "Brak ID",
+        "Indeks:",
+        index
+      );
     });
   }, [songs]);
 
@@ -44,17 +49,19 @@ const AdminMusicPage = () => {
   }) => {
     try {
       console.log("Dodawanie piosenki:", newSong);
-      const response = await fetch('/api/songs', {
-        method: 'POST',
+      const response = await fetch("/api/songs", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(newSong),
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+        throw new Error(
+          errorData.message || `HTTP error! status: ${response.status}`
+        );
       }
 
       const result = await response.json();
