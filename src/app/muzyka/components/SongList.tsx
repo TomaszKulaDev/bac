@@ -20,7 +20,6 @@ import { Song } from "../types";
 import { motion } from "framer-motion";
 import { getYouTubeThumbnail } from "../utils/youtube";
 import { sortSongs } from "../utils/sortUtils";
-import Toast from "./Toast";
 
 interface SongListProps {
   songs: Song[];
@@ -69,11 +68,11 @@ const SongList: React.FC<SongListProps> = ({
   const [showNotification, setShowNotification] = useState(false);
 
   useEffect(() => {
-    console.log('SongList received new props:', { songs, sortBy, sortOrder });
+    console.log("SongList received new props:", { songs, sortBy, sortOrder });
   }, [songs, sortBy, sortOrder]);
 
   const sortedAndFilteredSongs = useMemo(() => {
-    console.log('Recalculating sortedAndFilteredSongs:', { sortBy, sortOrder });
+    console.log("Recalculating sortedAndFilteredSongs:", { sortBy, sortOrder });
     const sorted = sortSongs(songs, sortBy, sortOrder);
     return filterText
       ? sorted.filter(
@@ -100,21 +99,39 @@ const SongList: React.FC<SongListProps> = ({
     return sortSongs(songs, sortBy, sortOrder);
   }, [songs, sortBy, sortOrder]);
 
-  console.log('Sorted songs:', sortedAndFilteredSongs.map(song => song.title));
+  console.log(
+    "Sorted songs:",
+    sortedAndFilteredSongs.map((song) => song.title)
+  );
 
   useEffect(() => {
-    console.log('Rendering songs:', sortedAndFilteredSongs.map(song => ({title: song.title, artist: song.artist})));
+    console.log(
+      "Rendering songs:",
+      sortedAndFilteredSongs.map((song) => ({
+        title: song.title,
+        artist: song.artist,
+      }))
+    );
   }, [sortedAndFilteredSongs]);
 
   useEffect(() => {
-    console.log('sortedAndFilteredSongs changed:', sortedAndFilteredSongs.map(song => song.title));
+    console.log(
+      "sortedAndFilteredSongs changed:",
+      sortedAndFilteredSongs.map((song) => song.title)
+    );
   }, [sortedAndFilteredSongs]);
 
-  const onSongSelectMemoized = useCallback((songId: string) => {
-    onSongSelect(songId);
-  }, [onSongSelect]);
+  const onSongSelectMemoized = useCallback(
+    (songId: string) => {
+      onSongSelect(songId);
+    },
+    [onSongSelect]
+  );
 
-  console.log('Songs with dates:', songs.map(song => ({title: song.title, createdAt: song.createdAt})));
+  console.log(
+    "Songs with dates:",
+    songs.map((song) => ({ title: song.title, createdAt: song.createdAt }))
+  );
 
   return (
     <div className="song-list bg-white rounded-lg shadow-md p-4">
@@ -129,7 +146,7 @@ const SongList: React.FC<SongListProps> = ({
           />
         </div>
       )}
-    
+
       <motion.ul layout className="space-y-2">
         {sortedAndFilteredSongs.map((song) => (
           <motion.li
@@ -215,7 +232,7 @@ const SongList: React.FC<SongListProps> = ({
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  if (!isPlaylistExpanded || !expandedPlaylist) {      
+                  if (!isPlaylistExpanded || !expandedPlaylist) {
                   } else {
                     onAddToPlaylist(song.id);
                   }
@@ -249,9 +266,6 @@ const SongList: React.FC<SongListProps> = ({
         >
           Załaduj więcej
         </motion.button>
-      )}
-      {showNotification && (
-        <Toast message="Najpierw stwórz lub wybierz playlistę, aby dodać do niej utwór." />
       )}
     </div>
   );

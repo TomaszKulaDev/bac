@@ -15,7 +15,6 @@ import { RootState } from "@/store/store";
 import BaciataRisingBanner from "./components/BaciataRisingBanner";
 import SongList from "./components/SongList";
 import PlaylistManager from "./components/PlaylistManager";
-import Toast from "./components/Toast";
 
 const generateUniqueId = () => {
   return Date.now().toString(36) + Math.random().toString(36).substr(2);
@@ -37,9 +36,6 @@ const MusicPage: React.FC = () => {
     null
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [notificationMessage, setNotificationMessage] = useState<string | null>(
-    null
-  );
 
   const handleCreatePlaylist = useCallback(
     (name: string, selectedSongs: string[] = []) => {
@@ -82,17 +78,12 @@ const MusicPage: React.FC = () => {
     (playlistId: string, songId: string) => {
       const playlist = playlists.find((p) => p.id === playlistId);
       if (!playlist) {
-        setNotificationMessage(
-          "Ups! Najpierw utwórz playlistę. Nie możemy dodać utworu do nieistniejącej playlisty - Pamietaj że utwory mozesz tylko do rozwinietych Playlist 😄"
-        );
-
-        setTimeout(() => setNotificationMessage(null), 9000);
+        console.log("Nie można dodać utworu do nieistniejącej playlisty");
         return;
       }
 
       if (playlist.songs.includes(songId)) {
-        setNotificationMessage("Utwór już istnieje w tej playliście 😄 ");
-        setTimeout(() => setNotificationMessage(null), 9000);
+        console.log("Utwór już istnieje w tej playliście");
         return;
       }
 
@@ -192,14 +183,14 @@ const MusicPage: React.FC = () => {
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
-      const mainContainer = document.querySelector('.max-w-7xl');
+      const mainContainer = document.querySelector(".max-w-7xl");
       if (mainContainer) {
         if (window.innerWidth < 640) {
-          mainContainer.classList.remove('pb-20');
-          mainContainer.classList.add('pb-32');
+          mainContainer.classList.remove("pb-20");
+          mainContainer.classList.add("pb-32");
         } else {
-          mainContainer.classList.remove('pb-32');
-          mainContainer.classList.add('pb-20');
+          mainContainer.classList.remove("pb-32");
+          mainContainer.classList.add("pb-20");
         }
       }
     };
@@ -322,9 +313,6 @@ const MusicPage: React.FC = () => {
           </div>
         </div>
       </div>
-      {notificationMessage && (
-        <Toast message={notificationMessage} duration={9000} />
-      )}
     </div>
   );
 };
