@@ -37,6 +37,7 @@ import {
 import { sortSongs } from "../utils/sortUtils";
 import CreatePlaylistModal from "./CreatePlaylistModal";
 import SortControl from "./SortControl";
+import PlaybackBar from "./PlaybackBar";
 
 interface MusicPlayerProps {
   songs: Song[];
@@ -399,6 +400,34 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     return songs;
   }, [currentPlaylistId, playlists, songs]);
 
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [volume, setVolume] = useState(1);
+
+  const handleSeek = (time: number) => {
+    if (player) {
+      player.seekTo(time);
+      setCurrentTime(time);
+    }
+  };
+
+  const handleVolumeChange = (newVolume: number) => {
+    if (player) {
+      player.setVolume(newVolume * 100);
+      setVolume(newVolume);
+    }
+  };
+
+  useEffect(() => {
+    if (player) {
+      const interval = setInterval(() => {
+        setCurrentTime(player.getCurrentTime());
+        setDuration(player.getDuration());
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [player]);
+
   // Komponent MusicPlayer - główny komponent odtwarzacza muzyki
   return (
     <div className="max-w-7xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
@@ -581,6 +610,18 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           showSearch={false}
         />
       </div>
+      <PlaybackBar
+        isPlaying={isPlaying}
+        onTogglePlay={togglePlayback}
+        onPrevious={previousSong}
+        onNext={nextSong}
+        currentTime={currentTime}
+        duration={duration}
+        onSeek={handleSeek}
+        volume={volume}
+        onVolumeChange={handleVolumeChange}
+        currentSong={currentSong}
+      />
     </div>
   );
 };
