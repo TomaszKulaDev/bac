@@ -72,23 +72,23 @@ const PlaybackBar: React.FC<PlaybackBarProps> = ({
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-300 shadow-lg p-2 z-50 h-auto" role="region" aria-label="Kontrolki odtwarzacza">
+    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-300 shadow-lg p-4 z-50" role="region" aria-label="Kontrolki odtwarzacza">
       <div className="flex flex-col sm:flex-row items-center justify-between max-w-7xl mx-auto">
-        <div className="flex items-center space-x-2 w-full sm:w-1/3 mb-2 sm:mb-0" aria-live="polite">
+        <div className="flex items-center space-x-4 w-full sm:w-1/3 mb-4 sm:mb-0" aria-live="polite">
           {currentSong && (
             <>
               <Image
                 src={currentSong.thumbnail}
                 alt={`Okładka albumu ${currentSong.title}`}
-                width={32}
-                height={32}
-                className="object-cover rounded hidden sm:block"
+                width={48}
+                height={48}
+                className="object-cover rounded-md shadow-md"
               />
               <div className="flex flex-col">
-                <span className="text-sm sm:text-base font-bold truncate" aria-label="Tytuł utworu">
+                <span className="text-base font-bold truncate" aria-label="Tytuł utworu">
                   {currentSong.title}
                 </span>
-                <span className="text-xs sm:text-sm text-gray-500 truncate" aria-label="Wykonawca">
+                <span className="text-sm text-gray-500 truncate" aria-label="Wykonawca">
                   {currentSong.artist}
                 </span>
               </div>
@@ -96,26 +96,26 @@ const PlaybackBar: React.FC<PlaybackBarProps> = ({
           )}
         </div>
 
-        <div className="w-full sm:w-2/4 flex flex-col items-center">
-          <div className="flex items-center space-x-2 sm:space-x-4 mb-2">
+        <div className="w-full sm:w-2/5 flex flex-col items-center">
+          <div className="flex items-center space-x-4 mb-2">
             <button
               onClick={() => onToggleRepeatMode("playlist")}
-              className={`text-gray-600 hover:text-gray-800 ${
+              className={`text-gray-600 hover:text-purple-500 ${
                 repeatMode.playlist === "on" ? "text-purple-500" : ""
-              } p-1 sm:p-2 transition-all duration-150 ease-in-out active:scale-95 active:bg-gray-200 rounded-full`}
+              } p-2 transition-all duration-150 ease-in-out`}
               aria-label="Powtarzaj playlistę"
               title="Powtarzaj playlistę"
               aria-pressed={repeatMode.playlist === "on"}
             >
-              <FaRedo size={14} />
+              <FaRedo size={20} />
             </button>
             <button
               onClick={onPrevious}
-              className="text-gray-600 hover:text-gray-800 p-2 transition-all duration-150 ease-in-out active:scale-95 active:bg-gray-200 rounded-full"
+              className="text-gray-600 hover:text-gray-800 p-2 transition-all duration-150 ease-in-out"
               aria-label="Poprzedni utwór"
               title="Poprzedni utwór"
             >
-              <FaBackward size={20} />
+              <FaBackward size={24} />
             </button>
             <button
               onClick={onTogglePlay}
@@ -123,30 +123,30 @@ const PlaybackBar: React.FC<PlaybackBarProps> = ({
               aria-label={isPlaying ? "Pauza" : "Odtwórz"}
               title={isPlaying ? "Pauza" : "Odtwórz"}
             >
-              {isPlaying ? <FaPause size={24} /> : <FaPlay size={24} />}
+              {isPlaying ? <FaPause size={28} /> : <FaPlay size={28} />}
             </button>
             <button
               onClick={onNext}
-              className="text-gray-600 hover:text-gray-800 p-2 transition-all duration-150 ease-in-out active:scale-95 active:bg-gray-200 rounded-full"
+              className="text-gray-600 hover:text-gray-800 p-2 transition-all duration-150 ease-in-out"
               aria-label="Następny utwór"
               title="Następny utwór"
             >
-              <FaForward size={20} />
+              <FaForward size={24} />
             </button>
             <button
               onClick={() => onToggleRepeatMode("song")}
-              className={`text-gray-600 hover:text-gray-800 ${
+              className={`text-gray-600 hover:text-purple-500 ${
                 repeatMode.song === "on" ? "text-purple-500" : ""
-              } p-1 sm:p-2 transition-all duration-150 ease-in-out active:scale-95 active:bg-gray-200 rounded-full`}
+              } p-2 transition-all duration-150 ease-in-out`}
               aria-label="Powtarzaj utwór"
               title="Powtarzaj utwór"
               aria-pressed={repeatMode.song === "on"}
             >
-              <FaRetweet size={16} />
+              <FaRetweet size={20} />
             </button>
           </div>
           <div className="w-full flex items-center">
-            <span className="text-xs text-gray-500 mr-2">
+            <span className="text-xs text-gray-500 mr-2 w-10 text-right">
               {formatTime(currentTime)}
             </span>
             <input
@@ -155,7 +155,7 @@ const PlaybackBar: React.FC<PlaybackBarProps> = ({
               max={duration}
               value={currentTime}
               onChange={(e) => onSeek(Number(e.target.value))}
-              className="w-full h-1"
+              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
               role="slider"
               aria-label="Postęp odtwarzania"
               aria-valuemin={0}
@@ -163,52 +163,81 @@ const PlaybackBar: React.FC<PlaybackBarProps> = ({
               aria-valuenow={currentTime}
               aria-valuetext={`${formatTime(currentTime)} z ${formatTime(duration)}`}
             />
-            <span className="text-xs text-gray-500 ml-2">
+            <span className="text-xs text-gray-500 ml-2 w-10">
               {formatTime(duration)}
             </span>
           </div>
         </div>
         
-        <div className="w-full sm:w-1/4 flex justify-center sm:justify-end items-center space-x-2 sm:space-x-4 mt-2 sm:mt-0">
+        <div className="w-full sm:w-1/4 flex justify-center sm:justify-end items-center space-x-4 mt-4 sm:mt-0">
+          <div className="flex items-center space-x-2 sm:hidden">
+            <button
+              onClick={handleVolumeToggle}
+              className="text-gray-600 hover:text-gray-800 p-2"
+            >
+              {isMuted || volume === 0 ? (
+                <FaVolumeMute size={20} />
+              ) : (
+                <FaVolumeUp size={20} />
+              )}
+            </button>
+            <input
+              type="range"
+              min={0}
+              max={1}
+              step={0.01}
+              value={volume}
+              onChange={(e) => onVolumeChange(Number(e.target.value))}
+              className="w-20 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+              role="slider"
+              aria-label="Głośność"
+              aria-valuemin={0}
+              aria-valuemax={1}
+              aria-valuenow={volume}
+              aria-valuetext={`${Math.round(volume * 100)}%`}
+            />
+          </div>
           <button
             onClick={() => onLike(currentSong?.id || "")}
             className={`text-gray-600 hover:text-red-500 ${
               isLiked ? "text-red-500" : ""
-            }`}
+            } p-2`}
           >
-            <FaHeart size={14} aria-hidden="true" />
+            <FaHeart size={20} aria-hidden="true" />
           </button>
           <button
             onClick={() => onAddToPlaylist(currentSong?.id || "")}
-            className="text-gray-600 hover:text-purple-500"
+            className="text-gray-600 hover:text-purple-500 p-2"
           >
-            <FaBookmark size={14} />
+            <FaBookmark size={20} />
           </button>
-          <button
-            onClick={handleVolumeToggle}
-            className="text-gray-600 hover:text-gray-800"
-          >
-            {isMuted || volume === 0 ? (
-              <FaVolumeMute size={14} />
-            ) : (
-              <FaVolumeUp size={14} />
-            )}
-          </button>
-          <input
-            type="range"
-            min={0}
-            max={1}
-            step={0.01}
-            value={volume}
-            onChange={(e) => onVolumeChange(Number(e.target.value))}
-            className="w-16 h-1"
-            role="slider"
-            aria-label="Głośność"
-            aria-valuemin={0}
-            aria-valuemax={1}
-            aria-valuenow={volume}
-            aria-valuetext={`${Math.round(volume * 100)}%`}
-          />
+          <div className="hidden sm:flex items-center space-x-2">
+            <button
+              onClick={handleVolumeToggle}
+              className="text-gray-600 hover:text-gray-800 p-2"
+            >
+              {isMuted || volume === 0 ? (
+                <FaVolumeMute size={20} />
+              ) : (
+                <FaVolumeUp size={20} />
+              )}
+            </button>
+            <input
+              type="range"
+              min={0}
+              max={1}
+              step={0.01}
+              value={volume}
+              onChange={(e) => onVolumeChange(Number(e.target.value))}
+              className="w-20 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+              role="slider"
+              aria-label="Głośność"
+              aria-valuemin={0}
+              aria-valuemax={1}
+              aria-valuenow={volume}
+              aria-valuetext={`${Math.round(volume * 100)}%`}
+            />
+          </div>
         </div>
       </div>
     </div>
