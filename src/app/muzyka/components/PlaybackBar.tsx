@@ -74,7 +74,7 @@ const PlaybackBar: React.FC<PlaybackBarProps> = ({
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-300 shadow-lg p-2 z-50 h-auto" role="region" aria-label="Kontrolki odtwarzacza">
       <div className="flex flex-col sm:flex-row items-center justify-between max-w-7xl mx-auto">
-        <div className="flex items-center space-x-2 w-full sm:w-1/4 mb-2 sm:mb-0" aria-live="polite">
+        <div className="flex items-center space-x-2 w-full sm:w-1/3 mb-2 sm:mb-0" aria-live="polite">
           {currentSong && (
             <>
               <Image
@@ -82,13 +82,13 @@ const PlaybackBar: React.FC<PlaybackBarProps> = ({
                 alt={`Okładka albumu ${currentSong.title}`}
                 width={32}
                 height={32}
-                className="object-cover rounded"
+                className="object-cover rounded hidden sm:block"
               />
               <div className="flex flex-col">
-                <span className="text-xs sm:text-sm font-semibold truncate" aria-label="Tytuł utworu">
+                <span className="text-sm sm:text-base font-bold truncate" aria-label="Tytuł utworu">
                   {currentSong.title}
                 </span>
-                <span className="text-xs text-gray-500 truncate" aria-label="Wykonawca">
+                <span className="text-xs sm:text-sm text-gray-500 truncate" aria-label="Wykonawca">
                   {currentSong.artist}
                 </span>
               </div>
