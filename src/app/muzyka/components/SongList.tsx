@@ -43,6 +43,7 @@ interface SongListProps {
   currentSong: Song | null;
   isPlaylistExpanded: boolean;
   showSearch: boolean;
+  hasPlaylists: boolean;
 }
 
 const SongList: React.FC<SongListProps> = ({
@@ -64,6 +65,7 @@ const SongList: React.FC<SongListProps> = ({
   filterText,
   setFilterText,
   showSearch,
+  hasPlaylists,
 }) => {
   const [showNotification, setShowNotification] = useState(false);
 
@@ -229,28 +231,18 @@ const SongList: React.FC<SongListProps> = ({
               >
                 <FaThumbsUp className="text-xl" />
               </button>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  if (!isPlaylistExpanded || !expandedPlaylist) {
-                  } else {
+              {(isPlaylistExpanded && expandedPlaylist && hasPlaylists) && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
                     onAddToPlaylist(song.id);
-                  }
-                }}
-                disabled={!isPlaylistExpanded || !expandedPlaylist}
-                className={`text-gray-500 hover:text-blue-500 transition-colors duration-200 ${
-                  !isPlaylistExpanded || !expandedPlaylist
-                    ? "opacity-50 cursor-not-allowed"
-                    : ""
-                }`}
-                title={
-                  isPlaylistExpanded && expandedPlaylist
-                    ? "Dodaj do playlisty"
-                    : "Rozwiń playlistę, aby dodać utwór"
-                }
-              >
-                <FaBookmark className="text-xl" />
-              </button>
+                  }}
+                  className="text-gray-500 hover:text-blue-500 transition-colors duration-200"
+                  title="Dodaj do playlisty"
+                >
+                  <FaBookmark className="text-xl" />
+                </button>
+              )}
             </div>
           </motion.li>
         ))}

@@ -597,17 +597,17 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
 
         <SongList
           songs={sortedAndFilteredSongs}
-          visibleSongs={sortedAndFilteredSongs.length}
-          currentSong={currentSong}
+          visibleSongs={visibleSongs}
           isPlaying={isPlaying}
+          currentSong={currentSong}
           onSongSelect={(songId) => {
             const index = songs.findIndex((s) => s.id === songId);
             if (index !== -1) {
               dispatch(setCurrentSongIndex(index));
             }
           }}
-          onLoadMore={() => {}}
-          onCollapse={() => {}}
+          onLoadMore={loadMoreSongs}
+          onCollapse={collapseSongList}
           isPopularList={false}
           expandedPlaylist={expandedPlaylist}
           setExpandedPlaylist={setExpandedPlaylist}
@@ -619,6 +619,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           setFilterText={setFilterText}
           isPlaylistExpanded={!!expandedPlaylist}
           showSearch={false}
+          hasPlaylists={playlists.length > 0}
         />
       </div>
       <PlaybackBar
