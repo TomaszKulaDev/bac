@@ -32,6 +32,9 @@ const config: Config = {
         'global-white': '#ffffff',
         'music-page': 'white',
       },
+      fontFamily: {
+        'inter': ['Inter', 'sans-serif'],
+      },
     },
   },
   // Wtyczki Tailwind CSS

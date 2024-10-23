@@ -285,21 +285,33 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   const handleAddToPlaylist = useCallback(
     (songId: string) => {
       if (expandedPlaylist) {
-        const playlist = playlists.find(p => p.id === expandedPlaylist);
-        const song = songs.find(s => s.id === songId);
+        const playlist = playlists.find((p) => p.id === expandedPlaylist);
+        const song = songs.find((s) => s.id === songId);
         if (playlist && song) {
           if (playlist.songs.includes(songId)) {
-            showInfoToast(`Utwór "${song.title}" jest już w playliście "${playlist.name}"`);
+            showInfoToast(
+              `Utwór "${song.title}" jest już w playliście "${playlist.name}"`
+            );
           } else {
             onAddToPlaylist(expandedPlaylist, songId);
-            showSuccessToast(`Dodano "${song.title}" do playlisty "${playlist.name}"`);
+            showSuccessToast(
+              `Dodano "${song.title}" do playlisty "${playlist.name}"`
+            );
           }
         }
       } else {
         showErrorToast("Nie wybrano playlisty");
       }
     },
-    [expandedPlaylist, onAddToPlaylist, songs, playlists, showSuccessToast, showErrorToast, showInfoToast]
+    [
+      expandedPlaylist,
+      onAddToPlaylist,
+      songs,
+      playlists,
+      showSuccessToast,
+      showErrorToast,
+      showInfoToast,
+    ]
   );
 
   // Funkcja do dodawania utworu do playlisty
@@ -457,14 +469,24 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   // Komponent MusicPlayer - główny komponent odtwarzacza muzyki
   return (
     <div className="max-w-7xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden pb-20">
-      <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-6">
-        <h1 className="text-3xl font-bold text-white">
-          Poland&apos;s Top Bachata Tracks of 2024: Best Music Picks
+      <div className="bg-[#0a1e3b] text-white p-8 mb-8">
+        <div className="flex items-center mb-6">
+          <div className="bg-[#ffd700] text-[#0a1e3b] text-sm font-bold px-3 py-1.5 rounded mr-3">
+            Baciata.pl
+          </div>
+          <span className="text-base">Muzyka</span>
+        </div>
+        <h1 className="text-8xl font-bold mb-4 font-inter tracking-tight">
+          Bachata Top lista 2024!
         </h1>
-        <p className="text-white">
-          Known and loved music to dance at parties in 2024!
+        <p className="text-xl font-inter">
+          {" "}
+          Do nich tańczysz na imprezach w 2024 roku!
         </p>
-        <p className="text-white">8 utworów • Zaktualizowano: 18.10.2024</p>
+        <p className="text-white">
+          {filteredSongs.length} utworów • Zaktualizowano:{" "}
+          {new Date().toLocaleDateString("pl-PL")}
+        </p>
       </div>
       <div className="w-full mb-4 bg-gray-100">
         <SortControl
