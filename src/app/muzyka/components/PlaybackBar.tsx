@@ -35,6 +35,8 @@ interface PlaybackBarProps {
   onAddToPlaylist: (songId: string) => void;
   onLike: (songId: string) => void;
   isLiked: boolean;
+  hasPlaylistsAndExpanded: boolean;
+  onCreatePlaylist: () => void;
 }
 
 const PlaybackBar: React.FC<PlaybackBarProps> = ({
@@ -53,6 +55,8 @@ const PlaybackBar: React.FC<PlaybackBarProps> = ({
   onAddToPlaylist,
   onLike,
   isLiked,
+  hasPlaylistsAndExpanded,
+  onCreatePlaylist,
 }) => {
   const [isMuted, setIsMuted] = useState(false);
 
@@ -205,12 +209,17 @@ const PlaybackBar: React.FC<PlaybackBarProps> = ({
           >
             <FaHeart size={20} aria-hidden="true" />
           </button>
-          <button
-            onClick={() => onAddToPlaylist(currentSong?.id || "")}
-            className="text-gray-600 hover:text-purple-500 p-2"
-          >
-            <FaBookmark size={20} />
-          </button>
+          {hasPlaylistsAndExpanded && (
+            <button
+              onClick={() => onAddToPlaylist(currentSong?.id || "")}
+              className="text-gray-600 hover:text-purple-500 p-2"
+              title="Dodaj do playlisty"
+              aria-label="Dodaj bieżący utwór do playlisty"
+              role="button"
+            >
+              <FaBookmark size={20} aria-hidden="true" />
+            </button>
+          )}
           <div className="hidden sm:flex items-center space-x-2">
             <button
               onClick={handleVolumeToggle}
@@ -238,6 +247,13 @@ const PlaybackBar: React.FC<PlaybackBarProps> = ({
               aria-valuetext={`${Math.round(volume * 100)}%`}
             />
           </div>
+          <button
+            onClick={onCreatePlaylist}
+            className="text-gray-600 hover:text-purple-500 p-2"
+            title="Utwórz nową playlistę"
+          >
+            <FaPlus size={20} />
+          </button>
         </div>
       </div>
     </div>

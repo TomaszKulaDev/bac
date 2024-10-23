@@ -641,6 +641,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
         onAddToPlaylist={(songId) => handleAddToPlaylist(songId)}
         onLike={(songId) => {/* Dodaj logikę dla polubienia utworu */}}
         isLiked={false} // Dodaj logikę sprawdzania, czy utwór jest polubiony
+        hasPlaylistsAndExpanded={playlists.length > 0 && !!expandedPlaylist}
+        onCreatePlaylist={() => setIsModalOpen(true)}
       />
     </div>
   );
