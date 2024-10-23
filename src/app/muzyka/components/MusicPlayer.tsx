@@ -442,8 +442,11 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     <div className="max-w-7xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden pb-20">
       <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-6">
         <h1 className="text-3xl font-bold text-white">
-          Bachata Top Playlist 2024
+          Poland&apos;s Top Bachata Tracks of 2024: Best Music Picks
         </h1>
+        <p className="text-white">
+          Known and loved music to dance at parties in 2024!
+        </p>
         <p className="text-white">8 utworów • Zaktualizowano: 18.10.2024</p>
       </div>
       <div className="w-full mb-4 bg-gray-100">
@@ -567,7 +570,9 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
             </div>
           </div>
         </div>
-        {isMobile && (
+
+        {/* TODO: new playlist */}
+        {/* {isMobile && (
           <>
             <button
               onClick={() => setIsModalOpen(true)}
@@ -593,7 +598,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
             Powrót do wszystkich utworów.
             <br /> Dodaj więcej ulubionych.
           </button>
-        )}
+        )} */}
 
         <SongList
           songs={sortedAndFilteredSongs}
@@ -632,14 +637,22 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
         onSeek={handleSeek}
         volume={volume}
         onVolumeChange={handleVolumeChange}
-        currentSong={currentSong ? {
-          ...currentSong,
-          thumbnail: currentSong.thumbnail || getYouTubeThumbnail(currentSong.youtubeId)
-        } : null}
+        currentSong={
+          currentSong
+            ? {
+                ...currentSong,
+                thumbnail:
+                  currentSong.thumbnail ||
+                  getYouTubeThumbnail(currentSong.youtubeId),
+              }
+            : null
+        }
         repeatMode={repeatMode}
         onToggleRepeatMode={toggleRepeatMode}
         onAddToPlaylist={(songId) => handleAddToPlaylist(songId)}
-        onLike={(songId) => {/* Dodaj logikę dla polubienia utworu */}}
+        onLike={(songId) => {
+          /* Dodaj logikę dla polubienia utworu */
+        }}
         isLiked={false} // Dodaj logikę sprawdzania, czy utwór jest polubiony
         hasPlaylistsAndExpanded={playlists.length > 0 && !!expandedPlaylist}
         onCreatePlaylist={() => setIsModalOpen(true)}
