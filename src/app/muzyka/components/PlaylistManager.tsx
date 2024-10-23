@@ -43,7 +43,7 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
   };
 
   return (
-    <div className="space-y-4 mt-6 mb-8">
+    <div className="space-y-2 overflow-y-auto flex-grow">
       {playlists.length < 2 && (
         <button
           onClick={() => setIsModalOpen(true)}

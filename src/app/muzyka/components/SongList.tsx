@@ -136,7 +136,7 @@ const SongList: React.FC<SongListProps> = ({
   );
 
   return (
-    <div className="song-list bg-white rounded-lg shadow-md p-4">
+    <div className="overflow-y-auto flex-grow">
       {showSearch && (
         <div className="mb-4">
           <input

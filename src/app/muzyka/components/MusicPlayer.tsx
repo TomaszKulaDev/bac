@@ -571,17 +571,16 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           </div>
         </div>
 
-        {/* TODO: new playlist */}
-        {/* {isMobile && (
+        {isMobile && (
           <>
-            <button
+            {/* <button
               onClick={() => setIsModalOpen(true)}
               className="w-full bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 transition duration-300 mb-4 flex items-center justify-center"
               aria-label="Utwórz nową playlistę"
               title="Utwórz nową playlistę"
             >
               <FaPlus className="mr-2" /> Utwórz nową playlistę
-            </button>
+            </button> */}
             {isModalOpen && (
               <CreatePlaylistModal
                 onClose={() => setIsModalOpen(false)}
@@ -598,7 +597,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
             Powrót do wszystkich utworów.
             <br /> Dodaj więcej ulubionych.
           </button>
-        )} */}
+        )}
 
         <SongList
           songs={sortedAndFilteredSongs}
