@@ -1,3 +1,4 @@
+// src/app/muzyka/components/PlaybackBar.tsx
 import React, { useState } from "react";
 import {
   FaPlay,
@@ -76,9 +77,16 @@ const PlaybackBar: React.FC<PlaybackBarProps> = ({
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-300 shadow-lg p-4 z-50" role="region" aria-label="Kontrolki odtwarzacza">
+    <div
+      className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-300 shadow-lg p-4 z-50"
+      role="region"
+      aria-label="Kontrolki odtwarzacza"
+    >
       <div className="flex flex-col sm:flex-row items-center justify-between max-w-7xl mx-auto">
-        <div className="flex items-center space-x-4 w-full sm:w-1/3 mb-4 sm:mb-0" aria-live="polite">
+        <div
+          className="flex items-center space-x-4 w-full sm:w-1/3 mb-4 sm:mb-0"
+          aria-live="polite"
+        >
           {currentSong && (
             <>
               <Image
@@ -89,10 +97,16 @@ const PlaybackBar: React.FC<PlaybackBarProps> = ({
                 className="object-cover rounded-md shadow-md"
               />
               <div className="flex flex-col">
-                <span className="text-base font-bold truncate" aria-label="Tytuł utworu">
+                <span
+                  className="text-base font-bold truncate"
+                  aria-label="Tytuł utworu"
+                >
                   {currentSong.title}
                 </span>
-                <span className="text-sm text-gray-500 truncate" aria-label="Wykonawca">
+                <span
+                  className="text-sm text-gray-500 truncate"
+                  aria-label="Wykonawca"
+                >
                   {currentSong.artist}
                 </span>
               </div>
@@ -165,14 +179,16 @@ const PlaybackBar: React.FC<PlaybackBarProps> = ({
               aria-valuemin={0}
               aria-valuemax={duration}
               aria-valuenow={currentTime}
-              aria-valuetext={`${formatTime(currentTime)} z ${formatTime(duration)}`}
+              aria-valuetext={`${formatTime(currentTime)} z ${formatTime(
+                duration
+              )}`}
             />
             <span className="text-xs text-gray-500 ml-2 w-10">
               {formatTime(duration)}
             </span>
           </div>
         </div>
-        
+
         <div className="w-full sm:w-1/4 flex justify-center sm:justify-end items-center space-x-4 mt-4 sm:mt-0">
           <div className="flex items-center space-x-2 sm:hidden">
             <button
@@ -208,6 +224,13 @@ const PlaybackBar: React.FC<PlaybackBarProps> = ({
             } p-2`}
           >
             <FaHeart size={20} aria-hidden="true" />
+          </button>
+          <button
+            onClick={onCreatePlaylist}
+            className="text-gray-600 hover:text-purple-500 p-2"
+            title="Utwórz nową playlistę"
+          >
+            <FaPlus size={20} />
           </button>
           {hasPlaylistsAndExpanded && (
             <button
@@ -247,13 +270,6 @@ const PlaybackBar: React.FC<PlaybackBarProps> = ({
               aria-valuetext={`${Math.round(volume * 100)}%`}
             />
           </div>
-          <button
-            onClick={onCreatePlaylist}
-            className="text-gray-600 hover:text-purple-500 p-2"
-            title="Utwórz nową playlistę"
-          >
-            <FaPlus size={20} />
-          </button>
         </div>
       </div>
     </div>
