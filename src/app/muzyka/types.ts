@@ -35,6 +35,7 @@ export interface MusicPlayerProps {
   showSuccessToast: (message: string) => void;
   showErrorToast: (message: string) => void;
   showInfoToast: (message: string) => void;
+  playlistCount: number;
 }
 
 export interface RepeatMode {

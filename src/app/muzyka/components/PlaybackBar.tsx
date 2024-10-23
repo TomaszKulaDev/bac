@@ -38,6 +38,7 @@ interface PlaybackBarProps {
   isLiked: boolean;
   hasPlaylistsAndExpanded: boolean;
   onCreatePlaylist: () => void;
+  playlistCount: number;
 }
 
 const PlaybackBar: React.FC<PlaybackBarProps> = ({
@@ -58,6 +59,7 @@ const PlaybackBar: React.FC<PlaybackBarProps> = ({
   isLiked,
   hasPlaylistsAndExpanded,
   onCreatePlaylist,
+  playlistCount,
 }) => {
   const [isMuted, setIsMuted] = useState(false);
 
@@ -225,13 +227,15 @@ const PlaybackBar: React.FC<PlaybackBarProps> = ({
           >
             <FaHeart size={20} aria-hidden="true" />
           </button>
-          <button
-            onClick={onCreatePlaylist}
-            className="text-gray-600 hover:text-purple-500 p-2"
-            title="Utwórz nową playlistę"
-          >
-            <FaPlus size={20} />
-          </button>
+          {playlistCount < 2 && (
+            <button
+              onClick={onCreatePlaylist}
+              className="text-gray-600 hover:text-purple-500 p-2"
+              title="Utwórz nową playlistę"
+            >
+              <FaPlus size={20} />
+            </button>
+          )}
           {hasPlaylistsAndExpanded && (
             <button
               onClick={() => onAddToPlaylist(currentSong?.id || "")}

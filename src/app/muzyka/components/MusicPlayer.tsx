@@ -673,6 +673,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
         }}
         isLiked={false} // Dodaj logikę sprawdzania, czy utwór jest polubiony
         hasPlaylistsAndExpanded={playlists.length > 0 && !!expandedPlaylist}
+        playlistCount={playlists.length}
         onCreatePlaylist={() => setIsModalOpen(true)}
       />
     </div>
