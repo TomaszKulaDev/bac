@@ -15,6 +15,8 @@ import { RootState } from "@/store/store";
 import BaciataRisingBanner from "./components/BaciataRisingBanner";
 import SongList from "./components/SongList";
 import PlaylistManager from "./components/PlaylistManager";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const generateUniqueId = () => {
   return Date.now().toString(36) + Math.random().toString(36).substr(2);
@@ -36,6 +38,11 @@ const MusicPage: React.FC = () => {
     null
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Dodajmy funkcje pomocnicze do wyświetlania powiadomień
+  const showSuccessToast = (message: string) => toast.success(message);
+  const showErrorToast = (message: string) => toast.error(message);
+  const showInfoToast = (message: string) => toast.info(message);
 
   const handleCreatePlaylist = useCallback(
     (name: string, selectedSongs: string[] = []) => {
@@ -246,6 +253,9 @@ const MusicPage: React.FC = () => {
             }}
             isModalOpen={isModalOpen}
             setIsModalOpen={setIsModalOpen}
+            showSuccessToast={showSuccessToast}
+            showErrorToast={showErrorToast}
+            showInfoToast={showInfoToast}
           />
         </div>
         <div className="w-full lg:w-1/3 p-4">
@@ -303,6 +313,9 @@ const MusicPage: React.FC = () => {
             }}
             currentPlaylistId={currentPlaylistId}
             onAddToPlaylist={handleAddToExistingPlaylist}
+            showSuccessToast={showSuccessToast}
+            showErrorToast={showErrorToast}
+            showInfoToast={showInfoToast}
           />
         </div>
       </div>
@@ -360,6 +373,7 @@ const MusicPage: React.FC = () => {
           </button>
         </section>
       )}
+      <ToastContainer position="bottom-right" autoClose={3000} />
     </div>
   );
 };

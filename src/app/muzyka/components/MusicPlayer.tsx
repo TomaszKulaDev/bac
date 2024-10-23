@@ -57,6 +57,9 @@ interface MusicPlayerProps {
   ) => void;
   isModalOpen: boolean;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  showSuccessToast: (message: string) => void;
+  showErrorToast: (message: string) => void;
+  showInfoToast: (message: string) => void;
 }
 
 // Komponent MusicPlayer
@@ -75,6 +78,9 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   onUpdatePlaylists,
   isModalOpen,
   setIsModalOpen,
+  showSuccessToast,
+  showErrorToast,
+  showInfoToast,
 }) => {
   const dispatch = useDispatch();
   const currentSong = useSelector(
@@ -279,10 +285,21 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   const handleAddToPlaylist = useCallback(
     (songId: string) => {
       if (expandedPlaylist) {
-        onAddToPlaylist(expandedPlaylist, songId);
+        const playlist = playlists.find(p => p.id === expandedPlaylist);
+        const song = songs.find(s => s.id === songId);
+        if (playlist && song) {
+          if (playlist.songs.includes(songId)) {
+            showInfoToast(`Utwór "${song.title}" jest już w playliście "${playlist.name}"`);
+          } else {
+            onAddToPlaylist(expandedPlaylist, songId);
+            showSuccessToast(`Dodano "${song.title}" do playlisty "${playlist.name}"`);
+          }
+        }
+      } else {
+        showErrorToast("Nie wybrano playlisty");
       }
     },
-    [expandedPlaylist, onAddToPlaylist]
+    [expandedPlaylist, onAddToPlaylist, songs, playlists, showSuccessToast, showErrorToast, showInfoToast]
   );
 
   // Funkcja do dodawania utworu do playlisty
@@ -585,6 +602,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
               <CreatePlaylistModal
                 onClose={() => setIsModalOpen(false)}
                 onCreatePlaylist={onCreatePlaylist}
+                showSuccessToast={showSuccessToast}
+                showErrorToast={showErrorToast}
               />
             )}
           </>

@@ -32,6 +32,9 @@ export interface MusicPlayerProps {
   playlists: Playlist[];
   onUpdatePlaylists: (updater: (prevPlaylists: Playlist[]) => Playlist[]) => void;
   onPlayPlaylist: (playlistId: string) => void;
+  showSuccessToast: (message: string) => void;
+  showErrorToast: (message: string) => void;
+  showInfoToast: (message: string) => void;
 }
 
 export interface RepeatMode {

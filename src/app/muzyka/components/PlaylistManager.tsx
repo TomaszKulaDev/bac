@@ -10,7 +10,7 @@ interface PlaylistManagerProps {
   songs: Song[];
   expandedPlaylist: string | null;
   setExpandedPlaylist: (playlistId: string | null) => void;
-  onCreatePlaylist: (name: string, selectedSongs: string[]) => void;
+  onCreatePlaylist: (name: string, selectedSongs?: string[]) => void;
   onDeletePlaylist: (playlistId: string) => void;
   onRenamePlaylist: (playlistId: string, newName: string) => void;
   onRemoveSongFromPlaylist: (playlistId: string, songId: string) => void;
@@ -20,6 +20,9 @@ interface PlaylistManagerProps {
   onAddToPlaylist: (playlistId: string, songId: string) => void;
   setIsModalOpen: (isOpen: boolean) => void;
   isModalOpen: boolean;
+  showSuccessToast: (message: string) => void;
+  showErrorToast: (message: string) => void;
+  showInfoToast: (message: string) => void;
 }
 
 const PlaylistManager: React.FC<PlaylistManagerProps> = ({
@@ -37,6 +40,9 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
   onAddToPlaylist,
   setIsModalOpen,
   isModalOpen,
+  showSuccessToast,
+  showErrorToast,
+  showInfoToast,
 }) => {
   const getSongDetails = (songId: string): Song | undefined => {
     return songs.find((song) => song._id === songId || song.id === songId);
@@ -55,7 +61,9 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
       {isModalOpen && (
         <CreatePlaylistModal
           onClose={() => setIsModalOpen(false)}
-          onCreatePlaylist={(name) => onCreatePlaylist(name, [])}
+          onCreatePlaylist={onCreatePlaylist}
+          showSuccessToast={showSuccessToast}
+          showErrorToast={showErrorToast}
         />
       )}
       {playlists.map((playlist) => (
@@ -135,9 +143,9 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
                       onClick={() => {
                         if (!playlist.songs.includes(song.id)) {
                           onAddToPlaylist(playlist.id, song.id);
+                          showSuccessToast(`Dodano "${song.title}" do playlisty "${playlist.name}"`);
                         } else {
-                          // Możesz tutaj dodać jakieś powiadomienie, że utwór już istnieje w playliście
-                          console.log("Utwór już istnieje w tej playliście");
+                          showInfoToast(`Utwór "${song.title}" jest już w playliście "${playlist.name}"`);
                         }
                       }}
                       className="text-green-500 hover:text-green-700 text-xs"

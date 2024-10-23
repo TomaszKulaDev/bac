@@ -3,11 +3,15 @@ import React, { useState } from "react";
 interface CreatePlaylistModalProps {
   onClose: () => void;
   onCreatePlaylist: (name: string, selectedSongs?: string[]) => void;
+  showSuccessToast: (message: string) => void;
+  showErrorToast: (message: string) => void;
 }
 
 const CreatePlaylistModal: React.FC<CreatePlaylistModalProps> = ({
   onClose,
   onCreatePlaylist,
+  showSuccessToast,
+  showErrorToast,
 }) => {
   const [playlistName, setPlaylistName] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -39,7 +43,10 @@ const CreatePlaylistModal: React.FC<CreatePlaylistModalProps> = ({
     e.preventDefault();
     if (validatePlaylistName(playlistName)) {
       onCreatePlaylist(playlistName.trim());
+      showSuccessToast(`Utworzono nową playlistę "${playlistName.trim()}"`);
       onClose();
+    } else {
+      showErrorToast("Nie udało się utworzyć playlisty. Sprawdź nazwę.");
     }
   };
 
