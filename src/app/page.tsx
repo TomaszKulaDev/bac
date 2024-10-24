@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FaUser, FaLock, FaShieldAlt, FaMusic } from "react-icons/fa";
+import { FaUser, FaMusic } from "react-icons/fa";
 
 interface FeatureCardProps {
   icon: React.ReactNode;

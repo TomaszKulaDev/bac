@@ -1,23 +1,18 @@
-Aktualna struktura projektu (98 plików)
-
-Statystyki projektu:
-Całkowity rozmiar: 0.99 MB
-Całkowita liczba linii kodu: 9999
-Typy plików: {".local":1,".json":3,".ts":38,".mjs":3,".png":2,".txt":2,".md":1,".tsx":44,".ico":1,".css":1,".js":1,".tsbuildinfo":1}
 
 Struktura plików projektu:
 ├── .env.local (.local, 0.40 KB)
 ├── .eslintrc.json (.json, 0.04 KB)
 ├── next-env.d.ts (.ts, 0.20 KB)
-├── next.config.mjs (.mjs, 1.57 KB)
-├── package.json (.json, 1.48 KB)
+├── next.config.mjs (.mjs, 1.66 KB)
+├── package.json (.json, 1.63 KB)
 ├── postcss.config.mjs (.mjs, 0.14 KB)
 ├── public/
 │   ├── default-avatar.png (.png, 422.36 KB)
 │   ├── images/
+│   │   ├── hero_img.jpg (.jpg, 122.10 KB)
 │   │   └── open-in-browser.png (.png, 36.73 KB)
 │   └── robots.txt (.txt, 0.07 KB)
-├── README.md (.md, 1.47 KB)
+├── README.md (.md, 3.07 KB)
 ├── src/
 │   ├── app/
 │   │   ├── accommodations/
@@ -26,9 +21,9 @@ Struktura plików projektu:
 │   │   │   ├── AdminLayout.tsx (.tsx, 0.82 KB)
 │   │   │   ├── music/
 │   │   │   │   ├── components/
-│   │   │   │   │   ├── AddSongForm.tsx (.tsx, 4.82 KB)
+│   │   │   │   │   ├── AddSongForm.tsx (.tsx, 5.95 KB)
 │   │   │   │   │   └── SongList.tsx (.tsx, 2.36 KB)
-│   │   │   │   └── page.tsx (.tsx, 2.96 KB)
+│   │   │   │   └── page.tsx (.tsx, 3.11 KB)
 │   │   │   ├── page.tsx (.tsx, 11.80 KB)
 │   │   │   └── users/
 │   │   │       └── page.tsx (.tsx, 12.54 KB)
@@ -46,7 +41,6 @@ Struktura plików projektu:
 │   │   │   │   └── route.ts (.ts, 5.02 KB)
 │   │   │   ├── login/
 │   │   │   │   └── route.ts (.ts, 3.71 KB)
-│   │   │   ├── playlists/
 │   │   │   ├── register/
 │   │   │   │   └── route.ts (.ts, 4.93 KB)
 │   │   │   ├── resend-verification/
@@ -54,7 +48,7 @@ Struktura plików projektu:
 │   │   │   ├── reset-password/
 │   │   │   │   └── route.ts (.ts, 4.81 KB)
 │   │   │   ├── songs/
-│   │   │   │   ├── route.ts (.ts, 2.06 KB)
+│   │   │   │   ├── route.ts (.ts, 2.32 KB)
 │   │   │   │   └── [id]/
 │   │   │   │       └── route.ts (.ts, 1.07 KB)
 │   │   │   ├── submit-song/
@@ -72,7 +66,6 @@ Struktura plików projektu:
 │   │   │   └── page.tsx (.tsx, 0.12 KB)
 │   │   ├── dance-schools/
 │   │   │   └── page.tsx (.tsx, 0.12 KB)
-│   │   ├── data-deletion/
 │   │   ├── events/
 │   │   │   └── page.tsx (.tsx, 0.11 KB)
 │   │   ├── favicon.ico (.ico, 25.32 KB)
@@ -82,7 +75,7 @@ Struktura plików projektu:
 │   │   │   └── page.tsx (.tsx, 0.12 KB)
 │   │   ├── gamification/
 │   │   │   └── page.tsx (.tsx, 0.12 KB)
-│   │   ├── globals.css (.css, 0.64 KB)
+│   │   ├── globals.css (.css, 0.94 KB)
 │   │   ├── jobs/
 │   │   │   └── page.tsx (.tsx, 0.11 KB)
 │   │   ├── layout.tsx (.tsx, 4.36 KB)
@@ -93,16 +86,17 @@ Struktura plików projektu:
 │   │   ├── muzyka/
 │   │   │   ├── components/
 │   │   │   │   ├── BaciataRisingBanner.tsx (.tsx, 0.67 KB)
-│   │   │   │   ├── CreatePlaylistModal.tsx (.tsx, 1.67 KB)
+│   │   │   │   ├── CreatePlaylistModal.tsx (.tsx, 2.88 KB)
 │   │   │   │   ├── index.ts (.ts, 0.06 KB)
-│   │   │   │   ├── MusicPlayer.tsx (.tsx, 20.40 KB)
-│   │   │   │   ├── PlaylistManager.tsx (.tsx, 8.28 KB)
-│   │   │   │   ├── SongList.tsx (.tsx, 9.08 KB)
-│   │   │   │   └── Toast.tsx (.tsx, 0.89 KB)
-│   │   │   ├── page.tsx (.tsx, 11.38 KB)
-│   │   │   ├── types.ts (.ts, 1.05 KB)
+│   │   │   │   ├── MusicPlayer.tsx (.tsx, 23.46 KB)
+│   │   │   │   ├── PlaybackBar.tsx (.tsx, 9.28 KB)
+│   │   │   │   ├── PlaylistManager.tsx (.tsx, 8.91 KB)
+│   │   │   │   ├── SongList.tsx (.tsx, 8.56 KB)
+│   │   │   │   └── SortControl.tsx (.tsx, 2.74 KB)
+│   │   │   ├── page.tsx (.tsx, 13.70 KB)
+│   │   │   ├── types.ts (.ts, 1.29 KB)
 │   │   │   └── utils/
-│   │   │       ├── sortUtils.ts (.ts, 0.69 KB)
+│   │   │       ├── sortUtils.ts (.ts, 1.41 KB)
 │   │   │       └── youtube.ts (.ts, 0.12 KB)
 │   │   ├── page.tsx (.tsx, 2.40 KB)
 │   │   ├── polityka-prywatnosci-baciata-pl/
@@ -118,6 +112,8 @@ Struktura plików projektu:
 │   │   ├── sitemap.xml.ts (.ts, 1.27 KB)
 │   │   ├── subscription/
 │   │   │   └── page.tsx (.tsx, 0.12 KB)
+│   │   ├── taneczne-historie/
+│   │   │   └── page.tsx (.tsx, 8.76 KB)
 │   │   ├── terms-of-service/
 │   │   ├── users/
 │   │   │   └── page.tsx (.tsx, 0.10 KB)
@@ -132,8 +128,8 @@ Struktura plików projektu:
 │   │   ├── ClientLayout.tsx (.tsx, 0.89 KB)
 │   │   ├── ClientProviders.tsx (.tsx, 0.38 KB)
 │   │   ├── LoadingSpinner.tsx (.tsx, 0.56 KB)
-│   │   ├── NavContent.tsx (.tsx, 4.09 KB)
-│   │   └── UserMenu.tsx (.tsx, 1.75 KB)
+│   │   ├── NavContent.tsx (.tsx, 4.57 KB)
+│   │   └── UserMenu.tsx (.tsx, 2.21 KB)
 │   ├── contexts/
 │   │   └── AuthContext.tsx (.tsx, 1.18 KB)
 │   ├── global.d.ts (.ts, 0.67 KB)
@@ -146,7 +142,7 @@ Struktura plików projektu:
 │   ├── middleware/
 │   │   └── adminAuthMiddleware.ts (.ts, 0.64 KB)
 │   ├── models/
-│   │   ├── Song.ts (.ts, 0.37 KB)
+│   │   ├── Song.ts (.ts, 0.48 KB)
 │   │   └── User.ts (.ts, 0.93 KB)
 │   ├── schemas/
 │   │   └── passwordSchema.ts (.ts, 3.49 KB)
@@ -160,12 +156,12 @@ Struktura plików projektu:
 │   │   │   │   └── songsSlice.ts (.ts, 3.74 KB)
 │   │   │   └── types.ts (.ts, 0.42 KB)
 │   │   └── store.ts (.ts, 0.77 KB)
-│   ├── struktura-projektu.txt (.txt, 7.69 KB)
+│   ├── struktura-projektu.txt (.txt, 0.00 KB)
 │   ├── types/
 │   │   └── next-auth.d.ts (.ts, 1.12 KB)
 │   └── utils/
 │       ├── projectAnalyzer.d.ts (.ts, 0.15 KB)
 │       └── projectAnalyzer.js (.js, 36.79 KB)
-├── tailwind.config.ts (.ts, 1.52 KB)
+├── tailwind.config.ts (.ts, 1.59 KB)
 ├── tsconfig.json (.json, 1.84 KB)
 └── tsconfig.tsbuildinfo (.tsbuildinfo, 242.56 KB)

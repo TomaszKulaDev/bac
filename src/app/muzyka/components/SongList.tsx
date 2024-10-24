@@ -1,20 +1,9 @@
 import React, { useState, useMemo, useCallback, useEffect } from "react";
 import Image from "next/image";
 import {
-  FaArrowUp,
-  FaArrowDown,
-  FaMinus,
   FaPlay,
-  FaMusic,
-  FaChevronDown,
-  FaChevronUp,
-  FaPlus,
-  FaListUl,
   FaBookmark,
-  FaSortAmountDown,
-  FaSortAmountUp,
   FaHeart,
-  FaThumbsUp,
 } from "react-icons/fa";
 import { Song } from "../types";
 import { motion } from "framer-motion";
@@ -222,15 +211,7 @@ const SongList: React.FC<SongListProps> = ({
               >
                 <FaHeart className="text-xl" />
               </button>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  // Tutaj dodaj logikę dla lajka
-                }}
-                className="text-gray-500 hover:text-green-500 transition-colors duration-200"
-              >
-                <FaThumbsUp className="text-xl" />
-              </button>
+              
               {(isPlaylistExpanded && expandedPlaylist && hasPlaylists) && (
                 <button
                   onClick={(e) => {

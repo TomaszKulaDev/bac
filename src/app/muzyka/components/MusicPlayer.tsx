@@ -14,18 +14,10 @@ import YouTube, { YouTubeProps } from "react-youtube";
 import {
   FaPlay,
   FaPause,
-  FaMusic,
-  FaChevronDown,
-  FaChevronUp,
-  FaRandom,
-  FaStepBackward,
-  FaStepForward,
   FaRedo,
-  FaRedoAlt,
   FaRetweet,
   FaBackward,
   FaForward,
-  FaPlus,
 } from "react-icons/fa";
 import { Song, Playlist, RepeatMode } from "../types";
 import { RootState } from "../../../store/store";
