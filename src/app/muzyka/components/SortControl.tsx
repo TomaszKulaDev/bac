@@ -53,10 +53,10 @@ const SortControl: React.FC<SortControlProps> = ({
                   "desc"
                 );
               }}
-              className={`px-3 py-1 rounded-full text-sm transition-all duration-300 ease-in-out flex items-center mb-2 ${
+              className={`px-6 py-3 rounded-md text-sm transition-all duration-300 ease-in-out flex items-center mb-2 ${
                 sortBy === option
-                  ? "bg-purple-500 text-white"
-                  : "bg-white hover:bg-gray-50 active:bg-gray-100 active:shadow-inner active:transform active:translate-y-px text-gray-700"
+                  ? "bg-gray-700 text-white"
+                  : "bg-gray-600 text-white hover:bg-gray-500"
               }`}
             >
               {option === "date"
