@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../store/store";
 
 interface CreatePlaylistModalProps {
   onClose: () => void;
@@ -15,6 +17,9 @@ const CreatePlaylistModal: React.FC<CreatePlaylistModalProps> = ({
 }) => {
   const [playlistName, setPlaylistName] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.auth.isAuthenticated
+  );
 
   const validatePlaylistName = (name: string): boolean => {
     if (name.length < 3) {
@@ -41,6 +46,10 @@ const CreatePlaylistModal: React.FC<CreatePlaylistModalProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isAuthenticated) {
+      showErrorToast("Musisz być zalogowany, aby tworzyć playlisty.");
+      return;
+    }
     if (validatePlaylistName(playlistName)) {
       onCreatePlaylist(playlistName.trim());
       showSuccessToast(`Utworzono nową playlistę "${playlistName.trim()}"`);

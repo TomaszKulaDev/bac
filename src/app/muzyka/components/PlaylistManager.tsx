@@ -4,6 +4,8 @@ import Image from "next/image";
 import { getYouTubeThumbnail } from "../utils/youtube";
 import { FaPlay, FaChevronUp, FaChevronDown, FaEdit, FaTrash, FaPlus } from "react-icons/fa";
 import CreatePlaylistModal from "./CreatePlaylistModal";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store"; // Upewnij się, że ścieżka jest poprawna
 
 interface PlaylistManagerProps {
   playlists: Playlist[];
@@ -44,8 +46,27 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
   showErrorToast,
   showInfoToast,
 }) => {
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.auth.isAuthenticated
+  );
+
   const getSongDetails = (songId: string): Song | undefined => {
     return songs.find((song) => song._id === songId || song.id === songId);
+  };
+
+  const handleAddToPlaylist = (playlistId: string, songId: string) => {
+    if (!isAuthenticated) {
+      showErrorToast("Musisz być zalogowany, aby dodawać utwory do playlist.");
+      return;
+    }
+
+    const playlist = playlists.find((p) => p.id === playlistId);
+    if (playlist && !playlist.songs.includes(songId)) {
+      onAddToPlaylist(playlistId, songId);
+      showSuccessToast("Utwór dodany do playlisty.");
+    } else {
+      showInfoToast("Utwór już istnieje w tej playliście.");
+    }
   };
 
   return (
@@ -140,14 +161,7 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
                       </div>
                     </div>
                     <button
-                      onClick={() => {
-                        if (!playlist.songs.includes(song.id)) {
-                          onAddToPlaylist(playlist.id, song.id);
-                          showSuccessToast(`Dodano "${song.title}" do playlisty "${playlist.name}"`);
-                        } else {
-                          showInfoToast(`Utwór "${song.title}" jest już w playliście "${playlist.name}"`);
-                        }
-                      }}
+                      onClick={() => handleAddToPlaylist(playlist.id, song.id)}
                       className="text-green-500 hover:text-green-700 text-xs"
                     >
                       Dodaj

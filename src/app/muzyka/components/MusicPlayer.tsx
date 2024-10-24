@@ -52,6 +52,7 @@ interface MusicPlayerProps {
   showSuccessToast: (message: string) => void;
   showErrorToast: (message: string) => void;
   showInfoToast: (message: string) => void;
+  isAuthenticated: boolean;
 }
 
 // Komponent MusicPlayer
@@ -73,6 +74,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   showSuccessToast,
   showErrorToast,
   showInfoToast,
+  isAuthenticated,
 }) => {
   const dispatch = useDispatch();
   const currentSong = useSelector(
@@ -657,6 +659,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           isPlaylistExpanded={!!expandedPlaylist}
           showSearch={false}
           hasPlaylists={playlists.length > 0}
+          isAuthenticated={isAuthenticated}
         />
       </div>
       <PlaybackBar
@@ -683,7 +686,11 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
         onToggleRepeatMode={toggleRepeatMode}
         onAddToPlaylist={(songId) => handleAddToPlaylist(songId)}
         onLike={(songId) => {
-          /* Dodaj logikę dla polubienia utworu */
+          if (isAuthenticated) {
+            // Logika dla polubienia utworu
+          } else {
+            showErrorToast("Musisz być zalogowany, aby polubić utwory.");
+          }
         }}
         isLiked={false} // Dodaj logikę sprawdzania, czy utwór jest polubiony
         hasPlaylistsAndExpanded={playlists.length > 0 && !!expandedPlaylist}

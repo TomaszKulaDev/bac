@@ -33,6 +33,7 @@ interface SongListProps {
   isPlaylistExpanded: boolean;
   showSearch: boolean;
   hasPlaylists: boolean;
+  isAuthenticated: boolean;
 }
 
 const SongList: React.FC<SongListProps> = ({
@@ -55,6 +56,7 @@ const SongList: React.FC<SongListProps> = ({
   setFilterText,
   showSearch,
   hasPlaylists,
+  isAuthenticated,
 }) => {
   const [showNotification, setShowNotification] = useState(false);
 
@@ -202,15 +204,17 @@ const SongList: React.FC<SongListProps> = ({
               </div>
             </div>
             <div className="flex items-center space-x-2">
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  // Tutaj dodaj logikę dla serduszka
-                }}
-                className="text-gray-500 hover:text-red-500 transition-colors duration-200"
-              >
-                <FaHeart className="text-xl" />
-              </button>
+              {isAuthenticated && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    // Logika dla serduszka
+                  }}
+                  className="text-gray-500 hover:text-red-500 transition-colors duration-200"
+                >
+                  <FaHeart className="text-xl" />
+                </button>
+              )}
               
               {(isPlaylistExpanded && expandedPlaylist && hasPlaylists) && (
                 <button

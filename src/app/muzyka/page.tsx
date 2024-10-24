@@ -27,6 +27,9 @@ const MusicPage: React.FC = () => {
   const { songs, status, error, currentSongIndex } = useSelector(
     (state: RootState) => state.songs
   );
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.auth.isAuthenticated
+  );
 
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [expandedPlaylist, setExpandedPlaylist] = useState<string | null>(null);
@@ -39,13 +42,17 @@ const MusicPage: React.FC = () => {
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Dodajmy funkcje pomocnicze do wyświetlania powiadomień
   const showSuccessToast = (message: string) => toast.success(message);
   const showErrorToast = (message: string) => toast.error(message);
   const showInfoToast = (message: string) => toast.info(message);
 
   const handleCreatePlaylist = useCallback(
     (name: string, selectedSongs: string[] = []) => {
+      if (!isAuthenticated) {
+        showErrorToast("Musisz być zalogowany, aby tworzyć playlisty.");
+        return;
+      }
+
       if (playlists.length >= 2) {
         alert(
           "Możesz stworzyć maksymalnie 2 playlisty. Usuń jedną z istniejących playlist, aby utworzyć nową."
@@ -68,10 +75,9 @@ const MusicPage: React.FC = () => {
         songs: selectedSongs,
       };
       setPlaylists((prevPlaylists) => [...prevPlaylists, newPlaylist]);
-      setExpandedPlaylist(newPlaylistId); // Dodajemy tę linię, aby rozwinąć nowo utworzoną playlistę
-      // TODO: Zaimplementuj logikę zapisywania playlisty w bazie danych
+      setExpandedPlaylist(newPlaylistId);
     },
-    [playlists]
+    [playlists, isAuthenticated]
   );
 
   const handleCreateEmptyPlaylist = useCallback(() => {
@@ -256,6 +262,7 @@ const MusicPage: React.FC = () => {
             showSuccessToast={showSuccessToast}
             showErrorToast={showErrorToast}
             showInfoToast={showInfoToast}
+            isAuthenticated={isAuthenticated}
           />
         </div>
         <div className="w-full lg:w-1/3 p-4">
