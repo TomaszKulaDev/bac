@@ -1,0 +1,16 @@
+[
+  {
+    "title": "Song Title 1",
+    "artist": "Artist 1",
+    "youtubeLink": "https://www.youtube.com/watch?v=L31Lu4j5Q3c",
+    "impro": true,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "Song Title 2",
+    "artist": "Artist 2",
+    "youtubeLink": "https://www.youtube.com/watch?v=gpZQ3NYPsVU",
+    "impro": false,
+    "beginnerFriendly": true
+  }
+]

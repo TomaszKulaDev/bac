@@ -1,3 +1,4 @@
+// admin/music/page.tsx
 "use client";
 import {
   // addSong,
@@ -12,7 +13,7 @@ import {
 import SongList from "./components/SongList";
 // import Link from "next/link";
 import AdminLayout from "../AdminLayout";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "@/store/store";
 import AddSongForm from "./components/AddSongForm";
@@ -22,6 +23,8 @@ const AdminMusicPage = () => {
   const { songs, status, error } = useSelector(
     (state: RootState) => state.songs
   );
+
+  const [fileContent, setFileContent] = useState(null);
 
   useEffect(() => {
     console.log("Pobieranie piosenek...");
@@ -45,7 +48,7 @@ const AdminMusicPage = () => {
     artist: string;
     youtubeLink: string;
     impro: boolean;
-    beginnerFriendly: boolean; // Nowe pole
+    beginnerFriendly: boolean;
   }) => {
     try {
       console.log("Dodawanie piosenki:", newSong);
@@ -87,6 +90,43 @@ const AdminMusicPage = () => {
     }
   };
 
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file && file.type === "application/json") {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const json = JSON.parse(e.target?.result as string);
+          setFileContent(json);
+          json.forEach((song: any) => {
+            // Walidacja danych piosenki
+            if (validateSong(song)) {
+              handleAddSong(song);
+            } else {
+              console.error("Nieprawidłowe dane piosenki:", song);
+            }
+          });
+        } catch (error) {
+          console.error("Błąd podczas parsowania pliku JSON:", error);
+        }
+      };
+      reader.readAsText(file);
+    } else {
+      console.error("Niepoprawny format pliku. Wybierz plik JSON.");
+    }
+  };
+
+  // Funkcja walidująca dane piosenki
+  const validateSong = (song: any) => {
+    return (
+      typeof song.title === 'string' &&
+      typeof song.artist === 'string' &&
+      typeof song.youtubeLink === 'string' &&
+      typeof song.impro === 'boolean' &&
+      typeof song.beginnerFriendly === 'boolean'
+    );
+  };
+
   if (status === "loading") {
     return <div>Ładowanie...</div>;
   }
@@ -100,6 +140,7 @@ const AdminMusicPage = () => {
       <div className="container mx-auto p-4">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-3xl font-bold">Panel administracyjny - Muzyka</h1>
+          <input type="file" accept=".json" onChange={handleFileChange} />
         </div>
         <AddSongForm onAddSong={handleAddSong} />
         <SongList songs={songs} onDelete={handleDeleteSong} />
