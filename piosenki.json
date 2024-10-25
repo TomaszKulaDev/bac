@@ -558,5 +558,89 @@
     "youtubeLink": "https://www.youtube.com/watch?v=EGAa6qJczG4",
     "impro": true,
     "beginnerFriendly": false
+  },
+  {
+    "title": "Prophex (Bachata Version 2024)",
+    "artist": "Mundo Latino",
+    "youtubeLink": "https://www.youtube.com/watch?v=T6WmMCHzOv8",
+    "impro": false,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "All I want for Christmas Bachata Vinny Rivera",
+    "artist": "EQS Musica",
+    "youtubeLink": "https://www.youtube.com/watch?v=paZWci8_ASA",
+    "impro": false,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "Kesi (Remix)",
+    "artist": "Camilo & Shawn Mendes",
+    "youtubeLink": "https://www.youtube.com/watch?v=Q5685685685",
+    "impro": false,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "Invisible",
+    "artist": "Prince Royce",
+    "youtubeLink": "https://www.youtube.com/watch?v=ogfzzxMYCvk",
+    "impro": false,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "Always Never - Bad For Me",
+    "artist": "Berlin Sounds",
+    "youtubeLink": "https://www.youtube.com/watch?v=Sdzg71M2zFA",
+    "impro": true,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "NI BIEN NI MAL",
+    "artist": "Bad Bunny & DJ MONARD",
+    "youtubeLink": "https://www.youtube.com/watch?v=CXw_zS2TAks",
+    "impro": true,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "Mi Regalo Favorito",
+    "artist": "Prince Royce",
+    "youtubeLink": "https://www.youtube.com/watch?v=fIJc4XZ8okc",
+    "impro": false,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "Justo a Tiempo",
+    "artist": "Danny Romero & DJ Nassos B",
+    "youtubeLink": "https://www.youtube.com/watch?v=Q0170o-MVUg",
+    "impro": false,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "Aire (feat. Xriz)",
+    "artist": "Dani J & Doble Music",
+    "youtubeLink": "https://www.youtube.com/watch?v=IQyVbzMgt0E",
+    "impro": false,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "Rush",
+    "artist": "William Singe",
+    "youtubeLink": "https://www.youtube.com/watch?v=TdA90lIqpiI",
+    "impro": true,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "Nadie Te Va A Querer",
+    "artist": "Alfonso La Cruz & Dj Nassos B",
+    "youtubeLink": "https://www.youtube.com/watch?v=9Eaws-p-vqQ",
+    "impro": false,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "The Motion",
+    "artist": "Drake & Berlin Sounds",
+    "youtubeLink": "https://www.youtube.com/watch?v=9Eaws-p-vqQ",
+    "impro": false,
+    "beginnerFriendly": false
   }
 ]
