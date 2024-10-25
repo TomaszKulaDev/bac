@@ -1,16 +1,226 @@
 [
   {
-    "title": "Song Title 1",
-    "artist": "Artist 1",
-    "youtubeLink": "https://www.youtube.com/watch?v=L31Lu4j5Q3c",
-    "impro": true,
+    "title": "Bachata En Las Venas (feat. Akai Rojas)",
+    "artist": "Esme",
+    "youtubeLink": "https://www.youtube.com/watch?v=9g9q9kwWdaY",
+    "impro": false,
     "beginnerFriendly": false
   },
   {
-    "title": "Song Title 2",
-    "artist": "Artist 2",
+    "title": "SEXTING",
+    "artist": "Dani J & Mundo Latino",
+    "youtubeLink": "https://www.youtube.com/watch?v=0V4qthcFk9Y",
+    "impro": false,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "Otra oportunidad (Video Oficial)",
+    "artist": "Tutto Durán",
+    "youtubeLink": "https://www.youtube.com/watch?v=90_7t-uCLEw",
+    "impro": false,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "TU FEO (Official Video)",
+    "artist": "Lenny Tavárez, Prince Royce",
+    "youtubeLink": "https://www.youtube.com/watch?v=QCyXiW42VYI",
+    "impro": false,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "ÁNGEL",
+    "artist": "Grupo Frontera, Romeo Santos",
+    "youtubeLink": "https://www.youtube.com/watch?v=6rBc-dXEY4c",
+    "impro": false,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "Bad Intentions",
+    "artist": "Sasha X - Music Producer & DJ",
+    "youtubeLink": "https://www.youtube.com/watch?v=kXSDGDdkUsk",
+    "impro": false,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "Sudor y Calor (Official Video)",
+    "artist": "Johnny Sk",
+    "youtubeLink": "https://www.youtube.com/watch?v=P7ngHzWiF7c",
+    "impro": false,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "Apretaito",
+    "artist": "Charles Luis & El Mundo de la Bachata",
+    "youtubeLink": "https://www.youtube.com/watch?v=CIncYinR_C4",
+    "impro": false,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "LOSE CONTROL (Spanish Bachata Version)",
+    "artist": "Sebas Garreta",
+    "youtubeLink": "https://www.youtube.com/watch?v=y5wkxehZyUk",
+    "impro": false,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "Te Pido (Bachata Version)",
+    "artist": "Dani J, DJ Alejandro, Dimen5ions",
+    "youtubeLink": "https://www.youtube.com/watch?v=_uU-gJ_tPNk",
+    "impro": false,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "Było, minęło (Bachata Version)",
+    "artist": "Sanah & DJ Cat",
+    "youtubeLink": "https://www.youtube.com/watch?v=xyI1VXYvmnQ",
+    "impro": false,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "Qué tienes tú (Bachata Version)",
+    "artist": "Dani J, Ryan Miles",
+    "youtubeLink": "https://www.youtube.com/watch?v=3MmEwxcTByA",
+    "impro": false,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "No Me Acostumbro (Bachata Version)",
+    "artist": "Dani J, Dj Husky",
+    "youtubeLink": "https://www.youtube.com/watch?v=QBtV2BSCA6c",
+    "impro": false,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "AYER (Bachata 2023🌍)",
+    "artist": "J Salez, DerekVinci & Mundo Latino",
+    "youtubeLink": "https://www.youtube.com/watch?v=MCGgoLgVpnI",
+    "impro": false,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "Disparo Al Corazón - #BACHATA 2023",
+    "artist": "Dani J & El Mundo de la Bachata",
+    "youtubeLink": "https://www.youtube.com/watch?v=L31Lu4j5Q3c",
+    "impro": false,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "Villano (Lyric Video)",
+    "artist": "Dani J",
+    "youtubeLink": "https://www.youtube.com/watch?v=_WFHT3X7UYk",
+    "impro": false,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "When We (Bachata Version)",
+    "artist": "DJ Manuel Citro ft DJ Dimen5ions",
+    "youtubeLink": "https://www.youtube.com/watch?v=d-I4jf-sDHU",
+    "impro": false,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "Se Me Va La Voz (Bachata Version)",
+    "artist": "Alejandro Fernández",
+    "youtubeLink": "https://www.youtube.com/watch?v=toZYHCiI6Xo",
+    "impro": false,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "SI NO ESTÁS - Bachata Version",
+    "artist": "Dj Husky x Sebas Garreta (Official Video)",
+    "youtubeLink": "https://www.youtube.com/watch?v=YmCm8GovDko",
+    "impro": false,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "Quien Te Ve Te Compra",
+    "artist": "Ronny Dae & DJ Hitomi Osaka Japan",
+    "youtubeLink": "https://www.youtube.com/watch?v=A2A2SbxLVfk",
+    "impro": false,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "Feeling Something - #BACHATA 2024",
+    "artist": "Pinto Picasso, Federica Caracciolo",
+    "youtubeLink": "https://www.youtube.com/watch?v=BqISSHFrRb4",
+    "impro": false,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "Que Haríamos Los Viernes (Bachata)",
+    "artist": "Jose Otero, Karen Méndez, DJ Tronky",
     "youtubeLink": "https://www.youtube.com/watch?v=gpZQ3NYPsVU",
     "impro": false,
-    "beginnerFriendly": true
+    "beginnerFriendly": false
+  },
+  {
+    "title": "Tiburones",
+    "artist": "Ricky Martin & Dimen5ions & DJ Alejandro",
+    "youtubeLink": "https://www.youtube.com/watch?v=zJDW9jNHp1s",
+    "impro": false,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "Piscina (Bachata Version)",
+    "artist": "Dani J & Dj Tronky",
+    "youtubeLink": "https://www.youtube.com/watch?v=XxpgoGUGw9I",
+    "impro": false,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "Máquina del tiempo (Bachata Version)",
+    "artist": "Román, Dj Clau",
+    "youtubeLink": "https://www.youtube.com/watch?v=oLgeoVEalzU",
+    "impro": false,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "Cosas de la Peda",
+    "artist": "Prince Royce, Gabito Ballesteros & Royal Vibes",
+    "youtubeLink": "https://www.youtube.com/watch?v=JJzODqS-zAs",
+    "impro": false,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "No Digas Ft Wilven Bello (Bachata Version",
+    "artist": "EsmeMusic",
+    "youtubeLink": "https://www.youtube.com/watch?v=Bo6HhGYQvDU",
+    "impro": false,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "No Digas Ft Wilven Bello (Bachata Version",
+    "artist": "EsmeMusic",
+    "youtubeLink": "https://www.youtube.com/watch?v=Bo6HhGYQvDU",
+    "impro": false,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "DIABLITA",
+    "artist": "Fabbio, OMAR MONTES, Lennis Rodriguez & DJ ADEMARO",
+    "youtubeLink": "https://www.youtube.com/watch?v=xjPRlk7ReE0",
+    "impro": false,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "Pa Mi (Bachata Version)",
+    "artist": "DJ Tony Pecino · Chris Paradise",
+    "youtubeLink": "https://www.youtube.com/watch?v=5A8wle4F6w8",
+    "impro": false,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "Una Vuelta - #BACHATA 2018",
+    "artist": "Pinto Picasso & El Mundo de la Bachata",
+    "youtubeLink": "https://www.youtube.com/watch?v=755qYxEMM54",
+    "impro": false,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "Hookah & Sheridan's",
+    "artist": "Mr.Don & Dj Khalid",
+    "youtubeLink": "https://www.youtube.com/watch?v=vmbaZSTSxB4",
+    "impro": false,
+    "beginnerFriendly": false
   }
 ]

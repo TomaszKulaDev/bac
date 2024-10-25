@@ -1,34 +1,28 @@
 // admin/music/page.tsx
 "use client";
 import {
-  // addSong,
-  // deleteSong,
-  // setSongs,
+  // importowanie akcji z songsSlice
   fetchSongs,
   deleteSongAndRefetch,
 } from "@/store/slices/features/songsSlice";
-// import { Song as SongModel } from "@/models/Song";
-// import { Song } from "@/app/muzyka/types";
-// import { connectToDatabase } from "@/lib/mongodb";
-import SongList from "./components/SongList";
-// import Link from "next/link";
-import AdminLayout from "../AdminLayout";
-import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState, AppDispatch } from "@/store/store";
-import AddSongForm from "./components/AddSongForm";
+import SongList from "./components/SongList"; // importowanie komponentu SongList
+import AdminLayout from "../AdminLayout"; // importowanie komponentu AdminLayout
+import React, { useEffect, useState } from "react"; // importowanie React i hooków useEffect oraz useState
+import { useSelector, useDispatch } from "react-redux"; // importowanie hooków useSelector i useDispatch z react-redux
+import { RootState, AppDispatch } from "@/store/store"; // importowanie typów RootState i AppDispatch
+import AddSongForm from "./components/AddSongForm"; // importowanie komponentu AddSongForm
 
 const AdminMusicPage = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch<AppDispatch>(); // inicjalizacja dispatcha
   const { songs, status, error } = useSelector(
-    (state: RootState) => state.songs
+    (state: RootState) => state.songs // pobieranie stanu songs z redux store
   );
 
-  const [fileContent, setFileContent] = useState(null);
+  const [fileContent, setFileContent] = useState(null); // stan do przechowywania zawartości pliku
 
   useEffect(() => {
     console.log("Pobieranie piosenek...");
-    dispatch(fetchSongs());
+    dispatch(fetchSongs()); // pobieranie piosenek przy załadowaniu komponentu
   }, [dispatch]);
 
   useEffect(() => {
@@ -41,7 +35,7 @@ const AdminMusicPage = () => {
         index
       );
     });
-  }, [songs]);
+  }, [songs]); // logowanie aktualnego stanu piosenek przy każdej zmianie stanu songs
 
   const handleAddSong = async (newSong: {
     title: string;
@@ -57,7 +51,7 @@ const AdminMusicPage = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(newSong),
+        body: JSON.stringify(newSong), // wysyłanie nowej piosenki do API
       });
 
       if (!response.ok) {
@@ -72,7 +66,7 @@ const AdminMusicPage = () => {
 
       if (result.success) {
         console.log("Piosenka dodana pomyślnie");
-        dispatch(fetchSongs());
+        dispatch(fetchSongs()); // ponowne pobranie piosenek po dodaniu nowej
       } else {
         console.error("Błąd podczas dodawania piosenki:", result.error);
       }
@@ -83,7 +77,7 @@ const AdminMusicPage = () => {
 
   const handleDeleteSong = async (id: string) => {
     try {
-      await dispatch(deleteSongAndRefetch(id));
+      await dispatch(deleteSongAndRefetch(id)); // usuwanie piosenki i ponowne pobranie piosenek
       console.log("Piosenka usunięta pomyślnie");
     } catch (error) {
       console.error("Błąd podczas usuwania piosenki:", error);
@@ -97,11 +91,11 @@ const AdminMusicPage = () => {
       reader.onload = (e) => {
         try {
           const json = JSON.parse(e.target?.result as string);
-          setFileContent(json);
+          setFileContent(json); // ustawianie zawartości pliku w stanie
           json.forEach((song: any) => {
             // Walidacja danych piosenki
             if (validateSong(song)) {
-              handleAddSong(song);
+              handleAddSong(song); // dodawanie piosenki po walidacji
             } else {
               console.error("Nieprawidłowe dane piosenki:", song);
             }
@@ -110,7 +104,7 @@ const AdminMusicPage = () => {
           console.error("Błąd podczas parsowania pliku JSON:", error);
         }
       };
-      reader.readAsText(file);
+      reader.readAsText(file); // odczytywanie pliku jako tekst
     } else {
       console.error("Niepoprawny format pliku. Wybierz plik JSON.");
     }
@@ -124,15 +118,15 @@ const AdminMusicPage = () => {
       typeof song.youtubeLink === 'string' &&
       typeof song.impro === 'boolean' &&
       typeof song.beginnerFriendly === 'boolean'
-    );
+    ); // sprawdzanie czy dane piosenki są poprawne
   };
 
   if (status === "loading") {
-    return <div>Ładowanie...</div>;
+    return <div>Ładowanie...</div>; // wyświetlanie komunikatu o ładowaniu
   }
 
   if (status === "failed") {
-    return <div>Błąd: {error}</div>;
+    return <div>Błąd: {error}</div>; // wyświetlanie komunikatu o błędzie
   }
 
   return (
@@ -140,10 +134,10 @@ const AdminMusicPage = () => {
       <div className="container mx-auto p-4">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-3xl font-bold">Panel administracyjny - Muzyka</h1>
-          <input type="file" accept=".json" onChange={handleFileChange} />
+          <input type="file" accept=".json" onChange={handleFileChange} /> {/* input do wczytywania pliku JSON */}
         </div>
-        <AddSongForm onAddSong={handleAddSong} />
-        <SongList songs={songs} onDelete={handleDeleteSong} />
+        <AddSongForm onAddSong={handleAddSong} /> {/* formularz do dodawania piosenek */}
+        <SongList songs={songs} onDelete={handleDeleteSong} /> {/* lista piosenek */}
       </div>
     </AdminLayout>
   );
