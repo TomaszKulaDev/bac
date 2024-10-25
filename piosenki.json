@@ -222,5 +222,103 @@
     "youtubeLink": "https://www.youtube.com/watch?v=vmbaZSTSxB4",
     "impro": false,
     "beginnerFriendly": false
+  },
+  {
+    "title": "Unsteady",
+    "artist": "Olivia Penalva & Giacomo Lalli (DJ Casanova)",
+    "youtubeLink": "https://www.youtube.com/watch?v=9ZWyoL2McR4",
+    "impro": true,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "Man Overboard (Bachata 2019)",
+    "artist": "SP Polanco & Pinto Picasso & dj El Mundo de la Bachata",
+    "youtubeLink": "https://www.youtube.com/watch?v=YynkHg29O3U",
+    "impro": false,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "Fantasías",
+    "artist": "Rauw Alejandro, Farruko & DJ Tronky",
+    "youtubeLink": "https://www.youtube.com/watch?v=olsp8ibH9fg",
+    "impro": false,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "Estado Decadente",
+    "artist": "Kewin Cosmos x Jensen",
+    "youtubeLink": "https://www.youtube.com/watch?v=L4jBx9WGT_4",
+    "impro": false,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "Cita",
+    "artist": "Prince Royce & dj Tronky",
+    "youtubeLink": "https://www.youtube.com/watch?v=QHjF40139nI",
+    "impro": false,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "Yummy (Bachata Version)",
+    "artist": "Justin Bieber & dj Tronky",
+    "youtubeLink": "https://www.youtube.com/watch?v=vz6N-6CSEn8",
+    "impro": false,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "Culpables",
+    "artist": "Manuel Turizo & Dimen5ions & DJ Alejandro",
+    "youtubeLink": "https://www.youtube.com/watch?v=Gxn3U4vwHV0",
+    "impro": false,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "Caramelo (Bachata Version)",
+    "artist": "DJ Tronky & Marco Puma",
+    "youtubeLink": "https://www.youtube.com/watch?v=_QUSNngPDPA",
+    "impro": false,
+    "beginnerFriendly": true
+  },
+  {
+    "title": "ADMV (Bachata Version)",
+    "artist": "DJ Tronky & Marco Puma",
+    "youtubeLink": "https://www.youtube.com/watch?v=_QUSNngPDPA",
+    "impro": false,
+    "beginnerFriendly": true
+  },
+  {
+    "title": "Confiésale (Bachata Version)",
+    "artist": "Dani J & Doble Music",
+    "youtubeLink": "https://www.youtube.com/watch?v=VRhGMCYvWQ4",
+    "impro": false,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "Paris (Bachata Version)",
+    "artist": "Pinto Picasso & DJ John Moon",
+    "youtubeLink": "https://www.youtube.com/watch?v=jCOzVRgZeEs",
+    "impro": false,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "Rechazame",
+    "artist": "Prince Royce",
+    "youtubeLink": "https://www.youtube.com/watch?v=kVtfXd_WdkA",
+    "impro": false,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "Miénteme (Bachata Version)",
+    "artist": "TINI, Maria Becerra & DJC",
+    "youtubeLink": "https://www.youtube.com/watch?v=kVtfXd_WdkA",
+    "impro": false,
+    "beginnerFriendly": false
+  },
+  {
+    "title": "Miénteme (Bachata Version)",
+    "artist": "TINI, Maria Becerra & DJC",
+    "youtubeLink": "https://www.youtube.com/watch?v=kVtfXd_WdkA",
+    "impro": false,
+    "beginnerFriendly": false
   }
 ]
