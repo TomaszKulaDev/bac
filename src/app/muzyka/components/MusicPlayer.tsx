@@ -170,37 +170,54 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
 
   // Funkcja do przełączania odtwarzania
   const togglePlayback = useCallback(() => {
-    if (player && isPlayerReady) {
+    if (!player || !isPlayerReady) {
+      console.warn('Player nie jest gotowy');
+      return;
+    }
+    
+    try {
       if (isPlaying) {
         player.pauseVideo();
       } else {
         player.playVideo();
       }
       setIsPlaying(!isPlaying);
+    } catch (error) {
+      console.error('Błąd podczas przełączania odtwarzania:', error);
     }
   }, [player, isPlaying, isPlayerReady]);
 
   // Funkcja do odtwarzania następnego utworu
   const nextSong = () => {
-    if (currentPlaylistId) {
-      const currentPlaylist = playlists.find(
-        (p: Playlist) => p.id === currentPlaylistId
-      );
-      if (currentPlaylist) {
-        const currentIndex = currentPlaylist.songs.indexOf(currentSong.id);
-        let nextIndex = (currentIndex + 1) % currentPlaylist.songs.length;
-        const nextSongId = currentPlaylist.songs[nextIndex];
-        dispatch(
-          setCurrentSongIndex(songs.findIndex((s) => s.id === nextSongId))
-        );
-      }
-    } else {
-      const currentIndex = songs.findIndex((s) => s.id === currentSong.id);
-      let nextIndex = (currentIndex + 1) % songs.length;
-      dispatch(setCurrentSongIndex(nextIndex));
+    if (!player || !isPlayerReady) {
+      console.warn('Player nie jest gotowy');
+      return;
     }
-    setIsPlaying(true);
-    setIsLoading(true);
+    
+    try {
+      // reszta logiki pozostaje bez zmian
+      if (currentPlaylistId) {
+        const currentPlaylist = playlists.find(
+          (p: Playlist) => p.id === currentPlaylistId
+        );
+        if (currentPlaylist) {
+          const currentIndex = currentPlaylist.songs.indexOf(currentSong.id);
+          let nextIndex = (currentIndex + 1) % currentPlaylist.songs.length;
+          const nextSongId = currentPlaylist.songs[nextIndex];
+          dispatch(
+            setCurrentSongIndex(songs.findIndex((s) => s.id === nextSongId))
+          );
+        }
+      } else {
+        const currentIndex = songs.findIndex((s) => s.id === currentSong.id);
+        let nextIndex = (currentIndex + 1) % songs.length;
+        dispatch(setCurrentSongIndex(nextIndex));
+      }
+      setIsPlaying(true);
+      setIsLoading(true);
+    } catch (error) {
+      console.error('Błąd podczas przechodzenia do następnego utworu:', error);
+    }
   };
 
   // Funkcja do ładowania większej liczby utworów
@@ -446,6 +463,13 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     }
   }, [player]);
 
+  useEffect(() => {
+    if (player && isPlayerReady) {
+      console.log('Player jest gotowy');
+      setIsLoading(false);
+    }
+  }, [player, isPlayerReady]);
+
   // Komponent MusicPlayer - główny komponent odtwarzacza muzyki
   return (
     <div className="max-w-7xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden pb-20">
@@ -664,6 +688,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
         hasPlaylistsAndExpanded={playlists.length > 0 && !!expandedPlaylist}
         playlistCount={playlists.length}
         onCreatePlaylist={() => setIsModalOpen(true)}
+        isAuthenticated={isAuthenticated}
+        isLoading={isLoading}
       />
     </div>
   );

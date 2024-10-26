@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { TrackInfo } from "./TrackInfo";
 import { PlaybackControls } from "./PlaybackControls";
 import { SeekBar } from "./SeekBar";
@@ -25,6 +25,8 @@ interface PlaybackBarProps {
   hasPlaylistsAndExpanded: boolean;
   onCreatePlaylist: () => void;
   playlistCount: number;
+  isAuthenticated: boolean;
+  isLoading?: boolean;
 }
 
 const PlaybackBar: React.FC<PlaybackBarProps> = ({
@@ -46,6 +48,8 @@ const PlaybackBar: React.FC<PlaybackBarProps> = ({
   hasPlaylistsAndExpanded,
   onCreatePlaylist,
   playlistCount,
+  isAuthenticated,
+  isLoading = false,
 }) => {
   return (
     <div
@@ -53,7 +57,7 @@ const PlaybackBar: React.FC<PlaybackBarProps> = ({
       role="region"
       aria-label="Kontrolki odtwarzacza"
     >
-      <div className="flex flex-col sm:flex-row items-center justify-between max-w-7xl mx-auto">
+      <div className="flex flex-col sm:flex-row items-center justify-between max-w-7xl mx-auto gap-4">
         <TrackInfo 
           currentSong={currentSong ? {
             id: currentSong.id,
@@ -63,7 +67,7 @@ const PlaybackBar: React.FC<PlaybackBarProps> = ({
           } : null} 
         />
 
-        <div className="w-full sm:w-2/5 flex flex-col items-center">
+        <div className="w-full sm:w-2/5 flex flex-col items-center gap-2">
           <PlaybackControls
             isPlaying={isPlaying}
             onTogglePlay={onTogglePlay}
@@ -71,6 +75,7 @@ const PlaybackBar: React.FC<PlaybackBarProps> = ({
             onNext={onNext}
             repeatMode={repeatMode}
             onToggleRepeatMode={onToggleRepeatMode}
+            isLoading={isLoading}
           />
           <SeekBar
             currentTime={currentTime}
@@ -79,7 +84,7 @@ const PlaybackBar: React.FC<PlaybackBarProps> = ({
           />
         </div>
 
-        <div className="w-full sm:w-1/4 flex justify-center sm:justify-end items-center space-x-4 mt-4 sm:mt-0">
+        <div className="w-full sm:w-1/4 flex justify-center sm:justify-end items-center space-x-4">
           <div className="sm:hidden">
             <VolumeControl
               volume={volume}
@@ -95,6 +100,7 @@ const PlaybackBar: React.FC<PlaybackBarProps> = ({
             onAddToPlaylist={onAddToPlaylist}
             playlistCount={playlistCount}
             hasPlaylistsAndExpanded={hasPlaylistsAndExpanded}
+            isAuthenticated={isAuthenticated}
           />
           
           <div className="hidden sm:block">
