@@ -5,7 +5,7 @@ import {
   FaBookmark,
   FaHeart,
 } from "react-icons/fa";
-import { Song } from "../types";
+import { Song, SortOption, SortOrder } from "../types";
 import { motion } from "framer-motion";
 import { getYouTubeThumbnail } from "../utils/youtube";
 import { getSortValue } from '../utils/sortUtils';
@@ -22,11 +22,11 @@ interface SongListProps {
   expandedPlaylist: string | null;
   setExpandedPlaylist: React.Dispatch<React.SetStateAction<string | null>>;
   onAddToPlaylist: (songId: string) => void;
-  sortBy: "date" | "title" | "artist" | "impro" | "beginnerFriendly";
-  sortOrder: "asc" | "desc";
+  sortBy: SortOption;
+  sortOrder: SortOrder;
   onSortChange: (
-    newSortBy: "date" | "title" | "artist" | "impro" | "beginnerFriendly",
-    newSortOrder: "asc" | "desc"
+    newSortBy: SortOption,
+    newSortOrder: SortOrder
   ) => void;
   filterText: string;
   setFilterText: React.Dispatch<React.SetStateAction<string>>;
@@ -64,7 +64,7 @@ const SongList: React.FC<SongListProps> = ({
   const sortedAndFilteredSongs = useSortedAndFilteredSongs(songs, sortBy, sortOrder, filterText);
 
   const handleSort = useCallback(
-    (newSortBy: "date" | "title" | "artist" | "impro" | "beginnerFriendly") => {
+    (newSortBy: SortOption) => {
       const newSortOrder = sortBy === newSortBy && sortOrder === "asc" ? "desc" : "asc";
       onSortChange(newSortBy, newSortOrder);
     },

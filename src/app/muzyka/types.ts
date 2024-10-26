@@ -43,5 +43,6 @@ export interface RepeatMode {
   song: 'off' | 'on';
 }
 
-export type SortBy = "date" | "title" | "artist" | "impro" | "beginnerFriendly";
+export type SortOption = "date" | "title" | "artist" | "impro" | "beginnerFriendly";
+export type SortBy = SortOption;
 export type SortOrder = "asc" | "desc";

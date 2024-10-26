@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
-import { Song, SortBy, SortOrder } from '../types';
+import { Song, SortOption, SortOrder } from '../types';
 import { getSortValue } from '../utils/sortUtils';
 
 export const useSortedAndFilteredSongs = (
   songs: Song[],
-  sortBy: SortBy,
+  sortBy: SortOption,
   sortOrder: SortOrder,
   filterText: string
 ) => {
