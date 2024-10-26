@@ -29,7 +29,7 @@ import {
 // import { sortSongs } from "../utils/sortUtils";
 import CreatePlaylistModal from "./CreatePlaylistModal";
 import SortControl from "./SortControl";
-import PlaybackBar from "./PlaybackBar";
+import PlaybackBar from "./playback/PlaybackBar";
 import { getYouTubeThumbnail } from "../utils/youtube";
 import { Z_INDEX } from '@/app/constants/zIndex';
 import PlaylistHeader from './PlaylistHeader';
@@ -618,7 +618,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           isPopularList={false}
           expandedPlaylist={expandedPlaylist}
           setExpandedPlaylist={setExpandedPlaylist}
-          onAddToPlaylist={handleAddToPlaylist}
+          onAddToPlaylist={(songId: string) => handleAddToPlaylist(songId)}
           sortBy={sortBy}
           sortOrder={sortOrder}
           onSortChange={onSortChange}
@@ -653,7 +653,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
         repeatMode={repeatMode}
         onToggleRepeatMode={toggleRepeatMode}
         onAddToPlaylist={(songId) => handleAddToPlaylist(songId)}
-        onLike={(songId) => {
+        onLike={(songId: string) => {
           if (isAuthenticated) {
             // Logika dla polubienia utworu
           } else {
