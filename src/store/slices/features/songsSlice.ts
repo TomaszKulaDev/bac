@@ -51,21 +51,31 @@ export const syncSongsWithPlaylists = createAsyncThunk<string[], string[], { dis
 // Asynchroniczna akcja do usuwania wszystkich piosenek i odświeżania listy
 export const deleteAllSongsAndRefetch = createAsyncThunk(
   'songs/deleteAllSongsAndRefetch',
-  async (_, { dispatch }) => {
-    const response = await fetch('/api/songs/deleteAll', { 
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json'
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await fetch('/api/songs/deleteAll', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        return rejectWithValue({
+          status: response.status,
+          message: errorData.message || 'Wystąpił błąd podczas usuwania wszystkich utworów'
+        });
       }
-    });
-    
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.message || 'Błąd podczas usuwania wszystkich utworów');
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      return rejectWithValue({
+        status: 500,
+        message: error instanceof Error ? error.message : 'Nieznany błąd podczas usuwania utworów'
+      });
     }
-    
-    await dispatch(fetchSongs());
-    return response.json();
   }
 );
 

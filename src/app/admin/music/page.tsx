@@ -139,17 +139,19 @@ const AdminMusicPage = () => {
   // Funkcja obsługująca usuwanie wszystkich piosenek
   const handleDeleteAllSongs = async () => {
     try {
-      await dispatch(deleteAllSongsAndRefetch());
+      const result = await dispatch(deleteAllSongsAndRefetch()).unwrap();
       setIsDeleteAllModalOpen(false);
       setNotification({
         type: 'success',
         message: 'Wszystkie utwory zostały pomyślnie usunięte'
       });
-    } catch (error) {
+    } catch (error: any) {
+      const errorMessage = error.message || 'Wystąpił nieznany błąd podczas usuwania utworów';
       setNotification({
         type: 'error',
-        message: 'Wystąpił błąd podczas usuwania utworów'
+        message: errorMessage
       });
+      console.error('Błąd podczas usuwania wszystkich utworów:', error);
     }
   };
 
