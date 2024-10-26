@@ -18,6 +18,7 @@ import PlaylistManager from "./components/PlaylistManager";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Z_INDEX } from "@/app/constants/zIndex";
+import { useResponsive } from "./hooks/useResponsive";
 
 const generateUniqueId = () => {
   return Date.now().toString(36) + Math.random().toString(36).substr(2);
@@ -37,7 +38,7 @@ const MusicPage: React.FC = () => {
   const [sortBy, setSortBy] = useState<"date" | "title" | "artist">("date");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const [filterText, setFilterText] = useState("");
-  const [isMobile, setIsMobile] = useState(false);
+  const { isMobile, updateContainerPadding } = useResponsive();
   const [currentPlaylistId, setCurrentPlaylistId] = useState<string | null>(
     null
   );
@@ -46,6 +47,10 @@ const MusicPage: React.FC = () => {
   const showSuccessToast = (message: string) => toast.success(message);
   const showErrorToast = (message: string) => toast.error(message);
   const showInfoToast = (message: string) => toast.info(message);
+
+  useEffect(() => {
+    updateContainerPadding();
+  }, [updateContainerPadding]);
 
   const handleCreatePlaylist = useCallback(
     (name: string, selectedSongs: string[] = []) => {
@@ -184,25 +189,6 @@ const MusicPage: React.FC = () => {
   useEffect(() => {
     console.log("Stan playlist po aktualizacji:", playlists);
   }, [playlists]);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-      const mainContainer = document.querySelector(".max-w-7xl");
-      if (mainContainer) {
-        if (window.innerWidth < 640) {
-          mainContainer.classList.remove("pb-20");
-          mainContainer.classList.add("pb-32");
-        } else {
-          mainContainer.classList.remove("pb-32");
-          mainContainer.classList.add("pb-20");
-        }
-      }
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   if (status === "loading") {
     return (

@@ -34,6 +34,7 @@ import { getYouTubeThumbnail } from "../utils/youtube";
 import { Z_INDEX } from '@/app/constants/zIndex';
 import PlaylistHeader from './PlaylistHeader';
 import { useSortedAndFilteredSongs } from '../hooks/useSortedAndFilteredSongs';
+import { useYouTubePlayer } from '../hooks/useYouTubePlayer';
 
 interface MusicPlayerProps {
   songs: Song[];
@@ -84,34 +85,34 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     (state: RootState) => state.songs.songs[state.songs.currentSongIndex]
   );
 
-  // Stan odtwarzania
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const playerRef = useRef<any>(null);
+  const {
+    player,
+    playerRef,
+    isPlaying,
+    setIsPlaying,
+    isLoading,
+    setIsLoading,
+    isPlayerReady,
+    error,
+    playerDimensions,
+    opts,
+    onReady,
+    onPlay,
+    onPause,
+    setError,
+    updatePlayerDimensions,
+    isSmallScreen,
+    setIsSmallScreen
+  } = useYouTubePlayer();
+
   const [visibleSongs, setVisibleSongs] = useState(7);
   const initialVisibleSongs = 7;
   const songsPerLoad = 10;
-  const [player, setPlayer] = useState<any>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [playerDimensions, setPlayerDimensions] = useState({
-    width: "100%",
-    height: "300px",
-  });
-  const [isSmallScreen, setIsSmallScreen] = useState(false);
-  const [isPlayerReady, setIsPlayerReady] = useState(false);
   const [isMinimalistic, setIsMinimalistic] = useState(false);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   const [userPlaylists, setUserPlaylists] = useState<
     { id: string; name: string }[]
   >([]);
-
-  const opts: YouTubeProps["opts"] = {
-    width: "100%",
-    height: "100%",
-    playerVars: {
-      autoplay: 1,
-    },
-  };
 
   const [sortBy, setSortBy] = useState<
     "date" | "title" | "artist" | "impro" | "beginnerFriendly"
@@ -126,12 +127,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   ) => {
     setSortBy(newSortBy);
     setSortOrder(newSortOrder);
-  };
-
-  // Funkcja wywoływana, gdy odtwarzacz jest gotowy
-  const onPlayerReady = (event: any) => {
-    playerRef.current = event.target;
-    setIsLoading(false);
   };
 
   // Funkcja do odtwarzania poprzedniego utworu
@@ -185,7 +180,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     } catch (error) {
       console.error('Błąd podczas przełączania odtwarzania:', error);
     }
-  }, [player, isPlaying, isPlayerReady]);
+  }, [player, isPlaying, isPlayerReady, setIsPlaying]);
 
   // Funkcja do odtwarzania następnego utworu
   const nextSong = () => {
@@ -232,50 +227,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     setVisibleSongs(initialVisibleSongs);
   };
 
-  // Funkcja wywoływana, gdy odtwarzacz jest gotowy
-  const onReady = (event: { target: any }) => {
-    if (event.target && typeof event.target.loadVideoById === "function") {
-      setPlayer(event.target);
-      setIsPlayerReady(true);
-      setError(null);
-      event.target.setVolume(volume * 100);
-    } else {
-      console.error("Nie można zainicjalizować odtwarzacza YouTube");
-      setError("Nie można załadować odtwarzacza YouTube");
-    }
-  };
-
-  // Funkcja do aktualizacji wymiarów odtwarzacza
-  const updatePlayerDimensions = useCallback(() => {
-    const width = window.innerWidth;
-    if (width < 640) {
-      setPlayerDimensions({ width: "100%", height: "200px" });
-    } else if (width < 1024) {
-      setPlayerDimensions({ width: "100%", height: "300px" });
-    } else {
-      setPlayerDimensions({ width: "100%", height: "360px" });
-    }
-  }, []);
-
-  // Efekt do aktualizacji wymiarów odtwarzacza przy zmianie rozmiaru okna
-  useEffect(() => {
-    updatePlayerDimensions();
-    window.addEventListener("resize", updatePlayerDimensions, {
-      passive: true,
-    });
-    return () => window.removeEventListener("resize", updatePlayerDimensions);
-  }, [updatePlayerDimensions]);
-
-  // Efekt do sprawdzania, czy ekran jest mały
-  useEffect(() => {
-    const handleResize = () => {
-      setIsSmallScreen(window.innerWidth < 768);
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
   // Zapamiętana lista utworów
   const MemoizedSongList = React.memo(SongList);
 
@@ -289,7 +240,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
         setIsLoading(true);
       }
     },
-    [dispatch, songs]
+    [dispatch, songs, setIsPlaying, setIsLoading]
   );
 
   // Funkcja do przełączania trybu minimalistycznego
@@ -468,7 +419,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
       console.log('Player jest gotowy');
       setIsLoading(false);
     }
-  }, [player, isPlayerReady]);
+  }, [player, isPlayerReady, setIsLoading]);
 
   const getThumbnailSafely = useCallback((youtubeId: string | undefined): string => {
     try {
