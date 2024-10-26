@@ -1,30 +1,38 @@
-// admin/music/page.tsx
+// Importowanie niezbędnych modułów i komponentów
 "use client";
 import {
-  // importowanie akcji z songsSlice
   fetchSongs,
   deleteSongAndRefetch,
+  deleteAllSongsAndRefetch,
 } from "@/store/slices/features/songsSlice";
-import SongList from "./components/SongList"; // importowanie komponentu SongList
-import AdminLayout from "../AdminLayout"; // importowanie komponentu AdminLayout
-import React, { useEffect, useState } from "react"; // importowanie React i hooków useEffect oraz useState
-import { useSelector, useDispatch } from "react-redux"; // importowanie hooków useSelector i useDispatch z react-redux
-import { RootState, AppDispatch } from "@/store/store"; // importowanie typów RootState i AppDispatch
-import AddSongForm from "./components/AddSongForm"; // importowanie komponentu AddSongForm
+import SongList from "./components/SongList";
+import AdminLayout from "../AdminLayout";
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState, AppDispatch } from "@/store/store";
+import AddSongForm from "./components/AddSongForm";
+import DeleteAllConfirmation from "./components/DeleteAllConfirmation";
 
+// Główny komponent strony administracyjnej dla muzyki
 const AdminMusicPage = () => {
-  const dispatch = useDispatch<AppDispatch>(); // inicjalizacja dispatcha
+  const dispatch = useDispatch<AppDispatch>();
+  // Pobieranie stanu piosenek z Redux store
   const { songs, status, error } = useSelector(
-    (state: RootState) => state.songs // pobieranie stanu songs z redux store
+    (state: RootState) => state.songs
   );
 
-  const [fileContent, setFileContent] = useState(null); // stan do przechowywania zawartości pliku
+  // Stan do przechowywania zawartości wczytanego pliku
+  const [fileContent, setFileContent] = useState(null);
+  // Stan do kontrolowania widoczności modalu potwierdzenia usunięcia wszystkich utworów
+  const [isDeleteAllModalOpen, setIsDeleteAllModalOpen] = useState(false);
 
+  // Efekt pobierający piosenki przy załadowaniu komponentu
   useEffect(() => {
     console.log("Pobieranie piosenek...");
-    dispatch(fetchSongs()); // pobieranie piosenek przy załadowaniu komponentu
+    dispatch(fetchSongs());
   }, [dispatch]);
 
+  // Efekt logujący aktualny stan piosenek
   useEffect(() => {
     console.log("Aktualny stan piosenek:", songs);
     songs.forEach((song, index) => {
@@ -35,8 +43,9 @@ const AdminMusicPage = () => {
         index
       );
     });
-  }, [songs]); // logowanie aktualnego stanu piosenek przy każdej zmianie stanu songs
+  }, [songs]);
 
+  // Funkcja obsługująca dodawanie nowej piosenki
   const handleAddSong = async (newSong: {
     title: string;
     artist: string;
@@ -51,7 +60,7 @@ const AdminMusicPage = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(newSong), // wysyłanie nowej piosenki do API
+        body: JSON.stringify(newSong),
       });
 
       if (!response.ok) {
@@ -66,7 +75,7 @@ const AdminMusicPage = () => {
 
       if (result.success) {
         console.log("Piosenka dodana pomyślnie");
-        dispatch(fetchSongs()); // ponowne pobranie piosenek po dodaniu nowej
+        dispatch(fetchSongs());
       } else {
         console.error("Błąd podczas dodawania piosenki:", result.error);
       }
@@ -75,15 +84,17 @@ const AdminMusicPage = () => {
     }
   };
 
+  // Funkcja obsługująca usuwanie piosenki
   const handleDeleteSong = async (id: string) => {
     try {
-      await dispatch(deleteSongAndRefetch(id)); // usuwanie piosenki i ponowne pobranie piosenek
+      await dispatch(deleteSongAndRefetch(id));
       console.log("Piosenka usunięta pomyślnie");
     } catch (error) {
       console.error("Błąd podczas usuwania piosenki:", error);
     }
   };
 
+  // Funkcja obsługująca wczytywanie pliku JSON
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file && file.type === "application/json") {
@@ -91,11 +102,10 @@ const AdminMusicPage = () => {
       reader.onload = (e) => {
         try {
           const json = JSON.parse(e.target?.result as string);
-          setFileContent(json); // ustawianie zawartości pliku w stanie
+          setFileContent(json);
           json.forEach((song: any) => {
-            // Walidacja danych piosenki
             if (validateSong(song)) {
-              handleAddSong(song); // dodawanie piosenki po walidacji
+              handleAddSong(song);
             } else {
               console.error("Nieprawidłowe dane piosenki:", song);
             }
@@ -104,7 +114,7 @@ const AdminMusicPage = () => {
           console.error("Błąd podczas parsowania pliku JSON:", error);
         }
       };
-      reader.readAsText(file); // odczytywanie pliku jako tekst
+      reader.readAsText(file);
     } else {
       console.error("Niepoprawny format pliku. Wybierz plik JSON.");
     }
@@ -118,26 +128,53 @@ const AdminMusicPage = () => {
       typeof song.youtubeLink === 'string' &&
       typeof song.impro === 'boolean' &&
       typeof song.beginnerFriendly === 'boolean'
-    ); // sprawdzanie czy dane piosenki są poprawne
+    );
   };
 
+  // Funkcja obsługująca usuwanie wszystkich piosenek
+  const handleDeleteAllSongs = async () => {
+    try {
+      await dispatch(deleteAllSongsAndRefetch());
+      setIsDeleteAllModalOpen(false);
+      console.log("Wszystkie utwory zostały usunięte");
+    } catch (error) {
+      console.error("Błąd podczas usuwania wszystkich utworów:", error);
+    }
+  };
+
+  // Renderowanie komponentu w zależności od stanu ładowania
   if (status === "loading") {
-    return <div>Ładowanie...</div>; // wyświetlanie komunikatu o ładowaniu
+    return <div>Ładowanie...</div>;
   }
 
   if (status === "failed") {
-    return <div>Błąd: {error}</div>; // wyświetlanie komunikatu o błędzie
+    return <div>Błąd: {error}</div>;
   }
 
+  // Główny render komponentu
   return (
     <AdminLayout>
       <div className="container mx-auto p-4">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-3xl font-bold">Panel administracyjny - Muzyka</h1>
-          <input type="file" accept=".json" onChange={handleFileChange} /> {/* input do wczytywania pliku JSON */}
+          <div className="flex gap-4">
+            <input type="file" accept=".json" onChange={handleFileChange} />
+            <button
+              onClick={() => setIsDeleteAllModalOpen(true)}
+              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors"
+            >
+              Usuń wszystkie utwory
+            </button>
+          </div>
         </div>
-        <AddSongForm onAddSong={handleAddSong} /> {/* formularz do dodawania piosenek */}
-        <SongList songs={songs} onDelete={handleDeleteSong} /> {/* lista piosenek */}
+        <AddSongForm onAddSong={handleAddSong} />
+        <SongList songs={songs} onDelete={handleDeleteSong} />
+        
+        <DeleteAllConfirmation
+          isOpen={isDeleteAllModalOpen}
+          onConfirm={handleDeleteAllSongs}
+          onCancel={() => setIsDeleteAllModalOpen(false)}
+        />
       </div>
     </AdminLayout>
   );
