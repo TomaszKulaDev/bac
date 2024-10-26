@@ -10,14 +10,16 @@ export const useSortedAndFilteredSongs = (
 ) => {
   const sortFunction = useSortFunction(sortBy, sortOrder);
 
+  const filteredSongs = useMemo(() => {
+    if (!filterText) return songs;
+    return songs.filter(
+      (song) =>
+        song.title.toLowerCase().includes(filterText.toLowerCase()) ||
+        song.artist.toLowerCase().includes(filterText.toLowerCase())
+    );
+  }, [songs, filterText]);
+
   return useMemo(() => {
-    const filteredSongs = filterText
-      ? songs.filter(
-          (song) =>
-            song.title.toLowerCase().includes(filterText.toLowerCase()) ||
-            song.artist.toLowerCase().includes(filterText.toLowerCase())
-        )
-      : songs;
     return sortSongs(filteredSongs, sortFunction);
-  }, [songs, sortFunction, filterText]);
+  }, [filteredSongs, sortFunction]);
 };

@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 type SortBy = "date" | "title" | "artist" | "impro" | "beginnerFriendly";
 type SortOrder = "asc" | "desc";
 
-const getSortValue = (song: Song, sortBy: SortBy): any => {
+const getSortValue = (song: Song, sortBy: SortBy): string | number | boolean => {
   switch (sortBy) {
     case "date":
       return new Date(song.createdAt).getTime();
@@ -13,7 +13,7 @@ const getSortValue = (song: Song, sortBy: SortBy): any => {
       return song[sortBy].trim().toLowerCase();
     case "impro":
     case "beginnerFriendly":
-      return song[sortBy] ? 1 : 0;
+      return song[sortBy];
     default:
       return song.title.trim().toLowerCase();
   }

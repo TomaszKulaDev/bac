@@ -112,15 +112,10 @@ const SongList: React.FC<SongListProps> = ({
     );
   }, [sortedAndFilteredSongs]);
 
-  // TODO: Usunąć przed wdrożeniem produkcyjnym
-  // Ten efekt informuje o zmianie w sortedAndFilteredSongs, co może być przydatne
-  // podczas debugowania, ale zbędne w produkcji
-  useEffect(() => {
-    console.log(
-      "sortedAndFilteredSongs changed:",
-      sortedAndFilteredSongs.map((song) => song.title)
-    );
-  }, [sortedAndFilteredSongs]);
+  // Uncomment for debugging if needed
+  // useEffect(() => {
+  //   console.log("sortedAndFilteredSongs changed:", sortedAndFilteredSongs.map(song => song.title));
+  // }, [sortedAndFilteredSongs]);
 
   const onSongSelectMemoized = useCallback(
     (songId: string) => {
