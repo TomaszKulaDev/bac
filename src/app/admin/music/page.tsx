@@ -12,6 +12,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "@/store/store";
 import AddSongForm from "./components/AddSongForm";
 import DeleteAllConfirmation from "./components/DeleteAllConfirmation";
+import Notification from './components/Notification';
 
 // Główny komponent strony administracyjnej dla muzyki
 const AdminMusicPage = () => {
@@ -25,6 +26,10 @@ const AdminMusicPage = () => {
   const [fileContent, setFileContent] = useState(null);
   // Stan do kontrolowania widoczności modalu potwierdzenia usunięcia wszystkich utworów
   const [isDeleteAllModalOpen, setIsDeleteAllModalOpen] = useState(false);
+  const [notification, setNotification] = useState<{
+    type: 'success' | 'error' | 'info';
+    message: string;
+  } | null>(null);
 
   // Efekt pobierający piosenki przy załadowaniu komponentu
   useEffect(() => {
@@ -136,9 +141,15 @@ const AdminMusicPage = () => {
     try {
       await dispatch(deleteAllSongsAndRefetch());
       setIsDeleteAllModalOpen(false);
-      console.log("Wszystkie utwory zostały usunięte");
+      setNotification({
+        type: 'success',
+        message: 'Wszystkie utwory zostały pomyślnie usunięte'
+      });
     } catch (error) {
-      console.error("Błąd podczas usuwania wszystkich utworów:", error);
+      setNotification({
+        type: 'error',
+        message: 'Wystąpił błąd podczas usuwania utworów'
+      });
     }
   };
 
@@ -176,6 +187,13 @@ const AdminMusicPage = () => {
           onCancel={() => setIsDeleteAllModalOpen(false)}
         />
       </div>
+      {notification && (
+        <Notification
+          type={notification.type}
+          message={notification.message}
+          onClose={() => setNotification(null)}
+        />
+      )}
     </AdminLayout>
   );
 };
