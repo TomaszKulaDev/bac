@@ -67,14 +67,14 @@ export const useYouTubePlayer = (): UseYouTubePlayerReturn => {
     isPlayerReady,
     error,
     playerDimensions,
+    setPlayerDimensions,
     opts,
     onReady,
     onPlay,
     onPause,
     setError,
-    isSmallScreen,
-    setPlayerDimensions,
     updatePlayerDimensions,
+    isSmallScreen,
     setIsSmallScreen
   };
 };
