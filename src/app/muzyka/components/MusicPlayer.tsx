@@ -31,6 +31,7 @@ import CreatePlaylistModal from "./CreatePlaylistModal";
 import SortControl from "./SortControl";
 import PlaybackBar from "./PlaybackBar";
 import { getYouTubeThumbnail } from "../utils/youtube";
+import { Z_INDEX } from '@/app/constants/zIndex';
 
 interface MusicPlayerProps {
   songs: Song[];

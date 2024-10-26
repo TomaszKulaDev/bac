@@ -17,6 +17,7 @@ import SongList from "./components/SongList";
 import PlaylistManager from "./components/PlaylistManager";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Z_INDEX } from '@/app/constants/zIndex';
 
 const generateUniqueId = () => {
   return Date.now().toString(36) + Math.random().toString(36).substr(2);
@@ -380,7 +381,11 @@ const MusicPage: React.FC = () => {
           </button>
         </section>
       )}
-      <ToastContainer position="bottom-right" autoClose={3000} />
+      <ToastContainer 
+        position="bottom-right" 
+        autoClose={3000}
+        style={{ zIndex: Z_INDEX.TOAST }}
+      />
     </div>
   );
 };

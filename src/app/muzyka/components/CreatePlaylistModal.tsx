@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
+import { Z_INDEX } from '@/app/constants/zIndex';
 
 interface CreatePlaylistModalProps {
   onClose: () => void;
@@ -60,8 +61,10 @@ const CreatePlaylistModal: React.FC<CreatePlaylistModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[10000]">
-      <div className="bg-white p-6 rounded-lg">
+    <div className="fixed inset-0 flex items-center justify-center" 
+         style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', zIndex: Z_INDEX.MODAL_OVERLAY }}>
+      <div className="bg-white p-6 rounded-lg shadow-xl" 
+           style={{ zIndex: Z_INDEX.MODAL }}>
         <h2 className="text-xl font-bold mb-4">Utwórz nową playlistę</h2>
         <form onSubmit={handleSubmit}>
           <input
