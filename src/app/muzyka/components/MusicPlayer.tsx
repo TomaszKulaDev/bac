@@ -470,6 +470,18 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     }
   }, [player, isPlayerReady]);
 
+  const getThumbnailSafely = useCallback((youtubeId: string | undefined): string => {
+    try {
+      if (!youtubeId) {
+        return '/images/default-thumbnail.jpg'; // Dodaj domyślną miniaturę
+      }
+      return getYouTubeThumbnail(youtubeId);
+    } catch (error) {
+      console.error('Błąd podczas pobierania miniatury:', error);
+      return '/images/default-thumbnail.jpg';
+    }
+  }, []);
+
   // Komponent MusicPlayer - główny komponent odtwarzacza muzyki
   return (
     <div className="max-w-7xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden pb-20">
@@ -668,9 +680,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           currentSong
             ? {
                 ...currentSong,
-                thumbnail:
-                  currentSong.thumbnail ||
-                  getYouTubeThumbnail(currentSong.youtubeId),
+                thumbnail: currentSong.thumbnail || getThumbnailSafely(currentSong.youtubeId),
               }
             : null
         }
