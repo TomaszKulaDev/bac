@@ -1,9 +1,11 @@
+// Interfejs reprezentujący playlistę
 export interface Playlist {
   id: string;
   name: string;
   songs: string[]; // Tablica ID piosenek
 }
 
+// Interfejs reprezentujący utwór muzyczny
 export interface Song {
   _id: string;
   id: string;
@@ -11,13 +13,14 @@ export interface Song {
   artist: string;
   youtubeId: string;
   impro: boolean;
-  beginnerFriendly: boolean; // Nowe pole
+  beginnerFriendly: boolean; // Określa, czy utwór jest przyjazny dla początkujących
   createdAt: Date;
   __v?: number;
   playlists: string[]; // Tablica ID playlist, do których należy utwór
   thumbnail?: string;
 }
 
+// Interfejs właściwości komponentu odtwarzacza muzyki
 export interface MusicPlayerProps {
   songs: Song[];
   onCreatePlaylist: (name: string, selectedSongs?: string[]) => void;
@@ -38,11 +41,13 @@ export interface MusicPlayerProps {
   playlistCount: number;
 }
 
+// Interfejs reprezentujący tryb powtarzania
 export interface RepeatMode {
   playlist: 'off' | 'on';
   song: 'off' | 'on';
 }
 
+// Typy dla opcji sortowania
 export type SortOption = "date" | "title" | "artist" | "impro" | "beginnerFriendly";
 export type SortBy = SortOption;
 export type SortOrder = "asc" | "desc";
