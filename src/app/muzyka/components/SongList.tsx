@@ -9,6 +9,7 @@ import { Song } from "../types";
 import { motion } from "framer-motion";
 import { getYouTubeThumbnail } from "../utils/youtube";
 import { sortSongs } from "../utils/sortUtils";
+import { useSortedAndFilteredSongs } from '../hooks/useSortedAndFilteredSongs';
 
 interface SongListProps {
   songs: Song[];
@@ -64,17 +65,7 @@ const SongList: React.FC<SongListProps> = ({
     console.log("SongList received new props:", { songs, sortBy, sortOrder });
   }, [songs, sortBy, sortOrder]);
 
-  const sortedAndFilteredSongs = useMemo(() => {
-    console.log("Recalculating sortedAndFilteredSongs:", { sortBy, sortOrder });
-    const sorted = sortSongs(songs, sortBy, sortOrder);
-    return filterText
-      ? sorted.filter(
-          (song) =>
-            song.title.toLowerCase().includes(filterText.toLowerCase()) ||
-            song.artist.toLowerCase().includes(filterText.toLowerCase())
-        )
-      : sorted;
-  }, [songs, sortBy, sortOrder, filterText]);
+  const sortedAndFilteredSongs = useSortedAndFilteredSongs(songs, sortBy, sortOrder, filterText);
 
   const handleSort = useCallback(
     (newSortBy: "date" | "title" | "artist" | "impro") => {

@@ -32,6 +32,8 @@ import SortControl from "./SortControl";
 import PlaybackBar from "./PlaybackBar";
 import { getYouTubeThumbnail } from "../utils/youtube";
 import { Z_INDEX } from '@/app/constants/zIndex';
+import PlaylistHeader from './PlaylistHeader';
+import { useSortedAndFilteredSongs } from '../hooks/useSortedAndFilteredSongs';
 
 interface MusicPlayerProps {
   songs: Song[];
@@ -115,6 +117,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     "date" | "title" | "artist" | "impro" | "beginnerFriendly"
   >("date");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
+
+  const sortedAndFilteredSongs = useSortedAndFilteredSongs(songs, sortBy, sortOrder, filterText);
 
   const onSortChange = (
     newSortBy: "date" | "title" | "artist" | "impro" | "beginnerFriendly",
@@ -369,25 +373,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     [onUpdatePlaylists, onPlayPlaylist, currentPlaylistId]
   );
 
-  const sortedAndFilteredSongs = useMemo(() => {
-    let result = currentPlaylistId
-      ? songs.filter((song) =>
-          playlists
-            .find((p) => p.id === currentPlaylistId)
-            ?.songs.includes(song.id)
-        )
-      : songs;
-
-    if (filterText) {
-      result = result.filter(
-        (song) =>
-          song.title.toLowerCase().includes(filterText.toLowerCase()) ||
-          song.artist.toLowerCase().includes(filterText.toLowerCase())
-      );
-    }
-    return sortSongs(result, sortBy, sortOrder);
-  }, [songs, currentPlaylistId, playlists, filterText, sortBy, sortOrder]);
-
   useEffect(() => {
     const allPlaylistNames = playlists.map((p: Playlist) => p.name);
     dispatch(syncSongsWithPlaylists(allPlaylistNames) as unknown as AnyAction);
@@ -464,25 +449,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   // Komponent MusicPlayer - główny komponent odtwarzacza muzyki
   return (
     <div className="max-w-7xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden pb-20">
-      <div className="bg-[#0a1e3b] text-white p-8 mb-8">
-        <div className="flex items-center mb-6">
-          <div className="bg-[#ffd700] text-[#0a1e3b] text-sm font-bold px-3 py-1.5 rounded mr-3">
-            Baciata.pl
-          </div>
-          <span className="text-base">Muzyka</span>
-        </div>
-        <h1 className="text-8xl font-bold mb-4 font-inter tracking-tight">
-          Bachata Top lista 2024!
-        </h1>
-        <p className="text-xl font-inter">
-          {" "}
-          Do nich tańczysz na imprezach w 2024 roku!
-        </p>
-        <p className="text-white">
-          {filteredSongs.length} utworów • Zaktualizowano:{" "}
-          {new Date().toLocaleDateString("pl-PL")}
-        </p>
-      </div>
+      <PlaylistHeader filteredSongsCount={filteredSongs.length} />
       <div className="w-full mb-4 bg-gray-100">
         <SortControl
           sortBy={sortBy}
