@@ -6,24 +6,86 @@ import { RootState, AppDispatch } from '@/store/store';
 // Asynchroniczna akcja do pobierania piosenek z API
 export const fetchSongs = createAsyncThunk(
   'songs/fetchSongs',
-  async () => {
-    const response = await fetch('/api/songs');
-    const data = await response.json();
-    // Mapowanie danych i zapewnienie, że każda piosenka ma poprawne ID
-    return data.map((song: any) => ({
-      ...song,
-      id: song._id || song.id
-    }));
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await fetch('/api/songs');
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        return rejectWithValue({
+          status: response.status,
+          message: errorData.message || 'Wystąpił błąd podczas pobierania utworów',
+          details: errorData.details || null
+        });
+      }
+
+      const data = await response.json();
+      return data.map((song: any) => ({
+        ...song,
+        id: song._id,
+        impro: song.impro || false,
+        beginnerFriendly: song.beginnerFriendly || false
+      }));
+    } catch (error: any) {
+      return rejectWithValue({
+        status: 500,
+        message: 'Wystąpił nieoczekiwany błąd podczas pobierania utworów',
+        details: error.message
+      });
+    }
   }
 );
 
 // Asynchroniczna akcja do usuwania piosenki i odświeżania listy
 export const deleteSongAndRefetch = createAsyncThunk(
   'songs/deleteSongAndRefetch',
-  async (id: string, { dispatch }) => {
-    const response = await fetch(`/api/songs/${id}`, { method: 'DELETE' });
-    if (!response.ok) throw new Error('Failed to delete song');
-    await dispatch(fetchSongs());
+  async (id: string, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await fetch(`/api/songs/${id}`, { 
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        let errorMessage = 'Wystąpił błąd podczas usuwania utworu';
+
+        switch (response.status) {
+          case 401:
+            errorMessage = 'Brak uprawnień do usunięcia utworu';
+            break;
+          case 403:
+            errorMessage = 'Dostęp zabroniony';
+            break;
+          case 404:
+            errorMessage = 'Nie znaleziono utworu do usunięcia';
+            break;
+          case 500:
+            errorMessage = 'Błąd serwera podczas usuwania utworu';
+            break;
+          default:
+            errorMessage = errorData.message || errorMessage;
+        }
+
+        return rejectWithValue({
+          status: response.status,
+          message: errorMessage,
+          details: errorData.details || null
+        });
+      }
+
+      const data = await response.json();
+      await dispatch(fetchSongs());
+      return data;
+    } catch (error: any) {
+      return rejectWithValue({
+        status: 500,
+        message: 'Wystąpił nieoczekiwany błąd podczas usuwania utworu',
+        details: error.message
+      });
+    }
   }
 );
 

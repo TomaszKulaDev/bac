@@ -33,8 +33,24 @@ const AdminMusicPage = () => {
 
   // Efekt pobierający piosenki przy załadowaniu komponentu
   useEffect(() => {
-    console.log("Pobieranie piosenek...");
-    dispatch(fetchSongs());
+    const loadSongs = async () => {
+      try {
+        const result = await dispatch(fetchSongs()).unwrap();
+        console.log("Piosenki pobrane pomyślnie:", result);
+      } catch (error: any) {
+        setNotification({
+          type: 'error',
+          message: error.message || 'Wystąpił błąd podczas pobierania piosenek'
+        });
+        console.error("Błąd podczas pobierania piosenek:", {
+          status: error.status,
+          message: error.message,
+          details: error.details
+        });
+      }
+    };
+
+    loadSongs();
   }, [dispatch]);
 
   // Efekt logujący aktualny stan piosenek
@@ -106,17 +122,27 @@ const AdminMusicPage = () => {
   // Funkcja obsługująca usuwanie piosenki
   const handleDeleteSong = async (id: string) => {
     try {
-      await dispatch(deleteSongAndRefetch(id));
+      const result = await dispatch(deleteSongAndRefetch(id)).unwrap();
       setNotification({
         type: 'success',
         message: 'Piosenka została pomyślnie usunięta'
       });
     } catch (error: any) {
+      const errorDetails = error.details ? `: ${error.details}` : '';
       setNotification({
         type: 'error',
-        message: error.message || 'Wystąpił błąd podczas usuwania piosenki'
+        message: `${error.message}${errorDetails}`
       });
-      console.error("Błąd podczas usuwania piosenki:", error);
+      
+      console.error('Błąd podczas usuwania piosenki:', {
+        status: error.status,
+        message: error.message,
+        details: error.details
+      });
+
+      if (error.status === 401 || error.status === 403) {
+        console.log('Użytkownik nie ma uprawnień do usuwania piosenek');
+      }
     }
   };
 
@@ -211,11 +237,29 @@ const AdminMusicPage = () => {
 
   // Renderowanie komponentu w zależności od stanu ładowania
   if (status === "loading") {
-    return <div>Ładowanie...</div>;
+    return (
+      <AdminLayout>
+        <div className="container mx-auto p-4">
+          <div className="flex items-center justify-center h-64">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500"></div>
+            <span className="ml-3">Ładowanie danych...</span>
+          </div>
+        </div>
+      </AdminLayout>
+    );
   }
 
   if (status === "failed") {
-    return <div>Błąd: {error}</div>;
+    return (
+      <AdminLayout>
+        <div className="container mx-auto p-4">
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
+            <strong className="font-bold">Błąd! </strong>
+            <span className="block sm:inline">{error}</span>
+          </div>
+        </div>
+      </AdminLayout>
+    );
   }
 
   // Główny render komponentu
