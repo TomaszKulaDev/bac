@@ -13,6 +13,7 @@ import { RootState, AppDispatch } from "@/store/store";
 import AddSongForm from "./components/AddSongForm";
 import DeleteAllConfirmation from "./components/DeleteAllConfirmation";
 import Notification from './components/Notification';
+import { useValidation } from '@/app/muzyka/hooks/useValidation';
 
 // Główny komponent strony administracyjnej dla muzyki
 const AdminMusicPage = () => {
@@ -30,6 +31,8 @@ const AdminMusicPage = () => {
     type: 'success' | 'error' | 'info';
     message: string;
   } | null>(null);
+
+  const { validateSong } = useValidation();
 
   // Efekt pobierający piosenki przy załadowaniu komponentu
   useEffect(() => {
@@ -158,17 +161,15 @@ const AdminMusicPage = () => {
           let successCount = 0;
           let errorCount = 0;
 
-          for (const song of json) {
-            if (validateSong(song)) {
+          if (Array.isArray(json)) {
+            const validSongs = json.filter(validateSongData);
+            for (const song of validSongs) {
               try {
                 await handleAddSong(song);
                 successCount++;
               } catch {
                 errorCount++;
               }
-            } else {
-              errorCount++;
-              console.error("Nieprawidłowe dane piosenki:", song);
             }
           }
 
@@ -194,7 +195,7 @@ const AdminMusicPage = () => {
   };
 
   // Funkcja walidująca dane piosenki
-  const validateSong = (song: any) => {
+  const validateSongData = (song: any) => {
     return (
       typeof song.title === 'string' &&
       typeof song.artist === 'string' &&
