@@ -3,6 +3,14 @@ import { FaSort, FaSearch } from "react-icons/fa";
 import { useDebounce } from '../hooks/useDebounce';
 import { SortOption, SortOrder } from '../types';
 
+const sortOptionLabels: Record<SortOption, string> = {
+  date: "Ostatnio dodane",
+  title: "Tytuł",
+  artist: "Artysta",
+  impro: "Impro",
+  beginnerFriendly: "Dla początkujących"
+};
+
 interface SortControlProps {
   sortBy: SortOption;
   sortOrder: SortOrder;
@@ -54,31 +62,19 @@ const SortControl: React.FC<SortControlProps> = ({
         </div>
       </div>
       <div className="flex space-x-2 flex-wrap justify-center">
-        {["date", "title", "artist", "impro", "beginnerFriendly"].map(
-          (option) => (
-            <button
-              key={option}
-              onClick={() => handleSort(option as SortOption)}
-              className={`px-6 py-3 rounded-md text-sm transition-all duration-300 ease-in-out flex items-center mb-2 ${
-                sortBy === option
-                  ? "bg-gray-700 text-white"
-                  : "bg-gray-600 text-white hover:bg-gray-500"
-              }`}
-            >
-              {option === "date"
-                ? "Ostatnio dodane"
-                : option === "title"
-                ? "Tytuł"
-                : option === "artist"
-                ? "Artysta"
-                : option === "impro"
-                ? "Impro"
-                : option === "beginnerFriendly"
-                ? "Dla początkujących"
-                : option}
-            </button>
-          )
-        )}
+        {(Object.keys(sortOptionLabels) as SortOption[]).map((option) => (
+          <button
+            key={option}
+            onClick={() => handleSort(option)}
+            className={`px-6 py-3 rounded-md text-sm transition-all duration-300 ease-in-out flex items-center mb-2 ${
+              sortBy === option
+                ? "bg-gray-700 text-white"
+                : "bg-gray-600 text-white hover:bg-gray-500"
+            }`}
+          >
+            {sortOptionLabels[option]}
+          </button>
+        ))}
       </div>
     </div>
   );
