@@ -1,4 +1,5 @@
 import { Song } from "../types";
+import { useMemo } from 'react';
 
 type SortBy = "date" | "title" | "artist" | "impro" | "beginnerFriendly";
 type SortOrder = "asc" | "desc";
@@ -18,22 +19,24 @@ const getSortValue = (song: Song, sortBy: SortBy): any => {
   }
 };
 
-export const sortSongs = (
-  songs: Song[],
-  sortBy: SortBy,
-  sortOrder: SortOrder
-): Song[] => {
-  return [...songs].sort((a, b) => {
-    const aValue = getSortValue(a, sortBy);
-    const bValue = getSortValue(b, sortBy);
-    
-    if (typeof aValue === 'string' && typeof bValue === 'string') {
-      const comparison = aValue.localeCompare(bValue, undefined, { sensitivity: 'base' });
-      return sortOrder === "asc" ? comparison : -comparison;
-    }
-    
-    if (aValue < bValue) return sortOrder === "asc" ? -1 : 1;
-    if (aValue > bValue) return sortOrder === "asc" ? 1 : -1;
-    return 0;
-  });
+export const useSortFunction = (sortBy: SortBy, sortOrder: SortOrder) => {
+  return useMemo(() => {
+    return (a: Song, b: Song) => {
+      const aValue = getSortValue(a, sortBy);
+      const bValue = getSortValue(b, sortBy);
+      
+      if (typeof aValue === 'string' && typeof bValue === 'string') {
+        const comparison = aValue.localeCompare(bValue, undefined, { sensitivity: 'base' });
+        return sortOrder === "asc" ? comparison : -comparison;
+      }
+      
+      if (aValue < bValue) return sortOrder === "asc" ? -1 : 1;
+      if (aValue > bValue) return sortOrder === "asc" ? 1 : -1;
+      return 0;
+    };
+  }, [sortBy, sortOrder]);
+};
+
+export const sortSongs = (songs: Song[], sortFunction: (a: Song, b: Song) => number): Song[] => {
+  return [...songs].sort(sortFunction);
 };

@@ -8,7 +8,7 @@ import {
 import { Song } from "../types";
 import { motion } from "framer-motion";
 import { getYouTubeThumbnail } from "../utils/youtube";
-import { sortSongs } from "../utils/sortUtils";
+import { sortSongs, useSortFunction } from '../utils/sortUtils';
 import { useSortedAndFilteredSongs } from '../hooks/useSortedAndFilteredSongs';
 
 interface SongListProps {
@@ -78,10 +78,12 @@ const SongList: React.FC<SongListProps> = ({
     [sortBy, sortOrder, onSortChange]
   );
 
+  const sortFunction = useSortFunction(sortBy, sortOrder);
+
   const sortedSongs = useMemo(() => {
     console.log("Recalculating sortedSongs");
-    return sortSongs(songs, sortBy, sortOrder);
-  }, [songs, sortBy, sortOrder]);
+    return sortSongs(songs, sortFunction);
+  }, [songs, sortFunction]);
 
   console.log(
     "Sorted songs:",

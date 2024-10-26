@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { Song } from '../types';
-import { sortSongs } from '../utils/sortUtils';
+import { sortSongs, useSortFunction } from '../utils/sortUtils';
 
 export const useSortedAndFilteredSongs = (
   songs: Song[],
@@ -8,16 +8,16 @@ export const useSortedAndFilteredSongs = (
   sortOrder: "asc" | "desc",
   filterText: string
 ) => {
-  return useMemo(() => {
-    let filteredSongs = songs;
-    if (filterText) {
-      filteredSongs = songs.filter(
-        (song) =>
-          song.title.toLowerCase().includes(filterText.toLowerCase()) ||
-          song.artist.toLowerCase().includes(filterText.toLowerCase())
-      );
-    }
-    return sortSongs(filteredSongs, sortBy, sortOrder);
-  }, [songs, sortBy, sortOrder, filterText]);
-};
+  const sortFunction = useSortFunction(sortBy, sortOrder);
 
+  return useMemo(() => {
+    const filteredSongs = filterText
+      ? songs.filter(
+          (song) =>
+            song.title.toLowerCase().includes(filterText.toLowerCase()) ||
+            song.artist.toLowerCase().includes(filterText.toLowerCase())
+        )
+      : songs;
+    return sortSongs(filteredSongs, sortFunction);
+  }, [songs, sortFunction, filterText]);
+};
