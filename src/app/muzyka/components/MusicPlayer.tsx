@@ -35,6 +35,7 @@ import { Z_INDEX } from '@/app/constants/zIndex';
 import PlaylistHeader from './PlaylistHeader';
 import { useSortedAndFilteredSongs } from '../hooks/useSortedAndFilteredSongs';
 import { useYouTubePlayer } from '../hooks/useYouTubePlayer';
+import { usePlaybackControls } from '../hooks/usePlaybackControls';
 
 interface MusicPlayerProps {
   songs: Song[];
@@ -114,6 +115,11 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     { id: string; name: string }[]
   >([]);
 
+  const [repeatMode, setRepeatMode] = useState<RepeatMode>({
+    song: "off",
+    playlist: "off",
+  });
+
   const [sortBy, setSortBy] = useState<
     "date" | "title" | "artist" | "impro" | "beginnerFriendly"
   >("date");
@@ -129,91 +135,18 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     setSortOrder(newSortOrder);
   };
 
-  // Funkcja do odtwarzania poprzedniego utworu
-  const previousSong = () => {
-    if (currentPlaylistId) {
-      const currentPlaylist = playlists.find(
-        (p: Playlist) => p.id === currentPlaylistId
-      );
-      if (currentPlaylist) {
-        const currentIndex = currentPlaylist.songs.indexOf(currentSong.id);
-        let prevIndex;
-
-        if (repeatMode.song === "on") {
-          prevIndex = currentIndex;
-        } else if (currentIndex > 0) {
-          prevIndex = currentIndex - 1;
-        } else if (repeatMode.playlist === "on") {
-          prevIndex = currentPlaylist.songs.length - 1;
-        } else {
-          return; // Nie odtwarzaj poprzedniego utworu, jeśli to pierwszy i nie ma powtarzania
-        }
-
-        const prevSongId = currentPlaylist.songs[prevIndex];
-        dispatch(
-          setCurrentSongIndex(songs.findIndex((s) => s.id === prevSongId))
-        );
-      }
-    } else {
-      const currentIndex = songs.findIndex((s) => s.id === currentSong.id);
-      let prevIndex = (currentIndex - 1 + songs.length) % songs.length;
-      dispatch(setCurrentSongIndex(prevIndex));
-    }
-    setIsPlaying(true);
-    setIsLoading(true);
-  };
-
-  // Funkcja do przełączania odtwarzania
-  const togglePlayback = useCallback(() => {
-    if (!player || !isPlayerReady) {
-      console.warn('Player nie jest gotowy');
-      return;
-    }
-    
-    try {
-      if (isPlaying) {
-        player.pauseVideo();
-      } else {
-        player.playVideo();
-      }
-      setIsPlaying(!isPlaying);
-    } catch (error) {
-      console.error('Błąd podczas przełączania odtwarzania:', error);
-    }
-  }, [player, isPlaying, isPlayerReady, setIsPlaying]);
-
-  // Funkcja do odtwarzania następnego utworu
-  const nextSong = () => {
-    if (!player || !isPlayerReady) {
-      console.warn('Player nie jest gotowy');
-      return;
-    }
-    
-    try {
-      // reszta logiki pozostaje bez zmian
-      if (currentPlaylistId) {
-        const currentPlaylist = playlists.find(
-          (p: Playlist) => p.id === currentPlaylistId
-        );
-        if (currentPlaylist) {
-          const currentIndex = currentPlaylist.songs.indexOf(currentSong.id);
-          let nextIndex = (currentIndex + 1) % currentPlaylist.songs.length;
-          const nextSongId = currentPlaylist.songs[nextIndex];
-          dispatch(
-            setCurrentSongIndex(songs.findIndex((s) => s.id === nextSongId))
-          );
-        }
-      } else {
-        const currentIndex = songs.findIndex((s) => s.id === currentSong.id);
-        let nextIndex = (currentIndex + 1) % songs.length;
-        dispatch(setCurrentSongIndex(nextIndex));
-      }
-      setIsPlaying(true);
-      setIsLoading(true);
-    } catch (error) {
-      console.error('Błąd podczas przechodzenia do następnego utworu:', error);
-    }
-  };
+  const { previousSong, togglePlayback, nextSong } = usePlaybackControls({
+    player,
+    isPlayerReady,
+    currentSong,
+    songs,
+    playlists,
+    currentPlaylistId,
+    setIsPlaying,
+    setIsLoading,
+    repeatMode,
+    isPlaying
+  });
 
   // Funkcja do ładowania większej liczby utworów
   const loadMoreSongs = useCallback(() => {
@@ -358,19 +291,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     );
   };
 
-  // Funkcja do przełączania trybu powtarzania
-  const [repeatMode, setRepeatMode] = useState<RepeatMode>({
-    playlist: "off",
-    song: "off",
-  });
-
-  const toggleRepeatMode = (mode: "playlist" | "song") => {
-    setRepeatMode((prevMode) => ({
-      ...prevMode,
-      [mode]: prevMode[mode] === "off" ? "on" : "off",
-    }));
-  };
-
   const currentPlaylist = useMemo(
     () => playlists.find((p) => p.id === currentPlaylistId),
     [playlists, currentPlaylistId]
@@ -431,6 +351,14 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
       console.error('Błąd podczas pobierania miniatury:', error);
       return '/images/default-thumbnail.jpg';
     }
+  }, []);
+
+  // Dodajemy funkcję toggleRepeatMode
+  const toggleRepeatMode = useCallback((type: "song" | "playlist") => {
+    setRepeatMode(prev => ({
+      ...prev,
+      [type]: prev[type] === "on" ? "off" : "on"
+    }));
   }, []);
 
   // Komponent MusicPlayer - główny komponent odtwarzacza muzyki
