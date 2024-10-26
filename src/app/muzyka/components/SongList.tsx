@@ -8,7 +8,7 @@ import {
 import { Song } from "../types";
 import { motion } from "framer-motion";
 import { getYouTubeThumbnail } from "../utils/youtube";
-import { sortSongs, useSortFunction } from '../utils/sortUtils';
+import { sortSongs, getSortValue } from '../utils/sortUtils';
 import { useSortedAndFilteredSongs } from '../hooks/useSortedAndFilteredSongs';
 
 interface SongListProps {
@@ -61,13 +61,6 @@ const SongList: React.FC<SongListProps> = ({
 }) => {
   const [showNotification, setShowNotification] = useState(false);
 
-  // TODO: Usunąć przed wdrożeniem produkcyjnym
-  // Ten efekt loguje nowe propsy komponentu SongList, co może być przydatne podczas debugowania,
-  // ale niepotrzebne w produkcji i może wpływać na wydajność przy dużej liczbie piosenek
-  useEffect(() => {
-    console.log("SongList received new props:", { songs, sortBy, sortOrder });
-  }, [songs, sortBy, sortOrder]);
-
   const sortedAndFilteredSongs = useSortedAndFilteredSongs(songs, sortBy, sortOrder, filterText);
 
   const handleSort = useCallback(
@@ -78,55 +71,11 @@ const SongList: React.FC<SongListProps> = ({
     [sortBy, sortOrder, onSortChange]
   );
 
-  const sortFunction = useSortFunction(sortBy, sortOrder);
-
-  const sortedSongs = useMemo(() => {
-    // TODO: Usunąć przed wdrożeniem produkcyjnym
-    // Ten log informuje o ponownym przeliczaniu posortowanych piosenek,
-    // co może być pomocne w debugowaniu, ale zbędne w produkcji
-    console.log("Recalculating sortedSongs");
-    return sortSongs(songs, sortFunction);
-  }, [songs, sortFunction]);
-
-  // TODO: Usunąć przed wdrożeniem produkcyjnym
-  // Ten log wyświetla tytuły posortowanych i przefiltrowanych piosenek,
-  // co może być przydatne podczas debugowania, ale niepotrzebne w produkcji
-  console.log(
-    "Sorted songs:",
-    sortedAndFilteredSongs.map((song) => song.title)
-  );
-
-  // TODO: Usunąć przed wdrożeniem produkcyjnym
-  // Ten efekt loguje renderowane piosenki, co może być pomocne w debugowaniu,
-  // ale niepotrzebne w produkcji i może wpływać na wydajność
-  useEffect(() => {
-    console.log(
-      "Rendering songs:",
-      sortedAndFilteredSongs.map((song) => ({
-        title: song.title,
-        artist: song.artist,
-      }))
-    );
-  }, [sortedAndFilteredSongs]);
-
-  // Uncomment for debugging if needed
-  // useEffect(() => {
-  //   console.log("sortedAndFilteredSongs changed:", sortedAndFilteredSongs.map(song => song.title));
-  // }, [sortedAndFilteredSongs]);
-
   const onSongSelectMemoized = useCallback(
     (songId: string) => {
       onSongSelect(songId);
     },
     [onSongSelect]
-  );
-
-  // TODO: Usunąć przed wdrożeniem produkcyjnym
-  // Ten log wyświetla tytuły i daty utworzenia piosenek, co może być pomocne
-  // w debugowaniu, ale niepotrzebne w produkcji
-  console.log(
-    "Songs with dates:",
-    songs.map((song) => ({ title: song.title, createdAt: song.createdAt }))
   );
 
   return (
