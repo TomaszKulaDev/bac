@@ -61,6 +61,9 @@ const SongList: React.FC<SongListProps> = ({
 }) => {
   const [showNotification, setShowNotification] = useState(false);
 
+  // TODO: Usunąć przed wdrożeniem produkcyjnym
+  // Ten efekt loguje nowe propsy komponentu SongList, co może być przydatne podczas debugowania,
+  // ale niepotrzebne w produkcji i może wpływać na wydajność przy dużej liczbie piosenek
   useEffect(() => {
     console.log("SongList received new props:", { songs, sortBy, sortOrder });
   }, [songs, sortBy, sortOrder]);
@@ -81,15 +84,24 @@ const SongList: React.FC<SongListProps> = ({
   const sortFunction = useSortFunction(sortBy, sortOrder);
 
   const sortedSongs = useMemo(() => {
+    // TODO: Usunąć przed wdrożeniem produkcyjnym
+    // Ten log informuje o ponownym przeliczaniu posortowanych piosenek,
+    // co może być pomocne w debugowaniu, ale zbędne w produkcji
     console.log("Recalculating sortedSongs");
     return sortSongs(songs, sortFunction);
   }, [songs, sortFunction]);
 
+  // TODO: Usunąć przed wdrożeniem produkcyjnym
+  // Ten log wyświetla tytuły posortowanych i przefiltrowanych piosenek,
+  // co może być przydatne podczas debugowania, ale niepotrzebne w produkcji
   console.log(
     "Sorted songs:",
     sortedAndFilteredSongs.map((song) => song.title)
   );
 
+  // TODO: Usunąć przed wdrożeniem produkcyjnym
+  // Ten efekt loguje renderowane piosenki, co może być pomocne w debugowaniu,
+  // ale niepotrzebne w produkcji i może wpływać na wydajność
   useEffect(() => {
     console.log(
       "Rendering songs:",
@@ -100,6 +112,9 @@ const SongList: React.FC<SongListProps> = ({
     );
   }, [sortedAndFilteredSongs]);
 
+  // TODO: Usunąć przed wdrożeniem produkcyjnym
+  // Ten efekt informuje o zmianie w sortedAndFilteredSongs, co może być przydatne
+  // podczas debugowania, ale zbędne w produkcji
   useEffect(() => {
     console.log(
       "sortedAndFilteredSongs changed:",
@@ -114,6 +129,9 @@ const SongList: React.FC<SongListProps> = ({
     [onSongSelect]
   );
 
+  // TODO: Usunąć przed wdrożeniem produkcyjnym
+  // Ten log wyświetla tytuły i daty utworzenia piosenek, co może być pomocne
+  // w debugowaniu, ale niepotrzebne w produkcji
   console.log(
     "Songs with dates:",
     songs.map((song) => ({ title: song.title, createdAt: song.createdAt }))
