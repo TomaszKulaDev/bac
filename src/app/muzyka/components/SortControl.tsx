@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { FaSort, FaSearch } from "react-icons/fa";
 import { useDebounce } from '../hooks/useDebounce';
 
@@ -30,6 +30,14 @@ const SortControl: React.FC<SortControlProps> = ({
     setFilterText(debouncedFilterText);
   }, [debouncedFilterText, setFilterText]);
 
+  const handleSort = useCallback(
+    (newSortBy: "date" | "title" | "artist" | "impro" | "beginnerFriendly") => {
+      const newSortOrder = sortBy === newSortBy && sortOrder === "asc" ? "desc" : "asc";
+      onSortChange(newSortBy, newSortOrder);
+    },
+    [sortBy, sortOrder, onSortChange]
+  );
+
   return (
     <div className="flex flex-col items-center w-full p-3 bg-gray-100 rounded-lg">
       <div className="w-full max-w-md mb-4">
@@ -49,17 +57,7 @@ const SortControl: React.FC<SortControlProps> = ({
           (option) => (
             <button
               key={option}
-              onClick={() => {
-                onSortChange(
-                  option as
-                    | "date"
-                    | "title"
-                    | "artist"
-                    | "impro"
-                    | "beginnerFriendly",
-                  "desc"
-                );
-              }}
+              onClick={() => handleSort(option as "date" | "title" | "artist" | "impro" | "beginnerFriendly")}
               className={`px-6 py-3 rounded-md text-sm transition-all duration-300 ease-in-out flex items-center mb-2 ${
                 sortBy === option
                   ? "bg-gray-700 text-white"

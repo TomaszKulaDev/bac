@@ -15,9 +15,9 @@ import { RootState } from "@/store/store";
 import BaciataRisingBanner from "./components/BaciataRisingBanner";
 import SongList from "./components/SongList";
 import PlaylistManager from "./components/PlaylistManager";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { Z_INDEX } from '@/app/constants/zIndex';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Z_INDEX } from "@/app/constants/zIndex";
 
 const generateUniqueId = () => {
   return Date.now().toString(36) + Math.random().toString(36).substr(2);
@@ -164,15 +164,6 @@ const MusicPage: React.FC = () => {
     },
     [dispatch, playlists]
   );
-
-  const filteredSongs = useMemo(() => {
-    if (!filterText) return songs;
-    return songs.filter(
-      (song) =>
-        song.title.toLowerCase().includes(filterText.toLowerCase()) ||
-        song.artist.toLowerCase().includes(filterText.toLowerCase())
-    );
-  }, [songs, filterText]);
 
   useEffect(() => {
     if (status === "idle") {
@@ -351,29 +342,29 @@ const MusicPage: React.FC = () => {
           </div>
           <article className="prose prose-lg text-gray-700 mb-8 leading-relaxed">
             <p>
-              Witaj w naszym muzycznym raju <strong>bachaty</strong>! Mamy tu wszystko - od
-              starych, zakurzonych hitów prosto z dominikańskich piwnic, po
-              nowoczesne kawałki <strong>bachaty</strong>, które sprawią, że nawet twoja babcia zacznie
-              kręcić biodrami.
+              Witaj w naszym muzycznym raju <strong>bachaty</strong>! Mamy tu
+              wszystko - od starych, zakurzonych hitów prosto z dominikańskich
+              piwnic, po nowoczesne kawałki <strong>bachaty</strong>, które
+              sprawią, że nawet twoja babcia zacznie kręcić biodrami.
             </p>
 
             <p>
-              Nasze playlisty <strong>bachaty</strong> to istne rollercoastery emocji - od romantycznych
-              ballad, przy których będziesz płakać jak bóbr, po energiczne
-              rytmy, które sprawią, że twoje stopy same zaczną tańczyć (nawet
-              jeśli masz dwie lewe!).
+              Nasze playlisty <strong>bachaty</strong> to istne rollercoastery
+              emocji - od romantycznych ballad, przy których będziesz płakać jak
+              bóbr, po energiczne rytmy, które sprawią, że twoje stopy same
+              zaczną tańczyć (nawet jeśli masz dwie lewe!).
             </p>
 
             <p>
-              Zapraszamy do muzycznej podróży przez historię <strong>bachaty</strong> - od
-              czasów, gdy instrumenty robiono z kokosów, po dzisiejsze
-              elektroniczne cuda.
+              Zapraszamy do muzycznej podróży przez historię{" "}
+              <strong>bachaty</strong> - od czasów, gdy instrumenty robiono z
+              kokosów, po dzisiejsze elektroniczne cuda.
             </p>
 
             <p>
-              Gwarantujemy, że po przesłuchaniu naszej kolekcji <strong>bachaty</strong> albo zostaniesz
-              mistrzem tańca, albo przynajmniej mistrzem udawania, że umiesz
-              tańczyć!
+              Gwarantujemy, że po przesłuchaniu naszej kolekcji{" "}
+              <strong>bachaty</strong> albo zostaniesz mistrzem tańca, albo
+              przynajmniej mistrzem udawania, że umiesz tańczyć!
             </p>
           </article>
           <button className="bg-purple-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-purple-700 transition duration-300 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50">
@@ -381,8 +372,8 @@ const MusicPage: React.FC = () => {
           </button>
         </section>
       )}
-      <ToastContainer 
-        position="bottom-right" 
+      <ToastContainer
+        position="bottom-right"
         autoClose={3000}
         style={{ zIndex: Z_INDEX.TOAST }}
       />

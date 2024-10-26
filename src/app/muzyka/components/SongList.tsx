@@ -71,12 +71,9 @@ const SongList: React.FC<SongListProps> = ({
   const sortedAndFilteredSongs = useSortedAndFilteredSongs(songs, sortBy, sortOrder, filterText);
 
   const handleSort = useCallback(
-    (newSortBy: "date" | "title" | "artist" | "impro") => {
-      if (sortBy === newSortBy) {
-        onSortChange(newSortBy, sortOrder === "asc" ? "desc" : "asc");
-      } else {
-        onSortChange(newSortBy, newSortBy === "date" ? "desc" : "asc");
-      }
+    (newSortBy: "date" | "title" | "artist" | "impro" | "beginnerFriendly") => {
+      const newSortOrder = sortBy === newSortBy && sortOrder === "asc" ? "desc" : "asc";
+      onSortChange(newSortBy, newSortOrder);
     },
     [sortBy, sortOrder, onSortChange]
   );

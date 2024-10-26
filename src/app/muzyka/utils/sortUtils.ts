@@ -1,10 +1,10 @@
-import { Song } from "../types";
-import { useMemo } from 'react';
+import { Song, SortBy, SortOrder } from "../types";
+import { useMemo } from "react";
 
-type SortBy = "date" | "title" | "artist" | "impro" | "beginnerFriendly";
-type SortOrder = "asc" | "desc";
-
-const getSortValue = (song: Song, sortBy: SortBy): string | number | boolean => {
+export const getSortValue = (
+  song: Song,
+  sortBy: SortBy
+): string | number | boolean => {
   switch (sortBy) {
     case "date":
       return new Date(song.createdAt).getTime();
@@ -24,12 +24,14 @@ export const useSortFunction = (sortBy: SortBy, sortOrder: SortOrder) => {
     return (a: Song, b: Song) => {
       const aValue = getSortValue(a, sortBy);
       const bValue = getSortValue(b, sortBy);
-      
-      if (typeof aValue === 'string' && typeof bValue === 'string') {
-        const comparison = aValue.localeCompare(bValue, undefined, { sensitivity: 'base' });
+
+      if (typeof aValue === "string" && typeof bValue === "string") {
+        const comparison = aValue.localeCompare(bValue, undefined, {
+          sensitivity: "base",
+        });
         return sortOrder === "asc" ? comparison : -comparison;
       }
-      
+
       if (aValue < bValue) return sortOrder === "asc" ? -1 : 1;
       if (aValue > bValue) return sortOrder === "asc" ? 1 : -1;
       return 0;
@@ -37,6 +39,9 @@ export const useSortFunction = (sortBy: SortBy, sortOrder: SortOrder) => {
   }, [sortBy, sortOrder]);
 };
 
-export const sortSongs = (songs: Song[], sortFunction: (a: Song, b: Song) => number): Song[] => {
+export const sortSongs = (
+  songs: Song[],
+  sortFunction: (a: Song, b: Song) => number
+): Song[] => {
   return [...songs].sort(sortFunction);
 };

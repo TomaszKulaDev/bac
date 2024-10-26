@@ -1,25 +1,29 @@
 import { useMemo } from 'react';
-import { Song } from '../types';
-import { sortSongs, useSortFunction } from '../utils/sortUtils';
+import { Song, SortBy, SortOrder } from '../types';
+import { getSortValue } from '../utils/sortUtils';
 
 export const useSortedAndFilteredSongs = (
   songs: Song[],
-  sortBy: "date" | "title" | "artist" | "impro" | "beginnerFriendly",
-  sortOrder: "asc" | "desc",
+  sortBy: SortBy,
+  sortOrder: SortOrder,
   filterText: string
 ) => {
-  const sortFunction = useSortFunction(sortBy, sortOrder);
-
-  const filteredSongs = useMemo(() => {
-    if (!filterText) return songs;
-    return songs.filter(
-      (song) =>
+  return useMemo(() => {
+    return songs
+      .filter(song => 
+        !filterText || 
         song.title.toLowerCase().includes(filterText.toLowerCase()) ||
         song.artist.toLowerCase().includes(filterText.toLowerCase())
-    );
-  }, [songs, filterText]);
-
-  return useMemo(() => {
-    return sortSongs(filteredSongs, sortFunction);
-  }, [filteredSongs, sortFunction]);
+      )
+      .sort((a, b) => {
+        const aValue = getSortValue(a, sortBy);
+        const bValue = getSortValue(b, sortBy);
+        if (typeof aValue === 'string' && typeof bValue === 'string') {
+          return sortOrder === 'asc' 
+            ? aValue.localeCompare(bValue, undefined, { sensitivity: 'base' })
+            : bValue.localeCompare(aValue, undefined, { sensitivity: 'base' });
+        }
+        return sortOrder === 'asc' ? (aValue > bValue ? 1 : -1) : (bValue > aValue ? 1 : -1);
+      });
+  }, [songs, sortBy, sortOrder, filterText]);
 };
