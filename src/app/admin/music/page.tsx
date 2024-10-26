@@ -70,9 +70,11 @@ const AdminMusicPage = () => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(
-          errorData.message || `HTTP error! status: ${response.status}`
-        );
+        setNotification({
+          type: 'error',
+          message: errorData.message || `Błąd HTTP: ${response.status}`
+        });
+        throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
       }
 
       const result = await response.json();
@@ -81,10 +83,22 @@ const AdminMusicPage = () => {
       if (result.success) {
         console.log("Piosenka dodana pomyślnie");
         dispatch(fetchSongs());
+        setNotification({
+          type: 'success',
+          message: 'Piosenka została pomyślnie dodana'
+        });
       } else {
+        setNotification({
+          type: 'error',
+          message: result.error || 'Wystąpił błąd podczas dodawania piosenki'
+        });
         console.error("Błąd podczas dodawania piosenki:", result.error);
       }
-    } catch (error) {
+    } catch (error: any) {
+      setNotification({
+        type: 'error',
+        message: error.message || 'Wystąpił nieoczekiwany błąd podczas dodawania piosenki'
+      });
       console.error("Błąd podczas dodawania piosenki:", error);
     }
   };
@@ -93,8 +107,15 @@ const AdminMusicPage = () => {
   const handleDeleteSong = async (id: string) => {
     try {
       await dispatch(deleteSongAndRefetch(id));
-      console.log("Piosenka usunięta pomyślnie");
-    } catch (error) {
+      setNotification({
+        type: 'success',
+        message: 'Piosenka została pomyślnie usunięta'
+      });
+    } catch (error: any) {
+      setNotification({
+        type: 'error',
+        message: error.message || 'Wystąpił błąd podczas usuwania piosenki'
+      });
       console.error("Błąd podczas usuwania piosenki:", error);
     }
   };
@@ -104,24 +125,45 @@ const AdminMusicPage = () => {
     const file = event.target.files?.[0];
     if (file && file.type === "application/json") {
       const reader = new FileReader();
-      reader.onload = (e) => {
+      reader.onload = async (e) => {
         try {
           const json = JSON.parse(e.target?.result as string);
           setFileContent(json);
-          json.forEach((song: any) => {
+          let successCount = 0;
+          let errorCount = 0;
+
+          for (const song of json) {
             if (validateSong(song)) {
-              handleAddSong(song);
+              try {
+                await handleAddSong(song);
+                successCount++;
+              } catch {
+                errorCount++;
+              }
             } else {
+              errorCount++;
               console.error("Nieprawidłowe dane piosenki:", song);
             }
+          }
+
+          setNotification({
+            type: successCount > 0 ? 'success' : 'error',
+            message: `Zaimportowano ${successCount} piosenek${errorCount > 0 ? `, ${errorCount} błędów` : ''}`
           });
         } catch (error) {
+          setNotification({
+            type: 'error',
+            message: 'Błąd podczas parsowania pliku JSON'
+          });
           console.error("Błąd podczas parsowania pliku JSON:", error);
         }
       };
       reader.readAsText(file);
     } else {
-      console.error("Niepoprawny format pliku. Wybierz plik JSON.");
+      setNotification({
+        type: 'error',
+        message: 'Niepoprawny format pliku. Wybierz plik JSON.'
+      });
     }
   };
 
