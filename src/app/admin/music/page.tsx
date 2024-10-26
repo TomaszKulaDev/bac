@@ -146,12 +146,24 @@ const AdminMusicPage = () => {
         message: 'Wszystkie utwory zostały pomyślnie usunięte'
       });
     } catch (error: any) {
-      const errorMessage = error.message || 'Wystąpił nieznany błąd podczas usuwania utworów';
+      const errorDetails = error.details ? `: ${error.details}` : '';
       setNotification({
         type: 'error',
-        message: errorMessage
+        message: `${error.message}${errorDetails}`
       });
-      console.error('Błąd podczas usuwania wszystkich utworów:', error);
+      
+      // Logowanie błędu z dodatkowymi informacjami
+      console.error('Błąd podczas usuwania wszystkich utworów:', {
+        status: error.status,
+        message: error.message,
+        details: error.details
+      });
+      
+      // Dodatkowa logika dla konkretnych kodów błędów
+      if (error.status === 401 || error.status === 403) {
+        // Możemy np. przekierować do strony logowania
+        console.log('Użytkownik nie ma uprawnień - należy się zalogować');
+      }
     }
   };
 

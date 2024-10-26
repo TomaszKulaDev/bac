@@ -51,7 +51,7 @@ export const syncSongsWithPlaylists = createAsyncThunk<string[], string[], { dis
 // Asynchroniczna akcja do usuwania wszystkich piosenek i odświeżania listy
 export const deleteAllSongsAndRefetch = createAsyncThunk(
   'songs/deleteAllSongsAndRefetch',
-  async (_, { rejectWithValue }) => {
+  async (_, { rejectWithValue, dispatch }) => {
     try {
       const response = await fetch('/api/songs/deleteAll', {
         method: 'DELETE',
@@ -62,18 +62,40 @@ export const deleteAllSongsAndRefetch = createAsyncThunk(
 
       if (!response.ok) {
         const errorData = await response.json();
+        let errorMessage = 'Wystąpił błąd podczas usuwania wszystkich utworów';
+
+        switch (response.status) {
+          case 401:
+            errorMessage = 'Brak uprawnień do wykonania tej operacji';
+            break;
+          case 403:
+            errorMessage = 'Dostęp zabroniony';
+            break;
+          case 404:
+            errorMessage = 'Nie znaleziono zasobu';
+            break;
+          case 500:
+            errorMessage = 'Błąd serwera podczas usuwania utworów';
+            break;
+          default:
+            errorMessage = errorData.message || errorMessage;
+        }
+
         return rejectWithValue({
           status: response.status,
-          message: errorData.message || 'Wystąpił błąd podczas usuwania wszystkich utworów'
+          message: errorMessage,
+          details: errorData.details || null
         });
       }
 
       const data = await response.json();
+      await dispatch(fetchSongs());
       return data;
-    } catch (error) {
+    } catch (error: any) {
       return rejectWithValue({
         status: 500,
-        message: error instanceof Error ? error.message : 'Nieznany błąd podczas usuwania utworów'
+        message: 'Wystąpił nieoczekiwany błąd podczas usuwania utworów',
+        details: error.message
       });
     }
   }
