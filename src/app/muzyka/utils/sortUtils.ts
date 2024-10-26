@@ -19,9 +19,3 @@ export const getSortValue = (
   }
 };
 
-export const sortSongs = (
-  songs: Song[],
-  sortFunction: (a: Song, b: Song) => number
-): Song[] => {
-  return [...songs].sort(sortFunction);
-};

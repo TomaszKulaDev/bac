@@ -26,7 +26,7 @@ import {
   setCurrentSongIndex,
   syncSongsWithPlaylists,
 } from "@/store/slices/features/songsSlice";
-import { sortSongs } from "../utils/sortUtils";
+// import { sortSongs } from "../utils/sortUtils";
 import CreatePlaylistModal from "./CreatePlaylistModal";
 import SortControl from "./SortControl";
 import PlaybackBar from "./PlaybackBar";

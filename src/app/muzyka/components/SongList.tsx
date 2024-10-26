@@ -8,7 +8,7 @@ import {
 import { Song } from "../types";
 import { motion } from "framer-motion";
 import { getYouTubeThumbnail } from "../utils/youtube";
-import { sortSongs, getSortValue } from '../utils/sortUtils';
+import { getSortValue } from '../utils/sortUtils';
 import { useSortedAndFilteredSongs } from '../hooks/useSortedAndFilteredSongs';
 
 interface SongListProps {
