@@ -18,6 +18,12 @@ import {
   FaCalendar,
   FaHeart,
   FaGuitar,
+  FaGraduationCap,
+  FaChalkboardTeacher,
+  FaMapMarkerAlt,
+  FaStar,
+  FaBullhorn,
+  FaDoorOpen,
 } from "react-icons/fa";
 
 // Importy z zewnętrznych bibliotek
@@ -75,44 +81,45 @@ const statsData: StatItem[] = [
 
 const adBanners: AdBanner[] = [
   {
-    title: "Szkoła Bachaty",
+    title: "Szkoły Bachaty",
     description: "Rozpocznij swoją przygodę z bachatą już dziś!",
-    icon: <FaMusic className="h-6 w-6 text-yellow-400" />,
-    image: "/images/school-banner.jpg", 
+    icon: <FaGraduationCap className="h-6 w-6 text-blue-400" />,
+    image: "/images/school-banner.jpg",
     position: "left",
   },
   {
-    title: "Warsztaty Bachaty",
+    title: "Warsztaty Taneczne",
     description: "Ucz się od najlepszych instruktorów z całego świata",
-    icon: <FaUsers className="h-6 w-6 text-purple-400" />,
+    icon: <FaChalkboardTeacher className="h-6 w-6 text-purple-400" />,
     image: "/images/workshop-banner.jpg",
     position: "right",
   },
   {
     title: "Festiwale Bachaty",
-    description: "Największe wydarzenia bachatowe w Polsce!",
-    icon: <FaCalendar className="h-6 w-6 text-pink-400" />,
+    description: "Największe wydarzenie bachatowe w Polsce!",
+    icon: <FaStar className="h-6 w-6 text-yellow-400" />,
     image: "/images/festival-banner.jpg",
     position: "left",
   },
   {
     title: "Instruktorzy",
     description: "Znajdź najlepszych instruktorów w Polsce!",
-    icon: <FaHeart className="h-6 w-6 text-red-400" />,
+    icon: <FaUsers className="h-6 w-6 text-green-400" />,
     image: "/images/instructor-banner.jpg",
     position: "right",
   },
   {
     title: "Promuj siebie",
-    description: "Promuj siebie i swoją szkołę tańca",
-    icon: <FaCrown className="h-6 w-6 text-yellow-400" />,
+    description:
+      "Pokaż swoje umiejętności taneczne i zbuduj swoją markę w osobistą.",
+    icon: <FaBullhorn className="h-6 w-6 text-red-400" />,
     image: "/images/promote-banner.jpg",
     position: "left",
   },
   {
     title: "Praktysy",
     description: "Znajdź miejsce do praktyki w swoim mieście",
-    icon: <FaGuitar className="h-6 w-6 text-green-400" />,
+    icon: <FaDoorOpen className="h-6 w-6 text-indigo-400" />,
     image: "/images/practice-banner.jpg",
     position: "right",
   },
@@ -124,10 +131,18 @@ const loginSchema = z.object({
   password: z.string().min(1, "Hasło jest wymagane"),
 });
 
-const BannerIcon = ({ icon, color }: { icon: React.ReactNode; color: string }) => {
+const BannerIcon = ({
+  icon,
+  color,
+}: {
+  icon: React.ReactNode;
+  color: string;
+}) => {
   return (
-    <div className={`bg-${color}-400/20 p-2.5 rounded-full flex items-center justify-center backdrop-blur-sm
-      border border-${color}-400/30 shadow-lg shadow-${color}-400/10 group-hover:scale-110 transition-transform duration-300`}>
+    <div
+      className={`bg-${color}-400/20 p-2.5 rounded-full flex items-center justify-center backdrop-blur-sm
+      border border-${color}-400/30 shadow-lg shadow-${color}-400/10 group-hover:scale-110 transition-transform duration-300`}
+    >
       {icon}
     </div>
   );
@@ -135,57 +150,57 @@ const BannerIcon = ({ icon, color }: { icon: React.ReactNode; color: string }) =
 
 const getBannerColor = (icon: React.ReactNode): string => {
   if (React.isValidElement(icon)) {
-    const className = icon.props.className || '';
+    const className = icon.props.className || "";
     const colorMatch = className.match(/text-(\w+)-400/);
-    return colorMatch ? colorMatch[1] : 'yellow';
+    return colorMatch ? colorMatch[1] : "yellow";
   }
-  return 'yellow';
+  return "yellow";
 };
 
-const BannerCard = ({ 
-  banner, 
-  index, 
-  direction 
-}: { 
-  banner: AdBanner; 
-  index: number; 
-  direction: 'left' | 'right' 
+const BannerCard = ({
+  banner,
+  index,
+  direction,
+}: {
+  banner: AdBanner;
+  index: number;
+  direction: "left" | "right";
 }) => {
+  const color = getBannerColor(banner.icon);
+
   return (
     <motion.div
       key={index}
-      initial={{ opacity: 0, x: direction === 'left' ? -50 : 50 }}
+      initial={{ opacity: 0, x: direction === "left" ? -50 : 50 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.6, delay: index * 0.1 }}
       className="group"
     >
-      <div className="bg-white/10 backdrop-blur-lg rounded-xl overflow-hidden border border-white/10 shadow-xl">
-        <div className="relative h-40">
-          <Image
-            src={banner.image}
-            alt={banner.title}
-            layout="fill"
-            objectFit="cover"
-            className="transition-transform duration-300 group-hover:scale-105"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-        </div>
-        <div className="p-4">
-          <div className="flex items-center space-x-3 mb-2">
-            <div className={`bg-${getBannerColor(banner.icon)}-400/20 p-2 rounded-full`}>
+      <div className="w-[300px] h-[300px] relative">
+        <div className="absolute inset-0 bg-[#0F1A2A] rounded-full overflow-hidden border border-white/5">
+          <div className="relative w-full h-full flex flex-col items-center justify-center text-center p-8">
+            <div className={`mb-4 bg-${color}-400/10 p-3 rounded-full`}>
               {banner.icon}
             </div>
-            <h3 className="text-lg font-bold text-white">{banner.title}</h3>
+
+            <h3 className="text-xl font-bold text-white mb-2">
+              {banner.title}
+            </h3>
+
+            <p className="text-white/60 text-sm mb-6 max-w-[80%]">
+              {banner.description}
+            </p>
+
+            <motion.button
+              className={`bg-${color}-400/20 hover:bg-${color}-400/30 text-${color}-400 
+                py-2 px-6 rounded-full text-sm font-medium transition-colors duration-300
+                border border-${color}-400/30`}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Dowiedz się więcej
+            </motion.button>
           </div>
-          <p className="text-white/70 text-sm">{banner.description}</p>
-          <motion.button
-            className={`w-full mt-4 bg-gradient-to-r from-${getBannerColor(banner.icon)}-400 
-              to-${getBannerColor(banner.icon)}-600 text-white py-2 px-4 rounded-lg font-medium`}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            Dowiedz się więcej
-          </motion.button>
         </div>
       </div>
     </motion.div>
@@ -338,13 +353,13 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0a1e3b] to-[#2a4a7f] p-4">
       <div className="container mx-auto flex justify-between items-center max-w-screen-2xl">
         {/* Lewa kolumna banerów */}
-        <div className="hidden xl:flex flex-col gap-4 w-[300px]">
+        <div className="hidden xl:flex flex-col gap-8 w-[300px]">
           {leftBanners.map((banner, index) => (
-            <BannerCard 
+            <BannerCard
               key={index}
-              banner={banner} 
-              index={index} 
-              direction="left" 
+              banner={banner}
+              index={index}
+              direction="left"
             />
           ))}
         </div>
@@ -470,7 +485,7 @@ export default function Login() {
                 </div>
                 <div>
                   <h2 className="text-2xl font-bold text-white">
-                    Baciata Summer Festival 2024
+                    Bachata Festival 2025
                   </h2>
                   <p className="text-white/70">
                     Największe wydarzenie bachatowe tego lata!
@@ -512,7 +527,7 @@ export default function Login() {
                   </div>
                   <div>
                     <h3 className="text-xl font-bold text-white">Premium</h3>
-                    <p className="text-white/70">Odblokuj pełen dostęp</p>
+                    <p className="text-white/70">Rozwiń swój biznes taneczny</p>
                   </div>
                 </div>
                 <div className="text-right">
@@ -522,16 +537,20 @@ export default function Login() {
               </div>
               <div className="mt-4 space-y-2">
                 <div className="flex items-center text-white/80">
-                  <FaMusic className="h-4 w-4 mr-2 text-yellow-400" />
-                  <span>Dodaj swoją szkołę</span>
+                  <FaUsers className="h-4 w-4 mr-2 text-yellow-400" />
+                  <span>Promuj swoją szkołę tańca</span>
+                </div>
+                <div className="flex items-center text-white/80">
+                  <FaCalendar className="h-4 w-4 mr-2 text-yellow-400" />
+                  <span>Dodawaj i promuj wydarzenia</span>
                 </div>
                 <div className="flex items-center text-white/80">
                   <FaUsers className="h-4 w-4 mr-2 text-yellow-400" />
-                  <span>Promuj swoje wydarzenia</span>
+                  <span>Buduj społeczność tancerzy</span>
                 </div>
                 <div className="flex items-center text-white/80">
-                  <FaCrown className="h-4 w-4 mr-2 text-yellow-400" />
-                  <span>Zaistniej w sieci</span>
+                  <FaMusic className="h-4 w-4 mr-2 text-yellow-400" />
+                  <span>Buduj swoją markę tancerza</span>
                 </div>
               </div>
               <button
@@ -571,13 +590,13 @@ export default function Login() {
         </div>
 
         {/* Prawa kolumna banerów */}
-        <div className="hidden xl:flex flex-col gap-4 w-[300px]">
+        <div className="hidden xl:flex flex-col gap-8 w-[300px]">
           {rightBanners.map((banner, index) => (
-            <BannerCard 
+            <BannerCard
               key={index}
-              banner={banner} 
-              index={index} 
-              direction="right" 
+              banner={banner}
+              index={index}
+              direction="right"
             />
           ))}
         </div>
