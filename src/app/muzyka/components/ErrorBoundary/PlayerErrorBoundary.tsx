@@ -3,6 +3,7 @@ import React, { Component, ErrorInfo, ReactNode } from "react";
 import { YouTubeError, YouTubeErrorCode } from "../../utils/youtube";
 import { errorLogger } from "../../utils/errorLogger";
 import { ErrorLogBuffer } from "../../utils/ErrorLogBuffer";
+import { BaseErrorLog } from "../../utils/errorLogger";
 
 interface Props {
   children: ReactNode;
@@ -25,12 +26,13 @@ interface State {
   errorType: "youtube" | "playback" | "general";
   retryCount: number;
   lastErrorTimestamp: number;
-  errorHistory: ErrorHistoryEntry[];
+  errorHistory: ErrorHistoryEntry[]; // Dodajemy brakujące pole
 }
 
 export class PlayerErrorBoundary extends Component<Props, State> {
   private readonly DEFAULT_MAX_RETRIES = 3;
   private readonly ERROR_RESET_TIME = 5 * 60 * 1000; // 5 minut
+  private static errorBuffer = ErrorLogBuffer.getInstance();
 
   constructor(props: Props) {
     super(props);
@@ -75,49 +77,38 @@ export class PlayerErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    const { retryCount, lastErrorTimestamp } = this.state;
-    const maxRetries = this.props.maxRetries || this.DEFAULT_MAX_RETRIES;
-    
-    // Resetuj licznik prób po określonym czasie
-    if (Date.now() - lastErrorTimestamp > this.ERROR_RESET_TIME) {
-      this.setState({ retryCount: 0 });
-    }
-
-    errorLogger.logError({
-      type: error instanceof YouTubeError ? "youtube" : "playback",
-      severity: this.determineErrorSeverity(error),
+    const errorLog: BaseErrorLog = {
+      type: this.state.errorType,
+      severity: this.getSeverity(error),
       message: error.message,
       timestamp: new Date().toISOString(),
       environment: process.env.NODE_ENV || 'development',
       details: {
         code: error instanceof YouTubeError ? error.code : undefined,
-        stack: error.stack || undefined, // Konwertujemy null na undefined
+        stack: typeof error.stack === 'string' ? error.stack : undefined,
         componentStack: errorInfo.componentStack || undefined,
-        retryCount,
-        maxRetries,
-        additionalInfo: {
-          lastErrorTimestamp: this.state.lastErrorTimestamp,
-          errorType: this.state.errorType
-        }
+        retryCount: this.state.retryCount,
+        maxRetries: this.props.maxRetries || this.DEFAULT_MAX_RETRIES,
+        errorHistory: this.state.errorHistory
       }
-    });
+    };
 
+    PlayerErrorBoundary.errorBuffer.add(errorLog);
     this.props.onError?.(error, errorInfo);
   }
 
-  private determineErrorSeverity(error: Error): "error" | "warning" | "critical" {
-    if (error instanceof YouTubeError) {
-      switch (error.code) {
-        case YouTubeErrorCode.VIDEO_NOT_FOUND:
-        case YouTubeErrorCode.EMBED_NOT_ALLOWED:
-          return "warning";
-        case YouTubeErrorCode.HTML5_ERROR:
-          return "critical";
-        default:
-          return "error";
-      }
+  private getSeverity(error: Error): BaseErrorLog['severity'] {
+    if (!(error instanceof YouTubeError)) return "critical";
+    
+    switch (error.code) {
+      case YouTubeErrorCode.VIDEO_NOT_FOUND:
+      case YouTubeErrorCode.EMBED_NOT_ALLOWED:
+        return "warning";
+      case YouTubeErrorCode.HTML5_ERROR:
+        return "critical";
+      default:
+        return "error";
     }
-    return "error";
   }
 
   private handleRetry = async () => {

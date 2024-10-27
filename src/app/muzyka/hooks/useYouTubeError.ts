@@ -1,4 +1,6 @@
 import { YouTubeError, YouTubeErrorCode, getYouTubeErrorMessage } from '../utils/youtube';
+import { ErrorLogBuffer } from '../utils/ErrorLogBuffer';
+import { BaseErrorLog } from '../utils/errorLogger';
 
 interface ErrorDetails {
   code: number;
@@ -13,12 +15,24 @@ interface ErrorDetails {
 }
 
 export const useYouTubeError = (showErrorToast: (message: string) => void) => {
+  const errorBuffer = ErrorLogBuffer.getInstance();
+
   const logErrorDetails = (details: ErrorDetails): void => {
-    console.error('Szczegóły błędu YouTube:', {
-      ...details,
-      environment: process.env.NODE_ENV,
-      context: 'YouTubePlayer'
-    });
+    const errorLog: BaseErrorLog = {
+      type: "youtube",
+      severity: "error",
+      message: details.message,
+      timestamp: details.timestamp,
+      environment: process.env.NODE_ENV || 'development',
+      details: {
+        code: details.code,
+        additionalInfo: {
+          browserInfo: details.browserInfo
+        }
+      }
+    };
+
+    errorBuffer.add(errorLog);
   };
 
   const getBrowserInfo = (): ErrorDetails['browserInfo'] => {
