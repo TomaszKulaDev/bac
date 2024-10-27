@@ -1,13 +1,16 @@
 "use client";
 
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaEnvelope, FaEye, FaEyeSlash, FaLock, FaUser, FaCheck } from "react-icons/fa";
 import { z } from "zod";
 import { passwordSchema } from "../../schemas/passwordSchema";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import Head from "next/head";
+import { motion } from "framer-motion";
+import LoadingSpinner from "@/components/LoadingSpinner";
+import { Input } from "@/app/register/Input";
 
 const registerSchemaBase = z.object({
   name: z
@@ -41,6 +44,8 @@ export default function Register() {
   const description =
     "Zarejestruj się na baciata.pl i dołącz do naszej roztańczonej społeczności. Odkryj nowe możliwości, poznaj pasjonatów bachaty i rozwijaj swoją taneczną pasję.";
 
+  const [showPasswords, setShowPasswords] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -48,9 +53,10 @@ export default function Register() {
   const [agreeToTerms, setAgreeToTerms] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPasswords(!showPasswords);
+  };
 
   const validateField = useCallback(
     (field: keyof typeof registerSchemaBase.shape, value: string | boolean) => {
@@ -152,14 +158,6 @@ export default function Register() {
     }
   };
 
-  const togglePasswordVisibility = (field: "password" | "confirmPassword") => {
-    if (field === "password") {
-      setShowPassword(!showPassword);
-    } else {
-      setShowConfirmPassword(!showConfirmPassword);
-    }
-  };
-
   const getInputClasses = (value: string, fieldName: string) => {
     if (!value) return "border-gray-300";
     return errors[fieldName] ? "border-red-500" : "border-green-500";
@@ -181,192 +179,176 @@ export default function Register() {
         <title>Rejestracja - baciata.pl</title>
         <meta name="description" content={description} />
       </Head>
-      <div className="flex justify-center items-center min-h-screen bg-gray-100">
-        <form
-          onSubmit={handleSubmit}
-          className="bg-white p-6 rounded shadow-md w-full max-w-sm"
-        >
-          <Head>
-            <title>Rejestracja - baciata.pl</title>
-            <meta name="description" content={description} />
-          </Head>
-          <h1 className="text-gray-700 font-medium mb-4 text-2xltext-center">
-            Zarejestruj się
-          </h1>
-
-          <div className="mb-4 flex items-center">
-            <div className="flex-grow border-t border-gray-300"></div>
-            <span className="px-4 text-gray-500 text-sm">lub</span>
-            <div className="flex-grow border-t border-gray-300"></div>
-          </div>
-
-          {successMessage && (
-            <div className="mb-4 text-green-600 text-center">
-              {successMessage}
+      <div className="min-h-screen bg-[#0a1e3b] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-md w-full space-y-8">
+          {/* Logo i nagłówek */}
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-center"
+          >
+            <div className="flex justify-center mb-6">
+              <motion.div 
+                className="bg-gradient-to-r from-yellow-400 to-yellow-600 p-0.5 rounded-full"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <div className="bg-[#0a1e3b] px-6 py-2 rounded-full">
+                  <span className="text-white font-medium text-xl">Dołącz do nas</span>
+                </div>
+              </motion.div>
             </div>
-          )}
-          {errors.form && (
-            <div className="mb-4 text-red-600 text-center">{errors.form}</div>
-          )}
-          <div className="mb-4">
-            <label className="block text-gray-700 mb-2">Imię</label>
-            <input
-              type="text"
-              name="name"
-              value={name}
-              onChange={handleInputChange}
-              className={`w-full px-3 py-2 border rounded text-gray-900 focus:outline-none ${getInputClasses(
-                name,
-                "name"
-              )}`}
-              placeholder="Twoje imię"
-            />
-            {errors.name && (
-              <p className="text-red-600 text-sm mt-2">{errors.name}</p>
+            <h2 className="text-3xl font-bold text-white">
+              Stwórz konto
+            </h2>
+            <p className="mt-2 text-white/60">
+              i rozpocznij swoją przygodę z bachatą
+            </p>
+          </motion.div>
+
+          {/* Formularz */}
+          <motion.form
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            onSubmit={handleSubmit}
+            className="mt-8 space-y-6 bg-white/5 backdrop-blur-lg p-8 rounded-2xl border border-white/10"
+          >
+            {successMessage && (
+              <div className="bg-green-400/20 border border-green-400/30 text-green-400 p-4 rounded-xl mb-6">
+                {successMessage}
+              </div>
             )}
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 mb-2">Email</label>
-            <input
-              type="email"
-              name="email"
-              value={email}
-              onChange={handleInputChange}
-              className={`w-full px-3 py-2 border rounded text-gray-900 focus:outline-none ${getInputClasses(
-                email,
-                "email"
-              )}`}
-              placeholder="twoj@email.com"
-            />
-            {errors.email && (
-              <p className="text-red-600 text-sm mt-2">{errors.email}</p>
+
+            {errors.form && (
+              <div className="bg-red-400/20 border border-red-400/30 text-red-400 p-4 rounded-xl mb-6">
+                {errors.form}
+              </div>
             )}
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 mb-2">Hasło</label>
-            <div className="relative">
-              <input
-                type={showPassword ? "text" : "password"}
+
+            <div className="space-y-4">
+              {/* Pole imienia */}
+              <Input
+                type="text"
+                name="name"
+                value={name}
+                onChange={handleInputChange}
+                placeholder="Twoje imię"
+                icon={FaUser}
+                error={errors.name}
+                label="Imię"
+              />
+
+              {/* Pole email */}
+              <Input
+                type="email"
+                name="email"
+                value={email}
+                onChange={handleInputChange}
+                placeholder="twoj@email.com"
+                icon={FaEnvelope}
+                error={errors.email}
+                label="Email"
+              />
+
+              {/* Pole hasła */}
+              <Input
+                type="password"
                 name="password"
                 value={password}
                 onChange={handleInputChange}
-                className={`w-full px-3 py-2 pr-10 border rounded text-gray-900 focus:outline-none ${getInputClasses(
-                  password,
-                  "password"
-                )}`}
                 placeholder="Twoje hasło"
+                icon={FaLock}
+                error={errors.password}
+                isPassword
+                label="Hasło"
+                showPasswords={showPasswords}
+                onTogglePassword={togglePasswordVisibility}
               />
-              <button
-                type="button"
-                onClick={() => togglePasswordVisibility("password")}
-                className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                aria-pressed={showPassword}
-                aria-label={showPassword ? "Ukryj hasło" : "Pokaż hasło"}
-              >
-                {showPassword ? (
-                  <FaEyeSlash className="text-gray-500" aria-hidden="true" />
-                ) : (
-                  <FaEye className="text-gray-500" aria-hidden="true" />
-                )}
-              </button>
-            </div>
-            {errors.password && (
-              <p id="password-error" className="text-red-600 text-sm mt-2">
-                {errors.password}
-              </p>
-            )}
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 mb-2">Potwierdź hasło</label>
-            <div className="relative">
-              <input
-                type={showConfirmPassword ? "text" : "password"}
+
+              {/* Pole potwierdzenia hasła */}
+              <Input
+                type="password"
                 name="confirmPassword"
                 value={confirmPassword}
                 onChange={handleInputChange}
-                aria-invalid={!!errors.confirmPassword}
-                className={`w-full px-3 py-2 pr-10 border rounded text-gray-900 focus:outline-none ${getInputClasses(
-                  confirmPassword,
-                  "confirmPassword"
-                )}`}
                 placeholder="Potwierdź hasło"
-                autoComplete="new-password"
+                icon={FaLock}
+                error={errors.confirmPassword}
+                isPassword
+                label="Potwierdź hasło"
+                showPasswords={showPasswords}
               />
-              <button
-                type="button"
-                onClick={() => togglePasswordVisibility("confirmPassword")}
-                className="absolute inset-y-0 right-0 pr-3 flex items-center"
-              >
-                {showConfirmPassword ? (
-                  <FaEyeSlash className="text-gray-500" />
-                ) : (
-                  <FaEye className="text-gray-500" />
+
+              {/* Checkbox akceptacji warunków */}
+              <div className="space-y-2">
+                <label className="flex items-start space-x-3 text-white/80">
+                  <input
+                    type="checkbox"
+                    name="agreeToTerms"
+                    checked={agreeToTerms}
+                    onChange={handleInputChange}
+                    className="mt-1 h-4 w-4 rounded border-white/10 bg-white/5 text-yellow-400 
+                      focus:ring-2 focus:ring-yellow-400/50 focus:ring-offset-0"
+                  />
+                  <span className="text-sm">
+                    Akceptuję{" "}
+                    <Link href="/polityka-prywatnosci" className="text-yellow-400 hover:text-yellow-300">
+                      Politykę Prywatności
+                    </Link>{" "}
+                    oraz{" "}
+                    <Link href="/regulamin" className="text-yellow-400 hover:text-yellow-300">
+                      Warunki Korzystania z Usługi
+                    </Link>
+                  </span>
+                </label>
+                {errors.agreeToTerms && (
+                  <motion.p
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-red-400 text-sm"
+                  >
+                    {errors.agreeToTerms}
+                  </motion.p>
                 )}
-              </button>
+              </div>
             </div>
-            {errors.confirmPassword && (
-              <p className="text-red-600 text-sm mt-2">
-                {errors.confirmPassword}
-              </p>
-            )}
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 mb-2">
-              <input
-                type="checkbox"
-                name="agreeToTerms"
-                checked={agreeToTerms}
-                onChange={handleInputChange}
-                className="mr-2"
-              />
-              Akceptuję{" "}
-              <Link
-                href="/polityka-prywatnosci-baciata-pl"
-                className="text-blue-500 hover:underline"
-              >
-                Politykę Prywatności
-              </Link>{" "}
-              oraz{" "}
-              <Link
-                href="/warunki-korzystania-z-uslugi-baciata-pl"
-                className="text-blue-500 hover:underline"
-              >
-                Warunki Korzystania z Usługi
-              </Link>
-            </label>
-            {errors.agreeToTerms && (
-              <p className="text-red-600 text-sm mt-2">{errors.agreeToTerms}</p>
-            )}
-          </div>
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition-colors duration-200 flex items-center justify-center"
-            disabled={isLoading || !isFormValid}
+            <button
+              type="submit"
+              disabled={isLoading || !isFormValid}
+              className="w-full bg-gradient-to-r from-yellow-400 to-yellow-600 text-[#0a1e3b] py-3 px-4 
+                rounded-xl font-medium hover:from-yellow-500 hover:to-yellow-700 
+                transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed
+                flex items-center justify-center space-x-2"
+            >
+              {isLoading ? (
+                <>
+                  <LoadingSpinner />
+                  <span>Rejestrowanie...</span>
+                </>
+              ) : (
+                <>
+                  <FaCheck className="w-5 h-5" />
+                  <span>Zarejestruj się</span>
+                </>
+              )}
+            </button>
+          </motion.form>
+
+          {/* Link do logowania */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="text-center text-white/60"
           >
-            {isLoading ? (
-              <>
-                <svg className="animate-spin h-5 w-5 mr-3" viewBox="0 0 24 24">
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  ></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  ></path>
-                </svg>
-                Rejestrowanie...
-              </>
-            ) : (
-              "Zarejestruj się"
-            )}
-          </button>
-        </form>
+            Masz już konto?{" "}
+            <Link href="/login" className="text-yellow-400 hover:text-yellow-300 transition-colors">
+              Zaloguj się
+            </Link>
+          </motion.p>
+        </div>
       </div>
     </>
   );

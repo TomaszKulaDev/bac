@@ -32,7 +32,7 @@ import { z } from "zod";
 // Importy lokalne
 import { useAuth } from "../../contexts/AuthContext";
 import LoadingSpinner from "@/components/LoadingSpinner";
-import Input from "@/components/ui/Input";
+import Input from "@/app/login/Input";
 
 // Dodaj po importach
 interface StatItem {
