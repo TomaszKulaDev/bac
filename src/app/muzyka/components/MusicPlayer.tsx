@@ -26,7 +26,6 @@ import {
   setCurrentSongIndex,
   syncSongsWithPlaylists,
 } from "@/store/slices/features/songsSlice";
-// import { sortSongs } from "../utils/sortUtils";
 import CreatePlaylistModal from "./CreatePlaylistModal";
 import SortControl from "./SortControl";
 import PlaybackBar from "./playback/PlaybackBar";
@@ -36,6 +35,7 @@ import PlaylistHeader from './PlaylistHeader';
 import { useSortedAndFilteredSongs } from '../hooks/useSortedAndFilteredSongs';
 import { useYouTubePlayer } from '../hooks/useYouTubePlayer';
 import { usePlaybackControls } from '../hooks/usePlaybackControls';
+import { PlayerErrorBoundary } from './ErrorBoundary/PlayerErrorBoundary';
 
 interface MusicPlayerProps {
   songs: Song[];
@@ -363,224 +363,231 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
 
   // Komponent MusicPlayer - główny komponent odtwarzacza muzyki
   return (
-    <div className="max-w-7xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden pb-20">
-      <PlaylistHeader filteredSongsCount={filteredSongs.length} />
-      <div className="w-full mb-4 bg-gray-100">
-        <SortControl
-          sortBy={sortBy}
-          sortOrder={sortOrder}
-          onSortChange={onSortChange}
-          filterText={filterText}
-          setFilterText={setFilterText}
-        />
-      </div>
-      <div className="flex flex-col md:flex-row flex-grow">
-        <div className="md:order-2 md:w-3/5 flex flex-col">
-          <div className="sticky top-0 bg-white z-40 p-6 shadow-md">
-            <div
-              className="youtube-player mb-6 rounded-lg overflow-hidden relative"
-              style={{
-                width: playerDimensions.width,
-                height: playerDimensions.height,
-              }}
-            >
-              {error && (
-                <div className="error-message bg-red-100 text-red-700 p-4 rounded">
-                  {error}
-                </div>
-              )}
-              {songs.length > 0 && (
-                <YouTube
-                  videoId={currentSong?.youtubeId}
-                  opts={opts}
-                  onReady={onReady}
-                  onPlay={() => setIsPlaying(true)}
-                  onPause={() => setIsPlaying(false)}
-                  onEnd={() => {
-                    if (repeatMode.song === "on") {
-                      if (player) {
-                        player.seekTo(0);
-                        player.playVideo();
+    <PlayerErrorBoundary
+      onError={(error, errorInfo) => {
+        showErrorToast('Wystąpił błąd podczas odtwarzania');
+        console.error('MusicPlayer Error:', { error, errorInfo });
+      }}
+    >
+      <div className="max-w-7xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden pb-20">
+        <PlaylistHeader filteredSongsCount={filteredSongs.length} />
+        <div className="w-full mb-4 bg-gray-100">
+          <SortControl
+            sortBy={sortBy}
+            sortOrder={sortOrder}
+            onSortChange={onSortChange}
+            filterText={filterText}
+            setFilterText={setFilterText}
+          />
+        </div>
+        <div className="flex flex-col md:flex-row flex-grow">
+          <div className="md:order-2 md:w-3/5 flex flex-col">
+            <div className="sticky top-0 bg-white z-40 p-6 shadow-md">
+              <div
+                className="youtube-player mb-6 rounded-lg overflow-hidden relative"
+                style={{
+                  width: playerDimensions.width,
+                  height: playerDimensions.height,
+                }}
+              >
+                {error && (
+                  <div className="error-message bg-red-100 text-red-700 p-4 rounded">
+                    {error}
+                  </div>
+                )}
+                {songs.length > 0 && (
+                  <YouTube
+                    videoId={currentSong?.youtubeId}
+                    opts={opts}
+                    onReady={onReady}
+                    onPlay={() => setIsPlaying(true)}
+                    onPause={() => setIsPlaying(false)}
+                    onEnd={() => {
+                      if (repeatMode.song === "on") {
+                        if (player) {
+                          player.seekTo(0);
+                          player.playVideo();
+                        }
+                      } else {
+                        nextSong();
                       }
-                    } else {
-                      nextSong();
-                    }
-                  }}
-                  className="w-full h-full"
-                />
-              )}
-            </div>
-            <div className="flex flex-col space-y-4 mt-6">
-              <div className="text-center">
-                <h2 className="text-2xl font-bold text-gray-800">
-                  {currentSong?.title}
-                </h2>
-                <p className="text-lg text-gray-600">{currentSong?.artist}</p>
+                    }}
+                    className="w-full h-full"
+                  />
+                )}
               </div>
-              <div className="flex flex-col items-center space-y-6 mt-6">
-                <div className="flex justify-center items-center space-x-4 w-full">
-                  <button
-                    onClick={() => toggleRepeatMode("playlist")}
-                    className={`text-gray-600 p-3 rounded-full transition-all duration-300 ease-in-out ${
-                      repeatMode.playlist === "on"
-                        ? "bg-gray-100 shadow-inner transform translate-y-px"
-                        : "bg-white hover:bg-gray-50 active:bg-gray-100 active:shadow-inner active:transform active:translate-y-px"
-                    }`}
-                    aria-label={`Powtarzaj playlistę: ${
-                      repeatMode.playlist === "on" ? "włączone" : "wyłączone"
-                    }`}
-                    title="Powtarzaj playlistę"
-                  >
-                    <FaRedo
-                      size={28}
-                      className={
-                        repeatMode.playlist === "on" ? "text-purple-500" : ""
-                      }
-                    />
-                  </button>
-                  <button
-                    onClick={previousSong}
-                    className="text-gray-600 hover:text-gray-800 p-3 transition-all duration-150 ease-in-out active:scale-95"
-                    aria-label="Poprzedni utwór"
-                    title="Poprzedni utwór"
-                  >
-                    <FaBackward size={28} />
-                  </button>
-                  <button
-                    onClick={togglePlayback}
-                    className="bg-white rounded-full p-6 shadow-lg transition-all duration-150 ease-in-out active:scale-95"
-                    aria-label={isPlaying ? "Pauza" : "Odtwórz"}
-                    title={isPlaying ? "Pauza" : "Odtwórz"}
-                  >
-                    {isPlaying ? <FaPause size={40} /> : <FaPlay size={40} />}
-                  </button>
-                  <button
-                    onClick={nextSong}
-                    className="text-gray-600 hover:text-gray-800 p-3 transition-all duration-150 ease-in-out active:scale-95"
-                    aria-label="Następny utwór"
-                    title="Następny utwór"
-                  >
-                    <FaForward size={28} />
-                  </button>
-                  <button
-                    onClick={() => toggleRepeatMode("song")}
-                    className={`text-gray-600 p-3 rounded-full transition-all duration-300 ease-in-out ${
-                      repeatMode.song === "on"
-                        ? "bg-gray-100 shadow-inner transform translate-y-px"
-                        : "bg-white hover:bg-gray-50 active:bg-gray-100 active:shadow-inner active:transform active:translate-y-px"
-                    }`}
-                    aria-label={`Powtarzaj utwór: ${
-                      repeatMode.song === "on" ? "włączone" : "wyłączone"
-                    }`}
-                    title="Powtarzaj utwór"
-                  >
-                    <FaRetweet
-                      size={28}
-                      className={
-                        repeatMode.song === "on" ? "text-purple-500" : ""
-                      }
-                    />
-                  </button>
+              <div className="flex flex-col space-y-4 mt-6">
+                <div className="text-center">
+                  <h2 className="text-2xl font-bold text-gray-800">
+                    {currentSong?.title}
+                  </h2>
+                  <p className="text-lg text-gray-600">{currentSong?.artist}</p>
+                </div>
+                <div className="flex flex-col items-center space-y-6 mt-6">
+                  <div className="flex justify-center items-center space-x-4 w-full">
+                    <button
+                      onClick={() => toggleRepeatMode("playlist")}
+                      className={`text-gray-600 p-3 rounded-full transition-all duration-300 ease-in-out ${
+                        repeatMode.playlist === "on"
+                          ? "bg-gray-100 shadow-inner transform translate-y-px"
+                          : "bg-white hover:bg-gray-50 active:bg-gray-100 active:shadow-inner active:transform active:translate-y-px"
+                      }`}
+                      aria-label={`Powtarzaj playlistę: ${
+                        repeatMode.playlist === "on" ? "włączone" : "wyłączone"
+                      }`}
+                      title="Powtarzaj playlistę"
+                    >
+                      <FaRedo
+                        size={28}
+                        className={
+                          repeatMode.playlist === "on" ? "text-purple-500" : ""
+                        }
+                      />
+                    </button>
+                    <button
+                      onClick={previousSong}
+                      className="text-gray-600 hover:text-gray-800 p-3 transition-all duration-150 ease-in-out active:scale-95"
+                      aria-label="Poprzedni utwór"
+                      title="Poprzedni utwór"
+                    >
+                      <FaBackward size={28} />
+                    </button>
+                    <button
+                      onClick={togglePlayback}
+                      className="bg-white rounded-full p-6 shadow-lg transition-all duration-150 ease-in-out active:scale-95"
+                      aria-label={isPlaying ? "Pauza" : "Odtwórz"}
+                      title={isPlaying ? "Pauza" : "Odtwórz"}
+                    >
+                      {isPlaying ? <FaPause size={40} /> : <FaPlay size={40} />}
+                    </button>
+                    <button
+                      onClick={nextSong}
+                      className="text-gray-600 hover:text-gray-800 p-3 transition-all duration-150 ease-in-out active:scale-95"
+                      aria-label="Następny utwór"
+                      title="Następny utwór"
+                    >
+                      <FaForward size={28} />
+                    </button>
+                    <button
+                      onClick={() => toggleRepeatMode("song")}
+                      className={`text-gray-600 p-3 rounded-full transition-all duration-300 ease-in-out ${
+                        repeatMode.song === "on"
+                          ? "bg-gray-100 shadow-inner transform translate-y-px"
+                          : "bg-white hover:bg-gray-50 active:bg-gray-100 active:shadow-inner active:transform active:translate-y-px"
+                      }`}
+                      aria-label={`Powtarzaj utwór: ${
+                        repeatMode.song === "on" ? "włączone" : "wyłączone"
+                      }`}
+                      title="Powtarzaj utwór"
+                    >
+                      <FaRetweet
+                        size={28}
+                        className={
+                          repeatMode.song === "on" ? "text-purple-500" : ""
+                        }
+                      />
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {isMobile && (
-          <>
-            {/* <button
-              onClick={() => setIsModalOpen(true)}
-              className="w-full bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 transition duration-300 mb-4 flex items-center justify-center"
-              aria-label="Utwórz nową playlistę"
-              title="Utwórz nową playlistę"
+          {isMobile && (
+            <>
+              {/* <button
+                onClick={() => setIsModalOpen(true)}
+                className="w-full bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 transition duration-300 mb-4 flex items-center justify-center"
+                aria-label="Utwórz nową playlistę"
+                title="Utwórz nową playlistę"
+              >
+                <FaPlus className="mr-2" /> Utwórz nową playlistę
+              </button> */}
+              {isModalOpen && (
+                <CreatePlaylistModal
+                  onClose={() => setIsModalOpen(false)}
+                  onCreatePlaylist={onCreatePlaylist}
+                  showSuccessToast={showSuccessToast}
+                  showErrorToast={showErrorToast}
+                />
+              )}
+            </>
+          )}
+          {currentPlaylistId && (
+            <button
+              onClick={() => onPlayPlaylist("")}
+              className="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300 transition duration-300 mb-4"
             >
-              <FaPlus className="mr-2" /> Utwórz nową playlistę
-            </button> */}
-            {isModalOpen && (
-              <CreatePlaylistModal
-                onClose={() => setIsModalOpen(false)}
-                onCreatePlaylist={onCreatePlaylist}
-                showSuccessToast={showSuccessToast}
-                showErrorToast={showErrorToast}
-              />
-            )}
-          </>
-        )}
-        {currentPlaylistId && (
-          <button
-            onClick={() => onPlayPlaylist("")}
-            className="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300 transition duration-300 mb-4"
-          >
-            Powrót do wszystkich utworów.
-            <br /> Dodaj więcej ulubionych.
-          </button>
-        )}
+              Powrót do wszystkich utworów.
+              <br /> Dodaj więcej ulubionych.
+            </button>
+          )}
 
-        <SongList
-          songs={sortedAndFilteredSongs}
-          visibleSongs={visibleSongs}
+          <SongList
+            songs={sortedAndFilteredSongs}
+            visibleSongs={visibleSongs}
+            isPlaying={isPlaying}
+            currentSong={currentSong}
+            onSongSelect={(songId) => {
+              const index = songs.findIndex((s) => s.id === songId);
+              if (index !== -1) {
+                dispatch(setCurrentSongIndex(index));
+              }
+            }}
+            onLoadMore={loadMoreSongs}
+            onCollapse={collapseSongList}
+            isPopularList={false}
+            expandedPlaylist={expandedPlaylist}
+            setExpandedPlaylist={setExpandedPlaylist}
+            onAddToPlaylist={(songId: string) => handleAddToPlaylist(songId)}
+            sortBy={sortBy}
+            sortOrder={sortOrder}
+            onSortChange={onSortChange}
+            filterText={filterText}
+            setFilterText={setFilterText}
+            isPlaylistExpanded={!!expandedPlaylist}
+            showSearch={false}
+            hasPlaylists={playlists.length > 0}
+            isAuthenticated={isAuthenticated}
+          />
+        </div>
+        <PlaybackBar
           isPlaying={isPlaying}
-          currentSong={currentSong}
-          onSongSelect={(songId) => {
-            const index = songs.findIndex((s) => s.id === songId);
-            if (index !== -1) {
-              dispatch(setCurrentSongIndex(index));
+          onTogglePlay={togglePlayback}
+          onPrevious={previousSong}
+          onNext={nextSong}
+          currentTime={currentTime}
+          duration={duration}
+          onSeek={handleSeek}
+          volume={volume}
+          onVolumeChange={handleVolumeChange}
+          currentSong={
+            currentSong
+              ? {
+                  ...currentSong,
+                  thumbnail: currentSong.thumbnail || getThumbnailSafely(currentSong.youtubeId),
+                }
+              : null
+          }
+          repeatMode={repeatMode}
+          onToggleRepeatMode={toggleRepeatMode}
+          onAddToPlaylist={(songId) => handleAddToPlaylist(songId)}
+          onLike={(songId: string) => {
+            if (isAuthenticated) {
+              // Logika dla polubienia utworu
+            } else {
+              showErrorToast("Musisz być zalogowany, aby polubić utwory.");
             }
           }}
-          onLoadMore={loadMoreSongs}
-          onCollapse={collapseSongList}
-          isPopularList={false}
-          expandedPlaylist={expandedPlaylist}
-          setExpandedPlaylist={setExpandedPlaylist}
-          onAddToPlaylist={(songId: string) => handleAddToPlaylist(songId)}
-          sortBy={sortBy}
-          sortOrder={sortOrder}
-          onSortChange={onSortChange}
-          filterText={filterText}
-          setFilterText={setFilterText}
-          isPlaylistExpanded={!!expandedPlaylist}
-          showSearch={false}
-          hasPlaylists={playlists.length > 0}
+          isLiked={false} // Dodaj logikę sprawdzania, czy utwór jest polubiony
+          hasPlaylistsAndExpanded={playlists.length > 0 && !!expandedPlaylist}
+          playlistCount={playlists.length}
+          onCreatePlaylist={() => setIsModalOpen(true)}
           isAuthenticated={isAuthenticated}
+          isLoading={isLoading}
         />
       </div>
-      <PlaybackBar
-        isPlaying={isPlaying}
-        onTogglePlay={togglePlayback}
-        onPrevious={previousSong}
-        onNext={nextSong}
-        currentTime={currentTime}
-        duration={duration}
-        onSeek={handleSeek}
-        volume={volume}
-        onVolumeChange={handleVolumeChange}
-        currentSong={
-          currentSong
-            ? {
-                ...currentSong,
-                thumbnail: currentSong.thumbnail || getThumbnailSafely(currentSong.youtubeId),
-              }
-            : null
-        }
-        repeatMode={repeatMode}
-        onToggleRepeatMode={toggleRepeatMode}
-        onAddToPlaylist={(songId) => handleAddToPlaylist(songId)}
-        onLike={(songId: string) => {
-          if (isAuthenticated) {
-            // Logika dla polubienia utworu
-          } else {
-            showErrorToast("Musisz być zalogowany, aby polubić utwory.");
-          }
-        }}
-        isLiked={false} // Dodaj logikę sprawdzania, czy utwór jest polubiony
-        hasPlaylistsAndExpanded={playlists.length > 0 && !!expandedPlaylist}
-        playlistCount={playlists.length}
-        onCreatePlaylist={() => setIsModalOpen(true)}
-        isAuthenticated={isAuthenticated}
-        isLoading={isLoading}
-      />
-    </div>
+    </PlayerErrorBoundary>
   );
 };
 

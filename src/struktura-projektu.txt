@@ -1,10 +1,10 @@
-
 Struktura plików projektu:
 ├── .env.local (.local, 0.40 KB)
 ├── .eslintrc.json (.json, 0.04 KB)
 ├── next-env.d.ts (.ts, 0.20 KB)
 ├── next.config.mjs (.mjs, 1.66 KB)
 ├── package.json (.json, 1.63 KB)
+├── piosenki.json (.json, 18.85 KB)
 ├── postcss.config.mjs (.mjs, 0.14 KB)
 ├── public/
 │   ├── default-avatar.png (.png, 422.36 KB)
@@ -22,8 +22,11 @@ Struktura plików projektu:
 │   │   │   ├── music/
 │   │   │   │   ├── components/
 │   │   │   │   │   ├── AddSongForm.tsx (.tsx, 5.95 KB)
+│   │   │   │   │   ├── DeleteAllConfirmation.tsx (.tsx, 2.21 KB)
+│   │   │   │   │   ├── Notification.tsx (.tsx, 0.90 KB)
 │   │   │   │   │   └── SongList.tsx (.tsx, 2.36 KB)
-│   │   │   │   └── page.tsx (.tsx, 3.11 KB)
+│   │   │   │   ├── hooks/
+│   │   │   │   └── page.tsx (.tsx, 9.84 KB)
 │   │   │   ├── page.tsx (.tsx, 11.80 KB)
 │   │   │   └── users/
 │   │   │       └── page.tsx (.tsx, 12.54 KB)
@@ -48,6 +51,8 @@ Struktura plików projektu:
 │   │   │   ├── reset-password/
 │   │   │   │   └── route.ts (.ts, 4.81 KB)
 │   │   │   ├── songs/
+│   │   │   │   ├── deleteAll/
+│   │   │   │   │   └── route.ts (.ts, 1.76 KB)
 │   │   │   │   ├── route.ts (.ts, 2.32 KB)
 │   │   │   │   └── [id]/
 │   │   │   │       └── route.ts (.ts, 1.07 KB)
@@ -64,6 +69,8 @@ Struktura plików projektu:
 │   │   │   └── page.tsx (.tsx, 0.11 KB)
 │   │   ├── community/
 │   │   │   └── page.tsx (.tsx, 0.12 KB)
+│   │   ├── constants/
+│   │   │   └── zIndex.ts (.ts, 1.01 KB)
 │   │   ├── dance-schools/
 │   │   │   └── page.tsx (.tsx, 0.12 KB)
 │   │   ├── events/
@@ -84,21 +91,42 @@ Struktura plików projektu:
 │   │   ├── mentorship/
 │   │   │   └── page.tsx (.tsx, 0.12 KB)
 │   │   ├── muzyka/
+│   │   │   ├── actions/
 │   │   │   ├── components/
 │   │   │   │   ├── BaciataRisingBanner.tsx (.tsx, 0.67 KB)
-│   │   │   │   ├── CreatePlaylistModal.tsx (.tsx, 2.88 KB)
+│   │   │   │   ├── CreatePlaylistModal.tsx (.tsx, 3.35 KB)
 │   │   │   │   ├── index.ts (.ts, 0.06 KB)
-│   │   │   │   ├── MusicPlayer.tsx (.tsx, 23.46 KB)
-│   │   │   │   ├── PlaybackBar.tsx (.tsx, 9.28 KB)
-│   │   │   │   ├── PlaylistManager.tsx (.tsx, 8.91 KB)
-│   │   │   │   ├── SongList.tsx (.tsx, 8.56 KB)
-│   │   │   │   └── SortControl.tsx (.tsx, 2.74 KB)
-│   │   │   ├── page.tsx (.tsx, 13.70 KB)
-│   │   │   ├── types.ts (.ts, 1.29 KB)
+│   │   │   │   ├── MusicPlayer.tsx (.tsx, 19.30 KB)
+│   │   │   │   ├── playback/
+│   │   │   │   │   ├── ActionButtons.tsx (.tsx, 2.81 KB)
+│   │   │   │   │   ├── PlaybackBar.tsx (.tsx, 3.36 KB)
+│   │   │   │   │   ├── PlaybackControls.tsx (.tsx, 2.45 KB)
+│   │   │   │   │   ├── SeekBar.tsx (.tsx, 1.04 KB)
+│   │   │   │   │   ├── TrackInfo.tsx (.tsx, 1.03 KB)
+│   │   │   │   │   └── VolumeControl.tsx (.tsx, 1.45 KB)
+│   │   │   │   ├── PlaylistHeader.tsx (.tsx, 0.92 KB)
+│   │   │   │   ├── PlaylistManager.tsx (.tsx, 9.27 KB)
+│   │   │   │   ├── SongList.tsx (.tsx, 6.78 KB)
+│   │   │   │   └── SortControl.tsx (.tsx, 2.70 KB)
+│   │   │   ├── context/
+│   │   │   ├── hooks/
+│   │   │   │   ├── useDebounce.ts (.ts, 0.40 KB)
+│   │   │   │   ├── usePlaybackControls.ts (.ts, 3.69 KB)
+│   │   │   │   ├── useResponsive.ts (.ts, 2.08 KB)
+│   │   │   │   ├── useSortedAndFilteredSongs.ts (.ts, 1.07 KB)
+│   │   │   │   ├── useValidation.ts (.ts, 0.94 KB)
+│   │   │   │   ├── useYouTubeError.ts (.ts, 0.61 KB)
+│   │   │   │   └── useYouTubePlayer.ts (.ts, 2.14 KB)
+│   │   │   ├── page.tsx (.tsx, 13.15 KB)
+│   │   │   ├── types/
+│   │   │   │   ├── index.ts (.ts, 0.29 KB)
+│   │   │   │   └── validation.ts (.ts, 0.23 KB)
+│   │   │   ├── types.ts (.ts, 1.71 KB)
 │   │   │   └── utils/
-│   │   │       ├── sortUtils.ts (.ts, 1.41 KB)
-│   │   │       └── youtube.ts (.ts, 0.12 KB)
-│   │   ├── page.tsx (.tsx, 2.40 KB)
+│   │   │       ├── formatTime.ts (.ts, 0.20 KB)
+│   │   │       ├── sortUtils.ts (.ts, 0.56 KB)
+│   │   │       └── youtube.ts (.ts, 2.82 KB)
+│   │   ├── page.tsx (.tsx, 2.38 KB)
 │   │   ├── polityka-prywatnosci-baciata-pl/
 │   │   │   └── page.tsx (.tsx, 3.02 KB)
 │   │   ├── privacy-policy/
@@ -142,6 +170,7 @@ Struktura plików projektu:
 │   ├── middleware/
 │   │   └── adminAuthMiddleware.ts (.ts, 0.64 KB)
 │   ├── models/
+│   │   ├── Playlist.ts (.ts, 1.03 KB)
 │   │   ├── Song.ts (.ts, 0.48 KB)
 │   │   └── User.ts (.ts, 0.93 KB)
 │   ├── schemas/
@@ -153,10 +182,11 @@ Struktura plików projektu:
 │   │   │   ├── adminSlice.ts (.ts, 6.56 KB)
 │   │   │   ├── authSlice.ts (.ts, 1.21 KB)
 │   │   │   ├── features/
-│   │   │   │   └── songsSlice.ts (.ts, 3.74 KB)
+│   │   │   │   └── songsSlice.ts (.ts, 8.14 KB)
 │   │   │   └── types.ts (.ts, 0.42 KB)
 │   │   └── store.ts (.ts, 0.77 KB)
-│   ├── struktura-projektu.txt (.txt, 0.00 KB)
+│   ├── struktura-projektu.txt (.txt, 7.74 KB)
+│   ├── tailwind.config.ts (.ts, 1.35 KB)
 │   ├── types/
 │   │   └── next-auth.d.ts (.ts, 1.12 KB)
 │   └── utils/
