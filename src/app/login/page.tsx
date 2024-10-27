@@ -54,28 +54,28 @@ interface AdBanner {
 // Dodaj przed komponentem Login
 const statsData: StatItem[] = [
   {
-    icon: <FaUsers className="h-5 w-5 text-purple-400" />,
-    value: "1000",
+    icon: <FaUsers className="h-6 w-6 text-purple-400" />,
+    value: "1000+",
     label: "Tancerzy",
-    bgColor: "bg-purple-400/20",
+    bgColor: "from-purple-400/20 to-purple-500/30",
   },
   {
-    icon: <FaMusic className="h-5 w-5 text-yellow-400" />,
-    value: "300",
+    icon: <FaMusic className="h-6 w-6 text-yellow-400" />,
+    value: "300+",
     label: "Utworów",
-    bgColor: "bg-yellow-400/20",
+    bgColor: "from-yellow-400/20 to-yellow-500/30",
   },
   {
-    icon: <FaCrown className="h-5 w-5 text-green-400" />,
-    value: "10k",
+    icon: <FaCrown className="h-6 w-6 text-green-400" />,
+    value: "10k+",
     label: "Filmów",
-    bgColor: "bg-green-400/20",
+    bgColor: "from-green-400/20 to-green-500/30",
   },
   {
-    icon: <FaCalendar className="h-5 w-5 text-pink-400" />,
-    value: "700",
+    icon: <FaCalendar className="h-6 w-6 text-pink-400" />,
+    value: "700+",
     label: "Wydarzeń",
-    bgColor: "bg-pink-400/20",
+    bgColor: "from-pink-400/20 to-pink-500/30",
   },
 ];
 
@@ -166,41 +166,60 @@ const BannerCard = ({
   index: number;
   direction: "left" | "right";
 }) => {
-  const color = getBannerColor(banner.icon);
-
   return (
     <motion.div
-      key={index}
       initial={{ opacity: 0, x: direction === "left" ? -50 : 50 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.6, delay: index * 0.1 }}
-      className="group"
+      className="group relative h-[200px] w-full overflow-hidden rounded-2xl"
     >
-      <div className="w-[300px] h-[300px] relative">
-        <div className="absolute inset-0 bg-[#0F1A2A] rounded-full overflow-hidden border border-white/5">
-          <div className="relative w-full h-full flex flex-col items-center justify-center text-center p-8">
-            <div className={`mb-4 bg-${color}-400/10 p-3 rounded-full`}>
+      {/* Tło z obrazem */}
+      <Image
+        src={banner.image}
+        alt={banner.title}
+        layout="fill"
+        objectFit="cover"
+        className="transition-transform duration-700 group-hover:scale-110"
+      />
+      
+      {/* Gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#0a1e3b]/90 via-[#0a1e3b]/70 to-transparent" />
+      
+      {/* Animated pattern background */}
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute inset-0 bg-[url('/patterns/music-notes.svg')] bg-repeat animate-float" />
+      </div>
+
+      {/* Content */}
+      <div className="absolute inset-0 p-5 flex flex-col justify-between">
+        <div className="flex items-center space-x-3">
+          <motion.div 
+            className="bg-gradient-to-r from-yellow-400 to-yellow-600 p-0.5 rounded-xl"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <div className="bg-[#0a1e3b] p-2 rounded-xl">
               {banner.icon}
             </div>
-
-            <h3 className="text-xl font-bold text-white mb-2">
-              {banner.title}
-            </h3>
-
-            <p className="text-white/60 text-sm mb-6 max-w-[80%]">
-              {banner.description}
-            </p>
-
-            <motion.button
-              className={`bg-${color}-400/20 hover:bg-${color}-400/30 text-${color}-400 
-                py-2 px-6 rounded-full text-sm font-medium transition-colors duration-300
-                border border-${color}-400/30`}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Dowiedz się więcej
-            </motion.button>
-          </div>
+          </motion.div>
+          <h3 className="text-lg font-bold text-white group-hover:text-yellow-400 transition-colors duration-300">
+            {banner.title}
+          </h3>
+        </div>
+        
+        <div className="space-y-3">
+          <p className="text-white/80 text-sm line-clamp-2">
+            {banner.description}
+          </p>
+          <motion.button
+            className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-[#0a1e3b] py-2 px-4 rounded-lg 
+              font-medium transition-all duration-300 hover:from-yellow-500 hover:to-yellow-700
+              flex items-center space-x-2 text-sm"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            <span>Dowiedz się więcej</span>
+          </motion.button>
         </div>
       </div>
     </motion.div>
@@ -425,6 +444,16 @@ export default function Login() {
                   {isLoading ? <LoadingSpinner /> : "Zaloguj się"}
                 </button>
 
+                {/* Link do resetowania hasła */}
+                <div className="mt-4 text-center">
+                  <Link
+                    href="/forgot-password"
+                    className="text-yellow-400 hover:text-yellow-300 text-sm transition-colors duration-200"
+                  >
+                    Zapomniałeś hasła?
+                  </Link>
+                </div>
+
                 {/* Separator */}
                 <div className="relative my-8">
                   <div className="absolute inset-0 flex items-center">
@@ -562,25 +591,29 @@ export default function Login() {
             </motion.div>
 
             {/* Statystyki */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-6">
               {statsData.map((stat, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.2 + index * 0.1 }}
-                  className="bg-white/10 backdrop-blur-lg rounded-xl p-6 shadow-xl border border-white/10"
-                  whileHover={{ scale: 1.02 }}
+                  className="bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-lg rounded-xl p-6 shadow-xl border border-white/10
+                    hover:shadow-2xl hover:border-white/20 transition-all duration-300"
+                  whileHover={{ scale: 1.03, y: -5 }}
                 >
-                  <div className="flex items-center space-x-3">
-                    <div className={`${stat.bgColor} p-3 rounded-full`}>
+                  <div className="flex items-center space-x-4">
+                    <div className={`bg-gradient-to-br ${stat.bgColor} p-4 rounded-xl shadow-lg
+                      backdrop-blur-xl border border-white/10 transform transition-transform duration-300
+                      group-hover:scale-110`}>
                       {stat.icon}
                     </div>
                     <div>
-                      <div className="text-2xl font-bold text-white">
+                      <div className="text-2xl font-bold text-white bg-clip-text text-transparent 
+                        bg-gradient-to-r from-white to-white/80">
                         {stat.value}
                       </div>
-                      <div className="text-white/60 text-sm">{stat.label}</div>
+                      <div className="text-white/70 text-sm font-medium">{stat.label}</div>
                     </div>
                   </div>
                 </motion.div>
@@ -590,15 +623,31 @@ export default function Login() {
         </div>
 
         {/* Prawa kolumna banerów */}
-        <div className="hidden xl:flex flex-col gap-8 w-[300px]">
-          {rightBanners.map((banner, index) => (
-            <BannerCard
-              key={index}
-              banner={banner}
-              index={index}
-              direction="right"
-            />
-          ))}
+        <div className="hidden xl:flex flex-col gap-6 w-[340px] p-6 bg-gradient-to-br from-white/5 to-white/10 
+          backdrop-blur-lg rounded-2xl border border-white/10">
+          <motion.div 
+            className="flex items-center space-x-2"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="bg-gradient-to-r from-yellow-400 to-yellow-600 p-0.5 rounded-full">
+              <div className="bg-[#0a1e3b] px-4 py-1.5 rounded-full">
+                <span className="text-white font-medium">Odkryj więcej</span>
+              </div>
+            </div>
+          </motion.div>
+          
+          <div className="space-y-5">
+            {rightBanners.map((banner, index) => (
+              <BannerCard
+                key={index}
+                banner={banner}
+                index={index}
+                direction="right"
+              />
+            ))}
+          </div>
         </div>
       </div>
     </div>
