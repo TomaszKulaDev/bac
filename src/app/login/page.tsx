@@ -124,20 +124,79 @@ const loginSchema = z.object({
   password: z.string().min(1, "Hasło jest wymagane"),
 });
 
+const BannerIcon = ({ icon, color }: { icon: React.ReactNode; color: string }) => {
+  return (
+    <div className={`bg-${color}-400/20 p-2.5 rounded-full flex items-center justify-center backdrop-blur-sm
+      border border-${color}-400/30 shadow-lg shadow-${color}-400/10 group-hover:scale-110 transition-transform duration-300`}>
+      {icon}
+    </div>
+  );
+};
+
+const getBannerColor = (icon: React.ReactNode): string => {
+  if (React.isValidElement(icon)) {
+    const className = icon.props.className || '';
+    const colorMatch = className.match(/text-(\w+)-400/);
+    return colorMatch ? colorMatch[1] : 'yellow';
+  }
+  return 'yellow';
+};
+
+const BannerCard = ({ 
+  banner, 
+  index, 
+  direction 
+}: { 
+  banner: AdBanner; 
+  index: number; 
+  direction: 'left' | 'right' 
+}) => {
+  return (
+    <motion.div
+      key={index}
+      initial={{ opacity: 0, x: direction === 'left' ? -50 : 50 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.6, delay: index * 0.1 }}
+      className="group"
+    >
+      <div className="bg-white/10 backdrop-blur-lg rounded-xl overflow-hidden border border-white/10 shadow-xl">
+        <div className="relative h-40">
+          <Image
+            src={banner.image}
+            alt={banner.title}
+            layout="fill"
+            objectFit="cover"
+            className="transition-transform duration-300 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+        </div>
+        <div className="p-4">
+          <div className="flex items-center space-x-3 mb-2">
+            <div className={`bg-${getBannerColor(banner.icon)}-400/20 p-2 rounded-full`}>
+              {banner.icon}
+            </div>
+            <h3 className="text-lg font-bold text-white">{banner.title}</h3>
+          </div>
+          <p className="text-white/70 text-sm">{banner.description}</p>
+          <motion.button
+            className={`w-full mt-4 bg-gradient-to-r from-${getBannerColor(banner.icon)}-400 
+              to-${getBannerColor(banner.icon)}-600 text-white py-2 px-4 rounded-lg font-medium`}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            Dowiedz się więcej
+          </motion.button>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
 export default function Login() {
   const leftBanners = adBanners.filter((banner) => banner.position === "left");
   const rightBanners = adBanners.filter(
     (banner) => banner.position === "right"
   );
-
-  const getBannerColor = (icon: React.ReactNode) => {
-    if (React.isValidElement(icon)) {
-      const className = icon.props.className || "";
-      const colorMatch = className.match(/text-(\w+)-\d+/);
-      return colorMatch ? colorMatch[1] : "yellow";
-    }
-    return "yellow";
-  };
 
   // Stan komponentu
   const [email, setEmail] = useState("");
@@ -281,51 +340,12 @@ export default function Login() {
         {/* Lewa kolumna banerów */}
         <div className="hidden xl:flex flex-col gap-4 w-[300px]">
           {leftBanners.map((banner, index) => (
-            <motion.div
+            <BannerCard 
               key={index}
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-            >
-              <div className="bg-white/10 backdrop-blur-lg rounded-xl overflow-hidden border border-white/10 shadow-xl">
-                <div className="relative h-40">
-                  <Image
-                    src={banner.image}
-                    alt={banner.title}
-                    layout="fill"
-                    objectFit="cover"
-                    className="transition-transform duration-300 hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                </div>
-                <div className="p-4">
-                  <div className="flex items-center space-x-3 mb-2">
-                    <div
-                      className={`bg-${getBannerColor(
-                        banner.icon
-                      )}-400/20 p-2 rounded-full`}
-                    >
-                      {banner.icon}
-                    </div>
-                    <h3 className="text-lg font-bold text-white">
-                      {banner.title}
-                    </h3>
-                  </div>
-                  <p className="text-white/70 text-sm">{banner.description}</p>
-                  <motion.button
-                    className={`w-full mt-4 bg-gradient-to-r from-${getBannerColor(
-                      banner.icon
-                    )}-400 to-${getBannerColor(
-                      banner.icon
-                    )}-600 text-white py-2 px-4 rounded-lg font-medium`}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    Dowiedz się więcej
-                  </motion.button>
-                </div>
-              </div>
-            </motion.div>
+              banner={banner} 
+              index={index} 
+              direction="left" 
+            />
           ))}
         </div>
 
@@ -553,51 +573,12 @@ export default function Login() {
         {/* Prawa kolumna banerów */}
         <div className="hidden xl:flex flex-col gap-4 w-[300px]">
           {rightBanners.map((banner, index) => (
-            <motion.div
+            <BannerCard 
               key={index}
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-            >
-              <div className="bg-white/10 backdrop-blur-lg rounded-xl overflow-hidden border border-white/10 shadow-xl">
-                <div className="relative h-40">
-                  <Image
-                    src={banner.image}
-                    alt={banner.title}
-                    layout="fill"
-                    objectFit="cover"
-                    className="transition-transform duration-300 hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                </div>
-                <div className="p-4">
-                  <div className="flex items-center space-x-3 mb-2">
-                    <div
-                      className={`bg-${getBannerColor(
-                        banner.icon
-                      )}-400/20 p-2 rounded-full`}
-                    >
-                      {banner.icon}
-                    </div>
-                    <h3 className="text-lg font-bold text-white">
-                      {banner.title}
-                    </h3>
-                  </div>
-                  <p className="text-white/70 text-sm">{banner.description}</p>
-                  <motion.button
-                    className={`w-full mt-4 bg-gradient-to-r from-${getBannerColor(
-                      banner.icon
-                    )}-400 to-${getBannerColor(
-                      banner.icon
-                    )}-600 text-white py-2 px-4 rounded-lg font-medium`}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    Dowiedz się więcej
-                  </motion.button>
-                </div>
-              </div>
-            </motion.div>
+              banner={banner} 
+              index={index} 
+              direction="right" 
+            />
           ))}
         </div>
       </div>
