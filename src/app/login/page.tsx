@@ -198,37 +198,51 @@ export default function Login() {
               onPasswordToggle={() => setShowPassword(!showPassword)}
             />
 
-            <div className="flex items-center justify-between">
-              <Link 
-                href="/forgot-password"
-                className="text-sm text-white/70 hover:text-white transition-colors"
-              >
-                Zapomniałeś hasła?
-              </Link>
-              <Link 
-                href="/register"
-                className="text-sm text-white/70 hover:text-white transition-colors"
-              >
-                Załóż konto
-              </Link>
-            </div>
-
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-white text-[#0a1e3b] py-3 px-4 rounded-lg font-medium
-                hover:bg-white/90 transition-all duration-200 flex items-center justify-center
-                disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-gradient-to-r from-yellow-400 to-yellow-600 text-[#0a1e3b] py-3 px-4 rounded-lg font-medium 
+                hover:from-yellow-500 hover:to-yellow-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isLoading ? (
-                <>
-                  <LoadingSpinner className="text-[#0a1e3b]" />
-                  <span className="ml-2">Logowanie...</span>
-                </>
-              ) : (
-                "Zaloguj się"
-              )}
+              {isLoading ? <LoadingSpinner /> : "Zaloguj się"}
             </button>
+
+            {/* Separator */}
+            <div className="relative my-8">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-white/10"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-4 text-white/60 bg-[#0a1e3b]/50 backdrop-blur-lg">lub kontynuuj przez</span>
+              </div>
+            </div>
+
+            {/* Przycisk Google */}
+            <motion.button
+              type="button"
+              onClick={() => signIn('google')}
+              className="w-full bg-white/10 hover:bg-white/20 text-white py-3 px-4 rounded-lg font-medium 
+                transition-all duration-200 flex items-center justify-center space-x-3 border border-white/10"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <Image
+                src="/images/google-logo.svg"
+                alt="Google"
+                width={20}
+                height={20}
+                className="w-5 h-5"
+              />
+              <span>Zaloguj się przez Google</span>
+            </motion.button>
+
+            {/* Link do rejestracji */}
+            <p className="text-center text-white/60 text-sm">
+              Nie masz jeszcze konta?{" "}
+              <Link href="/register" className="text-yellow-400 hover:text-yellow-300 transition-colors">
+                Zarejestruj się
+              </Link>
+            </p>
           </form>
         </div>
 
