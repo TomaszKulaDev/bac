@@ -7,6 +7,7 @@ import React, {
   useRef,
   useCallback,
   useMemo,
+  ErrorInfo,
 } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { AnyAction } from "@reduxjs/toolkit";
@@ -38,6 +39,7 @@ import { usePlaybackControls } from '../hooks/usePlaybackControls';
 import { PlayerErrorBoundary } from './ErrorBoundary/PlayerErrorBoundary';
 import { ErrorLogBuffer } from '../utils/ErrorLogBuffer';
 import { YouTubeError } from '../utils/youtube';
+import { useYouTubeErrorHandler } from '../hooks/useYouTubeErrorHandler';
 
 interface MusicPlayerProps {
   songs: Song[];
@@ -61,6 +63,18 @@ interface MusicPlayerProps {
   showInfoToast: (message: string) => void;
   isAuthenticated: boolean;
 }
+
+interface BrowserInfo {
+  userAgent: string;
+  platform: string;
+  language: string;
+}
+
+const getBrowserInfo = (): BrowserInfo => ({
+  userAgent: navigator.userAgent,
+  platform: navigator.platform,
+  language: navigator.language
+});
 
 // Komponent MusicPlayer
 const MusicPlayer: React.FC<MusicPlayerProps> = ({
@@ -363,26 +377,27 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     }));
   }, []);
 
-  const handleYouTubeError = useCallback((error: Error) => {
+  const { handleYouTubeError } = useYouTubeErrorHandler(showErrorToast);
+
+  const handleError = useCallback((error: Error, errorInfo?: ErrorInfo) => {
     const errorBuffer = ErrorLogBuffer.getInstance();
     
-    errorBuffer.add({
-      type: "youtube",
-      severity: error instanceof YouTubeError ? "error" : "warning",
-      message: error.message,
-      timestamp: new Date().toISOString(),
-      environment: process.env.NODE_ENV || 'development',
-      details: {
-        code: error instanceof YouTubeError ? (error as YouTubeError).code : undefined,
-        additionalInfo: {
-          currentSongId: currentSong?.id,
-          playerState: player?.getPlayerState()
+    if (error instanceof YouTubeError) {
+      handleYouTubeError(error);
+    } else {
+      errorBuffer.add({
+        type: "general",
+        severity: "error",
+        message: error.message,
+        timestamp: new Date().toISOString(),
+        environment: process.env.NODE_ENV || 'development',
+        details: {
+          componentStack: errorInfo?.componentStack || undefined
         }
-      }
-    });
-
-    showErrorToast('Wystąpił błąd podczas odtwarzania');
-  }, [currentSong, player, showErrorToast]);
+      });
+      showErrorToast('Wystąpił błąd podczas odtwarzania');
+    }
+  }, [handleYouTubeError, showErrorToast]);
 
   useEffect(() => {
     const errorBuffer = ErrorLogBuffer.getInstance();
@@ -393,8 +408,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   return (
     <PlayerErrorBoundary
       onError={(error, errorInfo) => {
-        showErrorToast('Wystąpił błąd podczas odtwarzania');
-        console.error('MusicPlayer Error:', { error, errorInfo });
+        handleError(error, errorInfo);
       }}
     >
       <div className="max-w-7xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden pb-20">

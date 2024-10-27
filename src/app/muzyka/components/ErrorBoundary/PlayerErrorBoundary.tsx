@@ -30,9 +30,9 @@ interface State {
 }
 
 export class PlayerErrorBoundary extends Component<Props, State> {
+  private static errorBuffer = ErrorLogBuffer.getInstance();
   private readonly DEFAULT_MAX_RETRIES = 3;
   private readonly ERROR_RESET_TIME = 5 * 60 * 1000; // 5 minut
-  private static errorBuffer = ErrorLogBuffer.getInstance();
 
   constructor(props: Props) {
     super(props);
@@ -42,7 +42,7 @@ export class PlayerErrorBoundary extends Component<Props, State> {
       errorType: "general",
       retryCount: 0,
       lastErrorTimestamp: 0,
-      errorHistory: []
+      errorHistory: [],
     };
   }
 
@@ -51,18 +51,19 @@ export class PlayerErrorBoundary extends Component<Props, State> {
       timestamp: Date.now(),
       errorType: this.state.errorType,
       code: error instanceof YouTubeError ? error.code : undefined,
-      retryCount: this.state.retryCount
+      retryCount: this.state.retryCount,
     };
 
-    this.setState(prevState => ({
-      errorHistory: [...prevState.errorHistory.slice(-4), entry]
+    this.setState((prevState) => ({
+      errorHistory: [...prevState.errorHistory.slice(-4), entry],
     }));
   }
 
   private shouldBlockRetry(): boolean {
-    const recentErrors = this.state.errorHistory
-      .filter(entry => Date.now() - entry.timestamp < this.ERROR_RESET_TIME);
-    
+    const recentErrors = this.state.errorHistory.filter(
+      (entry) => Date.now() - entry.timestamp < this.ERROR_RESET_TIME
+    );
+
     return recentErrors.length >= 3;
   }
 
@@ -72,7 +73,7 @@ export class PlayerErrorBoundary extends Component<Props, State> {
       hasError: true,
       error,
       errorType,
-      lastErrorTimestamp: Date.now()
+      lastErrorTimestamp: Date.now(),
     };
   }
 
@@ -82,24 +83,24 @@ export class PlayerErrorBoundary extends Component<Props, State> {
       severity: this.getSeverity(error),
       message: error.message,
       timestamp: new Date().toISOString(),
-      environment: process.env.NODE_ENV || 'development',
+      environment: process.env.NODE_ENV || "development",
       details: {
         code: error instanceof YouTubeError ? error.code : undefined,
-        stack: typeof error.stack === 'string' ? error.stack : undefined,
+        stack: typeof error.stack === "string" ? error.stack : undefined,
         componentStack: errorInfo.componentStack || undefined,
         retryCount: this.state.retryCount,
         maxRetries: this.props.maxRetries || this.DEFAULT_MAX_RETRIES,
-        errorHistory: this.state.errorHistory
-      }
+        errorHistory: this.state.errorHistory,
+      },
     };
 
     PlayerErrorBoundary.errorBuffer.add(errorLog);
     this.props.onError?.(error, errorInfo);
   }
 
-  private getSeverity(error: Error): BaseErrorLog['severity'] {
+  private getSeverity(error: Error): BaseErrorLog["severity"] {
     if (!(error instanceof YouTubeError)) return "critical";
-    
+
     switch (error.code) {
       case YouTubeErrorCode.VIDEO_NOT_FOUND:
       case YouTubeErrorCode.EMBED_NOT_ALLOWED:
@@ -111,9 +112,23 @@ export class PlayerErrorBoundary extends Component<Props, State> {
     }
   }
 
-  private handleRetry = async () => {
+  private handleRetry = async (): Promise<void> => {
     const { retryCount } = this.state;
     const maxRetries = this.props.maxRetries || this.DEFAULT_MAX_RETRIES;
+
+    const errorBuffer = ErrorLogBuffer.getInstance();
+    errorBuffer.add({
+      type: "general",
+      severity: "warning", // Zmiana z "info" na "warning"
+      message: `Próba ponownego odtworzenia ${retryCount + 1}/${maxRetries}`,
+      timestamp: new Date().toISOString(),
+      environment: process.env.NODE_ENV || "development",
+      details: {
+        retryCount,
+        maxRetries,
+        errorHistory: this.state.errorHistory,
+      },
+    });
 
     if (this.shouldBlockRetry()) {
       errorLogger.logError({
@@ -121,22 +136,22 @@ export class PlayerErrorBoundary extends Component<Props, State> {
         severity: "warning",
         message: "Zbyt wiele prób ponownego odtworzenia w krótkim czasie",
         timestamp: new Date().toISOString(),
-        environment: process.env.NODE_ENV || 'development',
+        environment: process.env.NODE_ENV || "development",
         details: {
           additionalInfo: {
-            errorHistory: this.state.errorHistory
-          }
-        }
+            errorHistory: this.state.errorHistory,
+          },
+        },
       });
       return;
     }
 
     if (retryCount < maxRetries) {
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Dodajemy opóźnienie
-      this.setState(prevState => ({
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // Dodajemy opóźnienie
+      this.setState((prevState) => ({
         hasError: false,
         error: null,
-        retryCount: prevState.retryCount + 1
+        retryCount: prevState.retryCount + 1,
       }));
     } else {
       window.location.reload();
@@ -195,17 +210,16 @@ export class PlayerErrorBoundary extends Component<Props, State> {
   }
 
   private renderErrorHistory() {
-    if (process.env.NODE_ENV !== 'development') return null;
+    if (process.env.NODE_ENV !== "development") return null;
 
     return (
       <div className="mt-4 text-xs text-gray-500">
         <div className="font-medium mb-1">Historia błędów:</div>
         {this.state.errorHistory.map((entry, index) => (
           <div key={index} className="ml-2">
-            {new Date(entry.timestamp).toLocaleTimeString()} - 
-            {entry.errorType}
-            {entry.code ? ` (kod: ${entry.code})` : ''} - 
-            Próba: {entry.retryCount}
+            {new Date(entry.timestamp).toLocaleTimeString()} -{entry.errorType}
+            {entry.code ? ` (kod: ${entry.code})` : ""} - Próba:{" "}
+            {entry.retryCount}
           </div>
         ))}
       </div>
@@ -218,5 +232,9 @@ export class PlayerErrorBoundary extends Component<Props, State> {
     }
 
     return this.props.children;
+  }
+  componentWillUnmount() {
+    PlayerErrorBoundary.errorBuffer.destroy();
+    this.setState = () => null;
   }
 }

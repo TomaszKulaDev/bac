@@ -1,18 +1,19 @@
-import { YouTubeError, YouTubeErrorCode, getYouTubeErrorMessage } from '../utils/youtube';
-import { ErrorLogBuffer } from '../utils/ErrorLogBuffer';
-import { BaseErrorLog } from '../utils/errorLogger';
+import {
+  YouTubeError,
+  YouTubeErrorCode,
+  getYouTubeErrorMessage,
+} from "../utils/youtube";
+import { ErrorLogBuffer } from "../utils/ErrorLogBuffer";
+import { BaseErrorLog } from "../utils/errorLogger";
+import { BrowserInfo, ErrorDetails } from '../types/errors';
 
-interface ErrorDetails {
-  code: number;
-  message: string;
-  details?: string;
-  timestamp: string;
-  browserInfo: {
-    userAgent: string;
-    platform: string;
-    language: string;
-  };
-}
+const getBrowserInfo = (): BrowserInfo => ({
+  userAgent: navigator.userAgent,
+  platform: navigator.platform,
+  language: navigator.language,
+  screenResolution: `${screen.width}x${screen.height}`,
+  timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+});
 
 export const useYouTubeError = (showErrorToast: (message: string) => void) => {
   const errorBuffer = ErrorLogBuffer.getInstance();
@@ -23,24 +24,16 @@ export const useYouTubeError = (showErrorToast: (message: string) => void) => {
       severity: "error",
       message: details.message,
       timestamp: details.timestamp,
-      environment: process.env.NODE_ENV || 'development',
+      environment: process.env.NODE_ENV || "development",
       details: {
         code: details.code,
         additionalInfo: {
-          browserInfo: details.browserInfo
-        }
-      }
+          browserInfo: details.browserInfo,
+        },
+      },
     };
 
     errorBuffer.add(errorLog);
-  };
-
-  const getBrowserInfo = (): ErrorDetails['browserInfo'] => {
-    return {
-      userAgent: navigator.userAgent,
-      platform: navigator.platform,
-      language: navigator.language
-    };
   };
 
   const createErrorDetails = (error: YouTubeError): ErrorDetails => {
@@ -49,13 +42,13 @@ export const useYouTubeError = (showErrorToast: (message: string) => void) => {
       message: error.message,
       details: error.details,
       timestamp: new Date().toISOString(),
-      browserInfo: getBrowserInfo()
+      browserInfo: getBrowserInfo(),
     };
   };
 
   const getLocalizedErrorMessage = (error: YouTubeError): string => {
     const baseMessage = getYouTubeErrorMessage(error.code);
-    const details = error.details ? `: ${error.details}` : '';
+    const details = error.details ? `: ${error.details}` : "";
     return `${baseMessage}${details}`;
   };
 
@@ -68,38 +61,33 @@ export const useYouTubeError = (showErrorToast: (message: string) => void) => {
         showErrorToast(userMessage);
         logErrorDetails(errorDetails);
 
-        // Specjalna obsługa dla konkretnych kodów błędów
         switch (error.code) {
           case YouTubeErrorCode.VIDEO_NOT_FOUND:
           case YouTubeErrorCode.EMBED_NOT_ALLOWED:
           case YouTubeErrorCode.EMBED_NOT_ALLOWED_2:
             // Możemy tutaj dodać dodatkową logikę dla tych błędów
             break;
-          case YouTubeErrorCode.HTML5_ERROR:
-            // Próba ponownego załadowania playera
-            window.dispatchEvent(new Event('youtube-player-reload'));
-            break;
         }
       } else {
         const genericError = {
           code: -1,
-          message: error instanceof Error ? error.message : 'Nieznany błąd',
+          message: error instanceof Error ? error.message : "Nieznany błąd",
           timestamp: new Date().toISOString(),
-          browserInfo: getBrowserInfo()
+          browserInfo: getBrowserInfo(),
         };
 
-        showErrorToast('Wystąpił nieoczekiwany błąd podczas odtwarzania');
+        showErrorToast("Wystąpił nieoczekiwany błąd podczas odtwarzania");
         logErrorDetails(genericError);
       }
     } catch (handlingError) {
-      console.error('Błąd podczas obsługi błędu YouTube:', handlingError);
-      showErrorToast('Wystąpił krytyczny błąd aplikacji');
+      console.error("Błąd podczas obsługi błędu YouTube:", handlingError);
+      showErrorToast("Wystąpił krytyczny błąd aplikacji");
     }
   };
 
   return {
     handleYouTubeError,
     getLocalizedErrorMessage,
-    createErrorDetails
+    createErrorDetails,
   };
 };
