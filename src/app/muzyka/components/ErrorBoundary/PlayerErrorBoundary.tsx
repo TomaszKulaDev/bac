@@ -2,6 +2,7 @@
 import React, { Component, ErrorInfo, ReactNode } from "react";
 import { YouTubeError, YouTubeErrorCode } from "../../utils/youtube";
 import { errorLogger } from "../../utils/errorLogger";
+import { ErrorLogBuffer } from "../../utils/ErrorLogBuffer";
 
 interface Props {
   children: ReactNode;

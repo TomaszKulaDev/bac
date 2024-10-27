@@ -1,5 +1,5 @@
 // src/app/muzyka/utils/errorLogger.ts
-interface BaseErrorLog {
+export interface BaseErrorLog {
   type: "youtube" | "playback" | "general";
   severity: "error" | "warning" | "critical";
   message: string;
@@ -21,7 +21,7 @@ interface BaseErrorLog {
   };
 }
 
-interface SystemInfo {
+export interface SystemInfo {
   userAgent: string;
   platform: string;
   language: string;
@@ -31,7 +31,7 @@ interface SystemInfo {
   connectionType?: string;
 }
 
-interface ErrorDetails {
+export interface ErrorDetails {
   code?: number;
   stack?: string;
   componentStack?: string;
@@ -39,11 +39,11 @@ interface ErrorDetails {
   additionalData?: Record<string, unknown>;
 }
 
-interface FullErrorLog extends BaseErrorLog {
+export interface FullErrorLog extends BaseErrorLog {
   systemInfo: SystemInfo;
   details: ErrorDetails;
   sessionId: string;
-  userId?: string; // Zmieniono z string | null na string | undefined
+  userId?: string;
 }
 
 class ErrorLogger {

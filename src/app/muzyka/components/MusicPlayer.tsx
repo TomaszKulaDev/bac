@@ -36,6 +36,8 @@ import { useSortedAndFilteredSongs } from '../hooks/useSortedAndFilteredSongs';
 import { useYouTubePlayer } from '../hooks/useYouTubePlayer';
 import { usePlaybackControls } from '../hooks/usePlaybackControls';
 import { PlayerErrorBoundary } from './ErrorBoundary/PlayerErrorBoundary';
+import { ErrorLogBuffer } from '../utils/ErrorLogBuffer';
+import { YouTubeError } from '../utils/youtube';
 
 interface MusicPlayerProps {
   songs: Song[];
@@ -359,6 +361,32 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
       ...prev,
       [type]: prev[type] === "on" ? "off" : "on"
     }));
+  }, []);
+
+  const handleYouTubeError = useCallback((error: Error) => {
+    const errorBuffer = ErrorLogBuffer.getInstance();
+    
+    errorBuffer.add({
+      type: "youtube",
+      severity: error instanceof YouTubeError ? "error" : "warning",
+      message: error.message,
+      timestamp: new Date().toISOString(),
+      environment: process.env.NODE_ENV || 'development',
+      details: {
+        code: error instanceof YouTubeError ? (error as YouTubeError).code : undefined,
+        additionalInfo: {
+          currentSongId: currentSong?.id,
+          playerState: player?.getPlayerState()
+        }
+      }
+    });
+
+    showErrorToast('Wystąpił błąd podczas odtwarzania');
+  }, [currentSong, player, showErrorToast]);
+
+  useEffect(() => {
+    const errorBuffer = ErrorLogBuffer.getInstance();
+    return () => errorBuffer.destroy();
   }, []);
 
   // Komponent MusicPlayer - główny komponent odtwarzacza muzyki
