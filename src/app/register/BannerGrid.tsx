@@ -10,6 +10,7 @@ import {
   FaCrown,
   FaMusic,
   FaStar,
+  FaArrowRight,
 } from "react-icons/fa";
 
 interface BannerItem {
@@ -65,55 +66,96 @@ const BannerCard = ({
       initial={{ opacity: 0, x: direction === "left" ? -50 : 50 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.6, delay: index * 0.1 }}
-      className="group relative h-[200px] w-full overflow-hidden rounded-2xl"
+      className="group relative h-[220px] w-full overflow-hidden rounded-2xl 
+        hover:shadow-2xl hover:shadow-yellow-400/10 transition-all duration-500"
     >
-      {/* Tło z obrazem */}
       <Image
         src={banner.image}
         alt={banner.title}
         layout="fill"
         objectFit="cover"
-        className="transition-transform duration-700 group-hover:scale-110"
+        className="transition-transform duration-700 group-hover:scale-110 group-hover:rotate-1"
+        priority={index < 2}
       />
       
-      {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#0a1e3b]/90 via-[#0a1e3b]/70 to-transparent backdrop-blur-[2px]" />
+      {/* Ulepszone gradienty */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#0a1e3b]/95 via-[#0a1e3b]/80 to-transparent
+        after:absolute after:inset-0 after:bg-gradient-to-t after:from-black/50 after:to-transparent" />
       
-      {/* Pattern background */}
-      <div className="absolute inset-0 opacity-10">
+      {/* Animated pattern z lepszą animacją */}
+      <div className="absolute inset-0 opacity-5 group-hover:opacity-15 transition-all duration-700">
         <div className="absolute inset-0 bg-[url('/patterns/music-notes.svg')] bg-repeat animate-float" />
+        <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/5 to-yellow-600/5 group-hover:opacity-100 opacity-0 transition-opacity duration-700" />
       </div>
 
       {/* Glass effect container */}
-      <div className="absolute inset-0 p-5 flex flex-col justify-between backdrop-blur-sm bg-white/5">
-        <div className="flex items-center space-x-3">
-          <motion.div 
-            className="bg-gradient-to-r from-yellow-400 to-yellow-600 p-0.5 rounded-xl backdrop-blur-md"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <div className="bg-[#0a1e3b]/80 p-2 rounded-xl backdrop-blur-sm">
-              <banner.icon className="h-6 w-6 text-yellow-400" />
+      <div className="absolute inset-0 p-6 flex flex-col justify-between backdrop-blur-[2px]">
+        <div className="space-y-4">
+          <div className="flex items-center space-x-3">
+            <motion.div 
+              className="bg-gradient-to-r from-yellow-400 to-yellow-600 p-0.5 rounded-xl
+                shadow-lg shadow-yellow-400/20"
+              whileHover={{ scale: 1.05, rotate: 5 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <div className="bg-[#0a1e3b]/90 p-2.5 rounded-xl backdrop-blur-sm">
+                <banner.icon className="h-6 w-6 text-yellow-400" />
+              </div>
+            </motion.div>
+            <div>
+              <motion.h3 
+                className="text-xl font-bold text-white group-hover:text-yellow-400 
+                  transition-colors duration-300 tracking-wide"
+                whileHover={{ x: 5 }}
+              >
+                {banner.title}
+              </motion.h3>
+              <p className="text-white/70 text-sm mt-1 max-w-[280px] group-hover:text-white/90 
+                transition-colors duration-300">
+                {banner.description}
+              </p>
             </div>
-          </motion.div>
-          <div className="backdrop-blur-sm bg-white/5 p-2 rounded-lg">
-            <h3 className="text-lg font-bold text-white group-hover:text-yellow-400 transition-colors duration-300">
-              {banner.title}
-            </h3>
-            <p className="text-white/80 text-sm">
-              {banner.description}
-            </p>
           </div>
+
+          {/* Ulepszone statystyki */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="flex gap-3"
+          >
+            <motion.div 
+              className="flex items-center space-x-2 text-white/60 bg-white/5 
+                backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/5
+                hover:bg-white/10 hover:border-white/10 transition-all duration-300"
+              whileHover={{ scale: 1.05 }}
+            >
+              <FaUsers className="h-3.5 w-3.5" />
+              <span className="text-sm">1000+</span>
+            </motion.div>
+            <motion.div 
+              className="flex items-center space-x-2 text-white/60 bg-white/5 
+                backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/5
+                hover:bg-white/10 hover:border-white/10 transition-all duration-300"
+              whileHover={{ scale: 1.05 }}
+            >
+              <FaStar className="h-3.5 w-3.5" />
+              <span className="text-sm">Premium</span>
+            </motion.div>
+          </motion.div>
         </div>
         
         <motion.button
-          className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-[#0a1e3b] py-2 px-4 rounded-lg 
-            font-medium transition-all duration-300 hover:from-yellow-500 hover:to-yellow-700
-            flex items-center space-x-2 text-sm backdrop-blur-md"
-          whileHover={{ scale: 1.02 }}
+          className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-[#0a1e3b] py-2.5 px-5 
+            rounded-lg font-medium transition-all duration-300 hover:from-yellow-500 
+            hover:to-yellow-700 flex items-center justify-center space-x-2 text-sm
+            opacity-0 group-hover:opacity-100 transform translate-y-4 
+            group-hover:translate-y-0 shadow-lg shadow-yellow-400/20"
+          whileHover={{ scale: 1.02, x: 5 }}
           whileTap={{ scale: 0.98 }}
         >
           <span>Dowiedz się więcej</span>
+          <FaArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
         </motion.button>
       </div>
     </motion.div>
