@@ -10,14 +10,16 @@ import { signIn, useSession, getSession } from "next-auth/react";
 import Image from "next/image";
 import { useDispatch } from "react-redux";
 import { login } from "../../store/slices/authSlice";
+import { motion } from 'framer-motion';
+import { FaMusic, FaUsers, FaCrown } from 'react-icons/fa';
 
 // Importy z zewnętrznych bibliotek
-import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { z } from "zod";
 
 // Importy lokalne
 import { useAuth } from "../../contexts/AuthContext";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import Input from "@/components/ui/Input";
 
 // Schema walidacji formularza logowania
 const loginSchema = z.object({
@@ -161,102 +163,162 @@ export default function Login() {
   };
 
   return (
-    <>
-      <div className="flex justify-center items-center min-h-screen bg-gray-100">
-        <form
-          onSubmit={handleLogin}
-          className="bg-white p-6 rounded shadow-md w-full max-w-sm"
-        >
-          <h1 className="text-gray-700 font-medium mb-4 text-2xl text-center">
-            Dołącz do nas:
-          </h1>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0a1e3b] to-[#2a4a7f] p-4">
+      <div className="container mx-auto flex flex-col lg:flex-row items-center justify-between gap-8 max-w-6xl">
+        {/* Lewa strona - Formularz logowania (bez zmian) */}
+        <div className="w-full lg:w-1/2 max-w-md">
+          {/* Istniejący kod formularza */}
+          <form onSubmit={handleLogin} className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 shadow-2xl space-y-6">
+            {errors.form && (
+              <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
+                <p className="text-red-200 text-sm">{errors.form}</p>
+              </div>
+            )}
 
-          {errors.form && (
-            <div className="mb-4 text-red-600">
-              <p>{errors.form}</p>
-            </div>
-          )}
-          <div className="mb-4">
-            <label className="block text-gray-700 mb-2">Email</label>
-            <input
+            <Input
+              label="Email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              aria-invalid={!!errors.email}
-              className={`w-full px-3 py-2 border rounded text-gray-900 focus:outline-none ${getInputClasses(
-                email,
-                "email"
-              )}`}
-              placeholder="Enter your email"
+              error={errors.email}
+              placeholder="Twój adres email"
               autoComplete="email"
             />
-            {errors.email && (
-              <p className="text-red-600 text-sm mt-2">{errors.email}</p>
-            )}
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 mb-2">Password</label>
-            <div className="relative">
-              <input
-                type={showPassword ? "text" : "password"}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                aria-invalid={!!errors.password}
-                className={`w-full px-3 py-2 pr-10 border rounded text-gray-900 focus:outline-none ${getInputClasses(
-                  password,
-                  "password"
-                )}`}
-                placeholder="Enter your password"
-                autoComplete="current-password"
-              />
-              <button
-                type="button"
-                onClick={togglePasswordVisibility}
-                className="absolute inset-y-0 right-0 pr-3 flex items-center"
+
+            <Input
+              label="Hasło"
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              error={errors.password}
+              placeholder="Twoje hasło"
+              autoComplete="current-password"
+              showPasswordToggle
+              showPassword={showPassword}
+              onPasswordToggle={() => setShowPassword(!showPassword)}
+            />
+
+            <div className="flex items-center justify-between">
+              <Link 
+                href="/forgot-password"
+                className="text-sm text-white/70 hover:text-white transition-colors"
               >
-                {showPassword ? (
-                  <FaEyeSlash className="text-gray-500" />
-                ) : (
-                  <FaEye className="text-gray-500" />
-                )}
-              </button>
-            </div>
-            {errors.password && (
-              <p className="text-red-600 text-sm mt-2">{errors.password}</p>
-            )}
-          </div>
-          <div className="mb-4 text-right">
-            <Link href="/forgot-password" legacyBehavior>
-              <a className="text-blue-500 hover:underline">
                 Zapomniałeś hasła?
-              </a>
-            </Link>
-          </div>
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition-colors duration-200 flex items-center justify-center"
-            disabled={isLoading}
-          >
-            {isLoading ? (
-              <>
-                <LoadingSpinner />
-                <span className="ml-2">Logowanie...</span>
-              </>
-            ) : (
-              "Zaloguj się"
-            )}
-          </button>
-          {errors.form && (
+              </Link>
+              <Link 
+                href="/register"
+                className="text-sm text-white/70 hover:text-white transition-colors"
+              >
+                Załóż konto
+              </Link>
+            </div>
+
             <button
-              type="button"
-              onClick={handleResendVerification}
-              className="mt-2 text-blue-500 underline"
+              type="submit"
+              disabled={isLoading}
+              className="w-full bg-white text-[#0a1e3b] py-3 px-4 rounded-lg font-medium
+                hover:bg-white/90 transition-all duration-200 flex items-center justify-center
+                disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Resend verification email
+              {isLoading ? (
+                <>
+                  <LoadingSpinner className="text-[#0a1e3b]" />
+                  <span className="ml-2">Logowanie...</span>
+                </>
+              ) : (
+                "Zaloguj się"
+              )}
             </button>
-          )}
-        </form>
+          </form>
+        </div>
+
+        {/* Prawa strona - Nowe warianty banerów */}
+        <div className="w-full lg:w-1/2 space-y-6 hidden lg:block">
+          {/* Wariant 1: Baner wydarzeń */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-gradient-to-r from-purple-500/20 to-blue-500/20 backdrop-blur-lg rounded-2xl p-8 shadow-2xl"
+          >
+            <div className="relative">
+              <Image
+                src="/images/bachata-event.jpg"
+                alt="Bachata Event"
+                width={500}
+                height={300}
+                className="rounded-xl mb-4 object-cover w-full h-48"
+              />
+              <div className="absolute top-4 right-4 bg-yellow-400 px-4 py-1 rounded-full">
+                <span className="text-sm font-bold text-[#0a1e3b]">Już wkrótce!</span>
+              </div>
+            </div>
+            <h2 className="text-2xl font-bold text-white mb-2">Baciata Summer Festival 2024</h2>
+            <p className="text-white/80 mb-4">Największe wydarzenie bachatowe tego lata!</p>
+            <button className="w-full bg-white/10 hover:bg-white/20 text-white py-3 px-4 rounded-lg font-medium transition-all duration-200">
+              Dowiedz się więcej
+            </button>
+          </motion.div>
+
+          {/* Wariant 2: Mini karty z animacją */}
+          <div className="grid grid-cols-2 gap-4">
+            <motion.div 
+              whileHover={{ scale: 1.05 }}
+              className="bg-gradient-to-br from-yellow-400/20 to-orange-500/20 backdrop-blur-lg rounded-xl p-6 shadow-xl"
+            >
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="bg-yellow-400/20 p-3 rounded-full">
+                  <FaMusic className="h-6 w-6 text-yellow-400" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-white">Nowe utwory</h3>
+                  <p className="text-white/70 text-sm">+50 w tym tygodniu</p>
+                </div>
+              </div>
+              <div className="mt-2 flex -space-x-2">
+                {[1, 2, 3, 4].map((i) => (
+                  <div key={i} className="w-8 h-8 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 border-2 border-[#0a1e3b]" />
+                ))}
+              </div>
+            </motion.div>
+
+            <motion.div 
+              whileHover={{ scale: 1.05 }}
+              className="bg-gradient-to-br from-purple-400/20 to-pink-500/20 backdrop-blur-lg rounded-xl p-6 shadow-xl"
+            >
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="bg-purple-400/20 p-3 rounded-full">
+                  <FaUsers className="h-6 w-6 text-purple-400" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-white">Społeczność</h3>
+                  <p className="text-white/70 text-sm">1.2k aktywnych</p>
+                </div>
+              </div>
+              <div className="w-full bg-white/10 rounded-full h-2 mt-4">
+                <div className="w-3/4 bg-gradient-to-r from-purple-400 to-pink-500 h-full rounded-full" />
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Wariant 3: Baner premium z efektem hover */}
+          <motion.div 
+            whileHover={{ scale: 1.02 }}
+            className="relative overflow-hidden bg-gradient-to-r from-yellow-400/10 to-orange-500/10 backdrop-blur-lg rounded-2xl p-8 shadow-2xl border border-white/10"
+          >
+            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-yellow-400/20 to-orange-500/20 blur-3xl -z-10" />
+            <h2 className="text-xl font-bold text-white mb-4 flex items-center">
+              <FaCrown className="text-yellow-400 mr-2" /> Premium
+            </h2>
+            <div className="flex items-baseline mb-6">
+              <span className="text-4xl font-bold text-white">29</span>
+              <span className="text-xl text-white/60 ml-1">zł/msc</span>
+            </div>
+            <button className="w-full bg-gradient-to-r from-yellow-400 to-orange-500 text-[#0a1e3b] py-3 px-4 rounded-lg font-medium hover:from-yellow-500 hover:to-orange-600 transition-all duration-200">
+              Wypróbuj za darmo
+            </button>
+          </motion.div>
+        </div>
       </div>
-    </>
+    </div>
   );
 }
