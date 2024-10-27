@@ -32,7 +32,6 @@ import SortControl from "./SortControl";
 import PlaybackBar from "./playback/PlaybackBar";
 import { getYouTubeThumbnail } from "../utils/youtube";
 import { Z_INDEX } from '@/app/constants/zIndex';
-import PlaylistHeader from './PlaylistHeader';
 import { useSortedAndFilteredSongs } from '../hooks/useSortedAndFilteredSongs';
 import { useYouTubePlayer } from '../hooks/useYouTubePlayer';
 import { usePlaybackControls } from '../hooks/usePlaybackControls';
@@ -412,7 +411,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
       }}
     >
       <div className="max-w-7xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden pb-20">
-        <PlaylistHeader filteredSongsCount={filteredSongs.length} />
         <div className="w-full mb-4 bg-gray-100">
           <SortControl
             sortBy={sortBy}

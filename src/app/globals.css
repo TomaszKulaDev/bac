@@ -35,8 +35,7 @@ body {
 }
 
 .music-page {
-  background-color: white;
-  min-height: 100vh;
+  background: linear-gradient(to right, #0a1e3b, #2a4a7f);
 }
 
 .my-masonry-grid {
@@ -51,13 +50,16 @@ body {
 }
 
 @keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-20px); }
-  100% { transform: translateY(0px); }
+  from {
+    transform: translateY(0) translateX(0);
+  }
+  to {
+    transform: translateY(-50%) translateX(-50%);
+  }
 }
 
 .animate-float {
-  animation: float 15s ease-in-out infinite;
+  animation: float 20s linear infinite;
 }
 
 @keyframes fade-in-up {

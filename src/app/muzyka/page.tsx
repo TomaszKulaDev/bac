@@ -19,6 +19,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Z_INDEX } from "@/app/constants/zIndex";
 import { useResponsive } from "./hooks/useResponsive";
+import PlaylistHeader from "./components/PlaylistHeader";
 
 const generateUniqueId = () => {
   return Date.now().toString(36) + Math.random().toString(36).substr(2);
@@ -208,9 +209,24 @@ const MusicPage: React.FC = () => {
   );
 
   return (
-    <div className="music-page bg-gray-100 min-h-screen flex flex-col">
-      <BaciataRisingBanner />
-      <div className="flex-grow flex flex-col lg:flex-row">
+    <div className="music-page min-h-screen flex flex-col">
+      <PlaylistHeader 
+        filteredSongsCount={songs.length}
+        onPlay={() => {
+          if (songs.length > 0) {
+            dispatch(setCurrentSongIndex(0));
+          }
+        }}
+        onLike={() => {
+          if (isAuthenticated) {
+            // Logika dla polubienia playlisty
+          } else {
+            showErrorToast("Musisz być zalogowany, aby polubić playlistę.");
+          }
+        }}
+        isLiked={false}
+      />
+      <div className="flex-grow flex flex-col lg:flex-row bg-white relative z-10 shadow-xl rounded-t-[2rem] -mt-20">
         <div className="w-full lg:w-2/3 p-4">
           <MusicPlayer
             songs={songs}

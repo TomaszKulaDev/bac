@@ -16,13 +16,12 @@ const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
   isLiked = false
 }) => {
   return (
-    <div className="relative min-h-[400px] bg-gradient-to-b from-[#0a1e3b] to-[#2a4a7f]">
-      {/* Animated background pattern */}
+    <div className="relative min-h-[600px] w-full bg-gradient-to-b from-[#0a1e3b] to-[#2a4a7f] overflow-hidden">
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0 bg-[url('/patterns/music-notes.svg')] bg-repeat animate-float" />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 py-12">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
         {/* Badge */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
