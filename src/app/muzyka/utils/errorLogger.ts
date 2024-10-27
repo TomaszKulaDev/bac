@@ -12,6 +12,12 @@ interface BaseErrorLog {
     retryCount?: number;
     maxRetries?: number;
     additionalInfo?: Record<string, unknown>;
+    errorHistory?: Array<{
+      timestamp: number;
+      errorType: "youtube" | "playback" | "general";
+      code?: number;
+      retryCount: number;
+    }>;
   };
 }
 

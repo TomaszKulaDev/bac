@@ -11,12 +11,20 @@ interface Props {
   maxRetries?: number;
 }
 
+interface ErrorHistoryEntry {
+  timestamp: number;
+  errorType: "youtube" | "playback" | "general";
+  code?: number;
+  retryCount: number;
+}
+
 interface State {
   hasError: boolean;
   error: Error | null;
   errorType: "youtube" | "playback" | "general";
   retryCount: number;
   lastErrorTimestamp: number;
+  errorHistory: ErrorHistoryEntry[];
 }
 
 export class PlayerErrorBoundary extends Component<Props, State> {
@@ -30,8 +38,29 @@ export class PlayerErrorBoundary extends Component<Props, State> {
       error: null,
       errorType: "general",
       retryCount: 0,
-      lastErrorTimestamp: 0
+      lastErrorTimestamp: 0,
+      errorHistory: []
     };
+  }
+
+  private addToErrorHistory(error: Error): void {
+    const entry: ErrorHistoryEntry = {
+      timestamp: Date.now(),
+      errorType: this.state.errorType,
+      code: error instanceof YouTubeError ? error.code : undefined,
+      retryCount: this.state.retryCount
+    };
+
+    this.setState(prevState => ({
+      errorHistory: [...prevState.errorHistory.slice(-4), entry]
+    }));
+  }
+
+  private shouldBlockRetry(): boolean {
+    const recentErrors = this.state.errorHistory
+      .filter(entry => Date.now() - entry.timestamp < this.ERROR_RESET_TIME);
+    
+    return recentErrors.length >= 3;
   }
 
   static getDerivedStateFromError(error: Error): Partial<State> {
@@ -90,11 +119,28 @@ export class PlayerErrorBoundary extends Component<Props, State> {
     return "error";
   }
 
-  private handleRetry = () => {
+  private handleRetry = async () => {
     const { retryCount } = this.state;
     const maxRetries = this.props.maxRetries || this.DEFAULT_MAX_RETRIES;
 
+    if (this.shouldBlockRetry()) {
+      errorLogger.logError({
+        type: "general",
+        severity: "warning",
+        message: "Zbyt wiele prób ponownego odtworzenia w krótkim czasie",
+        timestamp: new Date().toISOString(),
+        environment: process.env.NODE_ENV || 'development',
+        details: {
+          additionalInfo: {
+            errorHistory: this.state.errorHistory
+          }
+        }
+      });
+      return;
+    }
+
     if (retryCount < maxRetries) {
+      await new Promise(resolve => setTimeout(resolve, 1000)); // Dodajemy opóźnienie
       this.setState(prevState => ({
         hasError: false,
         error: null,
@@ -112,13 +158,7 @@ export class PlayerErrorBoundary extends Component<Props, State> {
 
     const { errorType, retryCount } = this.state;
     const maxRetries = this.props.maxRetries || this.DEFAULT_MAX_RETRIES;
-    const canRetry = retryCount < maxRetries;
-
-    const errorMessages = {
-      youtube: "Wystąpił problem z odtwarzaczem YouTube. Spróbuj odświeżyć stronę.",
-      playback: "Wystąpił problem z odtwarzaniem. Spróbuj ponownie za chwilę.",
-      general: "Wystąpił nieoczekiwany błąd. Spróbuj odświeżyć stronę."
-    };
+    const canRetry = retryCount < maxRetries && !this.shouldBlockRetry();
 
     return (
       <div className="p-4 bg-red-50 rounded-lg shadow-md">
@@ -137,7 +177,7 @@ export class PlayerErrorBoundary extends Component<Props, State> {
             />
           </svg>
           <h3 className="text-lg font-medium text-red-800">
-            {errorMessages[errorType]}
+            {this.renderErrorHistory()}
           </h3>
         </div>
         <div className="flex gap-2">
@@ -158,6 +198,24 @@ export class PlayerErrorBoundary extends Component<Props, State> {
             </span>
           )}
         </div>
+      </div>
+    );
+  }
+
+  private renderErrorHistory() {
+    if (process.env.NODE_ENV !== 'development') return null;
+
+    return (
+      <div className="mt-4 text-xs text-gray-500">
+        <div className="font-medium mb-1">Historia błędów:</div>
+        {this.state.errorHistory.map((entry, index) => (
+          <div key={index} className="ml-2">
+            {new Date(entry.timestamp).toLocaleTimeString()} - 
+            {entry.errorType}
+            {entry.code ? ` (kod: ${entry.code})` : ''} - 
+            Próba: {entry.retryCount}
+          </div>
+        ))}
       </div>
     );
   }
