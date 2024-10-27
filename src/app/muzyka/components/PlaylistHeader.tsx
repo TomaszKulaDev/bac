@@ -16,7 +16,7 @@ const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
   isLiked = false
 }) => {
   return (
-    <div className="relative min-h-[400px] bg-gradient-to-b from-[#0a1e3b] to-[#1a2e4b]">
+    <div className="relative min-h-[400px] bg-gradient-to-b from-[#0a1e3b] to-[#2a4a7f]">
       {/* Animated background pattern */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0 bg-[url('/patterns/music-notes.svg')] bg-repeat animate-float" />
@@ -70,9 +70,9 @@ const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
             <div className="flex items-center space-x-4">
               <button 
                 onClick={onPlay}
-                className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 
+                className="bg-gradient-to-r from-[#0a1e3b] to-[#2a4a7f] hover:from-[#0a1e3b] hover:to-[#3a5a8f]
                   text-white px-6 py-3 rounded-full font-medium flex items-center space-x-2 
-                  transform transition hover:scale-105"
+                  transform transition hover:scale-105 shadow-lg hover:shadow-xl"
               >
                 <FaPlay className="h-4 w-4" />
                 <span>Odtwórz</span>
@@ -80,8 +80,8 @@ const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
               
               <button 
                 onClick={onLike}
-                className={`p-3 rounded-full border border-white/20 transition
-                  ${isLiked ? 'bg-pink-500 border-transparent' : 'hover:bg-white/10'}`}
+                className={`p-3 rounded-full border border-white/20 transition shadow-lg
+                  ${isLiked ? 'bg-[#2a4a7f] border-transparent' : 'hover:bg-white/10'}`}
               >
                 <FaHeart className={`h-5 w-5 ${isLiked ? 'text-white' : 'text-white/60'}`} />
               </button>
