@@ -726,12 +726,14 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.8 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => setIsDrawerOpen(true)}
-              className="fixed right-4 bottom-72 bg-white rounded-full p-3 shadow-lg z-30 flex flex-col items-center justify-center"
+              className="fixed right-4 bottom-72 bg-white rounded-full p-4 shadow-xl z-30 flex items-center space-x-2 border border-gray-100"
             >
-              <div className="flex flex-col items-center">
-                <FaMusic size={24} className="text-gray-700 mb-1" />
-                <FaSort size={20} className="text-gray-700" />
+              <div className="flex items-center">
+                <FaSort size={16} className="text-gray-700" />
+                <span className="ml-2 text-sm font-medium text-gray-700">Sortuj</span>
               </div>
             </motion.button>
           )}
