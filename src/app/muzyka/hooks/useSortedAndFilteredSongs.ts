@@ -6,10 +6,20 @@ export const useSortedAndFilteredSongs = (
   songs: Song[],
   sortBy: SortOption,
   sortOrder: SortOrder,
-  filterText: string
+  filterText: string,
+  currentPlaylistId?: string | null
 ) => {
   return useMemo(() => {
-    return songs
+    let filteredSongs = songs;
+    
+    // Filtrujemy tylko jeśli mamy aktywną playlistę
+    if (currentPlaylistId) {
+      filteredSongs = songs.filter(song => 
+        song.playlists?.includes(currentPlaylistId)
+      );
+    }
+
+    return filteredSongs
       .filter(song => 
         !filterText || 
         song.title.toLowerCase().includes(filterText.toLowerCase()) ||
@@ -34,5 +44,5 @@ export const useSortedAndFilteredSongs = (
         
         return sortOrder === 'asc' ? (aValue > bValue ? 1 : -1) : (bValue > aValue ? 1 : -1);
       });
-  }, [songs, sortBy, sortOrder, filterText]);
+  }, [songs, sortBy, sortOrder, filterText, currentPlaylistId]);
 };

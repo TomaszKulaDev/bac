@@ -631,16 +631,16 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           )}
 
           <SongList
-            songs={sortedAndFilteredSongs}
+            songs={currentPlaylistId 
+              ? songs.filter(song => 
+                  playlists.find(p => p.id === currentPlaylistId)?.songs.includes(song.id)
+                )
+              : sortedAndFilteredSongs
+            }
             visibleSongs={visibleSongs}
             isPlaying={isPlaying}
             currentSong={currentSong}
-            onSongSelect={(songId) => {
-              const index = songs.findIndex((s) => s.id === songId);
-              if (index !== -1) {
-                dispatch(setCurrentSongIndex(index));
-              }
-            }}
+            onSongSelect={handleSongSelect}
             onLoadMore={loadMoreSongs}
             onCollapse={collapseSongList}
             isPopularList={false}
@@ -653,10 +653,10 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
             filterText={filterText}
             setFilterText={setFilterText}
             isPlaylistExpanded={!!expandedPlaylist}
-            showSearch={false}
+            showSearch={!currentPlaylistId}
             hasPlaylists={playlists.length > 0}
             isAuthenticated={isAuthenticated}
-            isMobile={isMobile} // Dodana linia
+            isMobile={isMobile}
           />
         </div>
         <PlaybackBar
