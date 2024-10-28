@@ -179,17 +179,45 @@ const MusicPage: React.FC = () => {
             ...song,
             id: song._id,
             impro: song.impro || false,
-            beginnerFriendly: song.beginnerFriendly || false, // Dodaj tę linię
+            beginnerFriendly: song.beginnerFriendly || false,
           }));
+
+          // Sortujemy piosenki przed ustawieniem ich w store
+          const sortedSongs = [...mappedSongs].sort((a, b) => {
+            const aValue = new Date(a.createdAt).getTime();
+            const bValue = new Date(b.createdAt).getTime();
+            return sortOrder === 'asc' ? (aValue > bValue ? 1 : -1) : (bValue > aValue ? 1 : -1);
+          });
+
+          // Znajdujemy index pierwszej piosenki po sortowaniu
+          const firstSongId = sortedSongs[0].id;
+          const indexInOriginalList = mappedSongs.findIndex((song: Song) => song.id === firstSongId);
+
+          // Ustawiamy piosenki i index pierwszej piosenki
           dispatch({ type: "songs/setSongs", payload: mappedSongs });
+          dispatch(setCurrentSongIndex(indexInOriginalList));
         }
       });
     }
-  }, [status, dispatch]);
+  }, [status, dispatch, sortOrder]);
 
   useEffect(() => {
     console.log("Stan playlist po aktualizacji:", playlists);
   }, [playlists]);
+
+  const handlePlayFirstSong = useCallback(() => {
+    if (songs.length > 0) {
+      const sortedSongs = [...songs].sort((a, b) => {
+        const aValue = new Date(a.createdAt).getTime();
+        const bValue = new Date(b.createdAt).getTime();
+        return sortOrder === 'asc' ? (aValue > bValue ? 1 : -1) : (bValue > aValue ? 1 : -1);
+      });
+      
+      const firstSongId = sortedSongs[0].id;
+      const indexInOriginalList = songs.findIndex(song => song.id === firstSongId);
+      dispatch(setCurrentSongIndex(indexInOriginalList));
+    }
+  }, [dispatch, songs, sortOrder]);
 
   if (status === "loading") {
     return (
@@ -212,11 +240,7 @@ const MusicPage: React.FC = () => {
     <div className="music-page min-h-screen flex flex-col">
       <PlaylistHeader 
         filteredSongsCount={songs.length}
-        onPlay={() => {
-          if (songs.length > 0) {
-            dispatch(setCurrentSongIndex(0));
-          }
-        }}
+        onPlay={handlePlayFirstSong}
         onLike={() => {
           if (isAuthenticated) {
             // Logika dla polubienia playlisty
