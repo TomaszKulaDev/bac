@@ -1,7 +1,19 @@
 "use client";
 
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { FaEnvelope, FaEye, FaEyeSlash, FaLock, FaUser, FaCheck, FaUsers, FaCalendar, FaHeart, FaCrown, FaMusic } from "react-icons/fa";
+import {
+  FaEnvelope,
+  FaEye,
+  FaEyeSlash,
+  FaLock,
+  FaUser,
+  FaCheck,
+  FaUsers,
+  FaCalendar,
+  FaHeart,
+  FaCrown,
+  FaMusic,
+} from "react-icons/fa";
 import { z } from "zod";
 import { passwordSchema } from "../../schemas/passwordSchema";
 import { signIn } from "next-auth/react";
@@ -198,19 +210,19 @@ export default function Register() {
               className="text-center"
             >
               <div className="flex justify-center mb-6">
-                <motion.div 
+                <motion.div
                   className="bg-gradient-to-r from-yellow-400 to-yellow-600 p-0.5 rounded-full"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
                   <div className="bg-[#0a1e3b] px-6 py-2 rounded-full">
-                    <span className="text-white font-medium text-xl">Dołącz do nas</span>
+                    <span className="text-white font-medium text-xl">
+                      Dołącz do nas
+                    </span>
                   </div>
                 </motion.div>
               </div>
-              <h2 className="text-3xl font-bold text-white">
-                Stwórz konto
-              </h2>
+              <h2 className="text-3xl font-bold text-white">Stwórz konto</h2>
               <p className="mt-2 text-white/60">
                 i rozpocznij swoją przygodę z bachatą
               </p>
@@ -303,11 +315,17 @@ export default function Register() {
                     />
                     <span className="text-sm">
                       Akceptuję{" "}
-                      <Link href="/polityka-prywatnosci" className="text-yellow-400 hover:text-yellow-300">
+                      <Link
+                        href="/polityka-prywatnosci-baciata-pl"
+                        className="text-yellow-400 hover:text-yellow-300"
+                      >
                         Politykę Prywatności
                       </Link>{" "}
                       oraz{" "}
-                      <Link href="/regulamin" className="text-yellow-400 hover:text-yellow-300">
+                      <Link
+                        href="/warunki-korzystania-z-uslugi-baciata-pl"
+                        className="text-yellow-400 hover:text-yellow-300"
+                      >
                         Warunki Korzystania z Usługi
                       </Link>
                     </span>
@@ -353,7 +371,10 @@ export default function Register() {
               className="text-center text-white/60"
             >
               Masz już konto?{" "}
-              <Link href="/login" className="text-yellow-400 hover:text-yellow-300 transition-colors">
+              <Link
+                href="/login"
+                className="text-yellow-400 hover:text-yellow-300 transition-colors"
+              >
                 Zaloguj się
               </Link>
             </motion.p>

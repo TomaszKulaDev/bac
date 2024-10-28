@@ -1,84 +1,117 @@
+"use client";
+
 import React from "react";
+import { motion } from "framer-motion";
+import { FaShieldAlt, FaUserLock, FaDatabase, FaEnvelope } from "react-icons/fa";
+
+const sections = [
+  {
+    icon: FaShieldAlt,
+    title: "Wprowadzenie",
+    content: "Niniejsza Polityka Prywatności szczegółowo opisuje zasady, na jakich przetwarzamy dane osobowe użytkowników naszej aplikacji. Zależy nam na ochronie prywatności naszych użytkowników i zapewnieniu, że ich dane są przetwarzane zgodnie z obowiązującymi przepisami prawa, w tym z Rozporządzeniem Parlamentu Europejskiego i Rady (UE) 2016/679 z dnia 27 kwietnia 2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych i w sprawie swobodnego przepływu takich danych (RODO).",
+  },
+  {
+    icon: FaDatabase,
+    title: "Zbierane dane",
+    content: [
+      "Adres e-mail: Wykorzystywany do celów rejestracji i komunikacji z użytkownikiem.",
+      "Imię i nazwisko: Używane do personalizacji konta użytkownika.",
+      "Dane profilowe z kont Google i Facebook: Zbierane tylko w przypadku, gdy użytkownik zdecyduje się na logowanie za pomocą tych usług.",
+    ],
+  },
+  {
+    icon: FaUserLock,
+    title: "Ochrona danych",
+    content: "Stosujemy zaawansowane środki techniczne i organizacyjne, aby zapewnić bezpieczeństwo danych osobowych naszych użytkowników. Dane są przechowywane na zabezpieczonych serwerach, a dostęp do nich mają wyłącznie upoważnione osoby, które są zobowiązane do zachowania poufności. Regularnie przeprowadzamy audyty bezpieczeństwa, aby zapewnić, że nasze systemy są odporne na nieautoryzowany dostęp, utratę lub zmianę danych.",
+  },
+  // ... więcej sekcji
+];
 
 export default function PrivacyPolicy() {
   return (
-    <div className="min-h-screen bg-indigo-100">
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-6">Polityka Prywatności</h1>
-        <p className="mb-4">
-          Ostatnia aktualizacja: {new Date().toLocaleDateString()}
-        </p>
+    <div className="min-h-screen bg-gradient-to-br from-[#0a1e3b] to-[#2a4a7f] text-white py-16 px-4">
+      <div className="max-w-4xl mx-auto">
+        {/* Header */}
+        <motion.div 
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <motion.div 
+            className="bg-gradient-to-r from-yellow-400 to-yellow-600 p-0.5 rounded-full mb-6 inline-block"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <div className="bg-[#0a1e3b] px-8 py-3 rounded-full">
+              <span className="text-white font-medium text-lg">Baciata.pl</span>
+            </div>
+          </motion.div>
+          
+          <h1 className="text-4xl font-bold mb-4">Polityka Prywatności</h1>
+          <p className="text-white/70">Ostatnia aktualizacja: {new Date().toLocaleDateString()}</p>
+        </motion.div>
 
-        <section className="mb-6">
-          <h2 className="text-2xl font-semibold mb-3">1. Wprowadzenie</h2>
-          <p>
-            Niniejsza Polityka Prywatności opisuje, w jaki sposób zbieramy,
-            używamy i chronimy Twoje dane osobowe podczas korzystania z naszej
-            aplikacji.
-          </p>
-        </section>
+        {/* Sections */}
+        <div className="space-y-8">
+          {sections.map((section, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+              className="bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-white/10
+                hover:shadow-xl hover:shadow-yellow-400/10 transition-all duration-300"
+            >
+              <div className="flex items-start space-x-4">
+                <motion.div 
+                  className="bg-gradient-to-r from-yellow-400 to-yellow-600 p-0.5 rounded-xl"
+                  whileHover={{ scale: 1.05, rotate: 5 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <div className="bg-[#0a1e3b]/90 p-2.5 rounded-xl backdrop-blur-sm">
+                    <section.icon className="h-6 w-6 text-yellow-400" />
+                  </div>
+                </motion.div>
+                <div className="flex-1">
+                  <h2 className="text-xl font-bold mb-3">{section.title}</h2>
+                  {Array.isArray(section.content) ? (
+                    <ul className="space-y-2">
+                      {section.content.map((item, idx) => (
+                        <motion.li
+                          key={idx}
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: 0.2 + idx * 0.1 }}
+                          className="flex items-center text-white/80"
+                        >
+                          <span className="w-1.5 h-1.5 bg-yellow-400 rounded-full mr-2" />
+                          {item}
+                        </motion.li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="text-white/80">{section.content}</p>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
 
-        <section className="mb-6">
-          <h2 className="text-2xl font-semibold mb-3">2. Zbierane dane</h2>
-          <p>Zbieramy następujące dane:</p>
-          <ul className="list-disc list-inside ml-4">
-            <li>Adres e-mail</li>
-            <li>Imię i nazwisko</li>
-            <li>
-              Dane profilowe z kont Google i Facebook (jeśli używane do
-              logowania)
-            </li>
-          </ul>
-        </section>
-
-        <section className="mb-6">
-          <h2 className="text-2xl font-semibold mb-3">
-            3. Cel zbierania danych
-          </h2>
-          <p>Dane są zbierane w celu:</p>
-          <ul className="list-disc list-inside ml-4">
-            <li>Umożliwienia logowania do aplikacji</li>
-            <li>Personalizacji doświadczenia użytkownika</li>
-            <li>Komunikacji z użytkownikiem</li>
-          </ul>
-        </section>
-
-        <section className="mb-6">
-          <h2 className="text-2xl font-semibold mb-3">4. Ochrona danych</h2>
-          <p>
-            Stosujemy odpowiednie środki bezpieczeństwa, aby chronić Twoje dane
-            przed nieautoryzowanym dostępem, utratą lub zmianą.
-          </p>
-        </section>
-
-        <section className="mb-6">
-          <h2 className="text-2xl font-semibold mb-3">
-            5. Udostępnianie danych
-          </h2>
-          <p>
-            Nie udostępniamy Twoich danych osobowych stronom trzecim bez Twojej
-            zgody, z wyjątkiem sytuacji wymaganych prawem.
-          </p>
-        </section>
-
-        <section className="mb-6">
-          <h2 className="text-2xl font-semibold mb-3">6. Twoje prawa</h2>
-          <p>Masz prawo do:</p>
-          <ul className="list-disc list-inside ml-4">
-            <li>Dostępu do swoich danych</li>
-            <li>Poprawiania swoich danych</li>
-            <li>Usunięcia swoich danych</li>
-            <li>Ograniczenia przetwarzania swoich danych</li>
-          </ul>
-        </section>
-
-        <section className="mb-6">
-          <h2 className="text-2xl font-semibold mb-3">7. Kontakt</h2>
-          <p>
-            W przypadku pytań dotyczących naszej Polityki Prywatności, prosimy o
-            kontakt pod adresem: privacy@baciata.pl
-          </p>
-        </section>
+        {/* Contact section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="mt-12 text-center"
+        >
+          <div className="inline-flex items-center space-x-2 text-white/60 bg-white/5 
+            backdrop-blur-sm px-4 py-2 rounded-full border border-white/10">
+            <FaEnvelope className="h-4 w-4" />
+            <span>privacy@baciata.pl</span>
+          </div>
+        </motion.div>
       </div>
     </div>
   );
