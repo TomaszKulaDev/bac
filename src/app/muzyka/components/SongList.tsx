@@ -79,6 +79,42 @@ const SongList: React.FC<SongListProps> = ({
     [onSongSelect]
   );
 
+  const listVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, x: -20 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 15
+      }
+    },
+    hover: {
+      scale: 1.02,
+      backgroundColor: "rgba(243, 244, 246, 1)",
+      transition: {
+        type: "spring",
+        stiffness: 400,
+        damping: 10
+      }
+    },
+    tap: {
+      scale: 0.98
+    }
+  };
+
   return (
     <div className="overflow-y-auto flex-grow">
       {showSearch && (
@@ -93,37 +129,49 @@ const SongList: React.FC<SongListProps> = ({
         </div>
       )}
 
-      <motion.ul layout className="space-y-2">
+      <motion.ul 
+        layout
+        variants={listVariants}
+        initial="hidden"
+        animate="visible"
+        className="space-y-3"
+      >
         {sortedAndFilteredSongs.map((song) => (
           <motion.li
             key={song.id}
-            layout
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.2 }}
-            className={`flex items-center justify-between p-3 ${
+            variants={itemVariants}
+            whileHover="hover"
+            whileTap="tap"
+            className={`flex items-center justify-between p-4 ${
               song.id === currentSong?.id
-                ? "bg-purple-100"
-                : "hover:bg-gray-100"
-            } transition-colors duration-200 rounded-md cursor-pointer`}
+                ? "bg-purple-100 shadow-md"
+                : "bg-white"
+            } rounded-xl shadow-sm transition-all duration-200`}
             onClick={() => onSongSelectMemoized(song.id)}
           >
-            <div className="flex items-center flex-grow min-w-0 mr-2">
-              <div className="w-12 h-12 mr-3 relative flex-shrink-0">
+            <div className="flex items-center flex-grow min-w-0 mr-4">
+              <motion.div 
+                className="w-14 h-14 mr-4 relative flex-shrink-0 rounded-lg overflow-hidden shadow-md"
+                whileHover={{ scale: 1.1 }}
+                transition={{ type: "spring", stiffness: 400 }}
+              >
                 <Image
                   src={getYouTubeThumbnail(song.youtubeId)}
                   alt={song.title}
                   layout="fill"
                   objectFit="cover"
-                  className="rounded"
+                  className="rounded-lg"
                 />
                 {song.id === currentSong?.id && isPlaying && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded">
-                    <FaPlay className="text-white" />
-                  </div>
+                  <motion.div 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm"
+                  >
+                    <FaPlay className="text-white text-xl" />
+                  </motion.div>
                 )}
-              </div>
+              </motion.div>
               <div className="flex-grow min-w-0 mr-2">
                 <h3 className="font-semibold truncate text-sm">
                   {song.title.length > 20
@@ -156,30 +204,32 @@ const SongList: React.FC<SongListProps> = ({
                 )}
               </div>
             </div>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-3">
               {isAuthenticated && (
-                <button
+                <motion.button
+                  whileHover={{ scale: 1.2 }}
+                  whileTap={{ scale: 0.9 }}
                   onClick={(e) => {
                     e.stopPropagation();
-                    // Logika dla serduszka
                   }}
-                  className="text-gray-500 hover:text-red-500 transition-colors duration-200"
+                  className="p-2 rounded-full hover:bg-red-50 text-gray-500 hover:text-red-500 transition-colors duration-200"
                 >
                   <FaHeart className="text-xl" />
-                </button>
+                </motion.button>
               )}
 
               {isPlaylistExpanded && expandedPlaylist && hasPlaylists && (
-                <button
+                <motion.button
+                  whileHover={{ scale: 1.2 }}
+                  whileTap={{ scale: 0.9 }}
                   onClick={(e) => {
                     e.stopPropagation();
                     onAddToPlaylist(song.id);
                   }}
-                  className="text-gray-500 hover:text-blue-500 transition-colors duration-200"
-                  title="Dodaj do playlisty"
+                  className="p-2 rounded-full hover:bg-blue-50 text-gray-500 hover:text-blue-500 transition-colors duration-200"
                 >
                   <FaBookmark className="text-xl" />
-                </button>
+                </motion.button>
               )}
             </div>
           </motion.li>
