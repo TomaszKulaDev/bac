@@ -1,4 +1,4 @@
-import { FaPlay, FaPause, FaBackward, FaForward, FaRetweet } from "react-icons/fa";
+import { FaPlay, FaPause, FaBackward, FaForward, FaRetweet, FaRedo } from "react-icons/fa";
 import { RepeatMode } from "../../types";
 
 interface PlaybackControlsProps {
@@ -22,6 +22,23 @@ export const PlaybackControls: React.FC<PlaybackControlsProps> = ({
 }) => {
   return (
     <div className="flex items-center space-x-4" role="group" aria-label="Kontrolki odtwarzania">
+      <button
+        onClick={() => onToggleRepeatMode("playlist")}
+        className={`text-gray-600 p-2 rounded-full transition-all duration-300 ease-in-out ${
+          repeatMode.playlist === "on"
+            ? "bg-gray-100 shadow-inner transform translate-y-px"
+            : "hover:bg-gray-50 active:bg-gray-100 active:shadow-inner active:transform active:translate-y-px"
+        }`}
+        aria-label={`Powtarzaj playlistę: ${repeatMode.playlist === "on" ? "włączone" : "wyłączone"}`}
+        title="Powtarzaj playlistę"
+        aria-pressed={repeatMode.playlist === "on"}
+      >
+        <FaRedo 
+          size={24} 
+          className={`${repeatMode.playlist === "on" ? "text-purple-500" : ""} transform rotate-90`}
+        />
+      </button>
+
       <button
         onClick={onPrevious}
         className="text-gray-600 hover:text-gray-800 p-2 transition-all duration-150 ease-in-out active:scale-95"

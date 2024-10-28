@@ -214,7 +214,7 @@ const MusicPage: React.FC = () => {
         filteredSongsCount={songs.length}
         onPlay={() => {
           if (songs.length > 0) {
-            dispatch(setCurrentSongIndex(0));
+            dispatch(setCurrentSongIndex(songs.length - 1));
           }
         }}
         onLike={() => {

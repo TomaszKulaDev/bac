@@ -301,7 +301,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     );
     dispatch(
       setCurrentSongIndex(
-        songs.findIndex((song) => song.id === shuffledSongs[0].id)
+        songs.findIndex((song) => song.id === shuffledSongs[shuffledSongs.length - 1].id)
       )
     );
   };
