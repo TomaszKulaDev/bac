@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { z } from "zod";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import LoadingSpinner from "@/components/LoadingSpinner";
 
 const forgotPasswordSchema = z.object({
@@ -76,70 +77,107 @@ export default function ForgotPassword() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-8 rounded-lg shadow-md w-full max-w-md"
-      >
-        <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">
-          Zapomniałeś hasła?
-        </h1>
-        {message && (
-          <p
-            className="mb-4 text-center text-sm font-medium p-3 rounded text-green-800 bg-green-100 border border-green-300"
-            role="status"
+    <div className="min-h-screen bg-gradient-to-br from-[#0a1e3b] to-[#2a4a7f] py-16 px-4">
+      <div className="max-w-md mx-auto">
+        {/* Header */}
+        <motion.div
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <motion.div
+            className="bg-gradient-to-r from-yellow-400 to-yellow-600 p-0.5 rounded-full mb-6 inline-block"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
-            {message}
-          </p>
-        )}
-        {errors.form && (
-          <p
-            className="mb-4 text-center text-sm font-medium p-3 rounded text-red-800 bg-red-100 border border-red-300"
-            role="alert"
-          >
-            {errors.form}
-          </p>
-        )}
-        <div className="mb-6">
-          <label className="block text-gray-700 mb-2 font-semibold">
-            Email
-          </label>
-          <div className="relative">
+            <div className="bg-[#0a1e3b] px-8 py-3 rounded-full">
+              <span className="text-white font-medium text-lg">Baciata.pl</span>
+            </div>
+          </motion.div>
+          
+          <h1 className="text-4xl font-bold mb-4 text-white">Zapomniałeś hasła?</h1>
+          <p className="text-white/70">Podaj swój email, aby zresetować hasło</p>
+        </motion.div>
+
+        {/* Form */}
+        <motion.form
+          onSubmit={handleSubmit}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="bg-white/5 backdrop-blur-lg rounded-2xl p-8 border border-white/10"
+        >
+          {message && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-6 p-4 rounded-lg bg-green-400/10 border border-green-400/20 text-green-400"
+            >
+              {message}
+            </motion.div>
+          )}
+
+          {errors.form && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-6 p-4 rounded-lg bg-red-400/10 border border-red-400/20 text-red-400"
+            >
+              {errors.form}
+            </motion.div>
+          )}
+
+          <div className="mb-6">
+            <label className="block text-white/80 mb-2 font-medium">Email</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className={`w-full px-3 py-2 border rounded text-gray-900 focus:outline-none focus:ring-2 ${getInputClasses(
-                "email"
-              )}`}
+              className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white 
+                placeholder-white/50 focus:outline-none focus:border-yellow-400/50 transition-colors"
               placeholder="Wprowadź swój email"
               autoComplete="email"
             />
+            {errors.email && (
+              <p className="mt-2 text-red-400 text-sm">{errors.email}</p>
+            )}
           </div>
-          {errors.email && (
-            <p className="text-red-600 text-sm mt-2">{errors.email}</p>
-          )}
-        </div>
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition-colors duration-200 flex items-center justify-center font-semibold"
-          disabled={isLoading}
-        >
-          {isLoading ? (
-            <>
-              <LoadingSpinner />
-              <span className="ml-2">Wysyłanie...</span>
-            </>
-          ) : (
-            "Wyślij link do resetowania"
-          )}
-        </button>
-        <div className="mt-4 text-center">
-          <Link href="/login" className="text-blue-500 hover:underline">
-            Powrót do logowania
-          </Link>
-        </div>
-      </form>
+
+          <motion.button
+            type="submit"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="w-full bg-gradient-to-r from-yellow-400 to-yellow-600 text-[#0a1e3b] py-3 px-4 
+              rounded-lg font-medium hover:from-yellow-500 hover:to-yellow-700 transition-all duration-200
+              flex items-center justify-center"
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <>
+                <LoadingSpinner />
+                <span className="ml-2">Wysyłanie...</span>
+              </>
+            ) : (
+              "Wyślij link do resetowania"
+            )}
+          </motion.button>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="mt-6 text-center text-white/60"
+          >
+            <Link
+              href="/login"
+              className="text-yellow-400 hover:text-yellow-300 transition-colors"
+            >
+              Powrót do logowania
+            </Link>
+          </motion.div>
+        </motion.form>
+      </div>
     </div>
   );
 }
