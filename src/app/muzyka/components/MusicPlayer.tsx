@@ -19,6 +19,9 @@ import {
   FaRetweet,
   FaBackward,
   FaForward,
+  FaList,
+  FaSort,
+  FaMusic,
 } from "react-icons/fa";
 import { Song, Playlist, RepeatMode } from "../types";
 import { RootState } from "../../../store/store";
@@ -39,6 +42,8 @@ import { PlayerErrorBoundary } from './ErrorBoundary/PlayerErrorBoundary';
 import { ErrorLogBuffer } from '../utils/ErrorLogBuffer';
 import { YouTubeError } from '../utils/youtube';
 import { useYouTubeErrorHandler } from '../hooks/useYouTubeErrorHandler';
+import MobileDrawer from './MobileDrawer';
+import { motion } from 'framer-motion';
 
 interface MusicPlayerProps {
   songs: Song[];
@@ -142,13 +147,16 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
 
   const sortedAndFilteredSongs = useSortedAndFilteredSongs(songs, sortBy, sortOrder, filterText);
 
-  const onSortChange = (
-    newSortBy: "date" | "title" | "artist" | "impro" | "beginnerFriendly",
-    newSortOrder: "asc" | "desc"
-  ) => {
-    setSortBy(newSortBy);
-    setSortOrder(newSortOrder);
-  };
+  const onSortChange = useCallback(
+    (
+      newSortBy: "date" | "title" | "artist" | "impro" | "beginnerFriendly",
+      newSortOrder: "asc" | "desc"
+    ) => {
+      setSortBy(newSortBy);
+      setSortOrder(newSortOrder);
+    },
+    []
+  );
 
   const { previousSong, togglePlayback, nextSong } = usePlaybackControls({
     player,
@@ -403,6 +411,63 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     return () => errorBuffer.destroy();
   }, []);
 
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [hasReachedPlaylist, setHasReachedPlaylist] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const playlistElement = document.getElementById('playlist-section');
+      if (playlistElement) {
+        const rect = playlistElement.getBoundingClientRect();
+        setHasReachedPlaylist(rect.top <= window.innerHeight);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    if (hasReachedPlaylist && isMobile) {
+      setIsDrawerOpen(true);
+    }
+  }, [hasReachedPlaylist, isMobile]);
+
+  // Funkcje do zarządzania playlistami
+  const handleDeletePlaylist = (id: string) => {
+    deletePlaylist(id);
+  };
+
+  const handleRenamePlaylist = (id: string, newName: string) => {
+    editPlaylistName(id, newName);
+  };
+
+  const handleRemoveSongFromPlaylist = (playlistId: string, songId: string) => {
+    removeSongFromPlaylist(playlistId, songId);
+  };
+
+  // Dodaj nowy stan na początku komponentu
+  const [showDrawerButton, setShowDrawerButton] = useState(false);
+
+  // Dodaj useEffect do obsługi scroll eventu
+  useEffect(() => {
+    if (!isMobile) return;
+
+    const handleScroll = () => {
+      const playerElement = document.querySelector('.youtube-player');
+      if (playerElement) {
+        const rect = playerElement.getBoundingClientRect();
+        const oneThirdHeight = rect.height / 3;
+        const playerOneThird = rect.top + oneThirdHeight;
+        const isPlayerOneThirdVisible = playerOneThird < 0;
+        setShowDrawerButton(isPlayerOneThirdVisible);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isMobile]);
+
   // Komponent MusicPlayer - główny komponent odtwarzacza muzyki
   return (
     <PlayerErrorBoundary
@@ -410,16 +475,18 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
         handleError(error, errorInfo);
       }}
     >
-      <div className="max-w-7xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden pb-20">
-        <div className="w-full mb-4 bg-gray-100">
-          <SortControl
-            sortBy={sortBy}
-            sortOrder={sortOrder}
-            onSortChange={onSortChange}
-            filterText={filterText}
-            setFilterText={setFilterText}
-          />
-        </div>
+      <div id="music-player" className="max-w-7xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden pb-20">
+        {!isMobile && (
+          <div className="w-full mb-4 bg-gray-100">
+            <SortControl
+              sortBy={sortBy}
+              sortOrder={sortOrder}
+              onSortChange={onSortChange}
+              filterText={filterText}
+              setFilterText={setFilterText}
+            />
+          </div>
+        )}
         <div className="flex flex-col md:flex-row flex-grow">
           <div className="md:order-2 md:w-3/5 flex flex-col">
             <div className="sticky top-0 bg-white z-40 p-6 shadow-md">
@@ -589,6 +656,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
             showSearch={false}
             hasPlaylists={playlists.length > 0}
             isAuthenticated={isAuthenticated}
+            isMobile={isMobile} // Dodana linia
           />
         </div>
         <PlaybackBar
@@ -627,6 +695,48 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           isLoading={isLoading}
         />
       </div>
+      {isMobile && (
+        <>
+          <MobileDrawer
+            isOpen={isDrawerOpen}
+            onClose={() => setIsDrawerOpen(false)}
+            playlists={playlists}
+            songs={songs}
+            expandedPlaylist={expandedPlaylist}
+            setExpandedPlaylist={setExpandedPlaylist}
+            onDeletePlaylist={handleDeletePlaylist}
+            onRenamePlaylist={handleRenamePlaylist}
+            onRemoveSongFromPlaylist={handleRemoveSongFromPlaylist}
+            onCreatePlaylist={onCreatePlaylist}
+            onPlayPlaylist={onPlayPlaylist}
+            currentPlaylistId={currentPlaylistId}
+            onAddToPlaylist={handleAddToPlaylist}
+            isModalOpen={isModalOpen}
+            setIsModalOpen={setIsModalOpen}
+            showSuccessToast={showSuccessToast}
+            showErrorToast={showErrorToast}
+            showInfoToast={showInfoToast}
+            // Dodane brakujące propsy
+            sortBy={sortBy}
+            sortOrder={sortOrder}
+            onSortChange={onSortChange}
+          />
+          {isMobile && showDrawerButton && (
+            <motion.button
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              onClick={() => setIsDrawerOpen(true)}
+              className="fixed right-4 bottom-72 bg-white rounded-full p-3 shadow-lg z-30 flex flex-col items-center justify-center"
+            >
+              <div className="flex flex-col items-center">
+                <FaMusic size={24} className="text-gray-700 mb-1" />
+                <FaSort size={20} className="text-gray-700" />
+              </div>
+            </motion.button>
+          )}
+        </>
+      )}
     </PlayerErrorBoundary>
   );
 };

@@ -1,15 +1,11 @@
 import React, { useState, useMemo, useCallback, useEffect } from "react";
 import Image from "next/image";
-import {
-  FaPlay,
-  FaBookmark,
-  FaHeart,
-} from "react-icons/fa";
+import { FaPlay, FaBookmark, FaHeart } from "react-icons/fa";
 import { Song, SortOption, SortOrder } from "../types";
 import { motion } from "framer-motion";
 import { getYouTubeThumbnail } from "../utils/youtube";
-import { getSortValue } from '../utils/sortUtils';
-import { useSortedAndFilteredSongs } from '../hooks/useSortedAndFilteredSongs';
+import { getSortValue } from "../utils/sortUtils";
+import { useSortedAndFilteredSongs } from "../hooks/useSortedAndFilteredSongs";
 
 interface SongListProps {
   songs: Song[];
@@ -24,10 +20,7 @@ interface SongListProps {
   onAddToPlaylist: (songId: string) => void;
   sortBy: SortOption;
   sortOrder: SortOrder;
-  onSortChange: (
-    newSortBy: SortOption,
-    newSortOrder: SortOrder
-  ) => void;
+  onSortChange: (newSortBy: SortOption, newSortOrder: SortOrder) => void;
   filterText: string;
   setFilterText: React.Dispatch<React.SetStateAction<string>>;
   currentSong: Song | null;
@@ -35,6 +28,7 @@ interface SongListProps {
   showSearch: boolean;
   hasPlaylists: boolean;
   isAuthenticated: boolean;
+  isMobile: boolean; // dodaj ten prop
 }
 
 const SongList: React.FC<SongListProps> = ({
@@ -58,14 +52,21 @@ const SongList: React.FC<SongListProps> = ({
   showSearch,
   hasPlaylists,
   isAuthenticated,
+  isMobile, // dodaj ten prop
 }) => {
   const [showNotification, setShowNotification] = useState(false);
 
-  const sortedAndFilteredSongs = useSortedAndFilteredSongs(songs, sortBy, sortOrder, filterText);
+  const sortedAndFilteredSongs = useSortedAndFilteredSongs(
+    songs,
+    sortBy,
+    sortOrder,
+    filterText
+  );
 
   const handleSort = useCallback(
     (newSortBy: SortOption) => {
-      const newSortOrder = sortBy === newSortBy && sortOrder === "asc" ? "desc" : "asc";
+      const newSortOrder =
+        sortBy === newSortBy && sortOrder === "asc" ? "desc" : "asc";
       onSortChange(newSortBy, newSortOrder);
     },
     [sortBy, sortOrder, onSortChange]
@@ -167,8 +168,8 @@ const SongList: React.FC<SongListProps> = ({
                   <FaHeart className="text-xl" />
                 </button>
               )}
-              
-              {(isPlaylistExpanded && expandedPlaylist && hasPlaylists) && (
+
+              {isPlaylistExpanded && expandedPlaylist && hasPlaylists && (
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
