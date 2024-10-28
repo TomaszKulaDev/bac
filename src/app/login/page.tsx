@@ -83,43 +83,43 @@ const adBanners: AdBanner[] = [
   {
     title: "Szkoły Bachaty",
     description: "Rozpocznij swoją przygodę z bachatą już dziś!",
-    icon: <FaGraduationCap className="h-6 w-6 text-blue-400" />,
+    icon: <FaGraduationCap className="h-6 w-6 text-yellow-400" />,
     image: "/images/school-banner.jpg",
     position: "left",
   },
   {
     title: "Warsztaty Taneczne",
     description: "Ucz się od najlepszych instruktorów z całego świata",
-    icon: <FaChalkboardTeacher className="h-6 w-6 text-purple-400" />,
+    icon: <FaChalkboardTeacher className="h-6 w-6 text-yellow-400" />,
     image: "/images/workshop-banner.jpg",
     position: "right",
   },
   {
     title: "Festiwale Bachaty",
     description: "Największe wydarzenie bachatowe w Polsce!",
-    icon: <FaStar className="h-6 w-6 text-yellow-400" />,
+    icon: <FaCrown className="h-6 w-6 text-yellow-400" />,
     image: "/images/festival-banner.jpg",
     position: "left",
   },
   {
     title: "Instruktorzy",
     description: "Znajdź najlepszych instruktorów w Polsce!",
-    icon: <FaUsers className="h-6 w-6 text-green-400" />,
+    icon: <FaStar className="h-6 w-6 text-yellow-400" />,
     image: "/images/instructor-banner.jpg",
     position: "right",
   },
   {
     title: "Promuj siebie",
     description:
-      "Pokaż swoje umiejętności taneczne i zbuduj swoją markę w osobistą.",
-    icon: <FaBullhorn className="h-6 w-6 text-red-400" />,
+      "Pokaż swoje umiejętności taneczne i zbuduj swoją markę osobistą.",
+    icon: <FaUsers className="h-6 w-6 text-yellow-400" />,
     image: "/images/promote-banner.jpg",
     position: "left",
   },
   {
-    title: "Praktysy",
+    title: "Praktisy",
     description: "Znajdź miejsce do praktyki w swoim mieście",
-    icon: <FaDoorOpen className="h-6 w-6 text-indigo-400" />,
+    icon: <FaCalendar className="h-6 w-6 text-yellow-400" />,
     image: "/images/practice-banner.jpg",
     position: "right",
   },
@@ -181,10 +181,10 @@ const BannerCard = ({
         objectFit="cover"
         className="transition-transform duration-700 group-hover:scale-110"
       />
-      
+
       {/* Gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#0a1e3b]/90 via-[#0a1e3b]/70 to-transparent" />
-      
+
       {/* Animated pattern background */}
       <div className="absolute inset-0 opacity-10">
         <div className="absolute inset-0 bg-[url('/patterns/music-notes.svg')] bg-repeat animate-float" />
@@ -193,20 +193,18 @@ const BannerCard = ({
       {/* Content */}
       <div className="absolute inset-0 p-5 flex flex-col justify-between">
         <div className="flex items-center space-x-3">
-          <motion.div 
+          <motion.div
             className="bg-gradient-to-r from-yellow-400 to-yellow-600 p-0.5 rounded-xl"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <div className="bg-[#0a1e3b] p-2 rounded-xl">
-              {banner.icon}
-            </div>
+            <div className="bg-[#0a1e3b] p-2 rounded-xl">{banner.icon}</div>
           </motion.div>
           <h3 className="text-lg font-bold text-white group-hover:text-yellow-400 transition-colors duration-300">
             {banner.title}
           </h3>
         </div>
-        
+
         <div className="space-y-3">
           <p className="text-white/80 text-sm line-clamp-2">
             {banner.description}
@@ -552,7 +550,7 @@ export default function Login() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4">
                   <div className="bg-yellow-400/20 p-3 rounded-full">
-                    <FaCrown className="h-6 w-6 text-yellow-400" />
+                    <FaUsers className="h-6 w-6 text-yellow-400" />
                   </div>
                   <div>
                     <h3 className="text-xl font-bold text-white">Premium</h3>
@@ -603,17 +601,23 @@ export default function Login() {
                   whileHover={{ scale: 1.03, y: -5 }}
                 >
                   <div className="flex items-center space-x-4">
-                    <div className={`bg-gradient-to-br ${stat.bgColor} p-4 rounded-xl shadow-lg
+                    <div
+                      className={`bg-gradient-to-br ${stat.bgColor} p-4 rounded-xl shadow-lg
                       backdrop-blur-xl border border-white/10 transform transition-transform duration-300
-                      group-hover:scale-110`}>
+                      group-hover:scale-110`}
+                    >
                       {stat.icon}
                     </div>
                     <div>
-                      <div className="text-2xl font-bold text-white bg-clip-text text-transparent 
-                        bg-gradient-to-r from-white to-white/80">
+                      <div
+                        className="text-2xl font-bold text-white bg-clip-text text-transparent 
+                        bg-gradient-to-r from-white to-white/80"
+                      >
                         {stat.value}
                       </div>
-                      <div className="text-white/70 text-sm font-medium">{stat.label}</div>
+                      <div className="text-white/70 text-sm font-medium">
+                        {stat.label}
+                      </div>
                     </div>
                   </div>
                 </motion.div>
@@ -623,9 +627,11 @@ export default function Login() {
         </div>
 
         {/* Prawa kolumna banerów */}
-        <div className="hidden xl:flex flex-col gap-6 w-[340px] p-6 bg-gradient-to-br from-white/5 to-white/10 
-          backdrop-blur-lg rounded-2xl border border-white/10">
-          <motion.div 
+        <div
+          className="hidden xl:flex flex-col gap-6 w-[340px] p-6 bg-gradient-to-br from-white/5 to-white/10 
+          backdrop-blur-lg rounded-2xl border border-white/10"
+        >
+          <motion.div
             className="flex items-center space-x-2"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -637,7 +643,7 @@ export default function Login() {
               </div>
             </div>
           </motion.div>
-          
+
           <div className="space-y-5">
             {rightBanners.map((banner, index) => (
               <BannerCard
