@@ -37,7 +37,7 @@ const MusicPage: React.FC = () => {
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [expandedPlaylist, setExpandedPlaylist] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState<"date" | "title" | "artist">("date");
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [filterText, setFilterText] = useState("");
   const { isMobile, updateContainerPadding } = useResponsive();
   const [currentPlaylistId, setCurrentPlaylistId] = useState<string | null>(

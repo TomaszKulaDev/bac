@@ -138,7 +138,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   const [sortBy, setSortBy] = useState<
     "date" | "title" | "artist" | "impro" | "beginnerFriendly"
   >("date");
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
   const sortedAndFilteredSongs = useSortedAndFilteredSongs(songs, sortBy, sortOrder, filterText);
 
