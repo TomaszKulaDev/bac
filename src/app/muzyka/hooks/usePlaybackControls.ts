@@ -31,35 +31,26 @@ export const usePlaybackControls = ({
   const dispatch = useDispatch();
 
   const previousSong = useCallback(() => {
-    if (!currentSong) return; // Dodajemy zabezpieczenie
+    if (!currentSong) return;
 
     if (currentPlaylistId) {
       const currentPlaylist = playlists.find(p => p.id === currentPlaylistId);
       if (currentPlaylist) {
         const currentIndex = currentPlaylist.songs.indexOf(currentSong.id);
-        let prevIndex;
-
-        if (repeatMode.song === "on") {
-          prevIndex = currentIndex;
-        } else if (currentIndex > 0) {
-          prevIndex = currentIndex - 1;
-        } else if (repeatMode.playlist === "on") {
-          prevIndex = currentPlaylist.songs.length - 1;
-        } else {
-          return;
-        }
-
+        // Zmiana kierunku na przeciwny
+        let prevIndex = (currentIndex + 1) % currentPlaylist.songs.length;
         const prevSongId = currentPlaylist.songs[prevIndex];
         dispatch(setCurrentSongIndex(songs.findIndex(s => s.id === prevSongId)));
       }
     } else {
       const currentIndex = songs.findIndex(s => s.id === currentSong.id);
-      let prevIndex = (currentIndex - 1 + songs.length) % songs.length;
+      // Zmiana kierunku na przeciwny
+      let prevIndex = (currentIndex + 1) % songs.length;
       dispatch(setCurrentSongIndex(prevIndex));
     }
     setIsPlaying(true);
     setIsLoading(true);
-  }, [currentPlaylistId, playlists, currentSong, songs, repeatMode.song, repeatMode.playlist, dispatch, setIsPlaying, setIsLoading]);
+  }, [currentPlaylistId, playlists, currentSong, songs, dispatch, setIsPlaying, setIsLoading]);
 
   const togglePlayback = useCallback(() => {
     if (!player || !isPlayerReady) {
@@ -80,7 +71,7 @@ export const usePlaybackControls = ({
   }, [player, isPlaying, isPlayerReady, setIsPlaying]);
 
   const nextSong = useCallback(() => {
-    if (!currentSong) return; // Dodajemy zabezpieczenie
+    if (!currentSong) return;
 
     if (!player || !isPlayerReady) {
       console.warn('Player nie jest gotowy');
@@ -92,13 +83,15 @@ export const usePlaybackControls = ({
         const currentPlaylist = playlists.find(p => p.id === currentPlaylistId);
         if (currentPlaylist) {
           const currentIndex = currentPlaylist.songs.indexOf(currentSong.id);
-          let nextIndex = (currentIndex + 1) % currentPlaylist.songs.length;
+          // Zmiana kierunku na przeciwny
+          let nextIndex = (currentIndex - 1 + currentPlaylist.songs.length) % currentPlaylist.songs.length;
           const nextSongId = currentPlaylist.songs[nextIndex];
           dispatch(setCurrentSongIndex(songs.findIndex(s => s.id === nextSongId)));
         }
       } else {
         const currentIndex = songs.findIndex(s => s.id === currentSong.id);
-        let nextIndex = (currentIndex + 1) % songs.length;
+        // Zmiana kierunku na przeciwny
+        let nextIndex = (currentIndex - 1 + songs.length) % songs.length;
         dispatch(setCurrentSongIndex(nextIndex));
       }
       setIsPlaying(true);
