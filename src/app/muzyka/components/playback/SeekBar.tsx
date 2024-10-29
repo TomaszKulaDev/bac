@@ -18,7 +18,7 @@ export const SeekBar: React.FC<SeekBarProps> = ({ currentTime, duration, onSeek 
         max={duration}
         value={currentTime}
         onChange={(e) => onSeek(Number(e.target.value))}
-        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+        className="w-full h-0.5 bg-gray-200 rounded-lg appearance-none cursor-pointer"
         role="slider"
         aria-label="Postęp odtwarzania"
         aria-valuemin={0}
