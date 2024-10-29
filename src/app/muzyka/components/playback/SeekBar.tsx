@@ -1,4 +1,5 @@
 import { formatTime } from '../../utils/formatTime';
+import { useState, useRef } from 'react';
 
 interface SeekBarProps {
   currentTime: number;
@@ -7,28 +8,67 @@ interface SeekBarProps {
 }
 
 export const SeekBar: React.FC<SeekBarProps> = ({ currentTime, duration, onSeek }) => {
+  const [isHovering, setIsHovering] = useState(false);
+  const progressBarRef = useRef<HTMLDivElement>(null);
+  const [hoverTime, setHoverTime] = useState(0);
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (progressBarRef.current) {
+      const rect = progressBarRef.current.getBoundingClientRect();
+      const position = (e.clientX - rect.left) / rect.width;
+      setHoverTime(position * duration);
+    }
+  };
+
+  const progress = (currentTime / duration) * 100;
+
   return (
-    <div className="w-full flex items-center">
-      <span className="text-xs text-gray-500 mr-2 w-10 text-right">
-        {formatTime(currentTime)}
-      </span>
-      <input
-        type="range"
-        min={0}
-        max={duration}
-        value={currentTime}
-        onChange={(e) => onSeek(Number(e.target.value))}
-        className="w-full h-0.5 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-        role="slider"
-        aria-label="Postęp odtwarzania"
-        aria-valuemin={0}
-        aria-valuemax={duration}
-        aria-valuenow={currentTime}
-        aria-valuetext={`${formatTime(currentTime)} z ${formatTime(duration)}`}
-      />
-      <span className="text-xs text-gray-500 ml-2 w-10">
-        {formatTime(duration)}
-      </span>
+    <div className="w-full flex flex-col gap-1">
+      <div 
+        ref={progressBarRef}
+        className="relative h-1 group cursor-pointer"
+        onMouseEnter={() => setIsHovering(true)}
+        onMouseLeave={() => setIsHovering(false)}
+        onMouseMove={handleMouseMove}
+        onClick={(e) => {
+          if (progressBarRef.current) {
+            const rect = progressBarRef.current.getBoundingClientRect();
+            const position = (e.clientX - rect.left) / rect.width;
+            onSeek(position * duration);
+          }
+        }}
+      >
+        {/* Tło paska */}
+        <div className="absolute w-full h-full bg-gray-200 rounded-full" />
+        
+        {/* Pasek postępu */}
+        <div 
+          className="absolute h-full bg-purple-500 rounded-full transition-all duration-150"
+          style={{ width: `${progress}%` }}
+        />
+
+        {/* Znacznik aktualnej pozycji */}
+        <div 
+          className="absolute h-3 w-3 bg-purple-600 rounded-full -top-1 shadow-md transition-opacity duration-150 opacity-0 group-hover:opacity-100"
+          style={{ left: `${progress}%`, transform: 'translateX(-50%)' }}
+        />
+
+        {/* Podgląd czasu przy hover */}
+        {isHovering && (
+          <div 
+            className="absolute -top-8 px-2 py-1 bg-black/75 text-white text-xs rounded transform -translate-x-1/2"
+            style={{ left: `${(hoverTime / duration) * 100}%` }}
+          >
+            {formatTime(hoverTime)}
+          </div>
+        )}
+      </div>
+
+      {/* Wyświetlanie czasu */}
+      <div className="flex justify-between text-xs text-gray-500 px-1">
+        <span>{formatTime(currentTime)}</span>
+        <span>{formatTime(duration)}</span>
+      </div>
     </div>
   );
 };
