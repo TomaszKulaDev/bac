@@ -784,7 +784,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => setIsDrawerOpen(true)}
-              className="fixed right-4 bottom-72 bg-white rounded-full p-4 shadow-xl z-30 flex items-center space-x-2 border border-gray-100"
+              className="fixed right-4 bottom-96 bg-white rounded-full p-4 shadow-xl z-30 flex items-center space-x-2 border border-gray-100"
             >
               <div className="flex items-center">
                 <FaSort size={16} className="text-gray-700" />
@@ -811,7 +811,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => setIsPlaylistSelectorOpen(true)}
-              className="fixed right-4 bottom-64 bg-white rounded-full p-4 shadow-xl z-30 flex items-center space-x-2 border border-gray-100"
+              className="fixed right-4 bottom-80 bg-white rounded-full p-4 shadow-xl z-30 flex items-center space-x-2 border border-gray-100"
             >
               <div className="flex items-center">
                 <FaMusic size={16} className="text-gray-700" />
