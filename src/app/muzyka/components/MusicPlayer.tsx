@@ -34,16 +34,17 @@ import CreatePlaylistModal from "./CreatePlaylistModal";
 import SortControl from "./SortControl";
 import PlaybackBar from "./playback/PlaybackBar";
 import { getYouTubeThumbnail } from "../utils/youtube";
-import { Z_INDEX } from '@/app/constants/zIndex';
-import { useSortedAndFilteredSongs } from '../hooks/useSortedAndFilteredSongs';
-import { useYouTubePlayer } from '../hooks/useYouTubePlayer';
-import { usePlaybackControls } from '../hooks/usePlaybackControls';
-import { PlayerErrorBoundary } from './ErrorBoundary/PlayerErrorBoundary';
-import { ErrorLogBuffer } from '../utils/ErrorLogBuffer';
-import { YouTubeError } from '../utils/youtube';
-import { useYouTubeErrorHandler } from '../hooks/useYouTubeErrorHandler';
-import MobileDrawer from './MobileDrawer';
-import { motion } from 'framer-motion';
+import { Z_INDEX } from "@/app/constants/zIndex";
+import { useSortedAndFilteredSongs } from "../hooks/useSortedAndFilteredSongs";
+import { useYouTubePlayer } from "../hooks/useYouTubePlayer";
+import { usePlaybackControls } from "../hooks/usePlaybackControls";
+import { PlayerErrorBoundary } from "./ErrorBoundary/PlayerErrorBoundary";
+import { ErrorLogBuffer } from "../utils/ErrorLogBuffer";
+import { YouTubeError } from "../utils/youtube";
+import { useYouTubeErrorHandler } from "../hooks/useYouTubeErrorHandler";
+import MobileDrawer from "./MobileDrawer";
+import { motion } from "framer-motion";
+import PlaylistSelectorDrawer from "./PlaylistSelectorDrawer";
 
 interface MusicPlayerProps {
   songs: Song[];
@@ -77,7 +78,7 @@ interface BrowserInfo {
 const getBrowserInfo = (): BrowserInfo => ({
   userAgent: navigator.userAgent,
   platform: navigator.platform,
-  language: navigator.language
+  language: navigator.language,
 });
 
 // Komponent MusicPlayer
@@ -123,7 +124,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     setError,
     updatePlayerDimensions,
     isSmallScreen,
-    setIsSmallScreen
+    setIsSmallScreen,
   } = useYouTubePlayer();
 
   const [visibleSongs, setVisibleSongs] = useState(7);
@@ -144,8 +145,13 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     "date" | "title" | "artist" | "impro" | "beginnerFriendly"
   >("date");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
-
-  const sortedAndFilteredSongs = useSortedAndFilteredSongs(songs, sortBy, sortOrder, filterText);
+  const [isPlaylistSelectorOpen, setIsPlaylistSelectorOpen] = useState(false);
+  const sortedAndFilteredSongs = useSortedAndFilteredSongs(
+    songs,
+    sortBy,
+    sortOrder,
+    filterText
+  );
 
   const onSortChange = useCallback(
     (
@@ -168,7 +174,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     setIsPlaying,
     setIsLoading,
     repeatMode,
-    isPlaying
+    isPlaying,
   });
 
   // Funkcja do ładowania większej liczby utworów
@@ -309,7 +315,9 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     );
     dispatch(
       setCurrentSongIndex(
-        songs.findIndex((song) => song.id === shuffledSongs[shuffledSongs.length - 1].id)
+        songs.findIndex(
+          (song) => song.id === shuffledSongs[shuffledSongs.length - 1].id
+        )
       )
     );
   };
@@ -359,52 +367,58 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
 
   useEffect(() => {
     if (player && isPlayerReady) {
-      console.log('Player jest gotowy');
+      console.log("Player jest gotowy");
       setIsLoading(false);
     }
   }, [player, isPlayerReady, setIsLoading]);
 
-  const getThumbnailSafely = useCallback((youtubeId: string | undefined): string => {
-    try {
-      if (!youtubeId) {
-        return '/images/default-thumbnail.jpg'; // Dodaj domyślną miniaturę
+  const getThumbnailSafely = useCallback(
+    (youtubeId: string | undefined): string => {
+      try {
+        if (!youtubeId) {
+          return "/images/default-thumbnail.jpg"; // Dodaj domyślną miniaturę
+        }
+        return getYouTubeThumbnail(youtubeId);
+      } catch (error) {
+        console.error("Błąd podczas pobierania miniatury:", error);
+        return "/images/default-thumbnail.jpg";
       }
-      return getYouTubeThumbnail(youtubeId);
-    } catch (error) {
-      console.error('Błąd podczas pobierania miniatury:', error);
-      return '/images/default-thumbnail.jpg';
-    }
-  }, []);
+    },
+    []
+  );
 
   // Dodajemy funkcję toggleRepeatMode
   const toggleRepeatMode = useCallback((type: "song" | "playlist") => {
-    setRepeatMode(prev => ({
+    setRepeatMode((prev) => ({
       ...prev,
-      [type]: prev[type] === "on" ? "off" : "on"
+      [type]: prev[type] === "on" ? "off" : "on",
     }));
   }, []);
 
   const { handleYouTubeError } = useYouTubeErrorHandler(showErrorToast);
 
-  const handleError = useCallback((error: Error, errorInfo?: ErrorInfo) => {
-    const errorBuffer = ErrorLogBuffer.getInstance();
-    
-    if (error instanceof YouTubeError) {
-      handleYouTubeError(error);
-    } else {
-      errorBuffer.add({
-        type: "general",
-        severity: "error",
-        message: error.message,
-        timestamp: new Date().toISOString(),
-        environment: process.env.NODE_ENV || 'development',
-        details: {
-          componentStack: errorInfo?.componentStack || undefined
-        }
-      });
-      showErrorToast('Wystąpił błąd podczas odtwarzania');
-    }
-  }, [handleYouTubeError, showErrorToast]);
+  const handleError = useCallback(
+    (error: Error, errorInfo?: ErrorInfo) => {
+      const errorBuffer = ErrorLogBuffer.getInstance();
+
+      if (error instanceof YouTubeError) {
+        handleYouTubeError(error);
+      } else {
+        errorBuffer.add({
+          type: "general",
+          severity: "error",
+          message: error.message,
+          timestamp: new Date().toISOString(),
+          environment: process.env.NODE_ENV || "development",
+          details: {
+            componentStack: errorInfo?.componentStack || undefined,
+          },
+        });
+        showErrorToast("Wystąpił błąd podczas odtwarzania");
+      }
+    },
+    [handleYouTubeError, showErrorToast]
+  );
 
   useEffect(() => {
     const errorBuffer = ErrorLogBuffer.getInstance();
@@ -416,15 +430,15 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
 
   useEffect(() => {
     const handleScroll = () => {
-      const playlistElement = document.getElementById('playlist-section');
+      const playlistElement = document.getElementById("playlist-section");
       if (playlistElement) {
         const rect = playlistElement.getBoundingClientRect();
         setHasReachedPlaylist(rect.top <= window.innerHeight);
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {
@@ -454,7 +468,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     if (!isMobile) return;
 
     const handleScroll = () => {
-      const playerElement = document.querySelector('.youtube-player');
+      const playerElement = document.querySelector(".youtube-player");
       if (playerElement) {
         const rect = playerElement.getBoundingClientRect();
         const oneThirdHeight = rect.height / 3;
@@ -464,9 +478,42 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [isMobile]);
+
+
+  // Dodaj przed returnem, obok istniejących buttonów (około linii 724)
+  {
+    isMobile && (
+      <motion.button
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.8 }}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        onClick={() => setIsPlaylistSelectorOpen(true)}
+        className="fixed right-4 bottom-88 bg-white rounded-full p-4 shadow-xl z-30 flex items-center space-x-2 border border-gray-100"
+      >
+        <div className="flex items-center">
+          <FaMusic size={16} className="text-gray-700" />
+          <span className="ml-2 text-sm font-medium text-gray-700">
+            Playlisty
+          </span>
+        </div>
+      </motion.button>
+    );
+  }
+
+  <PlaylistSelectorDrawer
+    isOpen={isPlaylistSelectorOpen}
+    onClose={() => setIsPlaylistSelectorOpen(false)}
+    playlists={playlists}
+    currentPlaylistId={currentPlaylistId}
+    onPlayPlaylist={onPlayPlaylist}
+    isAuthenticated={isAuthenticated}
+    showErrorToast={showErrorToast}
+  />;
 
   // Komponent MusicPlayer - główny komponent odtwarzacza muzyki
   return (
@@ -475,7 +522,10 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
         handleError(error, errorInfo);
       }}
     >
-      <div id="music-player" className="max-w-7xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden pb-20">
+      <div
+        id="music-player"
+        className="max-w-7xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden pb-20"
+      >
         {!isMobile && (
           <div className="w-full mb-4 bg-gray-100">
             <SortControl
@@ -631,11 +681,14 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           )}
 
           <SongList
-            songs={currentPlaylistId 
-              ? songs.filter(song => 
-                  playlists.find(p => p.id === currentPlaylistId)?.songs.includes(song.id)
-                )
-              : sortedAndFilteredSongs
+            songs={
+              currentPlaylistId
+                ? songs.filter((song) =>
+                    playlists
+                      .find((p) => p.id === currentPlaylistId)
+                      ?.songs.includes(song.id)
+                  )
+                : sortedAndFilteredSongs
             }
             visibleSongs={visibleSongs}
             isPlaying={isPlaying}
@@ -673,7 +726,9 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
             currentSong
               ? {
                   ...currentSong,
-                  thumbnail: currentSong.thumbnail || getThumbnailSafely(currentSong.youtubeId),
+                  thumbnail:
+                    currentSong.thumbnail ||
+                    getThumbnailSafely(currentSong.youtubeId),
                 }
               : null
           }
@@ -733,7 +788,34 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
             >
               <div className="flex items-center">
                 <FaSort size={16} className="text-gray-700" />
-                <span className="ml-2 text-sm font-medium text-gray-700">Sortuj</span>
+                <span className="ml-2 text-sm font-medium text-gray-700">
+                  Sortuj
+                </span>
+              </div>
+            </motion.button>
+          )}
+          <PlaylistSelectorDrawer
+            isOpen={isPlaylistSelectorOpen}
+            onClose={() => setIsPlaylistSelectorOpen(false)}
+            playlists={playlists}
+            currentPlaylistId={currentPlaylistId}
+            onPlayPlaylist={onPlayPlaylist}
+            isAuthenticated={isAuthenticated}
+            showErrorToast={showErrorToast}
+          />
+          {showDrawerButton && (
+            <motion.button
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setIsPlaylistSelectorOpen(true)}
+              className="fixed right-4 bottom-64 bg-white rounded-full p-4 shadow-xl z-30 flex items-center space-x-2 border border-gray-100"
+            >
+              <div className="flex items-center">
+                <FaMusic size={16} className="text-gray-700" />
+                <span className="ml-2 text-sm font-medium text-gray-700">Playlisty</span>
               </div>
             </motion.button>
           )}
