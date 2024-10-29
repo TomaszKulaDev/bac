@@ -57,7 +57,7 @@ const PlaybackBar: React.FC<PlaybackBarProps> = ({
       role="region"
       aria-label="Kontrolki odtwarzacza"
     >
-      <div className="flex flex-col sm:flex-row items-center justify-between max-w-7xl mx-auto gap-4">
+      <div className="flex flex-col sm:flex-row items-center justify-between max-w-7xl mx-auto gap-0.5 sm:gap-0.5">
         <TrackInfo 
           currentSong={currentSong ? {
             id: currentSong.id,

@@ -15,7 +15,7 @@ export const TrackInfo: React.FC<TrackInfoProps> = ({ currentSong }) => {
 
   return (
     <div 
-      className="flex items-center space-x-4 w-full sm:w-1/3 mb-4 sm:mb-0"
+      className="flex items-center space-x-4 w-full sm:w-1/3 mb-0.5 sm:mb-0"
       aria-live="polite"
     >
       <div className="relative w-12 h-12">
