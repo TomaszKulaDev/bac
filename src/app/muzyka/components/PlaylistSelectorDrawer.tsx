@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaTimes, FaPlay, FaMusic } from "react-icons/fa";
 import { Playlist } from "../types";
@@ -22,14 +22,14 @@ const PlaylistSelectorDrawer: React.FC<PlaylistSelectorDrawerProps> = ({
   isAuthenticated,
   showErrorToast,
 }) => {
-  const handlePlaylistSelect = (playlistId: string) => {
+  const handlePlaylistSelect = useCallback((playlistId: string) => {
     if (!isAuthenticated) {
       showErrorToast("Musisz być zalogowany, aby odtwarzać playlisty");
       return;
     }
     onPlayPlaylist(playlistId);
     onClose();
-  };
+  }, [isAuthenticated, showErrorToast, onPlayPlaylist, onClose]);
 
   return (
     <AnimatePresence>

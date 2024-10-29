@@ -7,28 +7,24 @@ import { Playlist, Song } from "../types";
 interface MobileDrawerProps {
   isOpen: boolean;
   onClose: () => void;
-  playlists: Playlist[];
-  songs: Song[];
-  expandedPlaylist: string | null;
-  setExpandedPlaylist: (id: string | null) => void;
-  onDeletePlaylist: (id: string) => void;
-  onRenamePlaylist: (id: string, newName: string) => void;
-  onRemoveSongFromPlaylist: (playlistId: string, songId: string) => void;
-  onCreatePlaylist: (name: string) => void;
-  onPlayPlaylist: (id: string) => void;
-  currentPlaylistId: string | null;
-  onAddToPlaylist: (songId: string) => void;
-  isModalOpen: boolean;
-  setIsModalOpen: (isOpen: boolean) => void;
-  showSuccessToast: (message: string) => void;
-  showErrorToast: (message: string) => void;
-  showInfoToast: (message: string) => void;
   sortBy: "date" | "title" | "artist" | "impro" | "beginnerFriendly";
   sortOrder: "asc" | "desc";
   onSortChange: (
     sortBy: "date" | "title" | "artist" | "impro" | "beginnerFriendly",
     sortOrder: "asc" | "desc"
   ) => void;
+  playlists: Playlist[];
+  songs: Song[];
+  expandedPlaylist: string | null;
+  setExpandedPlaylist: (id: string | null) => void;
+  onAddToPlaylist: (playlistId: string, songId: string) => void;
+  onCreatePlaylist: (name: string, selectedSongs?: string[]) => void;
+  currentPlaylistId: string | null;
+  onPlayPlaylist: (id: string) => void;
+  onUpdatePlaylists: (playlists: Playlist[]) => void;
+  isAuthenticated: boolean;
+  showErrorToast: (message: string) => void;
+  showSuccessToast: (message: string) => void;
 }
 
 const MobileDrawer: React.FC<MobileDrawerProps> = ({

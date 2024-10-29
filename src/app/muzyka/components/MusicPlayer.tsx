@@ -47,6 +47,7 @@ import MobileDrawer from "./MobileDrawer";
 import { motion } from "framer-motion";
 import PlaylistSelectorDrawer from "./PlaylistSelectorDrawer";
 import CreatePlaylistDrawer from "./CreatePlaylistDrawer";
+import { useDrawers, SortByType, SortOrderType } from '../hooks/useDrawers';
 
 interface MusicPlayerProps {
   songs: Song[];
@@ -147,23 +148,11 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     "date" | "title" | "artist" | "impro" | "beginnerFriendly"
   >("date");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
-  const [isPlaylistSelectorOpen, setIsPlaylistSelectorOpen] = useState(false);
   const sortedAndFilteredSongs = useSortedAndFilteredSongs(
     songs,
     sortBy,
     sortOrder,
     filterText
-  );
-
-  const onSortChange = useCallback(
-    (
-      newSortBy: "date" | "title" | "artist" | "impro" | "beginnerFriendly",
-      newSortOrder: "asc" | "desc"
-    ) => {
-      setSortBy(newSortBy);
-      setSortOrder(newSortOrder);
-    },
-    []
   );
 
   const { previousSong, togglePlayback, nextSong } = usePlaybackControls({
@@ -427,28 +416,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     return () => errorBuffer.destroy();
   }, []);
 
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [hasReachedPlaylist, setHasReachedPlaylist] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const playlistElement = document.getElementById("playlist-section");
-      if (playlistElement) {
-        const rect = playlistElement.getBoundingClientRect();
-        setHasReachedPlaylist(rect.top <= window.innerHeight);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  useEffect(() => {
-    if (hasReachedPlaylist && isMobile) {
-      setIsDrawerOpen(true);
-    }
-  }, [hasReachedPlaylist, isMobile]);
-
   // Funkcje do zarządzania playlistami
   const handleDeletePlaylist = (id: string) => {
     deletePlaylist(id);
@@ -462,96 +429,37 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     removeSongFromPlaylist(playlistId, songId);
   };
 
-  // Dodaj nowy stan na początku komponentu
-  const [showDrawerButton, setShowDrawerButton] = useState(false);
+  const onSortChange = useCallback(
+    (newSortBy: SortByType, newSortOrder: SortOrderType) => {
+      setSortBy(newSortBy);
+      setSortOrder(newSortOrder);
+    },
+    []
+  );
 
-  // Dodaj useEffect do obsługi scroll eventu
-  useEffect(() => {
-    if (!isMobile) return;
+  const {
+    isPlaylistSelectorOpen,
+    isCreatePlaylistDrawerOpen,
+    isMobileDrawerOpen,
+    showDrawerButton,
+    hasReachedPlaylist,
+    handlePlaylistSelect,
+    handleCreatePlaylist,
+    handleSortChange,
+    toggleDrawer,
+    closeAllDrawers
+  } = useDrawers({
+    isAuthenticated,
+    showErrorToast,
+    onCreatePlaylist,
+    onPlayPlaylist,
+    onSortChange,
+    sortBy,
+    sortOrder,
+    isMobile,
+    setIsModalOpen
+  });
 
-    const handleScroll = () => {
-      const playerElement = document.querySelector(".youtube-player");
-      if (playerElement) {
-        const rect = playerElement.getBoundingClientRect();
-        const oneThirdHeight = rect.height / 3;
-        const playerOneThird = rect.top + oneThirdHeight;
-        const isPlayerOneThirdVisible = playerOneThird < 0;
-        setShowDrawerButton(isPlayerOneThirdVisible);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [isMobile]);
-
-  // Dodaj przed returnem, obok istniejących buttonów (około linii 724)
-  {
-    isMobile && (
-      <motion.button
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.8 }}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={() => setIsPlaylistSelectorOpen(true)}
-        className="fixed right-4 bottom-88 bg-white rounded-full p-4 shadow-xl z-30 flex items-center space-x-2 border border-gray-100"
-      >
-        <div className="flex items-center">
-          <FaMusic size={16} className="text-gray-700" />
-          <span className="ml-2 text-sm font-medium text-gray-700">
-            Playlisty
-          </span>
-        </div>
-      </motion.button>
-    );
-  }
-
-  <PlaylistSelectorDrawer
-    isOpen={isPlaylistSelectorOpen}
-    onClose={() => setIsPlaylistSelectorOpen(false)}
-    playlists={playlists}
-    currentPlaylistId={currentPlaylistId}
-    onPlayPlaylist={onPlayPlaylist}
-    isAuthenticated={isAuthenticated}
-    showErrorToast={showErrorToast}
-  />;
-
-  // Dodaj nowy stan
-  const [isCreatePlaylistDrawerOpen, setIsCreatePlaylistDrawerOpen] =
-    useState(false);
-
-  // Dodaj przycisk i drawer w sekcji mobilnej (około linii 753-823)
-  {
-    isMobile && showDrawerButton && playlists.length < 2 && (
-      <motion.button
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.8 }}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={() => setIsCreatePlaylistDrawerOpen(true)}
-        className="fixed right-4 bottom-64 bg-white rounded-full p-4 shadow-xl z-30 flex items-center space-x-2 border border-gray-100"
-      >
-        <div className="flex items-center">
-          <FaPlus size={16} className="text-gray-700" />
-          <span className="ml-2 text-sm font-medium text-gray-700">
-            Nowa playlista
-          </span>
-        </div>
-      </motion.button>
-    );
-  }
-
-  <CreatePlaylistDrawer
-    isOpen={isCreatePlaylistDrawerOpen}
-    onClose={() => setIsCreatePlaylistDrawerOpen(false)}
-    onCreatePlaylist={() => setIsModalOpen(true)}
-    isAuthenticated={isAuthenticated}
-    showErrorToast={showErrorToast}
-    playlists={playlists}
-  />;
-
-  // Komponent MusicPlayer - główny komponent odtwarzacza muzyki
   return (
     <PlayerErrorBoundary
       onError={(error, errorInfo) => {
@@ -641,7 +549,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                       onClick={previousSong}
                       className="text-gray-600 hover:text-gray-800 p-3 transition-all duration-150 ease-in-out active:scale-95"
                       aria-label="Poprzedni utwór"
-                      title="Poprzedni utwór"
+                      title="Poprzedni utwr"
                     >
                       <FaBackward size={28} />
                     </button>
@@ -789,28 +697,26 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
       {isMobile && (
         <>
           <MobileDrawer
-            isOpen={isDrawerOpen}
-            onClose={() => setIsDrawerOpen(false)}
+            isOpen={isMobileDrawerOpen}
+            onClose={() => toggleDrawer('isMobileDrawerOpen')}
+            sortBy={sortBy}
+            sortOrder={sortOrder}
+            onSortChange={handleSortChange}
             playlists={playlists}
             songs={songs}
             expandedPlaylist={expandedPlaylist}
             setExpandedPlaylist={setExpandedPlaylist}
-            onDeletePlaylist={handleDeletePlaylist}
-            onRenamePlaylist={handleRenamePlaylist}
-            onRemoveSongFromPlaylist={handleRemoveSongFromPlaylist}
+            onAddToPlaylist={onAddToPlaylist}
             onCreatePlaylist={onCreatePlaylist}
-            onPlayPlaylist={onPlayPlaylist}
             currentPlaylistId={currentPlaylistId}
-            onAddToPlaylist={handleAddToPlaylist}
-            isModalOpen={isModalOpen}
-            setIsModalOpen={setIsModalOpen}
-            showSuccessToast={showSuccessToast}
+            onPlayPlaylist={onPlayPlaylist}
+            onUpdatePlaylists={(prevPlaylists) => {
+              const updater = (prev: Playlist[]) => prevPlaylists;
+              onUpdatePlaylists(updater);
+            }}
+            isAuthenticated={isAuthenticated}
             showErrorToast={showErrorToast}
-            showInfoToast={showInfoToast}
-            // Dodane brakujące propsy
-            sortBy={sortBy}
-            sortOrder={sortOrder}
-            onSortChange={onSortChange}
+            showSuccessToast={showSuccessToast}
           />
           {isMobile && showDrawerButton && (
             <motion.button
@@ -819,7 +725,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
               exit={{ opacity: 0, scale: 0.8 }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => setIsDrawerOpen(true)}
+              onClick={() => toggleDrawer('isMobileDrawerOpen')}
               className="fixed right-4 bottom-96 bg-white rounded-full p-4 shadow-xl z-30 flex items-center space-x-2 border border-gray-100"
             >
               <div className="flex items-center">
@@ -832,10 +738,10 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           )}
           <PlaylistSelectorDrawer
             isOpen={isPlaylistSelectorOpen}
-            onClose={() => setIsPlaylistSelectorOpen(false)}
+            onClose={() => toggleDrawer('isPlaylistSelectorOpen')}
             playlists={playlists}
             currentPlaylistId={currentPlaylistId}
-            onPlayPlaylist={onPlayPlaylist}
+            onPlayPlaylist={handlePlaylistSelect}
             isAuthenticated={isAuthenticated}
             showErrorToast={showErrorToast}
           />
@@ -846,7 +752,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
               exit={{ opacity: 0, scale: 0.8 }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => setIsPlaylistSelectorOpen(true)}
+              onClick={() => toggleDrawer('isPlaylistSelectorOpen')}
               className="fixed right-4 bottom-80 bg-white rounded-full p-4 shadow-xl z-30 flex items-center space-x-2 border border-gray-100"
             >
               <div className="flex items-center">
@@ -864,7 +770,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
               exit={{ opacity: 0, scale: 0.8 }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => setIsCreatePlaylistDrawerOpen(true)}
+              onClick={() => toggleDrawer('isCreatePlaylistDrawerOpen')}
               className="fixed right-4 bottom-64 bg-white rounded-full p-4 shadow-xl z-30 flex items-center space-x-2 border border-gray-100"
             >
               <div className="flex items-center">
@@ -878,8 +784,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
 
           <CreatePlaylistDrawer
             isOpen={isCreatePlaylistDrawerOpen}
-            onClose={() => setIsCreatePlaylistDrawerOpen(false)}
-            onCreatePlaylist={() => setIsModalOpen(true)}
+            onClose={() => toggleDrawer('isCreatePlaylistDrawerOpen')}
+            onCreatePlaylist={handleCreatePlaylist}
             isAuthenticated={isAuthenticated}
             showErrorToast={showErrorToast}
             playlists={playlists}
@@ -891,3 +797,4 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
 };
 
 export default MusicPlayer;
+
