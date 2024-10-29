@@ -1,6 +1,5 @@
 // src/components/MusicPlayer.tsx
 "use client";
-
 import React, {
   useState,
   useEffect,
@@ -22,6 +21,8 @@ import {
   FaList,
   FaSort,
   FaMusic,
+  FaPlus,
+  FaTimes,
 } from "react-icons/fa";
 import { Song, Playlist, RepeatMode } from "../types";
 import { RootState } from "../../../store/store";
@@ -45,6 +46,7 @@ import { useYouTubeErrorHandler } from "../hooks/useYouTubeErrorHandler";
 import MobileDrawer from "./MobileDrawer";
 import { motion } from "framer-motion";
 import PlaylistSelectorDrawer from "./PlaylistSelectorDrawer";
+import CreatePlaylistDrawer from "./CreatePlaylistDrawer";
 
 interface MusicPlayerProps {
   songs: Song[];
@@ -482,7 +484,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isMobile]);
 
-
   // Dodaj przed returnem, obok istniejących buttonów (około linii 724)
   {
     isMobile && (
@@ -513,6 +514,41 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     onPlayPlaylist={onPlayPlaylist}
     isAuthenticated={isAuthenticated}
     showErrorToast={showErrorToast}
+  />;
+
+  // Dodaj nowy stan
+  const [isCreatePlaylistDrawerOpen, setIsCreatePlaylistDrawerOpen] =
+    useState(false);
+
+  // Dodaj przycisk i drawer w sekcji mobilnej (około linii 753-823)
+  {
+    isMobile && showDrawerButton && playlists.length < 2 && (
+      <motion.button
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.8 }}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        onClick={() => setIsCreatePlaylistDrawerOpen(true)}
+        className="fixed right-4 bottom-64 bg-white rounded-full p-4 shadow-xl z-30 flex items-center space-x-2 border border-gray-100"
+      >
+        <div className="flex items-center">
+          <FaPlus size={16} className="text-gray-700" />
+          <span className="ml-2 text-sm font-medium text-gray-700">
+            Nowa playlista
+          </span>
+        </div>
+      </motion.button>
+    );
+  }
+
+  <CreatePlaylistDrawer
+    isOpen={isCreatePlaylistDrawerOpen}
+    onClose={() => setIsCreatePlaylistDrawerOpen(false)}
+    onCreatePlaylist={() => setIsModalOpen(true)}
+    isAuthenticated={isAuthenticated}
+    showErrorToast={showErrorToast}
+    playlists={playlists}
   />;
 
   // Komponent MusicPlayer - główny komponent odtwarzacza muzyki
@@ -815,10 +851,39 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
             >
               <div className="flex items-center">
                 <FaMusic size={16} className="text-gray-700" />
-                <span className="ml-2 text-sm font-medium text-gray-700">Playlisty</span>
+                <span className="ml-2 text-sm font-medium text-gray-700">
+                  Playlisty
+                </span>
               </div>
             </motion.button>
           )}
+          {showDrawerButton && playlists.length < 2 && (
+            <motion.button
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setIsCreatePlaylistDrawerOpen(true)}
+              className="fixed right-4 bottom-64 bg-white rounded-full p-4 shadow-xl z-30 flex items-center space-x-2 border border-gray-100"
+            >
+              <div className="flex items-center">
+                <FaPlus size={16} className="text-gray-700" />
+                <span className="ml-2 text-sm font-medium text-gray-700">
+                  Nowa playlista
+                </span>
+              </div>
+            </motion.button>
+          )}
+
+          <CreatePlaylistDrawer
+            isOpen={isCreatePlaylistDrawerOpen}
+            onClose={() => setIsCreatePlaylistDrawerOpen(false)}
+            onCreatePlaylist={() => setIsModalOpen(true)}
+            isAuthenticated={isAuthenticated}
+            showErrorToast={showErrorToast}
+            playlists={playlists}
+          />
         </>
       )}
     </PlayerErrorBoundary>
