@@ -23,6 +23,16 @@ interface DrawerStates {
   hasReachedPlaylist: boolean;
 }
 
+interface UseDrawersReturn extends DrawerStates {
+  handlePlaylistSelect: (playlistId: string) => void;
+  handleCreatePlaylist: () => void;
+  handleSortChange: (newSortBy: SortByType) => void;
+  toggleDrawer: (drawerName: keyof Pick<DrawerStates, 'isPlaylistSelectorOpen' | 'isCreatePlaylistDrawerOpen' | 'isMobileDrawerOpen'>) => void;
+  closeAllDrawers: () => void;
+  setDrawerStates: React.Dispatch<React.SetStateAction<DrawerStates>>;
+  toggleDrawerState: (drawerName: keyof DrawerStates, value: boolean) => void;
+}
+
 export const useDrawers = ({
   isAuthenticated,
   showErrorToast,
@@ -107,6 +117,13 @@ export const useDrawers = ({
     }));
   }, []);
 
+  const toggleDrawerState = useCallback((drawerName: keyof DrawerStates, value: boolean) => {
+    setDrawerStates(prev => ({
+      ...prev,
+      [drawerName]: value
+    }));
+  }, []);
+
   return {
     ...drawerStates,
     handlePlaylistSelect,
@@ -114,6 +131,7 @@ export const useDrawers = ({
     handleSortChange,
     toggleDrawer,
     closeAllDrawers,
-    setDrawerStates
+    setDrawerStates,
+    toggleDrawerState
   };
 };

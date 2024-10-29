@@ -3,16 +3,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import PlaylistManager from "./PlaylistManager";
 import { FaTimes, FaSort } from "react-icons/fa";
 import { Playlist, Song } from "../types";
+import { SortByType, SortOrderType } from '../hooks/useDrawers';
 
 interface MobileDrawerProps {
   isOpen: boolean;
   onClose: () => void;
-  sortBy: "date" | "title" | "artist" | "impro" | "beginnerFriendly";
-  sortOrder: "asc" | "desc";
-  onSortChange: (
-    sortBy: "date" | "title" | "artist" | "impro" | "beginnerFriendly",
-    sortOrder: "asc" | "desc"
-  ) => void;
+  sortBy: SortByType;
+  sortOrder: SortOrderType;
+  onSortChange: (sortBy: SortByType, sortOrder: SortOrderType) => void;
   playlists: Playlist[];
   songs: Song[];
   expandedPlaylist: string | null;
@@ -21,7 +19,7 @@ interface MobileDrawerProps {
   onCreatePlaylist: (name: string, selectedSongs?: string[]) => void;
   currentPlaylistId: string | null;
   onPlayPlaylist: (id: string) => void;
-  onUpdatePlaylists: (playlists: Playlist[]) => void;
+  onUpdatePlaylists: (updater: (prevPlaylists: Playlist[]) => Playlist[]) => void;
   isAuthenticated: boolean;
   showErrorToast: (message: string) => void;
   showSuccessToast: (message: string) => void;
@@ -35,11 +33,8 @@ const MobileDrawer: React.FC<MobileDrawerProps> = ({
   onSortChange,
   ...playlistProps
 }) => {
-  const handleSortChange = (
-    newSortBy: "date" | "title" | "artist" | "impro" | "beginnerFriendly"
-  ) => {
-    const newSortOrder =
-      sortBy === newSortBy && sortOrder === "asc" ? "desc" : "asc";
+  const handleSortChange = (newSortBy: SortByType) => {
+    const newSortOrder = sortBy === newSortBy && sortOrder === "asc" ? "desc" : "asc";
     onSortChange(newSortBy, newSortOrder);
   };
 

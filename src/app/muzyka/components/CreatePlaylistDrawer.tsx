@@ -1,6 +1,7 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaTimes, FaPlus } from "react-icons/fa";
+import { Playlist } from "../types";
 
 interface CreatePlaylistDrawerProps {
   isOpen: boolean;
@@ -8,7 +9,7 @@ interface CreatePlaylistDrawerProps {
   onCreatePlaylist: () => void;
   isAuthenticated: boolean;
   showErrorToast: (message: string) => void;
-  playlists: any[];
+  playlists: Playlist[];
 }
 
 const CreatePlaylistDrawer: React.FC<CreatePlaylistDrawerProps> = ({

@@ -144,10 +144,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     playlist: "off",
   });
 
-  const [sortBy, setSortBy] = useState<
-    "date" | "title" | "artist" | "impro" | "beginnerFriendly"
-  >("date");
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+  const [sortBy, setSortBy] = useState<SortByType>("date");
+  const [sortOrder, setSortOrder] = useState<SortOrderType>("asc");
   const sortedAndFilteredSongs = useSortedAndFilteredSongs(
     songs,
     sortBy,
@@ -709,11 +707,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
             onAddToPlaylist={onAddToPlaylist}
             onCreatePlaylist={onCreatePlaylist}
             currentPlaylistId={currentPlaylistId}
-            onPlayPlaylist={onPlayPlaylist}
-            onUpdatePlaylists={(prevPlaylists) => {
-              const updater = (prev: Playlist[]) => prevPlaylists;
-              onUpdatePlaylists(updater);
-            }}
+            onPlayPlaylist={handlePlaylistSelect}
+            onUpdatePlaylists={onUpdatePlaylists}
             isAuthenticated={isAuthenticated}
             showErrorToast={showErrorToast}
             showSuccessToast={showSuccessToast}
