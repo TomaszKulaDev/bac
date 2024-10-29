@@ -43,13 +43,13 @@ export const SeekBar: React.FC<SeekBarProps> = ({ currentTime, duration, onSeek 
         
         {/* Pasek postępu */}
         <div 
-          className="absolute h-full bg-purple-500 rounded-full transition-all duration-150"
+          className="absolute h-full bg-blue-600 rounded-full transition-all duration-150"
           style={{ width: `${progress}%` }}
         />
 
         {/* Znacznik aktualnej pozycji */}
         <div 
-          className="absolute h-3 w-3 bg-purple-600 rounded-full -top-1 shadow-md transition-opacity duration-150 opacity-0 group-hover:opacity-100"
+          className="absolute h-3 w-3 bg-blue-600 rounded-full -top-1 shadow-md transition-opacity duration-150 opacity-0 group-hover:opacity-100"
           style={{ left: `${progress}%`, transform: 'translateX(-50%)' }}
         />
 
