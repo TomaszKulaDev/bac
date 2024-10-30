@@ -191,6 +191,18 @@ const MusicPage: React.FC = () => {
     console.log("Stan playlist po aktualizacji:", playlists);
   }, [playlists]);
 
+  useEffect(() => {
+    console.log("MusicPage Debug:", {
+      isMobile,
+      isAuthenticated,
+      playlists,
+      drawerElements: {
+        playlistSection: !!document.getElementById("playlist-section"),
+        playerContainer: !!document.querySelector(".youtube-player")
+      }
+    });
+  }, [isMobile, isAuthenticated, playlists]);
+
   if (status === "loading") {
     return (
       <div className="flex justify-center items-center h-screen">

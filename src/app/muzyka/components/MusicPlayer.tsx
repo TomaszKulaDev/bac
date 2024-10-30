@@ -441,17 +441,19 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     isMobileDrawerOpen,
     showDrawerButton,
     hasReachedPlaylist,
+    toggleDrawer,
+    closeAllDrawers,
     handlePlaylistSelect,
     handleCreatePlaylist,
-    handleSortChange,
-    toggleDrawer,
-    closeAllDrawers
+    handleSortChange
   } = useDrawers({
     isAuthenticated,
     showErrorToast,
     onCreatePlaylist,
     onPlayPlaylist,
-    onSortChange,
+    onSortChange: (newSortBy, newSortOrder) => {
+      // implementacja sortowania
+    },
     sortBy,
     sortOrder,
     isMobile,
@@ -714,22 +716,14 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
             showSuccessToast={showSuccessToast}
           />
           {isMobile && showDrawerButton && (
-            <motion.button
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => toggleDrawer('isMobileDrawerOpen')}
-              className="fixed right-4 bottom-96 bg-white rounded-full p-4 shadow-xl z-30 flex items-center space-x-2 border border-gray-100"
-            >
-              <div className="flex items-center">
-                <FaSort size={16} className="text-gray-700" />
-                <span className="ml-2 text-sm font-medium text-gray-700">
-                  Sortuj
-                </span>
-              </div>
-            </motion.button>
+            <div className="fixed bottom-4 right-4 z-50">
+              <button
+                onClick={() => toggleDrawer('isMobileDrawerOpen')}
+                className="bg-primary text-white rounded-full p-4 shadow-lg"
+              >
+                <FaMusic size={24} />
+              </button>
+            </div>
           )}
           <PlaylistSelectorDrawer
             isOpen={isPlaylistSelectorOpen}

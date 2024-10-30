@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
+import { debounce } from 'lodash';
 
 export type SortByType = "date" | "title" | "artist" | "impro" | "beginnerFriendly";
 export type SortOrderType = "asc" | "desc";
@@ -48,7 +49,7 @@ export const useDrawers = ({
     isPlaylistSelectorOpen: false,
     isCreatePlaylistDrawerOpen: false,
     isMobileDrawerOpen: false,
-    showDrawerButton: false,
+    showDrawerButton: true,
     hasReachedPlaylist: false
   });
 
@@ -79,26 +80,35 @@ export const useDrawers = ({
   useEffect(() => {
     if (!isMobile) return;
 
-    const handleScroll = () => {
+    const handleScroll = debounce(() => {
       const playlistSection = document.getElementById("playlist-section");
       const playerContainer = document.querySelector(".youtube-player");
 
-      if (playlistSection && playerContainer) {
-        const playlistRect = playlistSection.getBoundingClientRect();
-        const playerRect = playerContainer.getBoundingClientRect();
-
-        setDrawerStates(prev => ({
-          ...prev,
-          hasReachedPlaylist: playlistRect.top <= window.innerHeight,
-          showDrawerButton: playerRect.bottom < 0
-        }));
+      if (!playlistSection || !playerContainer) {
+        console.log("Elementy DOM:", { playlistSection, playerContainer });
+        return;
       }
-    };
+
+      const playlistRect = playlistSection.getBoundingClientRect();
+      const playerRect = playerContainer.getBoundingClientRect();
+
+      setDrawerStates(prev => ({
+        ...prev,
+        hasReachedPlaylist: playlistRect.top <= window.innerHeight,
+        showDrawerButton: true
+      }));
+    }, 150);
 
     window.addEventListener("scroll", handleScroll);
+    window.addEventListener("resize", handleScroll);
+    
     handleScroll();
     
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      handleScroll.cancel();
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
   }, [isMobile]);
 
   const toggleDrawer = useCallback((drawerName: keyof Pick<DrawerStates, 'isPlaylistSelectorOpen' | 'isCreatePlaylistDrawerOpen' | 'isMobileDrawerOpen'>) => {
