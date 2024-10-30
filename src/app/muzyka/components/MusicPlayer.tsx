@@ -725,7 +725,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
             showErrorToast={showErrorToast}
             showSuccessToast={showSuccessToast}
           />
-         
+
           <PlaylistSelectorDrawer
             isOpen={isPlaylistSelectorOpen}
             onClose={() => toggleDrawer("isPlaylistSelectorOpen")}
@@ -735,8 +735,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
             isAuthenticated={isAuthenticated}
             showErrorToast={showErrorToast}
           />
-      
-       
 
           <CreatePlaylistDrawer
             isOpen={isCreatePlaylistDrawerOpen}
@@ -760,7 +758,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                   exit={{ opacity: 0, x: 100 }}
                   transition={{ type: "spring", damping: 20 }}
                   className="fixed right-4 bottom-[340px] bg-white rounded-full p-4 shadow-xl z-60"
-                  onClick={() => toggleDrawer('isMobileDrawerOpen')}
+                  onClick={() => toggleDrawer("isMobileDrawerOpen")}
                 >
                   <FaSort className="text-gray-700" />
                 </motion.button>
@@ -772,7 +770,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                   exit={{ opacity: 0, x: 100 }}
                   transition={{ type: "spring", damping: 20, delay: 0.1 }}
                   className="fixed right-4 bottom-[280px] bg-white rounded-full p-4 shadow-xl z-60"
-                  onClick={() => toggleDrawer('isPlaylistSelectorOpen')}
+                  onClick={() => toggleDrawer("isPlaylistSelectorOpen")}
                 >
                   <FaPlay className="text-gray-700" />
                 </motion.button>
@@ -784,7 +782,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                   exit={{ opacity: 0, x: 100 }}
                   transition={{ type: "spring", damping: 20, delay: 0.2 }}
                   className="fixed right-4 bottom-[220px] bg-white rounded-full p-4 shadow-xl z-60"
-                  onClick={() => toggleDrawer('isCreatePlaylistDrawerOpen')}
+                  onClick={() => toggleDrawer("isCreatePlaylistDrawerOpen")}
                 >
                   <FaPlus className="text-gray-700" />
                 </motion.button>
@@ -794,14 +792,15 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
 
           {/* Przycisk ukrywania */}
           <Tooltip
-            content={areButtonsHidden ? 
-              "Kliknij, aby pokazać przyciski kontrolne" : 
-              "Kliknij, aby ukryć przyciski kontrolne"
+            content={
+              areButtonsHidden
+                ? "Kliknij, aby pokazać przyciski kontrolne"
+                : "Kliknij, aby ukryć przyciski kontrolne"
             }
           >
             <motion.button
               onClick={toggleButtonsVisibility}
-              className="fixed right-4 bottom-[160px] bg-white rounded-full p-4 shadow-xl z-60 flex items-center space-x-2"
+              className="fixed right-4 bottom-[160px] bg-white rounded-full p-4 shadow-xl z-500 flex items-center space-x-2"
             >
               {areButtonsHidden ? <FaEye /> : <FaEyeSlash />}
             </motion.button>
