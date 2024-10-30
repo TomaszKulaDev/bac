@@ -43,7 +43,7 @@ import { PlayerErrorBoundary } from "./ErrorBoundary/PlayerErrorBoundary";
 import { ErrorLogBuffer } from "../utils/ErrorLogBuffer";
 import { YouTubeError } from "../utils/youtube";
 import { useYouTubeErrorHandler } from "../hooks/useYouTubeErrorHandler";
-import MobileDrawer from "./MobileDrawer";
+import MobileDrawer from "./drawers/MobileDrawer";
 import { motion } from "framer-motion";
 import PlaylistSelectorDrawer from "./drawers/PlaylistSelectorDrawer";
 import CreatePlaylistDrawer from "./drawers/CreatePlaylistDrawer";

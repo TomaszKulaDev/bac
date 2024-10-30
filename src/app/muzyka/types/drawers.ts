@@ -1,5 +1,5 @@
 import { SortByType, SortOrderType } from "../hooks/useDrawers";
-import { Playlist } from "./playlist";
+import { Playlist, Song } from "../types";
 
 export interface BaseDrawerProps {
   isOpen: boolean;
@@ -34,4 +34,24 @@ export interface PlaylistSelectorDrawerProps {
   onPlayPlaylist: (playlistId: string) => void;
   isAuthenticated: boolean;
   showErrorToast: (message: string) => void;
+}
+
+export interface PlaylistManagerProps {
+  playlists: Playlist[];
+  songs: Song[];
+  expandedPlaylist: string | null;
+  setExpandedPlaylist: (id: string | null) => void;
+  onDeletePlaylist: (id: string) => void;
+  onRenamePlaylist: (id: string, name: string) => void;
+  onRemoveSongFromPlaylist: (playlistId: string, songId: string) => void;
+  onCreatePlaylist: () => void;
+  isMobile: boolean;
+  onPlayPlaylist: (id: string) => void;
+  currentPlaylistId: string | null;
+  onAddToPlaylist: (playlistId: string, songId: string) => void;
+  setIsModalOpen: (isOpen: boolean) => void;
+  isModalOpen: boolean;
+  showSuccessToast: (message: string) => void;
+  showErrorToast: (message: string) => void;
+  showInfoToast: (message: string) => void;
 }

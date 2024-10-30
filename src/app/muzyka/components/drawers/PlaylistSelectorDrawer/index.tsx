@@ -1,6 +1,6 @@
 import BaseDrawer from "../base/BaseDrawer";
 import PlaylistList from "./PlaylistList";
-import { PlaylistSelectorDrawerProps } from "../../../types";
+import { PlaylistSelectorDrawerProps } from "../../../types/drawers";
 import { useCallback } from "react";
 
 const PlaylistSelectorDrawer: React.FC<PlaylistSelectorDrawerProps> = ({

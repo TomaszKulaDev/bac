@@ -3,7 +3,7 @@ import { RootState } from "@/store/store";
 import PlaylistItem from "./PlaylistItem";
 import CreatePlaylistButton from "./CreatePlaylistButton";
 import CreatePlaylistModal from "../../CreatePlaylistModal";
-import { PlaylistManagerProps } from "../../../types";
+import { PlaylistManagerProps } from "../../../types/drawers";
 import { AnimatePresence, motion } from "framer-motion";
 
 const PlaylistManager: React.FC<PlaylistManagerProps> = ({

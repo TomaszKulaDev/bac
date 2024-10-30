@@ -9,6 +9,7 @@ import {
 import PlaylistSongs from "./PlaylistSongs";
 import { Playlist, Song } from "../../../../types";
 import PlaylistHeader from "../../../PlaylistHeader";
+import PlaylistControls from "./PlaylistControls";
 
 interface PlaylistItemProps {
   playlist: Playlist;

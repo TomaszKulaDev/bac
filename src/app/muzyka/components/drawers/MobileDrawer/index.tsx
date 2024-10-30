@@ -1,6 +1,6 @@
 import BaseDrawer from "../base/BaseDrawer";
 import SortingOptions from "./SortingOptions";
-import { MobileDrawerProps } from "../../../types";
+import { MobileDrawerProps } from "../../../types/drawers";
 import { SortByType } from "@/app/muzyka/hooks/useDrawers";
 
 const MobileDrawer: React.FC<MobileDrawerProps> = ({
