@@ -11,6 +11,7 @@ Struktura plików projektu:
 │   ├── images/
 │   │   ├── hero_img.jpg (.jpg, 122.10 KB)
 │   │   └── open-in-browser.png (.png, 36.73 KB)
+│   ├── patterns/
 │   └── robots.txt (.txt, 0.07 KB)
 ├── README.md (.md, 3.07 KB)
 ├── src/
@@ -77,63 +78,76 @@ Struktura plików projektu:
 │   │   │   └── page.tsx (.tsx, 0.11 KB)
 │   │   ├── favicon.ico (.ico, 25.32 KB)
 │   │   ├── forgot-password/
-│   │   │   └── page.tsx (.tsx, 4.31 KB)
+│   │   │   └── page.tsx (.tsx, 5.92 KB)
 │   │   ├── funny-images/
 │   │   │   └── page.tsx (.tsx, 0.12 KB)
 │   │   ├── gamification/
 │   │   │   └── page.tsx (.tsx, 0.12 KB)
-│   │   ├── globals.css (.css, 0.94 KB)
+│   │   ├── globals.css (.css, 2.24 KB)
 │   │   ├── jobs/
 │   │   │   └── page.tsx (.tsx, 0.11 KB)
 │   │   ├── layout.tsx (.tsx, 4.36 KB)
 │   │   ├── login/
-│   │   │   └── page.tsx (.tsx, 8.22 KB)
+│   │   │   ├── Input.tsx (.tsx, 1.88 KB)
+│   │   │   └── page.tsx (.tsx, 23.19 KB)
 │   │   ├── mentorship/
 │   │   │   └── page.tsx (.tsx, 0.12 KB)
 │   │   ├── muzyka/
-│   │   │   ├── actions/
 │   │   │   ├── components/
-│   │   │   │   ├── BaciataRisingBanner.tsx (.tsx, 0.67 KB)
-│   │   │   │   ├── CreatePlaylistModal.tsx (.tsx, 3.35 KB)
+│   │   │   │   ├── BaciataRisingBanner.tsx (.tsx, 3.55 KB)
+│   │   │   │   ├── CreatePlaylistDrawer.tsx (.tsx, 2.36 KB)
+│   │   │   │   ├── CreatePlaylistModal.tsx (.tsx, 6.76 KB)
+│   │   │   │   ├── drawers/
+│   │   │   │   ├── ErrorBoundary/
+│   │   │   │   │   └── PlayerErrorBoundary.tsx (.tsx, 7.31 KB)
 │   │   │   │   ├── index.ts (.ts, 0.06 KB)
-│   │   │   │   ├── MusicPlayer.tsx (.tsx, 19.30 KB)
+│   │   │   │   ├── MobileDrawer.tsx (.tsx, 3.61 KB)
+│   │   │   │   ├── MusicPlayer.tsx (.tsx, 26.18 KB)
 │   │   │   │   ├── playback/
 │   │   │   │   │   ├── ActionButtons.tsx (.tsx, 2.81 KB)
-│   │   │   │   │   ├── PlaybackBar.tsx (.tsx, 3.36 KB)
-│   │   │   │   │   ├── PlaybackControls.tsx (.tsx, 2.45 KB)
-│   │   │   │   │   ├── SeekBar.tsx (.tsx, 1.04 KB)
-│   │   │   │   │   ├── TrackInfo.tsx (.tsx, 1.03 KB)
+│   │   │   │   │   ├── PlaybackBar.tsx (.tsx, 3.37 KB)
+│   │   │   │   │   ├── PlaybackControls.tsx (.tsx, 3.22 KB)
+│   │   │   │   │   ├── SeekBar.tsx (.tsx, 2.53 KB)
+│   │   │   │   │   ├── TrackInfo.tsx (.tsx, 1.38 KB)
 │   │   │   │   │   └── VolumeControl.tsx (.tsx, 1.45 KB)
-│   │   │   │   ├── PlaylistHeader.tsx (.tsx, 0.92 KB)
-│   │   │   │   ├── PlaylistManager.tsx (.tsx, 9.27 KB)
-│   │   │   │   ├── SongList.tsx (.tsx, 6.78 KB)
+│   │   │   │   ├── PlaylistHeader.tsx (.tsx, 2.58 KB)
+│   │   │   │   ├── PlaylistManager.tsx (.tsx, 9.96 KB)
+│   │   │   │   ├── PlaylistSelectorDrawer.tsx (.tsx, 4.04 KB)
+│   │   │   │   ├── SongList.tsx (.tsx, 8.03 KB)
 │   │   │   │   └── SortControl.tsx (.tsx, 2.70 KB)
-│   │   │   ├── context/
 │   │   │   ├── hooks/
 │   │   │   │   ├── useDebounce.ts (.ts, 0.40 KB)
-│   │   │   │   ├── usePlaybackControls.ts (.ts, 3.69 KB)
+│   │   │   │   ├── useDrawers.ts (.ts, 4.70 KB)
+│   │   │   │   ├── usePlaybackControls.ts (.ts, 3.53 KB)
 │   │   │   │   ├── useResponsive.ts (.ts, 2.08 KB)
-│   │   │   │   ├── useSortedAndFilteredSongs.ts (.ts, 1.07 KB)
+│   │   │   │   ├── useSortedAndFilteredSongs.ts (.ts, 1.69 KB)
 │   │   │   │   ├── useValidation.ts (.ts, 0.94 KB)
-│   │   │   │   ├── useYouTubeError.ts (.ts, 0.61 KB)
+│   │   │   │   ├── useYouTubeError.ts (.ts, 2.90 KB)
+│   │   │   │   ├── useYouTubeErrorHandler.ts (.ts, 2.28 KB)
 │   │   │   │   └── useYouTubePlayer.ts (.ts, 2.14 KB)
-│   │   │   ├── page.tsx (.tsx, 13.15 KB)
+│   │   │   ├── page.tsx (.tsx, 14.04 KB)
 │   │   │   ├── types/
+│   │   │   │   ├── errors.ts (.ts, 0.31 KB)
 │   │   │   │   ├── index.ts (.ts, 0.29 KB)
 │   │   │   │   └── validation.ts (.ts, 0.23 KB)
 │   │   │   ├── types.ts (.ts, 1.71 KB)
 │   │   │   └── utils/
+│   │   │       ├── ErrorLogBuffer.ts (.ts, 2.46 KB)
+│   │   │       ├── errorLogger.ts (.ts, 4.27 KB)
 │   │   │       ├── formatTime.ts (.ts, 0.20 KB)
 │   │   │       ├── sortUtils.ts (.ts, 0.56 KB)
 │   │   │       └── youtube.ts (.ts, 2.82 KB)
 │   │   ├── page.tsx (.tsx, 2.38 KB)
 │   │   ├── polityka-prywatnosci-baciata-pl/
-│   │   │   └── page.tsx (.tsx, 3.02 KB)
-│   │   ├── privacy-policy/
+│   │   │   └── page.tsx (.tsx, 5.39 KB)
 │   │   ├── profile/
 │   │   │   └── page.tsx (.tsx, 8.01 KB)
 │   │   ├── register/
-│   │   │   └── page.tsx (.tsx, 12.63 KB)
+│   │   │   ├── BannerGrid.tsx (.tsx, 6.59 KB)
+│   │   │   ├── Input.tsx (.tsx, 2.94 KB)
+│   │   │   ├── page.tsx (.tsx, 13.14 KB)
+│   │   │   ├── PremiumBanner.tsx (.tsx, 2.46 KB)
+│   │   │   └── ui/
 │   │   ├── reset-password/
 │   │   │   ├── page.tsx (.tsx, 0.24 KB)
 │   │   │   └── ResetPasswordClient.tsx (.tsx, 7.39 KB)
@@ -142,24 +156,27 @@ Struktura plików projektu:
 │   │   │   └── page.tsx (.tsx, 0.12 KB)
 │   │   ├── taneczne-historie/
 │   │   │   └── page.tsx (.tsx, 8.76 KB)
-│   │   ├── terms-of-service/
 │   │   ├── users/
 │   │   │   └── page.tsx (.tsx, 0.10 KB)
 │   │   ├── verify/
 │   │   │   ├── page.tsx (.tsx, 0.42 KB)
 │   │   │   └── VerifyComponent.tsx (.tsx, 2.87 KB)
 │   │   └── warunki-korzystania-z-uslugi-baciata-pl/
-│   │       └── page.tsx (.tsx, 2.39 KB)
+│   │       └── page.tsx (.tsx, 4.25 KB)
 │   ├── components/
 │   │   ├── AdminCard.tsx (.tsx, 0.61 KB)
 │   │   ├── AuthSync.tsx (.tsx, 2.33 KB)
 │   │   ├── ClientLayout.tsx (.tsx, 0.89 KB)
 │   │   ├── ClientProviders.tsx (.tsx, 0.38 KB)
-│   │   ├── LoadingSpinner.tsx (.tsx, 0.56 KB)
+│   │   ├── LoadingSpinner.tsx (.tsx, 0.76 KB)
 │   │   ├── NavContent.tsx (.tsx, 4.57 KB)
 │   │   └── UserMenu.tsx (.tsx, 2.21 KB)
 │   ├── contexts/
 │   │   └── AuthContext.tsx (.tsx, 1.18 KB)
+│   ├── docs/
+│   │   ├── README.md (.md, 0.96 KB)
+│   │   └── sortowanie/
+│   │       └── readme.md (.md, 0.27 KB)
 │   ├── global.d.ts (.ts, 0.67 KB)
 │   ├── hooks/
 │   │   ├── useAuth.ts (.ts, 1.16 KB)
@@ -185,7 +202,8 @@ Struktura plików projektu:
 │   │   │   │   └── songsSlice.ts (.ts, 8.14 KB)
 │   │   │   └── types.ts (.ts, 0.42 KB)
 │   │   └── store.ts (.ts, 0.77 KB)
-│   ├── struktura-projektu.txt (.txt, 7.74 KB)
+│   ├── struktura-projektu.txt (.txt, 9.55 KB)
+│   ├── styles/
 │   ├── tailwind.config.ts (.ts, 1.35 KB)
 │   ├── types/
 │   │   └── next-auth.d.ts (.ts, 1.12 KB)
@@ -194,4 +212,4 @@ Struktura plików projektu:
 │       └── projectAnalyzer.js (.js, 36.79 KB)
 ├── tailwind.config.ts (.ts, 1.59 KB)
 ├── tsconfig.json (.json, 1.84 KB)
-└── tsconfig.tsbuildinfo (.tsbuildinfo, 242.56 KB)
+└── tsconfig.tsbuildinfo (.tsbuildinfo, 255.54 KB)
