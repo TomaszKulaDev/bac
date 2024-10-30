@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
+import { motion } from 'framer-motion';
 
 export type SortByType = "date" | "title" | "artist" | "impro" | "beginnerFriendly";
 export type SortOrderType = "asc" | "desc";
@@ -51,6 +52,8 @@ export const useDrawers = ({
     showDrawerButton: true,
     hasReachedPlaylist: false
   });
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const handlePlaylistSelect = useCallback((playlistId: string) => {
     if (!isAuthenticated) {
@@ -132,6 +135,8 @@ export const useDrawers = ({
     toggleDrawer,
     closeAllDrawers,
     setDrawerStates,
-    toggleDrawerState
+    toggleDrawerState,
+    isLoading,
+    setIsLoading
   };
 };
