@@ -15,6 +15,15 @@ export interface MobileDrawerProps {
   sortBy: SortByType;
   sortOrder: SortOrderType;
   onSortChange: (sortBy: SortByType, sortOrder: SortOrderType) => void;
+  playlists: Playlist[];
+  songs: Song[];
+  expandedPlaylist: string | null;
+  setExpandedPlaylist: (id: string | null) => void;
+  currentPlaylistId: string | null;
+  onPlayPlaylist: (id: string) => void;
+  isAuthenticated: boolean;
+  showErrorToast: (message: string) => void;
+  showSuccessToast: (message: string) => void;
 }
 
 export interface CreatePlaylistDrawerProps {
