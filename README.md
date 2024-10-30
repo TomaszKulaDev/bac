@@ -36,48 +36,50 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
 Dodany skrypt do analizy struktury projektu:
+//
 
 ```bash
 npm run analyze
-``````
+```
+
 src/app/muzyka/types.ts
-    Definiuje interfejs Song z polem impro
+Definiuje interfejs Song z polem impro
 
 src/store/slices/features/songsSlice.ts
-    Zawiera logikę Redux do zarządzania stanem piosenek, w tym impro
+Zawiera logikę Redux do zarządzania stanem piosenek, w tym impro
 
 src/app/api/songs/route.ts
-    Obsługuje dodawanie piosenek do bazy danych, w tym pole impro
+Obsługuje dodawanie piosenek do bazy danych, w tym pole impro
 
 src/app/muzyka/utils/sortUtils.ts
-    Zawiera funkcję sortowania piosenek, w tym po polu impro
+Zawiera funkcję sortowania piosenek, w tym po polu impro
 
 src/app/muzyka/components/SongList.tsx
-    Wyświetla listę piosenek, prawdopodobnie uwzględniając sortowanie
+Wyświetla listę piosenek, prawdopodobnie uwzględniając sortowanie
 
 src/app/admin/music/components/AddSongForm.tsx
-    Formularz do dodawania nowych piosenek, zawiera pole dla impro
+Formularz do dodawania nowych piosenek, zawiera pole dla impro
 
 src/app/admin/music/page.tsx
-    Strona admina do zarządzania piosenkami, obsługuje dodawanie piosenek z impro
+Strona admina do zarządzania piosenkami, obsługuje dodawanie piosenek z impro
 
 src/app/muzyka/page.tsx
-    Główna strona muzyki, obsługuje pobieranie i wyświetlanie piosenek z impro
+Główna strona muzyki, obsługuje pobieranie i wyświetlanie piosenek z impro
 
 src/models/Song.ts
-    Definiuje model MongoDB dla piosenek, zawiera pole impro
+Definiuje model MongoDB dla piosenek, zawiera pole impro
 
 src/app/api/submit-song/route.ts
-    Może zawierać dodatkową logikę walidacji dla pola impro przy dodawaniu piosenek
+Może zawierać dodatkową logikę walidacji dla pola impro przy dodawaniu piosenek
 
 src/app/muzyka/components/MusicPlayer.tsx
-    Komponent odtwarzacza muzyki, prawdopodobnie uwzględnia pole impro przy wyświetlaniu informacji o piosence
+Komponent odtwarzacza muzyki, prawdopodobnie uwzględnia pole impro przy wyświetlaniu informacji o piosence
 
 src/app/muzyka/components/PlaylistManager.tsx
-    Zarządza playlistami, może uwzględniać pole impro przy dodawaniu piosenek do playlist
+Zarządza playlistami, może uwzględniać pole impro przy dodawaniu piosenek do playlist
 
 src/app/admin/music/components/SongList.tsx
-    Lista piosenek w panelu admina, prawdopodobnie wyświetla informację o impro
+Lista piosenek w panelu admina, prawdopodobnie wyświetla informację o impro
 
 src/app/muzyka/utils/youtube.ts
-    Może zawierać funkcje pomocnicze związane z YouTube, które mogą być używane przy dodawaniu piosenek z impro
+Może zawierać funkcje pomocnicze związane z YouTube, które mogą być używane przy dodawaniu piosenek z impro
