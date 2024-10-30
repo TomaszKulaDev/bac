@@ -22,6 +22,7 @@ interface DrawerStates {
   isMobileDrawerOpen: boolean;
   showDrawerButton: boolean;
   hasReachedPlaylist: boolean;
+  areButtonsHidden: boolean;
 }
 
 interface UseDrawersReturn extends DrawerStates {
@@ -32,6 +33,7 @@ interface UseDrawersReturn extends DrawerStates {
   closeAllDrawers: () => void;
   setDrawerStates: React.Dispatch<React.SetStateAction<DrawerStates>>;
   toggleDrawerState: (drawerName: keyof DrawerStates, value: boolean) => void;
+  toggleButtonsVisibility: () => void;
 }
 
 export const useDrawers = ({
@@ -50,7 +52,8 @@ export const useDrawers = ({
     isCreatePlaylistDrawerOpen: false,
     isMobileDrawerOpen: false,
     showDrawerButton: true,
-    hasReachedPlaylist: false
+    hasReachedPlaylist: false,
+    areButtonsHidden: false
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -127,6 +130,32 @@ export const useDrawers = ({
     }));
   }, []);
 
+  const toggleButtonsVisibility = useCallback(() => {
+    try {
+      setDrawerStates(prev => {
+        const newState = {
+          ...prev,
+          areButtonsHidden: !prev.areButtonsHidden
+        };
+        localStorage.setItem('musicPlayerButtonsHidden', (!prev.areButtonsHidden).toString());
+        return newState;
+      });
+    } catch (error) {
+      console.error('Error toggling buttons visibility:', error);
+      // Opcjonalnie: showErrorToast('Wystąpił błąd podczas zmiany widoczności przycisków');
+    }
+  }, []);
+
+  useEffect(() => {
+    const savedState = localStorage.getItem('musicPlayerButtonsHidden');
+    if (savedState !== null) {
+      setDrawerStates(prev => ({
+        ...prev,
+        areButtonsHidden: savedState === 'true'
+      }));
+    }
+  }, []);
+
   return {
     ...drawerStates,
     handlePlaylistSelect,
@@ -136,7 +165,14 @@ export const useDrawers = ({
     closeAllDrawers,
     setDrawerStates,
     toggleDrawerState,
+    toggleButtonsVisibility,
     isLoading,
     setIsLoading
   };
 };
+
+export const DRAWER_TYPES = {
+  PLAYLIST: 'isPlaylistSelectorOpen',
+  CREATE: 'isCreatePlaylistDrawerOpen',
+  MOBILE: 'isMobileDrawerOpen'
+} as const;

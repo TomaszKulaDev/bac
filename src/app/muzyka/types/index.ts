@@ -16,3 +16,9 @@ export interface Playlist {
   name: string;
   songs: string[];
 }
+
+interface MusicPlayerProps {
+  // ... istniejące props
+  onToggleButtonsVisibility?: () => void;
+  initialButtonsVisible?: boolean;
+}

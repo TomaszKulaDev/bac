@@ -23,6 +23,8 @@ import {
   FaMusic,
   FaPlus,
   FaTimes,
+  FaEyeSlash,
+  FaEye,
 } from "react-icons/fa";
 import { Song, Playlist, RepeatMode } from "../types";
 import { RootState } from "../../../store/store";
@@ -44,10 +46,11 @@ import { ErrorLogBuffer } from "../utils/ErrorLogBuffer";
 import { YouTubeError } from "../utils/youtube";
 import { useYouTubeErrorHandler } from "../hooks/useYouTubeErrorHandler";
 import MobileDrawer from "./MobileDrawer";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import PlaylistSelectorDrawer from "./PlaylistSelectorDrawer";
 import CreatePlaylistDrawer from "./CreatePlaylistDrawer";
-import { useDrawers, SortByType, SortOrderType } from '../hooks/useDrawers';
+import { useDrawers, SortByType, SortOrderType } from "../hooks/useDrawers";
+import { Tooltip } from "@/components/ui/Tooltip";
 
 interface MusicPlayerProps {
   songs: Song[];
@@ -445,7 +448,9 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     handleCreatePlaylist,
     handleSortChange,
     toggleDrawer,
-    closeAllDrawers
+    closeAllDrawers,
+    toggleButtonsVisibility,
+    areButtonsHidden,
   } = useDrawers({
     isAuthenticated,
     showErrorToast,
@@ -455,14 +460,14 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     sortBy,
     sortOrder,
     isMobile,
-    setIsModalOpen
+    setIsModalOpen,
   });
 
-  console.log('Debug info:', {
+  console.log("Debug info:", {
     isMobile,
     showDrawerButton,
     hasReachedPlaylist,
-    playlists: playlists.length
+    playlists: playlists.length,
   });
 
   return (
@@ -703,7 +708,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
         <>
           <MobileDrawer
             isOpen={isMobileDrawerOpen}
-            onClose={() => toggleDrawer('isMobileDrawerOpen')}
+            onClose={() => toggleDrawer("isMobileDrawerOpen")}
             sortBy={sortBy}
             sortOrder={sortOrder}
             onSortChange={handleSortChange}
@@ -720,73 +725,22 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
             showErrorToast={showErrorToast}
             showSuccessToast={showSuccessToast}
           />
-          {isMobile && showDrawerButton && (
-            <motion.button
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => toggleDrawer('isMobileDrawerOpen')}
-              className="fixed right-4 bottom-96 bg-white rounded-full p-4 shadow-xl z-30 flex items-center space-x-2 border border-gray-100"
-            >
-              <div className="flex items-center">
-                <FaSort size={16} className="text-gray-700" />
-                <span className="ml-2 text-sm font-medium text-gray-700">
-                  Sortuj
-                </span>
-              </div>
-            </motion.button>
-          )}
+         
           <PlaylistSelectorDrawer
             isOpen={isPlaylistSelectorOpen}
-            onClose={() => toggleDrawer('isPlaylistSelectorOpen')}
+            onClose={() => toggleDrawer("isPlaylistSelectorOpen")}
             playlists={playlists}
             currentPlaylistId={currentPlaylistId}
             onPlayPlaylist={handlePlaylistSelect}
             isAuthenticated={isAuthenticated}
             showErrorToast={showErrorToast}
           />
-          {showDrawerButton && (
-            <motion.button
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => toggleDrawer('isPlaylistSelectorOpen')}
-              className="fixed right-4 bottom-80 bg-white rounded-full p-4 shadow-xl z-30 flex items-center space-x-2 border border-gray-100"
-            >
-              <div className="flex items-center">
-                <FaMusic size={16} className="text-gray-700" />
-                <span className="ml-2 text-sm font-medium text-gray-700">
-                  Playlisty
-                </span>
-              </div>
-            </motion.button>
-          )}
-          {showDrawerButton && playlists.length < 2 && (
-            <motion.button
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => toggleDrawer('isCreatePlaylistDrawerOpen')}
-              className="fixed right-4 bottom-64 bg-white rounded-full p-4 shadow-xl z-30 flex items-center space-x-2 border border-gray-100"
-            >
-              <div className="flex items-center">
-                <FaPlus size={16} className="text-gray-700" />
-                <span className="ml-2 text-sm font-medium text-gray-700">
-                  Nowa playlista
-                </span>
-              </div>
-            </motion.button>
-          )}
+      
+       
 
           <CreatePlaylistDrawer
             isOpen={isCreatePlaylistDrawerOpen}
-            onClose={() => toggleDrawer('isCreatePlaylistDrawerOpen')}
+            onClose={() => toggleDrawer("isCreatePlaylistDrawerOpen")}
             onCreatePlaylist={handleCreatePlaylist}
             isAuthenticated={isAuthenticated}
             showErrorToast={showErrorToast}
@@ -794,9 +748,69 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           />
         </>
       )}
+      {isMobile && (
+        <>
+          <AnimatePresence>
+            {!areButtonsHidden && (
+              <>
+                {/* Przycisk Sortowania */}
+                <motion.button
+                  initial={{ opacity: 0, x: 100 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 100 }}
+                  transition={{ type: "spring", damping: 20 }}
+                  className="fixed right-4 bottom-[340px] bg-white rounded-full p-4 shadow-xl z-30"
+                  onClick={() => toggleDrawer("isMobileDrawerOpen")}
+                >
+                  <FaSort className="text-gray-700" />
+                </motion.button>
+
+                {/* Przycisk Play/Playlist */}
+                <motion.button
+                  initial={{ opacity: 0, x: 100 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 100 }}
+                  transition={{ type: "spring", damping: 20, delay: 0.1 }}
+                  className="fixed right-4 bottom-[280px] bg-white rounded-full p-4 shadow-xl z-30"
+                  onClick={() => toggleDrawer("isPlaylistSelectorOpen")}
+                >
+                  <FaPlay className="text-gray-700" />
+                </motion.button>
+
+                {/* Przycisk Nowa playlista */}
+                <motion.button
+                  initial={{ opacity: 0, x: 100 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 100 }}
+                  transition={{ type: "spring", damping: 20, delay: 0.2 }}
+                  className="fixed right-4 bottom-[220px] bg-white rounded-full p-4 shadow-xl z-30"
+                  onClick={() => toggleDrawer("isCreatePlaylistDrawerOpen")}
+                >
+                  <FaPlus className="text-gray-700" />
+                </motion.button>
+              </>
+            )}
+          </AnimatePresence>
+
+          {/* Przycisk ukrywania - zawsze widoczny */}
+          <Tooltip
+            content={
+              areButtonsHidden
+                ? "Kliknij, aby pokazać przyciski kontrolne"
+                : "Kliknij, aby ukryć przyciski kontrolne"
+            }
+          >
+            <motion.button
+              onClick={toggleButtonsVisibility}
+              className="fixed right-4 bottom-[160px] bg-white rounded-full p-4 shadow-xl z-30 flex items-center space-x-2"
+            >
+              {areButtonsHidden ? <FaEye /> : <FaEyeSlash />}
+            </motion.button>
+          </Tooltip>
+        </>
+      )}
     </PlayerErrorBoundary>
   );
 };
 
 export default MusicPlayer;
-
