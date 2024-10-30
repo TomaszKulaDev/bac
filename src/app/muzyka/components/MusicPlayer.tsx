@@ -800,7 +800,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           >
             <motion.button
               onClick={toggleButtonsVisibility}
-              className="fixed right-4 bottom-[160px] bg-white rounded-full p-4 shadow-xl z-9999 flex items-center space-x-2"
+              className="fixed right-4 bottom-[160px] bg-white rounded-full p-4 shadow-xl z-[100] flex items-center space-x-2"
             >
               {areButtonsHidden ? <FaEye /> : <FaEyeSlash />}
             </motion.button>
