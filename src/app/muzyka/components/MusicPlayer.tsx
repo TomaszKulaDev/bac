@@ -458,6 +458,13 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     setIsModalOpen
   });
 
+  console.log('Debug info:', {
+    isMobile,
+    showDrawerButton,
+    hasReachedPlaylist,
+    playlists: playlists.length
+  });
+
   return (
     <PlayerErrorBoundary
       onError={(error, errorInfo) => {

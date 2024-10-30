@@ -48,7 +48,7 @@ export const useDrawers = ({
     isPlaylistSelectorOpen: false,
     isCreatePlaylistDrawerOpen: false,
     isMobileDrawerOpen: false,
-    showDrawerButton: false,
+    showDrawerButton: true,
     hasReachedPlaylist: false
   });
 
@@ -89,8 +89,8 @@ export const useDrawers = ({
 
         setDrawerStates(prev => ({
           ...prev,
-          hasReachedPlaylist: playlistRect.top <= window.innerHeight,
-          showDrawerButton: playerRect.bottom < 0
+          hasReachedPlaylist: true,
+          showDrawerButton: true
         }));
       }
     };
