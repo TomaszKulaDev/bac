@@ -45,9 +45,9 @@ import { YouTubeError } from "../utils/youtube";
 import { useYouTubeErrorHandler } from "../hooks/useYouTubeErrorHandler";
 import MobileDrawer from "./MobileDrawer";
 import { motion } from "framer-motion";
-import PlaylistSelectorDrawer from "./PlaylistSelectorDrawer";
-import CreatePlaylistDrawer from "./CreatePlaylistDrawer";
-import { useDrawers, SortByType, SortOrderType } from '../hooks/useDrawers';
+import PlaylistSelectorDrawer from "./drawers/PlaylistSelectorDrawer";
+import CreatePlaylistDrawer from "./drawers/CreatePlaylistDrawer";
+import { useDrawers, SortByType, SortOrderType } from "../hooks/useDrawers";
 
 interface MusicPlayerProps {
   songs: Song[];
@@ -445,7 +445,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     closeAllDrawers,
     handlePlaylistSelect,
     handleCreatePlaylist,
-    handleSortChange
+    handleSortChange,
   } = useDrawers({
     isAuthenticated,
     showErrorToast,
@@ -457,7 +457,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     sortBy,
     sortOrder,
     isMobile,
-    setIsModalOpen
+    setIsModalOpen,
   });
 
   return (
@@ -698,7 +698,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
         <>
           <MobileDrawer
             isOpen={isMobileDrawerOpen}
-            onClose={() => toggleDrawer('isMobileDrawerOpen')}
+            onClose={() => toggleDrawer("isMobileDrawerOpen")}
             sortBy={sortBy}
             sortOrder={sortOrder}
             onSortChange={handleSortChange}
@@ -718,7 +718,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           {isMobile && showDrawerButton && (
             <div className="fixed bottom-4 right-4 z-50">
               <button
-                onClick={() => toggleDrawer('isMobileDrawerOpen')}
+                onClick={() => toggleDrawer("isMobileDrawerOpen")}
                 className="bg-primary text-white rounded-full p-4 shadow-lg"
               >
                 <FaMusic size={24} />
@@ -727,7 +727,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           )}
           <PlaylistSelectorDrawer
             isOpen={isPlaylistSelectorOpen}
-            onClose={() => toggleDrawer('isPlaylistSelectorOpen')}
+            onClose={() => toggleDrawer("isPlaylistSelectorOpen")}
             playlists={playlists}
             currentPlaylistId={currentPlaylistId}
             onPlayPlaylist={handlePlaylistSelect}
@@ -741,7 +741,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
               exit={{ opacity: 0, scale: 0.8 }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => toggleDrawer('isPlaylistSelectorOpen')}
+              onClick={() => toggleDrawer("isPlaylistSelectorOpen")}
               className="fixed right-4 bottom-80 bg-white rounded-full p-4 shadow-xl z-30 flex items-center space-x-2 border border-gray-100"
             >
               <div className="flex items-center">
@@ -759,7 +759,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
               exit={{ opacity: 0, scale: 0.8 }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => toggleDrawer('isCreatePlaylistDrawerOpen')}
+              onClick={() => toggleDrawer("isCreatePlaylistDrawerOpen")}
               className="fixed right-4 bottom-64 bg-white rounded-full p-4 shadow-xl z-30 flex items-center space-x-2 border border-gray-100"
             >
               <div className="flex items-center">
@@ -773,7 +773,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
 
           <CreatePlaylistDrawer
             isOpen={isCreatePlaylistDrawerOpen}
-            onClose={() => toggleDrawer('isCreatePlaylistDrawerOpen')}
+            onClose={() => toggleDrawer("isCreatePlaylistDrawerOpen")}
             onCreatePlaylist={handleCreatePlaylist}
             isAuthenticated={isAuthenticated}
             showErrorToast={showErrorToast}
@@ -786,4 +786,3 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
 };
 
 export default MusicPlayer;
-
