@@ -144,7 +144,7 @@ const SongList: React.FC<SongListProps> = ({
             whileTap="tap"
             className={`flex items-center justify-between p-4 ${
               song.id === currentSong?.id
-                ? "bg-purple-100 shadow-md"
+                ? "bg-blue-100 shadow-md"
                 : "bg-white"
             } rounded-xl shadow-sm transition-all duration-200`}
             onClick={() => onSongSelectMemoized(song.id)}

@@ -22,14 +22,17 @@ const PlaylistSelectorDrawer: React.FC<PlaylistSelectorDrawerProps> = ({
   isAuthenticated,
   showErrorToast,
 }) => {
-  const handlePlaylistSelect = useCallback((playlistId: string) => {
-    if (!isAuthenticated) {
-      showErrorToast("Musisz być zalogowany, aby odtwarzać playlisty");
-      return;
-    }
-    onPlayPlaylist(playlistId);
-    onClose();
-  }, [isAuthenticated, showErrorToast, onPlayPlaylist, onClose]);
+  const handlePlaylistSelect = useCallback(
+    (playlistId: string) => {
+      if (!isAuthenticated) {
+        showErrorToast("Musisz być zalogowany, aby odtwarzać playlisty");
+        return;
+      }
+      onPlayPlaylist(playlistId);
+      onClose();
+    },
+    [isAuthenticated, showErrorToast, onPlayPlaylist, onClose]
+  );
 
   return (
     <AnimatePresence>
@@ -77,7 +80,7 @@ const PlaylistSelectorDrawer: React.FC<PlaylistSelectorDrawerProps> = ({
                     className={`w-full text-left p-4 rounded-lg flex items-center justify-between
                       ${
                         currentPlaylistId === playlist.id
-                          ? "bg-purple-50 text-purple-700 border border-purple-200"
+                          ? "bg-purple-50 text-blue-700 border border-blue-200"
                           : "hover:bg-gray-50 border border-transparent"
                       }`}
                   >
@@ -85,7 +88,7 @@ const PlaylistSelectorDrawer: React.FC<PlaylistSelectorDrawerProps> = ({
                       <FaMusic
                         className={
                           currentPlaylistId === playlist.id
-                            ? "text-purple-700"
+                            ? "text-blue-700"
                             : "text-gray-400"
                         }
                       />
@@ -95,7 +98,7 @@ const PlaylistSelectorDrawer: React.FC<PlaylistSelectorDrawerProps> = ({
                       </span>
                     </div>
                     {currentPlaylistId === playlist.id && (
-                      <FaPlay className="text-purple-700" />
+                      <FaPlay className="text-blue-700" />
                     )}
                   </motion.button>
                 ))

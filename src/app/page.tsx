@@ -40,7 +40,7 @@ export default function Home(): React.ReactElement {
           </Link>
           <Link
             href="/muzyka"
-            className="bg-purple-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-purple-700 transition duration-300 inline-block"
+            className="bg-purple-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-blue-700 transition duration-300 inline-block"
           >
             Odkryj muzykę
           </Link>

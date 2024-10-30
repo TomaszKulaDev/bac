@@ -551,7 +551,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                       <FaRedo
                         size={28}
                         className={
-                          repeatMode.playlist === "on" ? "text-purple-500" : ""
+                          repeatMode.playlist === "on" ? "text-blue-500" : ""
                         }
                       />
                     </button>
@@ -594,7 +594,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                       <FaRetweet
                         size={28}
                         className={
-                          repeatMode.song === "on" ? "text-purple-500" : ""
+                          repeatMode.song === "on" ? "text-blue-500" : ""
                         }
                       />
                     </button>
@@ -606,14 +606,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
 
           {isMobile && (
             <>
-              {/* <button
-                onClick={() => setIsModalOpen(true)}
-                className="w-full bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 transition duration-300 mb-4 flex items-center justify-center"
-                aria-label="Utwórz nową playlistę"
-                title="Utwórz nową playlistę"
-              >
-                <FaPlus className="mr-2" /> Utwórz nową playlistę
-              </button> */}
               {isModalOpen && (
                 <CreatePlaylistModal
                   onClose={() => setIsModalOpen(false)}

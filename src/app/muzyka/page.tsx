@@ -321,7 +321,7 @@ const MusicPage: React.FC = () => {
         </div>
       </div>
       {isMobile && (
-        <section className="w-full p-8 mt-8 mb-24 bg-gradient-to-br from-purple-50 to-blue-50 rounded-lg shadow-lg">
+        <section className="w-full p-8 mt-8 mb-24 bg-gradient-to-br from-blue-50 to-blue-50 rounded-lg shadow-lg">
           <h2 className="text-3xl font-bold mb-6 text-gray-800">
             Popularne tagi
           </h2>
@@ -336,7 +336,7 @@ const MusicPage: React.FC = () => {
             ].map((tag, index) => (
               <span
                 key={index}
-                className="bg-white text-purple-700 px-4 py-2 rounded-full text-sm font-medium shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer"
+                className="bg-white text-blue-700 px-4 py-2 rounded-full text-sm font-medium shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer"
               >
                 #{tag}
               </span>

@@ -1,4 +1,11 @@
-import { FaPlay, FaPause, FaBackward, FaForward, FaRetweet, FaRedo } from "react-icons/fa";
+import {
+  FaPlay,
+  FaPause,
+  FaBackward,
+  FaForward,
+  FaRetweet,
+  FaRedo,
+} from "react-icons/fa";
 import { RepeatMode } from "../../types";
 
 interface PlaybackControlsProps {
@@ -21,7 +28,11 @@ export const PlaybackControls: React.FC<PlaybackControlsProps> = ({
   isLoading = false,
 }) => {
   return (
-    <div className="flex items-center space-x-4" role="group" aria-label="Kontrolki odtwarzania">
+    <div
+      className="flex items-center space-x-4"
+      role="group"
+      aria-label="Kontrolki odtwarzania"
+    >
       <button
         onClick={() => onToggleRepeatMode("playlist")}
         className={`text-gray-600 p-2 rounded-full transition-all duration-300 ease-in-out ${
@@ -29,13 +40,17 @@ export const PlaybackControls: React.FC<PlaybackControlsProps> = ({
             ? "bg-gray-100 shadow-inner transform translate-y-px"
             : "hover:bg-gray-50 active:bg-gray-100 active:shadow-inner active:transform active:translate-y-px"
         }`}
-        aria-label={`Powtarzaj playlistę: ${repeatMode.playlist === "on" ? "włączone" : "wyłączone"}`}
+        aria-label={`Powtarzaj playlistę: ${
+          repeatMode.playlist === "on" ? "włączone" : "wyłączone"
+        }`}
         title="Powtarzaj playlistę"
         aria-pressed={repeatMode.playlist === "on"}
       >
-        <FaRedo 
-          size={24} 
-          className={`${repeatMode.playlist === "on" ? "text-purple-500" : ""} transform rotate-90`}
+        <FaRedo
+          size={24}
+          className={`${
+            repeatMode.playlist === "on" ? "text-blue-500" : ""
+          } transform rotate-90`}
         />
       </button>
 
@@ -48,7 +63,7 @@ export const PlaybackControls: React.FC<PlaybackControlsProps> = ({
       >
         <FaBackward size={24} />
       </button>
-      
+
       <button
         onClick={onTogglePlay}
         className="bg-white rounded-full p-4 shadow-lg transition-all duration-150 ease-in-out active:scale-95 hover:bg-gray-50"
@@ -58,7 +73,7 @@ export const PlaybackControls: React.FC<PlaybackControlsProps> = ({
       >
         {isPlaying ? <FaPause size={32} /> : <FaPlay size={32} />}
       </button>
-      
+
       <button
         onClick={onNext}
         className="text-gray-600 hover:text-gray-800 p-2 transition-all duration-150 ease-in-out active:scale-95"
@@ -68,7 +83,7 @@ export const PlaybackControls: React.FC<PlaybackControlsProps> = ({
       >
         <FaForward size={24} />
       </button>
-      
+
       <button
         onClick={() => onToggleRepeatMode("song")}
         className={`text-gray-600 p-2 rounded-full transition-all duration-300 ease-in-out ${
@@ -76,13 +91,15 @@ export const PlaybackControls: React.FC<PlaybackControlsProps> = ({
             ? "bg-gray-100 shadow-inner transform translate-y-px"
             : "hover:bg-gray-50 active:bg-gray-100 active:shadow-inner active:transform active:translate-y-px"
         }`}
-        aria-label={`Powtarzaj utwór: ${repeatMode.song === "on" ? "włączone" : "wyłączone"}`}
+        aria-label={`Powtarzaj utwór: ${
+          repeatMode.song === "on" ? "włączone" : "wyłączone"
+        }`}
         title="Powtarzaj utwór"
         aria-pressed={repeatMode.song === "on"}
       >
-        <FaRetweet 
-          size={24} 
-          className={repeatMode.song === "on" ? "text-purple-500" : ""}
+        <FaRetweet
+          size={24}
+          className={repeatMode.song === "on" ? "text-blue-500" : ""}
         />
       </button>
     </div>
