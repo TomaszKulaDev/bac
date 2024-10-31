@@ -55,6 +55,13 @@ const ITEM_HEIGHT = 96;
 const ITEM_PADDING = 16;
 
 const SongList = memo(({ songs, ...props }: SongListProps) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const LoadingState = () => (
+    <div className="flex-1 grid place-items-center">
+      <SongItemSkeleton />
+    </div>
+  );
+
   const sortedAndFilteredSongs = useSortedAndFilteredSongs(
     songs,
     props.sortBy,
@@ -98,7 +105,11 @@ const SongList = memo(({ songs, ...props }: SongListProps) => {
   }, []);
 
   return (
-    <div className="flex flex-col h-[calc(100vh-200px)]">
+    <div 
+      role="list"
+      aria-label="Lista utworów"
+      className="flex flex-col h-[calc(100vh-200px)]"
+    >
       {props.showSearch && (
         <SearchInput 
           value={props.filterText}
