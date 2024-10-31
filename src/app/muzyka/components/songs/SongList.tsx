@@ -80,7 +80,7 @@ const SongList = memo(({ songs, ...props }: SongListProps) => {
   ]);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 pb-24">
       {props.showSearch && (
         <SearchInput 
           value={props.filterText}
