@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { FaPlay, FaBookmark } from "react-icons/fa";
 import { Song, Playlist } from "../../types";
 import { getYouTubeThumbnail } from "../../utils/youtube";
+import { usePlaylistManagement } from "../../hooks/usePlaylistManagement";
+import { toast } from "react-toastify";
 
 interface SongItemProps {
   song: Song;
@@ -30,6 +32,14 @@ const SongItem: React.FC<SongItemProps> = ({
   onAddToPlaylist,
   playlists,
 }) => {
+  const { isInPlaylist } = usePlaylistManagement(song.id, playlists);
+
+  useEffect(() => {
+    if (isInPlaylist) {
+      toast.success(`Utwór "${song.title}" jest już w Twoich playlistach`);
+    }
+  }, [isInPlaylist, song.title]);
+
   const itemVariants = {
     hidden: { opacity: 0, x: -20 },
     visible: {
@@ -70,6 +80,9 @@ const SongItem: React.FC<SongItemProps> = ({
             layout="fill"
             objectFit="cover"
             className="rounded-lg"
+            loading="lazy"
+            placeholder="blur"
+            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRg..."
           />
           {song.id === currentSong?.id && isPlaying && (
             <motion.div
@@ -97,6 +110,11 @@ const SongItem: React.FC<SongItemProps> = ({
             {song.beginnerFriendly && (
               <span className="px-2 py-0.5 bg-green-100 text-green-800 text-xs rounded-full">
                 Dla początkujących
+              </span>
+            )}
+            {isInPlaylist && (
+              <span className="px-2 py-0.5 bg-blue-50 text-blue-600 text-xs rounded-full">
+                W playliście
               </span>
             )}
           </div>

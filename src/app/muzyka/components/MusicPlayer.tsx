@@ -463,12 +463,17 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     setIsModalOpen,
   });
 
-  console.log("Debug info:", {
+  const debugInfo = useMemo(() => ({
     isMobile,
     showDrawerButton,
     hasReachedPlaylist,
-    playlists: playlists.length,
-  });
+    playlists: playlists.length
+  }), [isMobile, showDrawerButton, hasReachedPlaylist, playlists.length]);
+
+  // Używaj tylko gdy DEBUG=true
+  if (process.env.NODE_ENV === 'development') {
+    console.debug('Debug info:', debugInfo);
+  }
 
   return (
     <PlayerErrorBoundary

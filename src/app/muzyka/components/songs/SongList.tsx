@@ -9,6 +9,8 @@ import { useSortedAndFilteredSongs } from "../../hooks/useSortedAndFilteredSongs
 import SongItem from "./SongItem";
 import SearchInput from "./SearchInput";
 import LoadMoreButton from "./LoadMoreButton";
+import dynamic from 'next/dynamic';
+import SongItemSkeleton from "./SongItemSkeleton";
 
 interface SongListProps {
   songs: Song[];
@@ -95,6 +97,16 @@ const SongList: React.FC<SongListProps> = ({
     },
   };
 
+  const SongItemLazy = dynamic(() => import('./SongItem'), {
+    loading: () => <SongItemSkeleton />,
+    ssr: false
+  });
+
+  const sortedSongsCount = useMemo(() => 
+    sortedAndFilteredSongs.length, 
+    [sortedAndFilteredSongs]
+  );
+
   return (
     <div className="flex flex-col h-full w-full">
       {showSearch && (
@@ -110,7 +122,7 @@ const SongList: React.FC<SongListProps> = ({
           className="space-y-3 px-4"
         >
           {sortedAndFilteredSongs.map((song) => (
-            <SongItem
+            <SongItemLazy
               key={song.id}
               song={song}
               currentSong={currentSong}
@@ -135,4 +147,11 @@ const SongList: React.FC<SongListProps> = ({
   );
 };
 
-export default React.memo(SongList);
+export default React.memo(SongList, (prevProps, nextProps) => {
+  return (
+    prevProps.songs === nextProps.songs &&
+    prevProps.currentSong?.id === nextProps.currentSong?.id &&
+    prevProps.isPlaying === nextProps.isPlaying &&
+    prevProps.playlists === nextProps.playlists
+  );
+});
