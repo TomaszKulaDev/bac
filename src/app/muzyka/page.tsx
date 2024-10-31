@@ -13,7 +13,7 @@ import {
 import { Song, Playlist } from "./types";
 import { RootState } from "@/store/store";
 import BaciataRisingBanner from "./components/BaciataRisingBanner";
-import SongList from "./components/SongList";
+import SongList from "./components/songs/SongList";
 import PlaylistManager from "./components/PlaylistManager";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -210,7 +210,7 @@ const MusicPage: React.FC = () => {
 
   return (
     <div className="music-page min-h-screen flex flex-col">
-      <PlaylistHeader 
+      <PlaylistHeader
         filteredSongsCount={songs.length}
         onPlay={() => {
           if (songs.length > 0) {

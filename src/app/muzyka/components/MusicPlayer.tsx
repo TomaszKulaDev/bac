@@ -28,7 +28,7 @@ import {
 } from "react-icons/fa";
 import { Song, Playlist, RepeatMode } from "../types";
 import { RootState } from "../../../store/store";
-import SongList from "./SongList";
+import SongList from "./songs/SongList";
 import {
   setCurrentSongIndex,
   syncSongsWithPlaylists,
@@ -491,8 +491,34 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
             />
           </div>
         )}
-        <div className="flex flex-col md:flex-row flex-grow">
-          <div className="md:order-2 md:w-3/5 flex flex-col">
+        <div className="flex flex-col lg:flex-row h-full">
+          <div className="w-full lg:w-1/2 xl:w-2/3">
+            <SongList
+              songs={sortedAndFilteredSongs}
+              visibleSongs={visibleSongs}
+              isPlaying={isPlaying}
+              currentSong={currentSong}
+              onSongSelect={handleSongSelect}
+              onLoadMore={loadMoreSongs}
+              onCollapse={collapseSongList}
+              isPopularList={false}
+              expandedPlaylist={expandedPlaylist}
+              setExpandedPlaylist={setExpandedPlaylist}
+              onAddToPlaylist={(songId: string) => handleAddToPlaylist(songId)}
+              sortBy={sortBy}
+              sortOrder={sortOrder}
+              onSortChange={handleSortChange}
+              filterText={filterText}
+              setFilterText={setFilterText}
+              isPlaylistExpanded={!!expandedPlaylist}
+              showSearch={true}
+              hasPlaylists={playlists.length > 0}
+              isAuthenticated={isAuthenticated}
+              isMobile={isMobile}
+              playlists={playlists}
+            />
+          </div>
+          <div className="w-full lg:w-1/2 xl:w-1/3">
             <div className="sticky top-0 bg-white z-40 p-6 shadow-md">
               <div
                 className="youtube-player mb-6 rounded-lg overflow-hidden relative"
@@ -603,60 +629,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
               </div>
             </div>
           </div>
-
-          {isMobile && (
-            <>
-              {isModalOpen && (
-                <CreatePlaylistModal
-                  onClose={() => setIsModalOpen(false)}
-                  onCreatePlaylist={onCreatePlaylist}
-                  showSuccessToast={showSuccessToast}
-                  showErrorToast={showErrorToast}
-                />
-              )}
-            </>
-          )}
-          {currentPlaylistId && (
-            <button
-              onClick={() => onPlayPlaylist("")}
-              className="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300 transition duration-300 mb-4"
-            >
-              Powrót do wszystkich utworów.
-              <br /> Dodaj więcej ulubionych.
-            </button>
-          )}
-
-          <SongList
-            songs={
-              currentPlaylistId
-                ? songs.filter((song) =>
-                    playlists
-                      .find((p) => p.id === currentPlaylistId)
-                      ?.songs.includes(song.id)
-                  )
-                : sortedAndFilteredSongs
-            }
-            visibleSongs={visibleSongs}
-            isPlaying={isPlaying}
-            currentSong={currentSong}
-            onSongSelect={handleSongSelect}
-            onLoadMore={loadMoreSongs}
-            onCollapse={collapseSongList}
-            isPopularList={false}
-            expandedPlaylist={expandedPlaylist}
-            setExpandedPlaylist={setExpandedPlaylist}
-            onAddToPlaylist={(songId: string) => handleAddToPlaylist(songId)}
-            sortBy={sortBy}
-            sortOrder={sortOrder}
-            onSortChange={onSortChange}
-            filterText={filterText}
-            setFilterText={setFilterText}
-            isPlaylistExpanded={!!expandedPlaylist}
-            showSearch={!currentPlaylistId}
-            hasPlaylists={playlists.length > 0}
-            isAuthenticated={isAuthenticated}
-            isMobile={isMobile}
-          />
         </div>
         <PlaybackBar
           isPlaying={isPlaying}

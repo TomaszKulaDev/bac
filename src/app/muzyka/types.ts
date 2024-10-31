@@ -39,12 +39,14 @@ export interface MusicPlayerProps {
   showErrorToast: (message: string) => void;
   showInfoToast: (message: string) => void;
   playlistCount: number;
+  onToggleButtonsVisibility?: () => void;
+  initialButtonsVisible?: boolean;
 }
 
 // Interfejs reprezentujący tryb powtarzania
 export interface RepeatMode {
-  playlist: 'off' | 'on';
-  song: 'off' | 'on';
+  song: "on" | "off";
+  playlist: "on" | "off";
 }
 
 // Typy dla opcji sortowania
