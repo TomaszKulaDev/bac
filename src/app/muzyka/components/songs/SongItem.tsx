@@ -108,11 +108,6 @@ const SongItem = memo(({ song, onSelect, onAddToPlaylist, ...props }: SongItemPr
                 Dla początkujących
               </span>
             )}
-            {isInPlaylist && (
-              <span className="px-2 py-0.5 bg-blue-50 text-blue-600 text-xs rounded-full">
-                W playliście
-              </span>
-            )}
           </div>
           <p className="text-xs text-gray-600 truncate">
             {song.artist.length > 30
@@ -120,6 +115,11 @@ const SongItem = memo(({ song, onSelect, onAddToPlaylist, ...props }: SongItemPr
               : song.artist}
           </p>
           <div className="flex flex-wrap gap-1 mt-1">
+            {isInPlaylist && (
+              <span className="px-2 py-0.5 bg-blue-50 text-blue-600 text-xs rounded-full">
+                W playliście
+              </span>
+            )}
             {props.playlists?.map(playlist => 
               playlist.songs.includes(song.id) && (
                 <span 
