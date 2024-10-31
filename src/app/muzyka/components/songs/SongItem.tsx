@@ -1,10 +1,15 @@
 import React, { useEffect, useCallback, memo, useRef } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { FaPlay, FaBookmark } from "react-icons/fa";
 import { Song, Playlist } from "../../types";
 import { getYouTubeThumbnail } from "../../utils/youtube";
 import { usePlaylistManagement } from "../../hooks/usePlaylistManagement";
+import { SongThumbnail } from "./SongThumbnail";
+import { SongTitle } from "./SongTitle";
+import { SongArtist } from "./SongArtist";
+import { SongTags } from "./tags/SongTags";
+import { AddToPlaylistButton } from "./AddToPlaylistButton";
 
 interface SongItemProps {
   song: Song;
@@ -19,144 +24,90 @@ interface SongItemProps {
   playlists: Playlist[];
 }
 
-const SongItem = memo(({ song, onSelect, onAddToPlaylist, ...props }: SongItemProps) => {
-  const isCurrentSong = song.id === props.currentSong?.id;
-  const { isInPlaylist } = usePlaylistManagement(song.id, props.playlists);
-
-  const handleClick = useCallback(() => {
-    onSelect(song.id);
-  }, [song.id, onSelect]);
-
-  const handleAddToPlaylist = useCallback((e: React.MouseEvent) => {
-    e.stopPropagation();
-    onAddToPlaylist(song.id);
-  }, [song.id, onAddToPlaylist]);
-
-  const itemVariants = {
-    hidden: { opacity: 0, x: -20 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: { type: "spring", stiffness: 100, damping: 15 },
-    },
-    hover: {
-      scale: 1.02,
-      backgroundColor: "rgba(243, 244, 246, 1)",
-      transition: { type: "spring", stiffness: 400, damping: 10 },
-    },
-    tap: { scale: 0.98 },
+interface AnimationVariants {
+  [key: string]: {
+    opacity?: number;
+    x?: number;
+    scale?: number;
+    backgroundColor?: string;
+    transition?: {
+      type?: string;
+      stiffness?: number;
+      damping?: number;
+    };
   };
+}
 
-  const SongImage = ({ song }: { song: Song }) => {
-    return (
-      <div className="relative aspect-video w-full">
-        <Image
-          src={getYouTubeThumbnail(song.youtubeId)}
-          alt={song.title}
-          fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className="rounded-lg object-cover"
-          priority={false}
-          loading="lazy"
-        />
-      </div>
+const SongItem = memo(
+  ({ song, onSelect, onAddToPlaylist, ...props }: SongItemProps) => {
+    const isCurrentSong = song.id === props.currentSong?.id;
+    const { isInPlaylist } = usePlaylistManagement(song.id, props.playlists);
+
+    const handleClick = useCallback(() => {
+      onSelect(song.id);
+    }, [song.id, onSelect]);
+
+    const handleAddToPlaylist = useCallback(
+      (e: React.MouseEvent) => {
+        e.stopPropagation();
+        onAddToPlaylist(song.id);
+      },
+      [song.id, onAddToPlaylist]
     );
-  };
 
-  return (
-    <motion.li
-      variants={itemVariants}
-      whileHover="hover"
-      whileTap="tap"
-      className={`flex items-center justify-between p-4 ${
-        isCurrentSong ? "bg-blue-50 shadow-md" : "bg-white"
-      } rounded-xl shadow-sm transition-all duration-200`}
-      onClick={handleClick}
-    >
-      <div className="flex items-center flex-grow min-w-0">
-        <motion.div
-          className="w-14 h-14 mr-4 relative flex-shrink-0 rounded-lg overflow-hidden shadow-md"
-          whileHover={{ scale: 1.1 }}
-          transition={{ type: "spring", stiffness: 400 }}
-        >
-          <SongImage song={song} />
-          {song.id === props.currentSong?.id && props.isPlaying && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm"
-            >
-              <FaPlay className="text-white text-xl" />
-            </motion.div>
-          )}
-        </motion.div>
+    const itemVariants: Variants = {
+      hidden: { opacity: 0, x: -20 },
+      visible: {
+        opacity: 1,
+        x: 0,
+        transition: { type: "spring", stiffness: 100, damping: 15 },
+      },
+      hover: {
+        scale: 1.02,
+        backgroundColor: "rgba(243, 244, 246, 1)",
+        transition: { type: "spring", stiffness: 400, damping: 10 },
+      },
+      tap: { scale: 0.98 },
+    };
 
-        <div className="min-w-0 flex-grow">
-          <div className="flex items-center gap-2">
-            <h3 className="font-semibold truncate text-sm">
-              {song.title.length > 30
-                ? `${song.title.slice(0, 50)}...`
-                : song.title}
-            </h3>
-            {song.impro && (
-              <span className="px-2 py-0.5 bg-amber-100 text-amber-800 text-xs rounded-full">
-                Impro
-              </span>
-            )}
-            {song.beginnerFriendly && (
-              <span className="px-2 py-0.5 bg-green-100 text-green-800 text-xs rounded-full">
-                Dla początkujących
-              </span>
-            )}
-          </div>
-          <p className="text-xs text-gray-600 truncate">
-            {song.artist.length > 30
-              ? `${song.artist.slice(0, 30)}...`
-              : song.artist}
-          </p>
-          <div className="flex flex-wrap gap-1 mt-1">
-            {isInPlaylist && (
-              <span className="px-2 py-0.5 bg-blue-50 text-blue-600 text-xs rounded-full">
-                W playliście
-              </span>
-            )}
-            {props.playlists?.map(playlist => 
-              playlist.songs.includes(song.id) && (
-                <span 
-                  key={playlist.id}
-                  className="px-2 py-0.5 bg-blue-50 text-blue-600 text-xs rounded-full flex items-center gap-1 border border-blue-100"
-                >
-                  <FaBookmark className="text-xs" />
-                  {playlist.name}
-                </span>
-              )
-            )}
+    return (
+      <motion.li
+        variants={itemVariants}
+        whileHover="hover"
+        whileTap="tap"
+        className={`flex items-center justify-between p-4 ${
+          isCurrentSong ? "bg-blue-50 shadow-md" : "bg-white"
+        } rounded-xl shadow-sm transition-all duration-200`}
+        onClick={handleClick}
+      >
+        <div className="flex items-center flex-grow min-w-0">
+          <SongThumbnail
+            song={song}
+            isCurrentSong={isCurrentSong}
+            isPlaying={props.isPlaying}
+          />
+          <div className="min-w-0 flex-grow">
+            <SongTitle title={song.title} />
+            <SongArtist artist={song.artist} />
+            <SongTags
+              song={song}
+              isInPlaylist={isInPlaylist}
+              playlists={props.playlists}
+            />
           </div>
         </div>
-      </div>
 
-      {props.hasPlaylists && props.isAuthenticated && (
-        <motion.button
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          onClick={handleAddToPlaylist}
-          className="ml-4 p-2 text-blue-600 hover:bg-blue-50 rounded-full transition-colors duration-200"
-          aria-label={`Dodaj ${song.title} do playlisty`}
-        >
-          <FaBookmark className="text-lg" />
-        </motion.button>
-      )}
-    </motion.li>
-  );
-}, (prevProps, nextProps) => {
-  return (
-    prevProps.song === nextProps.song &&
-    prevProps.currentSong?.id === nextProps.currentSong?.id &&
-    prevProps.isPlaying === nextProps.isPlaying &&
-    prevProps.playlists === nextProps.playlists
-  );
-});
+        {props.hasPlaylists && props.isAuthenticated && (
+          <AddToPlaylistButton
+            onClick={handleAddToPlaylist}
+            songTitle={song.title}
+          />
+        )}
+      </motion.li>
+    );
+  }
+);
 
-SongItem.displayName = 'SongItem';
+SongItem.displayName = "SongItem";
 
 export default SongItem;

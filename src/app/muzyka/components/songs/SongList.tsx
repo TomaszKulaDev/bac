@@ -101,12 +101,19 @@ const SongList = memo(({ songs, ...props }: SongListProps) => {
 SongList.displayName = 'SongList';
 
 export default React.memo(SongList, (prevProps, nextProps) => {
+  const arePlaylistsEqual = 
+    prevProps.playlists.length === nextProps.playlists.length &&
+    prevProps.playlists.every((playlist, index) => 
+      playlist.id === nextProps.playlists[index].id &&
+      playlist.songs.length === nextProps.playlists[index].songs.length
+    );
+
   return (
     prevProps.songs === nextProps.songs &&
     prevProps.currentSong?.id === nextProps.currentSong?.id &&
     prevProps.isPlaying === nextProps.isPlaying &&
     prevProps.visibleSongs === nextProps.visibleSongs &&
     prevProps.filterText === nextProps.filterText &&
-    JSON.stringify(prevProps.playlists) === JSON.stringify(nextProps.playlists)
+    arePlaylistsEqual
   );
 });
