@@ -9,7 +9,7 @@ import { SongThumbnail } from "./SongThumbnail";
 import { SongTitle } from "./SongTitle";
 import { SongArtist } from "./SongArtist";
 import { SongTags } from "./tags/SongTags";
-import { AddToPlaylistButton } from "./AddToPlaylistButton";
+import { AddToPlaylistButton } from "./buttons/AddToPlaylistButton";
 
 interface SongItemProps {
   song: Song;

@@ -1,6 +1,6 @@
+import { memo } from "react";
 import { motion } from "framer-motion";
 import { FaBookmark } from "react-icons/fa";
-import { memo } from "react";
 
 interface AddToPlaylistButtonProps {
   onClick: (e: React.MouseEvent) => void;
@@ -19,4 +19,4 @@ export const AddToPlaylistButton = memo(({ onClick, songTitle }: AddToPlaylistBu
   </motion.button>
 ));
 
-AddToPlaylistButton.displayName = 'AddToPlaylistButton';
+AddToPlaylistButton.displayName = 'AddToPlaylistButton'; 
