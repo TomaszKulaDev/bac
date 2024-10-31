@@ -11,6 +11,8 @@ import SearchInput from "./SearchInput";
 import LoadMoreButton from "./LoadMoreButton";
 import dynamic from 'next/dynamic';
 import SongItemSkeleton from "./SongItemSkeleton";
+import { FixedSizeList as List } from 'react-window';
+import AutoSizer from 'react-virtualized-auto-sizer';
 
 interface SongListProps {
   songs: Song[];
@@ -38,6 +40,20 @@ interface SongListProps {
   playlists: Playlist[];
 }
 
+interface AutoSizerProps {
+  children: ({ height, width }: { height: number; width: number }) => React.ReactNode;
+}
+
+interface OnItemsRenderedProps {
+  visibleStartIndex: number;
+  visibleStopIndex: number;
+  overscanStartIndex: number;
+  overscanStopIndex: number;
+}
+
+const ITEM_HEIGHT = 96;
+const ITEM_PADDING = 16;
+
 const SongList = memo(({ songs, ...props }: SongListProps) => {
   const sortedAndFilteredSongs = useSortedAndFilteredSongs(
     songs,
@@ -53,34 +69,36 @@ const SongList = memo(({ songs, ...props }: SongListProps) => {
 
   const hasMoreSongs = sortedAndFilteredSongs.length > props.visibleSongs;
 
-  const renderSongItem = useCallback((song: Song) => (
-    <SongItem 
-      key={song.id}
-      song={song}
-      currentSong={props.currentSong}
-      isPlaying={props.isPlaying}
-      isAuthenticated={props.isAuthenticated}
-      isPlaylistExpanded={props.isPlaylistExpanded}
-      expandedPlaylist={props.expandedPlaylist}
-      hasPlaylists={props.hasPlaylists}
-      onSelect={props.onSongSelect}
-      onAddToPlaylist={props.onAddToPlaylist}
-      playlists={props.playlists}
-    />
-  ), [
-    props.currentSong,
-    props.isPlaying,
-    props.isAuthenticated,
-    props.isPlaylistExpanded,
-    props.expandedPlaylist,
-    props.hasPlaylists,
-    props.onSongSelect,
-    props.onAddToPlaylist,
-    props.playlists
-  ]);
+  const Row = useCallback(({ index, style }: { index: number; style: React.CSSProperties }) => {
+    const song = visibleSongsList[index];
+    return (
+      <div style={{ ...style, paddingLeft: ITEM_PADDING, paddingRight: ITEM_PADDING }}>
+        <SongItem 
+          key={song.id}
+          song={song}
+          currentSong={props.currentSong}
+          isPlaying={props.isPlaying}
+          isAuthenticated={props.isAuthenticated}
+          isPlaylistExpanded={props.isPlaylistExpanded}
+          expandedPlaylist={props.expandedPlaylist}
+          hasPlaylists={props.hasPlaylists}
+          onSelect={props.onSongSelect}
+          onAddToPlaylist={props.onAddToPlaylist}
+          playlists={props.playlists}
+        />
+      </div>
+    );
+  }, [visibleSongsList, props]);
+
+  const onItemsRendered = useCallback(({ 
+    visibleStartIndex, 
+    visibleStopIndex 
+  }: OnItemsRenderedProps) => {
+    console.log(`Widoczne elementy od ${visibleStartIndex} do ${visibleStopIndex}`);
+  }, []);
 
   return (
-    <div className="space-y-4 pb-24">
+    <div className="flex flex-col h-[calc(100vh-200px)]">
       {props.showSearch && (
         <SearchInput 
           value={props.filterText}
@@ -88,12 +106,31 @@ const SongList = memo(({ songs, ...props }: SongListProps) => {
         />
       )}
       
-      {visibleSongsList.map(renderSongItem)}
-      
-      <LoadMoreButton 
-        isVisible={hasMoreSongs}
-        onClick={props.onLoadMore}
-      />
+      <div className="flex-1 relative">
+        <AutoSizer>
+          {({ height, width }) => (
+            <List
+              height={height}
+              width={width}
+              itemCount={visibleSongsList.length}
+              itemSize={ITEM_HEIGHT}
+              overscanCount={5}
+              onItemsRendered={(props: OnItemsRenderedProps) => onItemsRendered(props)}
+            >
+              {Row}
+            </List>
+          )}
+        </AutoSizer>
+      </div>
+
+      {hasMoreSongs && (
+        <div className="sticky bottom-0 w-full bg-gradient-to-t from-white pt-4">
+          <LoadMoreButton 
+            isVisible={hasMoreSongs}
+            onClick={props.onLoadMore}
+          />
+        </div>
+      )}
     </div>
   );
 });
@@ -101,12 +138,13 @@ const SongList = memo(({ songs, ...props }: SongListProps) => {
 SongList.displayName = 'SongList';
 
 export default React.memo(SongList, (prevProps, nextProps) => {
-  const arePlaylistsEqual = 
-    prevProps.playlists.length === nextProps.playlists.length &&
-    prevProps.playlists.every((playlist, index) => 
-      playlist.id === nextProps.playlists[index].id &&
-      playlist.songs.length === nextProps.playlists[index].songs.length
+  const arePlaylistsEqual = (prev: Playlist[], next: Playlist[]) => {
+    if (prev.length !== next.length) return false;
+    return prev.every((playlist, index) => 
+      playlist.id === next[index].id &&
+      playlist.songs.length === next[index].songs.length
     );
+  };
 
   return (
     prevProps.songs === nextProps.songs &&
@@ -114,6 +152,6 @@ export default React.memo(SongList, (prevProps, nextProps) => {
     prevProps.isPlaying === nextProps.isPlaying &&
     prevProps.visibleSongs === nextProps.visibleSongs &&
     prevProps.filterText === nextProps.filterText &&
-    arePlaylistsEqual
+    arePlaylistsEqual(prevProps.playlists, nextProps.playlists)
   );
 });
