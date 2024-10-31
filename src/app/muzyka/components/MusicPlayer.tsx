@@ -521,6 +521,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
               isAuthenticated={isAuthenticated}
               isMobile={isMobile}
               playlists={playlists}
+              isLoading={isLoading}
             />
           </div>
           <div className="w-full lg:w-1/2 xl:w-1/3">

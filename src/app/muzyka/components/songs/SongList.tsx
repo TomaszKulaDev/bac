@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback, useEffect } from "react";
+import React, { useState, useMemo, useCallback, useEffect, memo } from "react";
 import Image from "next/image";
 import { FaPlay, FaBookmark, FaHeart } from "react-icons/fa";
 import { Song, SortOption, SortOrder, Playlist } from "../../types";
@@ -16,6 +16,7 @@ interface SongListProps {
   songs: Song[];
   visibleSongs: number;
   isPlaying: boolean;
+  isLoading: boolean;
   onSongSelect: (songId: string) => void;
   onLoadMore: () => void;
   onCollapse: () => void;
@@ -33,125 +34,79 @@ interface SongListProps {
   showSearch: boolean;
   hasPlaylists: boolean;
   isAuthenticated: boolean;
-  isMobile: boolean; // dodaj ten prop
+  isMobile: boolean;
   playlists: Playlist[];
 }
 
-const SongList: React.FC<SongListProps> = ({
-  songs = [],
-  visibleSongs,
-  isPlaying,
-  onSongSelect,
-  onLoadMore,
-  onCollapse,
-  isPopularList,
-  expandedPlaylist,
-  setExpandedPlaylist,
-  onAddToPlaylist,
-  sortBy,
-  sortOrder,
-  onSortChange,
-  currentSong,
-  isPlaylistExpanded,
-  filterText,
-  setFilterText,
-  showSearch,
-  hasPlaylists,
-  isAuthenticated,
-  isMobile, // dodaj ten prop
-  playlists,
-}) => {
-  const [showNotification, setShowNotification] = useState(false);
-
+const SongList = memo(({ songs, ...props }: SongListProps) => {
   const sortedAndFilteredSongs = useSortedAndFilteredSongs(
     songs,
-    sortBy,
-    sortOrder,
-    filterText
+    props.sortBy,
+    props.sortOrder,
+    props.filterText
   );
 
-  const handleSort = useCallback(
-    (newSortBy: SortOption) => {
-      const newSortOrder =
-        sortBy === newSortBy && sortOrder === "asc" ? "desc" : "asc";
-      onSortChange(newSortBy, newSortOrder);
-    },
-    [sortBy, sortOrder, onSortChange]
+  const visibleSongsList = useMemo(() => 
+    sortedAndFilteredSongs.slice(0, props.visibleSongs),
+    [sortedAndFilteredSongs, props.visibleSongs]
   );
 
-  const onSongSelectMemoized = useCallback(
-    (songId: string) => {
-      onSongSelect(songId);
-    },
-    [onSongSelect]
-  );
+  const hasMoreSongs = sortedAndFilteredSongs.length > props.visibleSongs;
 
-  const listVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.1,
-      },
-    },
-  };
-
-  const SongItemLazy = dynamic(() => import('./SongItem'), {
-    loading: () => <SongItemSkeleton />,
-    ssr: false
-  });
-
-  const sortedSongsCount = useMemo(() => 
-    sortedAndFilteredSongs.length, 
-    [sortedAndFilteredSongs]
-  );
+  const renderSongItem = useCallback((song: Song) => (
+    <SongItem 
+      key={song.id}
+      song={song}
+      currentSong={props.currentSong}
+      isPlaying={props.isPlaying}
+      isAuthenticated={props.isAuthenticated}
+      isPlaylistExpanded={props.isPlaylistExpanded}
+      expandedPlaylist={props.expandedPlaylist}
+      hasPlaylists={props.hasPlaylists}
+      onSelect={props.onSongSelect}
+      onAddToPlaylist={props.onAddToPlaylist}
+      playlists={props.playlists}
+    />
+  ), [
+    props.currentSong,
+    props.isPlaying,
+    props.isAuthenticated,
+    props.isPlaylistExpanded,
+    props.expandedPlaylist,
+    props.hasPlaylists,
+    props.onSongSelect,
+    props.onAddToPlaylist,
+    props.playlists
+  ]);
 
   return (
-    <div className="flex flex-col h-full w-full">
-      {showSearch && (
-        <SearchInput value={filterText} onChange={setFilterText} />
-      )}
-
-      <div className="flex-grow overflow-y-auto">
-        <motion.ul
-          layout
-          variants={listVariants}
-          initial="hidden"
-          animate="visible"
-          className="space-y-3 px-4"
-        >
-          {sortedAndFilteredSongs.map((song) => (
-            <SongItemLazy
-              key={song.id}
-              song={song}
-              currentSong={currentSong}
-              isPlaying={isPlaying}
-              isAuthenticated={isAuthenticated}
-              isPlaylistExpanded={isPlaylistExpanded}
-              expandedPlaylist={expandedPlaylist}
-              hasPlaylists={hasPlaylists}
-              onSelect={onSongSelectMemoized}
-              onAddToPlaylist={onAddToPlaylist}
-              playlists={playlists}
-            />
-          ))}
-        </motion.ul>
-
-        <LoadMoreButton
-          isVisible={!isPopularList && visibleSongs < songs.length}
-          onClick={onLoadMore}
+    <div className="space-y-4">
+      {props.showSearch && (
+        <SearchInput 
+          value={props.filterText}
+          onChange={props.setFilterText}
         />
-      </div>
+      )}
+      
+      {visibleSongsList.map(renderSongItem)}
+      
+      <LoadMoreButton 
+        isVisible={hasMoreSongs}
+        onClick={props.onLoadMore}
+      />
     </div>
   );
-};
+});
+
+SongList.displayName = 'SongList';
 
 export default React.memo(SongList, (prevProps, nextProps) => {
   return (
     prevProps.songs === nextProps.songs &&
     prevProps.currentSong?.id === nextProps.currentSong?.id &&
     prevProps.isPlaying === nextProps.isPlaying &&
-    prevProps.playlists === nextProps.playlists
+    prevProps.visibleSongs === nextProps.visibleSongs &&
+    prevProps.filterText === nextProps.filterText &&
+    JSON.stringify(prevProps.playlists) === JSON.stringify(nextProps.playlists)
   );
 });

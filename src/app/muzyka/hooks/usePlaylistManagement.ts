@@ -13,7 +13,7 @@ export const usePlaylistManagement = (songId: string, playlists: Playlist[]) => 
   }, [playlists]);
 
   const isInPlaylist = useMemo(() => 
-    playlists.some(playlist => playlist.songs.includes(songId)),
+    playlists?.some(playlist => playlist?.songs?.includes(songId)) || false,
     [playlists, songId]
   );
 

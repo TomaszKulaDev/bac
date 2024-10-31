@@ -1,11 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback, memo, useRef } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { FaPlay, FaBookmark } from "react-icons/fa";
 import { Song, Playlist } from "../../types";
 import { getYouTubeThumbnail } from "../../utils/youtube";
 import { usePlaylistManagement } from "../../hooks/usePlaylistManagement";
-import { toast } from "react-toastify";
 
 interface SongItemProps {
   song: Song;
@@ -20,25 +19,18 @@ interface SongItemProps {
   playlists: Playlist[];
 }
 
-const SongItem: React.FC<SongItemProps> = ({
-  song,
-  currentSong,
-  isPlaying,
-  isAuthenticated,
-  isPlaylistExpanded,
-  expandedPlaylist,
-  hasPlaylists,
-  onSelect,
-  onAddToPlaylist,
-  playlists,
-}) => {
-  const { isInPlaylist } = usePlaylistManagement(song.id, playlists);
+const SongItem = memo(({ song, onSelect, onAddToPlaylist, ...props }: SongItemProps) => {
+  const isCurrentSong = song.id === props.currentSong?.id;
+  const { isInPlaylist } = usePlaylistManagement(song.id, props.playlists);
 
-  useEffect(() => {
-    if (isInPlaylist) {
-      toast.success(`Utwór "${song.title}" jest już w Twoich playlistach`);
-    }
-  }, [isInPlaylist, song.title]);
+  const handleClick = useCallback(() => {
+    onSelect(song.id);
+  }, [song.id, onSelect]);
+
+  const handleAddToPlaylist = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    onAddToPlaylist(song.id);
+  }, [song.id, onAddToPlaylist]);
 
   const itemVariants = {
     hidden: { opacity: 0, x: -20 },
@@ -55,18 +47,31 @@ const SongItem: React.FC<SongItemProps> = ({
     tap: { scale: 0.98 },
   };
 
+  const SongImage = ({ song }: { song: Song }) => {
+    return (
+      <div className="relative aspect-video w-full">
+        <Image
+          src={getYouTubeThumbnail(song.youtubeId)}
+          alt={song.title}
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className="rounded-lg object-cover"
+          priority={false}
+          loading="lazy"
+        />
+      </div>
+    );
+  };
+
   return (
     <motion.li
       variants={itemVariants}
       whileHover="hover"
       whileTap="tap"
       className={`flex items-center justify-between p-4 ${
-        song.id === currentSong?.id ? "bg-blue-50 shadow-md" : "bg-white"
+        isCurrentSong ? "bg-blue-50 shadow-md" : "bg-white"
       } rounded-xl shadow-sm transition-all duration-200`}
-      onClick={() => onSelect(song.id)}
-      aria-label={`Odtwórz ${song.title} przez ${song.artist}`}
-      role="button"
-      tabIndex={0}
+      onClick={handleClick}
     >
       <div className="flex items-center flex-grow min-w-0">
         <motion.div
@@ -74,17 +79,8 @@ const SongItem: React.FC<SongItemProps> = ({
           whileHover={{ scale: 1.1 }}
           transition={{ type: "spring", stiffness: 400 }}
         >
-          <Image
-            src={getYouTubeThumbnail(song.youtubeId)}
-            alt={song.title}
-            layout="fill"
-            objectFit="cover"
-            className="rounded-lg"
-            loading="lazy"
-            placeholder="blur"
-            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRg..."
-          />
-          {song.id === currentSong?.id && isPlaying && (
+          <SongImage song={song} />
+          {song.id === props.currentSong?.id && props.isPlaying && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -124,7 +120,7 @@ const SongItem: React.FC<SongItemProps> = ({
               : song.artist}
           </p>
           <div className="flex flex-wrap gap-1 mt-1">
-            {playlists?.map(playlist => 
+            {props.playlists?.map(playlist => 
               playlist.songs.includes(song.id) && (
                 <span 
                   key={playlist.id}
@@ -139,14 +135,11 @@ const SongItem: React.FC<SongItemProps> = ({
         </div>
       </div>
 
-      {hasPlaylists && isAuthenticated && (
+      {props.hasPlaylists && props.isAuthenticated && (
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
-          onClick={(e) => {
-            e.stopPropagation();
-            onAddToPlaylist(song.id);
-          }}
+          onClick={handleAddToPlaylist}
           className="ml-4 p-2 text-blue-600 hover:bg-blue-50 rounded-full transition-colors duration-200"
           aria-label={`Dodaj ${song.title} do playlisty`}
         >
@@ -155,6 +148,15 @@ const SongItem: React.FC<SongItemProps> = ({
       )}
     </motion.li>
   );
-};
+}, (prevProps, nextProps) => {
+  return (
+    prevProps.song === nextProps.song &&
+    prevProps.currentSong?.id === nextProps.currentSong?.id &&
+    prevProps.isPlaying === nextProps.isPlaying &&
+    prevProps.playlists === nextProps.playlists
+  );
+});
 
-export default React.memo(SongItem);
+SongItem.displayName = 'SongItem';
+
+export default SongItem;

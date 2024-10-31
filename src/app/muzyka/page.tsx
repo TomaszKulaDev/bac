@@ -191,6 +191,9 @@ const MusicPage: React.FC = () => {
     console.log("Stan playlist po aktualizacji:", playlists);
   }, [playlists]);
 
+  const memoizedSongs = useMemo(() => songs, [songs]);
+  const memoizedPlaylists = useMemo(() => playlists, [playlists]);
+
   if (status === "loading") {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -229,7 +232,7 @@ const MusicPage: React.FC = () => {
       <div className="flex-grow flex flex-col lg:flex-row bg-white relative z-10 shadow-xl rounded-t-[2rem] -mt-20">
         <div className="w-full lg:w-2/3 p-4">
           <MusicPlayer
-            songs={songs}
+            songs={memoizedSongs}
             onCreatePlaylist={handleCreatePlaylist}
             onAddToPlaylist={handleAddToExistingPlaylist}
             expandedPlaylist={expandedPlaylist}
@@ -238,7 +241,7 @@ const MusicPage: React.FC = () => {
             setFilterText={setFilterText}
             isMobile={isMobile}
             currentPlaylistId={currentPlaylistId}
-            playlists={playlists}
+            playlists={memoizedPlaylists}
             onUpdatePlaylists={setPlaylists}
             onPlayPlaylist={(playlistId: string) => {
               setCurrentPlaylistId(playlistId);
@@ -266,8 +269,8 @@ const MusicPage: React.FC = () => {
           <PlaylistManager
             setIsModalOpen={setIsModalOpen}
             isModalOpen={isModalOpen}
-            playlists={playlists}
-            songs={songs}
+            playlists={memoizedPlaylists}
+            songs={memoizedSongs}
             expandedPlaylist={expandedPlaylist}
             setExpandedPlaylist={setExpandedPlaylist}
             onCreatePlaylist={handleCreatePlaylist}
