@@ -54,8 +54,28 @@ interface OnItemsRenderedProps {
 const ITEM_HEIGHT = 96;
 const ITEM_PADDING = 16;
 
+const useWindowSize = () => {
+  const [size, setSize] = useState({ width: 0, height: 0 });
+  
+  useEffect(() => {
+    const handleResize = () => {
+      setSize({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    };
+    
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  
+  return size;
+};
+
 const SongList = memo(({ songs, ...props }: SongListProps) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
   const LoadingState = () => (
     <div className="flex-1 grid place-items-center">
       <SongItemSkeleton />
@@ -103,6 +123,14 @@ const SongList = memo(({ songs, ...props }: SongListProps) => {
   }: OnItemsRenderedProps) => {
     console.log(`Widoczne elementy od ${visibleStartIndex} do ${visibleStopIndex}`);
   }, []);
+
+  if (error) {
+    return (
+      <div role="alert" className="p-4 bg-red-50 text-red-600 rounded-lg">
+        Wystąpił błąd: {error.message}
+      </div>
+    );
+  }
 
   return (
     <div 
