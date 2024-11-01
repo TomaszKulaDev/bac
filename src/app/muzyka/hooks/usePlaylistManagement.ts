@@ -1,14 +1,16 @@
-import { useCallback } from 'react';
-import { useDispatch } from 'react-redux';
-import { updateSongsPlaylists } from '@/store/slices/features/songsSlice';
-import { updatePlaylistOrder } from '@/store/actions/playlistActions';
-import { Playlist, Song } from '../types';
-import { DragEndEvent } from '@dnd-kit/core';
-import { AsyncThunkAction, UnknownAction } from '@reduxjs/toolkit';
+import { useCallback } from "react";
+import { useDispatch } from "react-redux";
+import { updateSongsPlaylists } from "@/store/slices/features/songsSlice";
+import { updatePlaylistOrder } from "@/store/actions/playlistActions";
+import { Playlist, Song } from "../types";
+import { DragEndEvent } from "@dnd-kit/core";
+import { AsyncThunkAction, UnknownAction } from "@reduxjs/toolkit";
 
 export interface UsePlaylistManagementProps {
   playlists: Playlist[];
-  onUpdatePlaylists: (updater: (prevPlaylists: Playlist[]) => Playlist[]) => void;
+  onUpdatePlaylists: (
+    updater: (prevPlaylists: Playlist[]) => Playlist[]
+  ) => void;
   onPlayPlaylist: (playlistId: string) => void;
   currentPlaylistId: string | null;
   showSuccessToast: (message: string) => void;
@@ -29,141 +31,185 @@ export const usePlaylistManagement = ({
   showInfoToast,
   isAuthenticated,
   songs,
-  onCreatePlaylist
+  onCreatePlaylist,
 }: UsePlaylistManagementProps) => {
   const dispatch = useDispatch();
 
-  const handleDragEnd = useCallback((event: DragEndEvent, currentPlaylist: Playlist) => {
-    if (!isAuthenticated) {
-      showErrorToast("Musisz być zalogowany, aby zarządzać playlistami.");
-      return;
-    }
+  const handleDragEnd = useCallback(
+    (event: DragEndEvent, currentPlaylist: Playlist) => {
+      if (!isAuthenticated) {
+        showErrorToast("Musisz być zalogowany, aby zarządzać playlistami.");
+        return;
+      }
 
-    const { active, over } = event;
-    if (!over || active.id === over.id) return;
-    
-    const activeIndex = currentPlaylist.songs.indexOf(active.id as string);
-    const overIndex = currentPlaylist.songs.indexOf(over.id as string);
-    
-    if (activeIndex !== overIndex) {
-      const newSongs = [...currentPlaylist.songs];
-      newSongs.splice(activeIndex, 1);
-      newSongs.splice(overIndex, 0, active.id as string);
-      
+      const { active, over } = event;
+      if (!over || active.id === over.id) return;
+
+      const activeIndex = currentPlaylist.songs.indexOf(active.id as string);
+      const overIndex = currentPlaylist.songs.indexOf(over.id as string);
+
+      if (activeIndex !== overIndex) {
+        const newSongs = [...currentPlaylist.songs];
+        newSongs.splice(activeIndex, 1);
+        newSongs.splice(overIndex, 0, active.id as string);
+
+        onUpdatePlaylists((prevPlaylists) =>
+          prevPlaylists.map((playlist) =>
+            playlist.id === currentPlaylist.id
+              ? { ...playlist, songs: newSongs }
+              : playlist
+          )
+        );
+
+        dispatch(
+          updatePlaylistOrder({
+            playlistId: currentPlaylist.id,
+            newOrder: newSongs,
+          })
+        );
+      }
+    },
+    [dispatch, isAuthenticated, showErrorToast, onUpdatePlaylists]
+  );
+
+  const addSongToPlaylist = useCallback(
+    (playlistId: string, songId: string) => {
+      if (!isAuthenticated) {
+        showErrorToast(
+          "Musisz być zalogowany, aby dodawać utwory do playlisty."
+        );
+        return;
+      }
+
+      const playlist = playlists.find((p) => p.id === playlistId);
+      const song = songs.find((s) => s.id === songId);
+
+      if (!playlist || !song) {
+        showErrorToast("Nie można dodać utworu do playlisty.");
+        return;
+      }
+
+      if (playlist.songs.includes(songId)) {
+        showInfoToast(
+          `Utwór "${song.title}" jest już w playliście "${playlist.name}"`
+        );
+        return;
+      }
+
+      onUpdatePlaylists((prevPlaylists) =>
+        prevPlaylists.map((p) =>
+          p.id === playlistId ? { ...p, songs: [songId, ...p.songs] } : p
+        )
+      );
+
+      dispatch(
+        updateSongsPlaylists({
+          songIds: [songId],
+          playlistId,
+          playlistName: playlist.name,
+        }) as any
+      )
+        .unwrap()
+        .catch(() => {
+          showErrorToast("Nie udało się dodać utworu do playlisty");
+        });
+    },
+    [
+      playlists,
+      songs,
+      dispatch,
+      onUpdatePlaylists,
+      isAuthenticated,
+      showErrorToast,
+      showInfoToast,
+    ]
+  );
+
+  const removeSongFromPlaylist = useCallback(
+    (playlistId: string, songId: string) => {
+      if (!isAuthenticated) {
+        showErrorToast("Musisz być zalogowany, aby usuwać utwory z playlisty.");
+        return;
+      }
+
+      const playlistName =
+        playlists.find((p) => p.id === playlistId)?.name || "";
       onUpdatePlaylists((prevPlaylists) =>
         prevPlaylists.map((playlist) =>
-          playlist.id === currentPlaylist.id
-            ? { ...playlist, songs: newSongs }
+          playlist.id === playlistId
+            ? {
+                ...playlist,
+                songs: playlist.songs.filter((id) => id !== songId),
+              }
             : playlist
         )
       );
-      
-      dispatch(updatePlaylistOrder({
-        playlistId: currentPlaylist.id,
-        newOrder: newSongs
-      }));
-    }
-  }, [dispatch, isAuthenticated, showErrorToast, onUpdatePlaylists]);
 
-  const addSongToPlaylist = useCallback((playlistId: string, songId: string) => {
-    if (!isAuthenticated) {
-      showErrorToast("Musisz być zalogowany, aby dodawać utwory do playlisty.");
-      return;
-    }
-
-    const playlist = playlists.find(p => p.id === playlistId);
-    const song = songs.find(s => s.id === songId);
-
-    if (!playlist || !song) {
-      showErrorToast("Nie można dodać utworu do playlisty.");
-      return;
-    }
-
-    if (playlist.songs.includes(songId)) {
-      showInfoToast(`Utwór "${song.title}" jest już w playliście "${playlist.name}"`);
-      return;
-    }
-
-    onUpdatePlaylists((prevPlaylists) =>
-      prevPlaylists.map((p) =>
-        p.id === playlistId
-          ? { ...p, songs: [songId, ...p.songs] }
-          : p
+      dispatch(
+        updateSongsPlaylists({
+          songIds: [songId],
+          playlistId,
+          playlistName,
+          remove: true,
+        }) as any
       )
-    );
+        .unwrap()
+        .then(() => {
+          showSuccessToast("Utwór został usunięty z playlisty");
+        })
+        .catch(() => {
+          showErrorToast("Nie udało się usunąć utworu z playlisty");
+        });
+    },
+    [
+      dispatch,
+      playlists,
+      onUpdatePlaylists,
+      isAuthenticated,
+      showSuccessToast,
+      showErrorToast,
+    ]
+  );
 
-    dispatch(updateSongsPlaylists({
-      songIds: [songId],
-      playlistId,
-      playlistName: playlist.name
-    }) as any)
-      .unwrap()
-      .catch(() => {
-        showErrorToast("Nie udało się dodać utworu do playlisty");
-      });
-  }, [playlists, songs, dispatch, onUpdatePlaylists, isAuthenticated, showErrorToast, showInfoToast]);
+  const editPlaylistName = useCallback(
+    (playlistId: string, newName: string) => {
+      if (!isAuthenticated) {
+        showErrorToast("Musisz być zalogowany, aby edytować nazwę playlisty.");
+        return;
+      }
 
-  const removeSongFromPlaylist = useCallback((playlistId: string, songId: string) => {
-    if (!isAuthenticated) {
-      showErrorToast("Musisz być zalogowany, aby usuwać utwory z playlisty.");
-      return;
-    }
+      onUpdatePlaylists((prevPlaylists) =>
+        prevPlaylists.map((playlist) =>
+          playlist.id === playlistId ? { ...playlist, name: newName } : playlist
+        )
+      );
+    },
+    [onUpdatePlaylists, isAuthenticated, showErrorToast]
+  );
 
-    const playlistName = playlists.find((p) => p.id === playlistId)?.name || "";
-    onUpdatePlaylists((prevPlaylists) =>
-      prevPlaylists.map((playlist) =>
-        playlist.id === playlistId
-          ? {
-              ...playlist,
-              songs: playlist.songs.filter((id) => id !== songId),
-            }
-          : playlist
-      )
-    );
+  const deletePlaylist = useCallback(
+    (playlistId: string) => {
+      if (!isAuthenticated) {
+        showErrorToast("Musisz być zalogowany, aby usunąć playlistę.");
+        return;
+      }
 
-    dispatch(updateSongsPlaylists({
-      songIds: [songId],
-      playlistId,
-      playlistName,
-      remove: true,
-    }) as any).unwrap()
-      .then(() => {
-        showSuccessToast("Utwór został usunięty z playlisty");
-      })
-      .catch(() => {
-        showErrorToast("Nie udało się usunąć utworu z playlisty");
-      });
-  }, [dispatch, playlists, onUpdatePlaylists, isAuthenticated, showSuccessToast, showErrorToast]);
+      onUpdatePlaylists((prevPlaylists) =>
+        prevPlaylists.filter((playlist) => playlist.id !== playlistId)
+      );
 
-  const editPlaylistName = useCallback((playlistId: string, newName: string) => {
-    if (!isAuthenticated) {
-      showErrorToast("Musisz być zalogowany, aby edytować nazwę playlisty.");
-      return;
-    }
-
-    onUpdatePlaylists((prevPlaylists) =>
-      prevPlaylists.map((playlist) =>
-        playlist.id === playlistId
-          ? { ...playlist, name: newName }
-          : playlist
-      )
-    );
-  }, [onUpdatePlaylists, isAuthenticated, showErrorToast]);
-
-  const deletePlaylist = useCallback((playlistId: string) => {
-    if (!isAuthenticated) {
-      showErrorToast("Musisz być zalogowany, aby usunąć playlistę.");
-      return;
-    }
-
-    onUpdatePlaylists((prevPlaylists) =>
-      prevPlaylists.filter((playlist) => playlist.id !== playlistId)
-    );
-    
-    if (currentPlaylistId === playlistId) {
-      onPlayPlaylist("");
-    }
-  }, [onUpdatePlaylists, onPlayPlaylist, currentPlaylistId, isAuthenticated, showErrorToast]);
+      if (currentPlaylistId === playlistId) {
+        onPlayPlaylist("");
+      }
+    },
+    [
+      onUpdatePlaylists,
+      onPlayPlaylist,
+      currentPlaylistId,
+      isAuthenticated,
+      showErrorToast,
+    ]
+  );
 
   const handleCreateEmptyPlaylist = useCallback(() => {
     if (!isAuthenticated) {
@@ -184,6 +230,6 @@ export const usePlaylistManagement = ({
     removeSongFromPlaylist,
     editPlaylistName,
     deletePlaylist,
-    handleCreateEmptyPlaylist
+    handleCreateEmptyPlaylist,
   };
 };
