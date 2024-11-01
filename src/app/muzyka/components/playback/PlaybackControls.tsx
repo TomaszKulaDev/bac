@@ -7,6 +7,7 @@ import {
   FaRedo,
 } from "react-icons/fa";
 import { RepeatMode } from "../../types";
+import { useKeyboardControls } from '../../hooks/useKeyboardControls';
 
 interface PlaybackControlsProps {
   isPlaying: boolean;
@@ -27,6 +28,12 @@ export const PlaybackControls: React.FC<PlaybackControlsProps> = ({
   onToggleRepeatMode,
   isLoading = false,
 }) => {
+  useKeyboardControls({
+    onTogglePlay,
+    onPrevious,
+    onNext
+  });
+
   return (
     <div
       className="flex items-center space-x-4"
