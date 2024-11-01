@@ -53,3 +53,6 @@ export interface RepeatMode {
 export type SortOption = "date" | "title" | "artist" | "impro" | "beginnerFriendly";
 export type SortBy = SortOption;
 export type SortOrder = "asc" | "desc";
+
+export type SortOrderType = 'asc' | 'desc';
+export type SortByType = 'date' | 'title' | 'artist' | 'impro' | 'beginnerFriendly';

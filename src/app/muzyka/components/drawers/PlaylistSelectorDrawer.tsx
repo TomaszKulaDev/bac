@@ -1,16 +1,13 @@
 import React, { useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaTimes, FaPlay, FaMusic } from "react-icons/fa";
-import { Playlist } from "../types";
+import { BaseDrawerProps, CreatePlaylistDrawerProps } from './types';
+import { Playlist } from '@/app/muzyka/types';
 
-interface PlaylistSelectorDrawerProps {
-  isOpen: boolean;
-  onClose: () => void;
+interface PlaylistSelectorDrawerProps extends BaseDrawerProps {
   playlists: Playlist[];
   currentPlaylistId: string | null;
-  onPlayPlaylist: (id: string) => void;
-  isAuthenticated: boolean;
-  showErrorToast: (message: string) => void;
+  onPlayPlaylist: (playlistId: string) => void;
 }
 
 const PlaylistSelectorDrawer: React.FC<PlaylistSelectorDrawerProps> = ({

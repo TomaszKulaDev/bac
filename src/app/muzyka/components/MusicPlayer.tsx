@@ -26,7 +26,7 @@ import {
   FaEyeSlash,
   FaEye,
 } from "react-icons/fa";
-import { Song, Playlist, RepeatMode } from "../types";
+import { Song, Playlist, RepeatMode, SortOrderType } from "../types";
 import { RootState } from "../../../store/store";
 import SongList from "./songs/SongList";
 import {
@@ -45,12 +45,15 @@ import { PlayerErrorBoundary } from "./ErrorBoundary/PlayerErrorBoundary";
 import { ErrorLogBuffer } from "../utils/ErrorLogBuffer";
 import { YouTubeError } from "../utils/youtube";
 import { useYouTubeErrorHandler } from "../hooks/useYouTubeErrorHandler";
-import MobileDrawer from "./MobileDrawer";
-import { motion, AnimatePresence } from "framer-motion";
-import PlaylistSelectorDrawer from "./PlaylistSelectorDrawer";
-import CreatePlaylistDrawer from "./CreatePlaylistDrawer";
-import { useDrawers, SortByType, SortOrderType } from "../hooks/useDrawers";
+import {
+  CreatePlaylistDrawer,
+  MobileDrawer,
+  PlaylistSelectorDrawer,
+} from "../components/drawers";
 import { Tooltip } from "@/components/ui/Tooltip";
+import { SortByType } from "../hooks/useDrawers";
+import { motion, AnimatePresence } from "framer-motion";
+import { useDrawers } from "../hooks/useDrawers";
 
 interface MusicPlayerProps {
   songs: Song[];
@@ -463,16 +466,19 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     setIsModalOpen,
   });
 
-  const debugInfo = useMemo(() => ({
-    isMobile,
-    showDrawerButton,
-    hasReachedPlaylist,
-    playlists: playlists.length
-  }), [isMobile, showDrawerButton, hasReachedPlaylist, playlists.length]);
+  const debugInfo = useMemo(
+    () => ({
+      isMobile,
+      showDrawerButton,
+      hasReachedPlaylist,
+      playlists: playlists.length,
+    }),
+    [isMobile, showDrawerButton, hasReachedPlaylist, playlists.length]
+  );
 
   // Używaj tylko gdy DEBUG=true
-  if (process.env.NODE_ENV === 'development') {
-    console.debug('Debug info:', debugInfo);
+  if (process.env.NODE_ENV === "development") {
+    console.debug("Debug info:", debugInfo);
   }
 
   return (

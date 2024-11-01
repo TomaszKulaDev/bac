@@ -1,14 +1,11 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaTimes, FaPlus } from "react-icons/fa";
-import { Playlist } from "../types";
+import { Playlist } from '@/app/muzyka/types';
+import { BaseDrawerProps } from './types';
 
-interface CreatePlaylistDrawerProps {
-  isOpen: boolean;
-  onClose: () => void;
+interface CreatePlaylistDrawerProps extends BaseDrawerProps {
   onCreatePlaylist: () => void;
-  isAuthenticated: boolean;
-  showErrorToast: (message: string) => void;
   playlists: Playlist[];
 }
 

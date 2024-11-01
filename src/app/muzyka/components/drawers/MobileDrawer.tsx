@@ -1,30 +1,11 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import PlaylistManager from "./PlaylistManager";
+import PlaylistManager from "../PlaylistManager";
 import { FaTimes, FaSort } from "react-icons/fa";
-import { Playlist, Song } from "../types";
-import { SortByType, SortOrderType } from '../hooks/useDrawers';
-
-interface MobileDrawerProps {
-  isOpen: boolean;
-  onClose: () => void;
-  sortBy: SortByType;
-  sortOrder: SortOrderType;
-  onSortChange: (sortBy: SortByType, sortOrder: SortOrderType) => void;
-  playlists: Playlist[];
-  songs: Song[];
-  expandedPlaylist: string | null;
-  setExpandedPlaylist: (id: string | null) => void;
-  onAddToPlaylist: (playlistId: string, songId: string) => void;
-  onCreatePlaylist: (name: string, selectedSongs?: string[]) => void;
-  currentPlaylistId: string | null;
-  onPlayPlaylist: (id: string) => void;
-  onUpdatePlaylists: (updater: (prevPlaylists: Playlist[]) => Playlist[]) => void;
-  isAuthenticated: boolean;
-  showErrorToast: (message: string) => void;
-  showSuccessToast: (message: string) => void;
-}
-
+import { Playlist, Song } from "@/app/muzyka/types";
+import { SortByType, SortOrderType } from "@/app/muzyka/types";
+import { MobileDrawerProps } from "./types";
+  
 const MobileDrawer: React.FC<MobileDrawerProps> = ({
   isOpen,
   onClose,
