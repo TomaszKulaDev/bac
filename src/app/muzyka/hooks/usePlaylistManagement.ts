@@ -101,7 +101,7 @@ export const usePlaylistManagement = ({
       .catch(() => {
         showErrorToast("Nie udało się dodać utworu do playlisty");
       });
-  }, [playlists, songs, dispatch, onUpdatePlaylists, isAuthenticated, showSuccessToast, showErrorToast, showInfoToast]);
+  }, [playlists, songs, dispatch, onUpdatePlaylists, isAuthenticated, showErrorToast, showInfoToast]);
 
   const removeSongFromPlaylist = useCallback((playlistId: string, songId: string) => {
     if (!isAuthenticated) {

@@ -37,15 +37,15 @@ export const usePlaybackControls = ({
       const currentPlaylist = playlists.find(p => p.id === currentPlaylistId);
       if (currentPlaylist) {
         const currentIndex = currentPlaylist.songs.indexOf(currentSong.id);
-        // Zmiana kierunku na przeciwny
-        let prevIndex = (currentIndex + 1) % currentPlaylist.songs.length;
+        const prevIndex = currentIndex === 0 
+          ? currentPlaylist.songs.length - 1 
+          : currentIndex - 1;
         const prevSongId = currentPlaylist.songs[prevIndex];
         dispatch(setCurrentSongIndex(songs.findIndex(s => s.id === prevSongId)));
       }
     } else {
       const currentIndex = songs.findIndex(s => s.id === currentSong.id);
-      // Zmiana kierunku na przeciwny
-      let prevIndex = (currentIndex + 1) % songs.length;
+      const prevIndex = currentIndex === 0 ? songs.length - 1 : currentIndex - 1;
       dispatch(setCurrentSongIndex(prevIndex));
     }
     setIsPlaying(true);
@@ -73,31 +73,34 @@ export const usePlaybackControls = ({
   const nextSong = useCallback(() => {
     if (!currentSong) return;
 
-    if (!player || !isPlayerReady) {
-      console.warn('Player nie jest gotowy');
-      return;
-    }
-    
     try {
       if (currentPlaylistId) {
         const currentPlaylist = playlists.find(p => p.id === currentPlaylistId);
         if (currentPlaylist) {
           const currentIndex = currentPlaylist.songs.indexOf(currentSong.id);
-          const nextIndex = (currentIndex + 1) % currentPlaylist.songs.length;
-          const nextSongId = currentPlaylist.songs[nextIndex];
-          dispatch(setCurrentSongIndex(songs.findIndex(s => s.id === nextSongId)));
+          if (repeatMode.song === "on") {
+            dispatch(setCurrentSongIndex(songs.findIndex(s => s.id === currentSong.id)));
+          } else {
+            const nextIndex = (currentIndex + 1) % currentPlaylist.songs.length;
+            const nextSongId = currentPlaylist.songs[nextIndex];
+            dispatch(setCurrentSongIndex(songs.findIndex(s => s.id === nextSongId)));
+          }
         }
       } else {
         const currentIndex = songs.findIndex(s => s.id === currentSong.id);
-        const nextIndex = (currentIndex + 1) % songs.length;
-        dispatch(setCurrentSongIndex(nextIndex));
+        if (repeatMode.song === "on") {
+          dispatch(setCurrentSongIndex(currentIndex));
+        } else {
+          const nextIndex = (currentIndex + 1) % songs.length;
+          dispatch(setCurrentSongIndex(nextIndex));
+        }
       }
       setIsPlaying(true);
       setIsLoading(true);
     } catch (error) {
       console.error('Błąd podczas przechodzenia do następnego utworu:', error);
     }
-  }, [currentPlaylistId, playlists, currentSong, songs, player, isPlayerReady, dispatch, setIsPlaying, setIsLoading]);
+  }, [currentPlaylistId, playlists, currentSong, songs, repeatMode.song, dispatch, setIsPlaying, setIsLoading]);
 
   return {
     previousSong,
