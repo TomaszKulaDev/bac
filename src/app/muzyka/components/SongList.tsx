@@ -1,3 +1,4 @@
+// src/app/muzyka/components/SongList.tsx
 import React, { useState, useMemo, useCallback, useEffect } from "react";
 import Image from "next/image";
 import { FaPlay, FaBookmark, FaHeart } from "react-icons/fa";
@@ -85,9 +86,9 @@ const SongList: React.FC<SongListProps> = ({
       opacity: 1,
       transition: {
         staggerChildren: 0.1,
-        delayChildren: 0.1
-      }
-    }
+        delayChildren: 0.1,
+      },
+    },
   };
 
   const itemVariants = {
@@ -98,8 +99,8 @@ const SongList: React.FC<SongListProps> = ({
       transition: {
         type: "spring",
         stiffness: 100,
-        damping: 15
-      }
+        damping: 15,
+      },
     },
     hover: {
       scale: 1.02,
@@ -107,12 +108,12 @@ const SongList: React.FC<SongListProps> = ({
       transition: {
         type: "spring",
         stiffness: 400,
-        damping: 10
-      }
+        damping: 10,
+      },
     },
     tap: {
-      scale: 0.98
-    }
+      scale: 0.98,
+    },
   };
 
   return (
@@ -129,7 +130,7 @@ const SongList: React.FC<SongListProps> = ({
         </div>
       )}
 
-      <motion.ul 
+      <motion.ul
         layout
         variants={listVariants}
         initial="hidden"
@@ -143,15 +144,13 @@ const SongList: React.FC<SongListProps> = ({
             whileHover="hover"
             whileTap="tap"
             className={`flex items-center justify-between p-4 ${
-              song.id === currentSong?.id
-                ? "bg-blue-100 shadow-md"
-                : "bg-white"
+              song.id === currentSong?.id ? "bg-blue-100 shadow-md" : "bg-white"
             } rounded-xl shadow-sm transition-all duration-200`}
             onClick={() => onSongSelectMemoized(song.id)}
           >
             <div className="flex items-center flex-grow min-w-0 mr-4">
-              <motion.div 
-                className="w-14 h-14 mr-4 relative flex-shrink-0 rounded-lg overflow-hidden shadow-md"
+              <motion.div
+                className="w-14 h-14 mr-6 relative flex-shrink-0 rounded-lg overflow-hidden shadow-md"
                 whileHover={{ scale: 1.1 }}
                 transition={{ type: "spring", stiffness: 400 }}
               >
@@ -163,7 +162,7 @@ const SongList: React.FC<SongListProps> = ({
                   className="rounded-lg"
                 />
                 {song.id === currentSong?.id && isPlaying && (
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm"
@@ -172,13 +171,13 @@ const SongList: React.FC<SongListProps> = ({
                   </motion.div>
                 )}
               </motion.div>
-              <div className="flex-grow min-w-0 mr-2">
-                <h3 className="font-semibold truncate text-sm">
+              <div className="flex-grow min-w-0 mr-4 ml-2">
+                <h3 className="font-semibold truncate text-sm mb-1">
                   {song.title.length > 20
                     ? song.title.slice(0, 31) + "..."
                     : song.title}
                 </h3>
-                <p className="text-xs text-gray-600 truncate">
+                <p className="text-xs text-gray-600 truncate mb-2">
                   {song.artist.length > 20
                     ? song.artist.slice(0, 31) + "..."
                     : song.artist}

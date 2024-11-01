@@ -20,6 +20,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { Z_INDEX } from "@/app/constants/zIndex";
 import { useResponsive } from "./hooks/useResponsive";
 import PlaylistHeader from "./components/PlaylistHeader";
+import { useDebugEffect } from "./hooks/useDebugEffect";
+import LoadingState from "./components/LoadingState";
 
 const generateUniqueId = () => {
   return Date.now().toString(36) + Math.random().toString(36).substr(2);
@@ -187,22 +189,15 @@ const MusicPage: React.FC = () => {
     }
   }, [status, dispatch]);
 
-  useEffect(() => {
-    console.log("Stan playlist po aktualizacji:", playlists);
-  }, [playlists]);
-
-  const memoizedSongs = useMemo(() => songs, [songs]);
-  const memoizedPlaylists = useMemo(() => playlists, [playlists]);
+  useDebugEffect("playlists", playlists);
 
   if (status === "loading") {
     return (
-      <div className="flex justify-center items-center h-screen">
-        Ładowanie...
-      </div>
+      <LoadingState error={error} />
     );
   }
   if (status === "failed") {
-    return <div className="text-red-500 text-center">Błąd: {error}</div>;
+    return <LoadingState error={error} />;
   }
 
   console.log("Playlists przed renderowaniem:", playlists);
@@ -232,7 +227,7 @@ const MusicPage: React.FC = () => {
       <div className="flex-grow flex flex-col lg:flex-row bg-white relative z-10 shadow-xl rounded-t-[2rem] -mt-20">
         <div className="w-full lg:w-2/3 p-4">
           <MusicPlayer
-            songs={memoizedSongs}
+            songs={songs}
             onCreatePlaylist={handleCreatePlaylist}
             onAddToPlaylist={handleAddToExistingPlaylist}
             expandedPlaylist={expandedPlaylist}
@@ -241,7 +236,7 @@ const MusicPage: React.FC = () => {
             setFilterText={setFilterText}
             isMobile={isMobile}
             currentPlaylistId={currentPlaylistId}
-            playlists={memoizedPlaylists}
+            playlists={playlists}
             onUpdatePlaylists={setPlaylists}
             onPlayPlaylist={(playlistId: string) => {
               setCurrentPlaylistId(playlistId);
@@ -269,8 +264,8 @@ const MusicPage: React.FC = () => {
           <PlaylistManager
             setIsModalOpen={setIsModalOpen}
             isModalOpen={isModalOpen}
-            playlists={memoizedPlaylists}
-            songs={memoizedSongs}
+            playlists={playlists}
+            songs={songs}
             expandedPlaylist={expandedPlaylist}
             setExpandedPlaylist={setExpandedPlaylist}
             onCreatePlaylist={handleCreatePlaylist}

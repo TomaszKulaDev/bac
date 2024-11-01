@@ -1,3 +1,4 @@
+// src/app/muzyka/components/songs/SongList.tsx
 import React, { useState, useMemo, useCallback, useEffect, memo } from "react";
 import Image from "next/image";
 import { FaPlay, FaBookmark, FaHeart } from "react-icons/fa";
@@ -194,3 +195,39 @@ export default React.memo(SongList, (prevProps, nextProps) => {
     arePlaylistsEqual(prevProps.playlists, nextProps.playlists)
   );
 });
+
+const listVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, x: -20 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      type: "spring",
+      stiffness: 100,
+      damping: 15,
+    },
+  },
+  hover: {
+    scale: 1.02,
+    backgroundColor: "rgba(243, 244, 246, 1)",
+    transition: {
+      type: "spring",
+      stiffness: 400,
+      damping: 10,
+    },
+  },
+  tap: {
+    scale: 0.98,
+  },
+};

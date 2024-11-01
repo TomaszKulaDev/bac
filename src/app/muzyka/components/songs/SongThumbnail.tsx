@@ -11,7 +11,7 @@ interface SongThumbnailProps {
 }
 
 export const SongThumbnail = memo(({ song, isCurrentSong, isPlaying }: SongThumbnailProps) => (
-  <div className="relative w-14 h-14 flex-shrink-0">
+  <div className="relative w-14 h-14 flex-shrink-0 mr-6">
     <Image
       src={getYouTubeThumbnail(song.youtubeId)}
       alt={song.title}

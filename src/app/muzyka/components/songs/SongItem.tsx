@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback, memo, useRef } from "react";
 import Image from "next/image";
 import { motion, Variants } from "framer-motion";
-import { FaPlay, FaBookmark } from "react-icons/fa";
+import { FaPlay, FaBookmark, FaHeart } from "react-icons/fa";
 import { Song, Playlist } from "../../types";
 import { getYouTubeThumbnail } from "../../utils/youtube";
 import { usePlaylistManagement } from "../../hooks/usePlaylistManagement";
@@ -97,12 +97,33 @@ const SongItem = memo(
           </div>
         </div>
 
-        {props.hasPlaylists && props.isAuthenticated && (
-          <AddToPlaylistButton
-            onClick={handleAddToPlaylist}
-            songTitle={song.title}
-          />
-        )}
+        <div className="flex items-center space-x-3">
+          {props.isAuthenticated && (
+            <motion.button
+              whileHover={{ scale: 1.2 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+              className="p-2 rounded-full hover:bg-red-50 text-gray-500 hover:text-red-500"
+            >
+              <FaHeart className="text-xl" />
+            </motion.button>
+          )}
+          {props.isPlaylistExpanded && props.expandedPlaylist && props.hasPlaylists && (
+            <motion.button
+              whileHover={{ scale: 1.2 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={(e) => {
+                e.stopPropagation();
+                onAddToPlaylist(song.id);
+              }}
+              className="p-2 rounded-full hover:bg-blue-50 text-gray-500 hover:text-blue-500"
+            >
+              <FaBookmark className="text-xl" />
+            </motion.button>
+          )}
+        </div>
       </motion.li>
     );
   }

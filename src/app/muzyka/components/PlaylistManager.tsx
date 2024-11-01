@@ -1,7 +1,7 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { FaPlay, FaChevronUp, FaChevronDown, FaEdit, FaTrash, FaPlus, FaMusic } from "react-icons/fa";
+import { FaPlay, FaChevronUp, FaChevronDown, FaEdit, FaTrash, FaPlus, FaMusic, FaHeart, FaBookmark } from "react-icons/fa";
 import { Playlist, Song } from "../types";
 import { getYouTubeThumbnail } from "../utils/youtube";
 import CreatePlaylistModal from "./CreatePlaylistModal";
@@ -65,6 +65,17 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
     } else {
       showInfoToast("Utwór już istnieje w tej playliście.");
     }
+  };
+
+  const listVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.1,
+      },
+    },
   };
 
   return (
@@ -197,6 +208,21 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
                                   <p className="font-medium text-gray-800">{songDetails.title}</p>
                                   <p className="text-sm text-gray-500">{songDetails.artist}</p>
                                 </div>
+                              </div>
+                              <div className="flex items-center space-x-3">
+                                {isAuthenticated && (
+                                  <motion.button
+                                    whileHover={{ scale: 1.2 }}
+                                    whileTap={{ scale: 0.9 }}
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                    }}
+                                    className="p-2 rounded-full hover:bg-red-50 text-gray-500 hover:text-red-500"
+                                  >
+                                    <FaHeart className="text-xl" />
+                                  </motion.button>
+                                )}
+                                {/* Dodać przycisk FaBookmark */}
                               </div>
                               <motion.button
                                 whileHover={{ scale: 1.1 }}
