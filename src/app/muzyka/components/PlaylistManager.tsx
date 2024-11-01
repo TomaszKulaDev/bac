@@ -191,47 +191,34 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
                           return songDetails ? (
                             <motion.div
                               key={songId}
-                              initial={{ opacity: 0, x: -20 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              exit={{ opacity: 0, x: 20 }}
                               className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
                             >
-                              <div className="flex items-center space-x-4">
-                                <Image
-                                  src={getYouTubeThumbnail(songDetails.youtubeId)}
-                                  alt={songDetails.title}
-                                  width={48}
-                                  height={48}
-                                  className="rounded-md object-cover"
-                                />
-                                <div>
-                                  <p className="font-medium text-gray-800">{songDetails.title}</p>
-                                  <p className="text-sm text-gray-500">{songDetails.artist}</p>
+                              <div className="flex items-center space-x-3">
+                                <div className="relative w-16 h-16 flex-shrink-0">
+                                  <Image
+                                    src={getYouTubeThumbnail(songDetails.youtubeId)}
+                                    alt={songDetails.title}
+                                    fill
+                                    sizes="64px"
+                                    className="rounded-md object-cover"
+                                    priority={false}
+                                  />
+                                </div>
+                                <div className="min-w-0">
+                                  <p className="font-medium text-gray-800 truncate">{songDetails.title}</p>
+                                  <p className="text-sm text-gray-500 truncate">{songDetails.artist}</p>
                                 </div>
                               </div>
                               <div className="flex items-center space-x-3">
-                                {isAuthenticated && (
-                                  <motion.button
-                                    whileHover={{ scale: 1.2 }}
-                                    whileTap={{ scale: 0.9 }}
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                    }}
-                                    className="p-2 rounded-full hover:bg-red-50 text-gray-500 hover:text-red-500"
-                                  >
-                                    <FaHeart className="text-xl" />
-                                  </motion.button>
-                                )}
-                                {/* Dodać przycisk FaBookmark */}
+                                <motion.button
+                                  whileHover={{ scale: 1.1 }}
+                                  whileTap={{ scale: 0.9 }}
+                                  onClick={() => onRemoveSongFromPlaylist(playlist.id, songId)}
+                                  className="p-2 text-red-500 hover:bg-red-50 rounded-full transition-colors"
+                                >
+                                  <FaTrash />
+                                </motion.button>
                               </div>
-                              <motion.button
-                                whileHover={{ scale: 1.1 }}
-                                whileTap={{ scale: 0.9 }}
-                                onClick={() => onRemoveSongFromPlaylist(playlist.id, songId)}
-                                className="p-2 text-red-500 hover:bg-red-50 rounded-full transition-colors"
-                              >
-                                <FaTrash />
-                              </motion.button>
                             </motion.div>
                           ) : (
                             <div className="p-3 bg-red-50 text-red-500 rounded-lg">
