@@ -22,6 +22,7 @@ import { useResponsive } from "./hooks/useResponsive";
 import PlaylistHeader from "./components/PlaylistHeader";
 import { useDebugEffect } from "./hooks/useDebugEffect";
 import LoadingState from "./components/LoadingState";
+import { usePlaylistManagement } from "./hooks/usePlaylistManagement";
 
 const generateUniqueId = () => {
   return Date.now().toString(36) + Math.random().toString(36).substr(2);
@@ -55,89 +56,63 @@ const MusicPage: React.FC = () => {
     updateContainerPadding();
   }, [updateContainerPadding]);
 
-  const handleCreatePlaylist = useCallback(
-    (name: string, selectedSongs: string[] = []) => {
-      if (!isAuthenticated) {
-        showErrorToast("Musisz być zalogowany, aby tworzyć playlisty.");
-        return;
-      }
-
-      if (playlists.length >= 2) {
-        alert(
-          "Możesz stworzyć maksymalnie 2 playlisty. Usuń jedną z istniejących playlist, aby utworzyć nową."
-        );
-        return;
-      }
-
-      const playlistExists = playlists.some(
-        (playlist) => playlist.name.toLowerCase() === name.toLowerCase()
-      );
-      if (playlistExists) {
-        alert("Playlista o takiej nazwie już istnieje. Wybierz inną nazwę.");
-        return;
-      }
-
-      const newPlaylistId = generateUniqueId();
-      const newPlaylist: Playlist = {
-        id: newPlaylistId,
-        name,
-        songs: selectedSongs,
-      };
-      setPlaylists((prevPlaylists) => [...prevPlaylists, newPlaylist]);
-      setExpandedPlaylist(newPlaylistId);
-    },
-    [playlists, isAuthenticated]
-  );
-
-  const handleCreateEmptyPlaylist = useCallback(() => {
-    const name = prompt("Podaj nazwę nowej playlisty:");
-    if (name) {
-      handleCreatePlaylist(name, []);
+  const handleCreateEmptyPlaylist = useCallback((name: string, selectedSongs: string[] = []) => {
+    if (!isAuthenticated) {
+      showErrorToast("Musisz być zalogowany, aby utworzyć playlistę");
+      return;
     }
-  }, [handleCreatePlaylist]);
+    
+    const newPlaylist: Playlist = {
+      id: generateUniqueId(),
+      name,
+      songs: selectedSongs,
+    };
+    
+    setPlaylists(prev => [...prev, newPlaylist]);
+    setExpandedPlaylist(newPlaylist.id);
+    showSuccessToast(`Utworzono nową playlistę "${name}"`);
+  }, [isAuthenticated, showSuccessToast, showErrorToast, setExpandedPlaylist]);
 
-  const handleAddToExistingPlaylist = useCallback(
-    (playlistId: string, songId: string) => {
+  const playlistManagement = usePlaylistManagement({
+    playlists,
+    onUpdatePlaylists: setPlaylists,
+    onPlayPlaylist: (playlistId: string) => {
+      setCurrentPlaylistId(playlistId);
       const playlist = playlists.find((p) => p.id === playlistId);
-      if (!playlist) {
-        console.log("Nie można dodać utworu do nieistniejącej playlisty");
-        return;
+      if (playlist && playlist.songs.length > 0) {
+        dispatch(
+          setCurrentSongIndex(
+            songs.findIndex((s) => s.id === playlist.songs[0])
+          )
+        );
       }
-
-      if (playlist.songs.includes(songId)) {
-        console.log("Utwór już istnieje w tej playliście");
-        return;
-      }
-
-      console.log("handleAddToExistingPlaylist - playlistId:", playlistId);
-      console.log("handleAddToExistingPlaylist - songId:", songId);
-
-      const playlistName = playlist.name;
-
-      setPlaylists((prevPlaylists) =>
-        prevPlaylists.map((p) =>
-          p.id === playlistId
-            ? {
-                ...p,
-                songs: [songId, ...p.songs],
-              }
-            : p
-        )
-      );
-
-      dispatch(
-        updateSongsPlaylists({ songIds: [songId], playlistId, playlistName })
-      )
-        .unwrap()
-        .then(() => {
-          console.log("Playlists updated successfully");
-        })
-        .catch((error: unknown) => {
-          console.error("Failed to update playlists:", error);
-        });
     },
-    [dispatch, playlists]
-  );
+    currentPlaylistId,
+    showSuccessToast,
+    showErrorToast,
+    showInfoToast,
+    isAuthenticated,
+    songs,
+    onCreatePlaylist: handleCreateEmptyPlaylist
+  });
+
+  useEffect(() => {
+    if (status === "idle") {
+      dispatch(fetchSongs() as any).then((action: any) => {
+        if (action.payload) {
+          const mappedSongs = action.payload.map((song: any) => ({
+            ...song,
+            id: song._id,
+            impro: song.impro || false,
+            beginnerFriendly: song.beginnerFriendly || false, // Dodaj tę linię
+          }));
+          dispatch({ type: "songs/setSongs", payload: mappedSongs });
+        }
+      });
+    }
+  }, [status, dispatch]);
+
+  useDebugEffect("playlists", playlists);
 
   const handleRemoveSongFromPlaylist = useCallback(
     (playlistId: string, songId: string) => {
@@ -172,24 +147,6 @@ const MusicPage: React.FC = () => {
     },
     [dispatch, playlists]
   );
-
-  useEffect(() => {
-    if (status === "idle") {
-      dispatch(fetchSongs() as any).then((action: any) => {
-        if (action.payload) {
-          const mappedSongs = action.payload.map((song: any) => ({
-            ...song,
-            id: song._id,
-            impro: song.impro || false,
-            beginnerFriendly: song.beginnerFriendly || false, // Dodaj tę linię
-          }));
-          dispatch({ type: "songs/setSongs", payload: mappedSongs });
-        }
-      });
-    }
-  }, [status, dispatch]);
-
-  useDebugEffect("playlists", playlists);
 
   if (status === "loading") {
     return (
@@ -228,8 +185,8 @@ const MusicPage: React.FC = () => {
         <div className="w-full lg:w-2/3 p-4">
           <MusicPlayer
             songs={songs}
-            onCreatePlaylist={handleCreatePlaylist}
-            onAddToPlaylist={handleAddToExistingPlaylist}
+            onCreatePlaylist={handleCreateEmptyPlaylist}
+            onAddToPlaylist={playlistManagement.addSongToPlaylist}
             expandedPlaylist={expandedPlaylist}
             setExpandedPlaylist={setExpandedPlaylist}
             filterText={filterText}
@@ -268,7 +225,8 @@ const MusicPage: React.FC = () => {
             songs={songs}
             expandedPlaylist={expandedPlaylist}
             setExpandedPlaylist={setExpandedPlaylist}
-            onCreatePlaylist={handleCreatePlaylist}
+            onCreatePlaylist={handleCreateEmptyPlaylist}
+            onUpdatePlaylists={setPlaylists}
             onDeletePlaylist={(playlistId: string) => {
               const playlistToDelete = playlists.find(
                 (p) => p.id === playlistId
@@ -311,10 +269,11 @@ const MusicPage: React.FC = () => {
               }
             }}
             currentPlaylistId={currentPlaylistId}
-            onAddToPlaylist={handleAddToExistingPlaylist}
+            onAddToPlaylist={playlistManagement.addSongToPlaylist}
             showSuccessToast={showSuccessToast}
             showErrorToast={showErrorToast}
             showInfoToast={showInfoToast}
+            setPlaylists={setPlaylists}
           />
         </div>
       </div>

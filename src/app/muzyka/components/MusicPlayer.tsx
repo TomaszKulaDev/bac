@@ -54,6 +54,7 @@ import { Tooltip } from "@/components/ui/Tooltip";
 import { SortByType } from "../hooks/useDrawers";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDrawers } from "../hooks/useDrawers";
+import { usePlaylistManagement, UsePlaylistManagementProps } from "../hooks/usePlaylistManagement";
 
 interface MusicPlayerProps {
   songs: Song[];
@@ -238,65 +239,18 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     ]
   );
 
-  // Funkcja do dodawania utworu do playlisty
-  const addSongToPlaylist = useCallback(
-    (playlistId: string, songId: string) => {
-      onUpdatePlaylists((prevPlaylists: Playlist[]) =>
-        prevPlaylists.map((playlist) => {
-          if (playlist.id === playlistId) {
-            return { ...playlist, songs: [...playlist.songs, songId] };
-          }
-          return playlist;
-        })
-      );
-    },
-    [onUpdatePlaylists]
-  );
-
-  // Funkcja do usuwania utworu z playlisty
-  const removeSongFromPlaylist = useCallback(
-    (playlistId: string, songId: string) => {
-      onUpdatePlaylists((prevPlaylists: Playlist[]) =>
-        prevPlaylists.map((playlist) => {
-          if (playlist.id === playlistId) {
-            return {
-              ...playlist,
-              songs: playlist.songs.filter((id) => id !== songId),
-            };
-          }
-          return playlist;
-        })
-      );
-    },
-    [onUpdatePlaylists]
-  );
-
-  // Funkcja do edytowania nazwy playlisty
-  const editPlaylistName = useCallback(
-    (playlistId: string, newName: string) => {
-      onUpdatePlaylists((prevPlaylists: Playlist[]) =>
-        prevPlaylists.map((playlist) => {
-          if (playlist.id === playlistId) {
-            return { ...playlist, name: newName };
-          }
-          return playlist;
-        })
-      );
-    },
-    [onUpdatePlaylists]
-  );
-
-  const deletePlaylist = useCallback(
-    (playlistId: string) => {
-      onUpdatePlaylists((prevPlaylists: Playlist[]) =>
-        prevPlaylists.filter((playlist: Playlist) => playlist.id !== playlistId)
-      );
-      if (currentPlaylistId === playlistId) {
-        onPlayPlaylist("");
-      }
-    },
-    [onUpdatePlaylists, onPlayPlaylist, currentPlaylistId]
-  );
+  const playlistManagement = usePlaylistManagement({
+    playlists,
+    onUpdatePlaylists,
+    onPlayPlaylist,
+    currentPlaylistId,
+    showSuccessToast,
+    showErrorToast,
+    showInfoToast,
+    isAuthenticated,
+    songs,
+    onCreatePlaylist
+  });
 
   useEffect(() => {
     const allPlaylistNames = playlists.map((p: Playlist) => p.name);
@@ -422,15 +376,15 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
 
   // Funkcje do zarządzania playlistami
   const handleDeletePlaylist = (id: string) => {
-    deletePlaylist(id);
+    playlistManagement.deletePlaylist(id);
   };
 
   const handleRenamePlaylist = (id: string, newName: string) => {
-    editPlaylistName(id, newName);
+    playlistManagement.editPlaylistName(id, newName);
   };
 
   const handleRemoveSongFromPlaylist = (playlistId: string, songId: string) => {
-    removeSongFromPlaylist(playlistId, songId);
+    playlistManagement.removeSongFromPlaylist(playlistId, songId);
   };
 
   const onSortChange = useCallback(

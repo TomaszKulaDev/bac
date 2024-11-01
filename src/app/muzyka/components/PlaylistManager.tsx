@@ -7,6 +7,15 @@ import { getYouTubeThumbnail } from "../utils/youtube";
 import CreatePlaylistModal from "./CreatePlaylistModal";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
+import { DndContext, DragEndEvent, closestCenter } from '@dnd-kit/core';
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import { restrictToParentElement } from '@dnd-kit/modifiers';
+import { DraggableSong } from "../types";
+import { updatePlaylistOrder } from "@/store/actions/playlistActions";
+import { useDispatch } from "react-redux";
+import DraggableSongItem from "./DraggableSongItem";
+import { useSensors, useSensor, PointerSensor } from '@dnd-kit/core';
+import { usePlaylistManagement } from "../hooks/usePlaylistManagement";
 
 interface PlaylistManagerProps {
   playlists: Playlist[];
@@ -26,6 +35,8 @@ interface PlaylistManagerProps {
   showSuccessToast: (message: string) => void;
   showErrorToast: (message: string) => void;
   showInfoToast: (message: string) => void;
+  onUpdatePlaylists: (playlists: Playlist[]) => void;
+  setPlaylists: React.Dispatch<React.SetStateAction<Playlist[]>>;
 }
 
 const PlaylistManager: React.FC<PlaylistManagerProps> = ({
@@ -46,26 +57,38 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
   showSuccessToast,
   showErrorToast,
   showInfoToast,
+  onUpdatePlaylists,
+  setPlaylists
 }) => {
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+  const dispatch = useDispatch();
 
   const getSongDetails = (songId: string): Song | undefined => 
     songs.find((song) => song._id === songId || song.id === songId);
 
-  const handleAddToPlaylist = (playlistId: string, songId: string) => {
-    if (!isAuthenticated) {
-      showErrorToast("Musisz być zalogowany, aby dodawać utwory do playlist.");
-      return;
-    }
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    })
+  );
 
-    const playlist = playlists.find((p) => p.id === playlistId);
-    if (playlist && !playlist.songs.includes(songId)) {
-      onAddToPlaylist(playlistId, songId);
-      showSuccessToast("Utwór dodany do playlisty.");
-    } else {
-      showInfoToast("Utwór już istnieje w tej playliście.");
-    }
-  };
+  const playlistManagement = usePlaylistManagement({
+    playlists,
+    onUpdatePlaylists: (updater) => {
+      const newPlaylists = updater(playlists);
+      setPlaylists(newPlaylists);
+    },
+    onPlayPlaylist,
+    currentPlaylistId,
+    showSuccessToast,
+    showErrorToast,
+    showInfoToast,
+    isAuthenticated,
+    songs,
+    onCreatePlaylist
+  });
 
   const listVariants = {
     hidden: { opacity: 0 },
@@ -173,62 +196,44 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
 
               <AnimatePresence>
                 {expandedPlaylist === playlist.id && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    className="overflow-hidden"
+                  <DndContext
+                    sensors={sensors}
+                    collisionDetection={closestCenter}
+                    modifiers={[restrictToParentElement]}
+                    onDragEnd={(event) => playlistManagement.handleDragEnd(event, playlist)}
                   >
-                    <div className="space-y-2 mt-4">
-                      {playlist.songs.length === 0 ? (
-                        <div className="text-center py-8 text-gray-500">
-                          <FaMusic className="mx-auto text-4xl mb-2 opacity-50" />
-                          <p>Playlist jest pusta. Dodaj swoje ulubione utwory!</p>
-                        </div>
-                      ) : (
-                        playlist.songs.map((songId) => {
-                          const songDetails = getSongDetails(songId);
-                          return songDetails ? (
-                            <motion.div
-                              key={songId}
-                              className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
-                            >
-                              <div className="flex items-center space-x-3">
-                                <div className="relative w-16 h-16 flex-shrink-0">
-                                  <Image
-                                    src={getYouTubeThumbnail(songDetails.youtubeId)}
-                                    alt={songDetails.title}
-                                    fill
-                                    sizes="64px"
-                                    className="rounded-md object-cover"
-                                    priority={false}
-                                  />
-                                </div>
-                                <div className="min-w-0">
-                                  <p className="font-medium text-gray-800 truncate">{songDetails.title}</p>
-                                  <p className="text-sm text-gray-500 truncate">{songDetails.artist}</p>
-                                </div>
+                    <SortableContext
+                      items={playlist.songs}
+                      strategy={verticalListSortingStrategy}
+                    >
+                      <div className="space-y-2 mt-4">
+                        {playlist.songs.length === 0 ? (
+                          <div className="text-center py-8 text-gray-500">
+                            <FaMusic className="mx-auto text-4xl mb-2 opacity-50" />
+                            <p>Playlist jest pusta. Dodaj swoje ulubione utwory!</p>
+                          </div>
+                        ) : (
+                          playlist.songs.map((songId) => {
+                            const songDetails = getSongDetails(songId);
+                            return songDetails ? (
+                              <DraggableSongItem
+                                key={songId}
+                                id={songId}
+                                songDetails={songDetails}
+                                playlistId={playlist.id}
+                                onRemove={onRemoveSongFromPlaylist}
+                                isAuthenticated={isAuthenticated}
+                              />
+                            ) : (
+                              <div className="p-3 bg-red-50 text-red-500 rounded-lg">
+                                Utwór niedostępny
                               </div>
-                              <div className="flex items-center space-x-3">
-                                <motion.button
-                                  whileHover={{ scale: 1.1 }}
-                                  whileTap={{ scale: 0.9 }}
-                                  onClick={() => onRemoveSongFromPlaylist(playlist.id, songId)}
-                                  className="p-2 text-red-500 hover:bg-red-50 rounded-full transition-colors"
-                                >
-                                  <FaTrash />
-                                </motion.button>
-                              </div>
-                            </motion.div>
-                          ) : (
-                            <div className="p-3 bg-red-50 text-red-500 rounded-lg">
-                              Utwór niedostępny
-                            </div>
-                          );
-                        })
-                      )}
-                    </div>
-                  </motion.div>
+                            );
+                          })
+                        )}
+                      </div>
+                    </SortableContext>
+                  </DndContext>
                 )}
               </AnimatePresence>
             </div>

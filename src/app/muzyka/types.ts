@@ -1,3 +1,7 @@
+import { UniqueIdentifier } from '@dnd-kit/core';
+import { SensorDescriptor, SensorOptions } from '@dnd-kit/core';
+import { DragEndEvent } from '@dnd-kit/core';
+
 // Interfejs reprezentujący playlistę
 export interface Playlist {
   id: string;
@@ -41,6 +45,7 @@ export interface MusicPlayerProps {
   playlistCount: number;
   onToggleButtonsVisibility?: () => void;
   initialButtonsVisible?: boolean;
+  sensors: any; // możemy później dodać dokładniejszy typ z @dnd-kit/core
 }
 
 // Interfejs reprezentujący tryb powtarzania
@@ -56,3 +61,46 @@ export type SortOrder = "asc" | "desc";
 
 export type SortOrderType = 'asc' | 'desc';
 export type SortByType = 'date' | 'title' | 'artist' | 'impro' | 'beginnerFriendly';
+
+// Dodajemy interfejs DraggableSong
+export interface DraggableSong {
+  id: UniqueIdentifier;
+  playlistId: string;
+  songDetails: Song;
+}
+
+export interface PlaylistDndProps {
+  playlist: Playlist;
+  onReorder: (playlistId: string, newOrder: string[]) => void;
+}
+
+// Dodajemy nowy interfejs
+export interface PlaylistManagerProps {
+  playlists: Playlist[];
+  songs: Song[];
+  expandedPlaylist: string | null;
+  setExpandedPlaylist: (playlistId: string | null) => void;
+  onDeletePlaylist: (playlistId: string) => void;
+  onRenamePlaylist: (playlistId: string, newName: string) => void;
+  onRemoveSongFromPlaylist: (playlistId: string, songId: string) => void;
+  onCreatePlaylist: (name: string, selectedSongs?: string[]) => void;
+  isMobile: boolean;
+  onPlayPlaylist: (playlistId: string) => void;
+  currentPlaylistId: string | null;
+  onAddToPlaylist: (playlistId: string, songId: string) => void;
+  setIsModalOpen: (isOpen: boolean) => void;
+  isModalOpen: boolean;
+  showSuccessToast: (message: string) => void;
+  showErrorToast: (message: string) => void;
+  showInfoToast: (message: string) => void;
+  onUpdatePlaylists: (updater: (prevPlaylists: Playlist[]) => Playlist[]) => void;
+  setPlaylists: React.Dispatch<React.SetStateAction<Playlist[]>>;
+  isAuthenticated: boolean;
+}
+
+export interface PlaylistManagerContentProps extends PlaylistManagerProps {
+  sensors: SensorDescriptor<SensorOptions>[];
+  onDragEnd: (event: DragEndEvent, currentPlaylist: Playlist) => void;
+  getSongDetails: (songId: string) => Song | undefined;
+  isAuthenticated: boolean;
+}
