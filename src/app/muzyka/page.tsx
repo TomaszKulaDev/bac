@@ -47,10 +47,11 @@ const MusicPage: React.FC = () => {
     null
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
 
-  const showSuccessToast = (message: string) => toast.success(message);
-  const showErrorToast = (message: string) => toast.error(message);
-  const showInfoToast = (message: string) => toast.info(message);
+  const showSuccessToast = useCallback((message: string) => toast.success(message), []);
+  const showErrorToast = useCallback((message: string) => toast.error(message), []);
+  const showInfoToast = useCallback((message: string) => toast.info(message), []);
 
   useEffect(() => {
     updateContainerPadding();
@@ -148,6 +149,39 @@ const MusicPage: React.FC = () => {
     [dispatch, playlists]
   );
 
+  const getNextSongIndex = useCallback(() => {
+    if (currentPlaylistId) {
+      const playlist = playlists.find(p => p.id === currentPlaylistId);
+      if (playlist) {
+        const currentSongId = songs[currentSongIndex].id;
+        const currentSongPlaylistIndex = playlist.songs.indexOf(currentSongId);
+        
+        if (currentSongPlaylistIndex < playlist.songs.length - 1) {
+          // Znajdź indeks następnego utworu z playlisty w głównej tablicy songs
+          const nextSongId = playlist.songs[currentSongPlaylistIndex + 1];
+          return songs.findIndex(song => song.id === nextSongId);
+        }
+        // Jeśli to ostatni utwór w playliście, wróć do pierwszego
+        const firstSongId = playlist.songs[0];
+        return songs.findIndex(song => song.id === firstSongId);
+      }
+    }
+    // Jeśli nie ma aktywnej playlisty, przejdź do następnego utworu w głównej liście
+    return (currentSongIndex + 1) % songs.length;
+  }, [currentPlaylistId, playlists, songs, currentSongIndex]);
+
+  const handlePlayPlaylist = useCallback((playlistId: string) => {
+    setCurrentPlaylistId(playlistId);
+    const playlist = playlists.find((p) => p.id === playlistId);
+    if (playlist && playlist.songs.length > 0) {
+      const firstSongIndex = songs.findIndex(song => song.id === playlist.songs[0]);
+      if (firstSongIndex !== -1) {
+        dispatch(setCurrentSongIndex(firstSongIndex));
+        setIsPlaying(true);
+      }
+    }
+  }, [dispatch, playlists, songs]);
+
   if (status === "loading") {
     return (
       <LoadingState error={error} />
@@ -212,6 +246,8 @@ const MusicPage: React.FC = () => {
             showErrorToast={showErrorToast}
             showInfoToast={showInfoToast}
             isAuthenticated={isAuthenticated}
+            isPlaying={isPlaying}
+            setIsPlaying={setIsPlaying}
           />
         </div>
         <div className="w-full lg:w-1/3 p-4">

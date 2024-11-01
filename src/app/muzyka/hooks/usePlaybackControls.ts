@@ -83,15 +83,13 @@ export const usePlaybackControls = ({
         const currentPlaylist = playlists.find(p => p.id === currentPlaylistId);
         if (currentPlaylist) {
           const currentIndex = currentPlaylist.songs.indexOf(currentSong.id);
-          // Zmiana kierunku na przeciwny
-          let nextIndex = (currentIndex - 1 + currentPlaylist.songs.length) % currentPlaylist.songs.length;
+          const nextIndex = (currentIndex + 1) % currentPlaylist.songs.length;
           const nextSongId = currentPlaylist.songs[nextIndex];
           dispatch(setCurrentSongIndex(songs.findIndex(s => s.id === nextSongId)));
         }
       } else {
         const currentIndex = songs.findIndex(s => s.id === currentSong.id);
-        // Zmiana kierunku na przeciwny
-        let nextIndex = (currentIndex - 1 + songs.length) % songs.length;
+        const nextIndex = (currentIndex + 1) % songs.length;
         dispatch(setCurrentSongIndex(nextIndex));
       }
       setIsPlaying(true);
@@ -99,7 +97,7 @@ export const usePlaybackControls = ({
     } catch (error) {
       console.error('Błąd podczas przechodzenia do następnego utworu:', error);
     }
-  }, [player, isPlayerReady, currentPlaylistId, playlists, currentSong, songs, dispatch, setIsPlaying, setIsLoading]);
+  }, [currentPlaylistId, playlists, currentSong, songs, player, isPlayerReady, dispatch, setIsPlaying, setIsLoading]);
 
   return {
     previousSong,

@@ -46,6 +46,8 @@ export interface MusicPlayerProps {
   onToggleButtonsVisibility?: () => void;
   initialButtonsVisible?: boolean;
   sensors: any; // możemy później dodać dokładniejszy typ z @dnd-kit/core
+  isPlaying: boolean;
+  setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 // Interfejs reprezentujący tryb powtarzania

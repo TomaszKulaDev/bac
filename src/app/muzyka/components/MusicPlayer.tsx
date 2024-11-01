@@ -77,6 +77,8 @@ interface MusicPlayerProps {
   showErrorToast: (message: string) => void;
   showInfoToast: (message: string) => void;
   isAuthenticated: boolean;
+  isPlaying: boolean;
+  setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface BrowserInfo {
@@ -111,6 +113,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   showErrorToast,
   showInfoToast,
   isAuthenticated,
+  isPlaying,
+  setIsPlaying,
 }) => {
   const dispatch = useDispatch();
   const currentSong = useSelector(
@@ -120,8 +124,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   const {
     player,
     playerRef,
-    isPlaying,
-    setIsPlaying,
     isLoading,
     setIsLoading,
     isPlayerReady,
@@ -279,9 +281,12 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   const filteredSongs = useMemo(() => {
     if (currentPlaylistId) {
       const currentPlaylist = playlists.find((p) => p.id === currentPlaylistId);
-      return currentPlaylist
-        ? songs.filter((song) => currentPlaylist.songs.includes(song.id))
-        : [];
+      if (currentPlaylist) {
+        // Zwracamy utwory w kolejności z playlisty
+        return currentPlaylist.songs
+          .map(songId => songs.find(song => song.id === songId))
+          .filter((song): song is Song => song !== undefined);
+      }
     }
     return songs;
   }, [currentPlaylistId, playlists, songs]);
