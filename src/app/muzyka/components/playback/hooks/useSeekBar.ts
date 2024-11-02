@@ -1,5 +1,5 @@
-import { useState, useRef, useCallback, useEffect, useMemo } from 'react';
-import { debounce } from 'lodash';
+import { useState, useRef, useCallback, useEffect } from 'react';
+import { SEEK_BAR_CONFIG } from './seekBarConfig';
 
 interface UseSeekBarProps {
   currentTime: number;
@@ -13,6 +13,8 @@ export const useSeekBar = ({ currentTime, duration, onSeek, isMobile }: UseSeekB
   const [isDragging, setIsDragging] = useState(false);
   const [hoverTime, setHoverTime] = useState(0);
   const progressBarRef = useRef<HTMLDivElement>(null);
+  const frameRef = useRef<number>();
+  const lastPositionRef = useRef<number>(0);
 
   const calculatePosition = useCallback((clientX: number) => {
     if (progressBarRef.current) {
@@ -22,20 +24,29 @@ export const useSeekBar = ({ currentTime, duration, onSeek, isMobile }: UseSeekB
     return 0;
   }, []);
 
-  const debouncedSeek = useMemo(() => 
-    debounce((time: number) => {
+  const updateSeekPosition = useCallback((position: number) => {
+    if (position === lastPositionRef.current) return;
+    
+    lastPositionRef.current = position;
+    if (frameRef.current) {
+      cancelAnimationFrame(frameRef.current);
+    }
+
+    frameRef.current = requestAnimationFrame(() => {
+      const time = position * duration;
       if (time >= 0 && time <= duration) {
         onSeek(time);
       }
-    }, 16),
-    [duration, onSeek]
-  );
+    });
+  }, [duration, onSeek]);
 
   useEffect(() => {
     return () => {
-      debouncedSeek.cancel();
+      if (frameRef.current) {
+        cancelAnimationFrame(frameRef.current);
+      }
     };
-  }, [debouncedSeek]);
+  }, []);
 
   const handleMouseUp = useCallback(() => {
     setIsDragging(false);
@@ -52,9 +63,9 @@ export const useSeekBar = ({ currentTime, duration, onSeek, isMobile }: UseSeekB
     if (isDragging) {
       const position = calculatePosition(e.touches[0].clientX);
       setHoverTime(position * duration);
-      debouncedSeek(position * duration);
+      updateSeekPosition(position);
     }
-  }, [calculatePosition, duration, debouncedSeek, isDragging]);
+  }, [calculatePosition, duration, updateSeekPosition, isDragging]);
 
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     e.preventDefault();
@@ -64,8 +75,8 @@ export const useSeekBar = ({ currentTime, duration, onSeek, isMobile }: UseSeekB
     setIsDragging(true);
     const position = calculatePosition(e.touches[0].clientX);
     setHoverTime(position * duration);
-    debouncedSeek(position * duration);
-  }, [calculatePosition, duration, debouncedSeek]);
+    updateSeekPosition(position);
+  }, [calculatePosition, duration, updateSeekPosition]);
 
   const handleTouchEnd = useCallback(() => {
     setIsDragging(false);
@@ -75,9 +86,9 @@ export const useSeekBar = ({ currentTime, duration, onSeek, isMobile }: UseSeekB
     const position = calculatePosition(e.clientX);
     setHoverTime(position * duration);
     if (isDragging) {
-      onSeek(position * duration);
+      updateSeekPosition(position);
     }
-  }, [calculatePosition, duration, isDragging, onSeek]);
+  }, [calculatePosition, duration, isDragging, updateSeekPosition]);
 
   useEffect(() => {
     return () => {
@@ -88,25 +99,25 @@ export const useSeekBar = ({ currentTime, duration, onSeek, isMobile }: UseSeekB
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
     switch (e.key) {
       case 'ArrowRight':
-        onSeek(Math.min(currentTime + 5, duration));
+        updateSeekPosition(Math.min(currentTime + 5, duration));
         break;
       case 'ArrowLeft':
-        onSeek(Math.max(currentTime - 5, 0));
+        updateSeekPosition(Math.max(currentTime - 5, 0));
         break;
       case 'Home':
-        onSeek(0);
+        updateSeekPosition(0);
         break;
       case 'End':
-        onSeek(duration);
+        updateSeekPosition(duration);
         break;
       case 'PageUp':
-        onSeek(Math.min(currentTime + 30, duration));
+        updateSeekPosition(Math.min(currentTime + 30, duration));
         break;
       case 'PageDown':
-        onSeek(Math.max(currentTime - 30, 0));
+        updateSeekPosition(Math.max(currentTime - 30, 0));
         break;
     }
-  }, [currentTime, duration, onSeek]);
+  }, [currentTime, duration, updateSeekPosition]);
 
   const progress = (currentTime / duration) * 100;
 

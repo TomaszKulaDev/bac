@@ -1,5 +1,5 @@
 import { formatTime } from '../../utils/formatTime';
-import { useState, useRef, TouchEvent, useCallback } from 'react';
+import { useState, useRef, TouchEvent, useCallback, useEffect } from 'react';
 import { debounce } from 'lodash';
 
 interface SeekBarProps {
@@ -15,14 +15,40 @@ export const SeekBar: React.FC<SeekBarProps> = ({ currentTime, duration, onSeek,
   const [isDragging, setIsDragging] = useState(false);
   const progressBarRef = useRef<HTMLDivElement>(null);
   const [hoverTime, setHoverTime] = useState(0);
+  const frameRef = useRef<number>();
+  const lastPositionRef = useRef<number>(0);
 
-  const calculatePosition = (clientX: number) => {
+  const calculatePosition = useCallback((clientX: number) => {
     if (progressBarRef.current) {
       const rect = progressBarRef.current.getBoundingClientRect();
       return Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
     }
     return 0;
-  };
+  }, []);
+
+  const updateSeekPosition = useCallback((position: number) => {
+    if (position === lastPositionRef.current) return;
+    
+    lastPositionRef.current = position;
+    if (frameRef.current) {
+      cancelAnimationFrame(frameRef.current);
+    }
+
+    frameRef.current = requestAnimationFrame(() => {
+      const time = position * duration;
+      if (time >= 0 && time <= duration) {
+        onSeek(time);
+      }
+    });
+  }, [duration, onSeek]);
+
+  useEffect(() => {
+    return () => {
+      if (frameRef.current) {
+        cancelAnimationFrame(frameRef.current);
+      }
+    };
+  }, []);
 
   const handleTouchStart = (e: TouchEvent) => {
     e.preventDefault();
@@ -32,33 +58,32 @@ export const SeekBar: React.FC<SeekBarProps> = ({ currentTime, duration, onSeek,
     setIsDragging(true);
     const position = calculatePosition(e.touches[0].clientX);
     setHoverTime(position * duration);
-    debouncedSeek(position * duration);
+    updateSeekPosition(position * duration);
   };
 
-  const handleTouchMove = (e: TouchEvent) => {
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
     e.preventDefault();
-    if (isDragging) {
-      const position = calculatePosition(e.touches[0].clientX);
-      setHoverTime(position * duration);
-      debouncedSeek(position * duration);
-    }
-  };
+    if (!isDragging) return;
+    
+    const position = calculatePosition(e.touches[0].clientX);
+    setHoverTime(position * duration);
+    updateSeekPosition(position);
+  }, [calculatePosition, duration, isDragging, updateSeekPosition]);
 
   const handleTouchEnd = () => {
     setIsDragging(false);
   };
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (progressBarRef.current) {
-      const rect = progressBarRef.current.getBoundingClientRect();
-      const position = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-      setHoverTime(position * duration);
-      
-      if (isDragging) {
-        onSeek(position * duration);
-      }
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    if (!progressBarRef.current) return;
+    
+    const position = calculatePosition(e.clientX);
+    setHoverTime(position * duration);
+    
+    if (isDragging) {
+      updateSeekPosition(position);
     }
-  };
+  }, [calculatePosition, duration, isDragging, updateSeekPosition]);
 
   const handleMouseDown = () => {
     setIsDragging(true);
@@ -79,28 +104,6 @@ export const SeekBar: React.FC<SeekBarProps> = ({ currentTime, duration, onSeek,
       onSeek(Math.max(currentTime - 5, 0));
     }
   };
-
-  const debouncedSeek = useCallback(
-    (time: number) => {
-      if (time >= 0 && time <= duration) {
-        onSeek(time);
-      }
-    },
-    [duration, onSeek]
-  );
-
-  const handleSeek = useCallback((position: number) => {
-    try {
-      const time = position * duration;
-      if (time >= 0 && time <= duration) {
-        onSeek(time);
-      } else {
-        console.warn('Nieprawidłowa pozycja seekbara:', position);
-      }
-    } catch (error) {
-      console.error('Błąd podczas przewijania:', error);
-    }
-  }, [duration, onSeek]);
 
   return (
     <div className="w-full flex flex-col gap-1">
