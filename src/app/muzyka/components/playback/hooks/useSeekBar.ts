@@ -86,10 +86,25 @@ export const useSeekBar = ({ currentTime, duration, onSeek, isMobile }: UseSeekB
   }, [handleMouseUp]);
 
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
-    if (e.key === 'ArrowRight') {
-      onSeek(Math.min(currentTime + 5, duration));
-    } else if (e.key === 'ArrowLeft') {
-      onSeek(Math.max(currentTime - 5, 0));
+    switch (e.key) {
+      case 'ArrowRight':
+        onSeek(Math.min(currentTime + 5, duration));
+        break;
+      case 'ArrowLeft':
+        onSeek(Math.max(currentTime - 5, 0));
+        break;
+      case 'Home':
+        onSeek(0);
+        break;
+      case 'End':
+        onSeek(duration);
+        break;
+      case 'PageUp':
+        onSeek(Math.min(currentTime + 30, duration));
+        break;
+      case 'PageDown':
+        onSeek(Math.max(currentTime - 30, 0));
+        break;
     }
   }, [currentTime, duration, onSeek]);
 

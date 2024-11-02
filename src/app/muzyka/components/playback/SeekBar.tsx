@@ -89,6 +89,19 @@ export const SeekBar: React.FC<SeekBarProps> = ({ currentTime, duration, onSeek,
     [duration, onSeek]
   );
 
+  const handleSeek = useCallback((position: number) => {
+    try {
+      const time = position * duration;
+      if (time >= 0 && time <= duration) {
+        onSeek(time);
+      } else {
+        console.warn('Nieprawidłowa pozycja seekbara:', position);
+      }
+    } catch (error) {
+      console.error('Błąd podczas przewijania:', error);
+    }
+  }, [duration, onSeek]);
+
   return (
     <div className="w-full flex flex-col gap-1">
       <div 
