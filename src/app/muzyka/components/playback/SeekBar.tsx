@@ -9,15 +9,30 @@ interface SeekBarProps {
 
 export const SeekBar: React.FC<SeekBarProps> = ({ currentTime, duration, onSeek }) => {
   const [isHovering, setIsHovering] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
   const progressBarRef = useRef<HTMLDivElement>(null);
   const [hoverTime, setHoverTime] = useState(0);
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (progressBarRef.current) {
       const rect = progressBarRef.current.getBoundingClientRect();
-      const position = (e.clientX - rect.left) / rect.width;
+      const position = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
       setHoverTime(position * duration);
+      
+      if (isDragging) {
+        onSeek(position * duration);
+      }
     }
+  };
+
+  const handleMouseDown = () => {
+    setIsDragging(true);
+    document.addEventListener('mouseup', handleMouseUp);
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+    document.removeEventListener('mouseup', handleMouseUp);
   };
 
   const progress = (currentTime / duration) * 100;
@@ -28,12 +43,18 @@ export const SeekBar: React.FC<SeekBarProps> = ({ currentTime, duration, onSeek 
         ref={progressBarRef}
         className="relative h-1 group cursor-pointer"
         onMouseEnter={() => setIsHovering(true)}
-        onMouseLeave={() => setIsHovering(false)}
+        onMouseLeave={() => {
+          setIsHovering(false);
+          if (!isDragging) {
+            setIsDragging(false);
+          }
+        }}
         onMouseMove={handleMouseMove}
+        onMouseDown={handleMouseDown}
         onClick={(e) => {
-          if (progressBarRef.current) {
+          if (!isDragging && progressBarRef.current) {
             const rect = progressBarRef.current.getBoundingClientRect();
-            const position = (e.clientX - rect.left) / rect.width;
+            const position = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
             onSeek(position * duration);
           }
         }}
