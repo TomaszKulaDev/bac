@@ -745,5 +745,5 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     </PlayerErrorBoundary>
   );
 };
-
 export default MusicPlayer;
+

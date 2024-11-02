@@ -1,13 +1,14 @@
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import { updateSongsPlaylists } from '@/store/actions/playlistActions';
+import { updateSongsPlaylists } from '@/store/slices/features/songsSlice';
 import { Playlist } from '../types';
+import { AppDispatch } from '@/store/store';
 
 export const usePlaylistActions = (
   playlists: Playlist[],
   setPlaylists: (updater: (prevPlaylists: Playlist[]) => Playlist[]) => void
 ) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleRemoveSongFromPlaylist = useCallback(
     (playlistId: string, songId: string) => {
@@ -28,7 +29,11 @@ export const usePlaylistActions = (
         playlistId,
         playlistName,
         remove: true,
-      }));
+      }))
+        .unwrap()
+        .catch((error: Error) => {
+          console.error('Failed to update songs playlists:', error);
+        });
     },
     [dispatch, playlists, setPlaylists]
   );

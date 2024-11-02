@@ -1,10 +1,10 @@
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { updateSongsPlaylists } from "@/store/slices/features/songsSlice";
-import { updatePlaylistOrder } from "@/store/actions/playlistActions";
+import { updatePlaylistOrder } from "@/store/slices/features/playlistSlice";
 import { Playlist, Song } from "../types";
 import { DragEndEvent } from "@dnd-kit/core";
-import { AsyncThunkAction, UnknownAction } from "@reduxjs/toolkit";
+import { AppDispatch } from '@/store/store';
 
 export interface UsePlaylistManagementProps {
   playlists: Playlist[];
@@ -33,7 +33,7 @@ export const usePlaylistManagement = ({
   songs,
   onCreatePlaylist,
 }: UsePlaylistManagementProps) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleDragEnd = useCallback(
     (event: DragEndEvent, currentPlaylist: Playlist) => {
@@ -66,7 +66,12 @@ export const usePlaylistManagement = ({
             playlistId: currentPlaylist.id,
             newOrder: newSongs,
           })
-        );
+        )
+          .unwrap()
+          .catch((error: Error) => {
+            console.error('Failed to update playlist order:', error);
+            showErrorToast("Nie udało się zaktualizować kolejności utworów");
+          });
       }
     },
     [dispatch, isAuthenticated, showErrorToast, onUpdatePlaylists]
