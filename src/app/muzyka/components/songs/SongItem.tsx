@@ -41,7 +41,20 @@ interface AnimationVariants {
 const SongItem = memo(
   ({ song, onSelect, onAddToPlaylist, ...props }: SongItemProps) => {
     const isCurrentSong = song.id === props.currentSong?.id;
-    const { isInPlaylist } = usePlaylistManagement(song.id, props.playlists);
+    const playlistManagement = usePlaylistManagement({
+      playlists: props.playlists,
+      onUpdatePlaylists: () => {},
+      onPlayPlaylist: () => {},
+      currentPlaylistId: props.expandedPlaylist || '',
+      showSuccessToast: () => {},
+      showErrorToast: () => {},
+      showInfoToast: () => {},
+      isAuthenticated: props.isAuthenticated,
+      songs: [],
+      onCreatePlaylist: () => {}
+    });
+
+    const isInCurrentPlaylist = playlistManagement.isInPlaylist(song.id, props.expandedPlaylist || '');
 
     const handleClick = useCallback(() => {
       onSelect(song.id);
@@ -91,7 +104,7 @@ const SongItem = memo(
             <SongArtist artist={song.artist} />
             <SongTags
               song={song}
-              isInPlaylist={isInPlaylist}
+              isInPlaylist={isInCurrentPlaylist}
               playlists={props.playlists}
             />
           </div>

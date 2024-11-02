@@ -229,6 +229,15 @@ export const usePlaylistManagement = ({
     }
   }, [isAuthenticated, onCreatePlaylist, showSuccessToast, showErrorToast]);
 
+  const isInPlaylist = useCallback(
+    (songId: string, playlistId: string | null) => {
+      if (!playlistId) return false;
+      const playlist = playlists.find(p => p.id === playlistId);
+      return playlist ? playlist.songs.includes(songId) : false;
+    },
+    [playlists]
+  );
+
   return {
     handleDragEnd,
     addSongToPlaylist,
@@ -236,5 +245,6 @@ export const usePlaylistManagement = ({
     editPlaylistName,
     deletePlaylist,
     handleCreateEmptyPlaylist,
+    isInPlaylist,
   };
 };

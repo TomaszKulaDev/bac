@@ -11,7 +11,7 @@ import { DndContext, DragEndEvent, closestCenter } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { restrictToParentElement } from '@dnd-kit/modifiers';
 import { DraggableSong } from "../types";
-import { updatePlaylistOrder } from "@/store/actions/playlistActions";
+import { updatePlaylistOrder } from "@/store/slices/features/playlistSlice";
 import { useDispatch } from "react-redux";
 import DraggableSongItem from "./DraggableSongItem";
 import { useSensors, useSensor, PointerSensor } from '@dnd-kit/core';
