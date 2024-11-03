@@ -449,214 +449,222 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     >
       <div
         id="music-player"
-        className="max-w-7xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden pb-20"
+        className="w-full h-full min-h-screen flex flex-col bg-white"
       >
         {!isMobile && (
-          <div className="w-full mb-4 bg-gray-100">
-            <SortControl
-              sortBy={sortBy}
-              sortOrder={sortOrder}
-              onSortChange={onSortChange}
-              filterText={filterText}
-              setFilterText={setFilterText}
-            />
+          <div className="w-full bg-gray-100">
+            <div className="max-w-7xl mx-auto w-full">
+              <SortControl
+                sortBy={sortBy}
+                sortOrder={sortOrder}
+                onSortChange={onSortChange}
+                filterText={filterText}
+                setFilterText={setFilterText}
+              />
+            </div>
           </div>
         )}
-        <div className="flex flex-col lg:flex-row h-full">
-          {/* Lewa kolumna - Lista utworów */}
-          <div className="w-full lg:w-1/3 xl:w-1/3">
-            <SongList
-              songs={sortedAndFilteredSongs}
-              visibleSongs={visibleSongs}
-              isPlaying={isPlaying}
-              currentSong={currentSong}
-              onSongSelect={handleSongSelect}
-              onLoadMore={loadMoreSongs}
-              onCollapse={collapseSongList}
-              isPopularList={false}
-              expandedPlaylist={expandedPlaylist}
-              setExpandedPlaylist={setExpandedPlaylist}
-              onAddToPlaylist={(songId: string) => handleAddToPlaylist(songId)}
-              sortBy={sortBy}
-              sortOrder={sortOrder}
-              onSortChange={handleSortChange}
-              filterText={filterText}
-              setFilterText={setFilterText}
-              isPlaylistExpanded={!!expandedPlaylist}
-              showSearch={true}
-              hasPlaylists={playlists.length > 0}
-              isAuthenticated={isAuthenticated}
-              isMobile={isMobile}
-              playlists={playlists}
-              isLoading={isLoading}
-            />
-          </div>
-          
-          {/* Środkowa kolumna - Odtwarzacz */}
-          <div className="w-full lg:w-1/3 xl:w-1/3">
-            <div className="p-4">
-              {/* Obecny kod odtwarzacza */}
-              <YouTube
-                videoId={currentSong?.youtubeId}
-                opts={opts}
-                onReady={onReady}
-                onPlay={() => setIsPlaying(true)}
-                onPause={() => setIsPlaying(false)}
-                onEnd={() => {
-                  if (repeatMode.song === "on") {
-                    if (player) {
-                      player.seekTo(0);
-                      player.playVideo();
-                    }
-                  } else {
-                    nextSong();
-                  }
-                }}
-                className="w-full h-full"
+        <div className="flex-1 w-full max-w-7xl mx-auto px-4">
+          <div className="flex flex-col lg:flex-row h-full gap-4">
+            {/* Lewa kolumna - Lista utworów */}
+            <div className="w-full lg:w-1/3 xl:w-1/3">
+              <SongList
+                songs={sortedAndFilteredSongs}
+                visibleSongs={visibleSongs}
+                isPlaying={isPlaying}
+                currentSong={currentSong}
+                onSongSelect={handleSongSelect}
+                onLoadMore={loadMoreSongs}
+                onCollapse={collapseSongList}
+                isPopularList={false}
+                expandedPlaylist={expandedPlaylist}
+                setExpandedPlaylist={setExpandedPlaylist}
+                onAddToPlaylist={(songId: string) => handleAddToPlaylist(songId)}
+                sortBy={sortBy}
+                sortOrder={sortOrder}
+                onSortChange={handleSortChange}
+                filterText={filterText}
+                setFilterText={setFilterText}
+                isPlaylistExpanded={!!expandedPlaylist}
+                showSearch={true}
+                hasPlaylists={playlists.length > 0}
+                isAuthenticated={isAuthenticated}
+                isMobile={isMobile}
+                playlists={playlists}
+                isLoading={isLoading}
               />
-              {/* Kontrolki odtwarzacza */}
-              <div className="flex flex-col space-y-4 mt-6">
-                <div className="text-center">
-                  <h2 className="text-2xl font-bold text-gray-800">
-                    {currentSong?.title}
-                  </h2>
-                  <p className="text-lg text-gray-600">{currentSong?.artist}</p>
-                </div>
-                <div className="flex flex-col items-center space-y-6 mt-6">
-                  <div className="flex justify-center items-center space-x-4 w-full">
-                    <button
-                      onClick={() => toggleRepeatMode("playlist")}
-                      className={`text-gray-600 p-3 rounded-full transition-all duration-300 ease-in-out ${
-                        repeatMode.playlist === "on"
-                          ? "bg-gray-100 shadow-inner transform translate-y-px"
-                          : "bg-white hover:bg-gray-50 active:bg-gray-100 active:shadow-inner active:transform active:translate-y-px"
-                      }`}
-                      aria-label={`Powtarzaj playlistę: ${
-                        repeatMode.playlist === "on" ? "włączone" : "wyłączone"
-                      }`}
-                      title="Powtarzaj playlistę"
-                    >
-                      <FaRedo
-                        size={28}
-                        className={
-                          repeatMode.playlist === "on" ? "text-blue-500" : ""
-                        }
-                      />
-                    </button>
-                    <button
-                      onClick={previousSong}
-                      className="text-gray-600 hover:text-gray-800 p-3 transition-all duration-150 ease-in-out active:scale-95"
-                      aria-label="Poprzedni utwór"
-                      title="Poprzedni utwr"
-                    >
-                      <FaBackward size={28} />
-                    </button>
-                    <button
-                      onClick={togglePlayback}
-                      className="bg-white rounded-full p-6 shadow-lg transition-all duration-150 ease-in-out active:scale-95"
-                      aria-label={isPlaying ? "Pauza" : "Odtwórz"}
-                      title={isPlaying ? "Pauza" : "Odtwórz"}
-                    >
-                      {isPlaying ? <FaPause size={40} /> : <FaPlay size={40} />}
-                    </button>
-                    <button
-                      onClick={nextSong}
-                      className="text-gray-600 hover:text-gray-800 p-3 transition-all duration-150 ease-in-out active:scale-95"
-                      aria-label="Następny utwór"
-                      title="Następny utwór"
-                    >
-                      <FaForward size={28} />
-                    </button>
-                    <button
-                      onClick={() => toggleRepeatMode("song")}
-                      className={`text-gray-600 p-3 rounded-full transition-all duration-300 ease-in-out ${
-                        repeatMode.song === "on"
-                          ? "bg-gray-100 shadow-inner transform translate-y-px"
-                          : "bg-white hover:bg-gray-50 active:bg-gray-100 active:shadow-inner active:transform active:translate-y-px"
-                      }`}
-                      aria-label={`Powtarzaj utwór: ${
-                        repeatMode.song === "on" ? "włączone" : "wyłączone"
-                      }`}
-                      title="Powtarzaj utwór"
-                    >
-                      <FaRetweet
-                        size={28}
-                        className={
-                          repeatMode.song === "on" ? "text-blue-500" : ""
-                        }
-                      />
-                    </button>
+            </div>
+            
+            {/* Środkowa kolumna - Odtwarzacz */}
+            <div className="w-full lg:w-1/3 xl:w-1/3 flex flex-col">
+              <div className="flex-1 p-4">
+                {/* Obecny kod odtwarzacza */}
+                <YouTube
+                  videoId={currentSong?.youtubeId}
+                  opts={opts}
+                  onReady={onReady}
+                  onPlay={() => setIsPlaying(true)}
+                  onPause={() => setIsPlaying(false)}
+                  onEnd={() => {
+                    if (repeatMode.song === "on") {
+                      if (player) {
+                        player.seekTo(0);
+                        player.playVideo();
+                      }
+                    } else {
+                      nextSong();
+                    }
+                  }}
+                  className="w-full h-full"
+                />
+                {/* Kontrolki odtwarzacza */}
+                <div className="flex flex-col space-y-4 mt-6">
+                  <div className="text-center">
+                    <h2 className="text-2xl font-bold text-gray-800">
+                      {currentSong?.title}
+                    </h2>
+                    <p className="text-lg text-gray-600">{currentSong?.artist}</p>
+                  </div>
+                  <div className="flex flex-col items-center space-y-6 mt-6">
+                    <div className="flex justify-center items-center space-x-4 w-full">
+                      <button
+                        onClick={() => toggleRepeatMode("playlist")}
+                        className={`text-gray-600 p-3 rounded-full transition-all duration-300 ease-in-out ${
+                          repeatMode.playlist === "on"
+                            ? "bg-gray-100 shadow-inner transform translate-y-px"
+                            : "bg-white hover:bg-gray-50 active:bg-gray-100 active:shadow-inner active:transform active:translate-y-px"
+                        }`}
+                        aria-label={`Powtarzaj playlistę: ${
+                          repeatMode.playlist === "on" ? "włączone" : "wyłączone"
+                        }`}
+                        title="Powtarzaj playlistę"
+                      >
+                        <FaRedo
+                          size={28}
+                          className={
+                            repeatMode.playlist === "on" ? "text-blue-500" : ""
+                          }
+                        />
+                      </button>
+                      <button
+                        onClick={previousSong}
+                        className="text-gray-600 hover:text-gray-800 p-3 transition-all duration-150 ease-in-out active:scale-95"
+                        aria-label="Poprzedni utwór"
+                        title="Poprzedni utwr"
+                      >
+                        <FaBackward size={28} />
+                      </button>
+                      <button
+                        onClick={togglePlayback}
+                        className="bg-white rounded-full p-6 shadow-lg transition-all duration-150 ease-in-out active:scale-95"
+                        aria-label={isPlaying ? "Pauza" : "Odtwórz"}
+                        title={isPlaying ? "Pauza" : "Odtwórz"}
+                      >
+                        {isPlaying ? <FaPause size={40} /> : <FaPlay size={40} />}
+                      </button>
+                      <button
+                        onClick={nextSong}
+                        className="text-gray-600 hover:text-gray-800 p-3 transition-all duration-150 ease-in-out active:scale-95"
+                        aria-label="Następny utwór"
+                        title="Następny utwór"
+                      >
+                        <FaForward size={28} />
+                      </button>
+                      <button
+                        onClick={() => toggleRepeatMode("song")}
+                        className={`text-gray-600 p-3 rounded-full transition-all duration-300 ease-in-out ${
+                          repeatMode.song === "on"
+                            ? "bg-gray-100 shadow-inner transform translate-y-px"
+                            : "bg-white hover:bg-gray-50 active:bg-gray-100 active:shadow-inner active:transform active:translate-y-px"
+                        }`}
+                        aria-label={`Powtarzaj utwór: ${
+                          repeatMode.song === "on" ? "włączone" : "wyłączone"
+                        }`}
+                        title="Powtarzaj utwór"
+                      >
+                        <FaRetweet
+                          size={28}
+                          className={
+                            repeatMode.song === "on" ? "text-blue-500" : ""
+                          }
+                        />
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
+            
+            {/* Prawa kolumna - Playlist Manager */}
+            <div className="w-full lg:w-1/3 xl:w-1/3 border-l border-gray-200">
+              <PlaylistManager
+                playlists={playlists}
+                songs={songs}
+                expandedPlaylist={expandedPlaylist}
+                setExpandedPlaylist={setExpandedPlaylist}
+                onDeletePlaylist={handleDeletePlaylist}
+                onRenamePlaylist={playlistManagement.editPlaylistName}
+                onRemoveSongFromPlaylist={playlistManagement.removeSongFromPlaylist}
+                onCreatePlaylist={onCreatePlaylist}
+                isMobile={isMobile}
+                onPlayPlaylist={onPlayPlaylist}
+                currentPlaylistId={currentPlaylistId}
+                onAddToPlaylist={onAddToPlaylist}
+                setIsModalOpen={setIsModalOpen}
+                isModalOpen={isModalOpen}
+                showSuccessToast={showSuccessToast}
+                showErrorToast={showErrorToast}
+                showInfoToast={showInfoToast}
+                onUpdatePlaylists={(updater) => {
+                  const newPlaylists = updater(playlists);
+                  setPlaylists(newPlaylists);
+                }}
+                setPlaylists={setPlaylists}
+              />
+            </div>
           </div>
-          
-          {/* Prawa kolumna - Playlist Manager */}
-          <div className="w-full lg:w-1/3 xl:w-1/3 border-l border-gray-200">
-            <PlaylistManager
-              playlists={playlists}
-              songs={songs}
-              expandedPlaylist={expandedPlaylist}
-              setExpandedPlaylist={setExpandedPlaylist}
-              onDeletePlaylist={handleDeletePlaylist}
-              onRenamePlaylist={playlistManagement.editPlaylistName}
-              onRemoveSongFromPlaylist={playlistManagement.removeSongFromPlaylist}
-              onCreatePlaylist={onCreatePlaylist}
-              isMobile={isMobile}
-              onPlayPlaylist={onPlayPlaylist}
-              currentPlaylistId={currentPlaylistId}
-              onAddToPlaylist={onAddToPlaylist}
-              setIsModalOpen={setIsModalOpen}
-              isModalOpen={isModalOpen}
-              showSuccessToast={showSuccessToast}
-              showErrorToast={showErrorToast}
-              showInfoToast={showInfoToast}
-              onUpdatePlaylists={(updater) => {
-                const newPlaylists = updater(playlists);
-                setPlaylists(newPlaylists);
+        </div>
+        <div className="w-full fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200">
+          <div className="max-w-7xl mx-auto">
+            <PlaybackBar
+              isPlaying={isPlaying}
+              onTogglePlay={togglePlayback}
+              onPrevious={previousSong}
+              onNext={nextSong}
+              currentTime={currentTime}
+              duration={duration}
+              onSeek={handleSeek}
+              volume={volume}
+              onVolumeChange={handleVolumeChange}
+              currentSong={
+                currentSong
+                  ? {
+                      ...currentSong,
+                      thumbnail:
+                        currentSong.thumbnail ||
+                        getThumbnailSafely(currentSong.youtubeId),
+                    }
+                  : null
+              }
+              repeatMode={repeatMode}
+              onToggleRepeatMode={toggleRepeatMode}
+              onAddToPlaylist={(songId) => handleAddToPlaylist(songId)}
+              onLike={(songId: string) => {
+                if (isAuthenticated) {
+                  // Logika dla polubienia utworu
+                } else {
+                  showErrorToast("Musisz być zalogowany, aby polubić utwory.");
+                }
               }}
-              setPlaylists={setPlaylists}
+              isLiked={false} // Dodaj logikę sprawdzania, czy utwór jest polubiony
+              hasPlaylistsAndExpanded={playlists.length > 0 && !!expandedPlaylist}
+              playlistCount={playlists.length}
+              onCreatePlaylist={() => setIsModalOpen(true)}
+              isAuthenticated={isAuthenticated}
+              isLoading={isLoading}
             />
           </div>
         </div>
-        <PlaybackBar
-          isPlaying={isPlaying}
-          onTogglePlay={togglePlayback}
-          onPrevious={previousSong}
-          onNext={nextSong}
-          currentTime={currentTime}
-          duration={duration}
-          onSeek={handleSeek}
-          volume={volume}
-          onVolumeChange={handleVolumeChange}
-          currentSong={
-            currentSong
-              ? {
-                  ...currentSong,
-                  thumbnail:
-                    currentSong.thumbnail ||
-                    getThumbnailSafely(currentSong.youtubeId),
-                }
-              : null
-          }
-          repeatMode={repeatMode}
-          onToggleRepeatMode={toggleRepeatMode}
-          onAddToPlaylist={(songId) => handleAddToPlaylist(songId)}
-          onLike={(songId: string) => {
-            if (isAuthenticated) {
-              // Logika dla polubienia utworu
-            } else {
-              showErrorToast("Musisz być zalogowany, aby polubić utwory.");
-            }
-          }}
-          isLiked={false} // Dodaj logikę sprawdzania, czy utwór jest polubiony
-          hasPlaylistsAndExpanded={playlists.length > 0 && !!expandedPlaylist}
-          playlistCount={playlists.length}
-          onCreatePlaylist={() => setIsModalOpen(true)}
-          isAuthenticated={isAuthenticated}
-          isLoading={isLoading}
-        />
       </div>
       {isMobile && (
         <>

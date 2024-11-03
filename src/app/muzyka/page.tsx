@@ -216,7 +216,7 @@ const MusicPage: React.FC = () => {
         isLiked={false}
       />
       <div className="flex-grow flex flex-col lg:flex-row bg-white relative z-10 shadow-xl rounded-t-[2rem] -mt-20">
-        <div className="w-full lg:w-2/3 p-4">
+        <div className="w-full p-4">
           <MusicPlayer
             songs={songs}
             onCreatePlaylist={handleCreateEmptyPlaylist}
