@@ -19,16 +19,20 @@ export default function Home(): React.ReactElement {
         </p>
 
         <div className="grid md:grid-cols-2 gap-8 mb-16">
-          <FeatureCard
-            icon={<FaUser className="text-4xl text-indigo-600" />}
-            title="Taniec"
-            description="Dołącz do społeczności Baciata.pl – Odkryj najnowsze trendy w tańcu i muzyce, badz na bieząco z wydarzeniami. Baciata.pl to miejsce, gdzie pasja do tańca łączy ludzi!"
-          />
-          <FeatureCard
-            icon={<FaMusic className="text-4xl text-indigo-600" />}
-            title="Muzyka"
-            description="Odkryj bogaty świat muzyki bachaty na Baciata.pl. Słuchaj najnowszych hitów, twórz własne playlisty i ciesz się dźwiękami, które inspirują do tańca."
-          />
+          <Link href="/taniec">
+            <FeatureCard
+              icon={<FaUser className="text-4xl text-indigo-600" />}
+              title="Taniec"
+              description="Dołącz do społeczności Baciata.pl – Odkryj najnowsze trendy w tańcu i muzyce, badz na bieząco z wydarzeniami. Baciata.pl to miejsce, gdzie pasja do tańca łączy ludzi!"
+            />
+          </Link>
+          <Link href="/muzyka">
+            <FeatureCard
+              icon={<FaMusic className="text-4xl text-indigo-600" />}
+              title="Muzyka"
+              description="Odkryj bogaty świat muzyki bachaty na Baciata.pl. Słuchaj najnowszych hitów, twórz własne playlisty i ciesz się dźwiękami, które inspirują do tańca."
+            />
+          </Link>
         </div>
 
         <div className="text-center space-x-4">
