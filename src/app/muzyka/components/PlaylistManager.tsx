@@ -17,15 +17,15 @@ import DraggableSongItem from "./DraggableSongItem";
 import { useSensors, useSensor, PointerSensor } from '@dnd-kit/core';
 import { usePlaylistManagement } from "../hooks/usePlaylistManagement";
 
-interface PlaylistManagerProps {
+export interface PlaylistManagerProps {
   playlists: Playlist[];
   songs: Song[];
   expandedPlaylist: string | null;
-  setExpandedPlaylist: (playlistId: string | null) => void;
-  onCreatePlaylist: (name: string, selectedSongs?: string[]) => void;
-  onDeletePlaylist: (playlistId: string) => void;
-  onRenamePlaylist: (playlistId: string, newName: string) => void;
+  setExpandedPlaylist: React.Dispatch<React.SetStateAction<string | null>>;
+  onDeletePlaylist: (id: string) => void;
+  onRenamePlaylist: (id: string, newName: string) => void;
   onRemoveSongFromPlaylist: (playlistId: string, songId: string) => void;
+  onCreatePlaylist: (name: string) => void;
   isMobile: boolean;
   onPlayPlaylist: (playlistId: string) => void;
   currentPlaylistId: string | null;
@@ -35,7 +35,7 @@ interface PlaylistManagerProps {
   showSuccessToast: (message: string) => void;
   showErrorToast: (message: string) => void;
   showInfoToast: (message: string) => void;
-  onUpdatePlaylists: (playlists: Playlist[]) => void;
+  onUpdatePlaylists: (updater: (prevPlaylists: Playlist[]) => Playlist[]) => void;
   setPlaylists: React.Dispatch<React.SetStateAction<Playlist[]>>;
 }
 

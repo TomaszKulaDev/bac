@@ -55,6 +55,7 @@ import { SortByType } from "../hooks/useDrawers";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDrawers } from "../hooks/useDrawers";
 import { usePlaylistManagement, UsePlaylistManagementProps } from "../hooks/usePlaylistManagement";
+import PlaylistManager from "./PlaylistManager";
 
 interface MusicPlayerProps {
   songs: Song[];
@@ -79,6 +80,7 @@ interface MusicPlayerProps {
   isAuthenticated: boolean;
   isPlaying: boolean;
   setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
+  setPlaylists: React.Dispatch<React.SetStateAction<Playlist[]>>;
 }
 
 interface BrowserInfo {
@@ -115,6 +117,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   isAuthenticated,
   isPlaying,
   setIsPlaying,
+  setPlaylists,
 }) => {
   const dispatch = useDispatch();
   const currentSong = useSelector(
@@ -144,9 +147,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   const songsPerLoad = 10;
   const [isMinimalistic, setIsMinimalistic] = useState(false);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
-  const [userPlaylists, setUserPlaylists] = useState<
-    { id: string; name: string }[]
-  >([]);
+  const [userPlaylists, setUserPlaylists] = useState<Playlist[]>([]);
 
   const [repeatMode, setRepeatMode] = useState<RepeatMode>({
     song: "off",
@@ -462,7 +463,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           </div>
         )}
         <div className="flex flex-col lg:flex-row h-full">
-          <div className="w-full lg:w-1/2 xl:w-2/3">
+          {/* Lewa kolumna - Lista utworów */}
+          <div className="w-full lg:w-1/3 xl:w-1/3">
             <SongList
               songs={sortedAndFilteredSongs}
               visibleSongs={visibleSongs}
@@ -489,41 +491,30 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
               isLoading={isLoading}
             />
           </div>
-          <div className="w-full lg:w-1/2 xl:w-1/3">
-            <div className="sticky top-0 bg-white z-40 p-6 shadow-md">
-              <div
-                className="youtube-player mb-6 rounded-lg overflow-hidden relative"
-                style={{
-                  width: playerDimensions.width,
-                  height: playerDimensions.height,
+          
+          {/* Środkowa kolumna - Odtwarzacz */}
+          <div className="w-full lg:w-1/3 xl:w-1/3">
+            <div className="p-4">
+              {/* Obecny kod odtwarzacza */}
+              <YouTube
+                videoId={currentSong?.youtubeId}
+                opts={opts}
+                onReady={onReady}
+                onPlay={() => setIsPlaying(true)}
+                onPause={() => setIsPlaying(false)}
+                onEnd={() => {
+                  if (repeatMode.song === "on") {
+                    if (player) {
+                      player.seekTo(0);
+                      player.playVideo();
+                    }
+                  } else {
+                    nextSong();
+                  }
                 }}
-              >
-                {error && (
-                  <div className="error-message bg-red-100 text-red-700 p-4 rounded">
-                    {error}
-                  </div>
-                )}
-                {songs.length > 0 && (
-                  <YouTube
-                    videoId={currentSong?.youtubeId}
-                    opts={opts}
-                    onReady={onReady}
-                    onPlay={() => setIsPlaying(true)}
-                    onPause={() => setIsPlaying(false)}
-                    onEnd={() => {
-                      if (repeatMode.song === "on") {
-                        if (player) {
-                          player.seekTo(0);
-                          player.playVideo();
-                        }
-                      } else {
-                        nextSong();
-                      }
-                    }}
-                    className="w-full h-full"
-                  />
-                )}
-              </div>
+                className="w-full h-full"
+              />
+              {/* Kontrolki odtwarzacza */}
               <div className="flex flex-col space-y-4 mt-6">
                 <div className="text-center">
                   <h2 className="text-2xl font-bold text-gray-800">
@@ -599,6 +590,34 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                 </div>
               </div>
             </div>
+          </div>
+          
+          {/* Prawa kolumna - Playlist Manager */}
+          <div className="w-full lg:w-1/3 xl:w-1/3 border-l border-gray-200">
+            <PlaylistManager
+              playlists={playlists}
+              songs={songs}
+              expandedPlaylist={expandedPlaylist}
+              setExpandedPlaylist={setExpandedPlaylist}
+              onDeletePlaylist={handleDeletePlaylist}
+              onRenamePlaylist={playlistManagement.editPlaylistName}
+              onRemoveSongFromPlaylist={playlistManagement.removeSongFromPlaylist}
+              onCreatePlaylist={onCreatePlaylist}
+              isMobile={isMobile}
+              onPlayPlaylist={onPlayPlaylist}
+              currentPlaylistId={currentPlaylistId}
+              onAddToPlaylist={onAddToPlaylist}
+              setIsModalOpen={setIsModalOpen}
+              isModalOpen={isModalOpen}
+              showSuccessToast={showSuccessToast}
+              showErrorToast={showErrorToast}
+              showInfoToast={showInfoToast}
+              onUpdatePlaylists={(updater) => {
+                const newPlaylists = updater(playlists);
+                setPlaylists(newPlaylists);
+              }}
+              setPlaylists={setPlaylists}
+            />
           </div>
         </div>
         <PlaybackBar

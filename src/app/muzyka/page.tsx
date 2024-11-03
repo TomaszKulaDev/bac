@@ -227,19 +227,15 @@ const MusicPage: React.FC = () => {
             setFilterText={setFilterText}
             isMobile={isMobile}
             currentPlaylistId={currentPlaylistId}
-            playlists={playlists}
-            onUpdatePlaylists={setPlaylists}
-            onPlayPlaylist={(playlistId: string) => {
+            onPlayPlaylist={(playlistId) => {
               setCurrentPlaylistId(playlistId);
               const playlist = playlists.find((p) => p.id === playlistId);
               if (playlist && playlist.songs.length > 0) {
-                dispatch(
-                  setCurrentSongIndex(
-                    songs.findIndex((s) => s.id === playlist.songs[0])
-                  )
-                );
+                dispatch(setCurrentSongIndex(songs.findIndex((s) => s.id === playlist.songs[0])));
               }
             }}
+            playlists={playlists}
+            onUpdatePlaylists={setPlaylists}
             isModalOpen={isModalOpen}
             setIsModalOpen={setIsModalOpen}
             showSuccessToast={showSuccessToast}
@@ -248,70 +244,10 @@ const MusicPage: React.FC = () => {
             isAuthenticated={isAuthenticated}
             isPlaying={isPlaying}
             setIsPlaying={setIsPlaying}
-          />
-        </div>
-        <div className="w-full lg:w-1/3 p-4">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">
-            Twoje Playlisty
-          </h2>
-          <PlaylistManager
-            setIsModalOpen={setIsModalOpen}
-            isModalOpen={isModalOpen}
-            playlists={playlists}
-            songs={songs}
-            expandedPlaylist={expandedPlaylist}
-            setExpandedPlaylist={setExpandedPlaylist}
-            onCreatePlaylist={handleCreateEmptyPlaylist}
-            onUpdatePlaylists={setPlaylists}
-            onDeletePlaylist={(playlistId: string) => {
-              const playlistToDelete = playlists.find(
-                (p) => p.id === playlistId
-              );
-              if (playlistToDelete) {
-                setPlaylists((prevPlaylists) =>
-                  prevPlaylists.filter((p) => p.id !== playlistId)
-                );
-                // Aktualizacja stanu piosenek
-                dispatch(
-                  updateSongsPlaylists({
-                    songIds: playlistToDelete.songs,
-                    playlistId,
-                    playlistName: playlistToDelete.name,
-                    remove: true,
-                  })
-                );
-              }
-              // TODO: Zaimplementuj logikę usuwania playlisty z bazy danych
-            }}
-            onRenamePlaylist={(playlistId: string, newName: string) => {
-              setPlaylists((prevPlaylists) =>
-                prevPlaylists.map((p) =>
-                  p.id === playlistId ? { ...p, name: newName } : p
-                )
-              );
-              // TODO: Zaimplementuj logikę aktualizacji nazwy playlisty w bazie danych
-            }}
-            onRemoveSongFromPlaylist={handleRemoveSongFromPlaylist}
-            isMobile={isMobile}
-            onPlayPlaylist={(playlistId: string) => {
-              setCurrentPlaylistId(playlistId);
-              const playlist = playlists.find((p) => p.id === playlistId);
-              if (playlist && playlist.songs.length > 0) {
-                dispatch(
-                  setCurrentSongIndex(
-                    songs.findIndex((s) => s.id === playlist.songs[0])
-                  )
-                );
-              }
-            }}
-            currentPlaylistId={currentPlaylistId}
-            onAddToPlaylist={playlistManagement.addSongToPlaylist}
-            showSuccessToast={showSuccessToast}
-            showErrorToast={showErrorToast}
-            showInfoToast={showInfoToast}
             setPlaylists={setPlaylists}
           />
         </div>
+ 
       </div>
       {isMobile && (
         <section className="w-full p-8 mt-8 mb-24 bg-gradient-to-br from-blue-50 to-blue-50 rounded-lg shadow-lg">
