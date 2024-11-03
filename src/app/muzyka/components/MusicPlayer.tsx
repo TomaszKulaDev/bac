@@ -498,7 +498,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
             
             {/* Środkowa kolumna - jeszcze mniejsza wysokość */}
             <div className="w-full lg:w-1/3 flex flex-col">
-              <div className="w-full h-[600px]">
+              <div className="w-full h-[450px]">
                 <div className="youtube-player-wrapper">
                   <YouTube
                     videoId={currentSong?.youtubeId}
