@@ -1,0 +1,13 @@
+.youtube-player-wrapper {
+  border-radius: 1rem;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.youtube-player-wrapper iframe {
+  width: 100%;
+  height: 100%;
+  border-radius: 1rem;
+}

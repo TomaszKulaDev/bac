@@ -56,6 +56,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useDrawers } from "../hooks/useDrawers";
 import { usePlaylistManagement, UsePlaylistManagementProps } from "../hooks/usePlaylistManagement";
 import PlaylistManager from "./PlaylistManager";
+import '../styles/youtube-player.css';
 
 interface MusicPlayerProps {
   songs: Song[];
@@ -498,28 +499,30 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
             {/* Środkowa kolumna - jeszcze mniejsza wysokość */}
             <div className="w-full lg:w-1/3 flex flex-col">
               <div className="w-full h-[600px]">
-                <YouTube
-                  videoId={currentSong?.youtubeId}
-                  opts={{
-                    ...opts,
-                    height: '100%',
-                    width: '100%',
-                  }}
-                  onReady={onReady}
-                  onPlay={() => setIsPlaying(true)}
-                  onPause={() => setIsPlaying(false)}
-                  onEnd={() => {
-                    if (repeatMode.song === "on") {
-                      if (player) {
-                        player.seekTo(0);
-                        player.playVideo();
+                <div className="youtube-player-wrapper">
+                  <YouTube
+                    videoId={currentSong?.youtubeId}
+                    opts={{
+                      ...opts,
+                      height: '100%',
+                      width: '100%',
+                    }}
+                    onReady={onReady}
+                    onPlay={() => setIsPlaying(true)}
+                    onPause={() => setIsPlaying(false)}
+                    onEnd={() => {
+                      if (repeatMode.song === "on") {
+                        if (player) {
+                          player.seekTo(0);
+                          player.playVideo();
+                        }
+                      } else {
+                        nextSong();
                       }
-                    } else {
-                      nextSong();
-                    }
-                  }}
-                  className="w-full h-full"
-                />
+                    }}
+                    className="w-full h-full"
+                  />
+                </div>
               </div>
               <div className="flex flex-col space-y-4 mt-6">
                 <div className="text-center">
