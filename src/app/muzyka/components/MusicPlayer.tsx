@@ -218,7 +218,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
         if (playlist && song) {
           if (playlist.songs.includes(songId)) {
             showInfoToast(
-              `Utwór "${song.title}" jest już w playliście "${playlist.name}"`
+              `Utwór "${song.title}" jest już w playlisty "${playlist.name}"`
             );
           } else {
             onAddToPlaylist(expandedPlaylist, songId);
@@ -464,7 +464,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
             </div>
           </div>
         )}
-        <div className="flex-1 w-full max-w-7xl mx-auto px-4">
+        <div className="flex-1 w-full max-w-full mx-auto px-4">
           <div className="flex flex-col lg:flex-row h-full gap-4">
             {/* Lewa kolumna - Lista utworów */}
             <div className="w-full lg:w-1/3 xl:w-1/3">
@@ -495,13 +495,16 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
               />
             </div>
             
-            {/* Środkowa kolumna - Odtwarzacz */}
-            <div className="w-full lg:w-1/3 xl:w-1/3 flex flex-col">
-              <div className="flex-1 p-4">
-                {/* Obecny kod odtwarzacza */}
+            {/* Środkowa kolumna - jeszcze mniejsza wysokość */}
+            <div className="w-full lg:w-1/3 flex flex-col">
+              <div className="w-full h-[600px]">
                 <YouTube
                   videoId={currentSong?.youtubeId}
-                  opts={opts}
+                  opts={{
+                    ...opts,
+                    height: '100%',
+                    width: '100%',
+                  }}
                   onReady={onReady}
                   onPlay={() => setIsPlaying(true)}
                   onPause={() => setIsPlaying(false)}
@@ -517,79 +520,78 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                   }}
                   className="w-full h-full"
                 />
-                {/* Kontrolki odtwarzacza */}
-                <div className="flex flex-col space-y-4 mt-6">
-                  <div className="text-center">
-                    <h2 className="text-2xl font-bold text-gray-800">
-                      {currentSong?.title}
-                    </h2>
-                    <p className="text-lg text-gray-600">{currentSong?.artist}</p>
-                  </div>
-                  <div className="flex flex-col items-center space-y-6 mt-6">
-                    <div className="flex justify-center items-center space-x-4 w-full">
-                      <button
-                        onClick={() => toggleRepeatMode("playlist")}
-                        className={`text-gray-600 p-3 rounded-full transition-all duration-300 ease-in-out ${
-                          repeatMode.playlist === "on"
-                            ? "bg-gray-100 shadow-inner transform translate-y-px"
-                            : "bg-white hover:bg-gray-50 active:bg-gray-100 active:shadow-inner active:transform active:translate-y-px"
-                        }`}
-                        aria-label={`Powtarzaj playlistę: ${
-                          repeatMode.playlist === "on" ? "włączone" : "wyłączone"
-                        }`}
-                        title="Powtarzaj playlistę"
-                      >
-                        <FaRedo
-                          size={28}
-                          className={
-                            repeatMode.playlist === "on" ? "text-blue-500" : ""
-                          }
-                        />
-                      </button>
-                      <button
-                        onClick={previousSong}
-                        className="text-gray-600 hover:text-gray-800 p-3 transition-all duration-150 ease-in-out active:scale-95"
-                        aria-label="Poprzedni utwór"
-                        title="Poprzedni utwr"
-                      >
-                        <FaBackward size={28} />
-                      </button>
-                      <button
-                        onClick={togglePlayback}
-                        className="bg-white rounded-full p-6 shadow-lg transition-all duration-150 ease-in-out active:scale-95"
-                        aria-label={isPlaying ? "Pauza" : "Odtwórz"}
-                        title={isPlaying ? "Pauza" : "Odtwórz"}
-                      >
-                        {isPlaying ? <FaPause size={40} /> : <FaPlay size={40} />}
-                      </button>
-                      <button
-                        onClick={nextSong}
-                        className="text-gray-600 hover:text-gray-800 p-3 transition-all duration-150 ease-in-out active:scale-95"
-                        aria-label="Następny utwór"
-                        title="Następny utwór"
-                      >
-                        <FaForward size={28} />
-                      </button>
-                      <button
-                        onClick={() => toggleRepeatMode("song")}
-                        className={`text-gray-600 p-3 rounded-full transition-all duration-300 ease-in-out ${
-                          repeatMode.song === "on"
-                            ? "bg-gray-100 shadow-inner transform translate-y-px"
-                            : "bg-white hover:bg-gray-50 active:bg-gray-100 active:shadow-inner active:transform active:translate-y-px"
-                        }`}
-                        aria-label={`Powtarzaj utwór: ${
-                          repeatMode.song === "on" ? "włączone" : "wyłączone"
-                        }`}
-                        title="Powtarzaj utwór"
-                      >
-                        <FaRetweet
-                          size={28}
-                          className={
-                            repeatMode.song === "on" ? "text-blue-500" : ""
-                          }
-                        />
-                      </button>
-                    </div>
+              </div>
+              <div className="flex flex-col space-y-4 mt-6">
+                <div className="text-center">
+                  <h2 className="text-2xl font-bold text-gray-800">
+                    {currentSong?.title}
+                  </h2>
+                  <p className="text-lg text-gray-600">{currentSong?.artist}</p>
+                </div>
+                <div className="flex flex-col items-center space-y-6 mt-6">
+                  <div className="flex justify-center items-center space-x-4 w-full">
+                    <button
+                      onClick={() => toggleRepeatMode("playlist")}
+                      className={`text-gray-600 p-3 rounded-full transition-all duration-300 ease-in-out ${
+                        repeatMode.playlist === "on"
+                          ? "bg-gray-100 shadow-inner transform translate-y-px"
+                          : "bg-white hover:bg-gray-50 active:bg-gray-100 active:shadow-inner active:transform active:translate-y-px"
+                      }`}
+                      aria-label={`Powtarzaj playlistę: ${
+                        repeatMode.playlist === "on" ? "włączone" : "wyłączone"
+                      }`}
+                      title="Powtarzaj playlistę"
+                    >
+                      <FaRedo
+                        size={28}
+                        className={
+                          repeatMode.playlist === "on" ? "text-blue-500" : ""
+                        }
+                      />
+                    </button>
+                    <button
+                      onClick={previousSong}
+                      className="text-gray-600 hover:text-gray-800 p-3 transition-all duration-150 ease-in-out active:scale-95"
+                      aria-label="Poprzedni utwór"
+                      title="Poprzedni utwr"
+                    >
+                      <FaBackward size={28} />
+                    </button>
+                    <button
+                      onClick={togglePlayback}
+                      className="bg-white rounded-full p-6 shadow-lg transition-all duration-150 ease-in-out active:scale-95"
+                      aria-label={isPlaying ? "Pauza" : "Odtwórz"}
+                      title={isPlaying ? "Pauza" : "Odtwórz"}
+                    >
+                      {isPlaying ? <FaPause size={40} /> : <FaPlay size={40} />}
+                    </button>
+                    <button
+                      onClick={nextSong}
+                      className="text-gray-600 hover:text-gray-800 p-3 transition-all duration-150 ease-in-out active:scale-95"
+                      aria-label="Następny utwór"
+                      title="Następny utwór"
+                    >
+                      <FaForward size={28} />
+                    </button>
+                    <button
+                      onClick={() => toggleRepeatMode("song")}
+                      className={`text-gray-600 p-3 rounded-full transition-all duration-300 ease-in-out ${
+                        repeatMode.song === "on"
+                          ? "bg-gray-100 shadow-inner transform translate-y-px"
+                          : "bg-white hover:bg-gray-50 active:bg-gray-100 active:shadow-inner active:transform active:translate-y-px"
+                      }`}
+                      aria-label={`Powtarzaj utwór: ${
+                        repeatMode.song === "on" ? "włączone" : "wyłączone"
+                      }`}
+                      title="Powtarzaj utwór"
+                    >
+                      <FaRetweet
+                        size={28}
+                        className={
+                          repeatMode.song === "on" ? "text-blue-500" : ""
+                        }
+                      />
+                    </button>
                   </div>
                 </div>
               </div>
