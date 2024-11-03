@@ -23,7 +23,7 @@ import PlaylistHeader from "./components/PlaylistHeader";
 import { useDebugEffect } from "./hooks/useDebugEffect";
 import LoadingState from "./components/LoadingState";
 import { usePlaylistManagement } from "./hooks/usePlaylistManagement";
-
+import PopularSections from './components/PopularSections';
 const generateUniqueId = () => {
   return Date.now().toString(36) + Math.random().toString(36).substr(2);
 };
@@ -170,17 +170,34 @@ const MusicPage: React.FC = () => {
     return (currentSongIndex + 1) % songs.length;
   }, [currentPlaylistId, playlists, songs, currentSongIndex]);
 
-  const handlePlayPlaylist = useCallback((playlistId: string) => {
-    setCurrentPlaylistId(playlistId);
-    const playlist = playlists.find((p) => p.id === playlistId);
-    if (playlist && playlist.songs.length > 0) {
-      const firstSongIndex = songs.findIndex(song => song.id === playlist.songs[0]);
-      if (firstSongIndex !== -1) {
-        dispatch(setCurrentSongIndex(firstSongIndex));
+  const currentSong = songs[currentSongIndex] || null;
+
+  const handleSongSelect = useCallback(
+    (songId: string) => {
+      const index = songs.findIndex((s) => s.id === songId);
+      if (index !== -1) {
+        dispatch(setCurrentSongIndex(index));
         setIsPlaying(true);
       }
-    }
-  }, [dispatch, playlists, songs]);
+    },
+    [dispatch, songs, setIsPlaying]
+  );
+
+  const handlePlayPlaylist = useCallback(
+    (playlistId: string) => {
+      if (!isAuthenticated) {
+        showErrorToast("Musisz być zalogowany, aby odtworzyć playlistę");
+        return;
+      }
+      setCurrentPlaylistId(playlistId);
+    },
+    [isAuthenticated, showErrorToast]
+  );
+
+  // Dodajmy przykładowe dane dla sekcji popularnych
+  const topLikedSongs = songs.slice(0, 5);
+  const trendingSongs = songs.slice(5, 10);
+  const topPlaylists = playlists.slice(0, 4);
 
   if (status === "loading") {
     return (
@@ -215,6 +232,18 @@ const MusicPage: React.FC = () => {
         }}
         isLiked={false}
       />
+      <PopularSections
+        topLikedSongs={topLikedSongs}
+        trendingSongs={trendingSongs}
+        topPlaylists={topPlaylists}
+        songs={songs}
+        isAuthenticated={isAuthenticated}
+        onPlaySong={handleSongSelect}
+        onPlayPlaylist={handlePlayPlaylist}
+        currentSongId={currentSong?.id}
+        isPlaying={isPlaying}
+        showErrorToast={showErrorToast}
+      />
       <div className="flex-grow flex flex-col lg:flex-row bg-white relative z-10 shadow-xl rounded-t-[2rem] -mt-20">
         <div className="w-full p-4">
           <MusicPlayer
@@ -247,62 +276,7 @@ const MusicPage: React.FC = () => {
             setPlaylists={setPlaylists}
           />
         </div>
- 
       </div>
-      {isMobile && (
-        <section className="w-full p-8 mt-8 mb-24 bg-gradient-to-br from-blue-50 to-blue-50 rounded-lg shadow-lg">
-          <h2 className="text-3xl font-bold mb-6 text-gray-800">
-            Popularne tagi
-          </h2>
-          <div className="flex flex-wrap gap-3 mb-8">
-            {[
-              "bachata",
-              "bachatasensual",
-              "TopBachataMix",
-              "bachatadance",
-              "bachatasongs",
-              "BachataMix",
-            ].map((tag, index) => (
-              <span
-                key={index}
-                className="bg-white text-blue-700 px-4 py-2 rounded-full text-sm font-medium shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer"
-              >
-                #{tag}
-              </span>
-            ))}
-          </div>
-          <article className="prose prose-lg text-gray-700 mb-8 leading-relaxed">
-            <p>
-              Witaj w naszym muzycznym raju <strong>bachaty</strong>! Mamy tu
-              wszystko - od starych, zakurzonych hitów prosto z dominikańskich
-              piwnic, po nowoczesne kawałki <strong>bachaty</strong>, które
-              sprawią, że nawet twoja babcia zacznie kręcić biodrami.
-            </p>
-
-            <p>
-              Nasze playlisty <strong>bachaty</strong> to istne rollercoastery
-              emocji - od romantycznych ballad, przy których będziesz płakać jak
-              bóbr, po energiczne rytmy, które sprawią, że twoje stopy same
-              zaczną tańczyć (nawet jeśli masz dwie lewe!).
-            </p>
-
-            <p>
-              Zapraszamy do muzycznej podróży przez historię{" "}
-              <strong>bachaty</strong> - od czasów, gdy instrumenty robiono z
-              kokosów, po dzisiejsze elektroniczne cuda.
-            </p>
-
-            <p>
-              Gwarantujemy, że po przesłuchaniu naszej kolekcji{" "}
-              <strong>bachaty</strong> albo zostaniesz mistrzem tańca, albo
-              przynajmniej mistrzem udawania, że umiesz tańczyć!
-            </p>
-          </article>
-          <button className="bg-purple-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-purple-700 transition duration-300 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50">
-            Przeglądaj wszystkie tagi
-          </button>
-        </section>
-      )}
       <ToastContainer
         position="bottom-right"
         autoClose={3000}
