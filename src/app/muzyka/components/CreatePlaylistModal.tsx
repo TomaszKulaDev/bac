@@ -5,6 +5,7 @@ import { Z_INDEX } from '@/app/constants/zIndex';
 import { FaMusic, FaTimes, FaPlus } from 'react-icons/fa';
 import { motion } from "framer-motion";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import { validatePlaylistTitle } from '../utils/validation';
 
 interface CreatePlaylistModalProps {
   onClose: () => void;
@@ -25,6 +26,7 @@ const CreatePlaylistModal: React.FC<CreatePlaylistModalProps> = ({
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated
   );
+  const [validationError, setValidationError] = useState<string>('');
 
   // Nowa funkcja do walidacji w czasie rzeczywistym
   const validateOnChange = (name: string) => {
@@ -89,6 +91,21 @@ const CreatePlaylistModal: React.FC<CreatePlaylistModalProps> = ({
       showErrorToast("Nie udało się utworzyć playlisty. Sprawdź nazwę.");
     }
     setIsLoading(false);
+  };
+
+  const handleCreatePlaylist = () => {
+    const validation = validatePlaylistTitle(playlistName);
+    
+    if (!validation.isValid) {
+      setValidationError(validation.error || '');
+      showErrorToast(validation.error || '');
+      return;
+    }
+
+    onCreatePlaylist(playlistName);
+    setPlaylistName('');
+    setValidationError('');
+    onClose();
   };
 
   return (

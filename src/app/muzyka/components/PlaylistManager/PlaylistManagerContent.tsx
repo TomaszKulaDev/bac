@@ -26,9 +26,27 @@ const PlaylistManagerContent: React.FC<PlaylistManagerContentProps> = ({
   sensors,
   onDragEnd,
   getSongDetails,
+  isAuthenticated,
 }) => {
+  const buttonText = isAuthenticated 
+    ? "+ Utwórz nową playlistę"
+    : "Zaloguj się, aby utworzyć swoją playlistę";
+
   return (
     <div className="space-y-4 overflow-y-auto flex-grow p-4">
+      <button
+        onClick={() => {
+          if (!isAuthenticated) {
+            showErrorToast("Musisz być zalogowany, aby utworzyć playlistę");
+            return;
+          }
+          setIsModalOpen(true);
+        }}
+        className="w-full py-3 px-4 bg-navy-700 text-white rounded-lg hover:bg-navy-800 transition-colors duration-200 flex items-center justify-center gap-2 font-medium"
+      >
+        <FaPlus className={`text-lg ${!isAuthenticated && 'hidden'}`} />
+        {buttonText}
+      </button>
       {/* Kopiujemy JSX z oryginalnego PlaylistManager.tsx (linie 119-267) */}
     </div>
   );

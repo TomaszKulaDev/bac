@@ -9,9 +9,10 @@ import { DragEndEvent } from '@dnd-kit/core';
 import { Playlist, Song } from '../../types';
 import { useSensors, useSensor, PointerSensor } from '@dnd-kit/core';
 
-const PlaylistManager: React.FC<PlaylistManagerProps> = (props) => {
-  const { isAuthenticated } = props;
-
+const PlaylistManager: React.FC<PlaylistManagerProps> = ({
+  isAuthenticated,
+  ...props
+}) => {
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -31,6 +32,7 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = (props) => {
   return (
     <PlaylistManagerContent
       {...props}
+      isAuthenticated={isAuthenticated}
       sensors={sensors}
       getSongDetails={getSongDetails}
       onDragEnd={(event, playlist) => 

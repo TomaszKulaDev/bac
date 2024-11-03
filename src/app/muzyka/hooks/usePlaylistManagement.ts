@@ -4,7 +4,8 @@ import { updateSongsPlaylists } from "@/store/slices/features/songsSlice";
 import { updatePlaylistOrder } from "@/store/slices/features/playlistSlice";
 import { Playlist, Song } from "../types";
 import { DragEndEvent } from "@dnd-kit/core";
-import { AppDispatch } from '@/store/store';
+import { AppDispatch } from "@/store/store";
+import { validatePlaylistTitle } from "../utils/validation";
 
 export interface UsePlaylistManagementProps {
   playlists: Playlist[];
@@ -69,8 +70,8 @@ export const usePlaylistManagement = ({
         )
           .unwrap()
           .catch((error: Error) => {
-            console.error('Failed to update playlist order:', error);
-            showErrorToast("Nie udało się zaktualizować kolejności utworów");
+            console.error("Failed to update playlist order:", error);
+            showErrorToast("Nie udało się zaktualizować kolejności utworw");
           });
       }
     },
@@ -178,8 +179,10 @@ export const usePlaylistManagement = ({
 
   const editPlaylistName = useCallback(
     (playlistId: string, newName: string) => {
-      if (!isAuthenticated) {
-        showErrorToast("Musisz być zalogowany, aby edytować nazwę playlisty.");
+      const validation = validatePlaylistTitle(newName);
+
+      if (!validation.isValid) {
+        showErrorToast(validation.error || "");
         return;
       }
 
@@ -189,7 +192,7 @@ export const usePlaylistManagement = ({
         )
       );
     },
-    [onUpdatePlaylists, isAuthenticated, showErrorToast]
+    [onUpdatePlaylists, showErrorToast]
   );
 
   const deletePlaylist = useCallback(
@@ -232,7 +235,7 @@ export const usePlaylistManagement = ({
   const isInPlaylist = useCallback(
     (songId: string, playlistId: string | null) => {
       if (!playlistId) return false;
-      const playlist = playlists.find(p => p.id === playlistId);
+      const playlist = playlists.find((p) => p.id === playlistId);
       return playlist ? playlist.songs.includes(songId) : false;
     },
     [playlists]

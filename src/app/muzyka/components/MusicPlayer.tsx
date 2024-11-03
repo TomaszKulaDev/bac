@@ -54,9 +54,13 @@ import { Tooltip } from "@/components/ui/Tooltip";
 import { SortByType } from "../hooks/useDrawers";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDrawers } from "../hooks/useDrawers";
-import { usePlaylistManagement, UsePlaylistManagementProps } from "../hooks/usePlaylistManagement";
+import {
+  usePlaylistManagement,
+  UsePlaylistManagementProps,
+} from "../hooks/usePlaylistManagement";
 import PlaylistManager from "./PlaylistManager";
-import '../styles/youtube-player.css';
+import "../styles/youtube-player.css";
+import TopRatedSongs from "./TopRatedSongs";
 
 interface MusicPlayerProps {
   songs: Song[];
@@ -244,6 +248,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   );
 
   const playlistManagement = usePlaylistManagement({
+    
     playlists,
     onUpdatePlaylists,
     onPlayPlaylist,
@@ -253,7 +258,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     showInfoToast,
     isAuthenticated,
     songs,
-    onCreatePlaylist
+    onCreatePlaylist,
   });
 
   useEffect(() => {
@@ -286,7 +291,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
       if (currentPlaylist) {
         // Zwracamy utwory w kolejności z playlisty
         return currentPlaylist.songs
-          .map(songId => songs.find(song => song.id === songId))
+          .map((songId) => songs.find((song) => song.id === songId))
           .filter((song): song is Song => song !== undefined);
       }
     }
@@ -480,7 +485,9 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                 isPopularList={false}
                 expandedPlaylist={expandedPlaylist}
                 setExpandedPlaylist={setExpandedPlaylist}
-                onAddToPlaylist={(songId: string) => handleAddToPlaylist(songId)}
+                onAddToPlaylist={(songId: string) =>
+                  handleAddToPlaylist(songId)
+                }
                 sortBy={sortBy}
                 sortOrder={sortOrder}
                 onSortChange={handleSortChange}
@@ -495,17 +502,24 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                 isLoading={isLoading}
               />
             </div>
-            
-            {/* Środkowa kolumna - jeszcze mniejsza wysokość */}
+
+            {/* Środkowa kolumna */}
             <div className="w-full lg:w-1/3 flex flex-col">
-              <div className="w-full h-[400px]">
-                <div className={`youtube-player-wrapper ${isPlaying ? 'is-playing' : ''}`}>
+              <TopRatedSongs />
+
+              {/* Istniejący odtwarzacz */}
+              <div className="w-full h-[400px] mt-8">
+                <div
+                  className={`youtube-player-wrapper ${
+                    isPlaying ? "is-playing" : ""
+                  }`}
+                >
                   <YouTube
                     videoId={currentSong?.youtubeId}
                     opts={{
                       ...opts,
-                      height: '100%',
-                      width: '100%',
+                      height: "100%",
+                      width: "100%",
                     }}
                     onReady={onReady}
                     onPlay={() => setIsPlaying(true)}
@@ -599,17 +613,20 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                 </div>
               </div>
             </div>
-            
+
             {/* Prawa kolumna - Playlist Manager */}
             <div className="w-full lg:w-1/3 xl:w-1/3 border-l border-gray-200">
               <PlaylistManager
+                isAuthenticated={isAuthenticated} // Dodaj tę linię
                 playlists={playlists}
                 songs={songs}
                 expandedPlaylist={expandedPlaylist}
                 setExpandedPlaylist={setExpandedPlaylist}
                 onDeletePlaylist={handleDeletePlaylist}
                 onRenamePlaylist={playlistManagement.editPlaylistName}
-                onRemoveSongFromPlaylist={playlistManagement.removeSongFromPlaylist}
+                onRemoveSongFromPlaylist={
+                  playlistManagement.removeSongFromPlaylist
+                }
                 onCreatePlaylist={onCreatePlaylist}
                 isMobile={isMobile}
                 onPlayPlaylist={onPlayPlaylist}
@@ -662,7 +679,9 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                 }
               }}
               isLiked={false} // Dodaj logikę sprawdzania, czy utwór jest polubiony
-              hasPlaylistsAndExpanded={playlists.length > 0 && !!expandedPlaylist}
+              hasPlaylistsAndExpanded={
+                playlists.length > 0 && !!expandedPlaylist
+              }
               playlistCount={playlists.length}
               onCreatePlaylist={() => setIsModalOpen(true)}
               isAuthenticated={isAuthenticated}
@@ -778,4 +797,3 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   );
 };
 export default MusicPlayer;
-

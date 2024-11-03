@@ -37,6 +37,7 @@ export interface PlaylistManagerProps {
   showInfoToast: (message: string) => void;
   onUpdatePlaylists: (updater: (prevPlaylists: Playlist[]) => Playlist[]) => void;
   setPlaylists: React.Dispatch<React.SetStateAction<Playlist[]>>;
+  isAuthenticated: boolean;
 }
 
 const PlaylistManager: React.FC<PlaylistManagerProps> = ({
@@ -58,9 +59,9 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
   showErrorToast,
   showInfoToast,
   onUpdatePlaylists,
-  setPlaylists
+  setPlaylists,
+  isAuthenticated
 }) => {
-  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
   const dispatch = useDispatch();
 
   const getSongDetails = (songId: string): Song | undefined => 
@@ -107,12 +108,18 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
         <motion.button
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
-          onClick={() => setIsModalOpen(true)}
+          onClick={() => {
+            if (!isAuthenticated) {
+              showErrorToast("Musisz być zalogowany, aby utworzyć playlistę");
+              return;
+            }
+            setIsModalOpen(true);
+          }}
           className="w-full bg-gradient-to-r from-[#0a1e3b] to-[#2a4a7f] text-white px-6 py-3 rounded-lg 
             font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2"
         >
-          <FaPlus className="text-lg" />
-          <span>Utwórz nową playlistę</span>
+          <FaPlus className={`text-lg ${!isAuthenticated && 'hidden'}`} />
+          <span>{isAuthenticated ? "Stwórz swoją playlistę" : "Dołącz do nas i twórz playlisty"}</span>
         </motion.button>
       )}
 
