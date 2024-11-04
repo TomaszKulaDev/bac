@@ -451,6 +451,15 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     console.debug("Debug info:", debugInfo);
   }
 
+  useEffect(() => {
+    if (currentSong) {
+      const newIndex = sortedAndFilteredSongs.findIndex(s => s.id === currentSong.id);
+      if (newIndex === -1) {
+        setIsPlaying(false);
+      }
+    }
+  }, [sortBy, sortOrder, filterText, currentSong, setIsPlaying, sortedAndFilteredSongs]);
+
   return (
     <PlayerErrorBoundary
       onError={(error, errorInfo) => {

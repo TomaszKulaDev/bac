@@ -75,9 +75,10 @@ export const useSongNavigation = ({
 
   const navigateInMainList = useCallback(
     (direction: "next" | "previous") => {
-      if (!currentSong) return -1;
+      if (!currentSong || sortedSongs.length === 0) return -1;
 
       const currentSortedIndex = sortedSongs.findIndex(s => s.id === currentSong.id);
+      if (currentSortedIndex === -1) return -1;
       
       if (direction === "next") {
         if (repeatMode.song === "on") {

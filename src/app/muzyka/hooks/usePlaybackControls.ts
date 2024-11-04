@@ -17,6 +17,7 @@ interface UsePlaybackControlsProps {
   repeatMode: RepeatMode;
   isPlaying: boolean;
   setCurrentPlaylistId: (id: string | null) => void;
+  showErrorToast?: (message: string) => void;
 }
 
 export const usePlaybackControls = ({
@@ -31,7 +32,8 @@ export const usePlaybackControls = ({
   setIsLoading,
   repeatMode,
   isPlaying,
-  setCurrentPlaylistId
+  setCurrentPlaylistId,
+  showErrorToast
 }: UsePlaybackControlsProps) => {
   const { nextSong, previousSong } = useSongNavigation({
     currentSong,
@@ -53,15 +55,22 @@ export const usePlaybackControls = ({
     
     try {
       if (isPlaying) {
-        player.pauseVideo();
+        player.pauseVideo().catch((error: Error) => {
+          console.error('Błąd podczas pauzowania:', error);
+          setIsPlaying(false);
+        });
       } else {
-        player.playVideo();
+        player.playVideo().catch((error: Error) => {
+          console.error('Błąd podczas odtwarzania:', error);
+          showErrorToast?.('Nie udało się rozpocząć odtwarzania');
+        });
       }
       setIsPlaying(!isPlaying);
     } catch (error) {
       console.error('Błąd podczas przełączania odtwarzania:', error);
+      setIsPlaying(false);
     }
-  }, [player, isPlaying, isPlayerReady, setIsPlaying]);
+  }, [player, isPlaying, isPlayerReady, setIsPlaying, showErrorToast]);
 
   return {
     previousSong,
