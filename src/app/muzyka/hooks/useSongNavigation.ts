@@ -81,9 +81,9 @@ export const useSongNavigation = ({
         if (repeatMode.song === "on") {
           return currentIndex;
         }
-        return (currentIndex + 1) % songs.length;
-      } else {
         return currentIndex === 0 ? songs.length - 1 : currentIndex - 1;
+      } else {
+        return (currentIndex + 1) % songs.length;
       }
     },
     [currentSong, songs, repeatMode.song, findSongIndexInMainList]
