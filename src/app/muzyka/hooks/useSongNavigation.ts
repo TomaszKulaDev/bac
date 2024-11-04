@@ -12,6 +12,7 @@ interface UseSongNavigationProps {
   setIsPlaying: (isPlaying: boolean) => void;
   setIsLoading: (isLoading: boolean) => void;
   setCurrentPlaylistId: (id: string | null) => void;
+  sortedSongs: Song[];
 }
 
 export const useSongNavigation = ({
@@ -23,6 +24,7 @@ export const useSongNavigation = ({
   setIsPlaying,
   setIsLoading,
   setCurrentPlaylistId,
+  sortedSongs,
 }: UseSongNavigationProps) => {
   const dispatch = useDispatch();
 
@@ -75,18 +77,22 @@ export const useSongNavigation = ({
     (direction: "next" | "previous") => {
       if (!currentSong) return -1;
 
-      const currentIndex = findSongIndexInMainList(currentSong.id);
-
+      const currentSortedIndex = sortedSongs.findIndex(s => s.id === currentSong.id);
+      
       if (direction === "next") {
         if (repeatMode.song === "on") {
-          return currentIndex;
+          return findSongIndexInMainList(currentSong.id);
         }
-        return currentIndex === 0 ? songs.length - 1 : currentIndex - 1;
+        const nextSortedIndex = (currentSortedIndex + 1) % sortedSongs.length;
+        return findSongIndexInMainList(sortedSongs[nextSortedIndex].id);
       } else {
-        return (currentIndex + 1) % songs.length;
+        const prevSortedIndex = currentSortedIndex === 0 
+          ? sortedSongs.length - 1 
+          : currentSortedIndex - 1;
+        return findSongIndexInMainList(sortedSongs[prevSortedIndex].id);
       }
     },
-    [currentSong, songs, repeatMode.song, findSongIndexInMainList]
+    [currentSong, sortedSongs, repeatMode.song, findSongIndexInMainList]
   );
 
   const navigate = useCallback(

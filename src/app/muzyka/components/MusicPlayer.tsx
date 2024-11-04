@@ -174,6 +174,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     isPlayerReady,
     currentSong,
     songs,
+    sortedSongs: sortedAndFilteredSongs,
     playlists,
     currentPlaylistId,
     setIsPlaying,
@@ -261,7 +262,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     isAuthenticated,
     songs,
     onCreatePlaylist,
-    setCurrentPlaylistId
+    setCurrentPlaylistId,
   });
 
   useEffect(() => {
@@ -508,8 +509,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
 
             {/* Środkowa kolumna */}
             <div className="w-full lg:w-1/3 flex flex-col">
-              
-
               {/* Istniejący odtwarzacz */}
               <div className="w-full h-[400px] mt-8">
                 <div

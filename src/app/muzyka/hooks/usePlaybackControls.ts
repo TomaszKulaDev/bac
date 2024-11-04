@@ -9,6 +9,7 @@ interface UsePlaybackControlsProps {
   isPlayerReady: boolean;
   currentSong: Song;
   songs: Song[];
+  sortedSongs: Song[];
   playlists: Playlist[];
   currentPlaylistId: string | null;
   setIsPlaying: (playing: boolean) => void;
@@ -23,6 +24,7 @@ export const usePlaybackControls = ({
   isPlayerReady,
   currentSong,
   songs,
+  sortedSongs,
   playlists,
   currentPlaylistId,
   setIsPlaying,
@@ -34,6 +36,7 @@ export const usePlaybackControls = ({
   const { nextSong, previousSong } = useSongNavigation({
     currentSong,
     songs,
+    sortedSongs,
     playlists,
     currentPlaylistId,
     repeatMode,

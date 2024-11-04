@@ -24,6 +24,7 @@ import { useDebugEffect } from "./hooks/useDebugEffect";
 import LoadingState from "./components/LoadingState";
 import { usePlaylistManagement } from "./hooks/usePlaylistManagement";
 import { useSongNavigation } from "./hooks/useSongNavigation";
+import { useSortedAndFilteredSongs } from "./hooks/useSortedAndFilteredSongs";
 
 const generateUniqueId = () => {
   return Date.now().toString(36) + Math.random().toString(36).substr(2);
@@ -76,9 +77,12 @@ const MusicPage: React.FC = () => {
     showSuccessToast(`Utworzono nową playlistę "${name}"`);
   }, [isAuthenticated, showSuccessToast, showErrorToast, setExpandedPlaylist]);
 
+  const sortedSongs = useSortedAndFilteredSongs(songs, sortBy, sortOrder, filterText, currentPlaylistId);
+
   const { getCurrentIndex, nextSong, previousSong, playPlaylist } = useSongNavigation({
     currentSong: songs[currentSongIndex],
     songs,
+    sortedSongs,
     playlists,
     currentPlaylistId,
     repeatMode: {
