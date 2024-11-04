@@ -60,7 +60,6 @@ import {
 } from "../hooks/usePlaylistManagement";
 import PlaylistManager from "./PlaylistManager";
 import "../styles/youtube-player.css";
-import TopRatedSongs from "./TopRatedSongs";
 
 interface MusicPlayerProps {
   songs: Song[];
@@ -505,7 +504,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
 
             {/* Środkowa kolumna */}
             <div className="w-full lg:w-1/3 flex flex-col">
-              <TopRatedSongs />
+              
 
               {/* Istniejący odtwarzacz */}
               <div className="w-full h-[400px] mt-8">
