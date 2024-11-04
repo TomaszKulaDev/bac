@@ -23,6 +23,7 @@ import PlaylistHeader from "./components/PlaylistHeader";
 import { useDebugEffect } from "./hooks/useDebugEffect";
 import LoadingState from "./components/LoadingState";
 import { usePlaylistManagement } from "./hooks/usePlaylistManagement";
+import { useSongNavigation } from "./hooks/useSongNavigation";
 
 const generateUniqueId = () => {
   return Date.now().toString(36) + Math.random().toString(36).substr(2);
@@ -48,6 +49,7 @@ const MusicPage: React.FC = () => {
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const showSuccessToast = useCallback((message: string) => toast.success(message), []);
   const showErrorToast = useCallback((message: string) => toast.error(message), []);
@@ -74,27 +76,32 @@ const MusicPage: React.FC = () => {
     showSuccessToast(`Utworzono nową playlistę "${name}"`);
   }, [isAuthenticated, showSuccessToast, showErrorToast, setExpandedPlaylist]);
 
+  const { getCurrentIndex, nextSong, previousSong, playPlaylist } = useSongNavigation({
+    currentSong: songs[currentSongIndex],
+    songs,
+    playlists,
+    currentPlaylistId,
+    repeatMode: {
+      song: "off",
+      playlist: "off"
+    },
+    setIsPlaying,
+    setIsLoading,
+    setCurrentPlaylistId
+  });
+
   const playlistManagement = usePlaylistManagement({
     playlists,
     onUpdatePlaylists: setPlaylists,
-    onPlayPlaylist: (playlistId: string) => {
-      setCurrentPlaylistId(playlistId);
-      const playlist = playlists.find((p) => p.id === playlistId);
-      if (playlist && playlist.songs.length > 0) {
-        dispatch(
-          setCurrentSongIndex(
-            songs.findIndex((s) => s.id === playlist.songs[0])
-          )
-        );
-      }
-    },
     currentPlaylistId,
     showSuccessToast,
     showErrorToast,
     showInfoToast,
     isAuthenticated,
     songs,
-    onCreatePlaylist: handleCreateEmptyPlaylist
+    onCreatePlaylist: handleCreateEmptyPlaylist,
+    onPlayPlaylist: playPlaylist,
+    setCurrentPlaylistId
   });
 
   useEffect(() => {
@@ -149,38 +156,11 @@ const MusicPage: React.FC = () => {
     [dispatch, playlists]
   );
 
-  const getNextSongIndex = useCallback(() => {
-    if (currentPlaylistId) {
-      const playlist = playlists.find(p => p.id === currentPlaylistId);
-      if (playlist) {
-        const currentSongId = songs[currentSongIndex].id;
-        const currentSongPlaylistIndex = playlist.songs.indexOf(currentSongId);
-        
-        if (currentSongPlaylistIndex < playlist.songs.length - 1) {
-          // Znajdź indeks następnego utworu z playlisty w głównej tablicy songs
-          const nextSongId = playlist.songs[currentSongPlaylistIndex + 1];
-          return songs.findIndex(song => song.id === nextSongId);
-        }
-        // Jeśli to ostatni utwór w playliście, wróć do pierwszego
-        const firstSongId = playlist.songs[0];
-        return songs.findIndex(song => song.id === firstSongId);
-      }
+  const handleAutoPlay = useCallback(() => {
+    if (isPlaying) {
+      nextSong();
     }
-    // Jeśli nie ma aktywnej playlisty, przejdź do następnego utworu w głównej liście
-    return (currentSongIndex + 1) % songs.length;
-  }, [currentPlaylistId, playlists, songs, currentSongIndex]);
-
-  const handlePlayPlaylist = useCallback((playlistId: string) => {
-    setCurrentPlaylistId(playlistId);
-    const playlist = playlists.find((p) => p.id === playlistId);
-    if (playlist && playlist.songs.length > 0) {
-      const firstSongIndex = songs.findIndex(song => song.id === playlist.songs[0]);
-      if (firstSongIndex !== -1) {
-        dispatch(setCurrentSongIndex(firstSongIndex));
-        setIsPlaying(true);
-      }
-    }
-  }, [dispatch, playlists, songs]);
+  }, [isPlaying, nextSong]);
 
   if (status === "loading") {
     return (

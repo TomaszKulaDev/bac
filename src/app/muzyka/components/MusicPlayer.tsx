@@ -60,6 +60,7 @@ import {
 } from "../hooks/usePlaylistManagement";
 import PlaylistManager from "./PlaylistManager";
 import "../styles/youtube-player.css";
+import { setCurrentPlaylistId } from "@/store/slices/features/playlistSlice";
 
 interface MusicPlayerProps {
   songs: Song[];
@@ -168,6 +169,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   );
 
   const { previousSong, togglePlayback, nextSong } = usePlaybackControls({
+    setCurrentPlaylistId,
     player,
     isPlayerReady,
     currentSong,
@@ -202,10 +204,12 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
       if (index !== -1) {
         dispatch(setCurrentSongIndex(index));
         setIsPlaying(true);
-        setIsLoading(true);
+        if (!currentPlaylistId) {
+          setCurrentPlaylistId(null);
+        }
       }
     },
-    [dispatch, songs, setIsPlaying, setIsLoading]
+    [songs, dispatch, setIsPlaying, currentPlaylistId]
   );
 
   // Funkcja do przełączania trybu minimalistycznego
@@ -247,7 +251,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   );
 
   const playlistManagement = usePlaylistManagement({
-    
     playlists,
     onUpdatePlaylists,
     onPlayPlaylist,
@@ -258,6 +261,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     isAuthenticated,
     songs,
     onCreatePlaylist,
+    setCurrentPlaylistId
   });
 
   useEffect(() => {

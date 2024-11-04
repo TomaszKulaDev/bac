@@ -1,3 +1,25 @@
+const getNextSongIndex = useCallback(() => {
+if (currentPlaylistId) {
+const playlist = playlists.find(p => p.id === currentPlaylistId);
+if (playlist) {
+const currentSongId = songs[currentSongIndex].id;
+const currentSongPlaylistIndex = playlist.songs.indexOf(currentSongId);
+
+        if (currentSongPlaylistIndex < playlist.songs.length - 1) {
+          // Znajdź indeks następnego utworu z playlisty w głównej tablicy songs
+          const nextSongId = playlist.songs[currentSongPlaylistIndex + 1];
+          return songs.findIndex(song => song.id === nextSongId);
+        }
+        // Jeśli to ostatni utwór w playliście, wróć do pierwszego
+        const firstSongId = playlist.songs[0];
+        return songs.findIndex(song => song.id === firstSongId);
+      }
+    }
+    // Jeśli nie ma aktywnej playlisty, przejdź do następnego utworu w głównej liście
+    return (currentSongIndex + 1) % songs.length;
+
+}, [currentPlaylistId, playlists, songs, currentSongIndex]);
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started

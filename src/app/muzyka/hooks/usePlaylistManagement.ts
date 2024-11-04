@@ -20,6 +20,7 @@ export interface UsePlaylistManagementProps {
   isAuthenticated: boolean;
   songs: Song[];
   onCreatePlaylist: (name: string, selectedSongs?: string[]) => void;
+  setCurrentPlaylistId: (playlistId: string | null) => void;
 }
 
 export const usePlaylistManagement = ({
@@ -33,6 +34,7 @@ export const usePlaylistManagement = ({
   isAuthenticated,
   songs,
   onCreatePlaylist,
+  setCurrentPlaylistId,
 }: UsePlaylistManagementProps) => {
   const dispatch = useDispatch<AppDispatch>();
 
@@ -207,16 +209,10 @@ export const usePlaylistManagement = ({
       );
 
       if (currentPlaylistId === playlistId) {
-        onPlayPlaylist("");
+        setCurrentPlaylistId(null);
       }
     },
-    [
-      onUpdatePlaylists,
-      onPlayPlaylist,
-      currentPlaylistId,
-      isAuthenticated,
-      showErrorToast,
-    ]
+    [onUpdatePlaylists, currentPlaylistId, isAuthenticated, showErrorToast, setCurrentPlaylistId]
   );
 
   const handleCreateEmptyPlaylist = useCallback(() => {
