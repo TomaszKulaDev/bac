@@ -244,9 +244,9 @@ const MusicPage: React.FC = () => {
       </div>
       {isMobile && (
         <section className="w-full p-8 mt-8 mb-24 bg-gradient-to-br from-blue-50 to-blue-50 rounded-lg shadow-lg">
-          <h2 className="text-3xl font-bold mb-6 text-gray-800">
+          <h1 className="text-3xl font-bold mb-6 text-gray-800">
             Popularne tagi
-          </h2>
+          </h1>
           <div className="flex flex-wrap gap-3 mb-8">
             {[
               "bachata",
