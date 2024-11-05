@@ -90,7 +90,8 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
     showInfoToast,
     isAuthenticated,
     songs,
-    onCreatePlaylist
+    onCreatePlaylist,
+    setCurrentPlaylistId
   });
 
   const listVariants = {
