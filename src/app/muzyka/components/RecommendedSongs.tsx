@@ -1,9 +1,9 @@
-import React from 'react';
-import Image from 'next/image';
-import { Song } from '../types';
-import { FaPlay, FaPause, FaPlus, FaHeart } from 'react-icons/fa';
-import { getYouTubeThumbnail } from '../utils/youtube';
-import { useVideoDuration } from '../hooks/useVideoDuration';
+import React from "react";
+import Image from "next/image";
+import { Song } from "../types";
+import { FaPlay, FaPause, FaPlus, FaHeart } from "react-icons/fa";
+import { getYouTubeThumbnail } from "../utils/youtube";
+import { useVideoDuration } from "../hooks/useVideoDuration";
 
 interface RecommendedSongsProps {
   songs: Song[];
@@ -18,7 +18,10 @@ interface RecommendedSongsProps {
 
 const getRecommendedSongs = (songs: Song[]) => {
   return [...songs]
-    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    .sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    )
     .slice(0, 5);
 };
 
@@ -29,7 +32,7 @@ const RecommendedSongs: React.FC<RecommendedSongsProps> = ({
   onSongSelect,
   onAddToPlaylist,
   onToggleFavorite,
-  favorites
+  favorites,
 }) => {
   const recommendedSongs = getRecommendedSongs(songs);
 
@@ -49,7 +52,7 @@ const RecommendedSongs: React.FC<RecommendedSongsProps> = ({
 
   return (
     <div className="w-full bg-gradient-to-b from-[#0a1e3b] to-[#2a4a7f] text-white p-6 rounded-t-3xl">
-      <h2 className="text-2xl font-bold mb-6">Polecane nowe utwory</h2>
+      <h2 className="text-2xl font-bold mb-6">Nowości</h2>
       <div className="overflow-x-auto">
         <table className="w-full min-w-[800px] table-auto">
           <thead className="text-blue-200/70 text-sm uppercase border-b border-blue-700/30">
@@ -67,14 +70,14 @@ const RecommendedSongs: React.FC<RecommendedSongsProps> = ({
               const isFavorite = favorites.has(song.id);
 
               return (
-                <tr 
+                <tr
                   key={song.id}
                   onClick={() => onSongSelect(song.id)}
                   role="button"
                   aria-label={`Odtwórz ${song.title} - ${song.artist}`}
                   className={`
                     hover:bg-blue-800/20 transition-colors cursor-pointer
-                    ${isCurrentSong ? 'bg-blue-800/30' : ''}
+                    ${isCurrentSong ? "bg-blue-800/30" : ""}
                   `}
                 >
                   <td className="px-4 py-3">
@@ -88,7 +91,7 @@ const RecommendedSongs: React.FC<RecommendedSongsProps> = ({
                           className="object-cover rounded"
                           onError={(e) => {
                             const target = e.target as HTMLImageElement;
-                            target.src = '/images/default-album-cover.jpg';
+                            target.src = "/images/default-album-cover.jpg";
                           }}
                         />
                         <button
@@ -104,14 +107,20 @@ const RecommendedSongs: React.FC<RecommendedSongsProps> = ({
                       </div>
                       <div className="min-w-0">
                         <div className="font-medium truncate">{song.title}</div>
-                        <div className="text-sm text-blue-200/70 truncate">{song.artist}</div>
+                        <div className="text-sm text-blue-200/70 truncate">
+                          {song.artist}
+                        </div>
                       </div>
                     </div>
                   </td>
-                  <td className="px-4 py-3 truncate text-blue-100">{song.artist}</td>
-                  <td className="px-4 py-3 truncate text-blue-100">{song.title}</td>
+                  <td className="px-4 py-3 truncate text-blue-100">
+                    {song.artist}
+                  </td>
+                  <td className="px-4 py-3 truncate text-blue-100">
+                    {song.title}
+                  </td>
                   <td className="px-4 py-3 text-right text-blue-100">
-                    {durations[song.id] || '--:--'}
+                    {durations[song.id] || "--:--"}
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center justify-end gap-2">
@@ -124,7 +133,11 @@ const RecommendedSongs: React.FC<RecommendedSongsProps> = ({
                       </button>
                       <button
                         onClick={() => onToggleFavorite(song.id)}
-                        className={`p-2 transition-colors ${isFavorite ? 'text-red-500' : 'text-blue-200 hover:text-white'}`}
+                        className={`p-2 transition-colors ${
+                          isFavorite
+                            ? "text-red-500"
+                            : "text-blue-200 hover:text-white"
+                        }`}
                         title="Dodaj do ulubionych"
                       >
                         <FaHeart className="w-4 h-4" />
@@ -142,11 +155,11 @@ const RecommendedSongs: React.FC<RecommendedSongsProps> = ({
 };
 
 /*
-* Ten komponent współpracuje z:
-* - src/app/muzyka/hooks/useVideoDuration.ts (pobieranie czasu trwania utworów)
-* - src/app/muzyka/utils/time.ts (formatowanie wyświetlanego czasu)
-*
-* Wykorzystuje hooki i utilities do pobrania i wyświetlenia czasu trwania utworów w tabeli
-*/
+ * Ten komponent współpracuje z:
+ * - src/app/muzyka/hooks/useVideoDuration.ts (pobieranie czasu trwania utworów)
+ * - src/app/muzyka/utils/time.ts (formatowanie wyświetlanego czasu)
+ *
+ * Wykorzystuje hooki i utilities do pobrania i wyświetlenia czasu trwania utworów w tabeli
+ */
 
 export default RecommendedSongs;
