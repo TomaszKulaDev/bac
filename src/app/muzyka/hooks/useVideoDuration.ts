@@ -68,3 +68,11 @@ export const useVideoDuration = (videoId: string | undefined) => {
 
   return duration;
 };
+
+/*
+* Ten hook współpracuje z:
+* - src/app/muzyka/utils/time.ts (formatowanie czasu)
+* - src/app/muzyka/components/RecommendedSongs.tsx (wyświetlanie czasu trwania utworów)
+* 
+* Hook pobiera czas trwania filmu z YouTube API i formatuje go do wyświetlenia
+*/

@@ -141,4 +141,12 @@ const RecommendedSongs: React.FC<RecommendedSongsProps> = ({
   );
 };
 
+/*
+* Ten komponent współpracuje z:
+* - src/app/muzyka/hooks/useVideoDuration.ts (pobieranie czasu trwania utworów)
+* - src/app/muzyka/utils/time.ts (formatowanie wyświetlanego czasu)
+*
+* Wykorzystuje hooki i utilities do pobrania i wyświetlenia czasu trwania utworów w tabeli
+*/
+
 export default RecommendedSongs;
