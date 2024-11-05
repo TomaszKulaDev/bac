@@ -499,14 +499,28 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
             {/* Lewa kolumna - Lista utworów */}
             <div className="w-full lg:w-1/3 xl:w-1/3">
               {currentPlaylistId && (
-                <div className="w-full mb-4 px-4">
-                  <button
-                    onClick={handleReturnToMainList}
-                    className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-white hover:bg-gray-50 text-gray-700 hover:text-gray-900 rounded-lg shadow-sm hover:shadow transition-all duration-200 border border-gray-200"
-                  >
-                    <FaArrowLeft className="text-gray-600" />
-                    <span>Powrót do wszystkich utworów</span>
-                  </button>
+                <div className="w-full mb-6 sticky top-0 z-10 bg-white/95 backdrop-blur-sm py-3 border-b border-gray-100 shadow-sm">
+                  <div className="max-w-7xl mx-auto px-4">
+                    <div className="flex items-center justify-between">
+                      <button
+                        onClick={handleReturnToMainList}
+                        className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:text-gray-900 bg-white hover:bg-gray-50 rounded-lg shadow-sm hover:shadow transition-all duration-200 border border-gray-200"
+                      >
+                        <FaArrowLeft className="text-gray-600" />
+                        <span>Powrót do wszystkich utworów</span>
+                      </button>
+                      {currentPlaylist && (
+                        <div className="text-right">
+                          <h2 className="text-lg font-semibold text-gray-800">
+                            {currentPlaylist.name}
+                          </h2>
+                          <p className="text-sm text-gray-500">
+                            {currentPlaylist.songs.length} utworów
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </div>
               )}
               <SongList
