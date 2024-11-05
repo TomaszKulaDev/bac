@@ -1,12 +1,35 @@
 User-agent: *
 Allow: /
 Allow: /muzyka
+Allow: /sitemap.xml
+Allow: /manifest.json
+
 Disallow: /api/
 Disallow: /admin/
 Disallow: /private/
+Disallow: /*?*
+Disallow: /*?
+Disallow: /*/search
+Disallow: /error
+Disallow: /404
+Disallow: /500
 
-# Crawl-delay: 10
+User-agent: Googlebot
+Allow: /
+Allow: /*.js
+Allow: /*.css
+Allow: /*.png
+Allow: /*.jpg
+Allow: /*.gif
+
+User-agent: Googlebot-Image
+Allow: /*.jpg
+Allow: /*.jpeg
+Allow: /*.gif
+Allow: /*.png
+Allow: /*.webp
+
+Crawl-delay: 10
+Host: https://www.baciata.pl
 
 Sitemap: https://www.baciata.pl/sitemap.xml
-/public/manifest.json
-/public/sitemap.xml

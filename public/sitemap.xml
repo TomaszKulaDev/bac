@@ -1,15 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://www.baciata.pl/</loc>
     <lastmod>2024-03-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.baciata.pl/en"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.baciata.pl/es"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://www.baciata.pl"/>
   </url>
   <url>
     <loc>https://www.baciata.pl/muzyka</loc>
     <lastmod>2024-03-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://www.baciata.pl/og-image.jpg</image:loc>
+      <image:title>Kolekcja Muzyki Bachata</image:title>
+    </image:image>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.baciata.pl/en/music"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.baciata.pl/es/musica"/>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://www.baciata.pl/muzyka"/>
   </url>
 </urlset>

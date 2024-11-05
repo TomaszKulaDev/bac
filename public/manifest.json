@@ -1,8 +1,9 @@
 {
   "name": "Baciata.pl - Kolekcja Muzyki Bachata",
   "short_name": "Baciata",
-  "description": "Największa kolekcja muzyki bachata online",
-  "start_url": "/",
+  "description": "Największa kolekcja muzyki bachata online - darmowe playlisty do tańca",
+  "start_url": "/muzyka",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#6366f1",
@@ -10,12 +11,31 @@
     {
       "src": "/icon-192x192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "/icon-512x512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
-  ]
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshot1.png",
+      "type": "image/png",
+      "sizes": "1280x720",
+      "form_factor": "wide"
+    }
+  ],
+  "categories": ["music", "entertainment"],
+  "lang": "pl",
+  "orientation": "any"
 }

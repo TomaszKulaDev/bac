@@ -197,7 +197,24 @@ const MusicPage: React.FC = () => {
       className="music-page min-h-screen flex flex-col" 
       role="main" 
       aria-label="Kolekcja muzyki Bachata"
+      itemScope 
+      itemType="https://schema.org/MusicPlaylist"
     >
+      <nav aria-label="Ścieżka nawigacji" className="breadcrumbs p-4 text-sm text-gray-600">
+        <ol className="flex items-center space-x-2">
+          <li>
+            <a href="/" className="hover:text-primary-600 transition-colors">
+              Strona główna
+            </a>
+          </li>
+          <li className="flex items-center">
+            <span className="mx-2">/</span>
+            <span aria-current="page" className="font-medium">
+              Muzyka
+            </span>
+          </li>
+        </ol>
+      </nav>
       <header role="banner">
         <h1 className="sr-only">Kolekcja Muzyki Bachata - Największa baza utworów online</h1>
         <PlaylistHeader
@@ -341,6 +358,16 @@ const MusicPage: React.FC = () => {
           isAuthenticated,
         }}
       />
+      <article 
+        className="prose prose-lg"
+        itemScope 
+        itemType="https://schema.org/Article"
+      >
+        <meta itemProp="headline" content="Kolekcja Muzyki Bachata" />
+        <meta itemProp="author" content="Baciata.pl" />
+        <meta itemProp="datePublished" content="2024-03-21" />
+        {/* ... reszta contentu ... */}
+      </article>
     </main>
   );
 };

@@ -22,6 +22,7 @@ export default function Layout({
     "description": "Największa kolekcja muzyki bachata online",
     "numTracks": "100+", // Liczba utworów
     "genre": "Bachata",
+    "keywords": "bachata, muzyka do tańca, dominican bachata, bachata sensual",
     "provider": { // Informacje o dostawcy treści
       "@type": "Organization",
       "name": "Baciata.pl",
@@ -29,7 +30,11 @@ export default function Layout({
       "logo": {
         "@type": "ImageObject",
         "url": "https://www.baciata.pl/logo.png"
-      }
+      },
+      "sameAs": [
+        "https://www.facebook.com/baciata",
+        "https://www.instagram.com/baciata_pl/"
+      ]
     },
     "aggregateRating": { // Zagregowana ocena użytkowników
       "@type": "AggregateRating",
@@ -41,6 +46,27 @@ export default function Layout({
       "price": "0",
       "priceCurrency": "PLN",
       "availability": "https://schema.org/InStock"
+    },
+    "breadcrumb": {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Strona główna",
+          "item": "https://www.baciata.pl"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Muzyka",
+          "item": "https://www.baciata.pl/muzyka"
+        }
+      ]
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://www.baciata.pl/muzyka"
     }
   };
 
