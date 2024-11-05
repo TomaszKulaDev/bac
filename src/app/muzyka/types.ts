@@ -48,6 +48,8 @@ export interface MusicPlayerProps {
   sensors: any; // możemy później dodać dokładniejszy typ z @dnd-kit/core
   isPlaying: boolean;
   setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
+  setCurrentPlaylistId: (id: string | null) => void;
+  currentSongIndex: number;
 }
 
 // Interfejs reprezentujący tryb powtarzania

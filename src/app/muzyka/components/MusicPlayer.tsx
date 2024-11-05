@@ -25,6 +25,7 @@ import {
   FaTimes,
   FaEyeSlash,
   FaEye,
+  FaArrowLeft,
 } from "react-icons/fa";
 import { Song, Playlist, RepeatMode, SortOrderType } from "../types";
 import { RootState } from "../../../store/store";
@@ -86,6 +87,7 @@ interface MusicPlayerProps {
   isPlaying: boolean;
   setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
   setPlaylists: React.Dispatch<React.SetStateAction<Playlist[]>>;
+  setCurrentPlaylistId: (id: string | null) => void;
 }
 
 interface BrowserInfo {
@@ -123,6 +125,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   isPlaying,
   setIsPlaying,
   setPlaylists,
+  setCurrentPlaylistId,
 }) => {
   const dispatch = useDispatch();
   const currentSong = useSelector(
@@ -212,7 +215,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
         }
       }
     },
-    [songs, dispatch, setIsPlaying, currentPlaylistId]
+    [songs, dispatch, setIsPlaying, currentPlaylistId, setCurrentPlaylistId]
   );
 
   // Funkcja do przełączania trybu minimalistycznego
@@ -449,6 +452,25 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     }
   }, [sortBy, sortOrder, filterText, currentSong, setIsPlaying, sortedAndFilteredSongs]);
 
+  // Dodaj nową funkcję handleReturnToMainList
+  const handleReturnToMainList = useCallback(() => {
+    setCurrentPlaylistId(null);
+    setIsPlaying(false);
+    setSortBy("date");
+    setSortOrder("asc");
+    setFilterText("");
+    dispatch(setCurrentSongIndex(-1));
+    showSuccessToast("Powrócono do głównej listy utworów");
+  }, [
+    dispatch, 
+    setSortBy, 
+    setSortOrder, 
+    setFilterText, 
+    setIsPlaying, 
+    showSuccessToast, 
+    setCurrentPlaylistId
+  ]);
+
   return (
     <PlayerErrorBoundary
       onError={(error, errorInfo) => {
@@ -476,6 +498,17 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           <div className="flex flex-col lg:flex-row h-full gap-4">
             {/* Lewa kolumna - Lista utworów */}
             <div className="w-full lg:w-1/3 xl:w-1/3">
+              {currentPlaylistId && (
+                <div className="w-full mb-4 px-4">
+                  <button
+                    onClick={handleReturnToMainList}
+                    className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-white hover:bg-gray-50 text-gray-700 hover:text-gray-900 rounded-lg shadow-sm hover:shadow transition-all duration-200 border border-gray-200"
+                  >
+                    <FaArrowLeft className="text-gray-600" />
+                    <span>Powrót do wszystkich utworów</span>
+                  </button>
+                </div>
+              )}
               <SongList
                 songs={sortedAndFilteredSongs}
                 visibleSongs={visibleSongs}

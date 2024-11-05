@@ -51,6 +51,7 @@ const MusicPage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  
 
   const showSuccessToast = useCallback((message: string) => toast.success(message), []);
   const showErrorToast = useCallback((message: string) => toast.error(message), []);
@@ -217,7 +218,7 @@ const MusicPage: React.FC = () => {
               if (playlist && playlist.songs.length > 0) {
                 dispatch(setCurrentSongIndex(songs.findIndex((s) => s.id === playlist.songs[0])));
               }
-            }}
+            } }
             playlists={playlists}
             onUpdatePlaylists={setPlaylists}
             isModalOpen={isModalOpen}
@@ -229,6 +230,7 @@ const MusicPage: React.FC = () => {
             isPlaying={isPlaying}
             setIsPlaying={setIsPlaying}
             setPlaylists={setPlaylists}
+            setCurrentPlaylistId={setCurrentPlaylistId}
           />
         </div>
  
