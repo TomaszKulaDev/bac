@@ -92,7 +92,7 @@ const SongList = memo(({ songs, ...props }: SongListProps) => {
             onSelect={props.onSongSelect}
             onAddToPlaylist={props.onAddToPlaylist}
             playlists={props.playlists}
-          />
+            setCurrentPlaylistId={props.setExpandedPlaylist} currentPlaylistId={null}          />
         ))}
       </div>
 
