@@ -62,6 +62,7 @@ import {
 import PlaylistManager from "./PlaylistManager";
 import "../styles/youtube-player.css";
 import { setCurrentPlaylistId } from "@/store/slices/features/playlistSlice";
+import { DebugLogger } from "./DebugLogger";
 
 interface MusicPlayerProps {
   songs: Song[];
@@ -317,7 +318,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
 
   useEffect(() => {
     if (player && isPlayerReady) {
-      console.log("Player jest gotowy");
       setIsLoading(false);
     }
   }, [player, isPlayerReady, setIsLoading]);
@@ -430,11 +430,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     }),
     [isMobile, showDrawerButton, hasReachedPlaylist, playlists.length]
   );
-
-  // Używaj tylko gdy DEBUG=true
-  if (process.env.NODE_ENV === "development") {
-    console.debug("Debug info:", debugInfo);
-  }
 
   useEffect(() => {
     if (currentSong) {
@@ -835,6 +830,12 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           </Tooltip>
         </>
       )}
+      <DebugLogger 
+        playlists={playlists} 
+        songs={songs}
+        componentName="MusicPlayer"
+        additionalInfo={debugInfo}
+      />
     </PlayerErrorBoundary>
   );
 };

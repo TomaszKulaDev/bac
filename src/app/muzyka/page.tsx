@@ -25,6 +25,7 @@ import LoadingState from "./components/LoadingState";
 import { usePlaylistManagement } from "./hooks/usePlaylistManagement";
 import { useSongNavigation } from "./hooks/useSongNavigation";
 import { useSortedAndFilteredSongs } from "./hooks/useSortedAndFilteredSongs";
+import { DebugLogger } from "./components/DebugLogger";
 
 const generateUniqueId = () => {
   return Date.now().toString(36) + Math.random().toString(36).substr(2);
@@ -51,32 +52,43 @@ const MusicPage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  
 
-  const showSuccessToast = useCallback((message: string) => toast.success(message), []);
-  const showErrorToast = useCallback((message: string) => toast.error(message), []);
-  const showInfoToast = useCallback((message: string) => toast.info(message), []);
+  const showSuccessToast = useCallback(
+    (message: string) => toast.success(message),
+    []
+  );
+  const showErrorToast = useCallback(
+    (message: string) => toast.error(message),
+    []
+  );
+  const showInfoToast = useCallback(
+    (message: string) => toast.info(message),
+    []
+  );
 
   useEffect(() => {
     updateContainerPadding();
   }, [updateContainerPadding]);
 
-  const handleCreateEmptyPlaylist = useCallback((name: string, selectedSongs: string[] = []) => {
-    if (!isAuthenticated) {
-      showErrorToast("Musisz być zalogowany, aby utworzyć playlistę");
-      return;
-    }
-    
-    const newPlaylist: Playlist = {
-      id: generateUniqueId(),
-      name,
-      songs: selectedSongs,
-    };
-    
-    setPlaylists(prev => [...prev, newPlaylist]);
-    setExpandedPlaylist(newPlaylist.id);
-    showSuccessToast(`Utworzono nową playlistę "${name}"`);
-  }, [isAuthenticated, showSuccessToast, showErrorToast, setExpandedPlaylist]);
+  const handleCreateEmptyPlaylist = useCallback(
+    (name: string, selectedSongs: string[] = []) => {
+      if (!isAuthenticated) {
+        showErrorToast("Musisz być zalogowany, aby utworzyć playlistę");
+        return;
+      }
+
+      const newPlaylist: Playlist = {
+        id: generateUniqueId(),
+        name,
+        songs: selectedSongs,
+      };
+
+      setPlaylists((prev) => [...prev, newPlaylist]);
+      setExpandedPlaylist(newPlaylist.id);
+      showSuccessToast(`Utworzono nową playlistę "${name}"`);
+    },
+    [isAuthenticated, showSuccessToast, showErrorToast, setExpandedPlaylist]
+  );
 
   const sortedSongs = useSortedAndFilteredSongs(
     songs,
@@ -87,20 +99,21 @@ const MusicPage: React.FC = () => {
     playlists
   );
 
-  const { getCurrentIndex, nextSong, previousSong, playPlaylist } = useSongNavigation({
-    currentSong: songs[currentSongIndex],
-    songs,
-    sortedSongs,
-    playlists,
-    currentPlaylistId,
-    repeatMode: {
-      song: "off",
-      playlist: "off"
-    },
-    setIsPlaying,
-    setIsLoading,
-    setCurrentPlaylistId
-  });
+  const { getCurrentIndex, nextSong, previousSong, playPlaylist } =
+    useSongNavigation({
+      currentSong: songs[currentSongIndex],
+      songs,
+      sortedSongs,
+      playlists,
+      currentPlaylistId,
+      repeatMode: {
+        song: "off",
+        playlist: "off",
+      },
+      setIsPlaying,
+      setIsLoading,
+      setCurrentPlaylistId,
+    });
 
   const playlistManagement = usePlaylistManagement({
     playlists,
@@ -113,7 +126,7 @@ const MusicPage: React.FC = () => {
     songs,
     onCreatePlaylist: handleCreateEmptyPlaylist,
     onPlayPlaylist: playPlaylist,
-    setCurrentPlaylistId
+    setCurrentPlaylistId,
   });
 
   useEffect(() => {
@@ -131,8 +144,6 @@ const MusicPage: React.FC = () => {
       });
     }
   }, [status, dispatch]);
-
-  useDebugEffect("playlists", playlists);
 
   const handleRemoveSongFromPlaylist = useCallback(
     (playlistId: string, songId: string) => {
@@ -175,19 +186,11 @@ const MusicPage: React.FC = () => {
   }, [isPlaying, nextSong]);
 
   if (status === "loading") {
-    return (
-      <LoadingState error={error} />
-    );
+    return <LoadingState error={error} />;
   }
   if (status === "failed") {
     return <LoadingState error={error} />;
   }
-
-  console.log("Playlists przed renderowaniem:", playlists);
-  console.log(
-    "Songs przed renderowaniem:",
-    songs.map((song) => ({ id: song.id, _id: song._id }))
-  );
 
   return (
     <div className="music-page min-h-screen flex flex-col">
@@ -223,9 +226,13 @@ const MusicPage: React.FC = () => {
               setCurrentPlaylistId(playlistId);
               const playlist = playlists.find((p) => p.id === playlistId);
               if (playlist && playlist.songs.length > 0) {
-                dispatch(setCurrentSongIndex(songs.findIndex((s) => s.id === playlist.songs[0])));
+                dispatch(
+                  setCurrentSongIndex(
+                    songs.findIndex((s) => s.id === playlist.songs[0])
+                  )
+                );
               }
-            } }
+            }}
             playlists={playlists}
             onUpdatePlaylists={setPlaylists}
             isModalOpen={isModalOpen}
@@ -240,7 +247,6 @@ const MusicPage: React.FC = () => {
             setCurrentPlaylistId={setCurrentPlaylistId}
           />
         </div>
- 
       </div>
       {isMobile && (
         <section className="w-full p-8 mt-8 mb-24 bg-gradient-to-br from-blue-50 to-blue-50 rounded-lg shadow-lg">
@@ -300,6 +306,18 @@ const MusicPage: React.FC = () => {
         position="bottom-right"
         autoClose={3000}
         style={{ zIndex: Z_INDEX.TOAST }}
+      />
+      <DebugLogger
+        playlists={playlists}
+        songs={songs}
+        componentName="MusicPage"
+        additionalInfo={{
+          currentPlaylistId,
+          sortBy,
+          sortOrder,
+          filterText,
+          isAuthenticated,
+        }}
       />
     </div>
   );
