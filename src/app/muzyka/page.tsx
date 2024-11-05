@@ -78,7 +78,14 @@ const MusicPage: React.FC = () => {
     showSuccessToast(`Utworzono nową playlistę "${name}"`);
   }, [isAuthenticated, showSuccessToast, showErrorToast, setExpandedPlaylist]);
 
-  const sortedSongs = useSortedAndFilteredSongs(songs, sortBy, sortOrder, filterText, currentPlaylistId);
+  const sortedSongs = useSortedAndFilteredSongs(
+    songs,
+    sortBy,
+    sortOrder,
+    filterText,
+    currentPlaylistId,
+    playlists
+  );
 
   const { getCurrentIndex, nextSong, previousSong, playPlaylist } = useSongNavigation({
     currentSong: songs[currentSongIndex],

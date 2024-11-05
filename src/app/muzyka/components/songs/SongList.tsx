@@ -37,6 +37,7 @@ interface SongListProps {
   isAuthenticated: boolean;
   isMobile: boolean;
   playlists: Playlist[];
+  currentPlaylistId: string | null;
 }
 
 const SongList = memo(({ songs, ...props }: SongListProps) => {
@@ -47,7 +48,9 @@ const SongList = memo(({ songs, ...props }: SongListProps) => {
     songs,
     props.sortBy,
     props.sortOrder,
-    props.filterText
+    props.filterText,
+    props.currentPlaylistId,
+    props.playlists
   );
 
   const visibleSongsList = useMemo(() => 

@@ -164,14 +164,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
 
   const [sortBy, setSortBy] = useState<SortByType>("date");
   const [sortOrder, setSortOrder] = useState<SortOrderType>("asc");
-  const sortedAndFilteredSongs = useSortedAndFilteredSongs(
-    songs,
-    sortBy,
-    sortOrder,
-    filterText,
-    currentPlaylistId,
-    playlists
-  );
+  const sortedAndFilteredSongs = useSortedAndFilteredSongs(songs, sortBy, sortOrder, filterText, currentPlaylistId, playlists);
 
   const { previousSong, togglePlayback, nextSong } = usePlaybackControls({
     setCurrentPlaylistId,
@@ -534,6 +527,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                 isPopularList={false}
                 expandedPlaylist={expandedPlaylist}
                 setExpandedPlaylist={setExpandedPlaylist}
+                currentPlaylistId={currentPlaylistId}
                 onAddToPlaylist={(songId: string) =>
                   handleAddToPlaylist(songId)
                 }

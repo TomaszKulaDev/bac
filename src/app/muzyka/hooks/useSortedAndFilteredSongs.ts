@@ -1,16 +1,29 @@
 import { useMemo } from 'react';
-import { Song, SortOption, SortOrder, Playlist } from '../types';
-import { getSortValue } from '../utils/sortUtils';
+import { Song, SortByType, SortOrderType, Playlist } from '../types';
+
+const getSortValue = (song: Song, sortBy: SortByType) => {
+  switch (sortBy) {
+    case "title":
+      return song.title.toLowerCase();
+    case "artist":
+      return song.artist.toLowerCase();
+    case "date":
+      return song.createdAt || "";
+    default:
+      return "";
+  }
+};
 
 export const useSortedAndFilteredSongs = (
   songs: Song[],
-  sortBy: SortOption,
-  sortOrder: SortOrder,
+  sortBy: SortByType,
+  sortOrder: SortOrderType,
   filterText: string,
-  currentPlaylistId?: string | null,
-  playlists?: Playlist[]
+  currentPlaylistId: string | null,
+  playlists: Playlist[]
 ) => {
   return useMemo(() => {
+    // Jeśli mamy aktywną playlistę, zachowujemy kolejność utworów z playlisty
     if (currentPlaylistId && playlists) {
       const playlist = playlists.find(p => p.id === currentPlaylistId);
       if (playlist) {
@@ -18,35 +31,26 @@ export const useSortedAndFilteredSongs = (
           .map(songId => songs.find(song => song.id === songId))
           .filter((song): song is Song => 
             song !== undefined && 
-            (song.title.toLowerCase().includes(filterText.toLowerCase()) ||
-             song.artist.toLowerCase().includes(filterText.toLowerCase()))
+            (!filterText || 
+              song.title.toLowerCase().includes(filterText.toLowerCase()) ||
+              song.artist.toLowerCase().includes(filterText.toLowerCase()))
           );
       }
     }
 
-    let filteredSongs = songs.filter(song =>
-      !filterText || 
+    // Dla głównej listy stosujemy sortowanie i filtrowanie
+    const filteredSongs = songs.filter(song =>
+      !filterText ||
       song.title.toLowerCase().includes(filterText.toLowerCase()) ||
       song.artist.toLowerCase().includes(filterText.toLowerCase())
     );
 
-    return filteredSongs.sort((a, b) => {
+    return [...filteredSongs].sort((a, b) => {
       const aValue = getSortValue(a, sortBy);
       const bValue = getSortValue(b, sortBy);
-      
-      if (typeof aValue === 'boolean' && typeof bValue === 'boolean') {
-        return sortOrder === 'asc' 
-          ? (aValue === bValue ? 0 : aValue ? -1 : 1)
-          : (aValue === bValue ? 0 : aValue ? 1 : -1);
-      }
-      
-      if (typeof aValue === 'string' && typeof bValue === 'string') {
-        return sortOrder === 'asc' 
-          ? aValue.localeCompare(bValue, undefined, { sensitivity: 'base' })
-          : bValue.localeCompare(aValue, undefined, { sensitivity: 'base' });
-      }
-      
-      return sortOrder === 'asc' ? (aValue > bValue ? 1 : -1) : (bValue > aValue ? 1 : -1);
+      return sortOrder === "asc" ? 
+        (aValue > bValue ? 1 : -1) : 
+        (bValue > aValue ? 1 : -1);
     });
   }, [songs, sortBy, sortOrder, filterText, currentPlaylistId, playlists]);
 };
