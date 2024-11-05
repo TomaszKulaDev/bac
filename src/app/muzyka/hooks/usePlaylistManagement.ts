@@ -106,7 +106,7 @@ export const usePlaylistManagement = ({
 
       onUpdatePlaylists((prevPlaylists) =>
         prevPlaylists.map((p) =>
-          p.id === playlistId ? { ...p, songs: [songId, ...p.songs] } : p
+          p.id === playlistId ? { ...p, songs: [...p.songs, songId] } : p
         )
       );
 

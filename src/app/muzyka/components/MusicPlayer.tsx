@@ -291,19 +291,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     [playlists, currentPlaylistId]
   );
 
-  const filteredSongs = useMemo(() => {
-    if (currentPlaylistId) {
-      const currentPlaylist = playlists.find((p) => p.id === currentPlaylistId);
-      if (currentPlaylist) {
-        // Zwracamy utwory w kolejności z playlisty
-        return currentPlaylist.songs
-          .map((songId) => songs.find((song) => song.id === songId))
-          .filter((song): song is Song => song !== undefined);
-      }
-    }
-    return songs;
-  }, [currentPlaylistId, playlists, songs]);
-
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(1);

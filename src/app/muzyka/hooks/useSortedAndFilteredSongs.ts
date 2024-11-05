@@ -11,19 +11,21 @@ export const useSortedAndFilteredSongs = (
   playlists?: Playlist[]
 ) => {
   return useMemo(() => {
-    let filteredSongs = songs;
-    
-    // Filtrujemy tylko jeśli mamy aktywną playlistę
     if (currentPlaylistId && playlists) {
       const playlist = playlists.find(p => p.id === currentPlaylistId);
       if (playlist) {
-        filteredSongs = songs.filter(song => 
-          playlist.songs.includes(song.id)
-        );
+        return playlist.songs
+          .map(songId => songs.find(song => song.id === songId))
+          .filter((song): song is Song => 
+            song !== undefined && 
+            (!filterText || 
+              song.title.toLowerCase().includes(filterText.toLowerCase()) ||
+              song.artist.toLowerCase().includes(filterText.toLowerCase()))
+          );
       }
     }
 
-    return filteredSongs
+    return songs
       .filter(song => 
         !filterText || 
         song.title.toLowerCase().includes(filterText.toLowerCase()) ||
