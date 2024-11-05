@@ -193,24 +193,42 @@ const MusicPage: React.FC = () => {
   }
 
   return (
-    <div className="music-page min-h-screen flex flex-col">
-      <PlaylistHeader
-        filteredSongsCount={songs.length}
-        onPlay={() => {
-          if (songs.length > 0) {
-            dispatch(setCurrentSongIndex(songs.length - 1));
-          }
-        }}
-        onLike={() => {
-          if (isAuthenticated) {
-            // Logika dla polubienia playlisty
-          } else {
-            showErrorToast("Musisz być zalogowany, aby polubić playlistę.");
-          }
-        }}
-        isLiked={false}
-      />
-      <div className="flex-grow flex flex-col lg:flex-row bg-white relative z-10 shadow-xl rounded-t-[2rem] -mt-20">
+    <main 
+      className="music-page min-h-screen flex flex-col" 
+      role="main" 
+      aria-label="Kolekcja muzyki Bachata"
+    >
+      <header role="banner">
+        <h1 className="sr-only">Kolekcja Muzyki Bachata - Największa baza utworów online</h1>
+        <PlaylistHeader
+          filteredSongsCount={songs.length}
+          onPlay={() => {
+            if (songs.length > 0) {
+              dispatch(setCurrentSongIndex(songs.length - 1));
+            }
+          }}
+          onLike={() => {
+            if (isAuthenticated) {
+              // Logika dla polubienia playlisty
+            } else {
+              showErrorToast("Musisz być zalogowany, aby polubić playlistę.");
+            }
+          }}
+          isLiked={false}
+        />
+      </header>
+      <nav 
+        aria-label="Filtry muzyki" 
+        role="navigation" 
+        className="filters-navigation"
+      >
+        {/* komponenty filtrowania */}
+      </nav>
+      <article 
+        className="flex-grow flex flex-col lg:flex-row bg-white relative z-10 shadow-xl rounded-t-[2rem] -mt-20"
+        role="article"
+        aria-label="Lista utworów"
+      >
         <div className="w-full p-4">
           <MusicPlayer
             songs={songs}
@@ -247,9 +265,13 @@ const MusicPage: React.FC = () => {
             setCurrentPlaylistId={setCurrentPlaylistId}
           />
         </div>
-      </div>
+      </article>
       {isMobile && (
-        <section className="w-full p-8 mt-8 mb-24 bg-gradient-to-br from-blue-50 to-blue-50 rounded-lg shadow-lg">
+        <aside 
+          className="w-full p-8 mt-8 mb-24 bg-gradient-to-br from-blue-50 to-blue-50 rounded-lg shadow-lg"
+          role="complementary"
+          aria-label="Informacje dodatkowe"
+        >
           <h1 className="text-3xl font-bold mb-6 text-gray-800">
             Popularne tagi
           </h1>
@@ -300,7 +322,7 @@ const MusicPage: React.FC = () => {
           <button className="bg-purple-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-purple-700 transition duration-300 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50">
             Przeglądaj wszystkie tagi
           </button>
-        </section>
+        </aside>
       )}
       <ToastContainer
         position="bottom-right"
@@ -319,7 +341,7 @@ const MusicPage: React.FC = () => {
           isAuthenticated,
         }}
       />
-    </div>
+    </main>
   );
 };
 

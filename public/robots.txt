@@ -1,3 +1,12 @@
 User-agent: *
 Allow: /
+Allow: /muzyka
+Disallow: /api/
+Disallow: /admin/
+Disallow: /private/
+
+# Crawl-delay: 10
+
 Sitemap: https://www.baciata.pl/sitemap.xml
+/public/manifest.json
+/public/sitemap.xml
