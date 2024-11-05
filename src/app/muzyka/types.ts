@@ -98,6 +98,7 @@ export interface PlaylistManagerProps {
   onUpdatePlaylists: (updater: (prevPlaylists: Playlist[]) => Playlist[]) => void;
   setPlaylists: React.Dispatch<React.SetStateAction<Playlist[]>>;
   isAuthenticated: boolean;
+  setCurrentPlaylistId: (id: string | null) => void;
 }
 
 export interface PlaylistManagerContentProps extends PlaylistManagerProps {

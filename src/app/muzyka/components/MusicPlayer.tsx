@@ -628,7 +628,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
             {/* Prawa kolumna - Playlist Manager */}
             <div className="w-full lg:w-1/3 xl:w-1/3 border-l border-gray-200">
               <PlaylistManager
-                isAuthenticated={isAuthenticated} // Dodaj tę linię
+                isAuthenticated={isAuthenticated}
+                setCurrentPlaylistId={setCurrentPlaylistId}
                 playlists={playlists}
                 songs={songs}
                 expandedPlaylist={expandedPlaylist}

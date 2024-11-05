@@ -29,6 +29,7 @@ export interface PlaylistManagerProps {
   isMobile: boolean;
   onPlayPlaylist: (playlistId: string) => void;
   currentPlaylistId: string | null;
+  setCurrentPlaylistId: (id: string | null) => void;
   onAddToPlaylist: (playlistId: string, songId: string) => void;
   setIsModalOpen: (isOpen: boolean) => void;
   isModalOpen: boolean;
@@ -52,6 +53,7 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
   isMobile,
   onPlayPlaylist,
   currentPlaylistId,
+  setCurrentPlaylistId,
   onAddToPlaylist,
   setIsModalOpen,
   isModalOpen,
