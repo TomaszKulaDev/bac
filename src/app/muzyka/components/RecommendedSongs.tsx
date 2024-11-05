@@ -52,7 +52,7 @@ const RecommendedSongs: React.FC<RecommendedSongsProps> = ({
 
   return (
     <div className="w-full bg-gradient-to-b from-[#0a1e3b] to-[#2a4a7f] text-white p-6 rounded-t-3xl">
-      <h2 className="text-2xl font-bold mb-6">Nowości</h2>
+      <h2 className="text-2xl font-bold mb-6">Dodane przez użytkowników</h2>
       <div className="overflow-x-auto">
         <table className="w-full min-w-[800px] table-auto">
           <thead className="text-blue-200/70 text-sm uppercase border-b border-blue-700/30">
