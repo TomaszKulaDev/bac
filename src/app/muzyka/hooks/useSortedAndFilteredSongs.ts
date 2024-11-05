@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Song, SortOption, SortOrder } from '../types';
+import { Song, SortOption, SortOrder, Playlist } from '../types';
 import { getSortValue } from '../utils/sortUtils';
 
 export const useSortedAndFilteredSongs = (
@@ -7,16 +7,20 @@ export const useSortedAndFilteredSongs = (
   sortBy: SortOption,
   sortOrder: SortOrder,
   filterText: string,
-  currentPlaylistId?: string | null
+  currentPlaylistId?: string | null,
+  playlists?: Playlist[]
 ) => {
   return useMemo(() => {
     let filteredSongs = songs;
     
     // Filtrujemy tylko jeśli mamy aktywną playlistę
-    if (currentPlaylistId) {
-      filteredSongs = songs.filter(song => 
-        song.playlists?.includes(currentPlaylistId)
-      );
+    if (currentPlaylistId && playlists) {
+      const playlist = playlists.find(p => p.id === currentPlaylistId);
+      if (playlist) {
+        filteredSongs = songs.filter(song => 
+          playlist.songs.includes(song.id)
+        );
+      }
     }
 
     return filteredSongs
@@ -30,7 +34,6 @@ export const useSortedAndFilteredSongs = (
         const bValue = getSortValue(b, sortBy);
         
         if (typeof aValue === 'boolean' && typeof bValue === 'boolean') {
-          // Odwracamy kolejność dla wartości boolean
           return sortOrder === 'asc' 
             ? (aValue === bValue ? 0 : aValue ? -1 : 1)
             : (aValue === bValue ? 0 : aValue ? 1 : -1);
@@ -44,5 +47,5 @@ export const useSortedAndFilteredSongs = (
         
         return sortOrder === 'asc' ? (aValue > bValue ? 1 : -1) : (bValue > aValue ? 1 : -1);
       });
-  }, [songs, sortBy, sortOrder, filterText, currentPlaylistId]);
+  }, [songs, sortBy, sortOrder, filterText, currentPlaylistId, playlists]);
 };

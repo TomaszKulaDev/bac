@@ -165,7 +165,9 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     songs,
     sortBy,
     sortOrder,
-    filterText
+    filterText,
+    currentPlaylistId,
+    playlists
   );
 
   const { previousSong, togglePlayback, nextSong } = usePlaybackControls({
