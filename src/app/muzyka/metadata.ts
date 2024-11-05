@@ -3,7 +3,7 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Bachata Music Collection | Najlepsza muzyka do tańca Bachaty",
   description:
-    "Odkryj największą kolekcję muzyki bachata online. Playlisty dla początkujących i zaawansowanych tancerzy, klasyczne hity i współczesne utwory.",
+    "Odkryj największą kolekcję muzyki bachata online. Playlisty dla początkujących i zaawansowanych tancerzy bachaty, klasyczne hity i współczesne utwory.",
   keywords:
     "baciata,bachata, muzyka do tańca, bachata sensual, dominican bachata, nauka bachaty",
   robots: {
