@@ -10,9 +10,8 @@ const getSortValue = (song: Song, sortBy: SortByType) => {
     case "date":
       return new Date(song.createdAt).getTime();
     case "impro":
-      return Number(song.impro);
     case "beginnerFriendly":
-      return Number(song.beginnerFriendly);
+      return Number(!song[sortBy]);
     default:
       return new Date(song.createdAt).getTime();
   }
