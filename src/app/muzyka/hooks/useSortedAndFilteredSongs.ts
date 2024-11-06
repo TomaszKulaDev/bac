@@ -8,13 +8,13 @@ const getSortValue = (song: Song, sortBy: SortByType) => {
     case "artist":
       return song.artist.toLowerCase();
     case "date":
-      return new Date(song.createdAt || "").getTime().toString();
+      return new Date(song.createdAt).getTime();
     case "impro":
-      return song.impro ? "1" : "0";
+      return Number(song.impro);
     case "beginnerFriendly":
-      return song.beginnerFriendly ? "1" : "0";
+      return Number(song.beginnerFriendly);
     default:
-      return "";
+      return new Date(song.createdAt).getTime();
   }
 };
 
@@ -55,26 +55,9 @@ export const useSortedAndFilteredSongs = (
       const aValue = getSortValue(a, sortBy);
       const bValue = getSortValue(b, sortBy);
 
-      // Specjalna logika dla impro i beginnerFriendly
-      if (sortBy === "impro" || sortBy === "beginnerFriendly") {
-        // Odwracamy kolejność sortowania dla tych kategorii
-        return sortOrder === "asc"
-          ? bValue > aValue
-            ? 1
-            : -1
-          : aValue > bValue
-          ? 1
-          : -1;
-      }
-
-      // Standardowe sortowanie dla pozostałych kategorii
-      return sortOrder === "asc"
-        ? aValue > bValue
-          ? 1
-          : -1
-        : bValue > aValue
-        ? 1
-        : -1;
+      if (aValue === bValue) return 0;
+      const compareResult = aValue > bValue ? 1 : -1;
+      return sortOrder === "asc" ? compareResult : -compareResult;
     });
   }, [songs, sortBy, sortOrder, filterText, currentPlaylistId, playlists]);
 };
