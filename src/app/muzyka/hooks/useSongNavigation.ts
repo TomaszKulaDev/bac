@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { setCurrentSongIndex } from "@/store/slices/features/songsSlice";
-import type { Song, Playlist, RepeatMode } from "../types";
+import type { Song, Playlist, RepeatMode, SortByType } from "../types";
 
 interface UseSongNavigationProps {
   currentSong: Song | null;
@@ -13,6 +13,7 @@ interface UseSongNavigationProps {
   setIsLoading: (isLoading: boolean) => void;
   setCurrentPlaylistId: (id: string | null) => void;
   sortedSongs: Song[];
+  sortBy: SortByType;
 }
 
 export const useSongNavigation = ({
@@ -25,6 +26,7 @@ export const useSongNavigation = ({
   setIsLoading,
   setCurrentPlaylistId,
   sortedSongs,
+  sortBy,
 }: UseSongNavigationProps) => {
   const dispatch = useDispatch();
 
@@ -74,16 +76,13 @@ export const useSongNavigation = ({
   );
 
   const navigateInMainList = useCallback(
-    (direction: "next" | "previous") => {
+    (direction: "next" | "previous", sortBy: SortByType) => {
       if (!currentSong || sortedSongs.length === 0) return -1;
 
       const currentSortedIndex = sortedSongs.findIndex(s => s.id === currentSong.id);
       if (currentSortedIndex === -1) return -1;
-      
+
       if (direction === "next") {
-        if (repeatMode.song === "on") {
-          return findSongIndexInMainList(currentSong.id);
-        }
         const nextSortedIndex = (currentSortedIndex + 1) % sortedSongs.length;
         return findSongIndexInMainList(sortedSongs[nextSortedIndex].id);
       } else {
@@ -93,7 +92,7 @@ export const useSongNavigation = ({
         return findSongIndexInMainList(sortedSongs[prevSortedIndex].id);
       }
     },
-    [currentSong, sortedSongs, repeatMode.song, findSongIndexInMainList]
+    [currentSong, sortedSongs, findSongIndexInMainList]
   );
 
   const navigate = useCallback(
@@ -101,7 +100,7 @@ export const useSongNavigation = ({
       try {
         const newIndex = currentPlaylistId
           ? navigateInPlaylist(direction)
-          : navigateInMainList(direction);
+          : navigateInMainList(direction, sortBy);
 
         if (newIndex !== -1) {
           dispatch(setCurrentSongIndex(newIndex));
@@ -119,6 +118,7 @@ export const useSongNavigation = ({
       dispatch,
       setIsPlaying,
       setIsLoading,
+      sortBy
     ]
   );
 

@@ -164,7 +164,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   });
 
   const [sortBy, setSortBy] = useState<SortByType>("date");
-  const [sortOrder, setSortOrder] = useState<SortOrderType>("asc");
+  const [sortOrder, setSortOrder] = useState<SortOrderType>("desc");
   const sortedAndFilteredSongs = useSortedAndFilteredSongs(songs, sortBy, sortOrder, filterText, currentPlaylistId, playlists);
 
   const { previousSong, togglePlayback, nextSong } = usePlaybackControls({
