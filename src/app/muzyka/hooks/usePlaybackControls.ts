@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { setCurrentSongIndex } from '@/store/slices/features/songsSlice';
-import type { Song, Playlist, RepeatMode } from '../types';
+import type { Song, Playlist, RepeatMode, SortByType } from '../types';
 import { useSongNavigation } from './useSongNavigation';
 
 interface UsePlaybackControlsProps {
@@ -18,6 +18,7 @@ interface UsePlaybackControlsProps {
   isPlaying: boolean;
   setCurrentPlaylistId: (id: string | null) => void;
   showErrorToast?: (message: string) => void;
+  sortBy: SortByType;
 }
 
 export const usePlaybackControls = ({
@@ -33,7 +34,8 @@ export const usePlaybackControls = ({
   repeatMode,
   isPlaying,
   setCurrentPlaylistId,
-  showErrorToast
+  showErrorToast,
+  sortBy
 }: UsePlaybackControlsProps) => {
   const { nextSong, previousSong } = useSongNavigation({
     currentSong,
@@ -44,7 +46,8 @@ export const usePlaybackControls = ({
     repeatMode,
     setIsPlaying,
     setIsLoading,
-    setCurrentPlaylistId
+    setCurrentPlaylistId,
+    sortBy
   });
 
   const togglePlayback = useCallback(() => {

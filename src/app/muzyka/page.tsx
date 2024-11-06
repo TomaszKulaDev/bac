@@ -116,6 +116,7 @@ const MusicPage: React.FC = () => {
       setIsPlaying,
       setIsLoading,
       setCurrentPlaylistId,
+      sortBy,
     });
 
   const playlistManagement = usePlaylistManagement({

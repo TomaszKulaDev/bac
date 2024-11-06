@@ -180,6 +180,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     setIsLoading,
     repeatMode,
     isPlaying,
+    sortBy,
   });
 
   // Funkcja do ładowania większej liczby utworów

@@ -5,7 +5,6 @@ import { FaPlay, FaBookmark, FaHeart } from "react-icons/fa";
 import { Song, SortOption, SortOrder, Playlist } from "../../types";
 import { motion } from "framer-motion";
 import { getYouTubeThumbnail } from "../../utils/youtube";
-import { getSortValue } from "../../utils/sortUtils";
 import { useSortedAndFilteredSongs } from "../../hooks/useSortedAndFilteredSongs";
 import SongItem from "./SongItem";
 import SearchInput from "./SearchInput";
