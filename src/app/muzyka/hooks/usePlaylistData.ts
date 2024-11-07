@@ -38,15 +38,25 @@ export const usePlaylistData = () => {
         body: JSON.stringify(updatedData),
       });
 
-      if (!response.ok) throw new Error('Błąd aktualizacji playlisty');
-      
+      if (!response.ok) throw new Error('Failed to update playlist');
+
       const updatedPlaylist = await response.json();
-      setPlaylists(prev => 
-        prev.map(p => p.id === playlistId ? { ...updatedPlaylist, id: updatedPlaylist._id } : p)
-      );
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Wystąpił błąd aktualizacji');
-      throw err;
+      
+      setPlaylists(prev => prev.map(playlist => 
+        (playlist._id === playlistId || playlist.id === playlistId) 
+          ? { 
+              ...playlist, 
+              ...updatedPlaylist,
+              _id: updatedPlaylist._id || playlistId,
+              id: updatedPlaylist._id || playlistId
+            }
+          : playlist
+      ));
+
+      return updatedPlaylist;
+    } catch (error) {
+      console.error('Error updating playlist:', error);
+      throw error;
     }
   }, []);
 

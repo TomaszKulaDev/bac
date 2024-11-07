@@ -40,12 +40,30 @@ export async function GET() {
     console.log("GET /api/playlists: Connected to database");
     
     const playlists = await Playlist.find({})
-      .populate('songs')
+      .populate({
+        path: 'songs',
+        select: 'title artist youtubeId impro beginnerFriendly'
+      })
       .sort({ createdAt: -1 })
       .lean();
     
-    console.log("GET /api/playlists: Fetched playlists count:", playlists.length);
-    return NextResponse.json(playlists);
+    const normalizedPlaylists = playlists.map(playlist => ({
+      _id: playlist._id.toString(),
+      id: playlist._id.toString(),
+      name: playlist.name,
+      songs: Array.isArray(playlist.songs) 
+        ? playlist.songs.map(song => typeof song === 'string' ? song : song._id.toString())
+        : [],
+      createdAt: playlist.createdAt
+    }));
+
+    console.log("GET /api/playlists: Fetched playlists count:", normalizedPlaylists.length);
+    return NextResponse.json(normalizedPlaylists, {
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate',
+        'Pragma': 'no-cache'
+      }
+    });
   } catch (error) {
     console.error("GET /api/playlists: Error", error);
     return NextResponse.json(

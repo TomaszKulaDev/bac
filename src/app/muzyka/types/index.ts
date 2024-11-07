@@ -16,9 +16,11 @@ export interface Song {
 }
 
 export interface Playlist {
-  id: string;
+  _id: string;
+  id?: string;
   name: string;
   songs: string[];
+  createdAt: Date;
 }
 
 export interface DraggableSong {

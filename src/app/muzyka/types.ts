@@ -1,12 +1,14 @@
-import { UniqueIdentifier } from '@dnd-kit/core';
-import { SensorDescriptor, SensorOptions } from '@dnd-kit/core';
-import { DragEndEvent } from '@dnd-kit/core';
+import { UniqueIdentifier } from "@dnd-kit/core";
+import { SensorDescriptor, SensorOptions } from "@dnd-kit/core";
+import { DragEndEvent } from "@dnd-kit/core";
 
 // Interfejs reprezentujący playlistę
 export interface Playlist {
-  id: string;
+  _id: string; // Zmiana z id na _id
+  id?: string; // Opcjonalne id dla kompatybilności
   name: string;
   songs: string[]; // Tablica ID piosenek
+  createdAt: Date;
 }
 
 // Interfejs reprezentujący utwór muzyczny
@@ -37,7 +39,9 @@ export interface MusicPlayerProps {
   isMobile: boolean;
   currentPlaylistId: string | null;
   playlists: Playlist[];
-  onUpdatePlaylists: (updater: (prevPlaylists: Playlist[]) => Playlist[]) => void;
+  onUpdatePlaylists: (
+    updater: (prevPlaylists: Playlist[]) => Playlist[]
+  ) => void;
   onPlayPlaylist: (playlistId: string) => void;
   showSuccessToast: (message: string) => void;
   showErrorToast: (message: string) => void;
@@ -60,12 +64,22 @@ export interface RepeatMode {
 }
 
 // Typy dla opcji sortowania
-export type SortOption = "date" | "title" | "artist" | "impro" | "beginnerFriendly";
+export type SortOption =
+  | "date"
+  | "title"
+  | "artist"
+  | "impro"
+  | "beginnerFriendly";
 export type SortBy = SortOption;
 export type SortOrder = "asc" | "desc";
 
-export type SortOrderType = 'asc' | 'desc';
-export type SortByType = 'date' | 'title' | 'artist' | 'impro' | 'beginnerFriendly';
+export type SortOrderType = "asc" | "desc";
+export type SortByType =
+  | "date"
+  | "title"
+  | "artist"
+  | "impro"
+  | "beginnerFriendly";
 
 // Dodajemy interfejs DraggableSong
 export interface DraggableSong {
@@ -98,7 +112,9 @@ export interface PlaylistManagerProps {
   showSuccessToast: (message: string) => void;
   showErrorToast: (message: string) => void;
   showInfoToast: (message: string) => void;
-  onUpdatePlaylists: (updater: (prevPlaylists: Playlist[]) => Playlist[]) => void;
+  onUpdatePlaylists: (
+    updater: (prevPlaylists: Playlist[]) => Playlist[]
+  ) => void;
   setPlaylists: React.Dispatch<React.SetStateAction<Playlist[]>>;
   isAuthenticated: boolean;
   setCurrentPlaylistId: (id: string | null) => void;

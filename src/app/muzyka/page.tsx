@@ -82,49 +82,50 @@ const MusicPage: React.FC = () => {
     updateContainerPadding();
   }, [updateContainerPadding]);
 
-  const handleCreateEmptyPlaylist = useCallback(
-    async (name: string, selectedSongs: string[] = []) => {
-      console.log("handleCreateEmptyPlaylist: Start", { name, selectedSongs });
-      if (!isAuthenticated) {
-        console.log("handleCreateEmptyPlaylist: User not authenticated");
-        showErrorToast("Musisz być zalogowany, aby utworzyć playlistę");
-        return;
-      }
-
-      try {
-        console.log("handleCreateEmptyPlaylist: Sending request");
-        const response = await fetch('/api/playlists', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ name, songs: selectedSongs }),
-        });
-
-        console.log("handleCreateEmptyPlaylist: Response status:", response.status);
-        if (!response.ok) {
-          throw new Error('Failed to create playlist');
+  const refreshPlaylists = useCallback(async () => {
+    try {
+      const response = await fetch('/api/playlists', {
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache'
         }
+      });
+      
+      if (!response.ok) throw new Error('Błąd pobierania playlist');
+      const data = await response.json();
+      setPlaylists(data);
+    } catch (error) {
+      console.error('Błąd odświeżania playlist:', error);
+      showErrorToast('Nie udało się odświeżyć playlist');
+    }
+  }, [showErrorToast]);
 
-        const { id } = await response.json();
-        console.log("handleCreateEmptyPlaylist: Playlist created with ID:", id);
-        
-        const newPlaylist: Playlist = {
-          id,
-          name,
-          songs: selectedSongs,
-        };
+  useEffect(() => {
+    refreshPlaylists();
+  }, [refreshPlaylists]);
 
-        setPlaylists((prev) => [...prev, newPlaylist]);
-        setExpandedPlaylist(newPlaylist.id);
-        showSuccessToast(`Utworzono nową playlistę "${name}"`);
-      } catch (error) {
-        console.error("handleCreateEmptyPlaylist: Error", error);
-        showErrorToast('Nie udało się utworzyć playlisty');
-      }
-    },
-    [isAuthenticated, showSuccessToast, showErrorToast, setExpandedPlaylist]
-  );
+  const handleCreateEmptyPlaylist = async (name: string) => {
+    try {
+      const response = await fetch('/api/playlists', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, songs: [] }),
+      });
+
+      if (!response.ok) throw new Error('Błąd tworzenia playlisty');
+      
+      const data = await response.json();
+      await refreshPlaylists();
+      setExpandedPlaylist(data.id);
+      showSuccessToast(`Utworzono nową playlistę "${name}"`);
+    } catch (error) {
+      console.error("handleCreateEmptyPlaylist: Error", error);
+      showErrorToast('Nie udało się utworzyć playlisty');
+    }
+  };
 
   const sortedSongs = useSortedAndFilteredSongs(
     songs,
@@ -221,6 +222,24 @@ const MusicPage: React.FC = () => {
       nextSong();
     }
   }, [isPlaying, nextSong]);
+
+  const fetchPlaylists = useCallback(async () => {
+    try {
+      const response = await fetch('/api/playlists', {
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache'
+        }
+      });
+      if (!response.ok) throw new Error('Błąd pobierania playlist');
+      const data = await response.json();
+      setPlaylists(data);
+    } catch (error) {
+      console.error('Błąd:', error);
+      toast.error('Nie udało się załadować playlist');
+    }
+  }, []);
 
   if (status === "loading") {
     return <LoadingState error={error} />;

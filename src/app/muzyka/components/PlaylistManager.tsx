@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { FaPlay, FaChevronUp, FaChevronDown, FaEdit, FaTrash, FaPlus, FaMusic, FaHeart, FaBookmark } from "react-icons/fa";
@@ -105,13 +105,14 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
     },
   };
 
-  const handlePlaylistUpdate = async (playlistId: string, data: Partial<Playlist>) => {
-    try {
-      if (!data || (!data.name && !data.songs)) {
-        console.error("Brak danych do aktualizacji");
-        return;
-      }
+  const getPlaylistId = (playlist: Playlist): string => {
+    return playlist._id || playlist.id || '';
+  };
 
+  const handlePlaylistUpdate = async (playlistId: string, data: Partial<Playlist>) => {
+    if (!playlistId) return;
+    
+    try {
       const response = await fetch(`/api/playlists/${playlistId}`, {
         method: 'PUT',
         headers: {
@@ -120,19 +121,81 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
         body: JSON.stringify(data),
       });
 
-      if (!response.ok) {
-        throw new Error('Błąd aktualizacji playlisty');
-      }
+      if (!response.ok) throw new Error('Błąd aktualizacji playlisty');
 
       const updatedPlaylist = await response.json();
+      const normalizedId = updatedPlaylist._id || updatedPlaylist.id;
+      
+      if (!normalizedId) throw new Error('Brak ID w odpowiedzi');
+
       setPlaylists((prev) => 
-        prev.map(p => p.id === playlistId ? { ...updatedPlaylist, id: updatedPlaylist._id } : p)
+        prev.map(p => (getPlaylistId(p) === playlistId) ? {
+          ...updatedPlaylist,
+          _id: normalizedId,
+          id: normalizedId
+        } : p)
       );
     } catch (error) {
       console.error("Błąd podczas aktualizacji playlisty:", error);
       showErrorToast('Nie udało się zaktualizować playlisty');
     }
   };
+
+  const handleDeletePlaylist = (id: string) => {
+    if (!id) return;
+    playlistManagement.deletePlaylist(id);
+    if (currentPlaylistId === id) {
+      setCurrentPlaylistId(null);
+    }
+  };
+
+  const handleRenamePlaylist = (id: string, newName: string) => {
+    if (!id || !newName) return;
+    playlistManagement.editPlaylistName(id, newName);
+  };
+
+  const handlePlay = useCallback((playlist: Playlist) => {
+    const id = getPlaylistId(playlist);
+    if (!id) return;
+    
+    onPlayPlaylist(id);
+    setCurrentPlaylistId(id);
+  }, [onPlayPlaylist, setCurrentPlaylistId]);
+
+  const handleDelete = useCallback((playlist: Playlist) => {
+    const id = getPlaylistId(playlist);
+    if (!id) return;
+    onDeletePlaylist(id);
+    if (currentPlaylistId === id) {
+      setCurrentPlaylistId(null);
+    }
+  }, [currentPlaylistId, onDeletePlaylist, setCurrentPlaylistId]);
+
+  const handleRename = useCallback((playlist: Playlist, newName: string) => {
+    const id = getPlaylistId(playlist);
+    if (!id) return;
+    onRenamePlaylist(id, newName);
+  }, [onRenamePlaylist]);
+
+  const handleExpandPlaylist = useCallback((playlist: Playlist) => {
+    const id = getPlaylistId(playlist);
+    setExpandedPlaylist(id || null);
+  }, [setExpandedPlaylist]);
+
+  const renderDraggableSongItem = useCallback((playlist: Playlist, song: Song, index: number) => {
+    const playlistId = getPlaylistId(playlist);
+    if (!playlistId) return null;
+    
+    return (
+      <DraggableSongItem
+        key={song._id}
+        playlistId={playlistId}
+        song={song}
+        index={index}
+        onRemove={(songId) => onRemoveSongFromPlaylist(playlistId, songId)}
+      />
+    );
+  }, [onRemoveSongFromPlaylist]);
 
   return (
     <div className="space-y-4 overflow-y-auto flex-grow p-4">
@@ -184,7 +247,7 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
                   <motion.button
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
-                    onClick={() => onPlayPlaylist(playlist.id)}
+                    onClick={() => handlePlay(playlist)}
                     className={`
                       p-3 rounded-full bg-gradient-to-r from-[#0a1e3b] to-[#2a4a7f] text-white
                       shadow-md hover:shadow-lg transition-all duration-300
@@ -202,7 +265,7 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
                   <motion.button
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
-                    onClick={() => setExpandedPlaylist(expandedPlaylist === playlist.id ? null : playlist.id)}
+                    onClick={() => handleExpandPlaylist(playlist)}
                     className="p-2 rounded-full hover:bg-gray-100 transition-colors"
                   >
                     {expandedPlaylist === playlist.id ? <FaChevronUp /> : <FaChevronDown />}
@@ -212,7 +275,7 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
                     whileTap={{ scale: 0.9 }}
                     onClick={() => {
                       const newName = prompt("Podaj nową nazwę playlisty:", playlist.name);
-                      if (newName) onRenamePlaylist(playlist.id, newName);
+                      if (newName) handleRename(playlist, newName);
                     }}
                     className="p-2 rounded-full hover:bg-gray-100 transition-colors text-blue-500"
                   >
@@ -223,7 +286,7 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
                     whileTap={{ scale: 0.9 }}
                     onClick={() => {
                       if (window.confirm('Czy na pewno chcesz usunąć tę playlistę?')) {
-                        onDeletePlaylist(playlist.id);
+                        handleDelete(playlist);
                       }
                     }}
                     className="p-2 rounded-full hover:bg-gray-100 transition-colors text-red-500"
@@ -255,14 +318,7 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
                           playlist.songs.map((songId) => {
                             const songDetails = getSongDetails(songId);
                             return songDetails ? (
-                              <DraggableSongItem
-                                key={songId}
-                                id={songId}
-                                songDetails={songDetails}
-                                playlistId={playlist.id}
-                                onRemove={onRemoveSongFromPlaylist}
-                                isAuthenticated={isAuthenticated}
-                              />
+                              renderDraggableSongItem(playlist, songDetails, playlist.songs.indexOf(songId))
                             ) : (
                               <div className="p-3 bg-red-50 text-red-500 rounded-lg">
                                 Utwór niedostępny

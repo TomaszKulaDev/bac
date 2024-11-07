@@ -7,22 +7,24 @@ import { Song } from '../types';
 import { getYouTubeThumbnail } from '../utils/youtube';
 
 interface DraggableSongItemProps {
-  id: string;
-  songDetails: Song;
   playlistId: string;
-  onRemove: (playlistId: string, songId: string) => void;
-  onAddToPlaylist?: (playlistId: string, songId: string) => void;
-  isAuthenticated?: boolean;
+  song: Song;
+  index: number;
+  onRemove?: (songId: string) => void;
 }
 
 const DraggableSongItem: React.FC<DraggableSongItemProps> = ({
-  id,
-  songDetails,
   playlistId,
-  onRemove,
-  onAddToPlaylist,
-  isAuthenticated
+  song,
+  index,
+  onRemove
 }) => {
+  const handleRemove = () => {
+    if (onRemove && song._id) {
+      onRemove(song._id);
+    }
+  };
+
   const {
     attributes,
     listeners,
@@ -30,7 +32,7 @@ const DraggableSongItem: React.FC<DraggableSongItemProps> = ({
     transform,
     transition,
     isDragging,
-  } = useSortable({ id });
+  } = useSortable({ id: song._id });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -51,8 +53,8 @@ const DraggableSongItem: React.FC<DraggableSongItemProps> = ({
         </div>
         <div className="relative w-16 h-16 flex-shrink-0">
           <Image
-            src={getYouTubeThumbnail(songDetails.youtubeId)}
-            alt={songDetails.title}
+            src={getYouTubeThumbnail(song.youtubeId)}
+            alt={song.title}
             fill
             sizes="64px"
             className="rounded-md object-cover"
@@ -60,25 +62,15 @@ const DraggableSongItem: React.FC<DraggableSongItemProps> = ({
           />
         </div>
         <div className="min-w-0">
-          <p className="font-medium text-gray-800 truncate">{songDetails.title}</p>
-          <p className="text-sm text-gray-500 truncate">{songDetails.artist}</p>
+          <p className="font-medium text-gray-800 truncate">{song.title}</p>
+          <p className="text-sm text-gray-500 truncate">{song.artist}</p>
         </div>
       </div>
       <div className="flex items-center space-x-2">
-        {isAuthenticated && onAddToPlaylist && (
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={() => onAddToPlaylist(playlistId, id)}
-            className="p-2 rounded-full hover:bg-gray-100 transition-colors text-blue-500"
-          >
-            <FaPlus />
-          </motion.button>
-        )}
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
-          onClick={() => onRemove(playlistId, id)}
+          onClick={handleRemove}
           className="p-2 rounded-full hover:bg-gray-100 transition-colors text-red-500"
         >
           <FaTrash />

@@ -221,34 +221,28 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   // Funkcja do dodawania utworu do playlisty
   const handleAddToPlaylist = useCallback(
     (songId: string) => {
-      if (expandedPlaylist) {
-        const playlist = playlists.find((p) => p.id === expandedPlaylist);
-        const song = songs.find((s) => s.id === songId);
-        if (playlist && song) {
-          if (playlist.songs.includes(songId)) {
-            showInfoToast(
-              `Utwór "${song.title}" jest już w playlisty "${playlist.name}"`
-            );
-          } else {
-            onAddToPlaylist(expandedPlaylist, songId);
-            showSuccessToast(
-              `Dodano "${song.title}" do playlisty "${playlist.name}"`
-            );
-          }
-        }
-      } else {
+      if (!expandedPlaylist) {
         showErrorToast("Nie wybrano playlisty");
+        return;
       }
+
+      const playlist = playlists.find(p => p._id === expandedPlaylist || p.id === expandedPlaylist);
+      const song = songs.find(s => s._id === songId || s.id === songId);
+
+      if (!playlist || !song) {
+        showErrorToast("Nie można dodać utworu do playlisty");
+        return;
+      }
+
+      if (playlist.songs.includes(songId)) {
+        showInfoToast(`Utwór "${song.title}" jest już w playliście "${playlist.name}"`);
+        return;
+      }
+
+      onAddToPlaylist(expandedPlaylist, songId);
+      showSuccessToast(`Dodano "${song.title}" do playlisty "${playlist.name}"`);
     },
-    [
-      expandedPlaylist,
-      onAddToPlaylist,
-      songs,
-      playlists,
-      showSuccessToast,
-      showErrorToast,
-      showInfoToast,
-    ]
+    [expandedPlaylist, onAddToPlaylist, songs, playlists, showSuccessToast, showErrorToast, showInfoToast]
   );
 
   const playlistManagement = usePlaylistManagement({

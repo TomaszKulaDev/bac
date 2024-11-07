@@ -66,7 +66,7 @@ export const usePlaylistManagement = ({
 
         dispatch(
           updatePlaylistOrder({
-            playlistId: currentPlaylist.id,
+            playlistId: currentPlaylist._id || currentPlaylist.id || '',
             newOrder: newSongs,
           })
         )
@@ -82,13 +82,18 @@ export const usePlaylistManagement = ({
 
   const addSongToPlaylist = useCallback(
     async (playlistId: string, songId: string) => {
+      if (!playlistId || !songId) {
+        showErrorToast("Nieprawidłowe dane utworu lub playlisty");
+        return;
+      }
+
       if (!isAuthenticated) {
         showErrorToast("Musisz być zalogowany, aby dodawać utwory do playlisty.");
         return;
       }
 
-      const playlist = playlists.find((p) => p.id === playlistId);
-      const song = songs.find((s) => s.id === songId);
+      const playlist = playlists.find((p) => (p._id || p.id) === playlistId);
+      const song = songs.find((s) => (s._id || s.id) === songId);
 
       if (!playlist || !song) {
         showErrorToast("Nie można dodać utworu do playlisty.");
@@ -115,7 +120,7 @@ export const usePlaylistManagement = ({
 
         onUpdatePlaylists((prevPlaylists) =>
           prevPlaylists.map((p) =>
-            p.id === playlistId ? { ...p, songs: [...p.songs, songId] } : p
+            (p._id || p.id) === playlistId ? { ...p, songs: [...p.songs, songId] } : p
           )
         );
 
@@ -184,7 +189,9 @@ export const usePlaylistManagement = ({
 
       onUpdatePlaylists((prevPlaylists) =>
         prevPlaylists.map((playlist) =>
-          playlist.id === playlistId ? { ...playlist, name: newName } : playlist
+          (playlist._id || playlist.id) === playlistId
+            ? { ...playlist, name: newName }
+            : playlist
         )
       );
     },
@@ -199,7 +206,7 @@ export const usePlaylistManagement = ({
       }
 
       onUpdatePlaylists((prevPlaylists) =>
-        prevPlaylists.filter((playlist) => playlist.id !== playlistId)
+        prevPlaylists.filter((playlist) => (playlist._id || playlist.id) !== playlistId)
       );
 
       if (currentPlaylistId === playlistId) {
@@ -224,8 +231,8 @@ export const usePlaylistManagement = ({
 
   const isInPlaylist = useCallback(
     (songId: string, playlistId: string | null) => {
-      if (!playlistId) return false;
-      const playlist = playlists.find((p) => p.id === playlistId);
+      if (!playlistId || !songId) return false;
+      const playlist = playlists.find(p => p._id === playlistId || p.id === playlistId);
       return playlist ? playlist.songs.includes(songId) : false;
     },
     [playlists]
@@ -247,7 +254,7 @@ export const usePlaylistManagement = ({
 
       const updatedPlaylist = await response.json();
       onUpdatePlaylists(prev => 
-        prev.map(p => p.id === playlistId ? { ...updatedPlaylist, id: updatedPlaylist._id } : p)
+        prev.map(p => (p._id || p.id) === playlistId ? { ...updatedPlaylist, id: updatedPlaylist._id } : p)
       );
       
       return true;

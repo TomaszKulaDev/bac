@@ -8,8 +8,10 @@ export async function GET() {
     const db = await connectToDatabase();
     console.log("GET /api/songs: Connected to database");
 
-    const songs = await Song.find({}).select('title artist youtubeId impro beginnerFriendly createdAt').sort({ createdAt: -1 }).lean();
-    // console.log("GET /api/songs: Songs fetched", songs); tutaj zawsze jest problem edytuj to zeby dodac nowa opcje sortowania.
+    const songs = await Song.find({})
+      .select('title artist youtubeId impro beginnerFriendly createdAt')
+      .sort({ createdAt: -1 })
+      .lean();
 
     return new NextResponse(JSON.stringify(songs), {
       status: 200,
@@ -22,7 +24,7 @@ export async function GET() {
     console.error("GET /api/songs: Error", error);
     return new NextResponse(
       JSON.stringify({ error: "Internal Server Error" }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
+      { status: 500 }
     );
   }
 }
