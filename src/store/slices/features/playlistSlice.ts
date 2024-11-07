@@ -1,7 +1,22 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { Playlist, PlaylistState, UpdatePlaylistOrderAction } from '../types';
-import { RootState } from '@/store/store';
+import { RootState, AppDispatch } from '@/store/store';
 import { updateSongsPlaylists } from './songsSlice';
+
+interface DeletePlaylistResponse {
+  message: string;
+  success: boolean;
+}
+
+type ThunkConfig = {
+  state: RootState;
+  dispatch: AppDispatch;
+  rejectValue: {
+    status: number;
+    message: string;
+    details?: string | null;
+  };
+}
 
 const initialState: PlaylistState = {
   playlists: [],
@@ -81,6 +96,62 @@ const playlistSlice = createSlice({
       });
   }
 });
+
+export const deletePlaylistAndRefetch = createAsyncThunk<
+  DeletePlaylistResponse,
+  string,
+  ThunkConfig
+>('playlists/deletePlaylistAndRefetch',
+  async (id, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await fetch(`/api/playlists/${id}`, { 
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        let errorMessage = 'Wystąpił błąd podczas usuwania playlisty';
+
+        switch (response.status) {
+          case 401:
+            errorMessage = 'Brak uprawnień do usunięcia playlisty';
+            break;
+          case 403:
+            errorMessage = 'Dostęp zabroniony';
+            break;
+          case 404:
+            errorMessage = 'Nie znaleziono playlisty';
+            break;
+          case 500:
+            errorMessage = 'Błąd serwera podczas usuwania playlisty';
+            break;
+          default:
+            errorMessage = errorData.message || errorMessage;
+        }
+
+        return rejectWithValue({
+          status: response.status,
+          message: errorMessage,
+          details: errorData.details || null
+        });
+      }
+
+      const data = await response.json();
+      dispatch(removePlaylist(id));
+      await dispatch(fetchPlaylists());
+      return data;
+    } catch (error: any) {
+      return rejectWithValue({
+        status: 500,
+        message: 'Wystąpił nieoczekiwany błąd podczas usuwania playlisty',
+        details: error.message
+      });
+    }
+  }
+);
 
 export const { 
   setCurrentPlaylistId, 

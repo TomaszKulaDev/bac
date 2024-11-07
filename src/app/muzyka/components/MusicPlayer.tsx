@@ -63,6 +63,8 @@ import PlaylistManager from "./PlaylistManager";
 import "../styles/youtube-player.css";
 import { setCurrentPlaylistId } from "@/store/slices/features/playlistSlice";
 import { DebugLogger } from "./DebugLogger";
+import { deletePlaylistAndRefetch } from "@/store/slices/features/playlistSlice";
+import { AppDispatch } from '@/store/store';
 
 interface MusicPlayerProps {
   songs: Song[];
@@ -128,7 +130,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   showInfoToast,
   isAuthenticated,
 }) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const currentSong = useSelector(
     (state: RootState) => state.songs.songs[state.songs.currentSongIndex]
   );
@@ -371,8 +373,15 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   }, []);
 
   // Funkcje do zarządzania playlistami
-  const handleDeletePlaylist = (id: string) => {
-    playlistManagement.deletePlaylist(id);
+  const handleDeletePlaylist = async (playlistId: string) => {
+    try {
+      await dispatch(deletePlaylistAndRefetch(playlistId)).unwrap();
+      showSuccessToast('Playlista została usunięta');
+    } catch (error: any) {
+      const typedError = error as { message: string; details?: string };
+      console.error('Błąd podczas usuwania playlisty:', error);
+      showErrorToast(typedError.message || 'Nie udało się usunąć playlisty');
+    }
   };
 
   const handleRenamePlaylist = (id: string, newName: string) => {

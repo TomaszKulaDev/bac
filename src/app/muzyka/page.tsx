@@ -252,11 +252,15 @@ const MusicPage: React.FC = () => {
 
       if (!response.ok) throw new Error('Błąd usuwania playlisty');
       
-      await refreshPlaylists(); // Odświeżamy listę playlist po usunięciu
+      await refreshPlaylists();
       showSuccessToast('Playlista została usunięta');
+      
+      console.log('Playlista usunięta:', playlistId);
+      
     } catch (error) {
       console.error('Błąd podczas usuwania playlisty:', error);
       showErrorToast('Nie udało się usunąć playlisty');
+      throw error;
     }
   };
 

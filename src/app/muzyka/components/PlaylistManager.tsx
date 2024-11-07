@@ -145,19 +145,10 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
     if (!id) return;
     
     try {
-      const response = await fetch(`/api/playlists/${id}`, {
-        method: 'DELETE',
-      });
-
-      if (!response.ok) {
-        throw new Error('Nie udało się usunąć playlisty');
-      }
-
-      setPlaylists(prevPlaylists => prevPlaylists.filter(p => getPlaylistId(p) !== id));
+      await onDeletePlaylist(id);
       if (currentPlaylistId === id) {
         setCurrentPlaylistId(null);
       }
-      showSuccessToast('Playlista została usunięta');
     } catch (error) {
       console.error('Błąd podczas usuwania playlisty:', error);
       showErrorToast('Nie udało się usunąć playlisty');
@@ -177,14 +168,21 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
     setCurrentPlaylistId(id);
   }, [onPlayPlaylist, setCurrentPlaylistId]);
 
-  const handleDelete = useCallback((playlist: Playlist) => {
-    const id = getPlaylistId(playlist);
-    if (!id) return;
-    onDeletePlaylist(id);
-    if (currentPlaylistId === id) {
-      setCurrentPlaylistId(null);
+  const handleDelete = async (playlist: Playlist) => {
+    const playlistId = playlist._id || playlist.id;
+    if (!playlistId) return;
+    
+    try {
+      await onDeletePlaylist(playlistId);
+      if (currentPlaylistId === playlistId) {
+        setCurrentPlaylistId(null);
+      }
+      showSuccessToast('Playlista została usunięta');
+    } catch (error) {
+      console.error('Błąd podczas usuwania playlisty:', error);
+      showErrorToast('Nie udało się usunąć playlisty');
     }
-  }, [currentPlaylistId, onDeletePlaylist, setCurrentPlaylistId]);
+  };
 
   const handleRename = useCallback((playlist: Playlist, newName: string) => {
     const id = getPlaylistId(playlist);

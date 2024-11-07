@@ -69,8 +69,11 @@ export async function DELETE(
   request: Request,
   { params }: { params: { id: string } }
 ) {
+  console.log("DELETE /api/playlists/[id]: Start", { id: params.id });
+  
   try {
     const session = await getServerSession(authOptions);
+    console.log("Session:", session?.user?.email);
     
     if (!session?.user?.email) {
       return NextResponse.json(
@@ -79,30 +82,24 @@ export async function DELETE(
       );
     }
 
-    const db = await connectToDatabase();
-    if (!db) {
-      throw new Error("Nie udało się połączyć z bazą danych");
-    }
-
-    const { id } = params;
-    console.log("DELETE /api/playlists/[id]: Attempting to delete playlist with ID:", id);
-
-    const result = await Playlist.findOneAndDelete({
-      _id: id,
-      userId: session.user.email
-    });
+    await connectToDatabase();
+    
+    const result = await Playlist.findByIdAndDelete(params.id);
+    console.log("Delete result:", result);
 
     if (!result) {
       return NextResponse.json(
-        { error: "Playlista nie została znaleziona lub brak uprawnień" },
+        { error: "Playlista nie została znaleziona" },
         { status: 404 }
       );
     }
 
-    console.log("DELETE /api/playlists/[id]: Playlist deleted", id);
-    return NextResponse.json({ message: "Playlista została usunięta" });
+    return NextResponse.json({ 
+      message: "Playlista została usunięta",
+      success: true
+    });
   } catch (error) {
-    console.error("Błąd podczas usuwania playlisty:", error);
+    console.error("Error details:", error);
     return NextResponse.json(
       { error: "Wystąpił błąd podczas usuwania playlisty" },
       { status: 500 }
