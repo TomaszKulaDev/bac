@@ -66,6 +66,12 @@ import { DebugLogger } from "./DebugLogger";
 
 interface MusicPlayerProps {
   songs: Song[];
+  playlists: Playlist[];
+  currentPlaylistId: string | null;
+  isPlaying: boolean;
+  setIsPlaying: (playing: boolean) => void;
+  setPlaylists: React.Dispatch<React.SetStateAction<Playlist[]>>;
+  setCurrentPlaylistId: (id: string | null) => void;
   onAddToPlaylist: (playlistId: string, songId: string) => void;
   expandedPlaylist: string | null;
   setExpandedPlaylist: React.Dispatch<React.SetStateAction<string | null>>;
@@ -73,9 +79,7 @@ interface MusicPlayerProps {
   setFilterText: React.Dispatch<React.SetStateAction<string>>;
   isMobile: boolean;
   onCreatePlaylist: (name: string, selectedSongs?: string[]) => void;
-  currentPlaylistId: string | null;
   onPlayPlaylist: (playlistId: string) => void;
-  playlists: Playlist[];
   onUpdatePlaylists: (
     updater: (prevPlaylists: Playlist[]) => Playlist[]
   ) => void;
@@ -85,10 +89,6 @@ interface MusicPlayerProps {
   showErrorToast: (message: string) => void;
   showInfoToast: (message: string) => void;
   isAuthenticated: boolean;
-  isPlaying: boolean;
-  setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
-  setPlaylists: React.Dispatch<React.SetStateAction<Playlist[]>>;
-  setCurrentPlaylistId: (id: string | null) => void;
 }
 
 interface BrowserInfo {
@@ -106,6 +106,12 @@ const getBrowserInfo = (): BrowserInfo => ({
 // Komponent MusicPlayer
 const MusicPlayer: React.FC<MusicPlayerProps> = ({
   songs,
+  playlists,
+  currentPlaylistId,
+  isPlaying,
+  setIsPlaying,
+  setPlaylists,
+  setCurrentPlaylistId,
   onAddToPlaylist,
   expandedPlaylist,
   setExpandedPlaylist,
@@ -113,9 +119,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   setFilterText,
   isMobile,
   onCreatePlaylist,
-  currentPlaylistId,
   onPlayPlaylist,
-  playlists,
   onUpdatePlaylists,
   isModalOpen,
   setIsModalOpen,
@@ -123,10 +127,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   showErrorToast,
   showInfoToast,
   isAuthenticated,
-  isPlaying,
-  setIsPlaying,
-  setPlaylists,
-  setCurrentPlaylistId,
 }) => {
   const dispatch = useDispatch();
   const currentSong = useSelector(

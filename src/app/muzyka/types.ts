@@ -50,6 +50,7 @@ export interface MusicPlayerProps {
   setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
   setCurrentPlaylistId: (id: string | null) => void;
   currentSongIndex: number;
+  setPlaylists: React.Dispatch<React.SetStateAction<Playlist[]>>;
 }
 
 // Interfejs reprezentujący tryb powtarzania

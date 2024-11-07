@@ -81,11 +81,9 @@ export const usePlaylistManagement = ({
   );
 
   const addSongToPlaylist = useCallback(
-    (playlistId: string, songId: string) => {
+    async (playlistId: string, songId: string) => {
       if (!isAuthenticated) {
-        showErrorToast(
-          "Musisz być zalogowany, aby dodawać utwory do playlisty."
-        );
+        showErrorToast("Musisz być zalogowany, aby dodawać utwory do playlisty.");
         return;
       }
 
@@ -98,39 +96,35 @@ export const usePlaylistManagement = ({
       }
 
       if (playlist.songs.includes(songId)) {
-        showInfoToast(
-          `Utwór "${song.title}" jest już w playliście "${playlist.name}"`
-        );
+        showInfoToast(`Utwór "${song.title}" jest już w playliście "${playlist.name}"`);
         return;
       }
 
-      onUpdatePlaylists((prevPlaylists) =>
-        prevPlaylists.map((p) =>
-          p.id === playlistId ? { ...p, songs: [...p.songs, songId] } : p
-        )
-      );
-
-      dispatch(
-        updateSongsPlaylists({
-          songIds: [songId],
-          playlistId,
-          playlistName: playlist.name,
-        }) as any
-      )
-        .unwrap()
-        .catch(() => {
-          showErrorToast("Nie udało się dodać utworu do playlisty");
+      try {
+        const response = await fetch(`/api/playlists/${playlistId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ songId }),
         });
+
+        if (!response.ok) {
+          throw new Error('Failed to add song to playlist');
+        }
+
+        onUpdatePlaylists((prevPlaylists) =>
+          prevPlaylists.map((p) =>
+            p.id === playlistId ? { ...p, songs: [...p.songs, songId] } : p
+          )
+        );
+
+        showSuccessToast("Utwór został dodany do playlisty");
+      } catch {
+        showErrorToast("Nie udało się dodać utworu do playlisty");
+      }
     },
-    [
-      playlists,
-      songs,
-      dispatch,
-      onUpdatePlaylists,
-      isAuthenticated,
-      showErrorToast,
-      showInfoToast,
-    ]
+    [playlists, songs, isAuthenticated, showErrorToast, showInfoToast, onUpdatePlaylists, showSuccessToast]
   );
 
   const removeSongFromPlaylist = useCallback(
@@ -237,6 +231,32 @@ export const usePlaylistManagement = ({
     [playlists]
   );
 
+  const handlePlaylistUpdate = async (playlistId: string, songId: string) => {
+    try {
+      const response = await fetch(`/api/playlists/${playlistId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ songId }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Błąd aktualizacji playlisty');
+      }
+
+      const updatedPlaylist = await response.json();
+      onUpdatePlaylists(prev => 
+        prev.map(p => p.id === playlistId ? { ...updatedPlaylist, id: updatedPlaylist._id } : p)
+      );
+      
+      return true;
+    } catch (error) {
+      console.error('Błąd podczas aktualizacji playlisty:', error);
+      return false;
+    }
+  };
+
   return {
     handleDragEnd,
     addSongToPlaylist,
@@ -245,5 +265,6 @@ export const usePlaylistManagement = ({
     deletePlaylist,
     handleCreateEmptyPlaylist,
     isInPlaylist,
+    handlePlaylistUpdate,
   };
 };

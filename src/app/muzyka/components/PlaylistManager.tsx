@@ -105,6 +105,35 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
     },
   };
 
+  const handlePlaylistUpdate = async (playlistId: string, data: Partial<Playlist>) => {
+    try {
+      if (!data || (!data.name && !data.songs)) {
+        console.error("Brak danych do aktualizacji");
+        return;
+      }
+
+      const response = await fetch(`/api/playlists/${playlistId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error('Błąd aktualizacji playlisty');
+      }
+
+      const updatedPlaylist = await response.json();
+      setPlaylists((prev) => 
+        prev.map(p => p.id === playlistId ? { ...updatedPlaylist, id: updatedPlaylist._id } : p)
+      );
+    } catch (error) {
+      console.error("Błąd podczas aktualizacji playlisty:", error);
+      showErrorToast('Nie udało się zaktualizować playlisty');
+    }
+  };
+
   return (
     <div className="space-y-4 overflow-y-auto flex-grow p-4">
       {playlists.length < 2 && (

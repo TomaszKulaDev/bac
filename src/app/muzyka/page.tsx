@@ -29,6 +29,7 @@ import { DebugLogger } from "./components/DebugLogger";
 import RecommendedSongs from "./components/RecommendedSongs";
 import Image from "next/image";
 import { getYouTubeThumbnail } from "./utils/youtube";
+import { usePlaylistData } from "./hooks/usePlaylistData";
 
 const generateUniqueId = () => {
   return Date.now().toString(36) + Math.random().toString(36).substr(2);
@@ -69,26 +70,58 @@ const MusicPage: React.FC = () => {
     []
   );
 
+  const { playlists: playlistData, error: playlistError, isLoading: playlistsLoading } = usePlaylistData();
+
+  useEffect(() => {
+    if (playlistError) {
+      showErrorToast('Nie udało się pobrać playlist');
+    }
+  }, [playlistError, showErrorToast]);
+
   useEffect(() => {
     updateContainerPadding();
   }, [updateContainerPadding]);
 
   const handleCreateEmptyPlaylist = useCallback(
-    (name: string, selectedSongs: string[] = []) => {
+    async (name: string, selectedSongs: string[] = []) => {
+      console.log("handleCreateEmptyPlaylist: Start", { name, selectedSongs });
       if (!isAuthenticated) {
+        console.log("handleCreateEmptyPlaylist: User not authenticated");
         showErrorToast("Musisz być zalogowany, aby utworzyć playlistę");
         return;
       }
 
-      const newPlaylist: Playlist = {
-        id: generateUniqueId(),
-        name,
-        songs: selectedSongs,
-      };
+      try {
+        console.log("handleCreateEmptyPlaylist: Sending request");
+        const response = await fetch('/api/playlists', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ name, songs: selectedSongs }),
+        });
 
-      setPlaylists((prev) => [...prev, newPlaylist]);
-      setExpandedPlaylist(newPlaylist.id);
-      showSuccessToast(`Utworzono nową playlistę "${name}"`);
+        console.log("handleCreateEmptyPlaylist: Response status:", response.status);
+        if (!response.ok) {
+          throw new Error('Failed to create playlist');
+        }
+
+        const { id } = await response.json();
+        console.log("handleCreateEmptyPlaylist: Playlist created with ID:", id);
+        
+        const newPlaylist: Playlist = {
+          id,
+          name,
+          songs: selectedSongs,
+        };
+
+        setPlaylists((prev) => [...prev, newPlaylist]);
+        setExpandedPlaylist(newPlaylist.id);
+        showSuccessToast(`Utworzono nową playlistę "${name}"`);
+      } catch (error) {
+        console.error("handleCreateEmptyPlaylist: Error", error);
+        showErrorToast('Nie udało się utworzyć playlisty');
+      }
     },
     [isAuthenticated, showSuccessToast, showErrorToast, setExpandedPlaylist]
   );

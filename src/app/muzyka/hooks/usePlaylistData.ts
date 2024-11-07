@@ -1,39 +1,64 @@
-import { useState } from "react";
-
+import { useState, useCallback } from "react";
 import { useEffect } from "react";
 import { Playlist } from "../types";
 
-const usePlaylistData = () => {
+export const usePlaylistData = () => {
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchPlaylists = async () => {
-      try {
-        const cached = sessionStorage.getItem('playlists');
-        if (cached) {
-          setPlaylists(JSON.parse(cached));
-          setIsLoading(false);
-          return;
-        }
-
-        const response = await fetch('/api/playlists');
-        if (!response.ok) throw new Error('Błąd pobierania playlist');
-        
-        const data = await response.json();
-        setPlaylists(data);
-        sessionStorage.setItem('playlists', JSON.stringify(data));
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Wystąpił błąd');
-        console.error('Błąd:', err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchPlaylists();
+  const fetchPlaylists = useCallback(async () => {
+    console.log("usePlaylistData: Fetching playlists");
+    try {
+      const response = await fetch('/api/playlists');
+      console.log("usePlaylistData: Response status:", response.status);
+      
+      if (!response.ok) throw new Error('Błąd pobierania playlist');
+      
+      const data = await response.json();
+      console.log("usePlaylistData: Received playlists:", data.length);
+      setPlaylists(data);
+      sessionStorage.setItem('playlists', JSON.stringify(data));
+      console.log("usePlaylistData: Playlists saved to sessionStorage");
+    } catch (err) {
+      console.error("usePlaylistData: Error fetching playlists:", err);
+      setError(err instanceof Error ? err.message : 'Wystąpił błąd');
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
 
-  return { playlists, error, isLoading };
+  const updatePlaylist = useCallback(async (playlistId: string, updatedData: Partial<Playlist>) => {
+    try {
+      const response = await fetch(`/api/playlists/${playlistId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedData),
+      });
+
+      if (!response.ok) throw new Error('Błąd aktualizacji playlisty');
+      
+      const updatedPlaylist = await response.json();
+      setPlaylists(prev => 
+        prev.map(p => p.id === playlistId ? { ...updatedPlaylist, id: updatedPlaylist._id } : p)
+      );
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Wystąpił błąd aktualizacji');
+      throw err;
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchPlaylists();
+  }, [fetchPlaylists]);
+
+  return { 
+    playlists, 
+    error, 
+    isLoading, 
+    updatePlaylist,
+    refreshPlaylists: fetchPlaylists 
+  };
 };
