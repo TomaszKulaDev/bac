@@ -141,11 +141,26 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
     }
   };
 
-  const handleDeletePlaylist = (id: string) => {
+  const handleDeletePlaylist = async (id: string) => {
     if (!id) return;
-    playlistManagement.deletePlaylist(id);
-    if (currentPlaylistId === id) {
-      setCurrentPlaylistId(null);
+    
+    try {
+      const response = await fetch(`/api/playlists/${id}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error('Nie udało się usunąć playlisty');
+      }
+
+      setPlaylists(prevPlaylists => prevPlaylists.filter(p => getPlaylistId(p) !== id));
+      if (currentPlaylistId === id) {
+        setCurrentPlaylistId(null);
+      }
+      showSuccessToast('Playlista została usunięta');
+    } catch (error) {
+      console.error('Błąd podczas usuwania playlisty:', error);
+      showErrorToast('Nie udało się usunąć playlisty');
     }
   };
 

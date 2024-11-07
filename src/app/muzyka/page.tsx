@@ -241,6 +241,25 @@ const MusicPage: React.FC = () => {
     }
   }, []);
 
+  const handleDeletePlaylist = async (playlistId: string) => {
+    try {
+      const response = await fetch(`/api/playlists/${playlistId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) throw new Error('Błąd usuwania playlisty');
+      
+      await refreshPlaylists(); // Odświeżamy listę playlist po usunięciu
+      showSuccessToast('Playlista została usunięta');
+    } catch (error) {
+      console.error('Błąd podczas usuwania playlisty:', error);
+      showErrorToast('Nie udało się usunąć playlisty');
+    }
+  };
+
   if (status === "loading") {
     return <LoadingState error={error} />;
   }

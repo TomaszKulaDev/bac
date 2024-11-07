@@ -1,10 +1,30 @@
 import { NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/mongodb";
 import { Playlist } from "@/models/Playlist";
+import { Types } from 'mongoose';
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
+
+interface IPlaylistDocument {
+  _id: Types.ObjectId;
+  name: string;
+  userId: string;
+  songs: Array<string | { _id: Types.ObjectId }>;
+  createdAt: Date;
+}
 
 export async function POST(request: Request) {
   console.log("POST /api/playlists: Start");
   try {
+    const session = await getServerSession(authOptions);
+    
+    if (!session?.user?.email) {
+      return NextResponse.json(
+        { error: "Unauthorized" },
+        { status: 401 }
+      );
+    }
+
     await connectToDatabase();
     console.log("POST /api/playlists: Connected to database");
     
@@ -14,16 +34,23 @@ export async function POST(request: Request) {
     const newPlaylist = new Playlist({
       name,
       songs,
+      userId: session.user.email,
       createdAt: new Date(),
     });
 
     await newPlaylist.save();
     console.log("POST /api/playlists: Playlist saved", newPlaylist);
 
-    return NextResponse.json(
-      { id: newPlaylist._id },
-      { status: 201 }
-    );
+    return NextResponse.json({
+      playlist: {
+        _id: newPlaylist._id,
+        id: newPlaylist._id,
+        name: newPlaylist.name,
+        userId: newPlaylist.userId,
+        songs: newPlaylist.songs,
+        createdAt: newPlaylist.createdAt
+      }
+    }, { status: 201 });
   } catch (error) {
     console.error("POST /api/playlists: Error", error);
     return NextResponse.json(
@@ -36,23 +63,35 @@ export async function POST(request: Request) {
 export async function GET() {
   console.log("GET /api/playlists: Start");
   try {
+    const session = await getServerSession(authOptions);
+    
+    if (!session?.user?.email) {
+      return NextResponse.json(
+        { error: "Unauthorized" },
+        { status: 401 }
+      );
+    }
+
     await connectToDatabase();
     console.log("GET /api/playlists: Connected to database");
     
-    const playlists = await Playlist.find({})
+    const playlists = await Playlist.find({ userId: session.user.email })
       .populate({
         path: 'songs',
         select: 'title artist youtubeId impro beginnerFriendly'
       })
       .sort({ createdAt: -1 })
-      .lean();
+      .lean<IPlaylistDocument[]>();
     
     const normalizedPlaylists = playlists.map(playlist => ({
       _id: playlist._id.toString(),
       id: playlist._id.toString(),
       name: playlist.name,
+      userId: playlist.userId,
       songs: Array.isArray(playlist.songs) 
-        ? playlist.songs.map(song => typeof song === 'string' ? song : song._id.toString())
+        ? playlist.songs.map(song => 
+            typeof song === 'string' ? song : song._id.toString()
+          )
         : [],
       createdAt: playlist.createdAt
     }));

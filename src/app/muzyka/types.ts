@@ -7,6 +7,7 @@ export interface Playlist {
   _id: string; // Zmiana z id na _id
   id?: string; // Opcjonalne id dla kompatybilności
   name: string;
+  userId: string;
   songs: string[]; // Tablica ID piosenek
   createdAt: Date;
 }
@@ -55,6 +56,8 @@ export interface MusicPlayerProps {
   setCurrentPlaylistId: (id: string | null) => void;
   currentSongIndex: number;
   setPlaylists: React.Dispatch<React.SetStateAction<Playlist[]>>;
+  isPlaylistManagerVisible: boolean;
+  setIsPlaylistManagerVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 // Interfejs reprezentujący tryb powtarzania

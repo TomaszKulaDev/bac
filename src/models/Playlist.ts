@@ -9,6 +9,12 @@ const playlistSchema = new mongoose.Schema({
     required: true,   // Pole jest wymagane
     trim: true        // Usuwamy białe znaki z początku i końca
   },
+  // Pole 'userId' przechowuje identyfikator użytkownika, który utworzył playlistę
+  userId: {
+    type: String,
+    required: true,
+    index: true
+  },
   // Pole 'songs' to tablica zawierająca referencje do piosenek
   songs: [{
     type: mongoose.Schema.Types.ObjectId,  // Typ to ObjectId (referencja)
