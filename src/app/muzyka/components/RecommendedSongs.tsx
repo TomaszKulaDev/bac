@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { Song } from '../types';
-import { FaPlay, FaPause, FaPlus, FaHeart } from 'react-icons/fa';
+import { FaPlay, FaPause, FaBookmark, FaHeart } from 'react-icons/fa';
 import { getYouTubeThumbnail } from '../utils/youtube';
 import { useVideoDuration } from '../hooks/useVideoDuration';
 
@@ -120,7 +120,7 @@ const RecommendedSongs: React.FC<RecommendedSongsProps> = ({
                         className="p-2 text-blue-200 hover:text-white transition-colors"
                         title="Dodaj do playlisty"
                       >
-                        <FaPlus className="w-4 h-4" />
+                        <FaBookmark className="w-4 h-4" />
                       </button>
                       <button
                         onClick={() => onToggleFavorite(song.id)}
