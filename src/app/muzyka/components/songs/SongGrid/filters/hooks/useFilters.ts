@@ -28,16 +28,18 @@ export const useFilters = (initialSongs: Song[]) => {
 
   const filteredSongs = useMemo(() => {
     return initialSongs.filter(song => {
-      if (!song.difficulty || !song.style || !song.tempo) return true;
-      
       const matchesDifficulty = filters.difficulty.length === 0 || 
-        filters.difficulty.includes(song.difficulty);
+        (song.beginnerFriendly && filters.difficulty.includes('beginner')) ||
+        (!song.beginnerFriendly && !song.impro && filters.difficulty.includes('intermediate')) ||
+        (!song.beginnerFriendly && !song.impro && filters.difficulty.includes('advanced'));
       
       const matchesStyle = filters.style.length === 0 || 
-        filters.style.includes(song.style);
+        (song.impro && filters.style.includes('impro')) ||
+        (!song.impro && filters.style.includes('sensual')) ||
+        (!song.impro && filters.style.includes('dominicana'));
       
       const matchesTempo = filters.tempo.length === 0 || 
-        filters.tempo.includes(song.tempo);
+        filters.tempo.includes(song.tempo as TempoType);
 
       return matchesDifficulty && matchesStyle && matchesTempo;
     });
