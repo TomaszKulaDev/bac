@@ -173,11 +173,13 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
     if (!playlistId) return;
     
     try {
-      await onDeletePlaylist(playlistId);
-      if (currentPlaylistId === playlistId) {
-        setCurrentPlaylistId(null);
+      await handleDeletePlaylist(playlistId);
+      setPlaylists(prevPlaylists => 
+        prevPlaylists.filter(p => (p._id || p.id) !== playlistId)
+      );
+      if (expandedPlaylist === playlistId) {
+        setExpandedPlaylist(null);
       }
-      showSuccessToast('Playlista została usunięta');
     } catch (error) {
       console.error('Błąd podczas usuwania playlisty:', error);
       showErrorToast('Nie udało się usunąć playlisty');
