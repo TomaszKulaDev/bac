@@ -1,6 +1,7 @@
 import { UniqueIdentifier } from "@dnd-kit/core";
 import { SensorDescriptor, SensorOptions } from "@dnd-kit/core";
 import { DragEndEvent } from "@dnd-kit/core";
+import { DifficultyLevel, StyleType, TempoType } from './components/songs/SongGrid/types';
 
 // Interfejs reprezentujący playlistę
 export interface Playlist {
@@ -19,13 +20,16 @@ export interface Song {
   title: string;
   artist: string;
   youtubeId: string;
-  impro: boolean;
-  beginnerFriendly: boolean; // Określa, czy utwór jest przyjazny dla początkujących
+  impro?: boolean;
+  beginnerFriendly?: boolean; // Określa, czy utwór jest przyjazny dla początkujących
   createdAt: Date;
   __v?: number;
   playlists: string[]; // Tablica ID playlist, do których należy utwór
   thumbnail?: string;
   level?: SongLevel; // dodajemy opcjonalne pole level
+  difficulty: DifficultyLevel;
+  style: StyleType;
+  tempo: TempoType;
 }
 
 // Interfejs właściwości komponentu odtwarzacza muzyki
