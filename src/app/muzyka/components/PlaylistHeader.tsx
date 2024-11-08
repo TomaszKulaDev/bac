@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { FaPlay, FaHeart, FaUser } from "react-icons/fa";
+import { FaPlay, FaHeart, FaUser, FaShare } from "react-icons/fa";
 import Image from "next/image";
 
 interface PlaylistHeaderProps {
   filteredSongsCount: number;
   onPlay: () => void;
-  onLike?: () => void;
-  isLiked?: boolean;
   coverImage?: string;
   dominantColor?: string;
   isPlaying?: boolean;
@@ -16,8 +14,6 @@ interface PlaylistHeaderProps {
 const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
   filteredSongsCount,
   onPlay,
-  onLike,
-  isLiked = false,
   coverImage,
   dominantColor,
   isPlaying,
@@ -34,6 +30,10 @@ const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
 
   const opacity = Math.max(0, Math.min(1, 1 - scrollPosition / 300));
   const blur = Math.min(20, scrollPosition / 10);
+
+  function showSuccessToast(arg0: string) {
+    throw new Error("Function not implemented.");
+  }
 
   return (
     <motion.div
@@ -129,19 +129,17 @@ const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
-              onClick={onLike}
-              className={`p-4 rounded-full transition-all duration-300 ${
-                isLiked
-                  ? "bg-white text-green-500"
-                  : "bg-transparent border-2 border-white/20 text-white"
-              }`}
+              onClick={() => {
+                const url = window.location.href;
+                navigator.clipboard.writeText(url);
+                showSuccessToast('Link skopiowany do schowka!');
+              }}
+              className="p-4 rounded-full transition-all duration-300 
+                bg-transparent border-2 border-white/20 text-white 
+                hover:bg-white/10"
+              title="Udostępnij playlistę"
             >
-              <motion.div
-                animate={isLiked ? { scale: [1, 1.2, 1] } : {}}
-                transition={{ duration: 0.3 }}
-              >
-                <FaHeart className="h-6 w-6" />
-              </motion.div>
+              <FaShare className="h-6 w-6" />
             </motion.button>
           </div>
         </div>

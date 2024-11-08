@@ -275,45 +275,30 @@ const MusicPage: React.FC = () => {
     }
   };
 
-  const handlePlay = () => {
-    if (currentSong) {
-      // Jeśli utwór jest już odtwarzany, zatrzymaj
-      if (isPlaying) {
-        audioRef.current?.pause();
-        setIsPlaying(false);
-      } else {
-        // W przeciwnym razie rozpocznij odtwarzanie
-        audioRef.current?.play();
-        setIsPlaying(true);
-      }
-    } else {
-      // Jeśli nie ma aktualnego utworu, rozpocznij od pierwszego
-      const firstSong = filteredSongs[0];
-      if (firstSong) {
-        setCurrentSong(firstSong);
-        setIsPlaying(true);
-      }
-    }
-  };
 
   const audioRef = useRef<HTMLAudioElement>(null);
   const [currentSong, setCurrentSong] = useState<Song | null>(null);
   const [isLiked, setIsLiked] = useState(false);
   const [filteredSongs, setFilteredSongs] = useState<Song[]>([]);
 
-  const handleLike = useCallback(() => {
-    if (!isAuthenticated) {
-      showErrorToast("Zaloguj się, aby polubić utwór");
-      return;
-    }
-    setIsLiked(!isLiked);
-  }, [isAuthenticated, isLiked]);
-
   useEffect(() => {
     if (songs) {
       setFilteredSongs(songs);
     }
   }, [songs]);
+
+  const handlePlayHeader = useCallback(() => {
+    if (!songs.length) return;
+    
+    if (isPlaying) {
+      setIsPlaying(false);
+    } else {
+      if (!currentSongIndex) {
+        dispatch(setCurrentSongIndex(0));
+      }
+      setIsPlaying(true);
+    }
+  }, [isPlaying, songs, currentSongIndex, dispatch]);
 
   if (status === "loading") {
     return <LoadingState error={error} />;
@@ -349,10 +334,8 @@ const MusicPage: React.FC = () => {
         <h1 className="sr-only">Kolekcja Muzyki Bachata - Największa baza utworów online</h1>
         <PlaylistHeader
           filteredSongsCount={filteredSongs.length}
-          onPlay={handlePlay}
+          onPlay={handlePlayHeader}
           isPlaying={isPlaying}
-          onLike={handleLike}
-          isLiked={isLiked}
         />
       </header>
       <nav 
