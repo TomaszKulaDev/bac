@@ -25,6 +25,7 @@ export interface Song {
   __v?: number;
   playlists: string[]; // Tablica ID playlist, do których należy utwór
   thumbnail?: string;
+  level?: SongLevel; // dodajemy opcjonalne pole level
 }
 
 // Interfejs właściwości komponentu odtwarzacza muzyki
@@ -141,3 +142,5 @@ interface LoadMoreButtonProps {
   onClick: () => void;
   remainingSongs?: number;
 }
+
+export type SongLevel = 'beginner' | 'intermediate' | 'advanced' | 'impro';

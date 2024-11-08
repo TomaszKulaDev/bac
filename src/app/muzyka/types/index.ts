@@ -13,6 +13,7 @@ export interface Song {
   __v?: number;
   playlists: string[];
   thumbnail?: string;
+  level?: SongLevel;
 }
 
 export interface Playlist {
@@ -30,3 +31,5 @@ export interface DraggableSong {
 }
 
 // Pozostałe interfejsy...
+
+export type SongLevel = 'beginner' | 'intermediate' | 'advanced' | 'impro';

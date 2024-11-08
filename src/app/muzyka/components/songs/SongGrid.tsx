@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import { Song } from '../../types';
+import { Song, SongLevel } from '../../types';
 import { FaPlay, FaPause, FaBookmark, FaHeart } from 'react-icons/fa';
 import { getYouTubeThumbnail } from '../../utils/youtube';
 import { motion } from 'framer-motion';
@@ -14,6 +14,28 @@ interface SongGridProps {
   onToggleFavorite: (songId: string) => void;
   favorites: Set<string>;
 }
+
+const levelConfig = {
+  beginner: { label: 'Początkujący', color: 'bg-green-500' },
+  intermediate: { label: 'Średni', color: 'bg-yellow-500' },
+  advanced: { label: 'Zaawansowany', color: 'bg-red-500' },
+  impro: { label: 'Impro', color: 'bg-purple-500' }
+} as const;
+
+const LevelBadge: React.FC<{ level: keyof typeof levelConfig }> = ({ level }) => {
+  const config = levelConfig[level];
+  return (
+    <div className={`absolute top-1 right-1 ${config.color} text-white text-xs px-2 py-0.5 rounded-full z-10 opacity-90`}>
+      {config.label}
+    </div>
+  );
+};
+
+const getSongLevel = (song: Song): SongLevel | undefined => {
+  if (song.impro) return 'impro';
+  if (song.beginnerFriendly) return 'beginner';
+  return undefined;
+};
 
 const SongGrid: React.FC<SongGridProps> = ({
   songs,
@@ -33,6 +55,7 @@ const SongGrid: React.FC<SongGridProps> = ({
         {songs.map((song) => {
           const isCurrentSong = song.id === currentSongId;
           const isFavorite = favorites.has(song.id);
+          const level = getSongLevel(song);
           
           return (
             <motion.div
@@ -43,6 +66,7 @@ const SongGrid: React.FC<SongGridProps> = ({
               onClick={() => onSongSelect(song.id)}
             >
               <div className="relative aspect-square rounded-lg overflow-hidden">
+                {level && <LevelBadge level={level} />}
                 <Image
                   src={getYouTubeThumbnail(song.youtubeId)}
                   alt={`${song.title} - ${song.artist}`}
