@@ -31,6 +31,14 @@ const PlaylistSelectorDrawer: React.FC<PlaylistSelectorDrawerProps> = ({
     [isAuthenticated, showErrorToast, onPlayPlaylist, onClose]
   );
 
+  const handleSelect = (playlist: Playlist) => {
+    if (!playlist.id) {
+      console.error('Playlist ID is missing');
+      return;
+    }
+    handlePlaylistSelect(playlist.id);
+  };
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -71,7 +79,7 @@ const PlaylistSelectorDrawer: React.FC<PlaylistSelectorDrawerProps> = ({
                 playlists.map((playlist) => (
                   <motion.button
                     key={playlist.id}
-                    onClick={() => handlePlaylistSelect(playlist.id)}
+                    onClick={() => handleSelect(playlist)}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     className={`w-full text-left p-4 rounded-lg flex items-center justify-between

@@ -4,11 +4,11 @@ import { DragEndEvent } from "@dnd-kit/core";
 
 // Interfejs reprezentujący playlistę
 export interface Playlist {
-  _id: string; // Zmiana z id na _id
-  id?: string; // Opcjonalne id dla kompatybilności
+  _id: string;
+  id: string;
   name: string;
   userId: string;
-  songs: string[]; // Tablica ID piosenek
+  songs: string[];
   createdAt: Date;
 }
 

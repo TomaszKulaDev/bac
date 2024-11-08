@@ -82,6 +82,18 @@ const MusicPage: React.FC = () => {
     updateContainerPadding();
   }, [updateContainerPadding]);
 
+  const mapApiPlaylist = (apiPlaylist: any): Playlist => {
+    const id = apiPlaylist._id || apiPlaylist.id;
+    return {
+      _id: id,
+      id: id,
+      name: apiPlaylist.name,
+      userId: apiPlaylist.userId,
+      songs: apiPlaylist.songs,
+      createdAt: new Date(apiPlaylist.createdAt)
+    };
+  };
+
   const refreshPlaylists = useCallback(async () => {
     try {
       const response = await fetch('/api/playlists', {
@@ -94,7 +106,7 @@ const MusicPage: React.FC = () => {
       
       if (!response.ok) throw new Error('Błąd pobierania playlist');
       const data = await response.json();
-      setPlaylists(data);
+      setPlaylists(data.map(mapApiPlaylist));
     } catch (error) {
       console.error('Błąd odświeżania playlist:', error);
       showErrorToast('Nie udało się odświeżyć playlist');

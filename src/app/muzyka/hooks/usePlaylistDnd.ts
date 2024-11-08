@@ -5,6 +5,11 @@ import { Playlist } from '../types';
 
 export const usePlaylistDnd = (playlist: Playlist, onReorder: (playlistId: string, newOrder: string[]) => void) => {
   const handleDragEnd = useCallback((event: DragEndEvent) => {
+    if (!playlist.id) {
+      console.error('Cannot reorder playlist without ID');
+      return;
+    }
+    
     const { active, over } = event;
     
     if (!over || active.id === over.id) return;

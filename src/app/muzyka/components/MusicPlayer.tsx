@@ -228,8 +228,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
         return;
       }
 
-      const playlist = playlists.find(p => p._id === expandedPlaylist || p.id === expandedPlaylist);
-      const song = songs.find(s => s._id === songId || s.id === songId);
+      const playlist = playlists.find(p => p.id === expandedPlaylist);
+      const song = songs.find(s => s.id === songId);
 
       if (!playlist || !song) {
         showErrorToast("Nie można dodać utworu do playlisty");
