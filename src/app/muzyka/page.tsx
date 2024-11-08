@@ -29,6 +29,7 @@ import RecommendedSongs from "./components/RecommendedSongs";
 import Image from "next/image";
 import { getYouTubeThumbnail } from "./utils/youtube";
 import { usePlaylistData } from "./hooks/usePlaylistData";
+import SongGrid from './components/songs/SongGrid';
 
 const generateUniqueId = () => {
   return Date.now().toString(36) + Math.random().toString(36).substr(2);
@@ -375,6 +376,33 @@ const MusicPage: React.FC = () => {
         }}
         favorites={new Set()}
         expandedPlaylist={expandedPlaylist}
+      />
+      <SongGrid
+        songs={songs}
+        currentSongId={songs[currentSongIndex]?.id}
+        isPlaying={isPlaying}
+        onSongSelect={(songId) => {
+          const index = songs.findIndex(s => s.id === songId);
+          if (index !== -1) {
+            dispatch(setCurrentSongIndex(index));
+            setIsPlaying(true);
+          }
+        }}
+        onAddToPlaylist={(songId) => {
+          if (expandedPlaylist) {
+            playlistManagement.addSongToPlaylist(expandedPlaylist, songId);
+          } else {
+            showErrorToast("Wybierz najpierw playlistę");
+          }
+        }}
+        onToggleFavorite={(songId) => {
+          if (isAuthenticated) {
+            // Implementacja toggle favorite
+          } else {
+            showErrorToast("Musisz być zalogowany, aby dodać do ulubionych");
+          }
+        }}
+        favorites={new Set()}
       />
       <article 
         className="flex-grow flex flex-col lg:flex-row bg-white relative z-10 shadow-xl rounded-t-[2rem] -mt-20"
