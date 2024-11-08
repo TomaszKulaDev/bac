@@ -14,18 +14,14 @@ export interface Playlist {
 
 // Interfejs reprezentujący utwór muzyczny
 export interface Song {
-  _id: string;
   id: string;
   title: string;
   artist: string;
   youtubeId: string;
-  impro: boolean;
-  beginnerFriendly: boolean; // Określa, czy utwór jest przyjazny dla początkujących
-  createdAt: Date;
-  __v?: number;
-  playlists: string[]; // Tablica ID playlist, do których należy utwór
-  thumbnail?: string;
-  level?: SongLevel; // dodajemy opcjonalne pole level
+  beginnerFriendly?: boolean;
+  impro?: boolean;
+  style?: 'bachata' | 'sensual' | 'dominicana' | 'moderna';
+  tempo?: 'slow' | 'medium' | 'fast';
 }
 
 // Interfejs właściwości komponentu odtwarzacza muzyki
