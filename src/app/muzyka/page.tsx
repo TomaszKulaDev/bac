@@ -12,7 +12,6 @@ import {
 } from "@/store/slices/features/songsSlice";
 import { Song, Playlist } from "./types";
 import { RootState } from "@/store/store";
-import BaciataRisingBanner from "./components/BaciataRisingBanner";
 import SongList from "./components/songs/SongList";
 import PlaylistManager from "./components/PlaylistManager";
 import { ToastContainer, toast } from "react-toastify";

@@ -18,7 +18,11 @@ const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
   return (
     <div className="relative min-h-[600px] w-full bg-gradient-to-b from-[#0a1e3b] to-[#2a4a7f] overflow-hidden">
       <div className="absolute inset-0 opacity-10">
-        <div className="absolute inset-0 bg-[url('/patterns/music-notes.svg')] bg-repeat animate-float" />
+        <div className="absolute top-[-50%] left-0 right-0 h-[200%]">
+          <div className="absolute inset-0 bg-[url('/patterns/music-notes.svg')] bg-repeat animate-float-continuous" />
+          <div className="absolute inset-0 bg-[url('/patterns/music-notes.svg')] bg-repeat animate-float-continuous" 
+               style={{ top: '50%' }} />
+        </div>
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
@@ -35,7 +39,7 @@ const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
               animate={{ opacity: 1, y: 0 }}
               className="text-6xl md:text-8xl font-black text-white tracking-tight leading-none mb-6"
             >
-              Bachata Top lista 2024!
+              {`Bachata Top lista ${new Date().getFullYear()}!`}
             </motion.h1>
             
             <motion.p 
@@ -43,7 +47,7 @@ const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
               animate={{ opacity: 1, y: 0 }}
               className="text-xl text-white/80 mb-8"
             >
-              Do nich tańczysz na imprezach w 2024 roku!
+              Do nich tańczysz na imprezach w {new Date().getFullYear()} roku!
             </motion.p>
           </div>
 
