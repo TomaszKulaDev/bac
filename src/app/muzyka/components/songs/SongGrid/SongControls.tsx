@@ -21,19 +21,19 @@ export const SongControls: React.FC<SongControlsProps> = ({
 }) => {
   return (
     <div className="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-      <div className="flex gap-1">
+      <div className="flex gap-2">
         <button
           onClick={(e) => {
             e.stopPropagation();
             onSongSelect(songId);
           }}
-          className="p-1 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
+          className="p-2 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
           aria-label={isCurrentSong && isPlaying ? "Zatrzymaj" : "Odtwórz"}
         >
           {isCurrentSong && isPlaying ? (
-            <FaPause className="w-3 h-3 text-white" />
+            <FaPause className="w-5 h-5 text-white" />
           ) : (
-            <FaPlay className="w-3 h-3 text-white" />
+            <FaPlay className="w-5 h-5 text-white" />
           )}
         </button>
         <button
@@ -41,24 +41,24 @@ export const SongControls: React.FC<SongControlsProps> = ({
             e.stopPropagation();
             onAddToPlaylist(songId);
           }}
-          className="p-1 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
+          className="p-2 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
           aria-label="Dodaj do playlisty"
         >
-          <FaBookmark className="w-3 h-3 text-white" />
+          <FaBookmark className="w-5 h-5 text-white" />
         </button>
         <button
           onClick={(e) => {
             e.stopPropagation();
             onToggleFavorite(songId);
           }}
-          className={`p-1 rounded-full transition-colors ${
+          className={`p-2 rounded-full transition-colors ${
             isFavorite 
               ? 'bg-red-500/50 hover:bg-red-500/60' 
               : 'bg-white/20 hover:bg-white/30'
           }`}
           aria-label="Dodaj do ulubionych"
         >
-          <FaHeart className="w-3 h-3 text-white" />
+          <FaHeart className="w-5 h-5 text-white" />
         </button>
       </div>
     </div>
