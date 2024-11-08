@@ -5,9 +5,14 @@ import { FaChevronDown } from 'react-icons/fa';
 interface LoadMoreButtonProps {
   isVisible: boolean;
   onClick: () => void;
+  remainingSongs?: number;
 }
 
-const LoadMoreButton: React.FC<LoadMoreButtonProps> = ({ isVisible, onClick }) => {
+const LoadMoreButton: React.FC<LoadMoreButtonProps> = ({ 
+  isVisible, 
+  onClick, 
+  remainingSongs 
+}) => {
   if (!isVisible) return null;
 
   return (
@@ -20,7 +25,9 @@ const LoadMoreButton: React.FC<LoadMoreButtonProps> = ({ isVisible, onClick }) =
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
     >
-      <span>Załaduj więcej</span>
+      <span>
+        Załaduj więcej {remainingSongs && `(pozostało ${remainingSongs} utworów)`}
+      </span>
       <FaChevronDown className="text-gray-500" />
     </motion.button>
   );

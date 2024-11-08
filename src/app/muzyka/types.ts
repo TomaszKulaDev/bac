@@ -129,3 +129,15 @@ export interface PlaylistManagerContentProps extends PlaylistManagerProps {
   getSongDetails: (songId: string) => Song | undefined;
   isAuthenticated: boolean;
 }
+
+interface SongListProps {
+  // ... istniejące pola ...
+  visibleSongs: number;
+  onLoadMore: () => void;
+}
+
+interface LoadMoreButtonProps {
+  isVisible: boolean;
+  onClick: () => void;
+  remainingSongs?: number;
+}

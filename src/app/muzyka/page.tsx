@@ -315,20 +315,23 @@ const MusicPage: React.FC = () => {
       itemScope 
       itemType="https://schema.org/MusicPlaylist"
     >
-      <nav aria-label="Ścieżka nawigacji" className="breadcrumbs p-4 text-sm text-gray-600">
-        <ol className="flex items-center space-x-2">
-          <li>
-            <a href="/" className="hover:text-primary-600 transition-colors">
-              Strona główna
-            </a>
-          </li>
-          <li className="flex items-center">
-            <span className="mx-2">/</span>
-            <span aria-current="page" className="font-medium">
-              Muzyka
-            </span>
-          </li>
-        </ol>
+      <nav aria-label="Ścieżka nawigacji" 
+           className="top-line hidden xl:block bg-[#1e2124] h-[14px] w-full m-0 p-0">
+        <div className="container mx-auto">
+          <ol className="flex items-center h-full px-4">
+            <li className="text-[11.2px] leading-[11.2px] font-['Fira_Sans',Arial,Helvetica,sans-serif]">
+              <a href="/" className="text-[#8b8b8b] hover:text-white transition-all">
+                Strona główna
+              </a>
+            </li>
+            <li className="flex items-center text-[11.2px] leading-[11.2px]">
+              <span className="mx-1 text-[#8b8b8b]">/</span>
+              <span aria-current="page" className="font-normal text-[#8b8b8b]">
+                Muzyka
+              </span>
+            </li>
+          </ol>
+        </div>
       </nav>
       <header role="banner">
         <h1 className="sr-only">Kolekcja Muzyki Bachata - Największa baza utworów online</h1>

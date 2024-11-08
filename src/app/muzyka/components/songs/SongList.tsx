@@ -59,6 +59,8 @@ const SongList = memo(({ songs, ...props }: SongListProps) => {
 
   const hasMoreSongs = sortedAndFilteredSongs.length > props.visibleSongs;
 
+  const remainingSongs = sortedAndFilteredSongs.length - props.visibleSongs;
+
   if (error) {
     return (
       <div role="alert" className="p-4 bg-red-50 text-red-600 rounded-lg">
@@ -103,6 +105,7 @@ const SongList = memo(({ songs, ...props }: SongListProps) => {
           <LoadMoreButton 
             isVisible={hasMoreSongs}
             onClick={props.onLoadMore}
+            remainingSongs={remainingSongs}
           />
         </div>
       )}

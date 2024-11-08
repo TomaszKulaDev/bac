@@ -64,7 +64,7 @@ import "../styles/youtube-player.css";
 import { setCurrentPlaylistId } from "@/store/slices/features/playlistSlice";
 import { DebugLogger } from "./DebugLogger";
 import { deletePlaylistAndRefetch } from "@/store/slices/features/playlistSlice";
-import { AppDispatch } from '@/store/store';
+import { AppDispatch } from "@/store/store";
 
 interface MusicPlayerProps {
   songs: Song[];
@@ -153,9 +153,11 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     setIsSmallScreen,
   } = useYouTubePlayer();
 
-  const [visibleSongs, setVisibleSongs] = useState(7);
-  const initialVisibleSongs = 7;
-  const songsPerLoad = 10;
+  const SONGS_PER_LOAD = 25; // Liczba utworów ładowanych na raz
+  const INITIAL_VISIBLE_SONGS = 10; // Początkowa liczba widocznych utworów
+
+  const [visibleSongs, setVisibleSongs] = useState(INITIAL_VISIBLE_SONGS);
+
   const [isMinimalistic, setIsMinimalistic] = useState(false);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   const [userPlaylists, setUserPlaylists] = useState<Playlist[]>([]);
@@ -167,7 +169,14 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
 
   const [sortBy, setSortBy] = useState<SortByType>("date");
   const [sortOrder, setSortOrder] = useState<SortOrderType>("desc");
-  const sortedAndFilteredSongs = useSortedAndFilteredSongs(songs, sortBy, sortOrder, filterText, currentPlaylistId, playlists);
+  const sortedAndFilteredSongs = useSortedAndFilteredSongs(
+    songs,
+    sortBy,
+    sortOrder,
+    filterText,
+    currentPlaylistId,
+    playlists
+  );
 
   const { previousSong, togglePlayback, nextSong } = usePlaybackControls({
     setCurrentPlaylistId,
@@ -187,14 +196,16 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
 
   // Funkcja do ładowania większej liczby utworów
   const loadMoreSongs = useCallback(() => {
-    setVisibleSongs((prevVisible) =>
-      Math.min(prevVisible + songsPerLoad, songs.length)
-    );
-  }, [songsPerLoad, songs.length]);
+    setVisibleSongs((prevVisible) => {
+      const remainingSongs = songs.length - prevVisible;
+      const increment = Math.min(SONGS_PER_LOAD, remainingSongs);
+      return prevVisible + increment;
+    });
+  }, [songs.length]);
 
   // Funkcja do zwijania listy utworów
   const collapseSongList = () => {
-    setVisibleSongs(initialVisibleSongs);
+    setVisibleSongs(INITIAL_VISIBLE_SONGS);
   };
 
   // Zapamiętana lista utworów
@@ -228,8 +239,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
         return;
       }
 
-      const playlist = playlists.find(p => p.id === expandedPlaylist);
-      const song = songs.find(s => s.id === songId);
+      const playlist = playlists.find((p) => p.id === expandedPlaylist);
+      const song = songs.find((s) => s.id === songId);
 
       if (!playlist || !song) {
         showErrorToast("Nie można dodać utworu do playlisty");
@@ -237,14 +248,26 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
       }
 
       if (playlist.songs.includes(songId)) {
-        showInfoToast(`Utwór "${song.title}" jest już w playliście "${playlist.name}"`);
+        showInfoToast(
+          `Utwór "${song.title}" jest już w playliście "${playlist.name}"`
+        );
         return;
       }
 
       onAddToPlaylist(expandedPlaylist, songId);
-      showSuccessToast(`Dodano "${song.title}" do playlisty "${playlist.name}"`);
+      showSuccessToast(
+        `Dodano "${song.title}" do playlisty "${playlist.name}"`
+      );
     },
-    [expandedPlaylist, onAddToPlaylist, songs, playlists, showSuccessToast, showErrorToast, showInfoToast]
+    [
+      expandedPlaylist,
+      onAddToPlaylist,
+      songs,
+      playlists,
+      showSuccessToast,
+      showErrorToast,
+      showInfoToast,
+    ]
   );
 
   const playlistManagement = usePlaylistManagement({
@@ -376,11 +399,11 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   const handleDeletePlaylist = async (playlistId: string) => {
     try {
       await dispatch(deletePlaylistAndRefetch(playlistId)).unwrap();
-      showSuccessToast('Playlista została usunięta');
+      showSuccessToast("Playlista została usunięta");
     } catch (error: any) {
       const typedError = error as { message: string; details?: string };
-      console.error('Błąd podczas usuwania playlisty:', error);
-      showErrorToast(typedError.message || 'Nie udało się usunąć playlisty');
+      console.error("Błąd podczas usuwania playlisty:", error);
+      showErrorToast(typedError.message || "Nie udało się usunąć playlisty");
     }
   };
 
@@ -437,12 +460,21 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
 
   useEffect(() => {
     if (currentSong) {
-      const newIndex = sortedAndFilteredSongs.findIndex(s => s.id === currentSong.id);
+      const newIndex = sortedAndFilteredSongs.findIndex(
+        (s) => s.id === currentSong.id
+      );
       if (newIndex === -1) {
         setIsPlaying(false);
       }
     }
-  }, [sortBy, sortOrder, filterText, currentSong, setIsPlaying, sortedAndFilteredSongs]);
+  }, [
+    sortBy,
+    sortOrder,
+    filterText,
+    currentSong,
+    setIsPlaying,
+    sortedAndFilteredSongs,
+  ]);
 
   // Dodaj nową funkcję handleReturnToMainList
   const handleReturnToMainList = useCallback(() => {
@@ -454,13 +486,13 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     dispatch(setCurrentSongIndex(-1));
     showSuccessToast("Powrócono do głównej listy utworów");
   }, [
-    dispatch, 
-    setSortBy, 
-    setSortOrder, 
-    setFilterText, 
-    setIsPlaying, 
-    showSuccessToast, 
-    setCurrentPlaylistId
+    dispatch,
+    setSortBy,
+    setSortOrder,
+    setFilterText,
+    setIsPlaying,
+    showSuccessToast,
+    setCurrentPlaylistId,
   ]);
 
   return (
@@ -834,8 +866,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           </Tooltip>
         </>
       )}
-      <DebugLogger 
-        playlists={playlists} 
+      <DebugLogger
+        playlists={playlists}
         songs={songs}
         componentName="MusicPlayer"
         additionalInfo={debugInfo}
