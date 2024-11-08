@@ -32,7 +32,7 @@ const DraggableSongItem: React.FC<DraggableSongItemProps> = ({
     transform,
     transition,
     isDragging,
-  } = useSortable({ id: song._id });
+  } = useSortable({ id: song._id || song.id });
 
   const style = {
     transform: CSS.Transform.toString(transform),

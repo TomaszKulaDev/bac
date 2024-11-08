@@ -15,13 +15,17 @@ export interface Playlist {
 // Interfejs reprezentujący utwór muzyczny
 export interface Song {
   id: string;
+  _id?: string;
   title: string;
   artist: string;
   youtubeId: string;
+  createdAt?: string;
   beginnerFriendly?: boolean;
   impro?: boolean;
   style?: 'bachata' | 'sensual' | 'dominicana' | 'moderna';
   tempo?: 'slow' | 'medium' | 'fast';
+  playlists?: string[];
+  thumbnail?: string;
 }
 
 // Interfejs właściwości komponentu odtwarzacza muzyki
@@ -64,12 +68,7 @@ export interface RepeatMode {
 }
 
 // Typy dla opcji sortowania
-export type SortOption =
-  | "date"
-  | "title"
-  | "artist"
-  | "impro"
-  | "beginnerFriendly";
+export type SortOption = SortByType;
 export type SortBy = SortOption;
 export type SortOrder = "asc" | "desc";
 

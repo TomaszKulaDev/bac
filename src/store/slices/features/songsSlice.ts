@@ -163,6 +163,20 @@ export const deleteAllSongsAndRefetch = createAsyncThunk(
   }
 );
 
+interface UpdatePlaylistPayload {
+  songId: string;
+  playlistName: string;
+  shouldAdd: boolean;
+}
+
+const updateSongPlaylists = (song: Song, playlistName: string, shouldAdd: boolean): string[] => {
+  const currentPlaylists = song.playlists ?? [];
+  
+  return shouldAdd 
+    ? [...new Set([...currentPlaylists, playlistName])]
+    : currentPlaylists.filter(p => p !== playlistName);
+};
+
 // Definicja slice'a dla piosenek
 const songsSlice = createSlice({
   name: 'songs',
@@ -188,7 +202,26 @@ const songsSlice = createSlice({
     // Reducer do usuwania piosenki (duplikat deleteSong - można rozważyć usunięcie)
     removeSong: (state, action: PayloadAction<string>) => {
       state.songs = state.songs.filter(song => song.id !== action.payload);
-    }
+    },
+    updatePlaylist: (state, action: PayloadAction<UpdatePlaylistPayload>) => {
+      const song = state.songs.find(s => s.id === action.payload.songId);
+      if (song) {
+        song.playlists = updateSongPlaylists(
+          song, 
+          action.payload.playlistName, 
+          action.payload.shouldAdd
+        );
+      }
+    },
+    cleanupPlaylists: (state, action: PayloadAction<{ validPlaylistNames: string[] }>) => {
+      state.songs.forEach(song => {
+        if (song.playlists) {
+          song.playlists = song.playlists.filter(p => 
+            action.payload.validPlaylistNames.includes(p)
+          );
+        }
+      });
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -241,5 +274,5 @@ const songsSlice = createSlice({
 });
 
 // Eksport akcji i reducera
-export const { addSong, deleteSong, setSongs } = songsSlice.actions;
+export const { addSong, deleteSong, setSongs, updatePlaylist, cleanupPlaylists } = songsSlice.actions;
 export default songsSlice.reducer;

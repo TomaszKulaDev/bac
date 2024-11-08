@@ -1,6 +1,6 @@
 import { Song, SongLevel } from "../../../types";
 
-export type SortByType = 'newest' | 'popular' | 'alphabetical';
+export type SortByType = 'newest' | 'popular' | 'alphabetical' | 'title' | 'artist' | 'date' | 'impro';
 
 export interface SongGridProps {
   songs: Song[];

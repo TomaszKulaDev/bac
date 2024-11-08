@@ -4,6 +4,7 @@ import { Song } from "../types";
 import { FaPlay, FaPause, FaBookmark, FaHeart } from "react-icons/fa";
 import { getYouTubeThumbnail } from "../utils/youtube";
 import { useVideoDuration } from "../hooks/useVideoDuration";
+import { getDateTimestamp } from "../utils/dateHelpers";
 
 interface RecommendedSongsProps {
   songs: Song[];
@@ -18,10 +19,11 @@ interface RecommendedSongsProps {
 
 const getRecommendedSongs = (songs: Song[]) => {
   return [...songs]
-    .sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    )
+    .sort((a, b) => {
+      const bTime = getDateTimestamp(b.createdAt);
+      const aTime = getDateTimestamp(a.createdAt);
+      return bTime - aTime;
+    })
     .slice(0, 5);
 };
 
