@@ -1,3 +1,7 @@
+// UWAGA: Nie używamy .lean() przy zapytaniach do bazy danych, 
+    // ponieważ może to powodować problemy z mapowaniem pól w dokumentach,
+    // szczególnie dla pól z wartościami domyślnymi (np. Boolean).
+    // Problem występował z polem 'dominicana', które nie było zwracane przy użyciu .lean() 
 import { NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/mongodb";
 import { Song } from "@/models/Song";
@@ -8,10 +12,13 @@ export async function GET() {
     const db = await connectToDatabase();
     console.log("GET /api/songs: Connected to database");
 
+    // UWAGA: Nie używamy .lean() przy zapytaniach do bazy danych, 
+    // ponieważ może to powodować problemy z mapowaniem pól w dokumentach,
+    // szczególnie dla pól z wartościami domyślnymi (np. Boolean).
+    // Problem występował z polem 'dominicana', które nie było zwracane przy użyciu .lean()
     const songs = await Song.find({})
       .select('title artist youtubeId impro beginnerFriendly createdAt')
-      .sort({ createdAt: -1 })
-      .lean();
+      .sort({ createdAt: -1 });
 
     return new NextResponse(JSON.stringify(songs), {
       status: 200,
@@ -80,3 +87,7 @@ export async function POST(request: Request) {
     );
   }
 }
+// UWAGA: Nie używamy .lean() przy zapytaniach do bazy danych, 
+    // ponieważ może to powodować problemy z mapowaniem pól w dokumentach,
+    // szczególnie dla pól z wartościami domyślnymi (np. Boolean).
+    // Problem występował z polem 'dominicana', które nie było zwracane przy użyciu .lean()
