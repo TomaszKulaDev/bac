@@ -9,25 +9,37 @@ type FilterOption = {
 
 export const DIFFICULTY_OPTIONS: Record<DifficultyLevel, FilterOption> = {
   unspecified: {
-    label: "Do określenia",
+    label: "Poziom do określenia",
     color: "from-gray-400 to-gray-500",
     icon: "❓",
   },
-  beginner: levelConfig.beginner,
-  intermediate: levelConfig.intermediate,
-  advanced: levelConfig.advanced,
+  beginner: {
+    label: "Początkujący",
+    color: "from-emerald-400 to-emerald-500",
+    icon: "🎓",
+  },
+  intermediate: {
+    label: "Średni",
+    color: "from-amber-400 to-amber-500",
+    icon: "⭐",
+  },
+  advanced: {
+    label: "Zaawansowany",
+    color: "from-red-400 to-red-500",
+    icon: "🔥",
+  },
 };
 
 export const STYLE_OPTIONS: Record<StyleType, FilterOption> = {
   unspecified: {
-    label: "Do określenia",
-    color: "from-gray-400 to-gray-500",
+    label: "Styl do określenia",
+    color: "from-gray-400 to-gray-500", 
     icon: "❓",
   },
   sensual: {
     label: "Sensual",
     color: "from-pink-400 to-pink-500",
-    icon: "💖",
+    icon: "❤️",
   },
   dominicana: {
     label: "Dominicana",
@@ -37,14 +49,14 @@ export const STYLE_OPTIONS: Record<StyleType, FilterOption> = {
   impro: {
     label: "Impro",
     color: "from-purple-400 to-purple-500",
-    icon: "💃",
+    icon: "👥",
   },
 };
 
 export const TEMPO_OPTIONS: Record<TempoType, FilterOption> = {
   unspecified: {
-    label: "Do określenia",
-    color: "from-gray-400 to-gray-500",
+    label: "Tempo do określenia",
+    color: "from-gray-400 to-gray-500", 
     icon: "❓",
   },
   slow: {
@@ -55,7 +67,7 @@ export const TEMPO_OPTIONS: Record<TempoType, FilterOption> = {
   medium: {
     label: "Średnie",
     color: "from-green-400 to-green-500",
-    icon: "🚶",
+    icon: "👣",
   },
   fast: {
     label: "Szybkie",
