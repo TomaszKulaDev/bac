@@ -5,8 +5,9 @@ import { FilterPanel } from './filters/FilterPanel';
 import { useFilters } from './filters/hooks/useFilters';
 import type { SongGridProps } from './types';
 import LoadMoreButton from '../LoadMoreButton';
+import SongGridSkeleton from './SongGridSkeleton';
 
-const SongGrid: React.FC<SongGridProps> = ({ songs, ...props }) => {
+const SongGrid: React.FC<SongGridProps> = ({ songs, isLoading, error, ...props }) => {
   const { filters, updateFilter, clearFilters, filteredSongs, hasActiveFilters } = useFilters(songs);
   const [visibleSongs, setVisibleSongs] = useState<number>(20);
   
@@ -21,6 +22,30 @@ const SongGrid: React.FC<SongGridProps> = ({ songs, ...props }) => {
   const handleLoadMore = useCallback(() => {
     setVisibleSongs(prev => prev + 20);
   }, []);
+
+  if (isLoading) {
+    return (
+      <div className="w-full bg-white p-3">
+        <div className="flex justify-between items-center mb-3">
+          <h2 className="text-lg font-bold text-gray-800">
+            Szybki wybór
+          </h2>
+        </div>
+        <SongGridSkeleton />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="w-full p-4 bg-red-50 rounded-lg">
+        <div className="flex flex-col items-center gap-2">
+          <p className="text-red-600">Wystąpił błąd podczas ładowania utworów</p>
+          <p className="text-sm text-red-500">{error.message}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full bg-white p-3">
@@ -59,7 +84,15 @@ const SongGrid: React.FC<SongGridProps> = ({ songs, ...props }) => {
             transition={{ duration: 0.2 }}
             className="w-full"
           >
-            <SongCard isCurrentSong={false} isFavorite={false} song={song} {...props} />
+            <SongCard 
+              song={song}
+              isCurrentSong={song.id === props.currentSongId}
+              isFavorite={props.favorites.has(song.id)}
+              isPlaying={props.isPlaying}
+              onSongSelect={props.onSongSelect}
+              onAddToPlaylist={props.onAddToPlaylist}
+              onToggleFavorite={props.onToggleFavorite}
+            />
           </motion.div>
         ))}
       </motion.div>

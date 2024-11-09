@@ -21,6 +21,8 @@ export interface SongGridProps {
   favorites: Set<string>;
   filters?: Filters;
   onFilterChange?: (filters: Filters) => void;
+  isLoading?: boolean;
+  error?: Error | null;
 }
 
 export interface SongCardProps {

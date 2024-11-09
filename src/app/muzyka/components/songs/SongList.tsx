@@ -3,7 +3,7 @@ import React, { useState, useMemo, useCallback, useEffect, memo } from "react";
 import Image from "next/image";
 import { FaPlay, FaBookmark, FaHeart } from "react-icons/fa";
 import { Song, SortOption, SortOrder, Playlist } from "../../types";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { getYouTubeThumbnail } from "../../utils/youtube";
 import { useSortedAndFilteredSongs } from "../../hooks/useSortedAndFilteredSongs";
 import SongItem from "./SongItem";
