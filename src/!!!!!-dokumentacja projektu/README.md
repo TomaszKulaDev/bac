@@ -31,9 +31,5 @@ Główne komponenty aplikacji znajdują się w następujących lokalizacjach:
 - Hooki: `/src/app/muzyka/hooks/`
 - Typy: `/src/app/muzyka/types/`
 
-### Dokumentacja
-
-- [Architektura](/docs/architecture/overview.md)
-- [Funkcjonalności](/docs/features/)
-- [API](/docs/api/endpoints.md)
-- [Rozwój](/docs/development/getting-started.md)
+## Szybkie linki
+- [Dodawanie nowych pól do bazy](/docs/database/add-new-field.md)

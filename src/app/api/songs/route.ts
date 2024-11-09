@@ -17,7 +17,7 @@ export async function GET() {
     // szczególnie dla pól z wartościami domyślnymi (np. Boolean).
     // Problem występował z polem 'dominicana', które nie było zwracane przy użyciu .lean()
     const songs = await Song.find({})
-      .select('title artist youtubeId impro beginnerFriendly createdAt')
+      .select('title artist youtubeId impro beginnerFriendly sensual dominicana sredni zaawansowany slow medium fast createdAt')
       .sort({ createdAt: -1 });
 
     return new NextResponse(JSON.stringify(songs), {
@@ -43,7 +43,7 @@ export async function POST(request: Request) {
       throw new Error("Nie udało się połączyć z bazą danych");
     }
 
-    const { title, artist, youtubeLink, impro, beginnerFriendly } = await request.json();
+    const { title, artist, youtubeLink, impro, beginnerFriendly, sensual, dominicana, sredni, zaawansowany, slow, medium, fast } = await request.json();
 
     if (!title || !artist || !youtubeLink) {
       return NextResponse.json(
@@ -62,6 +62,13 @@ export async function POST(request: Request) {
 
     console.log("Received impro value:", impro);
     console.log("Received beginnerFriendly value:", beginnerFriendly);
+    console.log("Received sensual value:", sensual);
+    console.log("Received dominicana value:", dominicana);
+    console.log("Received sredni value:", sredni);
+    console.log("Received zaawansowany value:", zaawansowany);
+    console.log("Received slow value:", slow);
+    console.log("Received medium value:", medium);
+    console.log("Received fast value:", fast);
 
     const newSong = new Song({
       title,
@@ -69,6 +76,13 @@ export async function POST(request: Request) {
       youtubeId,
       impro,
       beginnerFriendly,
+      sensual,
+      dominicana,
+      sredni,
+      zaawansowany,
+      slow,
+      medium,
+      fast,
     });
 
     await newSong.save();
