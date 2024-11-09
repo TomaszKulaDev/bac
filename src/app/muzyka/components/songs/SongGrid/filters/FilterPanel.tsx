@@ -6,7 +6,7 @@ import { DIFFICULTY_OPTIONS, STYLE_OPTIONS, TEMPO_OPTIONS } from './constants';
 
 interface FilterSectionProps<T extends DifficultyLevel | StyleType | TempoType> {
   title: string;
-  options: Record<T, { label: string; icon: string; color: string }>;
+  options: Record<T, { label: string; icon: string; color: string; description: string }>;
   selectedValues: T[];
   onChange: (value: T) => void;
 }
@@ -23,26 +23,32 @@ const FilterSection = <T extends DifficultyLevel | StyleType | TempoType>({
   selectedValues,
   onChange,
 }: FilterSectionProps<T>) => (
-  <div>
-    <h4 className="text-sm font-medium text-gray-600 mb-2">{title}</h4>
+  <div className="relative">
+    <h4 className="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+      {title}
+      <span className="text-xs text-gray-400">
+        {selectedValues.length ? `(${selectedValues.length})` : ''}
+      </span>
+    </h4>
     <div className="flex flex-wrap gap-2">
-      {(Object.entries(options) as [T, { label: string; icon: string; color: string }][]).map(
-        ([value, { label, icon, color }]) => (
+      {(Object.entries(options) as [T, { label: string; icon: string; color: string; description: string }][]).map(
+        ([value, { label, icon, color, description }]) => (
           <motion.button
             key={value}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             onClick={() => onChange(value)}
+            title={description}
             className={`
-              px-3 py-1.5 rounded-full text-sm font-medium
-              flex items-center gap-1.5 transition-all duration-200
+              px-3 py-2 rounded-lg text-sm font-medium
+              flex items-center gap-2 transition-all duration-200
               ${selectedValues.includes(value)
-                ? `bg-gradient-to-r ${color} text-white shadow-sm`
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                ? `bg-gradient-to-r ${color} text-white shadow-md`
+                : 'bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-100'
               }
             `}
           >
-            <span>{icon}</span>
+            <span className="inline-flex items-center justify-center w-5 h-5 text-base">{icon}</span>
             <span>{label}</span>
           </motion.button>
         )
@@ -57,19 +63,31 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
   onClearFilters,
 }) => {
   const hasActiveFilters = Object.values(filters).some(arr => arr.length > 0);
+  const totalFilters = Object.values(filters).reduce((acc, arr) => acc + arr.length, 0);
 
   return (
     <motion.div
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg p-5 mb-6 border border-white/20"
+      className="bg-white/90 backdrop-blur-md rounded-2xl shadow-xl p-6 mb-8 border border-white/30"
     >
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-2.5">
-          <div className="bg-gray-100 p-2 rounded-lg">
-            <FaFilter className="text-gray-600 w-4 h-4" />
+      <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center gap-3">
+          <div className="bg-gradient-to-br from-blue-500 to-blue-600 p-2.5 rounded-xl shadow-md">
+            <FaFilter className="text-white w-4 h-4" />
           </div>
-          <h3 className="text-lg font-bold text-gray-800">Filtry</h3>
+          <div>
+            <h3 className="text-xl font-bold text-gray-800">Filtry</h3>
+            {hasActiveFilters && (
+              <motion.p 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="text-sm text-gray-500 mt-0.5"
+              >
+                Aktywne filtry: {totalFilters}
+              </motion.p>
+            )}
+          </div>
         </div>
         <AnimatePresence>
           {hasActiveFilters && (
@@ -78,18 +96,18 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.8 }}
               onClick={onClearFilters}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-gray-600 
-                hover:text-gray-800 transition-colors bg-gray-100 rounded-full
-                hover:bg-gray-200"
+              className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-red-600 
+                hover:text-red-700 transition-colors bg-red-50 rounded-lg
+                hover:bg-red-100 border border-red-100"
             >
-              <FaTimes className="w-3 h-3" />
-              <span>Wyczyść wszystko</span>
+              <FaTimes className="w-3.5 h-3.5" />
+              <span>Wyczyść filtry</span>
             </motion.button>
           )}
         </AnimatePresence>
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-8">
         <FilterSection
           title="Poziom trudności"
           options={DIFFICULTY_OPTIONS}
