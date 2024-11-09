@@ -40,12 +40,14 @@ export const useFilters = (initialSongs: Song[]) => {
         filters.difficulty.length === 0 ||
         filters.difficulty.some(level => {
           switch (level) {
+            case 'unspecified':
+              return !song.beginnerFriendly && !song.intermediate && !song.advanced;
             case 'beginner':
               return song.beginnerFriendly;
             case 'intermediate':
               return song.intermediate;
             case 'advanced':
-              return song.advanced || song.impro;
+              return song.advanced;
             default:
               return false;
           }
@@ -55,12 +57,14 @@ export const useFilters = (initialSongs: Song[]) => {
         filters.style.length === 0 ||
         filters.style.some(style => {
           switch (style) {
+            case 'unspecified':
+              return !song.sensual && !song.dominicana && !song.impro;
             case 'impro':
               return song.impro;
             case 'sensual':
-              return song.sensual && !song.impro;
+              return song.sensual;
             case 'dominicana':
-              return song.dominicana && !song.impro;
+              return song.dominicana;
             default:
               return false;
           }
@@ -70,6 +74,8 @@ export const useFilters = (initialSongs: Song[]) => {
         filters.tempo.length === 0 ||
         filters.tempo.some(tempo => {
           switch (tempo) {
+            case 'unspecified':
+              return !song.slow && !song.medium && !song.fast;
             case 'slow':
               return song.slow;
             case 'medium':

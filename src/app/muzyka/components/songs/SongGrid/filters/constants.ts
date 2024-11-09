@@ -8,12 +8,22 @@ type FilterOption = {
 };
 
 export const DIFFICULTY_OPTIONS: Record<DifficultyLevel, FilterOption> = {
+  unspecified: {
+    label: "Do określenia",
+    color: "from-gray-400 to-gray-500",
+    icon: "❓",
+  },
   beginner: levelConfig.beginner,
   intermediate: levelConfig.intermediate,
   advanced: levelConfig.advanced,
 };
 
 export const STYLE_OPTIONS: Record<StyleType, FilterOption> = {
+  unspecified: {
+    label: "Do określenia",
+    color: "from-gray-400 to-gray-500",
+    icon: "❓",
+  },
   sensual: {
     label: "Sensual",
     color: "from-pink-400 to-pink-500",
@@ -24,10 +34,19 @@ export const STYLE_OPTIONS: Record<StyleType, FilterOption> = {
     color: "from-yellow-400 to-yellow-500",
     icon: "🌴",
   },
-  impro: levelConfig.impro,
+  impro: {
+    label: "Impro",
+    color: "from-purple-400 to-purple-500",
+    icon: "💃",
+  },
 };
 
 export const TEMPO_OPTIONS: Record<TempoType, FilterOption> = {
+  unspecified: {
+    label: "Do określenia",
+    color: "from-gray-400 to-gray-500",
+    icon: "❓",
+  },
   slow: {
     label: "Wolne",
     color: "from-blue-400 to-blue-500",

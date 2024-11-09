@@ -4,54 +4,36 @@ import { motion } from 'framer-motion';
 import { getYouTubeThumbnail } from '../../../utils/youtube';
 import { LevelBadge } from './LevelBadge';
 import { SongControls } from './SongControls';
-import { getSongLevel } from './utils';
+import { getSongLevel, getSongStyle, getSongTempo } from './utils';
 import type { SongCardProps } from './types';
+import { StyleBadge } from './StyleBadge';
+import { TempoBadge } from './TempoBadge';
+import { BadgeContainer } from './BadgeContainer';
 
-export const SongCard: React.FC<SongCardProps> = ({
-  song,
-  isCurrentSong,
-  isPlaying,
-  isFavorite,
-  onSongSelect,
-  onAddToPlaylist,
-  onToggleFavorite,
-}) => {
-  const level = getSongLevel(song);
-
+export const SongCard: React.FC<SongCardProps> = ({ song, ...props }) => {
   return (
-    <motion.div
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.98 }}
-      className="relative group cursor-pointer bg-gray-50 rounded-lg p-1"
-      onClick={() => onSongSelect(song.id)}
-    >
-      <div className="relative aspect-square rounded-lg overflow-hidden">
-        {level && <LevelBadge level={level} />}
+    <div className="relative group w-full">
+      <div className="relative aspect-video rounded-lg overflow-hidden bg-gray-100">
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-transparent" />
         <Image
           src={getYouTubeThumbnail(song.youtubeId)}
           alt={`${song.title} - ${song.artist}`}
-          width={75}
-          height={75}
-          className="object-cover w-full h-full"
+          fill
+          className="object-cover transition-transform group-hover:scale-105"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          priority
           onError={(e) => {
             const target = e.target as HTMLImageElement;
             target.src = "/images/default-album-cover.jpg";
           }}
         />
-        <SongControls
-          songId={song.id}
-          isCurrentSong={isCurrentSong}
-          isPlaying={isPlaying}
-          isFavorite={isFavorite}
-          onSongSelect={onSongSelect}
-          onAddToPlaylist={onAddToPlaylist}
-          onToggleFavorite={onToggleFavorite}
-        />
+        <BadgeContainer song={song} />
+        <SongControls {...props} songId={song.id} />
       </div>
       <div className="mt-2 px-1">
-        <h3 className="text-xs font-medium text-gray-900 truncate">{song.title}</h3>
+        <h3 className="text-sm font-medium text-gray-900 truncate">{song.title}</h3>
         <p className="text-xs text-gray-600 truncate">{song.artist}</p>
       </div>
-    </motion.div>
+    </div>
   );
 };

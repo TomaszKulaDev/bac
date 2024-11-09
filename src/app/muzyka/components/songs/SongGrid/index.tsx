@@ -5,22 +5,8 @@ import { FilterPanel } from './filters/FilterPanel';
 import { useFilters } from './filters/hooks/useFilters';
 import type { SongGridProps } from './types';
 
-const SongGrid: React.FC<SongGridProps> = ({
-  songs,
-  currentSongId,
-  isPlaying,
-  onSongSelect,
-  onAddToPlaylist,
-  onToggleFavorite,
-  favorites,
-}) => {
-  const {
-    filters,
-    updateFilter,
-    clearFilters,
-    filteredSongs,
-    hasActiveFilters
-  } = useFilters(songs);
+const SongGrid: React.FC<SongGridProps> = ({ songs, ...props }) => {
+  const { filters, updateFilter, clearFilters, filteredSongs, hasActiveFilters } = useFilters(songs);
 
   return (
     <div className="w-full bg-white p-6">
@@ -48,7 +34,7 @@ const SongGrid: React.FC<SongGridProps> = ({
       <AnimatePresence mode="wait">
         <motion.div
           layout
-          className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3"
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4"
         >
           {filteredSongs.map((song) => (
             <motion.div
@@ -58,15 +44,13 @@ const SongGrid: React.FC<SongGridProps> = ({
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
               transition={{ duration: 0.2 }}
+              className="w-full"
             >
               <SongCard
                 song={song}
-                isCurrentSong={song.id === currentSongId}
-                isPlaying={isPlaying}
-                isFavorite={favorites.has(song.id)}
-                onSongSelect={onSongSelect}
-                onAddToPlaylist={onAddToPlaylist}
-                onToggleFavorite={onToggleFavorite}
+                {...props}
+                isCurrentSong={song.id === props.currentSongId}
+                isFavorite={props.favorites.has(song.id)}
               />
             </motion.div>
           ))}

@@ -1,9 +1,9 @@
 import { Song, SongLevel } from "../../../types";
 
 export type SortByType = 'newest' | 'popular' | 'alphabetical';
-export type DifficultyLevel = 'beginner' | 'intermediate' | 'advanced';
-export type StyleType = 'sensual' | 'dominicana' | 'impro';
-export type TempoType = 'slow' | 'medium' | 'fast';
+export type DifficultyLevel = 'unspecified' | 'beginner' | 'intermediate' | 'advanced';
+export type StyleType = 'unspecified' | 'sensual' | 'dominicana' | 'impro';
+export type TempoType = 'unspecified' | 'slow' | 'medium' | 'fast';
 
 export interface Filters {
   difficulty: DifficultyLevel[];
