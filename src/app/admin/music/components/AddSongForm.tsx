@@ -10,8 +10,8 @@ interface AddSongFormProps {
     beginnerFriendly: boolean;
     sensual: boolean;
     dominicana: boolean;
-    sredni: boolean;
-    zaawansowany: boolean;
+    intermediate: boolean;
+    advanced: boolean;
     slow: boolean;
     medium: boolean;
     fast: boolean;
@@ -27,8 +27,8 @@ const AddSongForm: React.FC<AddSongFormProps> = ({ onAddSong }) => {
     beginnerFriendly: false,
     sensual: false,
     dominicana: false,
-    sredni: false,
-    zaawansowany: false,
+    intermediate: false,
+    advanced: false,
     slow: false,
     medium: false,
     fast: false,
@@ -79,8 +79,8 @@ const AddSongForm: React.FC<AddSongFormProps> = ({ onAddSong }) => {
         beginnerFriendly: false,
         sensual: false,
         dominicana: false,
-        sredni: false,
-        zaawansowany: false,
+        intermediate: false,
+        advanced: false,
         slow: false,
         medium: false,
         fast: false,
@@ -175,17 +175,24 @@ const AddSongForm: React.FC<AddSongFormProps> = ({ onAddSong }) => {
         </div>
         <div className="space-y-6">
           <div className="bg-white p-4 rounded-lg shadow-sm">
-            <h3 className="text-md font-semibold text-gray-700 mb-3 border-b pb-2">Styl tańca</h3>
+            <h3 className="text-md font-semibold text-gray-700 mb-3 border-b pb-2">
+              Styl tańca
+            </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               <div className="flex items-center">
                 <input
                   id="impro"
                   type="checkbox"
                   checked={newSong.impro}
-                  onChange={(e) => setNewSong({ ...newSong, impro: e.target.checked })}
+                  onChange={(e) =>
+                    setNewSong({ ...newSong, impro: e.target.checked })
+                  }
                   className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                 />
-                <label htmlFor="impro" className="ml-2 block text-sm text-gray-900">
+                <label
+                  htmlFor="impro"
+                  className="ml-2 block text-sm text-gray-900"
+                >
                   Impro
                 </label>
               </div>
@@ -194,10 +201,15 @@ const AddSongForm: React.FC<AddSongFormProps> = ({ onAddSong }) => {
                   id="sensual"
                   type="checkbox"
                   checked={newSong.sensual}
-                  onChange={(e) => setNewSong({ ...newSong, sensual: e.target.checked })}
+                  onChange={(e) =>
+                    setNewSong({ ...newSong, sensual: e.target.checked })
+                  }
                   className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                 />
-                <label htmlFor="sensual" className="ml-2 block text-sm text-gray-900">
+                <label
+                  htmlFor="sensual"
+                  className="ml-2 block text-sm text-gray-900"
+                >
                   Sensual
                 </label>
               </div>
@@ -206,10 +218,15 @@ const AddSongForm: React.FC<AddSongFormProps> = ({ onAddSong }) => {
                   id="dominicana"
                   type="checkbox"
                   checked={newSong.dominicana}
-                  onChange={(e) => setNewSong({ ...newSong, dominicana: e.target.checked })}
+                  onChange={(e) =>
+                    setNewSong({ ...newSong, dominicana: e.target.checked })
+                  }
                   className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                 />
-                <label htmlFor="dominicana" className="ml-2 block text-sm text-gray-900">
+                <label
+                  htmlFor="dominicana"
+                  className="ml-2 block text-sm text-gray-900"
+                >
                   Dominicana
                 </label>
               </div>
@@ -217,41 +234,61 @@ const AddSongForm: React.FC<AddSongFormProps> = ({ onAddSong }) => {
           </div>
 
           <div className="bg-white p-4 rounded-lg shadow-sm">
-            <h3 className="text-md font-semibold text-gray-700 mb-3 border-b pb-2">Poziom zaawansowania</h3>
+            <h3 className="text-md font-semibold text-gray-700 mb-3 border-b pb-2">
+              Poziom zaawansowania
+            </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               <div className="flex items-center">
                 <input
                   id="beginnerFriendly"
                   type="checkbox"
                   checked={newSong.beginnerFriendly}
-                  onChange={(e) => setNewSong({ ...newSong, beginnerFriendly: e.target.checked })}
+                  onChange={(e) =>
+                    setNewSong({
+                      ...newSong,
+                      beginnerFriendly: e.target.checked,
+                    })
+                  }
                   className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                 />
-                <label htmlFor="beginnerFriendly" className="ml-2 block text-sm text-gray-900">
+                <label
+                  htmlFor="beginnerFriendly"
+                  className="ml-2 block text-sm text-gray-900"
+                >
                   Początkujący
                 </label>
               </div>
               <div className="flex items-center">
                 <input
-                  id="sredni"
+                  id="intermediate"
                   type="checkbox"
-                  checked={newSong.sredni}
-                  onChange={(e) => setNewSong({ ...newSong, sredni: e.target.checked })}
+                  checked={newSong.intermediate}
+                  onChange={(e) =>
+                    setNewSong({ ...newSong, intermediate: e.target.checked })
+                  }
                   className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                 />
-                <label htmlFor="sredni" className="ml-2 block text-sm text-gray-900">
+                <label
+                  htmlFor="intermediate"
+                  className="ml-2 block text-sm text-gray-900"
+                >
                   Średniozaawansowany
                 </label>
               </div>
               <div className="flex items-center">
                 <input
-                  id="zaawansowany"
+                  id="advanced"
                   type="checkbox"
-                  checked={newSong.zaawansowany}
-                  onChange={(e) => setNewSong({ ...newSong, zaawansowany: e.target.checked })}
+                  checked={newSong.advanced}
+                  onChange={(e) =>
+                    setNewSong({ ...newSong, advanced: e.target.checked })
+                  }
                   className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                 />
-                <label htmlFor="zaawansowany" className="ml-2 block text-sm text-gray-900">
+                <label
+                  htmlFor="zaawansowany"
+                  className="ml-2 block text-sm text-gray-900"
+                >
                   Zaawansowany
                 </label>
               </div>
@@ -259,17 +296,24 @@ const AddSongForm: React.FC<AddSongFormProps> = ({ onAddSong }) => {
           </div>
 
           <div className="bg-white p-4 rounded-lg shadow-sm">
-            <h3 className="text-md font-semibold text-gray-700 mb-3 border-b pb-2">Tempo muzyki</h3>
+            <h3 className="text-md font-semibold text-gray-700 mb-3 border-b pb-2">
+              Tempo muzyki
+            </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               <div className="flex items-center">
                 <input
                   id="slow"
                   type="checkbox"
                   checked={newSong.slow}
-                  onChange={(e) => setNewSong({ ...newSong, slow: e.target.checked })}
+                  onChange={(e) =>
+                    setNewSong({ ...newSong, slow: e.target.checked })
+                  }
                   className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                 />
-                <label htmlFor="slow" className="ml-2 block text-sm text-gray-900">
+                <label
+                  htmlFor="slow"
+                  className="ml-2 block text-sm text-gray-900"
+                >
                   Wolne
                 </label>
               </div>
@@ -278,10 +322,15 @@ const AddSongForm: React.FC<AddSongFormProps> = ({ onAddSong }) => {
                   id="medium"
                   type="checkbox"
                   checked={newSong.medium}
-                  onChange={(e) => setNewSong({ ...newSong, medium: e.target.checked })}
+                  onChange={(e) =>
+                    setNewSong({ ...newSong, medium: e.target.checked })
+                  }
                   className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                 />
-                <label htmlFor="medium" className="ml-2 block text-sm text-gray-900">
+                <label
+                  htmlFor="medium"
+                  className="ml-2 block text-sm text-gray-900"
+                >
                   Średnie
                 </label>
               </div>
@@ -290,10 +339,15 @@ const AddSongForm: React.FC<AddSongFormProps> = ({ onAddSong }) => {
                   id="fast"
                   type="checkbox"
                   checked={newSong.fast}
-                  onChange={(e) => setNewSong({ ...newSong, fast: e.target.checked })}
+                  onChange={(e) =>
+                    setNewSong({ ...newSong, fast: e.target.checked })
+                  }
                   className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                 />
-                <label htmlFor="fast" className="ml-2 block text-sm text-gray-900">
+                <label
+                  htmlFor="fast"
+                  className="ml-2 block text-sm text-gray-900"
+                >
                   Szybkie
                 </label>
               </div>

@@ -20,9 +20,16 @@ export interface Song {
   title: string;
   artist: string;
   youtubeId: string;
-  impro?: boolean;
-  beginnerFriendly?: boolean; // Określa, czy utwór jest przyjazny dla początkujących
-  createdAt: Date;
+  beginnerFriendly: boolean;
+  intermediate: boolean;
+  advanced: boolean;
+  impro: boolean;
+  sensual: boolean;
+  dominicana: boolean;
+  slow: boolean;
+  medium: boolean;
+  fast: boolean;
+  createdAt: string;
   __v?: number;
   playlists: string[]; // Tablica ID playlist, do których należy utwór
   thumbnail?: string;
