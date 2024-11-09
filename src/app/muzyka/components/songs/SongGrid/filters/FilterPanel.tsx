@@ -62,12 +62,14 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
     <motion.div
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-lg shadow-sm p-4 mb-6 border border-gray-100"
+      className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg p-5 mb-6 border border-white/20"
     >
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-2">
-          <FaFilter className="text-gray-500" />
-          <h3 className="text-lg font-semibold text-gray-700">Filtry</h3>
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center gap-2.5">
+          <div className="bg-gray-100 p-2 rounded-lg">
+            <FaFilter className="text-gray-600 w-4 h-4" />
+          </div>
+          <h3 className="text-lg font-bold text-gray-800">Filtry</h3>
         </div>
         <AnimatePresence>
           {hasActiveFilters && (
@@ -76,16 +78,18 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.8 }}
               onClick={onClearFilters}
-              className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-gray-600 
+                hover:text-gray-800 transition-colors bg-gray-100 rounded-full
+                hover:bg-gray-200"
             >
               <FaTimes className="w-3 h-3" />
-              <span>Wyczyść filtry</span>
+              <span>Wyczyść wszystko</span>
             </motion.button>
           )}
         </AnimatePresence>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-6">
         <FilterSection
           title="Poziom trudności"
           options={DIFFICULTY_OPTIONS}
@@ -94,14 +98,14 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
         />
         
         <FilterSection
-          title="Styl"
+          title="Styl bachaty"
           options={STYLE_OPTIONS}
           selectedValues={filters.style}
           onChange={(value) => onFilterChange('style', value)}
         />
         
         <FilterSection
-          title="Tempo"
+          title="Tempo utworu"
           options={TEMPO_OPTIONS}
           selectedValues={filters.tempo}
           onChange={(value) => onFilterChange('tempo', value)}
