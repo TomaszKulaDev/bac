@@ -1,12 +1,26 @@
-import React from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SongCard } from './SongCard';
 import { FilterPanel } from './filters/FilterPanel';
 import { useFilters } from './filters/hooks/useFilters';
 import type { SongGridProps } from './types';
+import LoadMoreButton from '../LoadMoreButton';
 
 const SongGrid: React.FC<SongGridProps> = ({ songs, ...props }) => {
   const { filters, updateFilter, clearFilters, filteredSongs, hasActiveFilters } = useFilters(songs);
+  const [visibleSongs, setVisibleSongs] = useState<number>(20);
+  
+  const currentSongs = useMemo(() => 
+    filteredSongs.slice(0, visibleSongs),
+    [filteredSongs, visibleSongs]
+  );
+
+  const hasMoreSongs = filteredSongs.length > visibleSongs;
+  const remainingSongs = filteredSongs.length - visibleSongs;
+
+  const handleLoadMore = useCallback(() => {
+    setVisibleSongs(prev => prev + 20);
+  }, []);
 
   return (
     <div className="w-full bg-white p-3">
@@ -35,7 +49,7 @@ const SongGrid: React.FC<SongGridProps> = ({ songs, ...props }) => {
         layout
         className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3"
       >
-        {filteredSongs.map((song) => (
+        {currentSongs.map((song) => (
           <motion.div
             key={song.id}
             layout
@@ -45,15 +59,18 @@ const SongGrid: React.FC<SongGridProps> = ({ songs, ...props }) => {
             transition={{ duration: 0.2 }}
             className="w-full"
           >
-            <SongCard
-              song={song}
-              {...props}
-              isCurrentSong={song.id === props.currentSongId}
-              isFavorite={props.favorites.has(song.id)}
-            />
+            <SongCard isCurrentSong={false} isFavorite={false} song={song} {...props} />
           </motion.div>
         ))}
       </motion.div>
+
+      {hasMoreSongs && (
+        <LoadMoreButton 
+          isVisible={hasMoreSongs}
+          onClick={handleLoadMore}
+          remainingSongs={remainingSongs}
+        />
+      )}
     </div>
   );
 };
