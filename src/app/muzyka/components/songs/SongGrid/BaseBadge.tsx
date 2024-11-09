@@ -21,8 +21,8 @@ export const BaseBadge: React.FC<BaseBadgeProps> = ({ icon, label, color }) => {
       initial={{ opacity: 0, y: -5 }}
       animate={{ opacity: 1, y: 0 }}
     >
-      <span className="text-[11px] drop-shadow-sm">{icon}</span>
-      <span className="truncate max-w-[48px] drop-shadow-sm">{label}</span>
+      <span className="inline-flex items-center justify-center w-[16px] h-[16px] text-[13px] leading-none">{icon}</span>
+      <span className="truncate max-w-[48px] drop-shadow-sm leading-none">{label}</span>
     </motion.div>
   );
 };
