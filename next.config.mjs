@@ -27,6 +27,14 @@ const nextConfig = {
       },
     ],
   },
+  // Dodajemy konfigurację source maps
+  webpack: (config, { dev, isServer }) => {
+    if (!dev) {
+      config.devtool = false;
+    }
+    return config;
+  },
+  productionBrowserSourceMaps: false,
   async headers() {
     return [
       {

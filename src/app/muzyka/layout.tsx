@@ -5,69 +5,72 @@
 import { metadata } from "./metadata";
 
 // Eksportujemy metadane, aby Next.js mógł je wykorzystać
-export { metadata };
+// export { metadata };
 
 // Główny komponent Layout, który opakowuje zawartość podstron
 export default function Layout({
   children, // children to komponenty podstron, które będą renderowane wewnątrz layoutu
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   // Definiujemy strukturę danych JSON-LD dla wyszukiwarek
   // JSON-LD to format służący do przekazywania ustrukturyzowanych danych
   const jsonLd = {
     "@context": "https://schema.org", // Określa kontekst Schema.org
     "@type": "MusicPlaylist", // Typ treści - playlista muzyczna
-    "name": "Kolekcja Bachaty",
-    "description": "Największa kolekcja muzyki bachata online",
-    "numTracks": "100+", // Liczba utworów
-    "genre": "Bachata",
-    "keywords": "bachata, muzyka do tańca, dominican bachata, bachata sensual",
-    "provider": { // Informacje o dostawcy treści
+    name: "Kolekcja Bachaty",
+    description: "Największa kolekcja muzyki bachata online",
+    numTracks: "100+", // Liczba utworów
+    genre: "Bachata",
+    keywords: "bachata, muzyka do tańca, dominican bachata, bachata sensual",
+    provider: {
+      // Informacje o dostawcy treści
       "@type": "Organization",
-      "name": "Baciata.pl",
-      "url": "https://www.baciata.pl",
-      "logo": {
+      name: "Baciata.pl",
+      url: "https://www.baciata.pl",
+      logo: {
         "@type": "ImageObject",
-        "url": "https://www.baciata.pl/logo.png"
+        url: "https://www.baciata.pl/logo.png",
       },
-      "sameAs": [
+      sameAs: [
         "https://www.facebook.com/baciata",
-        "https://www.instagram.com/baciata_pl/"
-      ]
+        "https://www.instagram.com/baciata_pl/",
+      ],
     },
-    "aggregateRating": { // Zagregowana ocena użytkowników
+    aggregateRating: {
+      // Zagregowana ocena użytkowników
       "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "ratingCount": "1250"
+      ratingValue: "4.8",
+      ratingCount: "1250",
     },
-    "offers": { // Informacje o ofercie
-      "@type": "Offer", 
-      "price": "0",
-      "priceCurrency": "PLN",
-      "availability": "https://schema.org/InStock"
+    offers: {
+      // Informacje o ofercie
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "PLN",
+      availability: "https://schema.org/InStock",
     },
-    "breadcrumb": {
+    breadcrumb: {
       "@type": "BreadcrumbList",
-      "itemListElement": [
+      itemListElement: [
         {
           "@type": "ListItem",
-          "position": 1,
-          "name": "Strona główna",
-          "item": "https://www.baciata.pl"
+          position: 1,
+          name: "Strona główna",
+          item: "https://www.baciata.pl",
         },
         {
           "@type": "ListItem",
-          "position": 2,
-          "name": "Muzyka",
-          "item": "https://www.baciata.pl/muzyka"
-        }
-      ]
+          position: 2,
+          name: "Muzyka",
+          item: "https://www.baciata.pl/muzyka",
+        },
+      ],
     },
-    "mainEntityOfPage": {
+    mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": "https://www.baciata.pl/muzyka"
-    }
+      "@id": "https://www.baciata.pl/muzyka",
+    },
   };
 
   return (
@@ -76,7 +79,7 @@ export default function Layout({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(jsonLd)
+          __html: JSON.stringify(jsonLd),
         }}
       />
       {/* Renderujemy właściwą zawartość podstrony */}
