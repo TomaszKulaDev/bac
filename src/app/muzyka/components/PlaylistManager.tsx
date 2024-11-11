@@ -110,7 +110,10 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
   };
 
   const handlePlaylistUpdate = async (playlistId: string, data: Partial<Playlist>) => {
-    if (!playlistId) return;
+    if (!playlistId || !isAuthenticated) {
+      showErrorToast('Musisz być zalogowany, aby zarządzać playlistami');
+      return;
+    }
     
     try {
       const response = await fetch(`/api/playlists/${playlistId}`, {

@@ -30,6 +30,7 @@ import Image from "next/image";
 import { getYouTubeThumbnail } from "./utils/youtube";
 import { usePlaylistData } from "./hooks/usePlaylistData";
 import SongGrid from './components/songs/SongGrid';
+import { useSecuredPlaylistOperations } from "./hooks/useSecuredPlaylistOperations";
 
 const generateUniqueId = () => {
   return Date.now().toString(36) + Math.random().toString(36).substr(2);
@@ -94,24 +95,33 @@ const MusicPage: React.FC = () => {
     };
   };
 
+  const { secureOperation } = useSecuredPlaylistOperations({
+    isAuthenticated,
+    showErrorToast,
+    showSuccessToast
+  });
+
   const refreshPlaylists = useCallback(async () => {
-    try {
-      const response = await fetch('/api/playlists', {
-        cache: 'no-store',
-        headers: {
-          'Cache-Control': 'no-cache',
-          'Pragma': 'no-cache'
-        }
-      });
-      
-      if (!response.ok) throw new Error('Błąd pobierania playlist');
-      const data = await response.json();
-      setPlaylists(data.map(mapApiPlaylist));
-    } catch (error) {
-      console.error('Błąd odświeżania playlist:', error);
-      showErrorToast('Nie udało się odświeżyć playlist');
-    }
-  }, [showErrorToast]);
+    await secureOperation(
+      async () => {
+        const response = await fetch('/api/playlists', {
+          cache: 'no-store',
+          headers: {
+            'Cache-Control': 'no-cache',
+            'Pragma': 'no-cache'
+          }
+        });
+        
+        if (!response.ok) throw new Error('Błąd pobierania playlist');
+        const data = await response.json();
+        setPlaylists(data.map(mapApiPlaylist));
+      },
+      {
+        requireAuth: true,
+        errorMessage: 'Nie można odświeżyć playlist - brak dostępu'
+      }
+    );
+  }, [secureOperation]);
 
   useEffect(() => {
     refreshPlaylists();

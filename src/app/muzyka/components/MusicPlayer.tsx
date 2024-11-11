@@ -65,6 +65,7 @@ import { setCurrentPlaylistId } from "@/store/slices/features/playlistSlice";
 import { DebugLogger } from "./DebugLogger";
 import { deletePlaylistAndRefetch } from "@/store/slices/features/playlistSlice";
 import { AppDispatch } from "@/store/store";
+import { useSecuredPlaylistOperations } from "../hooks/useSecuredPlaylistOperations";
 
 interface MusicPlayerProps {
   songs: Song[];
@@ -396,15 +397,20 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   }, []);
 
   // Funkcje do zarządzania playlistami
+  const { secureOperation } = useSecuredPlaylistOperations({
+    isAuthenticated,
+    showErrorToast,
+    showSuccessToast
+  });
+
   const handleDeletePlaylist = async (playlistId: string) => {
-    try {
-      await dispatch(deletePlaylistAndRefetch(playlistId)).unwrap();
-      showSuccessToast("Playlista została usunięta");
-    } catch (error: any) {
-      const typedError = error as { message: string; details?: string };
-      console.error("Błąd podczas usuwania playlisty:", error);
-      showErrorToast(typedError.message || "Nie udało się usunąć playlisty");
-    }
+    await secureOperation(
+      () => dispatch(deletePlaylistAndRefetch(playlistId)).unwrap(),
+      {
+        errorMessage: 'Nie masz uprawnień do usunięcia playlisty',
+        successMessage: 'Playlista została usunięta'
+      }
+    );
   };
 
   const handleRenamePlaylist = (id: string, newName: string) => {
@@ -484,7 +490,11 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     setSortOrder("asc");
     setFilterText("");
     dispatch(setCurrentSongIndex(-1));
-    showSuccessToast("Powrócono do głównej listy utworów");
+    
+    // Pokazujemy toast tylko dla zalogowanych użytkowników
+    if (isAuthenticated) {
+      showSuccessToast("Powrócono do głównej listy utworów");
+    }
   }, [
     dispatch,
     setSortBy,
@@ -493,6 +503,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     setIsPlaying,
     showSuccessToast,
     setCurrentPlaylistId,
+    isAuthenticated
   ]);
 
   return (

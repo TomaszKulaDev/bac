@@ -6,6 +6,7 @@ import { Playlist, Song } from "../types";
 import { DragEndEvent } from "@dnd-kit/core";
 import { AppDispatch } from "@/store/store";
 import { validatePlaylistTitle } from "../utils/validation";
+import { useSecuredPlaylistOperations } from "./useSecuredPlaylistOperations";
 
 export interface UsePlaylistManagementProps {
   playlists: Playlist[];
@@ -37,6 +38,11 @@ export const usePlaylistManagement = ({
   setCurrentPlaylistId,
 }: UsePlaylistManagementProps) => {
   const dispatch = useDispatch<AppDispatch>();
+  const { secureOperation } = useSecuredPlaylistOperations({
+    isAuthenticated,
+    showErrorToast,
+    showSuccessToast
+  });
 
   const handleDragEnd = useCallback(
     (event: DragEndEvent, currentPlaylist: Playlist) => {
@@ -82,54 +88,49 @@ export const usePlaylistManagement = ({
 
   const addSongToPlaylist = useCallback(
     async (playlistId: string, songId: string) => {
-      if (!playlistId || !songId) {
-        showErrorToast("Nieprawidłowe dane utworu lub playlisty");
-        return;
-      }
+      await secureOperation(
+        async () => {
+          if (!playlistId || !songId) {
+            throw new Error("Nieprawidłowe dane utworu lub playlisty");
+          }
 
-      if (!isAuthenticated) {
-        showErrorToast("Musisz być zalogowany, aby dodawać utwory do playlisty.");
-        return;
-      }
+          const playlist = playlists.find((p) => (p._id || p.id) === playlistId);
+          const song = songs.find((s) => (s._id || s.id) === songId);
 
-      const playlist = playlists.find((p) => (p._id || p.id) === playlistId);
-      const song = songs.find((s) => (s._id || s.id) === songId);
+          if (!playlist || !song) {
+            throw new Error("Nie można dodać utworu do playlisty");
+          }
 
-      if (!playlist || !song) {
-        showErrorToast("Nie można dodać utworu do playlisty.");
-        return;
-      }
+          if (playlist.songs.includes(songId)) {
+            showInfoToast(`Utwór "${song.title}" jest już w playliście "${playlist.name}"`);
+            return;
+          }
 
-      if (playlist.songs.includes(songId)) {
-        showInfoToast(`Utwór "${song.title}" jest już w playliście "${playlist.name}"`);
-        return;
-      }
+          const response = await fetch(`/api/playlists/${playlistId}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ songId }),
+          });
 
-      try {
-        const response = await fetch(`/api/playlists/${playlistId}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ songId }),
-        });
+          if (!response.ok) {
+            throw new Error('Nie udało się dodać utworu do playlisty');
+          }
 
-        if (!response.ok) {
-          throw new Error('Failed to add song to playlist');
+          onUpdatePlaylists((prevPlaylists) =>
+            prevPlaylists.map((p) =>
+              (p._id || p.id) === playlistId ? { ...p, songs: [...p.songs, songId] } : p
+            )
+          );
+        },
+        {
+          errorMessage: "Nie udało się dodać utworu do playlisty",
+          successMessage: "Utwór został dodany do playlisty"
         }
-
-        onUpdatePlaylists((prevPlaylists) =>
-          prevPlaylists.map((p) =>
-            (p._id || p.id) === playlistId ? { ...p, songs: [...p.songs, songId] } : p
-          )
-        );
-
-        showSuccessToast("Utwór został dodany do playlisty");
-      } catch {
-        showErrorToast("Nie udało się dodać utworu do playlisty");
-      }
+      );
     },
-    [playlists, songs, isAuthenticated, showErrorToast, showInfoToast, onUpdatePlaylists, showSuccessToast]
+    [secureOperation, playlists, songs, onUpdatePlaylists, showInfoToast]
   );
 
   const removeSongFromPlaylist = useCallback(
