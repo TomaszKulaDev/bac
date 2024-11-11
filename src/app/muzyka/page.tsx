@@ -83,7 +83,7 @@ const MusicPage: React.FC = () => {
     updateContainerPadding();
   }, [updateContainerPadding]);
 
-  const mapApiPlaylist = (apiPlaylist: any): Playlist => {
+  const mapApiPlaylist = useCallback((apiPlaylist: any): Playlist => {
     const id = apiPlaylist._id || apiPlaylist.id;
     return {
       _id: id,
@@ -93,7 +93,7 @@ const MusicPage: React.FC = () => {
       songs: apiPlaylist.songs,
       createdAt: new Date(apiPlaylist.createdAt)
     };
-  };
+  }, []);
 
   const { secureOperation } = useSecuredPlaylistOperations({
     isAuthenticated,
@@ -102,6 +102,11 @@ const MusicPage: React.FC = () => {
   });
 
   const refreshPlaylists = useCallback(async () => {
+    if (!isAuthenticated) {
+      setPlaylists([]);
+      return;
+    }
+
     await secureOperation(
       async () => {
         const response = await fetch('/api/playlists', {
@@ -121,11 +126,15 @@ const MusicPage: React.FC = () => {
         errorMessage: 'Nie można odświeżyć playlist - brak dostępu'
       }
     );
-  }, [secureOperation]);
+  }, [secureOperation, isAuthenticated, mapApiPlaylist]);
 
   useEffect(() => {
-    refreshPlaylists();
-  }, [refreshPlaylists]);
+    if (isAuthenticated) {
+      refreshPlaylists();
+    } else {
+      setPlaylists([]);
+    }
+  }, [isAuthenticated, refreshPlaylists]);
 
   const handleCreateEmptyPlaylist = async (name: string) => {
     try {
@@ -244,24 +253,6 @@ const MusicPage: React.FC = () => {
       nextSong();
     }
   }, [isPlaying, nextSong]);
-
-  const fetchPlaylists = useCallback(async () => {
-    try {
-      const response = await fetch('/api/playlists', {
-        cache: 'no-store',
-        headers: {
-          'Cache-Control': 'no-cache',
-          'Pragma': 'no-cache'
-        }
-      });
-      if (!response.ok) throw new Error('Błąd pobierania playlist');
-      const data = await response.json();
-      setPlaylists(data);
-    } catch (error) {
-      console.error('Błąd:', error);
-      toast.error('Nie udało się załadować playlist');
-    }
-  }, []);
 
   const handleDeletePlaylist = async (playlistId: string) => {
     try {
