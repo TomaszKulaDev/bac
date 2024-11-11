@@ -256,19 +256,8 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
       }
 
       onAddToPlaylist(expandedPlaylist, songId);
-      showSuccessToast(
-        `Dodano "${song.title}" do playlisty "${playlist.name}"`
-      );
     },
-    [
-      expandedPlaylist,
-      onAddToPlaylist,
-      songs,
-      playlists,
-      showSuccessToast,
-      showErrorToast,
-      showInfoToast,
-    ]
+    [expandedPlaylist, onAddToPlaylist, songs, playlists, showErrorToast, showInfoToast]
   );
 
   const playlistManagement = usePlaylistManagement({
