@@ -23,8 +23,8 @@ const SongGrid: React.FC<SongGridProps> = ({ songs, ...props }) => {
   }, []);
 
   return (
-    <div className="w-full bg-white p-2 pb-16">
-      <div className="flex justify-between items-center mb-2">
+    <div className="w-full bg-white p-1 pb-16">
+      <div className="flex justify-between items-center mb-2 px-2">
         <h2 className="text-lg font-bold text-gray-800">
           Szybki wybór
         </h2>
@@ -47,7 +47,7 @@ const SongGrid: React.FC<SongGridProps> = ({ songs, ...props }) => {
 
       <motion.div
         layout
-        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-3 p-1"
+        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-7 2xl:grid-cols-8 gap-2 px-1"
       >
         {currentSongs.map((song) => (
           <motion.div
