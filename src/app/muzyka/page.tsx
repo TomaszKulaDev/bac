@@ -71,13 +71,18 @@ const MusicPage: React.FC = () => {
     []
   );
 
-  const { playlists: playlistData, error: playlistError, isLoading: playlistsLoading } = usePlaylistData();
+  const { playlists: playlistData, error: playlistError, isLoading: playlistsLoading } = usePlaylistData({
+    isAuthenticated,
+    showErrorToast,
+    showSuccessToast
+  });
 
   useEffect(() => {
-    if (playlistError) {
-      showErrorToast('Nie udało się pobrać playlist');
+    if (isLoading) {
+      // Opcjonalnie możemy pokazać loader
+      return;
     }
-  }, [playlistError, showErrorToast]);
+  }, [isLoading]);
 
   useEffect(() => {
     updateContainerPadding();

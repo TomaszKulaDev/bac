@@ -16,6 +16,7 @@ import { useDispatch } from "react-redux";
 import DraggableSongItem from "./DraggableSongItem";
 import { useSensors, useSensor, PointerSensor } from '@dnd-kit/core';
 import { usePlaylistManagement } from "../hooks/usePlaylistManagement";
+import { useSecuredPlaylistOperations } from "../hooks/useSecuredPlaylistOperations";
 
 export interface PlaylistManagerProps {
   playlists: Playlist[];
@@ -109,40 +110,41 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
     return playlist._id || playlist.id || '';
   };
 
-  const handlePlaylistUpdate = async (playlistId: string, data: Partial<Playlist>) => {
-    if (!playlistId || !isAuthenticated) {
-      showErrorToast('Musisz być zalogowany, aby zarządzać playlistami');
-      return;
-    }
-    
-    try {
-      const response = await fetch(`/api/playlists/${playlistId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
+  const { secureOperation } = useSecuredPlaylistOperations({
+    isAuthenticated,
+    showErrorToast,
+    showSuccessToast
+  });
 
-      if (!response.ok) throw new Error('Błąd aktualizacji playlisty');
+  const handlePlaylistUpdate = useCallback(async (playlistId: string, data: Partial<Playlist>) => {
+    await secureOperation(
+      async () => {
+        const response = await fetch(`/api/playlists/${playlistId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        });
 
-      const updatedPlaylist = await response.json();
-      const normalizedId = updatedPlaylist._id || updatedPlaylist.id;
-      
-      if (!normalizedId) throw new Error('Brak ID w odpowiedzi');
+        if (!response.ok) throw new Error('Błąd aktualizacji playlisty');
+        const updatedPlaylist = await response.json();
+        const normalizedId = updatedPlaylist._id || updatedPlaylist.id;
+        
+        if (!normalizedId) throw new Error('Brak ID w odpowiedzi');
 
-      setPlaylists((prev) => 
-        prev.map(p => (getPlaylistId(p) === playlistId) ? {
-          ...updatedPlaylist,
-          _id: normalizedId,
-          id: normalizedId
-        } : p)
-      );
-    } catch (error) {
-      console.error("Błąd podczas aktualizacji playlisty:", error);
-      showErrorToast('Nie udało się zaktualizować playlisty');
-    }
-  };
+        setPlaylists(prev => prev.map(p => 
+          getPlaylistId(p) === playlistId 
+            ? { ...updatedPlaylist, _id: normalizedId, id: normalizedId }
+            : p
+        ));
+      },
+      {
+        requireAuth: true,
+        errorMessage: 'Nie udało się zaktualizować playlisty'
+      }
+    );
+  }, [secureOperation, setPlaylists]);
 
   const handleDeletePlaylist = async (id: string) => {
     if (!id) return;
