@@ -11,18 +11,19 @@ export const BaseBadge: React.FC<BaseBadgeProps> = ({ icon, label, color }) => {
     <motion.div
       className={`
         inline-flex items-center gap-1 px-1.5 py-0.5
-        rounded-md text-[10px] font-medium
-        bg-gradient-to-r ${color} to-transparent
+        rounded-sm text-[9px] font-medium
+        bg-gradient-to-r ${color}
         text-white shadow-sm
-        backdrop-blur-[2px]
+        backdrop-blur-sm
         border border-white/20
-        hover:border-white/30 transition-colors
+        hover:border-white/40 transition-colors
+        flex-1 min-w-0
       `}
       initial={{ opacity: 0, y: -5 }}
       animate={{ opacity: 1, y: 0 }}
     >
-      <span className="inline-flex items-center justify-center w-[16px] h-[16px] text-[13px] leading-none">{icon}</span>
-      <span className="truncate max-w-[48px] drop-shadow-sm leading-none">{label}</span>
+      <span className="inline-flex items-center justify-center w-3.5 h-3.5 text-[11px]">{icon}</span>
+      <span className="truncate leading-none">{label}</span>
     </motion.div>
   );
 };

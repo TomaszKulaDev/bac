@@ -10,8 +10,8 @@ interface BadgeContainerProps {
 
 export const BadgeContainer: React.FC<BadgeContainerProps> = ({ song }) => {
   return (
-    <div className="absolute top-1.5 left-1.5 z-20">
-      <div className="flex flex-wrap gap-1 items-start max-w-[200px]">
+    <div className="absolute top-0 left-0 right-0 z-20 p-1.5 bg-gradient-to-b from-black/60 to-transparent">
+      <div className="flex items-center justify-start gap-1.5 w-full">
         <LevelBadge level={getSongLevel(song)} />
         <StyleBadge style={getSongStyle(song)} />
         <TempoBadge tempo={getSongTempo(song)} />
