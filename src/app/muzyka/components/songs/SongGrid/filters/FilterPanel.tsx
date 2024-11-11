@@ -37,28 +37,34 @@ const FilterSection = <T extends DifficultyLevel | StyleType | TempoType>({
       </h4>
       <div className="flex flex-wrap gap-1.5">
         {(Object.entries(options) as [T, { label: string; icon: string; color: string; description: string }][]).map(
-          ([value, { label, icon, color, description }]) => (
-            <motion.button
-              key={value}
-              role="checkbox"
-              aria-checked={selectedValues.includes(value)}
-              aria-label={`${label} - ${description}`}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => onChange(value)}
-              className={`
-                px-2 py-1.5 rounded-md text-xs font-medium
-                flex items-center gap-1.5 transition-all duration-200
-                ${selectedValues.includes(value)
-                  ? `bg-gradient-to-r ${color} text-white shadow-sm`
-                  : 'bg-gray-50 text-gray-600 hover:bg-gray-100 border border-gray-100'
-                }
-              `}
-            >
-              <span className="text-sm" aria-hidden="true">{icon}</span>
-              <span>{label}</span>
-            </motion.button>
-          )
+          ([value, { label, icon, color, description }]) => {
+            const descriptionId = `${sectionId}-${value}-description`;
+            return (
+              <motion.button
+                key={value}
+                role="checkbox"
+                aria-checked={selectedValues.includes(value)}
+                aria-label={label}
+                aria-describedby={descriptionId}
+                title={description}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => onChange(value)}
+                className={`
+                  px-2 py-1.5 rounded-md text-xs font-medium
+                  flex items-center gap-1.5 transition-all duration-200
+                  ${selectedValues.includes(value)
+                    ? `bg-gradient-to-r ${color} text-white shadow-sm`
+                    : 'bg-gray-50 text-gray-600 hover:bg-gray-100 border border-gray-100'
+                  }
+                `}
+              >
+                <span className="text-sm" aria-hidden="true">{icon}</span>
+                <span>{label}</span>
+                <span id={descriptionId} className="sr-only">{description}</span>
+              </motion.button>
+            );
+          }
         )}
       </div>
     </div>
@@ -79,43 +85,30 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
       aria-label="Panel filtrów"
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white/90 backdrop-blur-sm rounded-lg shadow-sm p-3 mb-4 border border-gray-100"
+      className="bg-white/90 backdrop-blur-sm rounded-lg shadow-sm p-4 mb-4 border border-gray-100"
     >
-      <div className="flex items-center justify-between mb-3">
+      <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <div className="bg-blue-50 p-1.5 rounded-md" aria-hidden="true">
+          <div className="bg-blue-50 p-1.5 rounded-md">
             <FaFilter className="text-blue-500 w-3 h-3" />
           </div>
-          <div>
-            <h3 className="text-sm font-semibold text-gray-800" id="filter-heading">Filtry</h3>
-            {hasActiveFilters && (
-              <motion.p 
-                aria-live="polite"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="text-xs text-gray-500"
-              >
-                Aktywne filtry: {totalFilters}
-              </motion.p>
-            )}
-          </div>
+          <h3 className="text-sm font-semibold text-gray-800">Filtry</h3>
+          {hasActiveFilters && (
+            <span className="text-xs text-gray-500">({totalFilters})</span>
+          )}
         </div>
         {hasActiveFilters && (
           <motion.button
-            aria-label="Wyczyść wszystkie filtry"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
             onClick={onClearFilters}
             className="text-xs px-2 py-1 text-red-600 hover:text-red-700 
               bg-red-50 rounded-md hover:bg-red-100 transition-colors"
           >
-            <FaTimes className="w-3 h-3" aria-hidden="true" />
+            Wyczyść
           </motion.button>
         )}
       </div>
 
-      <div className="space-y-3" role="group" aria-labelledby="filter-heading">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <FilterSection
           title="Poziom trudności"
           options={DIFFICULTY_OPTIONS}

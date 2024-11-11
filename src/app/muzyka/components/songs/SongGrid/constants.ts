@@ -1,8 +1,8 @@
 export const levelConfig = {
   unspecified: {
-    label: "Do określenia",
+    label: "❓",
     color: "from-gray-400 to-gray-500",
-    icon: "❓",
+    icon: "",
   },
   beginner: {
     label: "Początkujący",
