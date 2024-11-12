@@ -163,6 +163,54 @@ export const deleteAllSongsAndRefetch = createAsyncThunk(
   }
 );
 
+// Dodajemy nowe akcje do istniejącego slice'a
+export const toggleLike = createAsyncThunk(
+  'songs/toggleLike',
+  async (songId: string, { rejectWithValue }) => {
+    try {
+      const response = await fetch(`/api/songs/${songId}/like`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.log('Toggle like error response:', {
+          status: response.status,
+          errorData
+        });
+        
+        if (response.status === 401) {
+          return rejectWithValue({
+            status: 401,
+            message: 'Unauthorized - Please log in',
+            details: null
+          });
+        }
+        
+        return rejectWithValue({
+          status: response.status,
+          message: errorData.error || 'Failed to toggle like',
+          details: errorData.details || null
+        });
+      }
+      
+      const data = await response.json();
+      return { songId, ...data };
+    } catch (error: any) {
+      console.error('Toggle like unexpected error:', error);
+      return rejectWithValue({
+        status: 500,
+        message: 'Unexpected error while toggling like',
+        details: error.message
+      });
+    }
+  }
+);
+
 // Definicja slice'a dla piosenek
 const songsSlice = createSlice({
   name: 'songs',
@@ -236,6 +284,14 @@ const songsSlice = createSlice({
           ...song,
           playlists: song.playlists ? song.playlists.filter(p => validPlaylistNames.includes(p)) : []
         }));
+      })
+      // W reducerze dodajemy obsługę nowej akcji
+      .addCase(toggleLike.fulfilled, (state, action: PayloadAction<{ songId: string; liked: boolean }>) => {
+        const song = state.songs.find(s => s.id === action.payload.songId);
+        if (song) {
+          song.likesCount = (song.likesCount ?? 0) + (action.payload.liked ? 1 : -1);
+          song.isLiked = action.payload.liked;
+        }
       });
   }
 });

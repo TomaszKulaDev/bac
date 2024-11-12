@@ -1,6 +1,13 @@
 // src/models/song.ts
 import mongoose from "mongoose";
 
+interface ISong extends mongoose.Document {
+  title: string;
+  artist: string;
+  youtubeId: string;
+  likesCount: number;
+}
+
 const songSchema = new mongoose.Schema({
   title: { type: String, required: true },
   artist: { type: String, required: true },
@@ -14,6 +21,11 @@ const songSchema = new mongoose.Schema({
   slow: { type: Boolean, default: false },
   medium: { type: Boolean, default: false },
   fast: { type: Boolean, default: false },
+  likesCount: {
+    type: Number,
+    default: 0,
+    min: 0
+  },
   createdAt: { type: Date, default: Date.now }
 });
 

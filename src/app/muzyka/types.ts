@@ -37,6 +37,8 @@ export interface Song {
   difficulty: DifficultyLevel;
   style: StyleType;
   tempo: TempoType;
+  likesCount: number;
+  isLiked: boolean;
 }
 
 // Interfejs właściwości komponentu odtwarzacza muzyki

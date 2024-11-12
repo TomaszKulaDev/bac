@@ -1,4 +1,5 @@
 import { FaHeart, FaPlus, FaBookmark } from "react-icons/fa";
+import { useLike } from '../../hooks/useLike';
 
 interface ActionButtonsProps {
   currentSongId: string | undefined;
@@ -9,6 +10,7 @@ interface ActionButtonsProps {
   playlistCount: number;
   hasPlaylistsAndExpanded: boolean;
   isAuthenticated?: boolean;
+  likesCount?: number;
 }
 
 export const ActionButtons: React.FC<ActionButtonsProps> = ({
@@ -20,10 +22,13 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({
   playlistCount,
   hasPlaylistsAndExpanded,
   isAuthenticated = false,
+  likesCount = 0,
 }) => {
+  const { handleLike } = useLike();
+
   const handleLikeClick = () => {
-    if (!currentSongId) return;
-    if (!isAuthenticated) return;
+    if (!currentSongId || !isAuthenticated) return;
+    handleLike(currentSongId);
     onLike(currentSongId);
   };
 
@@ -37,19 +42,11 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({
     <div className="flex items-center space-x-4" role="group" aria-label="Akcje dla utworu">
       <button
         onClick={handleLikeClick}
-        className={`p-2 rounded-full transition-all duration-300 ease-in-out 
-          ${isLiked 
-            ? "text-red-500 hover:text-red-600 active:text-red-700" 
-            : "text-gray-600 hover:text-red-500"} 
-          ${!isAuthenticated && "opacity-50 cursor-not-allowed"}
-          active:scale-95`}
-        aria-label={isLiked ? "Usuń z ulubionych" : "Dodaj do ulubionych"}
-        title={!isAuthenticated 
-          ? "Zaloguj się, aby polubić utwór" 
-          : (isLiked ? "Usuń z ulubionych" : "Dodaj do ulubionych")}
-        disabled={!isAuthenticated}
+        className={`flex items-center gap-2 ${isLiked ? 'text-red-500' : 'text-gray-500'}`}
+        disabled={!isAuthenticated || !currentSongId}
       >
-        <FaHeart size={20} aria-hidden="true" />
+        <FaHeart size={20} />
+        <span className="text-sm">{likesCount}</span>
       </button>
 
       {playlistCount < 2 && (
