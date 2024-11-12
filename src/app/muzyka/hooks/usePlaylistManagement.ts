@@ -7,6 +7,7 @@ import { DragEndEvent } from "@dnd-kit/core";
 import { AppDispatch } from "@/store/store";
 import { validatePlaylistTitle } from "../utils/validation";
 import { useSecuredPlaylistOperations } from "./useSecuredPlaylistOperations";
+import { usePlaylistSync, DEFAULT_RETRY_CONFIG } from "./usePlaylistSync";
 
 export interface UsePlaylistManagementProps {
   playlists: Playlist[];
@@ -48,7 +49,11 @@ export const usePlaylistManagement = ({
   const { secureOperation } = useSecuredPlaylistOperations({
     isAuthenticated,
     showErrorToast,
-    showSuccessToast
+    showSuccessToast,
+  });
+  const { addOperation } = usePlaylistSync({
+    showErrorToast,
+    retryConfig: DEFAULT_RETRY_CONFIG,
   });
 
   const handleDragEnd = useCallback(
@@ -77,17 +82,32 @@ export const usePlaylistManagement = ({
           )
         );
 
-        try {
-          const response = await fetch(`/api/playlists/${currentPlaylist.id}/reorder`, {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ newOrder: newSongs }),
+        if (!navigator.onLine) {
+          addOperation({
+            type: "REORDER",
+            playlistId: currentPlaylist.id,
+            data: { newOrder: newSongs },
           });
+          showInfoToast(
+            "Zmiany zostaną zsynchronizowane gdy połączenie zostanie przywrócone"
+          );
+          return;
+        }
+
+        try {
+          const response = await fetch(
+            `/api/playlists/${currentPlaylist.id}/reorder`,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ newOrder: newSongs }),
+            }
+          );
 
           if (!response.ok) {
-            throw new Error('Failed to update playlist order');
+            throw new Error("Failed to update playlist order");
           }
 
           const updatedPlaylist = await response.json();
@@ -104,18 +124,38 @@ export const usePlaylistManagement = ({
         }
       }
     },
-    [isAuthenticated, showErrorToast, onUpdatePlaylists]
+    [
+      isAuthenticated,
+      showErrorToast,
+      onUpdatePlaylists,
+      addOperation,
+      showInfoToast,
+    ]
   );
 
   const addSongToPlaylist = useCallback(
     async (playlistId: string, songId: string) => {
+      if (!navigator.onLine) {
+        addOperation({
+          type: "ADD_SONG",
+          playlistId,
+          data: { songId },
+        });
+        showInfoToast(
+          "Zmiany zostaną zsynchronizowane gdy połączenie zostanie przywrócone"
+        );
+        return;
+      }
+
       await secureOperation(
         async () => {
           if (!playlistId || !songId) {
             throw new Error("Nieprawidłowe dane utworu lub playlisty");
           }
 
-          const playlist = playlists.find((p) => (p._id || p.id) === playlistId);
+          const playlist = playlists.find(
+            (p) => (p._id || p.id) === playlistId
+          );
           const song = songs.find((s) => (s._id || s.id) === songId);
 
           if (!playlist || !song) {
@@ -123,35 +163,46 @@ export const usePlaylistManagement = ({
           }
 
           if (playlist.songs.includes(songId)) {
-            showInfoToast(`Utwór "${song.title}" jest już w playliście "${playlist.name}"`);
+            showInfoToast(
+              `Utwór "${song.title}" jest już w playliście "${playlist.name}"`
+            );
             return;
           }
 
           const response = await fetch(`/api/playlists/${playlistId}`, {
-            method: 'PUT',
+            method: "PUT",
             headers: {
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
             },
             body: JSON.stringify({ songId }),
           });
 
           if (!response.ok) {
-            throw new Error('Nie udało się dodać utworu do playlisty');
+            throw new Error("Nie udało się dodać utworu do playlisty");
           }
 
           onUpdatePlaylists((prevPlaylists) =>
             prevPlaylists.map((p) =>
-              (p._id || p.id) === playlistId ? { ...p, songs: [...p.songs, songId] } : p
+              (p._id || p.id) === playlistId
+                ? { ...p, songs: [...p.songs, songId] }
+                : p
             )
           );
         },
         {
           errorMessage: "Nie udało się dodać utworu do playlisty",
-          successMessage: "Utwór został dodany do playlisty"
+          successMessage: "Utwór został dodany do playlisty",
         }
       );
     },
-    [secureOperation, playlists, songs, onUpdatePlaylists, showInfoToast]
+    [
+      addOperation,
+      showInfoToast,
+      secureOperation,
+      playlists,
+      songs,
+      onUpdatePlaylists,
+    ]
   );
 
   const removeSongFromPlaylist = useCallback(
@@ -161,20 +212,37 @@ export const usePlaylistManagement = ({
         return;
       }
 
+      if (!navigator.onLine) {
+        addOperation({
+          type: "REMOVE_SONG",
+          playlistId,
+          data: { songId },
+        });
+        showInfoToast(
+          "Zmiany zostaną zsynchronizowane gdy połączenie zostanie przywrócone"
+        );
+        return;
+      }
+
       try {
         await secureOperation(
           async () => {
-            const response = await fetch(`/api/playlists/${playlistId}/songs/${songId}`, {
-              method: 'DELETE',
-              headers: {
-                'Content-Type': 'application/json',
-                'Cache-Control': 'no-cache'
+            const response = await fetch(
+              `/api/playlists/${playlistId}/songs/${songId}`,
+              {
+                method: "DELETE",
+                headers: {
+                  "Content-Type": "application/json",
+                  "Cache-Control": "no-cache",
+                },
               }
-            });
+            );
 
             if (!response.ok) {
               const errorData = await response.json();
-              throw new Error(errorData.error || 'Nie udało się usunąć utworu z playlisty');
+              throw new Error(
+                errorData.error || "Nie udało się usunąć utworu z playlisty"
+              );
             }
 
             onUpdatePlaylists((prevPlaylists) =>
@@ -190,54 +258,139 @@ export const usePlaylistManagement = ({
           },
           {
             requireAuth: true,
-            successMessage: 'Utwór został usunięty z playlisty',
-            errorMessage: 'Nie udało się usunąć utworu z playlisty'
+            successMessage: "Utwór został usunięty z playlisty",
+            errorMessage: "Nie udało się usunąć utworu z playlisty",
           }
         );
       } catch (error) {
-        console.error('Błąd podczas usuwania utworu:', error);
+        console.error("Błąd podczas usuwania utworu:", error);
         showErrorToast("Nie udało się usunąć utworu z playlisty");
       }
     },
-    [isAuthenticated, showErrorToast, secureOperation, onUpdatePlaylists]
+    [
+      isAuthenticated,
+      showErrorToast,
+      secureOperation,
+      onUpdatePlaylists,
+      addOperation,
+      showInfoToast,
+    ]
   );
 
   const editPlaylistName = useCallback(
-    (playlistId: string, newName: string) => {
+    async (playlistId: string, newName: string) => {
       const validation = validatePlaylistTitle(newName);
-
       if (!validation.isValid) {
         showErrorToast(validation.error || "");
         return;
       }
 
-      onUpdatePlaylists((prevPlaylists) =>
-        prevPlaylists.map((playlist) =>
-          (playlist._id || playlist.id) === playlistId
-            ? { ...playlist, name: newName }
-            : playlist
-        )
+      if (!navigator.onLine) {
+        addOperation({
+          type: "UPDATE",
+          playlistId,
+          data: { name: newName },
+        });
+        showInfoToast(
+          "Zmiany zostaną zsynchronizowane gdy połączenie zostanie przywrócone"
+        );
+        return;
+      }
+
+      await secureOperation(
+        async () => {
+          const response = await fetch(`/api/playlists/${playlistId}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name: newName }),
+          });
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            console.error("Błąd odpowiedzi serwera:", errorData);
+            throw new Error("Nie udało się zmienić nazwy playlisty");
+          }
+
+          const updatedPlaylist = await response.json();
+          onUpdatePlaylists((prevPlaylists) =>
+            prevPlaylists.map((playlist) =>
+              (playlist._id || playlist.id) === playlistId
+                ? { ...playlist, name: newName }
+                : playlist
+            )
+          );
+        },
+        {
+          errorMessage: "Nie udało się zmienić nazwy playlisty",
+          successMessage: "Nazwa playlisty została zmieniona",
+        }
       );
     },
-    [onUpdatePlaylists, showErrorToast]
+    [
+      onUpdatePlaylists,
+      showErrorToast,
+      addOperation,
+      showInfoToast,
+      secureOperation,
+    ]
   );
 
   const deletePlaylist = useCallback(
-    (playlistId: string) => {
+    async (playlistId: string) => {
       if (!isAuthenticated) {
         showErrorToast("Musisz być zalogowany, aby usunąć playlistę.");
         return;
       }
 
-      onUpdatePlaylists((prevPlaylists) =>
-        prevPlaylists.filter((playlist) => (playlist._id || playlist.id) !== playlistId)
-      );
-
-      if (currentPlaylistId === playlistId) {
-        setCurrentPlaylistId(null);
+      if (!navigator.onLine) {
+        addOperation({
+          type: "DELETE",
+          playlistId,
+          data: null,
+        });
+        showInfoToast(
+          "Zmiany zostaną zsynchronizowane gdy połączenie zostanie przywrócone"
+        );
+        return;
       }
+
+      await secureOperation(
+        async () => {
+          const response = await fetch(`/api/playlists/${playlistId}`, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+          });
+
+          if (!response.ok) {
+            throw new Error("Nie udało się usunąć playlisty");
+          }
+
+          onUpdatePlaylists((prevPlaylists) =>
+            prevPlaylists.filter(
+              (playlist) => (playlist._id || playlist.id) !== playlistId
+            )
+          );
+
+          if (currentPlaylistId === playlistId) {
+            setCurrentPlaylistId(null);
+          }
+        },
+        {
+          errorMessage: "Nie udało się usunąć playlisty",
+          successMessage: "Playlista została usunięta",
+        }
+      );
     },
-    [onUpdatePlaylists, currentPlaylistId, isAuthenticated, showErrorToast, setCurrentPlaylistId]
+    [
+      isAuthenticated,
+      showErrorToast,
+      addOperation,
+      showInfoToast,
+      onUpdatePlaylists,
+      currentPlaylistId,
+      setCurrentPlaylistId,
+      secureOperation,
+    ]
   );
 
   const handleCreateEmptyPlaylist = useCallback(() => {
@@ -256,7 +409,9 @@ export const usePlaylistManagement = ({
   const isInPlaylist = useCallback(
     (songId: string, playlistId: string | null) => {
       if (!playlistId || !songId) return false;
-      const playlist = playlists.find(p => p._id === playlistId || p.id === playlistId);
+      const playlist = playlists.find(
+        (p) => p._id === playlistId || p.id === playlistId
+      );
       return playlist ? playlist.songs.includes(songId) : false;
     },
     [playlists]
@@ -265,25 +420,29 @@ export const usePlaylistManagement = ({
   const handlePlaylistUpdate = async (playlistId: string, songId: string) => {
     try {
       const response = await fetch(`/api/playlists/${playlistId}`, {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ songId }),
       });
 
       if (!response.ok) {
-        throw new Error('Błąd aktualizacji playlisty');
+        throw new Error("Błąd aktualizacji playlisty");
       }
 
       const updatedPlaylist = await response.json();
-      onUpdatePlaylists(prev => 
-        prev.map(p => (p._id || p.id) === playlistId ? { ...updatedPlaylist, id: updatedPlaylist._id } : p)
+      onUpdatePlaylists((prev) =>
+        prev.map((p) =>
+          (p._id || p.id) === playlistId
+            ? { ...updatedPlaylist, id: updatedPlaylist._id }
+            : p
+        )
       );
-      
+
       return true;
     } catch (error) {
-      console.error('Błąd podczas aktualizacji playlisty:', error);
+      console.error("Błąd podczas aktualizacji playlisty:", error);
       return false;
     }
   };

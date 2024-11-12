@@ -16,6 +16,7 @@ import { useDispatch } from "react-redux";
 import DraggableSongItem from "./DraggableSongItem";
 import { useSensors, useSensor, PointerSensor } from '@dnd-kit/core';
 import { usePlaylistManagement } from "../hooks/usePlaylistManagement";
+import { usePlaylistSync } from "../hooks/usePlaylistSync";
 
 export interface PlaylistManagerProps {
   playlists: Playlist[];
@@ -112,6 +113,16 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
   const handlePlaylistUpdate = async (playlistId: string, data: Partial<Playlist>) => {
     if (!playlistId || !isAuthenticated) {
       showErrorToast('Musisz być zalogowany, aby zarządzać playlistami');
+      return;
+    }
+
+    if (!navigator.onLine) {
+      addOperation({
+        type: 'UPDATE',
+        playlistId,
+        data
+      });
+      showInfoToast('Zmiany zostaną zsynchronizowane gdy połączenie zostanie przywrócone');
       return;
     }
     
@@ -214,6 +225,8 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
       />
     );
   }, [onRemoveSongFromPlaylist]);
+
+  const { addOperation } = usePlaylistSync({ showErrorToast });
 
   return (
     <div className="space-y-4 overflow-y-auto flex-grow p-4">
