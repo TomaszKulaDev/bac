@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/mongodb";
 import { Song } from "@/models/Song";
 import { Playlist } from "@/models/Playlist";
+import { Like } from "@/models/Like";
 
 // Eksportowanie asynchronicznej funkcji DELETE obsługującej żądanie HTTP DELETE
 export async function DELETE(request: Request) {
@@ -25,6 +26,9 @@ export async function DELETE(request: Request) {
 
     // Aktualizacja wszystkich playlist - usuwanie referencji do usuniętych piosenek
     await Playlist.updateMany({}, { $set: { songs: [] } });
+
+    // Usuwanie wszystkich polubień
+    await Like.deleteMany({});
 
     // Logowanie informacji o liczbie usuniętych utworów
     console.log("Usunięto wszystkie utwory:", result.deletedCount);

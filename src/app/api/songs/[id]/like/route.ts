@@ -43,16 +43,25 @@ export async function POST(
       songId: songId
     });
 
+    let liked;
     if (existingLike) {
       await Like.deleteOne({ _id: existingLike._id });
-      return NextResponse.json({ liked: false });
+      liked = false;
     } else {
       await Like.create({
         userEmail: session.user.email,
         songId: songId
       });
-      return NextResponse.json({ liked: true });
+      liked = true;
     }
+
+    // Pobierz aktualną liczbę polubień
+    const likeCount = await Like.countDocuments({ songId });
+
+    return NextResponse.json({ 
+      liked,
+      likesCount: likeCount 
+    });
   } catch (error) {
     console.error('Error in like endpoint:', error);
     return NextResponse.json(

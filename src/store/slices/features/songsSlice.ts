@@ -247,12 +247,18 @@ const songsSlice = createSlice({
       // Obsługa pomyślnego pobrania piosenek
       .addCase(fetchSongs.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.songs = action.payload.map((song: any) => ({
-          id: song._id.toString(),
-          title: song.title,
-          artist: song.artist,
-          youtubeId: song.youtubeId,
-        }));
+        console.log('Received songs data:', action.payload);
+        state.songs = action.payload.map((song: any) => {
+          const mappedSong = {
+            ...song,
+            id: song._id.toString(),
+            _id: song._id.toString(),
+            isLiked: song.isLiked || false,
+            likesCount: song.likesCount || 0
+          };
+          console.log('Mapped song:', mappedSong);
+          return mappedSong;
+        });
       })
       // Obsługa błędu podczas pobierania piosenek
       .addCase(fetchSongs.rejected, (state, action) => {
@@ -286,11 +292,11 @@ const songsSlice = createSlice({
         }));
       })
       // W reducerze dodajemy obsługę nowej akcji
-      .addCase(toggleLike.fulfilled, (state, action: PayloadAction<{ songId: string; liked: boolean }>) => {
-        const song = state.songs.find(s => s.id === action.payload.songId);
+      .addCase(toggleLike.fulfilled, (state, action: PayloadAction<{ songId: string; liked: boolean; likesCount: number }>) => {
+        const song = state.songs.find(s => s._id === action.payload.songId);
         if (song) {
-          song.likesCount = (song.likesCount ?? 0) + (action.payload.liked ? 1 : -1);
           song.isLiked = action.payload.liked;
+          song.likesCount = action.payload.likesCount;
         }
       });
   }

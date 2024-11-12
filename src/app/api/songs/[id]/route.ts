@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/mongodb";
 import { Song } from "@/models/Song";
+import { Like } from "@/models/Like";
 
 export async function DELETE(
   request: Request,
@@ -15,6 +16,7 @@ export async function DELETE(
     const { id } = params;
     console.log("DELETE /api/songs/[id]: Attempting to delete song with ID:", id);
 
+    await Like.deleteMany({ songId: id });
     const result = await Song.findByIdAndDelete(id);
     console.log("Delete operation result:", result);
 
