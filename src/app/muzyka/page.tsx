@@ -187,6 +187,7 @@ const MusicPage: React.FC = () => {
     onCreatePlaylist: handleCreateEmptyPlaylist,
     onPlayPlaylist: playPlaylist,
     setCurrentPlaylistId,
+    onRemoveSong: undefined,
   });
 
   useEffect(() => {
@@ -204,40 +205,6 @@ const MusicPage: React.FC = () => {
       });
     }
   }, [status, dispatch]);
-
-  const handleRemoveSongFromPlaylist = useCallback(
-    (playlistId: string, songId: string) => {
-      setPlaylists((prevPlaylists) =>
-        prevPlaylists.map((playlist) =>
-          playlist.id === playlistId
-            ? {
-                ...playlist,
-                songs: playlist.songs.filter((id) => id !== songId),
-              }
-            : playlist
-        )
-      );
-      // TODO: Zaimplementuj logikę aktualizacji playlisty w bazie danych
-      const playlistName =
-        playlists.find((p) => p.id === playlistId)?.name || "";
-      dispatch(
-        updateSongsPlaylists({
-          songIds: [songId],
-          playlistId,
-          playlistName,
-          remove: true,
-        })
-      )
-        .unwrap()
-        .then(() => {
-          console.log("Song removed from playlist successfully");
-        })
-        .catch((error: unknown) => {
-          console.error("Failed to remove song from playlist:", error);
-        });
-    },
-    [dispatch, playlists]
-  );
 
   const handleAutoPlay = useCallback(() => {
     if (isPlaying) {

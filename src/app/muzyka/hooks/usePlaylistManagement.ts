@@ -22,6 +22,12 @@ export interface UsePlaylistManagementProps {
   songs: Song[];
   onCreatePlaylist: (name: string, selectedSongs?: string[]) => void;
   setCurrentPlaylistId: (playlistId: string | null) => void;
+  onRemoveSong?: (playlistId: string, songId: string) => Promise<void>;
+}
+
+export interface PlaylistManagementReturn {
+  removeSongFromPlaylist: (playlistId: string, songId: string) => Promise<void>;
+  // ...inne zwracane funkcje
 }
 
 export const usePlaylistManagement = ({
@@ -36,6 +42,7 @@ export const usePlaylistManagement = ({
   songs,
   onCreatePlaylist,
   setCurrentPlaylistId,
+  onRemoveSong,
 }: UsePlaylistManagementProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const { secureOperation } = useSecuredPlaylistOperations({
@@ -134,49 +141,51 @@ export const usePlaylistManagement = ({
   );
 
   const removeSongFromPlaylist = useCallback(
-    (playlistId: string, songId: string) => {
+    async (playlistId: string, songId: string) => {
       if (!isAuthenticated) {
         showErrorToast("Musisz być zalogowany, aby usuwać utwory z playlisty.");
         return;
       }
 
-      const playlistName =
-        playlists.find((p) => p.id === playlistId)?.name || "";
-      onUpdatePlaylists((prevPlaylists) =>
-        prevPlaylists.map((playlist) =>
-          playlist.id === playlistId
-            ? {
-                ...playlist,
-                songs: playlist.songs.filter((id) => id !== songId),
+      try {
+        await secureOperation(
+          async () => {
+            const response = await fetch(`/api/playlists/${playlistId}/songs/${songId}`, {
+              method: 'DELETE',
+              headers: {
+                'Content-Type': 'application/json',
+                'Cache-Control': 'no-cache'
               }
-            : playlist
-        )
-      );
+            });
 
-      dispatch(
-        updateSongsPlaylists({
-          songIds: [songId],
-          playlistId,
-          playlistName,
-          remove: true,
-        }) as any
-      )
-        .unwrap()
-        .then(() => {
-          showSuccessToast("Utwór został usunięty z playlisty");
-        })
-        .catch(() => {
-          showErrorToast("Nie udało się usunąć utworu z playlisty");
-        });
+            if (!response.ok) {
+              const errorData = await response.json();
+              throw new Error(errorData.error || 'Nie udało się usunąć utworu z playlisty');
+            }
+
+            onUpdatePlaylists((prevPlaylists) =>
+              prevPlaylists.map((playlist) =>
+                playlist.id === playlistId
+                  ? {
+                      ...playlist,
+                      songs: playlist.songs.filter((id) => id !== songId),
+                    }
+                  : playlist
+              )
+            );
+          },
+          {
+            requireAuth: true,
+            successMessage: 'Utwór został usunięty z playlisty',
+            errorMessage: 'Nie udało się usunąć utworu z playlisty'
+          }
+        );
+      } catch (error) {
+        console.error('Błąd podczas usuwania utworu:', error);
+        showErrorToast("Nie udało się usunąć utworu z playlisty");
+      }
     },
-    [
-      dispatch,
-      playlists,
-      onUpdatePlaylists,
-      isAuthenticated,
-      showSuccessToast,
-      showErrorToast,
-    ]
+    [isAuthenticated, showErrorToast, secureOperation, onUpdatePlaylists]
   );
 
   const editPlaylistName = useCallback(
