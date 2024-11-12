@@ -28,11 +28,19 @@ export const TrackInfo: React.FC<TrackInfoProps> = ({ currentSong }) => {
       </div>
       <div className="flex flex-col overflow-hidden">
         <div className="relative w-full overflow-hidden">
-          <div className="track-scroll sm:truncate">
-            <span className="text-base font-bold whitespace-nowrap inline-block" aria-label="Tytuł utworu">
-              {currentSong.title}
-            </span>
-            <span className="text-base font-bold whitespace-nowrap inline-block pl-8" aria-hidden="true">
+          <div className="sm:hidden">
+            <div className="track-scroll">
+              <span className="text-base font-bold whitespace-nowrap inline-block" aria-label="Tytuł utworu">
+                {currentSong.title}
+              </span>
+              <span className="text-base font-bold whitespace-nowrap inline-block pl-8" aria-hidden="true">
+                {currentSong.title}
+              </span>
+            </div>
+          </div>
+          
+          <div className="hidden sm:block">
+            <span className="text-base font-bold truncate block" aria-label="Tytuł utworu">
               {currentSong.title}
             </span>
           </div>
