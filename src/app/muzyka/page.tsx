@@ -31,6 +31,7 @@ import { getYouTubeThumbnail } from "./utils/youtube";
 import { usePlaylistData } from "./hooks/usePlaylistData";
 import SongGrid from './components/songs/SongGrid';
 import { useSecuredPlaylistOperations } from "./hooks/useSecuredPlaylistOperations";
+import { useLike } from '@/app/muzyka/hooks/useLike';
 
 const generateUniqueId = () => {
   return Date.now().toString(36) + Math.random().toString(36).substr(2);
@@ -278,6 +279,8 @@ const MusicPage: React.FC = () => {
     }
   }, [isPlaying, songs, currentSongIndex, dispatch]);
 
+  const { handleLike } = useLike();
+
   if (status === "loading") {
     return <LoadingState error={error} />;
   }
@@ -330,28 +333,31 @@ const MusicPage: React.FC = () => {
         songs={songs}
         currentSongId={songs[currentSongIndex]?.id}
         isPlaying={isPlaying}
-        onSongSelect={(songId) => {
+        onSongSelect={(songId: string) => {
           const index = songs.findIndex(s => s.id === songId);
           if (index !== -1) {
             dispatch(setCurrentSongIndex(index));
             setIsPlaying(true);
           }
         }}
-        onAddToPlaylist={(songId) => {
+        onAddToPlaylist={(songId: string) => {
           if (expandedPlaylist) {
             playlistManagement.addSongToPlaylist(expandedPlaylist, songId);
           } else {
-            showErrorToast("Nie wybrano playlisty");
+            showErrorToast("Wybierz najpierw playlistę");
           }
         }}
-        onToggleFavorite={(songId) => {
+        onToggleFavorite={async (songId: string) => {
           if (isAuthenticated) {
-            // Implementacja toggle favorite
+            try {
+              await handleLike(songId);
+            } catch (error) {
+              showErrorToast("Wystąpił błąd podczas aktualizacji polubienia");
+            }
           } else {
             showErrorToast("Musisz być zalogowany, aby dodać do ulubionych");
           }
         }}
-        favorites={new Set()}
         expandedPlaylist={expandedPlaylist}
       />
       <SongGrid
@@ -372,9 +378,13 @@ const MusicPage: React.FC = () => {
             showErrorToast("Wybierz najpierw playlistę");
           }
         }}
-        onToggleFavorite={(songId) => {
+        onToggleFavorite={async (songId) => {
           if (isAuthenticated) {
-            // Implementacja toggle favorite
+            try {
+              await handleLike(songId);
+            } catch (error) {
+              showErrorToast("Wystąpił błąd podczas aktualizacji polubienia");
+            }
           } else {
             showErrorToast("Musisz być zalogowany, aby dodać do ulubionych");
           }

@@ -4,16 +4,16 @@ import { Song } from "../types";
 import { FaPlay, FaPause, FaBookmark, FaHeart } from "react-icons/fa";
 import { getYouTubeThumbnail } from "../utils/youtube";
 import { useVideoDuration } from "../hooks/useVideoDuration";
+import { useLike } from "@/app/muzyka/hooks/useLike";
 
 interface RecommendedSongsProps {
   songs: Song[];
-  currentSongId?: string;
+  currentSongId: string | null;
   isPlaying: boolean;
   onSongSelect: (songId: string) => void;
   onAddToPlaylist: (songId: string) => void;
-  onToggleFavorite: (songId: string) => void;
-  favorites: Set<string>;
-  expandedPlaylist?: string | null;
+  expandedPlaylist: string | null;
+  onToggleFavorite: (songId: string) => Promise<void>;
 }
 
 const getRecommendedSongs = (songs: Song[]) => {
@@ -31,8 +31,8 @@ const RecommendedSongs: React.FC<RecommendedSongsProps> = ({
   isPlaying,
   onSongSelect,
   onAddToPlaylist,
+  expandedPlaylist,
   onToggleFavorite,
-  favorites,
 }) => {
   const recommendedSongs = getRecommendedSongs(songs);
 
@@ -49,6 +49,8 @@ const RecommendedSongs: React.FC<RecommendedSongsProps> = ({
     [recommendedSongs[3]?.id]: duration4,
     [recommendedSongs[4]?.id]: duration5,
   };
+
+  const { handleLike } = useLike();
 
   return (
     <div className="w-full bg-gradient-to-b from-[#0a1e3b] to-[#2a4a7f] text-white p-6 rounded-t-3xl">
@@ -69,7 +71,6 @@ const RecommendedSongs: React.FC<RecommendedSongsProps> = ({
           <tbody>
             {recommendedSongs.map((song) => {
               const isCurrentSong = song.id === currentSongId;
-              const isFavorite = favorites.has(song.id);
 
               return (
                 <tr
@@ -127,22 +128,35 @@ const RecommendedSongs: React.FC<RecommendedSongsProps> = ({
                   <td className="px-4 py-3">
                     <div className="flex items-center justify-end gap-2">
                       <button
-                        onClick={() => onAddToPlaylist(song.id)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onAddToPlaylist(song.id);
+                        }}
                         className="p-2 text-blue-200 hover:text-white transition-colors"
                         title="Dodaj do playlisty"
                       >
                         <FaBookmark className="w-4 h-4" />
                       </button>
                       <button
-                        onClick={() => onToggleFavorite(song.id)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleLike(song._id);
+                        }}
                         className={`p-2 transition-colors ${
-                          isFavorite
+                          song.isLiked
                             ? "text-red-500"
                             : "text-blue-200 hover:text-white"
                         }`}
-                        title="Dodaj do ulubionych"
+                        title={
+                          song.isLiked
+                            ? "Usuń z ulubionych"
+                            : "Dodaj do ulubionych"
+                        }
                       >
                         <FaHeart className="w-4 h-4" />
+                        <span className="ml-1 text-sm">
+                          {song.likesCount || 0}
+                        </span>
                       </button>
                     </div>
                   </td>

@@ -12,10 +12,12 @@ export async function POST(
 ) {
   try {
     const session = await getServerSession(authOptions);
+    const userEmail = session?.user?.email;
     
-    if (!session?.user?.email) {
+    if (!userEmail) {
+      console.log('Like attempt without email:', session);
       return NextResponse.json(
-        { error: 'Unauthorized' },
+        { error: 'Unauthorized - No email in session' },
         { status: 401 }
       );
     }
@@ -24,39 +26,45 @@ export async function POST(
     
     const songId = params.id;
     if (!mongoose.Types.ObjectId.isValid(songId)) {
+      console.log('Invalid song ID attempt:', songId);
       return NextResponse.json(
-        { error: 'Invalid song ID' },
+        { error: 'Invalid song ID format' },
         { status: 400 }
       );
     }
 
     const song = await Song.findById(songId);
     if (!song) {
+      console.log('Like attempt for non-existent song:', songId);
       return NextResponse.json(
         { error: 'Song not found' },
         { status: 404 }
       );
     }
 
+    console.log(`Processing like toggle for user ${userEmail} on song ${songId}`);
+    
     const existingLike = await Like.findOne({
-      userEmail: session.user.email,
-      songId: songId
+      userEmail,
+      songId
     });
 
     let liked;
     if (existingLike) {
       await Like.deleteOne({ _id: existingLike._id });
       liked = false;
+      console.log(`Removed like from user ${userEmail} for song ${songId}`);
     } else {
       await Like.create({
-        userEmail: session.user.email,
-        songId: songId
+        userEmail,
+        songId
       });
       liked = true;
+      console.log(`Added like from user ${userEmail} for song ${songId}`);
     }
 
-    // Pobierz aktualną liczbę polubień
     const likeCount = await Like.countDocuments({ songId });
+    console.log(`New like count for song ${songId}: ${likeCount}`);
 
     return NextResponse.json({ 
       liked,

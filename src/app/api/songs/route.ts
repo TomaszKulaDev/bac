@@ -156,3 +156,9 @@ export async function POST(request: Request) {
     );
   }
 }
+
+
+// UWAGA: Nie używamy .lean() przy zapytaniach do bazy danych,
+// ponieważ może to powodować problemy z mapowaniem pól w dokumentach,
+// szczególnie dla pól z wartościami domyślnymi (np. Boolean).
+// Problem występował z polem 'dominicana', które nie było zwracane przy użyciu .lean()
