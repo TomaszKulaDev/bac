@@ -2,30 +2,27 @@ import { NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/mongodb";
 import { Playlist } from "@/models/Playlist";
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
+import { authOptions } from "@/app/api/auth/[...nextauth]/config";
 
 export async function PUT(
   request: Request,
   { params }: { params: { id: string } }
 ) {
   console.log("PUT /api/playlists/[id]: Start", { id: params.id });
-  
+
   try {
     const session = await getServerSession(authOptions);
-    
+
     if (!session?.user?.email) {
-      return NextResponse.json(
-        { error: "Unauthorized" },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     await connectToDatabase();
     console.log("PUT /api/playlists/[id]: Connected to database");
-    
+
     const playlist = await Playlist.findOne({
       _id: params.id,
-      userId: session.user.email
+      userId: session.user.email,
     });
 
     if (!playlist) {
@@ -39,10 +36,7 @@ export async function PUT(
     console.log("PUT /api/playlists/[id]: Received data", { songId });
 
     if (!songId) {
-      return NextResponse.json(
-        { error: "Brak ID utworu" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Brak ID utworu" }, { status: 400 });
     }
 
     if (!playlist.songs.includes(songId)) {
@@ -52,8 +46,8 @@ export async function PUT(
 
     const updatedPlaylist = await Playlist.findOne({
       _id: params.id,
-      userId: session.user.email
-    }).populate('songs');
+      userId: session.user.email,
+    }).populate("songs");
 
     return NextResponse.json(updatedPlaylist);
   } catch (error) {
@@ -70,20 +64,17 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   console.log("DELETE /api/playlists/[id]: Start", { id: params.id });
-  
+
   try {
     const session = await getServerSession(authOptions);
     console.log("Session:", session?.user?.email);
-    
+
     if (!session?.user?.email) {
-      return NextResponse.json(
-        { error: "Unauthorized" },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     await connectToDatabase();
-    
+
     const result = await Playlist.findByIdAndDelete(params.id);
     console.log("Delete result:", result);
 
@@ -94,9 +85,9 @@ export async function DELETE(
       );
     }
 
-    return NextResponse.json({ 
+    return NextResponse.json({
       message: "Playlista została usunięta",
-      success: true
+      success: true,
     });
   } catch (error) {
     console.error("Error details:", error);
