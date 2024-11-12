@@ -52,7 +52,7 @@ export const usePlaylistManagement = ({
   });
 
   const handleDragEnd = useCallback(
-    (event: DragEndEvent, currentPlaylist: Playlist) => {
+    async (event: DragEndEvent, currentPlaylist: Playlist) => {
       if (!isAuthenticated) {
         showErrorToast("Musisz być zalogowany, aby zarządzać playlistami.");
         return;
@@ -77,20 +77,34 @@ export const usePlaylistManagement = ({
           )
         );
 
-        dispatch(
-          updatePlaylistOrder({
-            playlistId: currentPlaylist._id || currentPlaylist.id || '',
-            newOrder: newSongs,
-          })
-        )
-          .unwrap()
-          .catch((error: Error) => {
-            console.error("Failed to update playlist order:", error);
-            showErrorToast("Nie udało się zaktualizować kolejności utworw");
+        try {
+          const response = await fetch(`/api/playlists/${currentPlaylist.id}/reorder`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ newOrder: newSongs }),
           });
+
+          if (!response.ok) {
+            throw new Error('Failed to update playlist order');
+          }
+
+          const updatedPlaylist = await response.json();
+          onUpdatePlaylists((prevPlaylists) =>
+            prevPlaylists.map((playlist) =>
+              playlist.id === currentPlaylist.id
+                ? { ...updatedPlaylist, id: updatedPlaylist._id }
+                : playlist
+            )
+          );
+        } catch (error) {
+          console.error("Failed to update playlist order:", error);
+          showErrorToast("Nie udało się zaktualizować kolejności utworów");
+        }
       }
     },
-    [dispatch, isAuthenticated, showErrorToast, onUpdatePlaylists]
+    [isAuthenticated, showErrorToast, onUpdatePlaylists]
   );
 
   const addSongToPlaylist = useCallback(
