@@ -80,9 +80,6 @@ export const SongControls: React.FC<SongControlsProps> = ({
           ) : (
             <FaRegHeart className="w-5 h-5" />
           )}
-          <span className="ml-1 text-sm">
-            {song.likesCount || 0}
-          </span>
         </motion.button>
       )}
 

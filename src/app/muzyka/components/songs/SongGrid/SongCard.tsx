@@ -5,6 +5,7 @@ import { useImageFallback } from '../../../hooks/useImageFallback';
 import { BadgeContainer } from './BadgeContainer';
 import { SongControls } from './SongControls';
 import type { SongCardProps } from './types';
+import { FaHeart } from 'react-icons/fa';
 
 export const SongCard: React.FC<SongCardProps> = ({ song, ...props }) => {
   const { imageSrc, handleError } = useImageFallback(song.youtubeId);
@@ -22,6 +23,24 @@ export const SongCard: React.FC<SongCardProps> = ({ song, ...props }) => {
           onError={handleError}
         />
         <SongControls {...props} songId={song.id} />
+      </div>
+      <div className="border-b border-gray-100">
+        <div className="flex items-center gap-2 px-1 py-2">
+          {/* TODO: Tymczasowy avatar - w przyszłości zaimplementować wyświetlanie zdjęć profilowych użytkowników, którzy polubili utwór */}
+          <div className="relative w-6 h-6 rounded-full overflow-hidden bg-gray-100">
+            <Image
+              src="/images/default-avatar.png"
+              alt="Avatar użytkownika"
+              fill
+              sizes="24px"
+              className="object-cover"
+              priority={false}
+            />
+          </div>
+          <span className="text-sm font-medium text-gray-600">
+          Liczba polubień: {song.likesCount || 0}
+          </span>
+        </div>
       </div>
       <div className="px-1 pt-2 pb-4">
         <h3 className="text-base font-medium text-gray-900 truncate mb-1">
