@@ -3,7 +3,7 @@ import { TrackInfo } from "./TrackInfo";
 import { PlaybackControls } from "./PlaybackControls";
 import { SeekBar } from "./SeekBar";
 import { VolumeControl } from "./VolumeControl";
-import { ActionButtons } from "./ActionButtons";
+import ActionButtons from './ActionButtons';
 import { Song, RepeatMode } from "../../types";
 
 interface PlaybackBarProps {
@@ -94,8 +94,6 @@ const PlaybackBar: React.FC<PlaybackBarProps> = ({
           
           <ActionButtons
             currentSongId={currentSong?.id}
-            onLike={onLike}
-            isLiked={isLiked}
             onCreatePlaylist={onCreatePlaylist}
             onAddToPlaylist={onAddToPlaylist}
             playlistCount={playlistCount}
