@@ -10,6 +10,7 @@ import { SongTitle } from "./SongTitle";
 import { SongArtist } from "./SongArtist";
 import { SongTags } from "./tags/SongTags";
 import { AddToPlaylistButton } from "./buttons/AddToPlaylistButton";
+import { useLike } from "../../hooks/useLike";
 
 interface SongItemProps {
   song: Song;
@@ -100,6 +101,8 @@ const SongItem: React.FC<SongItemProps> = ({
     tap: { scale: 0.98 },
   };
 
+  const { handleLike } = useLike();
+
   return (
     <motion.li
       variants={itemVariants}
@@ -134,10 +137,19 @@ const SongItem: React.FC<SongItemProps> = ({
             whileTap={{ scale: 0.9 }}
             onClick={(e) => {
               e.stopPropagation();
+              handleLike(song._id);
             }}
-            className="p-2 rounded-full hover:bg-red-50 text-gray-500 hover:text-red-500"
+            className={`p-2 rounded-full ${
+              song.isLiked 
+                ? "text-red-500" 
+                : "text-gray-500 hover:text-red-500 hover:bg-red-50"
+            }`}
+            title={song.isLiked ? "Usuń z ulubionych" : "Dodaj do ulubionych"}
           >
             <FaHeart className="text-xl" />
+            <span className="ml-1 text-sm">
+              {song.likesCount || 0}
+            </span>
           </motion.button>
         )}
         {isPlaylistExpanded && expandedPlaylist && hasPlaylists && (

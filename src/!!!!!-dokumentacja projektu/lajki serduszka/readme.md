@@ -289,3 +289,73 @@
             favorites={new Set()}
         />
 
+4. Komponent SongItem.tsx w folderze app/muzyka/components/songs
+    - Dodano funkcjonalność lajkowania analogiczną do RecommendedSongs
+    - Zintegrowano z hookiem useLike
+    - Dodano wyświetlanie liczby polubień
+    - Zsynchronizowano stan z Redux store
+    - Dodano obsługę błędów i komunikaty dla użytkownika
+    
+    Zmiany obejmowały:
+    - Wykorzystanie hooka useLike do obsługi lajkowania
+    - Dodanie licznika polubień
+    - Stylizację przycisku lajkowania
+    - Obsługę stanu zalogowania użytkownika
+    - Animacje przy interakcji (Framer Motion)
+    
+    Kod wykorzystuje te same mechanizmy co RecommendedSongs:
+    - Redux store do synchronizacji stanu
+    - Next-Auth do autoryzacji
+    - Wspólny hook useLike
+    - Spójny system obsługi błędów
+
+5. Aktualizacja dokumentacji
+    - Dodano opis implementacji w SongItem
+    - Zaktualizowano listę plików
+    - Opisano mechanizm synchronizacji między komponentami
+    - Wyjaśniono współdzielenie logiki między komponentami
+
+6.  Pliki, które zostały zmodyfikowane:
+        1. src/app/muzyka/components/songs/SongItem.tsx
+        - Dodano przycisk lajkowania
+        - Zintegrowano z systemem autoryzacji
+        - Dodano obsługę liczby polubień
+
+        2. src/app/muzyka/hooks/useLike.ts
+        - Bez zmian, wykorzystano istniejącą implementację
+
+        3. src/store/slices/features/songsSlice.ts
+        - Bez zmian, wykorzystano istniejące akcje Redux
+
+        Dzięki tej implementacji mamy spójny system lajkowania w całej aplikacji, gdzie:
+        - Stan lajków jest synchronizowany między wszystkimi komponentami
+        - Interfejs użytkownika jest spójny wizualnie
+        - Logika biznesowa jest współdzielona
+        - Obsługa błędów jest jednolita
+
+        kod:            </div>
+      </div>
+          <motion.button
+      <div className="flex items-center space-x-3">
+        {isAuthenticated && (
+          <motion.button
+            whileHover={{ scale: 1.2 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleLike(song._id);
+            }}
+            className={`p-2 rounded-full ${
+              song.isLiked 
+                ? "text-red-500" 
+                : "text-gray-500 hover:text-red-500 hover:bg-red-50"
+            }`}
+            title={song.isLiked ? "Usuń z ulubionych" : "Dodaj do ulubionych"}
+          >
+            <FaHeart className="text-xl" />
+            <span className="ml-1 text-sm">
+              {song.likesCount || 0}
+            </span>
+          </motion.button>
+        )}
+        {isPlaylistExpanded && expandedPlaylist && hasPlaylists && (
