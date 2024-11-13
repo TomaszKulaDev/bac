@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback, memo, useRef } from "react";
 import Image from "next/image";
 import { motion, Variants } from "framer-motion";
-import { FaPlay, FaBookmark, FaHeart } from "react-icons/fa";
+import { FaPlay, FaBookmark, FaHeart, FaRegHeart } from "react-icons/fa";
 import { Song, Playlist } from "../../types";
 import { getYouTubeThumbnail } from "../../utils/youtube";
 import { usePlaylistManagement } from "../../hooks/usePlaylistManagement";
@@ -146,7 +146,11 @@ const SongItem: React.FC<SongItemProps> = ({
             }`}
             title={song.isLiked ? "Usuń z ulubionych" : "Dodaj do ulubionych"}
           >
-            <FaHeart className="text-xl" />
+            {song.isLiked ? (
+              <FaHeart className="text-xl" />
+            ) : (
+              <FaRegHeart className="text-xl" />
+            )}
             <span className="ml-1 text-sm">
               {song.likesCount || 0}
             </span>
