@@ -14,18 +14,18 @@ export const SongThumbnail = memo(({ song, isCurrentSong, isPlaying }: SongThumb
   const { imageSrc, handleError } = useImageFallback(song.youtubeId);
 
   return (
-    <div className="relative w-10 h-10 flex-shrink-0 mr-4">
+    <div className="relative w-24 h-24 flex-shrink-0 mr-6">
       <Image
         src={imageSrc}
         alt={song.title}
-        width={40}
-        height={40}
+        width={96}
+        height={96}
         className="rounded-lg object-cover"
         onError={handleError}
       />
       {isCurrentSong && isPlaying && (
         <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 rounded-lg">
-          <FaPlay className="text-white text-sm" />
+          <FaPlay className="text-white text-lg" />
         </div>
       )}
     </div>
