@@ -70,10 +70,8 @@ export const SongControls: React.FC<SongControlsProps> = ({
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={handleFavoriteClick}
-          className={`p-2.5 rounded-full transition-colors flex items-center ${
-            song.isLiked 
-              ? "text-red-500" 
-              : "text-gray-500 hover:text-red-500 hover:bg-red-50"
+          className={`p-2.5 rounded-full bg-white/20 hover:bg-white/30 transition-colors ${
+            song.isLiked ? "text-red-500" : "text-white"
           }`}
           title={song.isLiked ? "Usuń z ulubionych" : "Dodaj do ulubionych"}
         >
