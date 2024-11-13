@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { Song } from "../types";
-import { FaPlay, FaPause, FaBookmark, FaHeart } from "react-icons/fa";
+import { FaPlay, FaPause, FaBookmark, FaHeart, FaRegHeart } from "react-icons/fa";
 import { getYouTubeThumbnail } from "../utils/youtube";
 import { useVideoDuration } from "../hooks/useVideoDuration";
 import { useLike } from "@/app/muzyka/hooks/useLike";
@@ -153,7 +153,11 @@ const RecommendedSongs: React.FC<RecommendedSongsProps> = ({
                             : "Dodaj do ulubionych"
                         }
                       >
-                        <FaHeart className="w-4 h-4" />
+                        {song.isLiked ? (
+                          <FaHeart className="w-4 h-4" />
+                        ) : (
+                          <FaRegHeart className="w-4 h-4" />
+                        )}
                         <span className="ml-1 text-sm">
                           {song.likesCount || 0}
                         </span>

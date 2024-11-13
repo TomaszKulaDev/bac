@@ -2,7 +2,7 @@
     - Następnie należy zaktualizować endpoint API dla like'ów, aby używał email zamiast ID. 
     - Wygląda na to, że w całej aplikacji używamy email jako identyfikatora użytkownika (widać to w src/app/api/users/update-profile/route.ts linie 32-33).
 
-    1. Hook useLike.ts w folderze app/muzyka/hooks
+1. Hook useLike.ts w folderze app/muzyka/hooks
         - Główny hook obsługujący logikę lajkowania
         - Integracja z Redux i Next-Auth
         - Obsługa błędów i autoryzacji
@@ -359,3 +359,150 @@
           </motion.button>
         )}
         {isPlaylistExpanded && expandedPlaylist && hasPlaylists && (
+
+7. # System lajkowania w aplikacji muzycznej
+
+## Komponenty i funkcjonalności
+
+### 1. Hook useLike.ts (app/muzyka/hooks)
+- Główny hook obsługujący logikę lajkowania
+- Integracja z Redux i Next-Auth
+- Obsługa błędów i autoryzacji
+- Współdzielony między wszystkimi komponentami
+
+### 2. Slice Redux (store/slices/features/songsSlice.ts)
+- Akcja asynchroniczna toggleLike
+- Komunikacja z API
+- Obsługa błędów HTTP
+- Centralne zarządzanie stanem lajków
+
+### 3. Komponenty wykorzystujące system lajków:
+
+#### SongControls.tsx
+- Obsługa lajkowania w widoku siatki
+- Animacje przycisków (Framer Motion)
+- Synchronizacja z Redux store
+- Wyświetlanie liczby polubień
+
+#### SongItem.tsx
+- Funkcjonalność lajkowania w widoku listy
+- Integracja z hookiem useLike
+- Stylizacja i animacje
+- Licznik polubień
+
+#### RecommendedSongs.tsx
+- Lajkowanie w sekcji rekomendacji
+- Spójna implementacja z pozostałymi komponentami
+- Współdzielona logika biznesowa
+
+## Implementacja
+
+### Kluczowe mechanizmy:
+1. Jednolity system zarządzania stanem (Redux)
+2. Spójna autoryzacja (Next-Auth)
+3. Współdzielony hook useLike
+4. Zunifikowany interfejs użytkownika
+
+### Obsługa błędów:
+- Walidacja autoryzacji
+- Obsługa błędów API
+- Przywracanie stanu w przypadku błędu
+- Komunikaty dla użytkownika
+
+### Synchronizacja:
+- Stan przechowywany w Redux store
+- Automatyczna aktualizacja wszystkich komponentów
+- Spójna prezentacja stanu w UI
+
+## Pliki źródłowe:
+1. src/app/muzyka/hooks/useLike.ts
+2. src/store/slices/features/songsSlice.ts
+3. src/app/muzyka/components/songs/SongControls.tsx
+4. src/app/muzyka/components/songs/SongItem.tsx
+5. src/app/muzyka/components/RecommendedSongs.tsx
+
+                const handleLike = useCallback(async (songId: string) => {
+                if (!songId) return;
+                
+                if (status === 'unauthenticated') {
+                await signIn();
+                return;
+                }
+                
+                if (!session?.user?.email) {
+                console.error('No user email in session');
+                return;
+                }
+                
+                try {
+                const result = await dispatch(toggleLike(songId)).unwrap();
+                return result;
+                } catch (error: any) {
+                console.error('Error toggling like:', error);
+                throw error;
+                }
+            }, [dispatch, session, status]);
+            ------------------------------------------------------------------------------------------
+            return { handleLike };
+            };
+                                switch (response.status) {
+                    case 401:
+                        errorMessage = 'Brak uprawnień do usunięcia utworu';
+                        break;
+                    case 403:
+                        errorMessage = 'Dostęp zabroniony';
+                        break;
+                    case 404:
+                        errorMessage = 'Nie znaleziono utworu do usunięcia';
+                        break;
+                    case 500:
+                        errorMessage = 'Błąd serwera podczas usuwania utworu';
+                        break;
+                    default:
+                        errorMessage = errorData.message || errorMessage;
+                    }
+                    -------------------------------------------------------------------------------
+
+                    return rejectWithValue({
+                    status: response.status,
+                    message: errorMessage,
+                    details: errorData.details || null
+                    });
+                }
+
+                const data = await response.json();
+                await dispatch(fetchSongs());
+                return data;
+                } catch (error: any) {
+                return rejectWithValue({
+                    status: 500,
+                    message: 'Wystąpił nieoczekiwany błąd podczas usuwania utworu',
+                    details: error.message
+                });
+                }
+            }
+            );
+            // Akcja do ustawiania indeksu aktualnie odtwarzanej piosenki
+            export const setCurrentSongIndex = createAction<number>('songs/setCurrentSongIndex');
+
+            // Asynchroniczna akcja do aktualizacji playlist piosenek
+            export const updateSongsPlaylists = createAsyncThunk(
+            'songs/updateSongsPlaylists',
+            async (payload: { songIds: string[]; playlistId: string; playlistName: string; remove?: boolean }, thunkAPI) => {
+                // Tutaj powinna być implementacja aktualizacji playlist
+
+            ------------------------------------------------------------------------------------
+            const handleFavoriteClick = async (e: React.MouseEvent) => {
+                e.stopPropagation();
+                
+                if (!isAuthenticated) {
+                return;
+                }
+                    <button
+                try {
+                await handleLike(songId);
+                } catch (error) {
+                console.error('Error handling like:', error);
+                }
+            };
+
