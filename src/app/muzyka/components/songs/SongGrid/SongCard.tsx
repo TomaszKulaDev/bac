@@ -10,24 +10,27 @@ export const SongCard: React.FC<SongCardProps> = ({ song, ...props }) => {
   const { imageSrc, handleError } = useImageFallback(song.youtubeId);
 
   return (
-    <div className="relative group w-full max-w-[250px] mx-auto">
-      <div className="relative pb-[56.25%] rounded-md overflow-hidden bg-gray-100">
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-transparent" />
+    <div className="relative group w-full bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200">
+      <div className="relative aspect-[3/3] rounded-xl overflow-hidden">
         <Image
           src={imageSrc}
           alt={`${song.title} - ${song.artist}`}
           fill
-          className="absolute inset-0 object-cover transition-transform group-hover:scale-105"
-          sizes="(max-width: 640px) 35vw, (max-width: 1024px) 20vw, 12vw"
+          className="object-cover transition-transform duration-200 group-hover:scale-105"
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
           priority
           onError={handleError}
         />
-        <BadgeContainer song={song} />
         <SongControls {...props} songId={song.id} />
       </div>
-      <div className="mt-1 px-0.5">
-        <h3 className="text-xs font-medium text-gray-900 truncate">{song.title}</h3>
-        <p className="text-[10px] text-gray-600 truncate">{song.artist}</p>
+      <div className="px-1 pt-2 pb-4">
+        <h3 className="text-base font-medium text-gray-900 truncate mb-1">
+          {song.title}
+        </h3>
+        <p className="text-sm font-medium text-gray-600 truncate mb-2">
+          {song.artist}
+        </p>
+        <BadgeContainer song={song} />
       </div>
     </div>
   );
