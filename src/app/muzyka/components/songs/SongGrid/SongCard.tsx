@@ -43,10 +43,10 @@ export const SongCard: React.FC<SongCardProps> = ({ song, ...props }) => {
         </div>
       </div>
       <div className="px-1 pt-2 pb-4">
-        <h3 className="text-base font-medium text-gray-900 truncate mb-1">
+        <h3 className="font-semibold truncate text-sm text-black">
           {song.title}
         </h3>
-        <p className="text-sm font-medium text-gray-600 truncate mb-2">
+        <p className="font-['NeueMontreal',Arial,sans-serif] text-sm font-normal tracking-[0.5px] leading-normal text-[#3a3a3c] truncate" style={{fontVariant: 'normal'}}>
           {song.artist}
         </p>
         <BadgeContainer song={song} />
@@ -54,3 +54,4 @@ export const SongCard: React.FC<SongCardProps> = ({ song, ...props }) => {
     </div>
   );
 };
+
