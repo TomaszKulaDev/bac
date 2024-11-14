@@ -68,8 +68,7 @@ const SongGrid: React.FC<SongGridProps> = ({ songs, ...props }) => {
         <LoadMoreButton 
           isVisible={hasMoreSongs}
           onClick={handleLoadMore}
-          remainingSongs={remainingSongs}
-        />
+          remainingSongs={remainingSongs} isExpanded={false}        />
       )}
     </div>
   );

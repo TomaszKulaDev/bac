@@ -40,8 +40,8 @@ interface SongListProps {
 }
 
 const SongList = memo(({ songs, ...props }: SongListProps) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<Error | null>(null);
+  const [visibleCount, setVisibleCount] = useState(8);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const sortedAndFilteredSongs = useSortedAndFilteredSongs(
     songs,
@@ -53,21 +53,28 @@ const SongList = memo(({ songs, ...props }: SongListProps) => {
   );
 
   const visibleSongsList = useMemo(() => 
-    sortedAndFilteredSongs.slice(0, props.visibleSongs),
-    [sortedAndFilteredSongs, props.visibleSongs]
+    sortedAndFilteredSongs.slice(0, visibleCount),
+    [sortedAndFilteredSongs, visibleCount]
   );
 
-  const hasMoreSongs = sortedAndFilteredSongs.length > props.visibleSongs;
+  const handleToggleVisibility = useCallback(() => {
+    if (isExpanded) {
+      setVisibleCount(8);
+      setIsExpanded(false);
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    } else {
+      setVisibleCount(sortedAndFilteredSongs.length);
+      setIsExpanded(true);
+    }
+  }, [isExpanded, sortedAndFilteredSongs.length]);
 
-  const remainingSongs = sortedAndFilteredSongs.length - props.visibleSongs;
-
-  if (error) {
-    return (
-      <div role="alert" className="p-4 bg-red-50 text-red-600 rounded-lg">
-        Wystąpił błąd: {error.message}
-      </div>
-    );
-  }
+  const remainingSongs = useMemo(() => 
+    isExpanded ? 0 : sortedAndFilteredSongs.length - visibleCount,
+    [sortedAndFilteredSongs.length, visibleCount, isExpanded]
+  );
 
   return (
     <div 
@@ -82,7 +89,7 @@ const SongList = memo(({ songs, ...props }: SongListProps) => {
         />
       )}
       
-      <div className="space-y-4">
+      <div className="space-y-4 pb-32">
         {visibleSongsList.map((song) => (
           <SongItem 
             key={song.id}
@@ -96,19 +103,22 @@ const SongList = memo(({ songs, ...props }: SongListProps) => {
             onSelect={props.onSongSelect}
             onAddToPlaylist={props.onAddToPlaylist}
             playlists={props.playlists}
-            setCurrentPlaylistId={props.setExpandedPlaylist} currentPlaylistId={null}          />
-        ))}
-      </div>
-
-      {hasMoreSongs && (
-        <div className="w-full pt-4">
-          <LoadMoreButton 
-            isVisible={hasMoreSongs}
-            onClick={props.onLoadMore}
-            remainingSongs={remainingSongs}
+            setCurrentPlaylistId={props.setExpandedPlaylist}
+            currentPlaylistId={null}
           />
-        </div>
-      )}
+        ))}
+
+        {sortedAndFilteredSongs.length > 20 && (
+          <div className="w-full pt-4 mb-24">
+            <LoadMoreButton 
+              isVisible={true}
+              onClick={handleToggleVisibility}
+              remainingSongs={remainingSongs}
+              isExpanded={isExpanded}
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 });
