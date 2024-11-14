@@ -8,22 +8,33 @@ import LoadMoreButton from '../LoadMoreButton';
 
 const SongGrid: React.FC<SongGridProps> = ({ songs, ...props }) => {
   const { filters, updateFilter, clearFilters, filteredSongs, hasActiveFilters } = useFilters(songs);
-  const [visibleSongs, setVisibleSongs] = useState<number>(20);
+  const [visibleSongs, setVisibleSongs] = useState<number>(24);
+  const [isExpanded, setIsExpanded] = useState(false);
   
   const currentSongs = useMemo(() => 
     filteredSongs.slice(0, visibleSongs),
     [filteredSongs, visibleSongs]
   );
 
-  const hasMoreSongs = filteredSongs.length > visibleSongs;
-  const remainingSongs = filteredSongs.length - visibleSongs;
+  const hasMoreSongs = filteredSongs.length > 24;
+  const remainingSongs = isExpanded ? 0 : filteredSongs.length - visibleSongs;
 
-  const handleLoadMore = useCallback(() => {
-    setVisibleSongs(prev => prev + 20);
-  }, []);
+  const handleToggleVisibility = useCallback(() => {
+    if (isExpanded) {
+      setVisibleSongs(24);
+      setIsExpanded(false);
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    } else {
+      setVisibleSongs(filteredSongs.length);
+      setIsExpanded(true);
+    }
+  }, [isExpanded, filteredSongs.length]);
 
   return (
-    <div className="w-full bg-white p-1 pb-16">
+    <div className="w-full bg-white p-1 pb-32">
       <div className="flex justify-between items-center mb-2 px-2">
         <h2 className="text-lg font-bold text-gray-800">
           Szybki wybór
@@ -65,10 +76,14 @@ const SongGrid: React.FC<SongGridProps> = ({ songs, ...props }) => {
       </motion.div>
 
       {hasMoreSongs && (
-        <LoadMoreButton 
-          isVisible={hasMoreSongs}
-          onClick={handleLoadMore}
-          remainingSongs={remainingSongs} isExpanded={false}        />
+        <div className="w-full pt-4 mb-24">
+          <LoadMoreButton 
+            isVisible={hasMoreSongs}
+            onClick={handleToggleVisibility}
+            remainingSongs={remainingSongs}
+            isExpanded={isExpanded}
+          />
+        </div>
       )}
     </div>
   );
