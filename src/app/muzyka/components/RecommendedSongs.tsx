@@ -16,15 +16,6 @@ interface RecommendedSongsProps {
   onToggleFavorite: (songId: string) => Promise<void>;
 }
 
-const getRecommendedSongs = (songs: Song[]) => {
-  return [...songs]
-    .sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    )
-    .slice(0, 5);
-};
-
 const RecommendedSongs: React.FC<RecommendedSongsProps> = ({
   songs,
   currentSongId,
@@ -34,141 +25,137 @@ const RecommendedSongs: React.FC<RecommendedSongsProps> = ({
   expandedPlaylist,
   onToggleFavorite,
 }) => {
-  const recommendedSongs = getRecommendedSongs(songs);
-
-  const duration1 = useVideoDuration(recommendedSongs[0]?.youtubeId);
-  const duration2 = useVideoDuration(recommendedSongs[1]?.youtubeId);
-  const duration3 = useVideoDuration(recommendedSongs[2]?.youtubeId);
-  const duration4 = useVideoDuration(recommendedSongs[3]?.youtubeId);
-  const duration5 = useVideoDuration(recommendedSongs[4]?.youtubeId);
-
-  const durations: Record<string, string> = {
-    [recommendedSongs[0]?.id]: duration1,
-    [recommendedSongs[1]?.id]: duration2,
-    [recommendedSongs[2]?.id]: duration3,
-    [recommendedSongs[3]?.id]: duration4,
-    [recommendedSongs[4]?.id]: duration5,
+  const getRecommendedSongs = (songs: Song[]) => {
+    return [...songs]
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+      .slice(0, 10);
   };
 
+  const recommendedSongs = getRecommendedSongs(songs);
   const { handleLike } = useLike();
+  
+  const duration1 = useVideoDuration(recommendedSongs[0]?.youtubeId || '');
+  const duration2 = useVideoDuration(recommendedSongs[1]?.youtubeId || '');
+  const duration3 = useVideoDuration(recommendedSongs[2]?.youtubeId || '');
+  const duration4 = useVideoDuration(recommendedSongs[3]?.youtubeId || '');
+  const duration5 = useVideoDuration(recommendedSongs[4]?.youtubeId || '');
+  const duration6 = useVideoDuration(recommendedSongs[5]?.youtubeId || '');
+  const duration7 = useVideoDuration(recommendedSongs[6]?.youtubeId || '');
+  const duration8 = useVideoDuration(recommendedSongs[7]?.youtubeId || '');
+  const duration9 = useVideoDuration(recommendedSongs[8]?.youtubeId || '');
+  const duration10 = useVideoDuration(recommendedSongs[9]?.youtubeId || '');
+
+  const durations: Record<string, string> = {
+    [recommendedSongs[0]?.id || '']: duration1,
+    [recommendedSongs[1]?.id || '']: duration2,
+    [recommendedSongs[2]?.id || '']: duration3,
+    [recommendedSongs[3]?.id || '']: duration4,
+    [recommendedSongs[4]?.id || '']: duration5,
+    [recommendedSongs[5]?.id || '']: duration6,
+    [recommendedSongs[6]?.id || '']: duration7,
+    [recommendedSongs[7]?.id || '']: duration8,
+    [recommendedSongs[8]?.id || '']: duration9,
+    [recommendedSongs[9]?.id || '']: duration10,
+  };
+
+  const leftColumnSongs = recommendedSongs.slice(0, 5);
+  const rightColumnSongs = recommendedSongs.slice(5, 10);
 
   return (
     <div className="w-full bg-gradient-to-b from-[#0a1e3b] to-[#2a4a7f] text-white p-6 rounded-t-3xl">
       <h2 className="text-2xl font-bold mb-6">
         Nasze Muzyczne Polecenia {new Date().getFullYear()}!
       </h2>
-      <div className="overflow-x-auto">
-        <table className="w-full min-w-[800px] table-auto">
-          <thead className="text-blue-200/70 text-sm uppercase border-b border-blue-700/30">
-            <tr>
-              <th className="px-4 py-2 text-left">TYTUŁ</th>
-              <th className="px-4 py-2 text-left">ARTYSTA</th>
-              <th className="px-4 py-2 text-left">ALBUM</th>
-              <th className="px-4 py-2 text-right">CZAS</th>
-              <th className="w-24"></th>
-            </tr>
-          </thead>
-          <tbody>
-            {recommendedSongs.map((song) => {
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {[leftColumnSongs, rightColumnSongs].map((columnSongs, columnIndex) => (
+          <div key={columnIndex} className="space-y-2">
+            {columnSongs.map((song, index) => {
               const isCurrentSong = song.id === currentSongId;
+              const displayIndex = columnIndex * 5 + index + 1;
 
               return (
-                <tr
+                <div
                   key={song.id}
                   onClick={() => onSongSelect(song.id)}
-                  role="button"
-                  aria-label={`Odtwórz ${song.title} - ${song.artist}`}
                   className={`
+                    flex items-center p-3 rounded-lg
                     hover:bg-blue-800/20 transition-colors cursor-pointer
                     ${isCurrentSong ? "bg-blue-800/30" : ""}
                   `}
                 >
-                  <td className="px-4 py-3">
-                    <div className="flex items-center gap-3">
-                      <div className="relative group w-10 h-10 flex-shrink-0">
-                        <Image
-                          src={getYouTubeThumbnail(song.youtubeId)}
-                          alt={`Okładka albumu ${song.title}`}
-                          width={40}
-                          height={40}
-                          className="object-cover rounded"
-                          onError={(e) => {
-                            const target = e.target as HTMLImageElement;
-                            target.src = "/images/default-album-cover.jpg";
-                          }}
-                        />
-                        <button
-                          onClick={() => onSongSelect(song.id)}
-                          className="absolute inset-0 flex items-center justify-center bg-[#0a1e3b]/60 opacity-0 group-hover:opacity-100 transition-opacity"
-                        >
-                          {isCurrentSong && isPlaying ? (
-                            <FaPause className="w-4 h-4" />
-                          ) : (
-                            <FaPlay className="w-4 h-4" />
-                          )}
-                        </button>
-                      </div>
-                      <div className="min-w-0">
-                        <div className="font-medium truncate">{song.title}</div>
-                        <div className="text-sm text-blue-200/70 truncate">
-                          {song.artist}
-                        </div>
-                      </div>
+                  <span className="text-blue-200/70 w-8 text-sm">
+                    {displayIndex.toString().padStart(2, '0')}
+                  </span>
+
+                  <div className="relative group w-12 h-12 flex-shrink-0">
+                    <Image
+                      src={getYouTubeThumbnail(song.youtubeId)}
+                      alt={`${song.title} - ${song.artist}`}
+                      width={48}
+                      height={48}
+                      className="object-cover rounded-md"
+                      loading="lazy"
+                    />
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onSongSelect(song.id);
+                      }}
+                      className="absolute inset-0 flex items-center justify-center bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity rounded-md"
+                    >
+                      {isCurrentSong && isPlaying ? (
+                        <FaPause className="w-5 h-5" />
+                      ) : (
+                        <FaPlay className="w-5 h-5" />
+                      )}
+                    </button>
+                  </div>
+
+                  <div className="min-w-0 ml-3 flex-grow">
+                    <div className="font-medium truncate">{song.title}</div>
+                    <div className="text-sm text-blue-200/70 truncate">
+                      {song.artist}
                     </div>
-                  </td>
-                  <td className="px-4 py-3 truncate text-blue-100">
-                    {song.artist}
-                  </td>
-                  <td className="px-4 py-3 truncate text-blue-100">
-                    {song.title}
-                  </td>
-                  <td className="px-4 py-3 text-right text-blue-100">
+                  </div>
+
+                  <div className="text-blue-200/70 text-sm mx-4">
                     {durations[song.id] || "--:--"}
-                  </td>
-                  <td className="px-4 py-3">
-                    <div className="flex items-center justify-end gap-2">
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onAddToPlaylist(song.id);
-                        }}
-                        className="p-2 text-blue-200 hover:text-white transition-colors"
-                        title="Dodaj do playlisty"
-                      >
-                        <FaBookmark className="w-4 h-4" />
-                      </button>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleLike(song._id);
-                        }}
-                        className={`p-2 transition-colors ${
-                          song.isLiked
-                            ? "text-red-500"
-                            : "text-blue-200 hover:text-white"
-                        }`}
-                        title={
-                          song.isLiked
-                            ? "Usuń z ulubionych"
-                            : "Dodaj do ulubionych"
-                        }
-                      >
-                        {song.isLiked ? (
-                          <FaHeart className="w-4 h-4" />
-                        ) : (
-                          <FaRegHeart className="w-4 h-4" />
-                        )}
-                        <span className="ml-1 text-sm">
-                          {song.likesCount || 0}
-                        </span>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onAddToPlaylist(song.id);
+                      }}
+                      className="p-2 text-blue-200 hover:text-white transition-colors rounded-full hover:bg-blue-800/30"
+                      title="Dodaj do playlisty"
+                    >
+                      <FaBookmark className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleLike(song._id);
+                      }}
+                      className={`p-2 transition-colors rounded-full hover:bg-blue-800/30 flex items-center gap-1
+                        ${song.isLiked ? "text-red-500" : "text-blue-200 hover:text-white"}
+                      `}
+                      title={song.isLiked ? "Usuń z ulubionych" : "Dodaj do ulubionych"}
+                    >
+                      {song.isLiked ? (
+                        <FaHeart className="w-4 h-4" />
+                      ) : (
+                        <FaRegHeart className="w-4 h-4" />
+                      )}
+                      <span className="text-sm">{song.likesCount || 0}</span>
+                    </button>
+                  </div>
+                </div>
               );
             })}
-          </tbody>
-        </table>
+          </div>
+        ))}
       </div>
     </div>
   );
