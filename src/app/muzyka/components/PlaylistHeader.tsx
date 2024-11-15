@@ -5,12 +5,19 @@ import { FaPlay, FaPause } from "react-icons/fa";
 import { Song } from "../types";
 import { getYouTubeThumbnail } from "../utils/youtube";
 
+interface PlaylistSEOMetadata {
+  title: string;
+  description: string;
+  year: number;
+}
+
 interface PlaylistHeaderProps {
   filteredSongsCount: number;
   dominantColor: string;
   onPlay: () => void;
   isPlaying: boolean;
   songs: Song[];
+  seoMetadata?: PlaylistSEOMetadata;
 }
 
 interface HeaderImage {
@@ -72,6 +79,12 @@ const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
   onPlay,
   isPlaying,
   songs,
+  seoMetadata = {
+    title: "Więc mówisz, że szukasz muzyki?",
+    description: "Twoja Muzyczna Przestrzeń do sluchania bachaty",
+    year: new Date().getFullYear()
+   
+  }
 }) => {
   const [scrollPosition, setScrollPosition] = useState(0);
   const [headerImages, setHeaderImages] = useState<HeaderImage[]>([]);
@@ -111,12 +124,8 @@ const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
   return (
     <motion.div
       className="relative min-h-[400px] w-full overflow-hidden"
-      style={{
-        background: `linear-gradient(180deg, 
-          ${dominantColor || '#0a1e3b'} 0%, 
-          rgba(10, 30, 59, 0.8) 50%,
-          rgba(10, 30, 59, 0) 100%)`
-      }}
+      itemScope
+      itemType="https://schema.org/MusicPlaylist"
     >
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0a1e3b]/50 to-[#0a1e3b]" />
 
@@ -125,7 +134,7 @@ const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
         style={{ opacity }}
       >
         <div className="flex justify-center mb-8 relative">
-          <div className="flex items-center -space-x-8">
+          <div className="flex items-center -space-x-8" itemProp="image">
             {headerImages.map((image, index) => (
               <motion.div
                 key={image.position}
@@ -144,58 +153,44 @@ const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
               >
                 <Image
                   src={`/images/header/${image.imageName}`}
-                  alt={`Header image ${image.position}`}
+                  alt={`${seoMetadata.title} - ${image.title || `Zdjęcie ${image.position + 1}`}`}
                   layout="fill"
                   objectFit="cover"
                   className="transition-transform duration-300 group-hover:scale-110"
+                  priority={index === 2}
+                  loading={index === 2 ? "eager" : "lazy"}
+                  itemProp="image"
                 />
               </motion.div>
             ))}
           </div>
         </div>
 
-        <div className="text-center space-y-6">
+        <div className="text-center space-y-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="space-y-2"
+            className="space-y-4"
           >
-            <div className="text-sm font-medium text-blue-200/70 uppercase tracking-wider">
-              BACHATA TOP LVL MUSIC {new Date().getFullYear()}
-            </div>
-            <h1 className="text-4xl md:text-6xl font-bold text-white tracking-tight">
-              Twoja Muzyczna Przestrzeń
-            </h1>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="flex flex-col items-center space-y-6"
-          >
-            <div className="text-lg text-blue-200/70">
-              Bachateros poznajcie nasze muzyczne hity!
-            </div>
-
-            <div className="flex items-center justify-center space-x-4 text-sm text-blue-200/70">
-              <span>{filteredSongsCount} utworów bachaty</span>
-              <span>•</span>
-              <span>Codzienna aktualizacja playlist</span>
-            </div>
-
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={onPlay}
-              className="bg-white text-[#0a1e3b] px-8 py-3 rounded-full 
-                font-medium flex items-center space-x-3 shadow-lg
-                hover:bg-opacity-90 transition-all duration-300"
+            <h1 
+              className="text-4xl md:text-6xl font-bold text-white tracking-tight mb-4"
+              itemProp="name"
             >
-              {isPlaying ? <FaPause className="h-4 w-4" /> : <FaPlay className="h-4 w-4" />}
-              <span>{isPlaying ? 'Zatrzymaj' : 'Odtwórz wszystko'}</span>
-            </motion.button>
+              {seoMetadata.title}
+            </h1>
+            <div 
+              className="text-sm font-medium text-blue-200/70 uppercase tracking-wider mt-6"
+              itemProp="description"
+            >
+              {seoMetadata.description}
+            </div>
           </motion.div>
+
+          <div className="flex items-center justify-center space-x-4 text-sm text-blue-200/70 mt-8">
+            <span>{filteredSongsCount} utworów bachaty</span>
+            <span>•</span>
+            <span>Codzienna aktualizacja playlist</span>
+          </div>
         </div>
       </div>
     </motion.div>
