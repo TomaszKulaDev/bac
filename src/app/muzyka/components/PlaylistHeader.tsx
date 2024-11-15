@@ -56,21 +56,42 @@ const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0a1e3b]/50 to-[#0a1e3b]" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        {/* Sekcja zdjęć */}
+        {/* Sekcja zdjęć w formie łuku */}
         <div className="flex justify-center mb-12 relative">
-          <div className="flex items-center relative">
-            {[0, 1, 2].map((index) => (
+          <div className="flex items-center justify-center relative">
+            {[0, 1, 2, 3, 4].map((index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, x: index === 1 ? 0 : index === 0 ? -20 : 20 }}
-                animate={{ opacity: 1, x: 0 }}
+                initial={{ 
+                  opacity: 0,
+                  y: index === 2 ? 0 : 20,
+                  x: index === 2 ? 0 : 
+                     index === 0 ? -60 : 
+                     index === 1 ? -30 : 
+                     index === 3 ? 30 : 60
+                }}
+                animate={{ 
+                  opacity: 1,
+                  y: index === 2 ? 0 : 
+                     index === 0 || index === 4 ? 30 : 15,
+                  x: index === 2 ? 0 : 
+                     index === 0 ? -60 : 
+                     index === 1 ? -30 : 
+                     index === 3 ? 30 : 60
+                }}
                 className={`
-                  ${index === 1 ? 'w-32 h-32 z-20' : 'w-24 h-24 z-10'}
-                  ${index === 0 ? '-mr-4' : index === 2 ? '-ml-4' : ''}
+                  ${index === 2 ? 'w-36 h-36 z-20' : 
+                    (index === 1 || index === 3) ? 'w-28 h-28 z-10' : 
+                    'w-24 h-24 z-0'}
+                  ${index === 0 ? '-mr-4' : 
+                    index === 1 ? '-mr-4' : 
+                    index === 3 ? '-ml-4' : 
+                    index === 4 ? '-ml-4' : ''}
                   rounded-full overflow-hidden relative
                   border-2 border-blue-800/30
-                  ${index === 1 ? 'border-4' : 'border-2'}
+                  ${index === 2 ? 'border-4' : 'border-2'}
                   hover:scale-105 transition-transform duration-300
+                  transform
                 `}
               >
                 <Image
@@ -80,6 +101,7 @@ const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
                   alt={artists[index]?.name || ""}
                   className="transition-transform duration-300 hover:scale-110"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </motion.div>
             ))}
           </div>
@@ -92,7 +114,7 @@ const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
             animate={{ opacity: 1, y: 0 }}
             className="inline-flex items-center space-x-2 text-sm text-blue-200/70"
           >
-            <span>DISCOVERY BACIATA.PL</span>
+            <span>ODKRYJ MUZYKĘ NA NOWO</span>
           </motion.div>
 
           <motion.h1
@@ -100,7 +122,7 @@ const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
             animate={{ opacity: 1, y: 0 }}
             className="text-4xl md:text-6xl font-bold text-white tracking-tight"
           >
-            Rising tracks from new and upcoming artists
+            ODKRYJ MUZYKĘ BACHATY NA NOWO
           </motion.h1>
 
           <motion.p
@@ -108,7 +130,7 @@ const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
             animate={{ opacity: 1, y: 0 }}
             className="text-lg text-blue-200/70 max-w-2xl mx-auto"
           >
-            Be the first to listen to these future hit songs
+            Posłuchaj najnowszych hitów od najlepszych dj bachatowych
           </motion.p>
 
           {/* Oryginalne buttony - bez zmian */}
@@ -146,9 +168,9 @@ const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
           </div>
 
           <div className="flex items-center justify-center space-x-4 text-sm text-blue-200/70 pt-4">
-            <span>{filteredSongsCount} utworów</span>
+            <span>{filteredSongsCount} utworów bachaty</span>
             <span>•</span>
-            <span>Aktualizowane codziennie</span>
+            <span>Codzienna aktualizacja playlist</span>
           </div>
         </div>
       </div>
