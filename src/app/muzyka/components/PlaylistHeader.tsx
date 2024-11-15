@@ -3,12 +3,18 @@ import { motion } from "framer-motion";
 import { FaPlay, FaHeart, FaUser, FaShare } from "react-icons/fa";
 import Image from "next/image";
 
+interface Artist {
+  name: string;
+  image?: string;
+}
+
 interface PlaylistHeaderProps {
   filteredSongsCount: number;
   onPlay: () => void;
   coverImage?: string;
   dominantColor?: string;
   isPlaying?: boolean;
+  artists?: Artist[];
 }
 
 const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
@@ -17,6 +23,7 @@ const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
   coverImage,
   dominantColor,
   isPlaying,
+  artists = [],
 }) => {
   const [scrollPosition, setScrollPosition] = useState(0);
 
@@ -37,80 +44,75 @@ const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
 
   return (
     <motion.div
-      className="relative min-h-[600px] w-full overflow-hidden"
+      className="relative min-h-[500px] w-full overflow-hidden"
       style={{
-        background: dominantColor
-          ? `linear-gradient(to bottom, ${dominantColor}, #0a1e3b)`
-          : "linear-gradient(to bottom, #0a1e3b, #2a4a7f)",
+        background: `linear-gradient(180deg, 
+          ${dominantColor || '#0a1e3b'} 0%, 
+          rgba(10, 30, 59, 0.8) 50%,
+          rgba(10, 30, 59, 0) 100%)`
       }}
     >
-      {/* Tło z efektem parallax */}
-      <motion.div
-        className="absolute inset-0"
-        style={{
-          opacity: opacity,
-          filter: `blur(${blur}px)`,
-          transform: `translateY(${scrollPosition * 0.5}px)`,
-        }}
-      >
-        {coverImage && (
-          <Image
-            src={coverImage}
-            layout="fill"
-            objectFit="cover"
-            className="opacity-30"
-            alt="Playlist cover"
-          />
-        )}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-[#0a1e3b]" />
-      </motion.div>
+      {/* Overlay gradient dla lepszego przejścia */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0a1e3b]/50 to-[#0a1e3b]" />
 
-      {/* Animowane nuty w tle */}
-      <div className="absolute inset-0 opacity-5">
-        <motion.div
-          className="absolute inset-0 bg-[url('/patterns/music-notes.svg')] bg-repeat"
-          animate={{
-            y: [0, -100],
-            opacity: [0.1, 0.05],
-          }}
-          transition={{
-            y: { duration: 20, repeat: Infinity, ease: "linear" },
-            opacity: { duration: 10, repeat: Infinity, yoyo: true },
-          }}
-        />
-      </div>
-
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
-        <div className="flex items-center space-x-4 text-white/60 text-sm">
-          <div className="flex items-center space-x-2">
-            <span>Baciata.pl</span>
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        {/* Sekcja zdjęć */}
+        <div className="flex justify-center mb-12 relative">
+          <div className="flex items-center relative">
+            {[0, 1, 2].map((index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, x: index === 1 ? 0 : index === 0 ? -20 : 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                className={`
+                  ${index === 1 ? 'w-32 h-32 z-20' : 'w-24 h-24 z-10'}
+                  ${index === 0 ? '-mr-4' : index === 2 ? '-ml-4' : ''}
+                  rounded-full overflow-hidden relative
+                  border-2 border-blue-800/30
+                  ${index === 1 ? 'border-4' : 'border-2'}
+                  hover:scale-105 transition-transform duration-300
+                `}
+              >
+                <Image
+                  src={artists[index]?.image || "/images/default-avatar.png"}
+                  layout="fill"
+                  objectFit="cover"
+                  alt={artists[index]?.name || ""}
+                  className="transition-transform duration-300 hover:scale-110"
+                />
+              </motion.div>
+            ))}
           </div>
-          <span>•</span>
-          <span>{filteredSongsCount} utworów</span>
-          <span>•</span>
-          <span>Zaktualizowano: {new Date().toLocaleDateString("pl-PL")}</span>
         </div>
 
-        <div className="flex items-center justify-between">
-          <div className="flex-1">
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-6xl md:text-8xl font-black text-white tracking-tight leading-none mb-6"
-            >
-              {`Bachata Top lista ${new Date().getFullYear()}!`}
-            </motion.h1>
+        {/* Tekst */}
+        <div className="text-center space-y-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="inline-flex items-center space-x-2 text-sm text-blue-200/70"
+          >
+            <span>DISCOVERY BACIATA.PL</span>
+          </motion.div>
 
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-xl text-white/80 mb-8"
-            >
-              Do nich tańczysz na imprezach w {new Date().getFullYear()} roku!
-            </motion.p>
-          </div>
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-4xl md:text-6xl font-bold text-white tracking-tight"
+          >
+            Rising tracks from new and upcoming artists
+          </motion.h1>
 
-          <div className="flex items-center space-x-6">
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-lg text-blue-200/70 max-w-2xl mx-auto"
+          >
+            Be the first to listen to these future hit songs
+          </motion.p>
+
+          {/* Oryginalne buttony - bez zmian */}
+          <div className="flex items-center justify-center space-x-6 pt-4">
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -141,6 +143,12 @@ const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
             >
               <FaShare className="h-6 w-6" />
             </motion.button>
+          </div>
+
+          <div className="flex items-center justify-center space-x-4 text-sm text-blue-200/70 pt-4">
+            <span>{filteredSongsCount} utworów</span>
+            <span>•</span>
+            <span>Aktualizowane codziennie</span>
           </div>
         </div>
       </div>
