@@ -7,6 +7,8 @@ import type { Song } from '@/types/song';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { getYouTubeThumbnail } from '../utils/youtube';
+import { useState, useEffect } from 'react';
+import { getPredominantColor } from '../utils/colors';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -39,6 +41,21 @@ export const TopSongs: React.FC<TopSongsProps> = ({
       .slice(0, 5)
   );
 
+  const [dominantColor, setDominantColor] = useState('rgb(15, 28, 46)'); // domyślny kolor
+
+  const currentSongDetails = useSelector((state: RootState) => 
+    state.songs.songs.find(s => s._id === currentSongId)
+  );
+
+  useEffect(() => {
+    if (currentSongId && currentSongDetails) {
+      const thumbnail = getYouTubeThumbnail(currentSongDetails.youtubeId);
+      getPredominantColor(thumbnail).then(color => {
+        setDominantColor(color);
+      });
+    }
+  }, [currentSongId, currentSongDetails]);
+
     function showErrorToast(arg0: string) {
         throw new Error('Function not implemented.');
     }
@@ -53,93 +70,142 @@ export const TopSongs: React.FC<TopSongsProps> = ({
           initial="hidden"
           animate="show"
           variants={containerVariants}
-          className="w-1/2 bg-gradient-to-br from-purple-900/90 to-indigo-900/90 backdrop-blur-sm p-6 rounded-2xl border border-white/10"
+          className="w-1/2"
         >
-          <header className="flex items-center gap-3 mb-6">
-            <FaCrown className="text-2xl text-amber-400" />
-            <h2 className="text-xl font-bold text-white">Top 5 Najpopularniejszych </h2>
-          </header>
+          <div 
+            className="relative overflow-hidden rounded-2xl backdrop-blur-sm"
+            style={{
+              backgroundColor: `${dominantColor}95`,
+              boxShadow: `0 0 100px -20px ${dominantColor}`,
+              transition: 'background-color 1s ease-in-out, box-shadow 1s ease-in-out'
+            }}
+          >
+            {/* Gradient overlay */}
+            <div 
+              className="absolute inset-0 opacity-30"
+              style={{
+                background: `linear-gradient(to bottom right, ${dominantColor}, transparent)`
+              }}
+            />
+            
+            <div className="relative z-10 p-6">
+              <header className="flex items-center gap-3 mb-6">
+                <FaCrown className="text-2xl text-amber-400" />
+                <h2 className="text-xl font-bold text-white">Top 5 Najpopularniejszych</h2>
+              </header>
 
-          <div className="grid gap-3">
-            {topSongs.map((song, index) => (
-              <motion.div
-                key={song._id}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className={`flex items-center gap-4 p-3 rounded-xl transition-all group
-                  ${currentSongId === song._id ? 'bg-white/15' : 'bg-white/5 hover:bg-white/10'}`}
-              >
-                <div className="relative w-12 h-12 flex-shrink-0">
-                  <Image
-                    src={getYouTubeThumbnail(song.youtubeId)}
-                    alt={song.title}
-                    fill
-                    className="object-cover rounded-lg"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent rounded-lg" />
-                  <span className="absolute bottom-1 left-2 text-lg font-bold text-white/90">
-                    {index + 1}
-                  </span>
-                </div>
+              <div className="grid gap-3">
+                {topSongs.map((song, index) => (
+                  <motion.div
+                    key={song._id}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    className={`flex items-center gap-4 p-3 rounded-xl transition-all group
+                      ${currentSongId === song._id 
+                        ? 'bg-white/20 backdrop-blur-sm' 
+                        : 'bg-black/20 hover:bg-white/10 backdrop-blur-sm'}`}
+                  >
+                    <div className="relative w-12 h-12 flex-shrink-0">
+                      <Image
+                        src={getYouTubeThumbnail(song.youtubeId)}
+                        alt={song.title}
+                        fill
+                        className="object-cover rounded-lg"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent rounded-lg" />
+                      <span className="absolute bottom-1 left-2 text-lg font-bold text-white/90">
+                        {index + 1}
+                      </span>
+                    </div>
 
-                <div className="flex-grow min-w-0">
-                  <h3 className="font-medium text-white truncate">{song.title}</h3>
-                  <p className="text-sm text-indigo-200/70 truncate">{song.artist}</p>
-                </div>
+                    <div className="flex-grow min-w-0">
+                      <h3 className="font-medium text-white truncate">{song.title}</h3>
+                      <p className="text-sm text-indigo-200/70 truncate">{song.artist}</p>
+                    </div>
 
-                <div className="flex items-center gap-2">
-                  {onSongSelect && (
-                    <motion.button
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                      onClick={() => onSongSelect(song._id)}
-                      className="p-2 text-indigo-200 hover:text-white transition-colors rounded-full hover:bg-white/10"
-                    >
-                      {currentSongId === song._id && isPlaying ? (
-                        <FaPause className="w-4 h-4" />
-                      ) : (
-                        <FaPlay className="w-4 h-4" />
+                    <div className="flex items-center gap-2">
+                      {onSongSelect && (
+                        <motion.button
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
+                          onClick={() => onSongSelect(song._id)}
+                          className="p-2 text-indigo-200 hover:text-white transition-colors rounded-full hover:bg-white/10"
+                        >
+                          {currentSongId === song._id && isPlaying ? (
+                            <FaPause className="w-4 h-4" />
+                          ) : (
+                            <FaPlay className="w-4 h-4" />
+                          )}
+                        </motion.button>
                       )}
-                    </motion.button>
-                  )}
-                </div>
-              </motion.div>
-            ))}
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
           </div>
         </motion.div>
 
         {/* Prawa kolumna z informacją o odtwarzanym utworze */}
         <div className="w-1/2">
-          <div className="sticky top-4 bg-white/5 backdrop-blur-sm p-6 rounded-2xl border border-white/10">
+          <div className="sticky top-4">
             {currentSongId ? (
-              <div className="space-y-4">
-                <h2 className="text-xl font-bold text-white">Aktualnie odtwarzane:</h2>
-                {topSongs.find(s => s._id === currentSongId) && (
-                  <>
-                    <div className="aspect-video rounded-xl overflow-hidden bg-black/50">
-                      <Image
-                        src={getYouTubeThumbnail(topSongs.find(s => s._id === currentSongId)?.youtubeId || '')}
-                        alt="Miniatura"
-                        width={640}
-                        height={360}
-                        className="object-cover w-full h-full"
-                      />
-                    </div>
-                    <div className="text-white">
-                      <h3 className="font-semibold text-lg">
-                        {topSongs.find(s => s._id === currentSongId)?.title}
-                      </h3>
-                      <p className="text-slate-300">
-                        {topSongs.find(s => s._id === currentSongId)?.artist}
-                      </p>
-                    </div>
-                  </>
-                )}
+              <div 
+                className="relative overflow-hidden rounded-2xl backdrop-blur-sm transition-colors duration-700"
+                style={{
+                  backgroundColor: `${dominantColor}95`,
+                  boxShadow: `0 0 100px -20px ${dominantColor}`
+                }}
+              >
+                {/* Gradient overlay */}
+                <div 
+                  className="absolute inset-0 opacity-50"
+                  style={{
+                    background: `linear-gradient(to bottom right, ${dominantColor}, transparent)`
+                  }}
+                />
+                
+                {/* Ambient light effect */}
+                <div 
+                  className="absolute -inset-[100px] blur-3xl opacity-20"
+                  style={{
+                    background: `radial-gradient(circle at center, ${dominantColor}20, transparent 70%)`
+                  }}
+                />
+
+                <div className="relative z-10 p-6">
+                  <div className="space-y-4">
+                    <h2 className="text-xl font-bold text-white">Aktualnie odtwarzane:</h2>
+                    {currentSongDetails && (
+                      <>
+                        <div className="aspect-video rounded-xl overflow-hidden bg-black/50">
+                          <Image
+                            src={getYouTubeThumbnail(currentSongDetails.youtubeId)}
+                            alt="Miniatura"
+                            width={640}
+                            height={360}
+                            className="object-cover w-full h-full"
+                          />
+                        </div>
+                        <div className="text-white">
+                          <h3 className="font-semibold text-lg">
+                            {currentSongDetails.title}
+                          </h3>
+                          <p className="text-slate-300">
+                            {currentSongDetails.artist}
+                          </p>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </div>
               </div>
             ) : (
-              <div className="text-center text-slate-400">
-                <p>Wybierz utwór z listy aby rozpocząć odtwarzanie</p>
+              <div className="h-[400px] rounded-2xl bg-[#0f1c2e]/95 backdrop-blur-sm flex items-center justify-center">
+                <div className="text-center text-slate-400">
+                  <p>Wybierz utwór z listy aby rozpocząć odtwarzanie</p>
+                </div>
               </div>
             )}
           </div>
