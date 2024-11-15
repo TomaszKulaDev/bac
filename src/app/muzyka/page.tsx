@@ -32,6 +32,7 @@ import { usePlaylistData } from "./hooks/usePlaylistData";
 import SongGrid from './components/songs/SongGrid';
 import { useSecuredPlaylistOperations } from "./hooks/useSecuredPlaylistOperations";
 import { useLike } from '@/app/muzyka/hooks/useLike';
+import { TopSongs } from "./components/TopSongs";
 
 const generateUniqueId = () => {
   return Date.now().toString(36) + Math.random().toString(36).substr(2);
@@ -332,6 +333,19 @@ const MusicPage: React.FC = () => {
           songs={songs}
         />
       </header>
+
+      <TopSongs
+        currentSongId={songs[currentSongIndex]?.id}
+        isPlaying={isPlaying}
+        onSongSelect={(songId: string) => {
+          const index = songs.findIndex(s => s.id === songId);
+          if (index !== -1) {
+            dispatch(setCurrentSongIndex(index));
+            setIsPlaying(true);
+          }
+        }}
+      />
+
       <nav 
         aria-label="Filtry muzyki" 
         role="navigation" 
