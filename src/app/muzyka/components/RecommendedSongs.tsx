@@ -161,7 +161,7 @@ const RecommendedSongs: React.FC<RecommendedSongsProps> = ({
           className="text-2xl font-bold mb-6"
           id="recommended-songs-title"
         >
-          Nasze Muzyczne Polecenia {new Date().getFullYear()}!
+          Nasze Muzyczne Polecenia w {new Date().getFullYear()}!
         </h1>
         <meta name="description" content={`Odkryj najnowsze rekomendowane utwory muzyczne ${new Date().getFullYear()}`} />
       </header>
