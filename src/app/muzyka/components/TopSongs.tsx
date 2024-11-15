@@ -101,41 +101,82 @@ export const TopSongs: React.FC<TopSongsProps> = ({
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.1 }}
-                    className={`flex items-center gap-4 p-3 rounded-xl transition-all group
-                      ${currentSongId === song._id 
-                        ? 'bg-white/20 backdrop-blur-sm' 
-                        : 'bg-black/20 hover:bg-white/10 backdrop-blur-sm'}`}
+                    className={`
+                      flex items-center gap-4 transition-all group rounded-xl
+                      ${index === 0 
+                        ? 'p-4 mb-6 bg-gradient-to-r from-amber-500/20 to-transparent' 
+                        : 'p-3 ' + (currentSongId === song._id 
+                          ? 'bg-white/20 backdrop-blur-sm' 
+                          : 'bg-black/20 hover:bg-white/10 backdrop-blur-sm')
+                      }
+                    `}
                   >
-                    <div className="relative w-12 h-12 flex-shrink-0">
+                    {/* Numeracja */}
+                    <div className={`
+                      flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full
+                      ${index === 0 ? 'bg-amber-500 text-black font-bold' : 'text-white/60'}
+                    `}>
+                      {index + 1}
+                    </div>
+
+                    {/* Miniatura */}
+                    <div className={`
+                      relative overflow-hidden rounded-lg
+                      ${index === 0 ? 'w-20 h-20' : 'w-12 h-12'}
+                    `}>
                       <Image
                         src={getYouTubeThumbnail(song.youtubeId)}
                         alt={song.title}
-                        fill
-                        className="object-cover rounded-lg"
+                        width={index === 0 ? 80 : 48}
+                        height={index === 0 ? 80 : 48}
+                        className="object-cover"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent rounded-lg" />
-                      <span className="absolute bottom-1 left-2 text-lg font-bold text-white/90">
-                        {index + 1}
-                      </span>
                     </div>
 
+                    {/* Informacje o utworze */}
                     <div className="flex-grow min-w-0">
-                      <h3 className="font-medium text-white truncate">{song.title}</h3>
-                      <p className="text-sm text-indigo-200/70 truncate">{song.artist}</p>
+                      <h3 className={`
+                        font-medium truncate
+                        ${index === 0 ? 'text-xl text-amber-500' : 'text-base text-white'}
+                      `}>
+                        {song.title}
+                      </h3>
+                      <p className={`
+                        truncate
+                        ${index === 0 ? 'text-base text-amber-500/70' : 'text-sm text-white/70'}
+                      `}>
+                        {song.artist}
+                      </p>
+                      
+                      {/* Dodatkowe informacje dla #1 */}
+                      {index === 0 && (
+                        <div className="flex items-center gap-2 mt-1 text-amber-500/60 text-sm">
+                          <FaCrown className="w-4 h-4" />
+                          <span>Najpopularniejszy utwór tygodnia</span>
+                          <span>•</span>
+                          <span>{song.likesCount} polubień</span>
+                        </div>
+                      )}
                     </div>
 
+                    {/* Przyciski akcji */}
                     <div className="flex items-center gap-2">
                       {onSongSelect && (
                         <motion.button
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
                           onClick={() => onSongSelect(song._id)}
-                          className="p-2 text-indigo-200 hover:text-white transition-colors rounded-full hover:bg-white/10"
+                          className={`
+                            p-2 transition-colors rounded-full
+                            ${index === 0 
+                              ? 'text-amber-500 hover:bg-amber-500/20' 
+                              : 'text-indigo-200 hover:text-white hover:bg-white/10'}
+                          `}
                         >
                           {currentSongId === song._id && isPlaying ? (
-                            <FaPause className="w-4 h-4" />
+                            <FaPause className={`${index === 0 ? 'w-5 h-5' : 'w-4 h-4'}`} />
                           ) : (
-                            <FaPlay className="w-4 h-4" />
+                            <FaPlay className={`${index === 0 ? 'w-5 h-5' : 'w-4 h-4'}`} />
                           )}
                         </motion.button>
                       )}
