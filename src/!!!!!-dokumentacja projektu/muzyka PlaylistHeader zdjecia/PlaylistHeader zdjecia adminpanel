@@ -1,55 +1,81 @@
-# 📁 PlaylistHeader - System Zarządzania Zdjęciami
+Dokumentacja Systemu PlaylistHeader
+1. Struktura Systemu
+1.1 Komponenty
+PlaylistHeader.tsx
+Karuzela zdjęć na stronie głównej
+Animacje z Framer Motion
+Responsywny układ w formie łuku
+Interaktywne efekty hover
+ImagePositionSelector
+Wizualny wybór pozycji zdjęcia
+Wskaźniki zajętych pozycji
+Animowane przejścia stanów
+Notification
+System powiadomień
+Automatyczne zamykanie
+Animowane pojawienie się/znikanie
+2. API Endpoints
+/api/header-images
+GET: Pobieranie listy zdjęć
+POST: Upload z walidacją
+DELETE: Usuwanie ze sprawdzaniem pozycji
+3. Wprowadzone Funkcjonalności
+3.1 Zarządzanie Zdjęciami
+Upload z wyborem pozycji
+Optymalizacja obrazów (sharp)
+Walidacja plików (rozmiar, format, wymiary)
+Podgląd przed publikacją
+3.2 Bezpieczeństwo
+Autoryzacja next-auth
+Walidacja danych wejściowych
+Zabezpieczenie endpointów
+Obsługa błędów
+3.3 UX/UI
+Animowane przejścia
+Responsywny design
+System notyfikacji
+Potwierdzenia akcji
+4. Optymalizacje
+4.1 Wydajność
+Lazy loading obrazów
+Optymalizacja rozmiaru plików
+Cachowanie zapytań
+Memoizacja komponentów
+4.2 Kod
+TypeScript dla type safety
+Modułowa struktura
+Reużywalne komponenty
+Czytelna dokumentacja
+5. Użyte Technologie
+Next.js 14.2.6
+Framer Motion
+Sharp
+TailwindCSS
+TypeScript
+6. Struktura Plików
+src/
+├── app/
+│   ├── muzyka/
+│   │   └── components/
+│   │       └── PlaylistHeader.tsx
+│   ├── admin/
+│   │   ├── header-images/
+│   │   │   └── page.tsx
+│   │   └── AdminLayout.tsx
+│   └── api/
+│       └── header-images/
+│           └── route.ts
+├── components/
+│   └── ui/
+│       └── Notification.tsx
+└── lib/
+    └── utils/
+        └── fileValidation.ts
 
-## 🗂️ Struktura Plików i Ich Powiązania
-
-### 1️⃣ Komponenty Frontendowe
-
-src/app/muzyka/components/PlaylistHeader.tsx
-
-- **Cel**: Wyświetlanie karuzeli zdjęć na stronie głównej
-- **Funkcje**:
-  - Pobieranie zdjęć z API (`GET /api/header-images`)
-  - Animowana karuzela zdjęć
-  - Responsywne wyświetlanie
-- **Zależności**: 
-  - next/image
-  - framer-motion
-
-### 2️⃣ Panel Administracyjny
-src/app/admin/header-images/page.tsx
-
-- **Cel**: Zarządzanie zdjęciami nagłówka
-- **Funkcje**:
-  - Upload nowych zdjęć
-  - Usuwanie zdjęć
-  - Podgląd aktualnych zdjęć
-- **Zależności**:
-  - next-auth/react
-  - AdminLayout.tsx
-
-### 3️⃣ Layout Administracyjny
-src/app/admin/AdminLayout.tsx
-- **Cel**: Szablon dla panelu administracyjnego
-- **Funkcje**:
-  - Nawigacja
-  - Weryfikacja sesji
-  - Wspólny layout dla podstron admina
-
-### 4️⃣ API Endpoints
-src/app/api/header-images/route.ts
-- **Cel**: Obsługa operacji na zdjęciach
-- **Endpointy**:
-  - `GET /api/header-images`
-  - `POST /api/header-images`
-  - `DELETE /api/header-images`
-- **Zabezpieczenia**:
-  - Autoryzacja (next-auth)
-  - Walidacja plików
-## 🔄 Przepływ Danych
-
-### Dodawanie Zdjęcia:
-1. Panel Admina (`page.tsx`)
-2. → Upload pliku
-3. → `POST /api/header-images`
-4. → Zapis w `/public/images/header`
-5. → Odświeżenie listy
+7. Przepływ Danych
+Dodawanie Zdjęcia:
+Panel Admina (page.tsx)
+→ Upload pliku
+→ POST /api/header-images
+→ Zapis w /public/images/header
+→ Odświeżenie listy
