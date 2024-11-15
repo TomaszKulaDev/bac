@@ -37,6 +37,14 @@ const generateUniqueId = () => {
   return Date.now().toString(36) + Math.random().toString(36).substr(2);
 };
 
+interface PlaylistHeaderProps {
+  filteredSongsCount: number;
+  dominantColor: string;
+  onPlay: () => void;
+  isPlaying: boolean;
+  songs: Song[];
+}
+
 const MusicPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { songs, status, error, currentSongIndex } = useSelector(
@@ -320,6 +328,8 @@ const MusicPage: React.FC = () => {
           filteredSongsCount={filteredSongs.length}
           onPlay={handlePlayHeader}
           isPlaying={isPlaying}
+          dominantColor={""}
+          songs={songs}
         />
       </header>
       <nav 

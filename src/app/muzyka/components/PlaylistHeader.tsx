@@ -1,50 +1,47 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, memo, useMemo } from "react";
 import { motion } from "framer-motion";
-import { FaPlay, FaHeart, FaUser, FaShare } from "react-icons/fa";
 import Image from "next/image";
-
-interface Artist {
-  name: string;
-  image?: string;
-}
+import { FaPlay, FaPause } from "react-icons/fa";
+import { Song } from "../types";
+import { getYouTubeThumbnail } from "../utils/youtube";
 
 interface PlaylistHeaderProps {
   filteredSongsCount: number;
+  dominantColor: string;
   onPlay: () => void;
-  coverImage?: string;
-  dominantColor?: string;
-  isPlaying?: boolean;
-  artists?: Artist[];
+  isPlaying: boolean;
+  songs: Song[];
 }
 
 const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
   filteredSongsCount,
-  onPlay,
-  coverImage,
   dominantColor,
+  onPlay,
   isPlaying,
-  artists = [],
+  songs,
 }) => {
   const [scrollPosition, setScrollPosition] = useState(0);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrollPosition(window.scrollY);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+  const handleScroll = useCallback(() => {
+    setScrollPosition(window.scrollY);
   }, []);
 
-  const opacity = Math.max(0, Math.min(1, 1 - scrollPosition / 300));
-  const blur = Math.min(20, scrollPosition / 10);
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
 
-  function showSuccessToast(arg0: string) {
-    throw new Error("Function not implemented.");
-  }
+  const opacity = Math.max(0, Math.min(1, 1 - scrollPosition / 300));
+
+  const topFiveSongs = useMemo(() => {
+    return [...songs]
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+      .slice(0, 5);
+  }, [songs]);
 
   return (
     <motion.div
-      className="relative min-h-[500px] w-full overflow-hidden"
+      className="relative min-h-[400px] w-full overflow-hidden"
       style={{
         background: `linear-gradient(180deg, 
           ${dominantColor || '#0a1e3b'} 0%, 
@@ -52,130 +49,93 @@ const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
           rgba(10, 30, 59, 0) 100%)`
       }}
     >
-      {/* Overlay gradient dla lepszego przejścia */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0a1e3b]/50 to-[#0a1e3b]" />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        {/* Sekcja zdjęć w formie łuku */}
-        <div className="flex justify-center mb-12 relative">
-          <div className="flex items-center justify-center relative">
-            {[0, 1, 2, 3, 4].map((index) => (
+      <div 
+        className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16"
+        style={{ opacity }}
+      >
+        <div className="flex justify-center mb-8 relative">
+          <div className="flex items-center -space-x-4">
+            {topFiveSongs.map((song, index) => (
               <motion.div
-                key={index}
-                initial={{ 
-                  opacity: 0,
-                  y: index === 2 ? 0 : 20,
-                  x: index === 2 ? 0 : 
-                     index === 0 ? -60 : 
-                     index === 1 ? -30 : 
-                     index === 3 ? 30 : 60
-                }}
-                animate={{ 
-                  opacity: 1,
-                  y: index === 2 ? 0 : 
-                     index === 0 || index === 4 ? 30 : 15,
-                  x: index === 2 ? 0 : 
-                     index === 0 ? -60 : 
-                     index === 1 ? -30 : 
-                     index === 3 ? 30 : 60
-                }}
+                key={song.id}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: index * 0.1 }}
                 className={`
-                  ${index === 2 ? 'w-36 h-36 z-20' : 
-                    (index === 1 || index === 3) ? 'w-28 h-28 z-10' : 
-                    'w-24 h-24 z-0'}
-                  ${index === 0 ? '-mr-4' : 
-                    index === 1 ? '-mr-4' : 
-                    index === 3 ? '-ml-4' : 
-                    index === 4 ? '-ml-4' : ''}
-                  rounded-full overflow-hidden relative
-                  border-2 border-blue-800/30
-                  ${index === 2 ? 'border-4' : 'border-2'}
-                  hover:scale-105 transition-transform duration-300
-                  transform
+                  ${index === 2 ? 'w-32 h-32 z-30' : 
+                    index === 1 || index === 3 ? 'w-28 h-28 z-20' : 
+                    'w-24 h-24 z-10'}
+                  relative rounded-full overflow-hidden
+                  border-4 border-[#0a1e3b]/30
+                  transform transition-transform duration-300 hover:scale-105
+                  group
                 `}
               >
                 <Image
-                  src={artists[index]?.image || "/images/default-avatar.png"}
+                  src={getYouTubeThumbnail(song.youtubeId)}
+                  alt={`${song.title} - ${song.artist}`}
                   layout="fill"
                   objectFit="cover"
-                  alt={artists[index]?.name || ""}
-                  className="transition-transform duration-300 hover:scale-110"
+                  className="transition-transform duration-300 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="absolute bottom-0 left-0 right-0 p-2 text-xs text-white text-center truncate">
+                    {song.title}
+                  </div>
+                </div>
               </motion.div>
             ))}
           </div>
         </div>
 
-        {/* Tekst */}
         <div className="text-center space-y-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center space-x-2 text-sm text-blue-200/70"
+            className="space-y-2"
           >
-            <span>ODKRYJ MUZYKĘ NA NOWO</span>
+            <div className="text-sm font-medium text-blue-200/70 uppercase tracking-wider">
+              DISCOVERY POLAND
+            </div>
+            <h1 className="text-4xl md:text-6xl font-bold text-white tracking-tight">
+              Rising tracks from new and<br />upcoming artists
+            </h1>
           </motion.div>
 
-          <motion.h1
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-4xl md:text-6xl font-bold text-white tracking-tight"
+            transition={{ delay: 0.2 }}
+            className="flex flex-col items-center space-y-6"
           >
-            ODKRYJ MUZYKĘ BACHATY NA NOWO
-          </motion.h1>
+            <div className="text-lg text-blue-200/70">
+              Be the first to listen to these future hit songs
+            </div>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-lg text-blue-200/70 max-w-2xl mx-auto"
-          >
-            Posłuchaj najnowszych hitów od najlepszych dj bachatowych
-          </motion.p>
+            <div className="flex items-center justify-center space-x-4 text-sm text-blue-200/70">
+              <span>{filteredSongsCount} utworów bachaty</span>
+              <span>•</span>
+              <span>Codzienna aktualizacja playlist</span>
+            </div>
 
-          {/* Oryginalne buttony - bez zmian */}
-          <div className="flex items-center justify-center space-x-6 pt-4">
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-[#0a1e3b] px-8 py-4 rounded-full 
-                font-medium flex items-center space-x-3 shadow-lg hover:shadow-yellow-400/20 
-                hover:from-yellow-500 hover:to-yellow-700 transition-all duration-300
-                disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={onPlay}
-              disabled={!filteredSongsCount}
-              title={!filteredSongsCount ? "Brak utworów do odtworzenia" : "Odtwórz playlistę"}
+              className="bg-white text-[#0a1e3b] px-8 py-3 rounded-full 
+                font-medium flex items-center space-x-3 shadow-lg
+                hover:bg-opacity-90 transition-all duration-300"
             >
-              <FaPlay className={`h-5 w-5 ${isPlaying ? 'animate-pulse' : ''}`} />
-              <span>{isPlaying ? 'Zatrzymaj' : 'Odtwórz'}</span>
+              {isPlaying ? <FaPause className="h-4 w-4" /> : <FaPlay className="h-4 w-4" />}
+              <span>{isPlaying ? 'Zatrzymaj' : 'Odtwórz wszystko'}</span>
             </motion.button>
-
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={() => {
-                const url = window.location.href;
-                navigator.clipboard.writeText(url);
-                showSuccessToast('Link skopiowany do schowka!');
-              }}
-              className="p-4 rounded-full transition-all duration-300 
-                bg-transparent border-2 border-white/20 text-white 
-                hover:bg-white/10"
-              title="Udostępnij playlistę"
-            >
-              <FaShare className="h-6 w-6" />
-            </motion.button>
-          </div>
-
-          <div className="flex items-center justify-center space-x-4 text-sm text-blue-200/70 pt-4">
-            <span>{filteredSongsCount} utworów bachaty</span>
-            <span>•</span>
-            <span>Codzienna aktualizacja playlist</span>
-          </div>
+          </motion.div>
         </div>
       </div>
     </motion.div>
   );
 };
 
-export default PlaylistHeader;
+export default memo(PlaylistHeader);
