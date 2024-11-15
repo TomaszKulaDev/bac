@@ -13,6 +13,11 @@ interface PlaylistHeaderProps {
   songs: Song[];
 }
 
+interface HeaderImage {
+  position: number;
+  imageName: string;
+}
+
 const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
   filteredSongsCount,
   dominantColor,
@@ -21,6 +26,7 @@ const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
   songs,
 }) => {
   const [scrollPosition, setScrollPosition] = useState(0);
+  const [headerImages, setHeaderImages] = useState<HeaderImage[]>([]);
 
   const handleScroll = useCallback(() => {
     setScrollPosition(window.scrollY);
@@ -30,6 +36,21 @@ const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
+
+  useEffect(() => {
+    const fetchHeaderImages = async () => {
+      try {
+        const response = await fetch('/api/header-images');
+        if (!response.ok) throw new Error('Błąd podczas pobierania zdjęć');
+        const data = await response.json();
+        setHeaderImages(data);
+      } catch (error) {
+        console.error('Błąd:', error);
+      }
+    };
+
+    fetchHeaderImages();
+  }, []);
 
   const opacity = Math.max(0, Math.min(1, 1 - scrollPosition / 300));
 
@@ -57,9 +78,9 @@ const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
       >
         <div className="flex justify-center mb-8 relative">
           <div className="flex items-center -space-x-8">
-            {topFiveSongs.map((song, index) => (
+            {headerImages.map((image, index) => (
               <motion.div
-                key={song.id}
+                key={image.position}
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: index * 0.1 }}
@@ -74,17 +95,12 @@ const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
                 `}
               >
                 <Image
-                  src={getYouTubeThumbnail(song.youtubeId)}
-                  alt={`${song.title} - ${song.artist}`}
+                  src={`/images/header/${image.imageName}`}
+                  alt={`Header image ${image.position}`}
                   layout="fill"
                   objectFit="cover"
                   className="transition-transform duration-300 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <div className="absolute bottom-0 left-0 right-0 p-2 text-xs text-white text-center truncate">
-                    {song.title}
-                  </div>
-                </div>
               </motion.div>
             ))}
           </div>
