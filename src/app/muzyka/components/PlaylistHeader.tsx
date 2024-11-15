@@ -161,10 +161,10 @@ const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
             className="space-y-2"
           >
             <div className="text-sm font-medium text-blue-200/70 uppercase tracking-wider">
-              DISCOVERY POLAND
+              BACHATA TOP LVL MUSIC {new Date().getFullYear()}
             </div>
             <h1 className="text-4xl md:text-6xl font-bold text-white tracking-tight">
-              Rising tracks from new and<br />upcoming artists
+              Twoja Muzyczna Przestrzeń
             </h1>
           </motion.div>
 
@@ -175,7 +175,7 @@ const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
             className="flex flex-col items-center space-y-6"
           >
             <div className="text-lg text-blue-200/70">
-              Be the first to listen to these future hit songs
+              Bachateros poznajcie nasze muzyczne hity!
             </div>
 
             <div className="flex items-center justify-center space-x-4 text-sm text-blue-200/70">
