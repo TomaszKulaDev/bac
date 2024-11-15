@@ -1,0 +1,55 @@
+# 📁 PlaylistHeader - System Zarządzania Zdjęciami
+
+## 🗂️ Struktura Plików i Ich Powiązania
+
+### 1️⃣ Komponenty Frontendowe
+
+src/app/muzyka/components/PlaylistHeader.tsx
+
+- **Cel**: Wyświetlanie karuzeli zdjęć na stronie głównej
+- **Funkcje**:
+  - Pobieranie zdjęć z API (`GET /api/header-images`)
+  - Animowana karuzela zdjęć
+  - Responsywne wyświetlanie
+- **Zależności**: 
+  - next/image
+  - framer-motion
+
+### 2️⃣ Panel Administracyjny
+src/app/admin/header-images/page.tsx
+
+- **Cel**: Zarządzanie zdjęciami nagłówka
+- **Funkcje**:
+  - Upload nowych zdjęć
+  - Usuwanie zdjęć
+  - Podgląd aktualnych zdjęć
+- **Zależności**:
+  - next-auth/react
+  - AdminLayout.tsx
+
+### 3️⃣ Layout Administracyjny
+src/app/admin/AdminLayout.tsx
+- **Cel**: Szablon dla panelu administracyjnego
+- **Funkcje**:
+  - Nawigacja
+  - Weryfikacja sesji
+  - Wspólny layout dla podstron admina
+
+### 4️⃣ API Endpoints
+src/app/api/header-images/route.ts
+- **Cel**: Obsługa operacji na zdjęciach
+- **Endpointy**:
+  - `GET /api/header-images`
+  - `POST /api/header-images`
+  - `DELETE /api/header-images`
+- **Zabezpieczenia**:
+  - Autoryzacja (next-auth)
+  - Walidacja plików
+## 🔄 Przepływ Danych
+
+### Dodawanie Zdjęcia:
+1. Panel Admina (`page.tsx`)
+2. → Upload pliku
+3. → `POST /api/header-images`
+4. → Zapis w `/public/images/header`
+5. → Odświeżenie listy
