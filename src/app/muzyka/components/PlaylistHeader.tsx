@@ -56,7 +56,7 @@ const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
         style={{ opacity }}
       >
         <div className="flex justify-center mb-8 relative">
-          <div className="flex items-center -space-x-4">
+          <div className="flex items-center -space-x-8">
             {topFiveSongs.map((song, index) => (
               <motion.div
                 key={song.id}
@@ -64,9 +64,9 @@ const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: index * 0.1 }}
                 className={`
-                  ${index === 2 ? 'w-32 h-32 z-30' : 
-                    index === 1 || index === 3 ? 'w-28 h-28 z-20' : 
-                    'w-24 h-24 z-10'}
+                  ${index === 2 ? 'w-48 h-48 z-30' : 
+                    index === 1 || index === 3 ? 'w-40 h-40 z-20' : 
+                    'w-36 h-36 z-10'}
                   relative rounded-full overflow-hidden
                   border-4 border-[#0a1e3b]/30
                   transform transition-transform duration-300 hover:scale-105
