@@ -61,135 +61,129 @@ export const TopSongs: React.FC<TopSongsProps> = ({
     }
 
   return (
-    <div className="container mx-auto px-4 relative z-10">
+    <section 
+      className="container mx-auto px-4 relative z-10"
+      aria-label="Najpopularniejsze utwory"
+    >
       <div className="flex gap-8">
-        {/* Lewa kolumna z listą utworów */}
-        <motion.div 
+        {/* Lewa kolumna */}
+        <article 
           role="region"
-          aria-label="Lista top 5 utworów"
-          initial="hidden"
-          animate="show"
-          variants={containerVariants}
+          aria-label="Top 5 najpopularniejszych"
           className="w-1/2"
         >
-          <div 
-            className="relative overflow-hidden rounded-2xl backdrop-blur-sm"
-            style={{
-              backgroundColor: `${dominantColor}95`,
-              boxShadow: `0 0 100px -20px ${dominantColor}`,
-              transition: 'background-color 1s ease-in-out, box-shadow 1s ease-in-out'
-            }}
-          >
-            {/* Gradient overlay */}
-            <div 
-              className="absolute inset-0 opacity-30"
-              style={{
-                background: `linear-gradient(to bottom right, ${dominantColor}, transparent)`
-              }}
-            />
-            
-            <div className="relative z-10 p-6">
-              <header className="flex items-center gap-3 mb-6">
-                <FaCrown className="text-2xl text-amber-400" />
-                <h2 className="text-xl font-bold text-white">Top 5 Najpopularniejszych</h2>
-              </header>
+          <header className="flex items-center gap-3 mb-6">
+            <FaCrown className="text-2xl text-amber-400" aria-hidden="true" />
+            <h1 className="text-xl font-bold text-white">
+              Top 5 Najpopularniejszych
+            </h1>
+          </header>
 
-              <div className="grid gap-3">
-                {topSongs.map((song, index) => (
-                  <motion.div
-                    key={song._id}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    className={`
-                      flex items-center gap-4 transition-all group rounded-xl
-                      ${index === 0 
-                        ? 'p-4 mb-6 bg-gradient-to-r from-amber-500/20 to-transparent' 
-                        : 'p-3 ' + (currentSongId === song._id 
-                          ? 'bg-white/20 backdrop-blur-sm' 
-                          : 'bg-black/20 hover:bg-white/10 backdrop-blur-sm')
+          <ol className="grid gap-3">
+            {topSongs.map((song, index) => (
+              <li key={song._id}>
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className={`
+                    flex items-center gap-4 transition-all group rounded-xl
+                    ${index === 0 
+                      ? 'p-4 mb-6 bg-gradient-to-r from-amber-500/20 to-transparent' 
+                      : 'p-3 ' + (currentSongId === song._id 
+                        ? 'bg-white/20 backdrop-blur-sm' 
+                        : 'bg-black/20 hover:bg-white/10 backdrop-blur-sm')
                       }
-                    `}
-                  >
-                    {/* Numeracja */}
-                    <div className={`
-                      flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full
-                      ${index === 0 ? 'bg-amber-500 text-black font-bold' : 'text-white/60'}
+                  `}
+                >
+                  {/* Numeracja */}
+                  <div className={`
+                    flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full
+                    ${index === 0 ? 'bg-amber-500 text-black font-bold' : 'text-white/60'}
+                  `}>
+                    {index + 1}
+                  </div>
+
+                  {/* Miniatura */}
+                  <div className={`
+                    relative overflow-hidden rounded-lg
+                    ${index === 0 ? 'w-20 h-20' : 'w-12 h-12'}
+                  `}>
+                    <Image
+                      src={getYouTubeThumbnail(song.youtubeId)}
+                      alt={`Okładka utworu ${song.title} - ${song.artist}`}
+                      width={index === 0 ? 80 : 48}
+                      height={index === 0 ? 80 : 48}
+                      className="object-cover"
+                      loading={index < 2 ? "eager" : "lazy"}
+                      priority={index === 0}
+                    />
+                  </div>
+
+                  {/* Informacje o utworze */}
+                  <div className="flex-grow min-w-0">
+                    <h3 className={`
+                      font-medium truncate
+                      ${index === 0 ? 'text-xl text-amber-500' : 'text-base text-white'}
                     `}>
-                      {index + 1}
-                    </div>
-
-                    {/* Miniatura */}
-                    <div className={`
-                      relative overflow-hidden rounded-lg
-                      ${index === 0 ? 'w-20 h-20' : 'w-12 h-12'}
+                      {song.title}
+                    </h3>
+                    <p className={`
+                      truncate
+                      ${index === 0 ? 'text-base text-amber-500/70' : 'text-sm text-white/70'}
                     `}>
-                      <Image
-                        src={getYouTubeThumbnail(song.youtubeId)}
-                        alt={song.title}
-                        width={index === 0 ? 80 : 48}
-                        height={index === 0 ? 80 : 48}
-                        className="object-cover"
-                      />
-                    </div>
+                      {song.artist}
+                    </p>
+                    
+                    {/* Dodatkowe informacje dla #1 */}
+                    {index === 0 && (
+                      <div className="flex items-center gap-2 mt-1">
+                        <span className="sr-only">Status utworu:</span>
+                        <FaCrown className="w-4 h-4 text-amber-500/60" aria-hidden="true" />
+                        <strong className="text-amber-500/60 text-sm">
+                          Najpopularniejszy utwór tygodnia
+                        </strong>
+                        <span aria-hidden="true">•</span>
+                        <span className="text-amber-500/60 text-sm">
+                          Liczba polubień: {song.likesCount}
+                        </span>
+                      </div>
+                    )}
+                  </div>
 
-                    {/* Informacje o utworze */}
-                    <div className="flex-grow min-w-0">
-                      <h3 className={`
-                        font-medium truncate
-                        ${index === 0 ? 'text-xl text-amber-500' : 'text-base text-white'}
-                      `}>
-                        {song.title}
-                      </h3>
-                      <p className={`
-                        truncate
-                        ${index === 0 ? 'text-base text-amber-500/70' : 'text-sm text-white/70'}
-                      `}>
-                        {song.artist}
-                      </p>
-                      
-                      {/* Dodatkowe informacje dla #1 */}
-                      {index === 0 && (
-                        <div className="flex items-center gap-2 mt-1 text-amber-500/60 text-sm">
-                          <FaCrown className="w-4 h-4" />
-                          <span>Najpopularniejszy utwór tygodnia</span>
-                          <span>•</span>
-                          <span>{song.likesCount} polubień</span>
-                        </div>
-                      )}
-                    </div>
+                  {/* Przyciski akcji */}
+                  <div className="flex items-center gap-2">
+                    {onSongSelect && (
+                      <motion.button
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        onClick={() => onSongSelect(song._id)}
+                        className={`
+                          p-2 transition-colors rounded-full
+                          ${index === 0 
+                            ? 'text-amber-500 hover:bg-amber-500/20' 
+                            : 'text-indigo-200 hover:text-white hover:bg-white/10'}
+                        `}
+                      >
+                        {currentSongId === song._id && isPlaying ? (
+                          <FaPause className={`${index === 0 ? 'w-5 h-5' : 'w-4 h-4'}`} />
+                        ) : (
+                          <FaPlay className={`${index === 0 ? 'w-5 h-5' : 'w-4 h-4'}`} />
+                        )}
+                      </motion.button>
+                    )}
+                  </div>
+                </motion.div>
+              </li>
+            ))}
+          </ol>
+        </article>
 
-                    {/* Przyciski akcji */}
-                    <div className="flex items-center gap-2">
-                      {onSongSelect && (
-                        <motion.button
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
-                          onClick={() => onSongSelect(song._id)}
-                          className={`
-                            p-2 transition-colors rounded-full
-                            ${index === 0 
-                              ? 'text-amber-500 hover:bg-amber-500/20' 
-                              : 'text-indigo-200 hover:text-white hover:bg-white/10'}
-                          `}
-                        >
-                          {currentSongId === song._id && isPlaying ? (
-                            <FaPause className={`${index === 0 ? 'w-5 h-5' : 'w-4 h-4'}`} />
-                          ) : (
-                            <FaPlay className={`${index === 0 ? 'w-5 h-5' : 'w-4 h-4'}`} />
-                          )}
-                        </motion.button>
-                      )}
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Prawa kolumna z informacją o odtwarzanym utworze */}
-        <div className="w-1/2">
+        {/* Prawa kolumna */}
+        <aside 
+          className="w-1/2"
+          aria-label="Szczegóły aktualnie odtwarzanego utworu"
+        >
           <div className="sticky top-4">
             {currentSongId ? (
               <div 
@@ -250,8 +244,13 @@ export const TopSongs: React.FC<TopSongsProps> = ({
               </div>
             )}
           </div>
-        </div>
+        </aside>
       </div>
-    </div>
+      <meta name="robots" content="index, follow" />
+      <link 
+        rel="canonical" 
+        href="https://baciata.pl/muzyka/top-utwory" 
+      />
+    </section>
   );
 };
