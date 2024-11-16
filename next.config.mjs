@@ -7,7 +7,11 @@ const nextConfig = {
   // Włączenie trybu ścisłego Reacta, który pomaga w wykrywaniu potencjalnych problemów w aplikacji
   reactStrictMode: true,
   // Opcje eksperymentalne Next.js (obecnie puste)
-  experimental: {},
+  experimental: {
+    optimizeCss: true,
+    optimizeImages: true,
+    scrollRestoration: true,
+  },
   // Konfiguracja obsługi zdalnych obrazów
   images: {
     remotePatterns: [
@@ -26,6 +30,10 @@ const nextConfig = {
         pathname: "/**",
       },
     ],
+    minimumCacheTTL: 60,
+    deviceSizes: [640, 750, 828, 1080, 1200],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256],
+    formats: ['image/webp'],
   },
   // Dodajemy konfigurację source maps
   webpack: (config, { dev, isServer }) => {
