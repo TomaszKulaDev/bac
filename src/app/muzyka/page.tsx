@@ -81,13 +81,10 @@ const MusicPage: React.FC = () => {
     []
   );
 
-  const { playlists: playlistData, error: playlistError, isLoading: playlistsLoading } = usePlaylistData();
+  const { playlists: playlistData, isLoading: playlistsLoading } = usePlaylistData({ 
+    isAuthenticated 
+  });
 
-  useEffect(() => {
-    if (playlistError) {
-      showErrorToast('Nie udało się pobrać playlist');
-    }
-  }, [playlistError, showErrorToast]);
 
   useEffect(() => {
     updateContainerPadding();
@@ -221,24 +218,6 @@ const MusicPage: React.FC = () => {
       nextSong();
     }
   }, [isPlaying, nextSong]);
-
-  const fetchPlaylists = useCallback(async () => {
-    try {
-      const response = await fetch('/api/playlists', {
-        cache: 'no-store',
-        headers: {
-          'Cache-Control': 'no-cache',
-          'Pragma': 'no-cache'
-        }
-      });
-      if (!response.ok) throw new Error('Błąd pobierania playlist');
-      const data = await response.json();
-      setPlaylists(data);
-    } catch (error) {
-      console.error('Błąd:', error);
-      toast.error('Nie udało się załadować playlist');
-    }
-  }, []);
 
   const handleDeletePlaylist = async (playlistId: string) => {
     try {
