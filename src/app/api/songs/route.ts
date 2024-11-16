@@ -1,3 +1,6 @@
+export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store';
+
 // UWAGA: Nie używamy .lean() przy zapytaniach do bazy danych,
 // ponieważ może to powodować problemy z mapowaniem pól w dokumentach,
 // szczególnie dla pól z wartościami domyślnymi (np. Boolean).
