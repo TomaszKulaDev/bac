@@ -24,7 +24,7 @@ import LoadingState from "./components/LoadingState";
 import { usePlaylistManagement } from "./hooks/usePlaylistManagement";
 import { useSongNavigation } from "./hooks/useSongNavigation";
 import { useSortedAndFilteredSongs } from "./hooks/useSortedAndFilteredSongs";
-import { DebugLogger } from "./components/DebugLogger";
+// import { DebugLogger } from "./components/DebugLogger";
 import RecommendedSongs from "./components/RecommendedSongs";
 import Image from "next/image";
 import { getYouTubeThumbnail } from "./utils/youtube";
@@ -520,7 +520,7 @@ const MusicPage: React.FC = () => {
         autoClose={3000}
         style={{ zIndex: Z_INDEX.TOAST }}
       />
-      <DebugLogger
+      {/* <DebugLogger
         playlists={playlists}
         songs={songs}
         componentName="MusicPage"
@@ -531,7 +531,7 @@ const MusicPage: React.FC = () => {
           filterText,
           isAuthenticated,
         }}
-      />
+      /> */}
       <article 
         className="prose prose-lg"
         itemScope 

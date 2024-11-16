@@ -247,18 +247,13 @@ const songsSlice = createSlice({
       // Obsługa pomyślnego pobrania piosenek
       .addCase(fetchSongs.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        console.log('Received songs data:', action.payload);
-        state.songs = action.payload.map((song: any) => {
-          const mappedSong = {
-            ...song,
-            id: song._id.toString(),
-            _id: song._id.toString(),
-            isLiked: song.isLiked || false,
-            likesCount: song.likesCount || 0
-          };
-          console.log('Mapped song:', mappedSong);
-          return mappedSong;
-        });
+        state.songs = action.payload.map((song: any) => ({
+          ...song,
+          id: song._id.toString(),
+          _id: song._id.toString(),
+          isLiked: song.isLiked || false,
+          likesCount: song.likesCount || 0
+        }));
       })
       // Obsługa błędu podczas pobierania piosenek
       .addCase(fetchSongs.rejected, (state, action) => {

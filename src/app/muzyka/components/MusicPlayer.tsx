@@ -62,7 +62,7 @@ import {
 import PlaylistManager from "./PlaylistManager";
 import "../styles/youtube-player.css";
 import { setCurrentPlaylistId } from "@/store/slices/features/playlistSlice";
-import { DebugLogger } from "./DebugLogger";
+// import { DebugLogger } from "./DebugLogger";
 import { deletePlaylistAndRefetch } from "@/store/slices/features/playlistSlice";
 import { AppDispatch } from "@/store/store";
 import { useSecuredPlaylistOperations } from "../hooks/useSecuredPlaylistOperations";
@@ -866,12 +866,12 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           </Tooltip>
         </>
       )}
-      <DebugLogger
+      {/* <DebugLogger
         playlists={playlists}
         songs={songs}
         componentName="MusicPlayer"
         additionalInfo={debugInfo}
-      />
+      /> */}
     </PlayerErrorBoundary>
   );
 };
