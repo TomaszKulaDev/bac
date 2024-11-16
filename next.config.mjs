@@ -8,9 +8,7 @@ const nextConfig = {
   reactStrictMode: true,
   // Opcje eksperymentalne Next.js (obecnie puste)
   experimental: {
-    optimizeCss: true,
-    optimizeImages: true,
-    scrollRestoration: true,
+ 
   },
   // Konfiguracja obsługi zdalnych obrazów
   images: {
