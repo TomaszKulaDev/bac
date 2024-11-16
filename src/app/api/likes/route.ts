@@ -4,6 +4,8 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import { connectToDatabase } from '@/lib/mongodb';
 import { Like } from '@/models/Like';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   try {
     const session = await getServerSession(authOptions);
