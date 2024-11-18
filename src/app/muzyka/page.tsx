@@ -152,7 +152,6 @@ const MusicPage: React.FC = () => {
       const data = await response.json();
       await refreshPlaylists();
       setExpandedPlaylist(data.id);
-      showSuccessToast(`Utworzono nową playlistę "${name}"`);
     } catch (error) {
       console.error("handleCreateEmptyPlaylist: Error", error);
       showErrorToast('Nie udało się utworzyć playlisty');
