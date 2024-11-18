@@ -257,7 +257,14 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
 
       onAddToPlaylist(expandedPlaylist, songId);
     },
-    [expandedPlaylist, onAddToPlaylist, songs, playlists, showErrorToast, showInfoToast]
+    [
+      expandedPlaylist,
+      onAddToPlaylist,
+      songs,
+      playlists,
+      showErrorToast,
+      showInfoToast,
+    ]
   );
 
   const playlistManagement = usePlaylistManagement({
@@ -389,15 +396,15 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
   const { secureOperation } = useSecuredPlaylistOperations({
     isAuthenticated,
     showErrorToast,
-    showSuccessToast
+    showSuccessToast,
   });
 
   const handleDeletePlaylist = async (playlistId: string) => {
     await secureOperation(
       () => dispatch(deletePlaylistAndRefetch(playlistId)).unwrap(),
       {
-        errorMessage: 'Nie masz uprawnień do usunięcia playlisty',
-        successMessage: 'Playlista została usunięta'
+        errorMessage: "Nie masz uprawnień do usunięcia playlisty",
+        successMessage: "Playlista została usunięta",
       }
     );
   };
@@ -479,7 +486,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     setSortOrder("asc");
     setFilterText("");
     dispatch(setCurrentSongIndex(-1));
-    
+
     // Pokazujemy toast tylko dla zalogowanych użytkowników
     if (isAuthenticated) {
       showSuccessToast("Powrócono do głównej listy utworów");
@@ -492,7 +499,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     setIsPlaying,
     showSuccessToast,
     setCurrentPlaylistId,
-    isAuthenticated
+    isAuthenticated,
   ]);
 
   return (
@@ -687,7 +694,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
             </div>
 
             {/* Prawa kolumna - Playlist Manager */}
-            <div className="w-full lg:w-1/3 xl:w-1/3 border-l border-gray-200">
+            <div className="w-full lg:w-1/3 xl:w-1/3">
               <PlaylistManager
                 isAuthenticated={isAuthenticated}
                 setCurrentPlaylistId={setCurrentPlaylistId}
