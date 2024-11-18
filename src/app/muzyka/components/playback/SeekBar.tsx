@@ -106,10 +106,10 @@ export const SeekBar: React.FC<SeekBarProps> = ({ currentTime, duration, onSeek,
   };
 
   return (
-    <div className="w-full flex flex-col gap-1">
-      <div className="w-full flex items-center gap-2">
+    <div className="w-full flex flex-col gap-0.5">
+      <div className="w-full flex items-center gap-1">
         {/* Czas początkowy */}
-        <span className="text-xs text-gray-500 min-w-[40px]">
+        <span className="text-xs text-gray-500 min-w-[27px]">
           {formatTime(currentTime)}
         </span>
 
@@ -176,7 +176,7 @@ export const SeekBar: React.FC<SeekBarProps> = ({ currentTime, duration, onSeek,
         </div>
 
         {/* Czas końcowy */}
-        <span className="text-xs text-gray-500 min-w-[40px] text-right">
+        <span className="text-xs text-gray-500 min-w-[35px] text-right">
           {formatTime(duration)}
         </span>
       </div>
