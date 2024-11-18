@@ -107,80 +107,78 @@ export const SeekBar: React.FC<SeekBarProps> = ({ currentTime, duration, onSeek,
 
   return (
     <div className="w-full flex flex-col gap-1">
-      <div 
-        ref={progressBarRef}
-        className="relative h-1 group cursor-pointer"
-        onMouseEnter={() => setIsHovering(true)}
-        onMouseLeave={() => {
-          setIsHovering(false);
-          if (!isDragging) {
-            setIsDragging(false);
-          }
-        }}
-        onMouseMove={handleMouseMove}
-        onMouseDown={handleMouseDown}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-        onClick={(e) => {
-          if (!isDragging && progressBarRef.current) {
-            const position = calculatePosition(e.clientX);
-            onSeek(position * duration);
-          }
-        }}
-        tabIndex={0}
-        role="slider"
-        aria-label="Pozycja utworu"
-        aria-valuemin={0}
-        aria-valuemax={duration}
-        aria-valuenow={currentTime}
-        onKeyDown={handleKeyDown}
-      >
-        {/* Tło paska */}
-        <div className="absolute w-full h-full bg-gray-200 rounded-full" />
-        
+      <div className="w-full flex items-center gap-2">
+        {/* Czas początkowy */}
+        <span className="text-xs text-gray-500 min-w-[40px]">
+          {formatTime(currentTime)}
+        </span>
+
         {/* Pasek postępu */}
         <div 
-          className="absolute h-full bg-blue-600 rounded-full transition-all duration-150"
-          style={{ width: `${progress}%` }}
-        />
-
-        {/* Znacznik aktualnej pozycji */}
-        <div 
-          className={`
-            absolute h-3 w-3 bg-blue-600 rounded-full -top-1 
-            shadow-md transition-all duration-150 
-            ${isDragging ? 'scale-150 opacity-100' : 'group-hover:opacity-100 opacity-0'}
-            ${isMobile ? 'w-4 h-4 -top-1.5' : 'w-3 h-3 -top-1'}
-          `}
-          style={{ 
-            left: `${progress}%`, 
-            transform: 'translateX(-50%)',
-            boxShadow: isDragging ? '0 0 10px rgba(37, 99, 235, 0.5)' : ''
+          ref={progressBarRef}
+          className="relative h-1 group cursor-pointer flex-grow"
+          onMouseEnter={() => setIsHovering(true)}
+          onMouseLeave={() => {
+            setIsHovering(false);
+            if (!isDragging) {
+              setIsDragging(false);
+            }
           }}
-        />
-
-        {/* Podgląd czasu przy hover */}
-        {isHovering && (
+          onMouseMove={handleMouseMove}
+          onMouseDown={handleMouseDown}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+          onClick={(e) => {
+            if (!isDragging && progressBarRef.current) {
+              const position = calculatePosition(e.clientX);
+              onSeek(position * duration);
+            }
+          }}
+          tabIndex={0}
+          role="slider"
+          aria-label="Pozycja utworu"
+          aria-valuemin={0}
+          aria-valuemax={duration}
+          aria-valuenow={currentTime}
+          onKeyDown={handleKeyDown}
+        >
+          <div className="absolute w-full h-full bg-gray-200 rounded-full" />
           <div 
-            className="absolute -top-8 px-2 py-1 bg-black/75 text-white text-xs rounded transform -translate-x-1/2"
-            style={{ left: `${(hoverTime / duration) * 100}%` }}
-          >
-            {formatTime(hoverTime)}
-          </div>
-        )}
+            className="absolute h-full bg-blue-600 rounded-full transition-all duration-150"
+            style={{ width: `${progress}%` }}
+          />
+          <div 
+            className={`
+              absolute h-3 w-3 bg-blue-600 rounded-full -top-1 
+              shadow-md transition-all duration-150 
+              ${isDragging ? 'scale-150 opacity-100' : 'group-hover:opacity-100 opacity-0'}
+              ${isMobile ? 'w-4 h-4 -top-1.5' : 'w-3 h-3 -top-1'}
+            `}
+            style={{ 
+              left: `${progress}%`, 
+              transform: 'translateX(-50%)',
+              boxShadow: isDragging ? '0 0 10px rgba(37, 99, 235, 0.5)' : ''
+            }}
+          />
+          {isHovering && (
+            <div 
+              className="absolute -top-8 px-2 py-1 bg-black/75 text-white text-xs rounded transform -translate-x-1/2"
+              style={{ left: `${(hoverTime / duration) * 100}%` }}
+            >
+              {formatTime(hoverTime)}
+            </div>
+          )}
+          <div 
+            className="absolute h-full bg-gray-300 rounded-full"
+            style={{ width: `${(buffered || 0) * 100}%` }}
+          />
+        </div>
 
-        {/* Bufor ładowania */}
-        <div 
-          className="absolute h-full bg-gray-300 rounded-full"
-          style={{ width: `${(buffered || 0) * 100}%` }}
-        />
-      </div>
-
-      {/* Wyświetlanie czasu */}
-      <div className="flex justify-between text-xs text-gray-500 px-1">
-        <span>{formatTime(currentTime)}</span>
-        <span>{formatTime(duration)}</span>
+        {/* Czas końcowy */}
+        <span className="text-xs text-gray-500 min-w-[40px] text-right">
+          {formatTime(duration)}
+        </span>
       </div>
     </div>
   );

@@ -53,11 +53,11 @@ const PlaybackBar: React.FC<PlaybackBarProps> = ({
 }) => {
   return (
     <div
-      className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-300 shadow-lg p-4 z-50"
+      className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-300 shadow-lg z-50 px-4 py-2"
       role="region"
       aria-label="Kontrolki odtwarzacza"
     >
-      <div className="flex flex-col sm:flex-row items-center justify-between max-w-7xl mx-auto gap-0.5 sm:gap-0.5">
+      <div className="flex flex-col sm:flex-row items-center justify-between max-w-7xl mx-auto gap-1 sm:gap-2">
         <TrackInfo 
           currentSong={currentSong ? {
             id: currentSong.id,
@@ -67,7 +67,7 @@ const PlaybackBar: React.FC<PlaybackBarProps> = ({
           } : null} 
         />
 
-        <div className="w-full sm:w-2/5 flex flex-col items-center gap-2">
+        <div className="w-full sm:w-2/5 flex flex-col items-center gap-1">
           <PlaybackControls
             isPlaying={isPlaying}
             onTogglePlay={onTogglePlay}
@@ -84,7 +84,7 @@ const PlaybackBar: React.FC<PlaybackBarProps> = ({
           />
         </div>
 
-        <div className="w-full sm:w-1/4 flex justify-center sm:justify-end items-center space-x-4">
+        <div className="w-full sm:w-1/4 flex justify-center sm:justify-end items-center space-x-2">
           <div className="sm:hidden">
             <VolumeControl
               volume={volume}

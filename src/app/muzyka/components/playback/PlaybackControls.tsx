@@ -73,12 +73,12 @@ export const PlaybackControls: React.FC<PlaybackControlsProps> = ({
 
       <button
         onClick={onTogglePlay}
-        className="bg-white rounded-full p-4 shadow-lg transition-all duration-150 ease-in-out active:scale-95 hover:bg-gray-50"
+        className="bg-white rounded-full p-2 shadow-lg transition-all duration-150 ease-in-out active:scale-95 hover:bg-gray-50"
         aria-label={isPlaying ? "Pauza" : "Odtwórz"}
         title={isPlaying ? "Pauza" : "Odtwórz"}
         disabled={isLoading}
       >
-        {isPlaying ? <FaPause size={32} /> : <FaPlay size={32} />}
+        {isPlaying ? <FaPause size={24} /> : <FaPlay size={24} />}
       </button>
 
       <button
