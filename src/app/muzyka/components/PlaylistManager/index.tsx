@@ -8,6 +8,7 @@ import { usePlaylistManagement } from '../../hooks/usePlaylistManagement';
 import { DragEndEvent } from '@dnd-kit/core';
 import { Playlist, Song } from '../../types';
 import { useSensors, useSensor, PointerSensor } from '@dnd-kit/core';
+import { PlaylistErrorBoundary } from '../ErrorBoundary/PlaylistErrorBoundary';
 
 const PlaylistManager: React.FC<PlaylistManagerProps> = ({
   isAuthenticated,
@@ -32,16 +33,18 @@ const PlaylistManager: React.FC<PlaylistManagerProps> = ({
   });
 
   return (
-    <PlaylistManagerContent
-      {...props}
-      isAuthenticated={isAuthenticated}
-      setCurrentPlaylistId={setCurrentPlaylistId}
-      sensors={sensors}
-      getSongDetails={getSongDetails}
-      onDragEnd={(event, playlist) => 
-        playlistManagement.handleDragEnd(event, playlist)
-      }
-    />
+    <PlaylistErrorBoundary>
+      <PlaylistManagerContent
+        {...props}
+        isAuthenticated={isAuthenticated}
+        setCurrentPlaylistId={setCurrentPlaylistId}
+        sensors={sensors}
+        getSongDetails={getSongDetails}
+        onDragEnd={(event, playlist) => 
+          playlistManagement.handleDragEnd(event, playlist)
+        }
+      />
+    </PlaylistErrorBoundary>
   );
 };
 
