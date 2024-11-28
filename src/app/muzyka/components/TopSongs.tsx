@@ -65,12 +65,12 @@ export const TopSongs: React.FC<TopSongsProps> = ({
       className="container mx-auto px-4 relative z-10"
       aria-label="Najpopularniejsze utwory"
     >
-      <div className="flex gap-8">
+      <div className="flex flex-col lg:flex-row gap-4 lg:gap-8">
         {/* Lewa kolumna */}
         <article 
           role="region"
           aria-label="Top 5 najpopularniejszych"
-          className="w-1/2"
+          className="w-full lg:w-1/2"
         >
           <header className="flex items-center gap-3 mb-6">
             <FaCrown className="text-2xl text-amber-400" aria-hidden="true" />
@@ -181,13 +181,13 @@ export const TopSongs: React.FC<TopSongsProps> = ({
 
         {/* Prawa kolumna */}
         <aside 
-          className="w-1/2"
+          className="hidden lg:block lg:w-1/2 lg:sticky lg:top-4"
           aria-label="Szczegóły aktualnie odtwarzanego utworu"
         >
           <div className="sticky top-4">
             {currentSongId ? (
               <div 
-                className="relative overflow-hidden rounded-2xl backdrop-blur-sm transition-colors duration-700"
+                className="relative overflow-hidden rounded-2xl backdrop-blur-sm"
                 style={{
                   backgroundColor: `${dominantColor}95`,
                   boxShadow: `0 0 100px -20px ${dominantColor}`
