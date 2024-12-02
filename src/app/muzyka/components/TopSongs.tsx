@@ -135,41 +135,50 @@ export const TopSongs: React.FC<TopSongsProps> = ({
 
         {/* Środkowa zawartość - bez ograniczenia szerokości */}
         <div className="px-3 sm:px-4">
-          <div className="w-full"> {/* Usunięto max-width */}
+          <div className="w-full">
+            {" "}
+            {/* Usunięto max-width */}
             <header className="flex items-center gap-2 sm:gap-3 mb-8">
               <FaCrown className="text-xl sm:text-2xl text-amber-400 flex-shrink-0" />
               <h1 className="text-lg sm:text-xl font-bold text-white truncate">
                 Top 20 Najpopularniejszych
               </h1>
             </header>
-
             {/* Układamy utwory w rzędach z pełną szerokością */}
             <div className="flex flex-col gap-6">
               {/* Pierwszy rząd - TOP 5 */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
                 {topSongs.slice(0, 5).map((song, index) => (
-                  <SongItem key={song._id} song={song} index={index} />
+                  <div key={song._id} className="list-none">
+                    <SongItem song={song} index={index} />
+                  </div>
                 ))}
               </div>
 
               {/* Drugi rząd - miejsca 6-10 */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
                 {topSongs.slice(5, 10).map((song, index) => (
-                  <SongItem key={song._id} song={song} index={index + 5} />
+                  <div key={song._id} className="list-none">
+                    <SongItem song={song} index={index + 5} />
+                  </div>
                 ))}
               </div>
 
               {/* Trzeci rząd - miejsca 11-15 */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
                 {topSongs.slice(10, 15).map((song, index) => (
-                  <SongItem key={song._id} song={song} index={index + 10} />
+                  <div key={song._id} className="list-none">
+                    <SongItem song={song} index={index + 10} />
+                  </div>
                 ))}
               </div>
 
               {/* Czwarty rząd - miejsca 16-20 */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
                 {topSongs.slice(15, 20).map((song, index) => (
-                  <SongItem key={song._id} song={song} index={index + 15} />
+                  <div key={song._id} className="list-none">
+                    <SongItem song={song} index={index + 15} />
+                  </div>
                 ))}
               </div>
             </div>
