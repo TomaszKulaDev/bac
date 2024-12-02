@@ -46,21 +46,21 @@ export const TopSongs: React.FC<TopSongsProps> = ({
     <li>
       <div
         className={`
-        flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl transition-all duration-200
+        flex items-center gap-2 sm:gap-3 p-2 sm:p-3 rounded-xl transition-all duration-200
         ${
           index === 0
             ? "bg-gradient-to-r from-amber-500/20 to-transparent"
             : "bg-black/20 hover:bg-white/5"
         }
-        ${index < 3 ? "scale-105" : ""}
+        ${index < 3 ? "scale-[1.02]" : ""}
         backdrop-blur-sm
       `}
       >
-        {/* Numeracja z kolorami dla TOP 3 */}
+        {/* Numeracja z kolorami dla TOP 3 - pomniejszona */}
         <div
           className={`
-          flex-shrink-0 w-8 h-8 sm:w-9 sm:h-9
-          flex items-center justify-center rounded-full
+          flex-shrink-0 w-6 h-6 sm:w-7 sm:h-7
+          flex items-center justify-center rounded-full text-sm
           ${
             index === 0
               ? "bg-amber-500 text-black font-bold"
@@ -75,37 +75,37 @@ export const TopSongs: React.FC<TopSongsProps> = ({
           {index + 1}
         </div>
 
-        {/* Miniatura */}
-        <div className="relative overflow-hidden rounded-lg w-12 h-12 flex-shrink-0">
+        {/* Miniatura - pomniejszona */}
+        <div className="relative overflow-hidden rounded-lg w-10 h-10 flex-shrink-0">
           <Image
             src={getYouTubeThumbnail(song.youtubeId)}
             alt=""
             fill
             className="object-cover"
-            sizes="48px"
+            sizes="40px"
             loading={index < 4 ? "eager" : "lazy"}
           />
         </div>
 
-        {/* Informacje o utworze */}
+        {/* Informacje o utworze - mniejsze czcionki */}
         <div className="flex-grow min-w-0">
-          <h3 className="font-medium text-white truncate">{song.title}</h3>
-          <p className="text-sm text-white/70 truncate">{song.artist}</p>
+          <h3 className="font-medium text-sm text-white truncate">{song.title}</h3>
+          <p className="text-xs text-white/70 truncate">{song.artist}</p>
         </div>
 
-        {/* Przycisk odtwarzania */}
+        {/* Przycisk odtwarzania - pomniejszony */}
         {onSongSelect && (
           <button
             onClick={() => onSongSelect(song._id)}
-            className="p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-full"
+            className="p-1.5 text-white/80 hover:text-white hover:bg-white/10 rounded-full"
             aria-label={
               currentSongId === song._id && isPlaying ? "Zatrzymaj" : "Odtwórz"
             }
           >
             {currentSongId === song._id && isPlaying ? (
-              <FaPause className="w-4 h-4" />
+              <FaPause className="w-3.5 h-3.5" />
             ) : (
-              <FaPlay className="w-4 h-4" />
+              <FaPlay className="w-3.5 h-3.5" />
             )}
           </button>
         )}
@@ -147,36 +147,36 @@ export const TopSongs: React.FC<TopSongsProps> = ({
             {/* Układamy utwory w rzędach z pełną szerokością */}
             <div className="flex flex-col gap-6">
               {/* Pierwszy rząd - TOP 5 */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-2">
                 {topSongs.slice(0, 5).map((song, index) => (
-                  <div key={song._id} className="list-none">
+                  <div key={song._id} className="list-none min-w-[270px]">
                     <SongItem song={song} index={index} />
                   </div>
                 ))}
               </div>
 
               {/* Drugi rząd - miejsca 6-10 */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-2">
                 {topSongs.slice(5, 10).map((song, index) => (
-                  <div key={song._id} className="list-none">
+                  <div key={song._id} className="list-none min-w-[270px]">
                     <SongItem song={song} index={index + 5} />
                   </div>
                 ))}
               </div>
 
               {/* Trzeci rząd - miejsca 11-15 */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-2">
                 {topSongs.slice(10, 15).map((song, index) => (
-                  <div key={song._id} className="list-none">
+                  <div key={song._id} className="list-none min-w-[270px]">
                     <SongItem song={song} index={index + 10} />
                   </div>
                 ))}
               </div>
 
               {/* Czwarty rząd - miejsca 16-20 */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-2">
                 {topSongs.slice(15, 20).map((song, index) => (
-                  <div key={song._id} className="list-none">
+                  <div key={song._id} className="list-none min-w-[270px]">
                     <SongItem song={song} index={index + 15} />
                   </div>
                 ))}
