@@ -80,8 +80,8 @@ const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
   isPlaying,
   songs,
   seoMetadata = {
-    title: "Więc mówisz, że szukasz muzyki?",
-    description: "Twoja Muzyczna Przestrzeń do sluchania bachaty",
+    title: "Bachata Music Collection",
+    description: "Najlepsza muzyka do tańczenia Bachaty",
     year: new Date().getFullYear()
    
   }
