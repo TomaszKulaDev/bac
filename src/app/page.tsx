@@ -22,15 +22,15 @@ export default function Home(): React.ReactElement {
           <Link href="/taniec">
             <FeatureCard
               icon={<FaUser className="text-4xl text-indigo-600" />}
-              title="Taniec"
+              title="Bachata na Baciata.pl"
               description="Dołącz do społeczności Baciata.pl – Odkryj najnowsze trendy w tańcu i muzyce, badz na bieząco z wydarzeniami. Baciata.pl to miejsce, gdzie pasja do tańca łączy ludzi!"
             />
           </Link>
           <Link href="/muzyka">
             <FeatureCard
               icon={<FaMusic className="text-4xl text-indigo-600" />}
-              title="Muzyka"
-              description="Odkryj bogaty świat muzyki bachaty na Baciata.pl. Słuchaj najnowszych hitów, twórz własne playlisty i ciesz się dźwiękami, które inspirują do tańca."
+              title="Najlepsza muzyka do tańczenia Bachaty"
+              description="Odkryj największą kolekcję muzyki bachaty online. Playlisty dla początkujących i zaawansowanych tancerzy, klasyczne hity i współczesne utwory."
             />
           </Link>
         </div>
