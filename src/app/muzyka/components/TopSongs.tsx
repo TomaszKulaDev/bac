@@ -89,7 +89,9 @@ export const TopSongs: React.FC<TopSongsProps> = ({
 
         {/* Informacje o utworze - mniejsze czcionki */}
         <div className="flex-grow min-w-0">
-          <h3 className="font-medium text-sm text-white truncate">{song.title}</h3>
+          <h3 className="font-medium text-sm text-white truncate">
+            {song.title}
+          </h3>
           <p className="text-xs text-white/70 truncate">{song.artist}</p>
         </div>
 

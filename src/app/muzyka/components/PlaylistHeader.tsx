@@ -1,4 +1,11 @@
-import React, { useState, useEffect, useCallback, memo, useMemo } from "react";
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  memo,
+  useMemo,
+  useRef,
+} from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { FaPlay, FaPause } from "react-icons/fa";
@@ -25,6 +32,7 @@ interface HeaderImage {
   position: number;
   imageName: string;
   title?: string;
+  size?: "normal" | "wide" | "tall" | "large";
 }
 
 const imageAnimationVariants = {
@@ -54,6 +62,16 @@ const floatingAnimation = {
   },
 };
 
+// Stałe rozmiary dla konkretnych pozycji
+const FIXED_GRID_SIZES = {
+  1: "col-span-6 row-span-4", // duże 2x2
+  2: "col-span-6 row-span-2", // szerokie 2x1
+  3: "col-span-3 row-span-4", // wysokie 1x2
+  4: "col-span-3 row-span-2", // normalne 1x1
+  5: "col-span-3 row-span-2", // normalne 1x1
+  6: "col-span-3 row-span-2", // normalne 1x1
+} as const;
+
 const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
   filteredSongsCount,
   dominantColor,
@@ -61,20 +79,22 @@ const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
   isPlaying,
   songs,
   seoMetadata = {
-    title: "Bachata Music Collection",
+    title: "Bachata Music Collection 2025",
     description: "Najlepsza muzyka do tańczenia Bachaty",
     year: new Date().getFullYear(),
   },
 }) => {
   const [scrollPosition, setScrollPosition] = useState(0);
+  const headerRef = useRef<HTMLDivElement>(null);
   const [headerImages, setHeaderImages] = useState<HeaderImage[]>([]);
 
   const handleScroll = useCallback(() => {
+    if (!headerRef.current) return;
     setScrollPosition(window.scrollY);
   }, []);
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
@@ -93,8 +113,6 @@ const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
     fetchHeaderImages();
   }, []);
 
-  const opacity = Math.max(0, Math.min(1, 1 - scrollPosition / 300));
-
   const topFiveSongs = useMemo(() => {
     return [...songs]
       .sort(
@@ -104,91 +122,97 @@ const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
       .slice(0, 5);
   }, [songs]);
 
+  const headerOpacity = Math.max(0, Math.min(1, 1 - scrollPosition / 500));
+
   return (
-    <motion.div className="relative min-h-[400px] w-full overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0a1e3b]/50 to-[#0a1e3b]" />
-
-      <div className="relative z-[${Z_INDEX.HEADER}] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="flex justify-center mb-8 relative">
+    <motion.div
+      ref={headerRef}
+      className="relative min-h-[500px] w-full overflow-hidden bg-gradient-to-r from-[#0a1e3b] to-[#2a4a7f]"
+      style={{ opacity: headerOpacity }}
+    >
+      <div
+        className={`relative z-[${Z_INDEX.HEADER}] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16`}
+      >
+        <div className="grid lg:grid-cols-[1fr_1.2fr] gap-8 items-center">
+          {/* Lewa strona - tekst */}
           <motion.div
-            className="flex items-center -space-x-8"
-            initial={{
-              opacity: 0,
-              y: 8,
-              scale: 0.98, // Delikatne skalowanie
-            }}
-            animate={{
-              opacity: 1,
-              y: 0,
-              scale: 1,
-            }}
-            transition={{
-              duration: 0.9,
-              ease: [0.4, 0, 0.2, 1],
-              scale: {
-                duration: 0.8,
-                ease: "easeOut",
-              },
-            }}
+            initial={{ opacity: 0, y: 8, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.9, ease: [0.4, 0, 0.2, 1] }}
+            className="text-white space-y-6"
           >
-            {headerImages.map((image, index) => (
-              <div
-                key={image.position}
-                className={`
-                  ${
-                    index === 2
-                      ? "w-64 h-64 z-30"
-                      : index === 1 || index === 3
-                      ? "w-48 h-48 z-20"
-                      : "w-40 h-40 z-10"
-                  }
-                  relative rounded-full overflow-hidden
-                  border-4 border-[#0a1e3b]/30
-                  transform transition-transform duration-300 hover:scale-105
-                  group
-                `}
-              >
-                <Image
-                  src={`/images/header/${image.imageName}`}
-                  alt={`${seoMetadata.title} - ${
-                    image.title || `Zdjęcie ${image.position + 1}`
-                  }`}
-                  layout="fill"
-                  objectFit="cover"
-                  className="transition-transform duration-300 group-hover:scale-110"
-                  priority={index === 2}
-                  loading={index === 2 ? "eager" : "lazy"}
-                  itemProp="image"
-                />
+            <div className="space-y-2">
+              <div className="inline-flex items-center space-x-2 text-blue-300 text-sm font-medium">
+                <span className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-pulse" />
+                <span>Słuchaj jeszcze więcej z Baciata.pl</span>
               </div>
-            ))}
-          </motion.div>
-        </div>
+              <h1 className="text-4xl md:text-6xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-200">
+                {seoMetadata.title}
+              </h1>
+            </div>
 
-        <div className="text-center space-y-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="space-y-4"
-          >
-            <h1
-              className="text-4xl md:text-6xl font-bold text-white tracking-tight mb-4"
-              itemProp="name"
-            >
-              {seoMetadata.title}
-            </h1>
-            <div
-              className="text-sm font-medium text-blue-200/70 uppercase tracking-wider mt-6"
-              itemProp="description"
-            >
+            <p className="text-xl text-gray-200 mt-4 leading-relaxed">
               {seoMetadata.description}
+            </p>
+
+            <div className="space-y-4 mt-8">
+              <div className="flex items-center space-x-3 text-gray-200 bg-white/5 p-3 rounded-lg backdrop-blur-sm">
+                <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
+                <span className="font-medium">
+                  Ponad {filteredSongsCount} utworów Bachaty
+                </span>
+              </div>
+              <div className="flex items-center space-x-3 text-gray-200 bg-white/5 p-3 rounded-lg backdrop-blur-sm">
+                <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
+                <span className="font-medium">Regularne aktualizacje</span>
+              </div>
+              <div className="flex items-center space-x-3 text-gray-200 bg-white/5 p-3 rounded-lg backdrop-blur-sm">
+                <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
+                <span className="font-medium">
+                  Muzyka której możesz być pewien
+                </span>
+              </div>
+              <div className="flex items-center space-x-3 text-gray-200 bg-white/5 p-3 rounded-lg backdrop-blur-sm">
+                <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
+                <span className="font-medium">
+                  Znana i lubiana muzyka prosto z imprez i warsztatów
+                </span>
+              </div>
             </div>
           </motion.div>
 
-          <div className="flex items-center justify-center space-x-4 text-sm text-blue-200/70 mt-8">
-            <span>Codzienna aktualizacja playlist</span>
-            <br />
-            <span>{filteredSongsCount} utworów bachaty</span>
+          {/* Prawa strona - stała siatka zdjęć */}
+          <div className="relative">
+            <div className="grid grid-cols-12 auto-rows-[100px] gap-3 p-2">
+              {headerImages.map((image) => {
+                const gridClass =
+                  FIXED_GRID_SIZES[
+                    image.position as keyof typeof FIXED_GRID_SIZES
+                  ] || "col-span-3 row-span-2";
+
+                return (
+                  <div
+                    key={image.position}
+                    className={`
+                      relative rounded-xl overflow-hidden shadow-xl group
+                      ${gridClass}
+                    `}
+                  >
+                    <Image
+                      src={`/images/header/${image.imageName}`}
+                      alt={`Zdjęcie ${image.position}`}
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      className="object-cover transition-transform duration-300 group-hover:scale-110"
+                      priority={image.position <= 3}
+                    />
+
+                    {/* Gradient overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>

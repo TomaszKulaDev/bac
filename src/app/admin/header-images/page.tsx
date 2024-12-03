@@ -1,9 +1,8 @@
 "use client";
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import AdminLayout from '../AdminLayout';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { useSession } from 'next-auth/react';
 import { Notification } from '@/components/ui/Notification';
 import { validateFile } from '@/lib/utils/fileValidation';
 
@@ -13,30 +12,26 @@ interface HeaderImage {
 }
 
 const HeaderImagesPage = () => {
-  const { data: session } = useSession();
-  const [selectedPosition, setSelectedPosition] = useState<number | null>(null);
   const [images, setImages] = useState<HeaderImage[]>([]);
+  const [selectedPosition, setSelectedPosition] = useState<number | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [notification, setNotification] = useState<{
     type: 'success' | 'error';
     message: string;
   } | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const fileInputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
-  useEffect(() => {
-    fetchImages();
-  }, []);
+  const fileInputRefs = useRef<{ [key: number]: HTMLInputElement | null }>({});
 
   const fetchImages = async () => {
     try {
-      const response = await fetch('/api/header-images');
-      if (!response.ok) throw new Error('Błąd podczas pobierania zdjęć');
+      const response = await fetch("/api/header-images");
+      if (!response.ok) throw new Error("Błąd podczas pobierania zdjęć");
       const data = await response.json();
       setImages(data);
     } catch (error: any) {
       setNotification({
-        type: 'error',
-        message: error.message || 'Wystąpił błąd podczas pobierania zdjęć'
+        type: "error",
+        message: error.message || "Wystąpił błąd podczas pobierania zdjęć",
       });
     } finally {
       setIsLoading(false);
@@ -46,72 +41,72 @@ const HeaderImagesPage = () => {
   const handleImageUpload = async (file: File, position: number) => {
     try {
       await validateFile(file);
-      
+
       if (!selectedPosition) {
         setNotification({
-          type: 'error',
-          message: 'Wybierz pozycję dla zdjęcia'
+          type: "error",
+          message: "Wybierz pozycję dla zdjęcia",
         });
         return;
       }
 
       const formData = new FormData();
-      formData.append('file', file);
-      formData.append('position', selectedPosition.toString());
+      formData.append("file", file);
+      formData.append("position", selectedPosition.toString());
 
-      const response = await fetch('/api/header-images', {
-        method: 'POST',
+      const response = await fetch("/api/header-images", {
+        method: "POST",
         body: formData,
       });
-      
+
       if (!response.ok) {
         const error = await response.json();
-        throw new Error(error.message || 'Błąd podczas uploadu');
+        throw new Error(error.message || "Błąd podczas uploadu");
       }
-      
+
       await fetchImages();
       setSelectedPosition(null);
-      
+
       if (fileInputRefs.current[position]) {
-        fileInputRefs.current[position]!.value = '';
+        fileInputRefs.current[position]!.value = "";
       }
-      
+
       setNotification({
-        type: 'success',
-        message: 'Zdjęcie zostało dodane'
+        type: "success",
+        message: "Zdjęcie zostało dodane",
       });
     } catch (error: any) {
       setNotification({
-        type: 'error',
-        message: error.message || 'Wystąpił błąd podczas uploadu'
+        type: "error",
+        message: error.message || "Wystąpił błąd podczas uploadu",
       });
     }
   };
 
   const handleDeleteImage = async (position: number) => {
-    if (!confirm('Czy na pewno chcesz usunąć to zdjęcie?')) {
+    if (!confirm("Czy na pewno chcesz usunąć to zdjęcie?")) {
       return;
     }
-    
+
     try {
       const response = await fetch(`/api/header-images?position=${position}`, {
-        method: 'DELETE',
+        method: "DELETE",
       });
 
       if (!response.ok) {
         const error = await response.json();
-        throw new Error(error.message || 'Błąd podczas usuwania zdjęcia');
+        throw new Error(error.message || "Błąd podczas usuwania zdjęcia");
       }
 
       await fetchImages();
       setNotification({
-        type: 'success',
-        message: 'Zdjęcie zostało pomyślnie usunięte'
+        type: "success",
+        message: "Zdjęcie zostało pomyślnie usunięte",
       });
     } catch (error: any) {
       setNotification({
-        type: 'error',
-        message: error.message || 'Wystąpił błąd podczas usuwania zdjęcia'
+        type: "error",
+        message: error.message || "Wystąpił błąd podczas usuwania zdjęcia",
       });
     }
   };
@@ -119,19 +114,21 @@ const HeaderImagesPage = () => {
   return (
     <AdminLayout>
       <div className="container mx-auto p-4">
-        <h1 className="text-3xl font-bold mb-6">Zarządzanie zdjęciami nagłówka</h1>
-        
+        <h1 className="text-3xl font-bold mb-6">
+          Zarządzanie zdjęciami nagłówka
+        </h1>
+
         <ImagePositionSelector
           onSelect={setSelectedPosition}
           currentImages={images}
           selectedPosition={selectedPosition}
         />
-        
+
         {isLoading ? (
           <div>Ładowanie...</div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[1, 2, 3, 4, 5].map((position) => (
+            {Array.from({ length: 12 }, (_, i) => i + 1).map((position) => (
               <motion.div
                 key={position}
                 className="bg-white p-4 rounded-lg shadow"
@@ -139,17 +136,29 @@ const HeaderImagesPage = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
               >
-                <ImageCell 
-                  position={position} 
-                  image={images.find(img => img.position === position)}
+                <ImageCell
+                  position={position}
+                  image={images.find((img) => img.position === position)}
                   onDelete={handleDeleteImage}
                 />
 
                 <div className="text-center">
-                  <p className="font-semibold mb-2">Pozycja {position}</p>
+                  <p className="font-semibold mb-2">
+                    Pozycja {position}
+                    {position <= 3 && (
+                      <span className="text-xs text-blue-500 ml-2">
+                        {position === 1 && "(Duże 2x2)"}
+                        {position === 2 && "(Szerokie 2x1)"}
+                        {position === 3 && "(Wysokie 1x2)"}
+                      </span>
+                    )}
+                  </p>
                   <input
                     type="file"
                     accept="image/*"
+                    ref={(el) => {
+                      fileInputRefs.current[position] = el;
+                    }}
                     onChange={(e) => {
                       const file = e.target.files?.[0];
                       if (file) handleImageUpload(file, position);
@@ -179,19 +188,23 @@ const HeaderImagesPage = () => {
   );
 };
 
-const ImagePositionSelector = ({ onSelect, currentImages, selectedPosition }: {
+const ImagePositionSelector = ({
+  onSelect,
+  currentImages,
+  selectedPosition,
+}: {
   onSelect: (position: number) => void;
   currentImages: HeaderImage[];
   selectedPosition: number | null;
 }) => {
-  const positions = [1, 2, 3, 4, 5];
-  
+  const positions = Array.from({ length: 12 }, (_, i) => i + 1);
+
   return (
-    <div className="flex gap-4 justify-center mb-8">
+    <div className="flex flex-wrap gap-4 justify-center mb-8">
       {positions.map((pos) => {
-        const isOccupied = currentImages.some(img => img.position === pos);
+        const isOccupied = currentImages.some((img) => img.position === pos);
         const isSelected = selectedPosition === pos;
-        
+
         return (
           <button
             key={pos}
@@ -200,11 +213,13 @@ const ImagePositionSelector = ({ onSelect, currentImages, selectedPosition }: {
               relative w-12 h-12 rounded-full border-2
               flex items-center justify-center
               transition-all duration-300
-              ${isSelected 
-                ? 'border-green-500 bg-green-500/10' 
-                : isOccupied 
-                  ? 'border-blue-500 bg-blue-500/10' 
-                  : 'border-gray-300 hover:border-blue-300'}
+              ${
+                isSelected
+                  ? "border-green-500 bg-green-500/10"
+                  : isOccupied
+                  ? "border-blue-500 bg-blue-500/10"
+                  : "border-gray-300 hover:border-blue-300"
+              }
             `}
           >
             <span className="text-sm font-medium">{pos}</span>
@@ -218,12 +233,12 @@ const ImagePositionSelector = ({ onSelect, currentImages, selectedPosition }: {
   );
 };
 
-const ImageCell = ({ 
-  position, 
-  image, 
-  onDelete 
-}: { 
-  position: number; 
+const ImageCell = ({
+  position,
+  image,
+  onDelete,
+}: {
+  position: number;
   image?: HeaderImage;
   onDelete: (position: number) => void;
 }) => {
@@ -237,7 +252,7 @@ const ImageCell = ({
             fill
             className="object-cover"
             onError={(e) => {
-              e.currentTarget.src = '/images/placeholder.jpg';
+              e.currentTarget.src = "/images/placeholder.jpg";
             }}
             priority={position <= 2}
           />
@@ -249,8 +264,17 @@ const ImageCell = ({
                      hover:bg-red-600 transition-colors"
             title="Usuń zdjęcie"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                clipRule="evenodd"
+              />
             </svg>
           </motion.button>
         </>
