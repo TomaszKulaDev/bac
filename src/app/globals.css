@@ -161,8 +161,11 @@ body {
 /* Dodanie critical CSS dla navbaru */
 @layer components {
   .nav-container {
-    @apply fixed top-0 w-full bg-gray-800 text-white z-50;
-    contain: layout paint;  /* Optymalizacja renderowania */
+    @apply sticky top-0 z-40 bg-gray-800 text-white transition-shadow duration-300;
+  }
+
+  .nav-container.scrolled {
+    @apply shadow-lg;
   }
 
   .user-menu-container {
@@ -195,9 +198,5 @@ body {
       opacity: 1;
       transform: scale(1) translateY(0);
     }
-  }
-
-  .nav-container {
-    @apply relative z-40 bg-gray-800 text-white;
   }
 }

@@ -22,6 +22,22 @@ export const NavContent: React.FC = React.memo(function NavContent() {
     handleLogout,
   } = useNavigation();
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const navbar = document.querySelector('.nav-container');
+      if (navbar) {
+        if (window.scrollY > 0) {
+          navbar.classList.add('scrolled');
+        } else {
+          navbar.classList.remove('scrolled');
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <Suspense fallback={<NavbarSkeleton />}>
       <nav className="nav-container">
