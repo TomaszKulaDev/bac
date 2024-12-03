@@ -49,19 +49,6 @@ body {
   background-clip: padding-box;
 }
 
-@keyframes float {
-  from {
-    transform: translateY(0) translateX(0);
-  }
-  to {
-    transform: translateY(-50%) translateX(-50%);
-  }
-}
-
-.animate-float {
-  animation: float 20s linear infinite;
-}
-
 @keyframes fade-in-up {
   from {
     opacity: 0;
