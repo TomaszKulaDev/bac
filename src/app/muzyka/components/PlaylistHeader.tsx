@@ -4,6 +4,7 @@ import Image from "next/image";
 import { FaPlay, FaPause } from "react-icons/fa";
 import { Song } from "../types";
 import { getYouTubeThumbnail } from "../utils/youtube";
+import { Z_INDEX } from '@/app/constants/zIndex';
 
 interface PlaylistSEOMetadata {
   title: string;
@@ -130,7 +131,7 @@ const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0a1e3b]/50 to-[#0a1e3b]" />
 
       <div 
-        className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16"
+        className={`relative z-[${Z_INDEX.HEADER}] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16`}
         style={{ opacity }}
       >
         <div className="flex justify-center mb-8 relative">

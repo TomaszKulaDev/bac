@@ -15,8 +15,9 @@
  * i uniknąć konfliktów z nakładającymi się komponentami w aplikacji.
  */
 export const Z_INDEX = {
-  PLAYER: 30,
-  MODAL_OVERLAY: 40,
   MODAL: 50,
+  MODAL_OVERLAY: 45,
+  DROPDOWN: 40,
+  HEADER: 30,
   TOAST: 60
 } as const;

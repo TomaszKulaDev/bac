@@ -1,7 +1,7 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { FaUser, FaCog } from "react-icons/fa";
-import { Tooltip } from "./ui/Tooltip";
+import { FaUser, FaCaretDown } from "react-icons/fa";
+import { createPortal } from 'react-dom';
 
 interface UserMenuProps {
   user: {
@@ -14,6 +14,7 @@ interface UserMenuProps {
 export const UserMenu: React.FC<UserMenuProps> = ({ user, onLogout }) => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -26,9 +27,20 @@ export const UserMenu: React.FC<UserMenuProps> = ({ user, onLogout }) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Funkcja do obliczania pozycji menu
+  const getMenuPosition = () => {
+    if (!buttonRef.current) return { top: 0, right: 0 };
+    const rect = buttonRef.current.getBoundingClientRect();
+    return {
+      top: `${rect.bottom + window.scrollY}px`,
+      right: `${window.innerWidth - rect.right}px`
+    };
+  };
+
   return (
-    <div className="user-menu-container" ref={menuRef}>
+    <>
       <button
+        ref={buttonRef}
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center space-x-2 hover:text-gray-300 transition duration-150 ease-in-out"
         aria-expanded={isOpen}
@@ -38,62 +50,40 @@ export const UserMenu: React.FC<UserMenuProps> = ({ user, onLogout }) => {
         <span>{user.name}</span>
       </button>
 
-      {isOpen && (
-        <div className="user-menu-dropdown">
+      {isOpen && createPortal(
+        <div 
+          ref={menuRef}
+          className="fixed w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
+          style={{
+            ...getMenuPosition(),
+            zIndex: 9999
+          }}
+        >
           <div className="py-1" role="menu">
-            <div className="px-4 py-2 text-sm text-gray-700 border-b">
-              Zalogowany jako: {user.name}
-            </div>
-
-            {/* Menu dla wszystkich użytkowników */}
             <Link
-              href="/profil"
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-              role="menuitem"
+              href="/profile"
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
             >
               Profil
             </Link>
-
-            {/* Menu tylko dla administratorów */}
             {user.role === "admin" && (
-              <>
-                <Link
-                  href="/admin"
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  role="menuitem"
-                >
-                  <div className="flex items-center">
-                    <FaCog className="mr-2" />
-                    Panel Admina
-                  </div>
-                </Link>
-                <Link
-                  href="/admin/users"
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  role="menuitem"
-                >
-                  Zarządzaj Użytkownikami
-                </Link>
-                <Link
-                  href="/admin/content"
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  role="menuitem"
-                >
-                  Zarządzaj Treścią
-                </Link>
-              </>
+              <Link
+                href="/admin"
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+              >
+                Panel Admin
+              </Link>
             )}
-
             <button
               onClick={onLogout}
-              className="block w-full text-left px-4 py-2 text-sm text-red-700 hover:bg-gray-100"
-              role="menuitem"
+              className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
             >
               Wyloguj
             </button>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
-    </div>
+    </>
   );
 };
