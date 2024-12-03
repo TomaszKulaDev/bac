@@ -1,40 +1,33 @@
 import { useSession, signOut } from "next-auth/react";
-import { useDispatch } from "react-redux";
-import { useRouter } from "next/navigation";
-import { logout, login } from "../store/slices/authSlice";
-import { useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../store/store";
+import { login, logout } from "../store/slices/authSlice";
+import { mapSessionToUser } from "../types/auth";
 
-export function useAuth() {
+export const useAuth = () => {
   const { data: session, status } = useSession();
   const dispatch = useDispatch();
-  const router = useRouter();
+  const user = useSelector((state: RootState) => state.auth.user);
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
 
   const handleLogout = async () => {
-    try {
-      await signOut({ redirect: false });
-      dispatch(logout());
-      router.push("/");
-    } catch (error) {
-      console.error("Błąd podczas wylogowywania:", error);
+    await signOut();
+    dispatch(logout());
+  };
+
+  const syncAuthState = () => {
+    if (session?.user) {
+      const mappedUser = mapSessionToUser(session.user);
+      dispatch(login({ user: mappedUser }));
     }
   };
 
-  const syncAuthState = useCallback(() => {
-    if (status === "authenticated" && session?.user) {
-      dispatch(
-        login({
-          user: {
-            id: session.user.id || "",
-            email: session.user.email || null,
-            name: session.user.name || null,
-            role: session.user.role || null,
-          },
-        })
-      );
-    } else if (status === "unauthenticated") {
-      dispatch(logout());
-    }
-  }, [status, session, dispatch]);
-
-  return { session, status, handleLogout, syncAuthState };
-}
+  return {
+    session,
+    status,
+    user,
+    isAuthenticated,
+    handleLogout,
+    syncAuthState
+  };
+};

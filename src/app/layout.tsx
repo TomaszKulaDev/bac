@@ -63,11 +63,12 @@ import { ClientLayout } from "../components/ClientLayout";
 // Importujemy komponent ClientProviders, który dostarcza kontekst dla klienta
 import { ClientProviders } from "../components/ClientProviders";
 // Importujemy komponent NavContent, który będzie używany do nawigacji
-import { NavContent } from "../components/NavContent";
+import dynamic from 'next/dynamic';
 // Importujemy czcionkę Inter z Google Fonts, aby używać jej w aplikacji
 import { Inter } from "next/font/google";
 // Importujemy komponent AuthSync, który synchronizuje stan autoryzacji
 import { AuthSync } from "../components/AuthSync";
+import { NavbarSkeleton } from '../components/NavbarSkeleton';
 
 // Inicjalizujemy czcionkę Inter z podzbiorem "latin", aby używać jej w aplikacji
 const inter = Inter({ subsets: ["latin"] });
@@ -97,7 +98,7 @@ export default function RootLayout({
           {/* Owijamy aplikację w ClientLayout, aby ustawić układ strony */}
           <ClientLayout>
             {/* Renderujemy nawigację za pomocą komponentu NavContent */}
-            <NavContent />
+            <DynamicNavContent />
             {/* Renderujemy dzieci przekazane do RootLayout */}
             {children}
           </ClientLayout>
@@ -106,3 +107,11 @@ export default function RootLayout({
     </html>
   );
 }
+
+const DynamicNavContent = dynamic(
+  () => import('../components/NavContent').then(mod => mod.NavContent),
+  {
+    loading: () => <NavbarSkeleton />,
+    ssr: false
+  }
+);

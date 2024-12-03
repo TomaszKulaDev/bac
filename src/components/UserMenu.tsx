@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { FaUser, FaCaretDown } from "react-icons/fa";
+import { FaUser, FaCog } from "react-icons/fa";
+import { Tooltip } from "./ui/Tooltip";
 
 interface UserMenuProps {
   user: {
@@ -22,49 +23,75 @@ export const UserMenu: React.FC<UserMenuProps> = ({ user, onLogout }) => {
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   return (
-    <div ref={menuRef} className="relative dropdown-container w-full md:w-auto">
+    <div className="user-menu-container" ref={menuRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
+        className="flex items-center space-x-2 hover:text-gray-300 transition duration-150 ease-in-out"
         aria-expanded={isOpen}
-        aria-controls="user-menu"
-        aria-label="Otwórz menu użytkownika"
-        className="flex items-center space-x-1 hover:text-gray-300 transition duration-150 ease-in-out w-full md:w-auto justify-between md:justify-start py-2 md:py-0"
+        aria-haspopup="true"
       >
         <FaUser />
         <span>{user.name}</span>
-        <FaCaretDown className="ml-1" />
       </button>
+
       {isOpen && (
-        <div
-          id="user-menu"
-          className="absolute right-0 mt-2 w-full md:w-48 bg-white rounded-md shadow-lg py-1 z-10"
-        >
-          <Link
-            href="/profile"
-            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-          >
-            Profil
-          </Link>
-          {user.role === "admin" && (
+        <div className="user-menu-dropdown">
+          <div className="py-1" role="menu">
+            <div className="px-4 py-2 text-sm text-gray-700 border-b">
+              Zalogowany jako: {user.name}
+            </div>
+
+            {/* Menu dla wszystkich użytkowników */}
             <Link
-              href="/admin"
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+              href="/profil"
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              role="menuitem"
             >
-              Panel Admin
+              Profil
             </Link>
-          )}
-          <button
-            onClick={onLogout}
-            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-          >
-            Wyloguj
-          </button>
+
+            {/* Menu tylko dla administratorów */}
+            {user.role === "admin" && (
+              <>
+                <Link
+                  href="/admin"
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  role="menuitem"
+                >
+                  <div className="flex items-center">
+                    <FaCog className="mr-2" />
+                    Panel Admina
+                  </div>
+                </Link>
+                <Link
+                  href="/admin/users"
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  role="menuitem"
+                >
+                  Zarządzaj Użytkownikami
+                </Link>
+                <Link
+                  href="/admin/content"
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  role="menuitem"
+                >
+                  Zarządzaj Treścią
+                </Link>
+              </>
+            )}
+
+            <button
+              onClick={onLogout}
+              className="block w-full text-left px-4 py-2 text-sm text-red-700 hover:bg-gray-100"
+              role="menuitem"
+            >
+              Wyloguj
+            </button>
+          </div>
         </div>
       )}
     </div>

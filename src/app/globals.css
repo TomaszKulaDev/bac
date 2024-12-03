@@ -157,3 +157,47 @@ body {
 .animate-float-continuous {
   animation: floatContinuous 20s linear infinite;
 }
+
+/* Dodanie critical CSS dla navbaru */
+@layer components {
+  .nav-container {
+    @apply fixed top-0 w-full bg-gray-800 text-white z-50;
+    contain: layout paint;  /* Optymalizacja renderowania */
+  }
+
+  .user-menu-container {
+    @apply relative z-50;
+  }
+
+  .user-menu-dropdown {
+    @apply absolute right-0 mt-2 w-48 rounded-md shadow-lg;
+    @apply bg-white ring-1 ring-black ring-opacity-5;
+    @apply z-[100];
+    transform-origin: top right;
+    animation: dropdownFade 0.2s ease-out;
+  }
+
+  .user-menu-item {
+    @apply block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100;
+    @apply transition duration-150 ease-in-out;
+  }
+
+  .user-menu-admin {
+    @apply text-indigo-600 font-medium;
+  }
+
+  @keyframes dropdownFade {
+    from {
+      opacity: 0;
+      transform: scale(0.95) translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  .nav-container {
+    @apply relative z-40 bg-gray-800 text-white;
+  }
+}
