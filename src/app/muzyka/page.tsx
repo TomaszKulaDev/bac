@@ -18,7 +18,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Z_INDEX } from "@/app/constants/zIndex";
 import { useResponsive } from "./hooks/useResponsive";
-import PlaylistHeader from "./components/PlaylistHeader";
+// import PlaylistHeader from "./components/PlaylistHeader";
 import { useDebugEffect } from "./hooks/useDebugEffect";
 import LoadingState from "./components/LoadingState";
 import { usePlaylistManagement } from "./hooks/usePlaylistManagement";
@@ -29,9 +29,9 @@ import RecommendedSongs from "./components/RecommendedSongs";
 import Image from "next/image";
 import { getYouTubeThumbnail } from "./utils/youtube";
 import { usePlaylistData } from "./hooks/usePlaylistData";
-import SongGrid from './components/songs/SongGrid';
+import SongGrid from "./components/songs/SongGrid";
 import { useSecuredPlaylistOperations } from "./hooks/useSecuredPlaylistOperations";
-import { useLike } from '@/app/muzyka/hooks/useLike';
+import { useLike } from "@/app/muzyka/hooks/useLike";
 import { TopSongs } from "./components/TopSongs";
 
 const generateUniqueId = () => {
@@ -81,10 +81,10 @@ const MusicPage: React.FC = () => {
     []
   );
 
-  const { playlists: playlistData, isLoading: playlistsLoading } = usePlaylistData({ 
-    isAuthenticated 
-  });
-
+  const { playlists: playlistData, isLoading: playlistsLoading } =
+    usePlaylistData({
+      isAuthenticated,
+    });
 
   useEffect(() => {
     updateContainerPadding();
@@ -98,34 +98,34 @@ const MusicPage: React.FC = () => {
       name: apiPlaylist.name,
       userId: apiPlaylist.userId,
       songs: apiPlaylist.songs,
-      createdAt: new Date(apiPlaylist.createdAt)
+      createdAt: new Date(apiPlaylist.createdAt),
     };
   };
 
   const { secureOperation } = useSecuredPlaylistOperations({
     isAuthenticated,
     showErrorToast,
-    showSuccessToast
+    showSuccessToast,
   });
 
   const refreshPlaylists = useCallback(async () => {
     await secureOperation(
       async () => {
-        const response = await fetch('/api/playlists', {
-          cache: 'no-store',
+        const response = await fetch("/api/playlists", {
+          cache: "no-store",
           headers: {
-            'Cache-Control': 'no-cache',
-            'Pragma': 'no-cache'
-          }
+            "Cache-Control": "no-cache",
+            Pragma: "no-cache",
+          },
         });
-        
-        if (!response.ok) throw new Error('Błąd pobierania playlist');
+
+        if (!response.ok) throw new Error("Błąd pobierania playlist");
         const data = await response.json();
         setPlaylists(data.map(mapApiPlaylist));
       },
       {
         requireAuth: true,
-        errorMessage: 'Nie można odświeżyć playlist - brak dostępu'
+        errorMessage: "Nie można odświeżyć playlist - brak dostępu",
       }
     );
   }, [secureOperation]);
@@ -136,22 +136,22 @@ const MusicPage: React.FC = () => {
 
   const handleCreateEmptyPlaylist = async (name: string) => {
     try {
-      const response = await fetch('/api/playlists', {
-        method: 'POST',
+      const response = await fetch("/api/playlists", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ name, songs: [] }),
       });
 
-      if (!response.ok) throw new Error('Błąd tworzenia playlisty');
-      
+      if (!response.ok) throw new Error("Błąd tworzenia playlisty");
+
       const data = await response.json();
       await refreshPlaylists();
       setExpandedPlaylist(data.id);
     } catch (error) {
       console.error("handleCreateEmptyPlaylist: Error", error);
-      showErrorToast('Nie udało się utworzyć playlisty');
+      showErrorToast("Nie udało się utworzyć playlisty");
     }
   };
 
@@ -221,26 +221,24 @@ const MusicPage: React.FC = () => {
   const handleDeletePlaylist = async (playlistId: string) => {
     try {
       const response = await fetch(`/api/playlists/${playlistId}`, {
-        method: 'DELETE',
+        method: "DELETE",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
 
-      if (!response.ok) throw new Error('Błąd usuwania playlisty');
-      
+      if (!response.ok) throw new Error("Błąd usuwania playlisty");
+
       await refreshPlaylists();
-      showSuccessToast('Playlista została usunięta');
-      
-      console.log('Playlista usunięta:', playlistId);
-      
+      showSuccessToast("Playlista została usunięta");
+
+      console.log("Playlista usunięta:", playlistId);
     } catch (error) {
-      console.error('Błąd podczas usuwania playlisty:', error);
-      showErrorToast('Nie udało się usunąć playlisty');
+      console.error("Błąd podczas usuwania playlisty:", error);
+      showErrorToast("Nie udało się usunąć playlisty");
       throw error;
     }
   };
-
 
   const audioRef = useRef<HTMLAudioElement>(null);
   const [currentSong, setCurrentSong] = useState<Song | null>(null);
@@ -255,7 +253,7 @@ const MusicPage: React.FC = () => {
 
   const handlePlayHeader = useCallback(() => {
     if (!songs.length) return;
-    
+
     if (isPlaying) {
       setIsPlaying(false);
     } else {
@@ -276,19 +274,24 @@ const MusicPage: React.FC = () => {
   }
 
   return (
-    <main 
-      className="music-page min-h-screen flex flex-col" 
-      role="main" 
+    <main
+      className="music-page min-h-screen flex flex-col"
+      role="main"
       aria-label="Kolekcja muzyki Bachata"
-      itemScope 
+      itemScope
       itemType="https://schema.org/MusicPlaylist"
     >
-      <nav aria-label="Ścieżka nawigacji" 
-           className="top-line hidden xl:block bg-[#1e2124] h-[14px] w-full m-0 p-0">
+      <nav
+        aria-label="Ścieżka nawigacji"
+        className="top-line hidden xl:block bg-[#1e2124] h-[14px] w-full m-0 p-0"
+      >
         <div className="container mx-auto">
           <ol className="flex items-center h-full px-4">
             <li className="text-[11.2px] leading-[11.2px] font-['Fira_Sans',Arial,Helvetica,sans-serif]">
-              <a href="/" className="text-[#8b8b8b] hover:text-white transition-all">
+              <a
+                href="/"
+                className="text-[#8b8b8b] hover:text-white transition-all"
+              >
                 Strona główna
               </a>
             </li>
@@ -301,22 +304,12 @@ const MusicPage: React.FC = () => {
           </ol>
         </div>
       </nav>
-      <header role="banner">
-        <h1 className="sr-only">Kolekcja Muzyki Bachata - Największa baza utworów online</h1>
-        <PlaylistHeader
-          filteredSongsCount={filteredSongs.length}
-          onPlay={handlePlayHeader}
-          isPlaying={isPlaying}
-          dominantColor={""}
-          songs={songs}
-        />
-      </header>
 
       <TopSongs
         currentSongId={songs[currentSongIndex]?.id}
         isPlaying={isPlaying}
         onSongSelect={(songId: string) => {
-          const index = songs.findIndex(s => s.id === songId);
+          const index = songs.findIndex((s) => s.id === songId);
           if (index !== -1) {
             dispatch(setCurrentSongIndex(index));
             setIsPlaying(true);
@@ -324,9 +317,9 @@ const MusicPage: React.FC = () => {
         }}
       />
 
-      <nav 
-        aria-label="Filtry muzyki" 
-        role="navigation" 
+      <nav
+        aria-label="Filtry muzyki"
+        role="navigation"
         className="filters-navigation"
       >
         {/* komponenty filtrowania */}
@@ -336,7 +329,7 @@ const MusicPage: React.FC = () => {
         currentSongId={songs[currentSongIndex]?.id}
         isPlaying={isPlaying}
         onSongSelect={(songId: string) => {
-          const index = songs.findIndex(s => s.id === songId);
+          const index = songs.findIndex((s) => s.id === songId);
           if (index !== -1) {
             dispatch(setCurrentSongIndex(index));
             setIsPlaying(true);
@@ -367,7 +360,7 @@ const MusicPage: React.FC = () => {
         currentSongId={songs[currentSongIndex]?.id}
         isPlaying={isPlaying}
         onSongSelect={(songId) => {
-          const index = songs.findIndex(s => s.id === songId);
+          const index = songs.findIndex((s) => s.id === songId);
           if (index !== -1) {
             dispatch(setCurrentSongIndex(index));
             setIsPlaying(true);
@@ -393,7 +386,7 @@ const MusicPage: React.FC = () => {
         }}
         favorites={new Set()}
       />
-      <article 
+      <article
         className="flex-grow flex flex-col lg:flex-row bg-white relative z-10 shadow-xl rounded-t-[2rem] -mt-20"
         role="article"
         aria-label="Lista utworów"
@@ -436,7 +429,7 @@ const MusicPage: React.FC = () => {
         </div>
       </article>
       {isMobile && (
-        <aside 
+        <aside
           className="w-full p-8 mt-8 mb-24 bg-gradient-to-br from-blue-50 to-blue-50 rounded-lg shadow-lg"
           role="complementary"
           aria-label="Informacje dodatkowe"
@@ -510,9 +503,9 @@ const MusicPage: React.FC = () => {
           isAuthenticated,
         }}
       /> */}
-      <article 
+      <article
         className="prose prose-lg"
-        itemScope 
+        itemScope
         itemType="https://schema.org/Article"
       >
         <meta itemProp="headline" content="Kolekcja Muzyki Bachata" />

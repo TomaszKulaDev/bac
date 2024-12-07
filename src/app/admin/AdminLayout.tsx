@@ -13,9 +13,8 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   const pathname = usePathname();
 
   const navItems = [
-    { href: '/admin', label: 'Użytkownicy' },
-    { href: '/admin/music', label: 'Muzyka' },
-    { href: '/admin/header-images', label: 'Zdjęcia nagłówka' },
+    { href: "/admin", label: "Użytkownicy" },
+    { href: "/admin/music", label: "Muzyka" },
   ];
 
   return (
@@ -30,17 +29,15 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
                   href={item.href}
                   className={`px-3 py-2 rounded-md text-sm font-medium ${
                     pathname === item.href
-                      ? 'bg-gray-900 text-white'
-                      : 'text-gray-700 hover:bg-gray-200'
+                      ? "bg-gray-900 text-white"
+                      : "text-gray-700 hover:bg-gray-200"
                   }`}
                 >
                   {item.label}
                 </Link>
               ))}
             </div>
-            <div className="text-gray-600">
-              {session?.user?.email}
-            </div>
+            <div className="text-gray-600">{session?.user?.email}</div>
           </div>
         </div>
       </nav>
