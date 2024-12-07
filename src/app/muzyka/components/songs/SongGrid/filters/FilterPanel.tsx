@@ -39,12 +39,12 @@ const FilterSection = <T extends DifficultyLevel | StyleType | TempoType>({
     <div className="relative" role="group" aria-labelledby={sectionId}>
       <h4
         id={sectionId}
-        className="text-xs font-medium text-[#a7a7a7] mb-2 flex items-center gap-1"
+        className="text-sm font-medium text-white mb-3 flex items-center gap-1"
       >
         {title}
         {selectedValues.length > 0 && (
           <span
-            className="text-[10px] text-[#a7a7a7]"
+            className="text-xs text-white"
             aria-label={`Wybrano ${selectedValues.length} opcji`}
           >
             ({selectedValues.length})
@@ -71,16 +71,16 @@ const FilterSection = <T extends DifficultyLevel | StyleType | TempoType>({
               whileTap={{ scale: 0.98 }}
               onClick={() => onChange(value)}
               className={`
-                  px-2 py-1.5 rounded-md text-xs font-medium
-                  flex items-center gap-1.5 transition-all duration-200
+                  px-3 py-1.5 rounded-md text-sm font-medium
+                  flex items-center gap-2 transition-all duration-200
                   ${
                     selectedValues.includes(value)
-                      ? "bg-[#1ed760] text-black"
-                      : "bg-[#232323] text-white hover:bg-[#2a2a2a]"
+                      ? "bg-[#1ed760] text-black shadow-md"
+                      : "bg-[#282828] text-white hover:bg-[#3E3E3E]"
                   }
                 `}
             >
-              <span className="text-sm" aria-hidden="true">
+              <span className="text-base" aria-hidden="true">
                 {icon}
               </span>
               <span>{label}</span>
@@ -110,10 +110,11 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
     <div className="w-full">
       <div className="max-w-[1800px] mx-auto px-8">
         <div className="text-center mb-8">
-          <h3 className="text-[15px] font-medium text-[#a7a7a7] mb-2">
-            Dobierz muzykę do swoich możliwości
-          </h3>
-          {hasActiveFilters && (
+          {!hasActiveFilters ? (
+            <h3 className="text-lg font-semibold text-white mb-4 tracking-wide">
+              Dobierz muzykę do swoich możliwości
+            </h3>
+          ) : (
             <button
               onClick={onClearFilters}
               className="inline-flex items-center gap-2 px-4 py-1.5 
@@ -128,7 +129,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
           )}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <FilterSection
             title="Poziom trudności"
             options={DIFFICULTY_OPTIONS}
