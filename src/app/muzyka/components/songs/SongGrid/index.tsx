@@ -1,76 +1,65 @@
-import React, { useState, useMemo, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { SongCard } from './SongCard';
+import React, { useState, useMemo } from 'react';
+import { SongCard } from '../SongCard';
 import { FilterPanel } from './filters/FilterPanel';
 import { useFilters } from './filters/hooks/useFilters';
-import type { SongGridProps } from './types';
+import type { Song } from '../../../types';
+import type { SongGridProps } from '../types';
 import LoadMoreButton from '../LoadMoreButton';
 
-const SongGrid: React.FC<SongGridProps> = ({ songs, ...props }) => {
+const SongGrid: React.FC<SongGridProps> = ({ 
+  songs, 
+  currentSongId,
+  isPlaying,
+  favorites,
+  onSongSelect,
+  onAddToPlaylist,
+  onToggleFavorite 
+}) => {
   const { filters, updateFilter, clearFilters, filteredSongs, hasActiveFilters } = useFilters(songs);
   const [visibleSongs, setVisibleSongs] = useState<number>(24);
   const [isExpanded, setIsExpanded] = useState(false);
-  
+
   const currentSongs = useMemo(() => 
     filteredSongs.slice(0, visibleSongs),
     [filteredSongs, visibleSongs]
   );
 
-  const hasMoreSongs = filteredSongs.length > 24;
-  const remainingSongs = isExpanded ? 0 : filteredSongs.length - visibleSongs;
+  const hasMoreSongs = filteredSongs.length > visibleSongs;
+  const remainingSongs = filteredSongs.length - visibleSongs;
 
-  const handleToggleVisibility = useCallback(() => {
+  const handleToggleVisibility = () => {
     if (isExpanded) {
       setVisibleSongs(24);
       setIsExpanded(false);
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
     } else {
       setVisibleSongs(filteredSongs.length);
       setIsExpanded(true);
     }
-  }, [isExpanded, filteredSongs.length]);
+  };
 
   return (
-    <div className="w-full bg-[rgb(18,18,18)] pt-8 pb-32">
-      {hasActiveFilters && (
-        <div className="flex justify-center mb-6">
-          <motion.span
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-sm text-[#a7a7a7]"
-          >
-            Znaleziono: {filteredSongs.length} utworów
-          </motion.span>
-        </div>
-      )}
-      
+    <div className="w-full bg-[#121212] min-h-screen px-8 py-6">
       <FilterPanel
         filters={filters}
         onFilterChange={updateFilter}
         onClearFilters={clearFilters}
+        hasActiveFilters={hasActiveFilters}
       />
-
-      <motion.div
-        layout
-        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-7 2xl:grid-cols-8 gap-4 px-8 mt-12"
-      >
-        {currentSongs.map((song) => (
-          <motion.div
+      
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-6">
+        {currentSongs.map((song: Song) => (
+          <SongCard
             key={song.id}
-            layout
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            transition={{ duration: 0.2 }}
-            className="w-full"
-          >
-            <SongCard isCurrentSong={false} isFavorite={false} song={song} {...props} />
-          </motion.div>
+            song={song}
+            isCurrentSong={song.id === currentSongId}
+            isPlaying={isPlaying && song.id === currentSongId}
+            isFavorite={favorites.has(song.id)}
+            onSongSelect={onSongSelect}
+            onAddToPlaylist={onAddToPlaylist}
+            onToggleFavorite={onToggleFavorite}
+          />
         ))}
-      </motion.div>
+      </div>
 
       {hasMoreSongs && (
         <div className="w-full flex justify-center pt-8 mb-24">
