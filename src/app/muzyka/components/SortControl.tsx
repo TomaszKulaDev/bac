@@ -53,7 +53,7 @@ const SortControl: React.FC<SortControlProps> = ({
             placeholder="Co chcesz posłuchać?"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 text-sm rounded-full border border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50 outline-none transition-all duration-200"
+            className="w-full pl-10 pr-4 py-2 text-sm rounded-full border border-gray-300 focus:border-[rgb(30,215,96)] focus:ring focus:ring-[rgb(30,215,96)]/20 focus:ring-opacity-50 outline-none transition-all duration-200"
           />
           <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg" />
         </div>

@@ -513,7 +513,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
         className="w-full h-full min-h-screen flex flex-col bg-white"
       >
         {!isMobile && (
-          <div className="w-full bg-gray-100">
+          <div className="w-full bg-[rgb(18,18,18)]">
             <div className="max-w-7xl mx-auto w-full">
               <SortControl
                 sortBy={sortBy}
