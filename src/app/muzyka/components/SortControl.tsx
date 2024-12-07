@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { FaSort, FaSearch } from "react-icons/fa";
+import { FaSearch } from "react-icons/fa";
 import { useDebounce } from '../hooks/useDebounce';
 import { SortOption, SortOrder } from '../types';
 
@@ -29,9 +29,6 @@ const SortControl: React.FC<SortControlProps> = ({
   filterText,
   setFilterText,
 }) => {
-  const [lastClickedOption, setLastClickedOption] = useState<string | null>(
-    null
-  );
   const [inputValue, setInputValue] = useState(filterText);
   const debouncedFilterText = useDebounce(inputValue, 300);
 
@@ -48,12 +45,12 @@ const SortControl: React.FC<SortControlProps> = ({
   );
 
   return (
-    <div className="flex flex-col items-center w-full p-3 bg-gray-100 rounded-lg">
+    <div className="flex flex-col items-center w-full p-3 bg-[rgb(18,18,18)]">
       <div className="w-full max-w-md mb-4">
         <div className="relative">
           <input
             type="text"
-            placeholder="Szukaj..."
+            placeholder="Co chcesz posłuchać?"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             className="w-full pl-10 pr-4 py-2 text-sm rounded-full border border-gray-300 focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50 outline-none transition-all duration-200"
@@ -68,8 +65,8 @@ const SortControl: React.FC<SortControlProps> = ({
             onClick={() => handleSort(option)}
             className={`px-6 py-3 rounded-md text-sm transition-all duration-300 ease-in-out flex items-center mb-2 ${
               sortBy === option
-                ? "bg-gray-700 text-white"
-                : "bg-gray-600 text-white hover:bg-gray-500"
+                ? "bg-[rgb(30,215,96)] text-black hover:bg-[rgb(30,215,96)]/90"
+                : "bg-[rgb(40,40,40)] text-white hover:bg-[rgb(50,50,50)]"
             }`}
           >
             {sortOptionLabels[option]}
