@@ -75,8 +75,8 @@ const FilterSection = <T extends DifficultyLevel | StyleType | TempoType>({
                   flex items-center gap-1.5 transition-all duration-200
                   ${
                     selectedValues.includes(value)
-                      ? 'bg-[#1ed760] text-black'
-                      : 'bg-[#232323] text-white hover:bg-[#2a2a2a]'
+                      ? "bg-[#1ed760] text-black"
+                      : "bg-[#232323] text-white hover:bg-[#2a2a2a]"
                   }
                 `}
             >
@@ -107,51 +107,48 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
   );
 
   return (
-    <motion.div
-      role="region"
-      aria-label="Panel filtrów"
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="bg-black p-4 mb-4"
-    >
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-2">
-          <h3 className="text-sm font-medium text-[#a7a7a7]">Szybki wybór</h3>
+    <div className="w-full">
+      <div className="max-w-[1800px] mx-auto px-8">
+        <div className="text-center mb-8">
+          <h3 className="text-[15px] font-medium text-[#a7a7a7] mb-2">
+            Dobierz muzykę do swoich możliwości
+          </h3>
           {hasActiveFilters && (
-            <span className="text-xs text-[#a7a7a7]">({totalFilters})</span>
+            <button
+              onClick={onClearFilters}
+              className="inline-flex items-center gap-2 px-4 py-1.5 
+                rounded-full text-xs font-medium
+                bg-[#232323] text-white 
+                hover:bg-[#2a2a2a] hover:text-[#1ed760]
+                transition-all duration-200"
+            >
+              <span>Wyczyść</span>
+              <span className="opacity-75">({totalFilters})</span>
+            </button>
           )}
         </div>
-        {hasActiveFilters && (
-          <motion.button
-            onClick={onClearFilters}
-            className="text-xs px-2 py-1 text-[#a7a7a7] hover:text-white 
-              transition-colors"
-          >
-            Wyczyść
-          </motion.button>
-        )}
-      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <FilterSection
-          title="Poziom trudności"
-          options={DIFFICULTY_OPTIONS}
-          selectedValues={filters.difficulty}
-          onChange={(value) => onFilterChange("difficulty", value)}
-        />
-        <FilterSection
-          title="Styl bachaty"
-          options={STYLE_OPTIONS}
-          selectedValues={filters.style}
-          onChange={(value) => onFilterChange("style", value)}
-        />
-        <FilterSection
-          title="Tempo utworu"
-          options={TEMPO_OPTIONS}
-          selectedValues={filters.tempo}
-          onChange={(value) => onFilterChange("tempo", value)}
-        />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <FilterSection
+            title="Poziom trudności"
+            options={DIFFICULTY_OPTIONS}
+            selectedValues={filters.difficulty}
+            onChange={(value) => onFilterChange("difficulty", value)}
+          />
+          <FilterSection
+            title="Styl bachaty"
+            options={STYLE_OPTIONS}
+            selectedValues={filters.style}
+            onChange={(value) => onFilterChange("style", value)}
+          />
+          <FilterSection
+            title="Tempo utworu"
+            options={TEMPO_OPTIONS}
+            selectedValues={filters.tempo}
+            onChange={(value) => onFilterChange("tempo", value)}
+          />
+        </div>
       </div>
-    </motion.div>
+    </div>
   );
 };

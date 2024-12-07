@@ -34,12 +34,9 @@ const SongGrid: React.FC<SongGridProps> = ({ songs, ...props }) => {
   }, [isExpanded, filteredSongs.length]);
 
   return (
-    <div className="w-full bg-black p-1 pb-32">
-      <div className="flex justify-between items-center mb-4 px-6">
-        <h2 className="text-[22px] font-bold text-white">
-          Szybki wybór
-        </h2>
-        {hasActiveFilters && (
+    <div className="w-full bg-[rgb(18,18,18)] pt-8 pb-32">
+      {hasActiveFilters && (
+        <div className="flex justify-center mb-6">
           <motion.span
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -47,8 +44,8 @@ const SongGrid: React.FC<SongGridProps> = ({ songs, ...props }) => {
           >
             Znaleziono: {filteredSongs.length} utworów
           </motion.span>
-        )}
-      </div>
+        </div>
+      )}
       
       <FilterPanel
         filters={filters}
@@ -58,7 +55,7 @@ const SongGrid: React.FC<SongGridProps> = ({ songs, ...props }) => {
 
       <motion.div
         layout
-        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-7 2xl:grid-cols-8 gap-4 px-6"
+        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-7 2xl:grid-cols-8 gap-4 px-8 mt-12"
       >
         {currentSongs.map((song) => (
           <motion.div
@@ -76,7 +73,7 @@ const SongGrid: React.FC<SongGridProps> = ({ songs, ...props }) => {
       </motion.div>
 
       {hasMoreSongs && (
-        <div className="w-full pt-8 mb-24 px-6">
+        <div className="w-full flex justify-center pt-8 mb-24">
           <LoadMoreButton 
             isVisible={hasMoreSongs}
             onClick={handleToggleVisibility}
