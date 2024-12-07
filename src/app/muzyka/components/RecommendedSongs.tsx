@@ -172,11 +172,11 @@ const RecommendedSongs: React.FC<RecommendedSongsProps> = ({
       initial="hidden"
       animate="show"
       variants={containerVariants}
-      className="w-full bg-gradient-to-b from-[#0a1e3b] to-[#2a4a7f] text-white p-3 md:p-6 rounded-t-3xl"
+      className="w-full bg-[rgb(18,18,18)] text-white p-3 md:p-6 rounded-t-3xl"
     >
       <header>
         <h1
-          className="text-xl md:text-2xl font-bold mb-4 md:mb-6"
+          className="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-white"
           id="recommended-songs-title"
         >
           Nasze Muzyczne Polecenia w {new Date().getFullYear()}!
@@ -219,12 +219,13 @@ const RecommendedSongs: React.FC<RecommendedSongsProps> = ({
                   }}
                   className={`
                     flex items-center p-2 md:p-3 rounded-lg
-                    hover:bg-blue-800/20 transition-colors cursor-pointer
-                    ${isCurrentSong ? "bg-blue-800/30" : ""}
+                    bg-[rgb(24,24,24)] hover:bg-[rgb(40,40,40)] 
+                    transition-colors duration-200 cursor-pointer
+                    ${isCurrentSong ? "bg-[rgb(40,40,40)]" : ""}
                   `}
                 >
                   <span 
-                    className="flex-shrink-0 w-[28px] md:w-[32px] text-xs md:text-sm text-blue-200/70"
+                    className="flex-shrink-0 w-[28px] md:w-[32px] text-xs md:text-sm text-[rgb(167,167,167)]"
                     aria-label={`Numer utworu ${displayIndex}`}
                   >
                     {displayIndex.toString().padStart(2, '0')}
@@ -253,22 +254,22 @@ const RecommendedSongs: React.FC<RecommendedSongsProps> = ({
                       className="absolute inset-0 flex items-center justify-center bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity rounded-md"
                     >
                       {isCurrentSong && isPlaying ? (
-                        <FaPause className="w-5 h-5" aria-hidden="true" />
+                        <FaPause className="w-5 h-5 text-white" aria-hidden="true" />
                       ) : (
-                        <FaPlay className="w-5 h-5" aria-hidden="true" />
+                        <FaPlay className="w-5 h-5 text-white" aria-hidden="true" />
                       )}
                     </button>
                   </div>
 
                   <div className="min-w-0 ml-2 md:ml-3 flex-grow max-w-[45%]">
                     <div 
-                      className="font-medium text-sm md:text-base truncate"
+                      className="font-medium text-sm md:text-base truncate text-white"
                       title={song.title}
                     >
                       {song.title}
                     </div>
                     <div 
-                      className="text-xs md:text-sm text-blue-200/70 truncate"
+                      className="text-xs md:text-sm text-[rgb(167,167,167)] truncate"
                       title={song.artist}
                     >
                       {song.artist}
@@ -282,7 +283,8 @@ const RecommendedSongs: React.FC<RecommendedSongsProps> = ({
                         onAddToPlaylist(song.id);
                       }}
                       aria-label="Dodaj do playlisty"
-                      className="p-1.5 md:p-2 text-blue-200 hover:text-white transition-colors rounded-full hover:bg-blue-800/30"
+                      className="p-1.5 md:p-2 text-[rgb(167,167,167)] hover:text-white 
+                        transition-colors rounded-full hover:bg-[rgb(40,40,40)]"
                     >
                       <FaBookmark className="w-3.5 h-3.5 md:w-4 md:h-4" />
                     </button>
@@ -291,8 +293,9 @@ const RecommendedSongs: React.FC<RecommendedSongsProps> = ({
                         e.stopPropagation();
                         handleLike(song._id);
                       }}
-                      className={`p-1.5 md:p-2 flex items-center gap-1 transition-colors rounded-full hover:bg-blue-800/30
-                        ${song.isLiked ? "text-red-500" : "text-blue-200 hover:text-white"}
+                      className={`p-1.5 md:p-2 flex items-center gap-1 transition-colors rounded-full 
+                        hover:bg-[rgb(40,40,40)]
+                        ${song.isLiked ? "text-[rgb(30,215,96)]" : "text-[rgb(167,167,167)] hover:text-white"}
                       `}
                     >
                       {song.isLiked ? (
@@ -300,7 +303,7 @@ const RecommendedSongs: React.FC<RecommendedSongsProps> = ({
                       ) : (
                         <FaRegHeart className="w-3.5 h-3.5 md:w-4 md:h-4" />
                       )}
-                      <span className="text-xs md:text-sm min-w-[16px]">
+                      <span className="text-xs md:text-sm min-w-[16px] text-[rgb(167,167,167)]">
                         {song.likesCount || 0}
                       </span>
                     </button>

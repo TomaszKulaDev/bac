@@ -1,4 +1,4 @@
-import { FaCrown, FaHeart, FaPlay, FaPause } from "react-icons/fa";
+import { FaCrown, FaHeart, FaPlay, FaPause, FaRegHeart } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { useLike } from "../hooks/useLike";
 import { RootState } from "@/store/store";
@@ -16,9 +16,9 @@ interface TopSongsProps {
 }
 
 const AdBanner = () => (
-  <div className="w-full bg-navy-800/50 rounded-xl p-4 sm:p-6 backdrop-blur-sm">
-    <div className="flex items-center justify-center h-[100px] sm:h-[120px] border-2 border-dashed border-white/10 rounded-lg">
-      <span className="text-white/50 text-sm sm:text-base text-center">
+  <div className="w-full bg-[rgb(24,24,24)] rounded-xl p-4 sm:p-6">
+    <div className="flex items-center justify-center h-[100px] sm:h-[120px] border-2 border-dashed border-[rgb(40,40,40)] rounded-lg">
+      <span className="text-[rgb(167,167,167)] text-sm sm:text-base text-center">
         Przestrzeń reklamowa
       </span>
     </div>
@@ -48,34 +48,33 @@ export const TopSongs: React.FC<TopSongsProps> = ({
         className={`
         flex items-center gap-2 sm:gap-3 p-2 sm:p-3 rounded-xl transition-all duration-200
         ${
-          index === 0
-            ? "bg-gradient-to-r from-amber-500/20 to-transparent"
-            : "bg-black/20 hover:bg-white/5"
+          currentSongId === song._id
+            ? "bg-gradient-to-r from-[rgb(30,215,96)]/20 to-[rgb(24,24,24)]"
+            : "bg-[rgb(24,24,24)] hover:bg-[rgb(40,40,40)]"
         }
         ${index < 3 ? "scale-[1.02]" : ""}
-        backdrop-blur-sm
       `}
       >
-        {/* Numeracja z kolorami dla TOP 3 - pomniejszona */}
+        {/* Numeracja z kolorami dla TOP 3 */}
         <div
           className={`
           flex-shrink-0 w-6 h-6 sm:w-7 sm:h-7
           flex items-center justify-center rounded-full text-sm
           ${
             index === 0
-              ? "bg-amber-500 text-black font-bold"
+              ? "bg-[rgb(167,167,167)] text-black font-bold"
               : index === 1
-              ? "bg-gray-300 text-black font-bold"
+              ? "bg-[rgb(167,167,167)] text-black font-bold"
               : index === 2
-              ? "bg-amber-700 text-white font-bold"
-              : "bg-navy-800/50 text-white/60"
+              ? "bg-[rgb(40,40,40)] text-white font-bold"
+              : "bg-[rgb(24,24,24)] text-[rgb(167,167,167)]"
           }
         `}
         >
           {index + 1}
         </div>
 
-        {/* Miniatura - pomniejszona */}
+        {/* Miniatura */}
         <div className="relative overflow-hidden rounded-lg w-10 h-10 flex-shrink-0">
           <Image
             src={getYouTubeThumbnail(song.youtubeId)}
@@ -87,19 +86,20 @@ export const TopSongs: React.FC<TopSongsProps> = ({
           />
         </div>
 
-        {/* Informacje o utworze - mniejsze czcionki */}
+        {/* Informacje o utworze */}
         <div className="flex-grow min-w-0">
           <h3 className="font-medium text-sm text-white truncate">
             {song.title}
           </h3>
-          <p className="text-xs text-white/70 truncate">{song.artist}</p>
+          <p className="text-xs text-[rgb(167,167,167)] truncate">{song.artist}</p>
         </div>
 
-        {/* Przycisk odtwarzania - pomniejszony */}
+        {/* Przycisk odtwarzania */}
         {onSongSelect && (
           <button
             onClick={() => onSongSelect(song._id)}
-            className="p-1.5 text-white/80 hover:text-white hover:bg-white/10 rounded-full"
+            className="p-1.5 text-[rgb(167,167,167)] hover:text-white 
+              hover:bg-[rgb(40,40,40)] rounded-full transition-all duration-200"
             aria-label={
               currentSongId === song._id && isPlaying ? "Zatrzymaj" : "Odtwórz"
             }
@@ -111,12 +111,28 @@ export const TopSongs: React.FC<TopSongsProps> = ({
             )}
           </button>
         )}
+
+        {/* Przycisk polubienia */}
+        {isAuthenticated && (
+          <button
+            onClick={() => handleLike(song._id)}
+            className={`p-1.5 hover:bg-[rgb(40,40,40)] rounded-full transition-all duration-200
+              ${song.isLiked ? "text-[rgb(30,215,96)]" : "text-[rgb(167,167,167)] hover:text-white"}`}
+            aria-label={song.isLiked ? "Usuń z ulubionych" : "Dodaj do ulubionych"}
+          >
+            {song.isLiked ? (
+              <FaHeart className="w-3.5 h-3.5" />
+            ) : (
+              <FaRegHeart className="w-3.5 h-3.5" />
+            )}
+          </button>
+        )}
       </div>
     </li>
   );
 
   return (
-    <section className="w-full bg-navy-900/95 pb-4 sm:pb-6 md:pb-8">
+    <section className="w-full bg-[rgb(18,18,18)] pb-4 sm:pb-6 md:pb-8">
       {/* Górny banner w kontenerze */}
       <div className="px-3 sm:px-4 max-w-screen-2xl mx-auto mb-6 sm:mb-8">
         <AdBanner />
@@ -126,9 +142,9 @@ export const TopSongs: React.FC<TopSongsProps> = ({
       <div className="grid grid-cols-1 xl:grid-cols-[250px_1fr_250px]">
         {/* Lewy banner */}
         <div className="hidden xl:block">
-          <div className="w-full h-full bg-navy-800/50 p-4 sm:p-6 backdrop-blur-sm">
-            <div className="flex items-center justify-center w-full h-full border-2 border-dashed border-white/10">
-              <span className="text-white/50 text-sm sm:text-base text-center">
+          <div className="w-full h-full bg-[rgb(24,24,24)] p-4 sm:p-6">
+            <div className="flex items-center justify-center w-full h-full border-2 border-dashed border-[rgb(40,40,40)]">
+              <span className="text-[rgb(167,167,167)] text-sm sm:text-base text-center">
                 Przestrzeń reklamowa
               </span>
             </div>
