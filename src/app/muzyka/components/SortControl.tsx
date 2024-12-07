@@ -1,23 +1,20 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { FaSearch } from "react-icons/fa";
-import { useDebounce } from '../hooks/useDebounce';
-import { SortOption, SortOrder } from '../types';
+import { useDebounce } from "../hooks/useDebounce";
+import { SortOption, SortOrder } from "../types";
 
 const sortOptionLabels: Record<SortOption, string> = {
   date: "Ostatnio dodane",
   title: "Tytuł",
   artist: "Artysta",
   impro: "Impro",
-  beginnerFriendly: "Dla początkujących"
+  beginnerFriendly: "Dla początkujących",
 };
 
 interface SortControlProps {
   sortBy: SortOption;
   sortOrder: SortOrder;
-  onSortChange: (
-    newSortBy: SortOption,
-    newSortOrder: SortOrder
-  ) => void;
+  onSortChange: (newSortBy: SortOption, newSortOrder: SortOrder) => void;
   filterText: string;
   setFilterText: (text: string) => void;
 }
@@ -38,7 +35,8 @@ const SortControl: React.FC<SortControlProps> = ({
 
   const handleSort = useCallback(
     (newSortBy: SortOption) => {
-      const newSortOrder = sortBy === newSortBy && sortOrder === "asc" ? "desc" : "asc";
+      const newSortOrder =
+        sortBy === newSortBy && sortOrder === "asc" ? "desc" : "asc";
       onSortChange(newSortBy, newSortOrder);
     },
     [sortBy, sortOrder, onSortChange]
