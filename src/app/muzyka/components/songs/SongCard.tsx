@@ -1,7 +1,13 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { FaPlay, FaPause, FaHeart, FaRegHeart } from "react-icons/fa";
+import {
+  FaPlay,
+  FaPause,
+  FaHeart,
+  FaRegHeart,
+  FaBookmark,
+} from "react-icons/fa";
 import { BadgeContainer } from "./BadgeContainer";
 import type { SongCardProps } from "./types";
 
@@ -11,8 +17,22 @@ export const SongCard: React.FC<SongCardProps> = ({
   isPlaying,
   isFavorite,
   onSongSelect,
-  onToggleFavorite
+  onToggleFavorite,
+  onAddToPlaylist,
 }) => {
+  const [isLocalFavorite, setIsLocalFavorite] = useState(isFavorite);
+
+  useEffect(() => {
+    setIsLocalFavorite(isFavorite);
+  }, [isFavorite]);
+
+  const handleFavoriteClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsLocalFavorite(!isLocalFavorite);
+    onToggleFavorite?.(song.id);
+    console.log('Toggling favorite:', song.id, 'New state:', !isLocalFavorite);
+  };
+
   return (
     <motion.div
       whileHover={{ scale: 1.02 }}
@@ -29,22 +49,42 @@ export const SongCard: React.FC<SongCardProps> = ({
           className="object-cover rounded-md"
           loading={isCurrentSong ? "eager" : "lazy"}
         />
-        
+
         {/* Overlay */}
         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-md">
-          {/* Heart button */}
-          <button 
-            onClick={(e) => {
-              e.stopPropagation();
-              onToggleFavorite?.(song.id);
-            }}
-            className="absolute top-2 right-2 text-white hover:scale-110 transition-transform"
-          >
-            {isFavorite ? <FaHeart className="text-[#1ed760]" /> : <FaRegHeart />}
-          </button>
+          {/* Buttons container */}
+          <div className="absolute bottom-2 left-2 flex gap-2">
+            {/* Add to playlist button */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onAddToPlaylist?.(song.id);
+              }}
+              className="p-2 text-white hover:scale-110 transition-transform rounded-full hover:bg-[#282828]"
+              aria-label="Dodaj do playlisty"
+            >
+              <FaBookmark className="w-4 h-4" />
+            </button>
 
-          {/* Play/Pause button */}
-          <button 
+            {/* Heart button - używamy lokalnego stanu */}
+            <button
+              onClick={handleFavoriteClick}
+              className={`p-2 hover:scale-110 transition-all duration-200 rounded-full hover:bg-[#282828] 
+                ${isLocalFavorite ? 'text-[#1ed760]' : 'text-white'}`}
+              aria-label={isLocalFavorite ? "Usuń z ulubionych" : "Dodaj do ulubionych"}
+            >
+              <div className="transition-transform duration-200">
+                {isLocalFavorite ? (
+                  <FaHeart className="w-4 h-4" />
+                ) : (
+                  <FaRegHeart className="w-4 h-4" />
+                )}
+              </div>
+            </button>
+          </div>
+
+          {/* Play/Pause button - pozostaje w prawym dolnym rogu */}
+          <button
             className="absolute bottom-2 right-2 w-12 h-12 bg-[#1ed760] rounded-full flex items-center justify-center shadow-lg transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-200"
             onClick={(e) => {
               e.stopPropagation();
@@ -68,9 +108,7 @@ export const SongCard: React.FC<SongCardProps> = ({
         <h3 className="text-white font-bold text-base truncate">
           {song.title}
         </h3>
-        <p className="text-[#a7a7a7] text-sm truncate">
-          {song.artist}
-        </p>
+        <p className="text-[#a7a7a7] text-sm truncate">{song.artist}</p>
       </div>
 
       {/* Current song indicator */}
