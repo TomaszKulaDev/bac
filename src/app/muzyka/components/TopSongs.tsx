@@ -1,4 +1,4 @@
-import { FaCrown, FaHeart, FaPlay, FaPause, FaRegHeart } from "react-icons/fa";
+import { FaCrown, FaHeart, FaPlay, FaPause, FaRegHeart, FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { useLike } from "../hooks/useLike";
 import { RootState } from "@/store/store";
@@ -30,15 +30,15 @@ export const TopSongs: React.FC<TopSongsProps> = ({
   currentSongId,
   isPlaying,
 }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
   const { data: session } = useSession();
   const isAuthenticated = !!session;
   const { handleLike } = useLike();
 
-  // Pobieramy 40 najpopularniejszych utworów zamiast 20
+  // Pobieramy wszystkie utwory
   const topSongs = useSelector((state: RootState) =>
     [...state.songs.songs]
       .sort((a, b) => (b.likesCount || 0) - (a.likesCount || 0))
-      .slice(0, 40)
   );
 
   // Komponent pojedynczego utworu
@@ -172,77 +172,53 @@ export const TopSongs: React.FC<TopSongsProps> = ({
             </header>
             {/* Układamy utwory w rzędach z pełną szerokością */}
             <div className="flex flex-col gap-6">
-              {/* Pierwszy rząd - TOP 5 */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-2">
-                {topSongs.slice(0, 5).map((song, index) => (
-                  <div key={song._id} className="list-none min-w-[270px]">
-                    <SongItem song={song} index={index} />
-                  </div>
-                ))}
-              </div>
+              {/* Pierwsze 40 utworów (zawsze widoczne) */}
+              {[...Array(8)].map((_, rowIndex) => (
+                <div key={rowIndex} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-2">
+                  {topSongs
+                    .slice(rowIndex * 5, (rowIndex + 1) * 5)
+                    .map((song, index) => (
+                      <div key={song._id} className="list-none min-w-[270px]">
+                        <SongItem song={song} index={index + rowIndex * 5} />
+                      </div>
+                    ))}
+                </div>
+              ))}
 
-              {/* Drugi rząd - miejsca 6-10 */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-2">
-                {topSongs.slice(5, 10).map((song, index) => (
-                  <div key={song._id} className="list-none min-w-[270px]">
-                    <SongItem song={song} index={index + 5} />
-                  </div>
-                ))}
-              </div>
+              {/* Przycisk rozwijania/zwijania jeśli jest więcej niż 40 utworów */}
+              {topSongs.length > 40 && (
+                <div className="flex justify-center mt-6">
+                  <button
+                    onClick={() => setIsExpanded(!isExpanded)}
+                    className="flex items-center gap-2 px-4 py-2 rounded-full bg-[rgb(24,24,24)] 
+                      hover:bg-[rgb(40,40,40)] transition-colors duration-200 text-white"
+                  >
+                    <span>{isExpanded ? 'Pokaż mniej' : 'Pokaż więcej'}</span>
+                    {isExpanded ? (
+                      <FaChevronUp className="w-4 h-4" />
+                    ) : (
+                      <FaChevronDown className="w-4 h-4" />
+                    )}
+                  </button>
+                </div>
+              )}
 
-              {/* Trzeci rząd - miejsca 11-15 */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-2">
-                {topSongs.slice(10, 15).map((song, index) => (
-                  <div key={song._id} className="list-none min-w-[270px]">
-                    <SongItem song={song} index={index + 10} />
-                  </div>
-                ))}
-              </div>
-
-              {/* Czwarty rząd - miejsca 16-20 */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-2">
-                {topSongs.slice(15, 20).map((song, index) => (
-                  <div key={song._id} className="list-none min-w-[270px]">
-                    <SongItem song={song} index={index + 15} />
-                  </div>
-                ))}
-              </div>
-
-              {/* Piąty rząd - miejsca 21-25 */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-2">
-                {topSongs.slice(20, 25).map((song, index) => (
-                  <div key={song._id} className="list-none min-w-[270px]">
-                    <SongItem song={song} index={index + 20} />
-                  </div>
-                ))}
-              </div>
-
-              {/* Szósty rząd - miejsca 26-30 */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-2">
-                {topSongs.slice(25, 30).map((song, index) => (
-                  <div key={song._id} className="list-none min-w-[270px]">
-                    <SongItem song={song} index={index + 25} />
-                  </div>
-                ))}
-              </div>
-
-              {/* Siódmy rząd - miejsca 31-35 */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-2">
-                {topSongs.slice(30, 35).map((song, index) => (
-                  <div key={song._id} className="list-none min-w-[270px]">
-                    <SongItem song={song} index={index + 30} />
-                  </div>
-                ))}
-              </div>
-
-              {/* Ósmy rząd - miejsca 36-40 */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-2">
-                {topSongs.slice(35, 40).map((song, index) => (
-                  <div key={song._id} className="list-none min-w-[270px]">
-                    <SongItem song={song} index={index + 35} />
-                  </div>
-                ))}
-              </div>
+              {/* Rozwijana sekcja z pozostałymi utworami */}
+              {isExpanded && (
+                <div className="flex flex-col gap-6 mt-6">
+                  {[...Array(Math.ceil((topSongs.length - 40) / 5))].map((_, rowIndex) => (
+                    <div key={rowIndex + 8} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-2">
+                      {topSongs
+                        .slice(40 + rowIndex * 5, 40 + (rowIndex + 1) * 5)
+                        .map((song, index) => (
+                          <div key={song._id} className="list-none min-w-[270px]">
+                            <SongItem song={song} index={index + 40 + rowIndex * 5} />
+                          </div>
+                        ))}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>
