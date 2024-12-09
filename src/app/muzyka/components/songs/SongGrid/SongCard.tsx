@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Image from "next/image";
 import { motion } from "framer-motion";
 import {
@@ -21,16 +21,10 @@ export const SongCard: React.FC<SongCardProps> = ({
   onToggleFavorite,
   onAddToPlaylist,
 }) => {
-  const [isLocalFavorite, setIsLocalFavorite] = useState(isFavorite);
   const { imageSrc, handleError } = useImageFallback(song.youtubeId);
-
-  useEffect(() => {
-    setIsLocalFavorite(isFavorite);
-  }, [isFavorite]);
 
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsLocalFavorite(!isLocalFavorite);
     onToggleFavorite?.(song.id);
   };
 
@@ -71,16 +65,19 @@ export const SongCard: React.FC<SongCardProps> = ({
             {/* Heart button */}
             <button
               onClick={handleFavoriteClick}
-              className={`p-2 hover:scale-110 transition-all duration-200 rounded-full hover:bg-[#282828] 
-                ${isLocalFavorite ? 'text-[#1ed760]' : 'text-white'}`}
-              aria-label={isLocalFavorite ? "Usuń z ulubionych" : "Dodaj do ulubionych"}
+              className={`p-2 hover:scale-110 transition-all duration-200 rounded-full hover:bg-[#282828]
+                ${isFavorite ? 'text-[rgb(30,215,96)]' : 'text-white'}`}
+              aria-label={isFavorite ? "Usuń z ulubionych" : "Dodaj do ulubionych"}
             >
-              <div className="transition-transform duration-200">
-                {isLocalFavorite ? (
-                  <FaHeart className="w-4 h-4" />
+              <div className="flex items-center gap-1">
+                {isFavorite ? (
+                  <FaHeart className="w-4 h-4 fill-current" />
                 ) : (
                   <FaRegHeart className="w-4 h-4" />
                 )}
+                <span className={`text-xs min-w-[16px] ${isFavorite ? 'text-[rgb(30,215,96)]' : 'text-[#a7a7a7]'}`}>
+                  {song.likesCount || 0}
+                </span>
               </div>
             </button>
           </div>
