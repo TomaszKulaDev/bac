@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import {
@@ -9,8 +9,9 @@ import {
   FaBookmark,
 } from "react-icons/fa";
 import { BadgeContainer } from "./BadgeContainer";
-import { useImageFallback } from '../../../hooks/useImageFallback';
+import { useImageFallback } from "../../../hooks/useImageFallback";
 import type { SongCardProps } from "./types";
+import { useLike } from "../../../hooks/useLike";
 
 export const SongCard: React.FC<SongCardProps> = ({
   song,
@@ -21,11 +22,12 @@ export const SongCard: React.FC<SongCardProps> = ({
   onToggleFavorite,
   onAddToPlaylist,
 }) => {
+  const { handleLike } = useLike();
   const { imageSrc, handleError } = useImageFallback(song.youtubeId);
 
-  const handleFavoriteClick = (e: React.MouseEvent) => {
+  const handleFavoriteClick = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    onToggleFavorite?.(song.id);
+    await handleLike(song._id);
   };
 
   return (
@@ -66,16 +68,20 @@ export const SongCard: React.FC<SongCardProps> = ({
             <button
               onClick={handleFavoriteClick}
               className={`p-2 hover:scale-110 transition-all duration-200 rounded-full hover:bg-[#282828]
-                ${isFavorite ? 'text-[rgb(30,215,96)]' : 'text-white'}`}
-              aria-label={isFavorite ? "Usuń z ulubionych" : "Dodaj do ulubionych"}
+                ${song.isLiked ? "text-[rgb(30,215,96)]" : "text-white"}`}
+              aria-label={song.isLiked ? "Usuń z ulubionych" : "Dodaj do ulubionych"}
             >
               <div className="flex items-center gap-1">
-                {isFavorite ? (
+                {song.isLiked ? (
                   <FaHeart className="w-4 h-4 fill-current" />
                 ) : (
                   <FaRegHeart className="w-4 h-4" />
                 )}
-                <span className={`text-xs min-w-[16px] ${isFavorite ? 'text-[rgb(30,215,96)]' : 'text-[#a7a7a7]'}`}>
+                <span
+                  className={`text-xs min-w-[16px] ${
+                    song.isLiked ? "text-[rgb(30,215,96)]" : "text-[#a7a7a7]"
+                  }`}
+                >
                   {song.likesCount || 0}
                 </span>
               </div>
@@ -119,4 +125,3 @@ export const SongCard: React.FC<SongCardProps> = ({
     </motion.div>
   );
 };
-
