@@ -34,11 +34,11 @@ export const TopSongs: React.FC<TopSongsProps> = ({
   const isAuthenticated = !!session;
   const { handleLike } = useLike();
 
-  // Pobieramy 20 najpopularniejszych utworów
+  // Pobieramy 40 najpopularniejszych utworów zamiast 20
   const topSongs = useSelector((state: RootState) =>
     [...state.songs.songs]
       .sort((a, b) => (b.likesCount || 0) - (a.likesCount || 0))
-      .slice(0, 20)
+      .slice(0, 40)
   );
 
   // Komponent pojedynczego utworu
@@ -91,7 +91,9 @@ export const TopSongs: React.FC<TopSongsProps> = ({
           <h3 className="font-medium text-sm text-white truncate">
             {song.title}
           </h3>
-          <p className="text-xs text-[rgb(167,167,167)] truncate">{song.artist}</p>
+          <p className="text-xs text-[rgb(167,167,167)] truncate">
+            {song.artist}
+          </p>
         </div>
 
         {/* Przycisk odtwarzania */}
@@ -117,8 +119,14 @@ export const TopSongs: React.FC<TopSongsProps> = ({
           <button
             onClick={() => handleLike(song._id)}
             className={`p-1.5 hover:bg-[rgb(40,40,40)] rounded-full transition-all duration-200
-              ${song.isLiked ? "text-[rgb(30,215,96)]" : "text-[rgb(167,167,167)] hover:text-white"}`}
-            aria-label={song.isLiked ? "Usuń z ulubionych" : "Dodaj do ulubionych"}
+              ${
+                song.isLiked
+                  ? "text-[rgb(30,215,96)]"
+                  : "text-[rgb(167,167,167)] hover:text-white"
+              }`}
+            aria-label={
+              song.isLiked ? "Usuń z ulubionych" : "Dodaj do ulubionych"
+            }
           >
             {song.isLiked ? (
               <FaHeart className="w-3.5 h-3.5" />
@@ -159,7 +167,7 @@ export const TopSongs: React.FC<TopSongsProps> = ({
             <header className="flex items-center gap-2 sm:gap-3 mb-8">
               <FaCrown className="text-xl sm:text-2xl text-amber-400 flex-shrink-0" />
               <h1 className="text-lg sm:text-xl font-bold text-white truncate">
-                Top 20 Najpopularniejszych
+                Top 40 Najpopularniejszych
               </h1>
             </header>
             {/* Układamy utwory w rzędach z pełną szerokością */}
@@ -196,6 +204,42 @@ export const TopSongs: React.FC<TopSongsProps> = ({
                 {topSongs.slice(15, 20).map((song, index) => (
                   <div key={song._id} className="list-none min-w-[270px]">
                     <SongItem song={song} index={index + 15} />
+                  </div>
+                ))}
+              </div>
+
+              {/* Piąty rząd - miejsca 21-25 */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-2">
+                {topSongs.slice(20, 25).map((song, index) => (
+                  <div key={song._id} className="list-none min-w-[270px]">
+                    <SongItem song={song} index={index + 20} />
+                  </div>
+                ))}
+              </div>
+
+              {/* Szósty rząd - miejsca 26-30 */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-2">
+                {topSongs.slice(25, 30).map((song, index) => (
+                  <div key={song._id} className="list-none min-w-[270px]">
+                    <SongItem song={song} index={index + 25} />
+                  </div>
+                ))}
+              </div>
+
+              {/* Siódmy rząd - miejsca 31-35 */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-2">
+                {topSongs.slice(30, 35).map((song, index) => (
+                  <div key={song._id} className="list-none min-w-[270px]">
+                    <SongItem song={song} index={index + 30} />
+                  </div>
+                ))}
+              </div>
+
+              {/* Ósmy rząd - miejsca 36-40 */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-2">
+                {topSongs.slice(35, 40).map((song, index) => (
+                  <div key={song._id} className="list-none min-w-[270px]">
+                    <SongItem song={song} index={index + 35} />
                   </div>
                 ))}
               </div>
