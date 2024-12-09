@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FaFilter, FaTimes } from "react-icons/fa";
 import type { Filters, DifficultyLevel, StyleType, TempoType } from "../types";
 import { DIFFICULTY_OPTIONS, STYLE_OPTIONS, TEMPO_OPTIONS } from "./constants";
+import type { FilterPanelProps } from "../types";
 
 interface FilterSectionProps<
   T extends DifficultyLevel | StyleType | TempoType
@@ -14,15 +15,6 @@ interface FilterSectionProps<
   >;
   selectedValues: T[];
   onChange: (value: T) => void;
-}
-
-interface FilterPanelProps {
-  filters: Filters;
-  onFilterChange: (
-    filterType: keyof Filters,
-    value: DifficultyLevel | StyleType | TempoType
-  ) => void;
-  onClearFilters: () => void;
 }
 
 const FilterSection = <T extends DifficultyLevel | StyleType | TempoType>({
@@ -99,8 +91,8 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
   filters,
   onFilterChange,
   onClearFilters,
+  hasActiveFilters
 }) => {
-  const hasActiveFilters = Object.values(filters).some((arr) => arr.length > 0);
   const totalFilters = Object.values(filters).reduce(
     (acc, arr) => acc + arr.length,
     0

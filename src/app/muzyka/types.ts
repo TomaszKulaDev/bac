@@ -20,25 +20,32 @@ export interface Song {
   title: string;
   artist: string;
   youtubeId: string;
+  thumbnail?: string;
+  
+  // Pola dla difficulty
   beginnerFriendly: boolean;
   intermediate: boolean;
   advanced: boolean;
-  impro: boolean;
+  
+  // Pola dla style
   sensual: boolean;
   dominicana: boolean;
+  impro: boolean;
+  
+  // Pola dla tempo
   slow: boolean;
   medium: boolean;
   fast: boolean;
-  createdAt: string;
-  __v?: number;
-  playlists: string[]; // Tablica ID playlist, do których należy utwór
-  thumbnail?: string;
-  level?: SongLevel; // dodajemy opcjonalne pole level
+  
+  // Pozostałe pola
   difficulty: DifficultyLevel;
   style: StyleType;
   tempo: TempoType;
+  createdAt: string;
   likesCount: number;
   isLiked: boolean;
+  playlists: string[];
+  __v?: number;
 }
 
 // Interfejs właściwości komponentu odtwarzacza muzyki

@@ -13,13 +13,3 @@ export interface SongCardProps {
   onAddToPlaylist?: (songId: string) => void;
   onToggleFavorite?: (songId: string) => void;
 }
-
-export interface SongGridProps {
-  songs: Song[];
-  currentSongId?: string;
-  isPlaying: boolean;
-  favorites: Set<string>;
-  onSongSelect: (songId: string) => void;
-  onAddToPlaylist: (songId: string) => void;
-  onToggleFavorite: (songId: string) => void;
-}

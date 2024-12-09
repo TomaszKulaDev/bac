@@ -1,4 +1,4 @@
-import { Song, SongLevel } from "../../../types";
+import { Song } from "../../../types";
 
 export type SortByType = 'newest' | 'popular' | 'alphabetical';
 export type DifficultyLevel = 'unspecified' | 'beginner' | 'intermediate' | 'advanced';
@@ -11,6 +11,13 @@ export interface Filters {
   tempo: TempoType[];
 }
 
+export interface FilterPanelProps {
+  filters: Filters;
+  onFilterChange: (filterType: keyof Filters, value: DifficultyLevel | StyleType | TempoType) => void;
+  onClearFilters: () => void;
+  hasActiveFilters: boolean;
+}
+
 export interface SongGridProps {
   songs: Song[];
   currentSongId?: string;
@@ -19,8 +26,6 @@ export interface SongGridProps {
   onAddToPlaylist: (songId: string) => void;
   onToggleFavorite: (songId: string) => void;
   favorites: Set<string>;
-  filters?: Filters;
-  onFilterChange?: (filters: Filters) => void;
 }
 
 export interface SongCardProps {
@@ -31,4 +36,11 @@ export interface SongCardProps {
   onSongSelect: (songId: string) => void;
   onAddToPlaylist: (songId: string) => void;
   onToggleFavorite: (songId: string) => void;
+}
+
+export interface LoadMoreButtonProps {
+  isVisible: boolean;
+  onClick: () => void;
+  remainingSongs: number;
+  isExpanded: boolean;
 }

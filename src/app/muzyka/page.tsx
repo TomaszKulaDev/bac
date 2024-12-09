@@ -266,6 +266,18 @@ const MusicPage: React.FC = () => {
 
   const { handleLike } = useLike();
 
+  const handleSongSelect = (songId: string) => {
+    // ...
+  };
+
+  const handleAddToPlaylist = (songId: string) => {
+    // ...
+  };
+
+  const handleToggleFavorite = (songId: string) => {
+    // ...
+  };
+
   if (status === "loading") {
     return <LoadingState error={error} />;
   }

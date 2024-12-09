@@ -3,7 +3,7 @@ import { SongCard } from "../SongCard";
 import { FilterPanel } from "./filters/FilterPanel";
 import { useFilters } from "./filters/hooks/useFilters";
 import type { Song } from "../../../types";
-import type { SongGridProps } from "../types";
+import type { SongGridProps } from "./types";
 import LoadMoreButton from "../LoadMoreButton";
 
 const SongGrid: React.FC<SongGridProps> = ({
