@@ -1,8 +1,9 @@
 import { levelConfig } from './constants';
 import { BaseBadge } from './BaseBadge';
+import type { DifficultyLevel } from './types';
 
 interface LevelBadgeProps {
-  level: keyof typeof levelConfig;
+  level: DifficultyLevel;
 }
 
 export const LevelBadge: React.FC<LevelBadgeProps> = ({ level }) => {
@@ -12,6 +13,7 @@ export const LevelBadge: React.FC<LevelBadgeProps> = ({ level }) => {
       icon={config.icon}
       label={config.label}
       color={config.color}
+      description={config.description}
     />
   );
 };

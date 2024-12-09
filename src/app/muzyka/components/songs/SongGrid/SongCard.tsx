@@ -1,57 +1,125 @@
-import React from 'react';
-import Image from 'next/image';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import Image from "next/image";
+import { motion } from "framer-motion";
+import {
+  FaPlay,
+  FaPause,
+  FaHeart,
+  FaRegHeart,
+  FaBookmark,
+} from "react-icons/fa";
+import { BadgeContainer } from "./BadgeContainer";
 import { useImageFallback } from '../../../hooks/useImageFallback';
-import { BadgeContainer } from './BadgeContainer';
-import { SongControls } from './SongControls';
-import type { SongCardProps } from './types';
-import { FaHeart } from 'react-icons/fa';
+import type { SongCardProps } from "./types";
 
-export const SongCard: React.FC<SongCardProps> = ({ song, ...props }) => {
+export const SongCard: React.FC<SongCardProps> = ({
+  song,
+  isCurrentSong,
+  isPlaying,
+  isFavorite,
+  onSongSelect,
+  onToggleFavorite,
+  onAddToPlaylist,
+}) => {
+  const [isLocalFavorite, setIsLocalFavorite] = useState(isFavorite);
   const { imageSrc, handleError } = useImageFallback(song.youtubeId);
 
+  useEffect(() => {
+    setIsLocalFavorite(isFavorite);
+  }, [isFavorite]);
+
+  const handleFavoriteClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsLocalFavorite(!isLocalFavorite);
+    onToggleFavorite?.(song.id);
+  };
+
   return (
-    <div className="relative group w-full bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200">
-      <div className="relative aspect-[3/3] rounded-xl overflow-hidden">
+    <motion.div
+      whileHover={{ scale: 1.02 }}
+      className="relative group bg-[#181818] rounded-md p-4 hover:bg-[#282828] transition-all duration-200 cursor-pointer"
+      onClick={() => onSongSelect(song.id)}
+    >
+      {/* Thumbnail */}
+      <div className="relative aspect-square mb-4">
         <Image
           src={imageSrc}
           alt={`${song.title} - ${song.artist}`}
-          fill
-          className="object-cover transition-transform duration-200 group-hover:scale-105"
-          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
-          priority
+          width={300}
+          height={300}
+          className="object-cover rounded-md"
+          loading={isCurrentSong ? "eager" : "lazy"}
           onError={handleError}
         />
-        <SongControls {...props} songId={song.id} />
-      </div>
-      <div className="border-b border-gray-100">
-        <div className="flex items-center gap-2 px-1 py-2">
-          {/* TODO: Tymczasowy avatar - w przyszłości zaimplementować wyświetlanie zdjęć profilowych użytkowników, którzy polubili utwór */}
-          <div className="relative w-6 h-6 rounded-full overflow-hidden bg-gray-100">
-            <Image
-              src="/images/default-avatar.png"
-              alt="Avatar użytkownika"
-              fill
-              sizes="24px"
-              className="object-cover"
-              priority={false}
-            />
+
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-md">
+          {/* Buttons container */}
+          <div className="absolute bottom-2 left-2 flex gap-2">
+            {/* Add to playlist button */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onAddToPlaylist?.(song.id);
+              }}
+              className="p-2 text-white hover:scale-110 transition-transform rounded-full hover:bg-[#282828]"
+              aria-label="Dodaj do playlisty"
+            >
+              <FaBookmark className="w-4 h-4" />
+            </button>
+
+            {/* Heart button */}
+            <button
+              onClick={handleFavoriteClick}
+              className={`p-2 hover:scale-110 transition-all duration-200 rounded-full hover:bg-[#282828] 
+                ${isLocalFavorite ? 'text-[#1ed760]' : 'text-white'}`}
+              aria-label={isLocalFavorite ? "Usuń z ulubionych" : "Dodaj do ulubionych"}
+            >
+              <div className="transition-transform duration-200">
+                {isLocalFavorite ? (
+                  <FaHeart className="w-4 h-4" />
+                ) : (
+                  <FaRegHeart className="w-4 h-4" />
+                )}
+              </div>
+            </button>
           </div>
-          <span className="text-sm font-medium text-gray-600">
-          Liczba polubień: {song.likesCount || 0}
-          </span>
+
+          {/* Play/Pause button */}
+          <button
+            className="absolute bottom-2 right-2 w-12 h-12 bg-[#1ed760] rounded-full flex items-center justify-center shadow-lg transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-200"
+            onClick={(e) => {
+              e.stopPropagation();
+              onSongSelect(song.id);
+            }}
+          >
+            {isCurrentSong && isPlaying ? (
+              <FaPause className="text-black text-xl" />
+            ) : (
+              <FaPlay className="text-black text-xl ml-1" />
+            )}
+          </button>
         </div>
-      </div>
-      <div className="px-1 pt-2 pb-4">
-        <h3 className="font-semibold truncate text-sm text-black">
-          {song.title}
-        </h3>
-        <p className="font-['NeueMontreal',Arial,sans-serif] text-sm font-normal tracking-[0.5px] leading-normal text-[#3a3a3c] truncate" style={{fontVariant: 'normal'}}>
-          {song.artist}
-        </p>
+
+        {/* Badges */}
         <BadgeContainer song={song} />
       </div>
-    </div>
+
+      {/* Song info */}
+      <div className="space-y-1">
+        <h3 className="text-white font-bold text-base truncate">
+          {song.title}
+        </h3>
+        <p className="text-[#a7a7a7] text-sm truncate">{song.artist}</p>
+      </div>
+
+      {/* Current song indicator */}
+      {isCurrentSong && (
+        <div className="absolute top-2 left-2 w-3 h-3">
+          <span className="animate-pulse w-2 h-2 bg-[#1ed760] rounded-full absolute" />
+        </div>
+      )}
+    </motion.div>
   );
 };
 

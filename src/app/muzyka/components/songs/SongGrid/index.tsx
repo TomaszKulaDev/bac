@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef } from "react";
-import { SongCard } from "../SongCard";
+import { SongCard } from "./SongCard";
 import { FilterPanel } from "./filters/FilterPanel";
 import { useFilters } from "./filters/hooks/useFilters";
 import type { Song } from "../../../types";
