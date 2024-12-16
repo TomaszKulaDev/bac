@@ -1,4 +1,12 @@
-import { FaCrown, FaHeart, FaPlay, FaPause, FaRegHeart, FaChevronDown, FaChevronUp } from "react-icons/fa";
+import {
+  FaCrown,
+  FaHeart,
+  FaPlay,
+  FaPause,
+  FaRegHeart,
+  FaChevronDown,
+  FaChevronUp,
+} from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { useLike } from "../hooks/useLike";
 import { RootState } from "@/store/store";
@@ -37,13 +45,14 @@ export const TopSongs: React.FC<TopSongsProps> = ({
 
   // Pobieramy wszystkie utwory
   const topSongs = useSelector((state: RootState) =>
-    [...state.songs.songs]
-      .sort((a, b) => (b.likesCount || 0) - (a.likesCount || 0))
+    [...state.songs.songs].sort(
+      (a, b) => (b.likesCount || 0) - (a.likesCount || 0)
+    )
   );
 
   // Komponent pojedynczego utworu
   const SongItem = ({ song, index }: { song: Song; index: number }) => (
-    <li>
+    <li className="list-none">
       <div
         className={`
         flex items-center gap-2 sm:gap-3 p-2 sm:p-3 rounded-xl transition-all duration-200
@@ -174,11 +183,14 @@ export const TopSongs: React.FC<TopSongsProps> = ({
             <div className="flex flex-col gap-6">
               {/* Pierwsze 40 utworów (zawsze widoczne) */}
               {[...Array(8)].map((_, rowIndex) => (
-                <div key={rowIndex} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-2">
+                <div
+                  key={rowIndex}
+                  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 w-full"
+                >
                   {topSongs
                     .slice(rowIndex * 5, (rowIndex + 1) * 5)
                     .map((song, index) => (
-                      <div key={song._id} className="list-none min-w-[270px]">
+                      <div key={song._id} className="w-full">
                         <SongItem song={song} index={index + rowIndex * 5} />
                       </div>
                     ))}
@@ -193,7 +205,7 @@ export const TopSongs: React.FC<TopSongsProps> = ({
                     className="flex items-center gap-2 px-4 py-2 rounded-full bg-[rgb(24,24,24)] 
                       hover:bg-[rgb(40,40,40)] transition-colors duration-200 text-white"
                   >
-                    <span>{isExpanded ? 'Pokaż mniej' : 'Pokaż więcej'}</span>
+                    <span>{isExpanded ? "Pokaż mniej" : "Pokaż więcej"}</span>
                     {isExpanded ? (
                       <FaChevronUp className="w-4 h-4" />
                     ) : (
@@ -206,17 +218,28 @@ export const TopSongs: React.FC<TopSongsProps> = ({
               {/* Rozwijana sekcja z pozostałymi utworami */}
               {isExpanded && (
                 <div className="flex flex-col gap-6 mt-6">
-                  {[...Array(Math.ceil((topSongs.length - 40) / 5))].map((_, rowIndex) => (
-                    <div key={rowIndex + 8} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-2">
-                      {topSongs
-                        .slice(40 + rowIndex * 5, 40 + (rowIndex + 1) * 5)
-                        .map((song, index) => (
-                          <div key={song._id} className="list-none min-w-[270px]">
-                            <SongItem song={song} index={index + 40 + rowIndex * 5} />
-                          </div>
-                        ))}
-                    </div>
-                  ))}
+                  {[...Array(Math.ceil((topSongs.length - 40) / 5))].map(
+                    (_, rowIndex) => (
+                      <div
+                        key={rowIndex + 8}
+                        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-2"
+                      >
+                        {topSongs
+                          .slice(40 + rowIndex * 5, 40 + (rowIndex + 1) * 5)
+                          .map((song, index) => (
+                            <div
+                              key={song._id}
+                              className="list-none min-w-[270px]"
+                            >
+                              <SongItem
+                                song={song}
+                                index={index + 40 + rowIndex * 5}
+                              />
+                            </div>
+                          ))}
+                      </div>
+                    )
+                  )}
                 </div>
               )}
             </div>
