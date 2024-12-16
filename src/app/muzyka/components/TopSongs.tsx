@@ -227,7 +227,7 @@ export const TopSongs: React.FC<TopSongsProps> = ({
 
         {/* Prawy banner */}
         <div className="hidden xl:block">
-          <div className="w-full h-full bg-navy-800/50 p-4 sm:p-6 backdrop-blur-sm">
+          <div className="w-full h-full bg-[rgb(18,18,18)] p-4 sm:p-6">
             <div className="flex flex-col items-center justify-center w-full h-full border-2 border-dashed border-white/10">
               <span className="text-white/50 text-sm sm:text-base text-center">
                 Przestrzeń reklamowa

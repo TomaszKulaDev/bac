@@ -35,7 +35,7 @@ body {
 }
 
 .music-page {
-  background: linear-gradient(to right, #0a1e3b, #2a4a7f);
+  background: rgb(18,18,18);
 }
 
 .my-masonry-grid {
@@ -148,7 +148,7 @@ body {
 /* Dodanie critical CSS dla navbaru */
 @layer components {
   .nav-container {
-    @apply sticky top-0 z-40 bg-gray-800 text-white transition-shadow duration-300;
+    @apply sticky top-0 z-40 bg-[rgb(18,18,18)] text-white transition-shadow duration-300;
   }
 
   .nav-container.scrolled {
