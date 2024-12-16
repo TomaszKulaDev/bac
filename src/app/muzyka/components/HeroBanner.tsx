@@ -6,7 +6,7 @@ const HeroBanner = () => {
     <section className="relative w-full bg-[#121212] py-6">
       <div className="max-w-screen-xl mx-auto px-4">
         {/* Główny baner - zwiększona wysokość o kolejne 30px */}
-        <div className="relative w-full h-[300px] md:h-[500px] rounded-xl overflow-hidden">
+        <div className="relative w-full h-[300px] md:h-[540px] rounded-xl overflow-hidden">
           {/* Tło - grafika Spotify */}
           <Image
             src="/images/hero/bachata-beats-banner.webp"
