@@ -4,9 +4,10 @@ import type { DifficultyLevel } from './types';
 
 interface LevelBadgeProps {
   level: DifficultyLevel;
+  isMobile?: boolean;
 }
 
-export const LevelBadge: React.FC<LevelBadgeProps> = ({ level }) => {
+export const LevelBadge: React.FC<LevelBadgeProps> = ({ level, isMobile }) => {
   const config = levelConfig[level];
   return (
     <BaseBadge
@@ -14,6 +15,7 @@ export const LevelBadge: React.FC<LevelBadgeProps> = ({ level }) => {
       label={config.label}
       color={config.color}
       description={config.description}
+      isMobile={isMobile}
     />
   );
 };

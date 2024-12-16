@@ -5,13 +5,15 @@ interface BaseBadgeProps {
   label: string;
   color: string;
   description?: string;
+  isMobile?: boolean;
 }
 
 export const BaseBadge: React.FC<BaseBadgeProps> = ({
   icon,
   label,
   color,
-  description
+  description,
+  isMobile = false
 }) => {
   return (
     <div 
@@ -21,7 +23,7 @@ export const BaseBadge: React.FC<BaseBadgeProps> = ({
       aria-label={`${label}${description ? ` - ${description}` : ''}`}
     >
       {icon && <span className="text-xs">{icon}</span>}
-      <span>{label}</span>
+      {!isMobile && <span>{label}</span>}
     </div>
   );
 };
