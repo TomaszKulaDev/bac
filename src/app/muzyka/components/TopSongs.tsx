@@ -43,14 +43,12 @@ export const TopSongs: React.FC<TopSongsProps> = ({
   const isAuthenticated = !!session;
   const { handleLike } = useLike();
 
-  // Pobieramy wszystkie utwory
   const topSongs = useSelector((state: RootState) =>
     [...state.songs.songs].sort(
       (a, b) => (b.likesCount || 0) - (a.likesCount || 0)
     )
   );
 
-  // Komponent pojedynczego utworu
   const SongItem = ({ song, index }: { song: Song; index: number }) => (
     <li className="list-none">
       <div
@@ -155,87 +153,55 @@ export const TopSongs: React.FC<TopSongsProps> = ({
         <AdBanner />
       </div>
 
-      {/* Grid główny - zwiększamy szerokość */}
-      <div className="grid grid-cols-1 xl:grid-cols-[300px_1fr_300px]">
-        {/* Lewy banner */}
-        <div className="hidden xl:block">
-          <div className="w-full h-full bg-[rgb(24,24,24)] p-4 sm:p-6">
-            <div className="flex flex-col items-center justify-center w-full h-full border-2 border-dashed border-[rgb(40,40,40)]">
-              <span className="text-[rgb(167,167,167)] text-sm sm:text-base text-center">
-                Przestrzeń reklamowa
-              </span>
-              <span className="text-[rgb(167,167,167)] text-xs mt-2">
-                300 x 600 px
-              </span>
-            </div>
-          </div>
-        </div>
+      {/* Główna zawartość - bez banerów bocznych */}
+      <div className="px-3 sm:px-4">
+        <div className="w-full">
+          <header className="flex items-center gap-2 sm:gap-3 mb-8">
+            <FaCrown className="text-xl sm:text-2xl text-amber-400 flex-shrink-0" />
+            <h1 className="text-lg sm:text-xl font-bold text-white truncate">
+              Top 40 Najpopularniejszych
+            </h1>
+          </header>
 
-        {/* Środkowa zawartość - bez ograniczenia szerokości */}
-        <div className="px-3 sm:px-4">
-          <div className="w-full">
-            {" "}
-            {/* Usunięto max-width */}
-            <header className="flex items-center gap-2 sm:gap-3 mb-8">
-              <FaCrown className="text-xl sm:text-2xl text-amber-400 flex-shrink-0" />
-              <h1 className="text-lg sm:text-xl font-bold text-white truncate">
-                Top 40 Najpopularniejszych
-              </h1>
-            </header>
-            {/* Układamy utwory w rzędach z pełną szerokością */}
-            <div className="flex flex-col gap-6">
-              {/* Wszystkie utwory w jednej pętli */}
-              {[...Array(Math.ceil(topSongs.length / 5))].map((_, rowIndex) => (
-                <div
-                  key={rowIndex}
-                  className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 w-full
-                    ${rowIndex >= 8 && !isExpanded ? 'hidden' : ''}`}
+          {/* Lista utworów */}
+          <div className="flex flex-col gap-6">
+            {[...Array(Math.ceil(topSongs.length / 5))].map((_, rowIndex) => (
+              <div
+                key={rowIndex}
+                className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 w-full
+                  ${rowIndex >= 8 && !isExpanded ? 'hidden' : ''}`}
+              >
+                {topSongs
+                  .slice(rowIndex * 5, (rowIndex + 1) * 5)
+                  .map((song, index) => (
+                    <div key={song._id} className="w-full">
+                      <SongItem 
+                        song={song} 
+                        index={index + rowIndex * 5}
+                      />
+                    </div>
+                  ))}
+              </div>
+            ))}
+
+            {/* Przycisk rozwijania/zwijania */}
+            {topSongs.length > 40 && (
+              <div className="flex justify-center mt-6">
+                <button
+                  onClick={() => setIsExpanded(!isExpanded)}
+                  className="flex items-center gap-2 px-4 py-2 rounded-full 
+                    bg-[rgb(24,24,24)] hover:bg-[rgb(40,40,40)] 
+                    transition-colors duration-200 text-white"
                 >
-                  {topSongs
-                    .slice(rowIndex * 5, (rowIndex + 1) * 5)
-                    .map((song, index) => (
-                      <div key={song._id} className="w-full">
-                        <SongItem 
-                          song={song} 
-                          index={index + rowIndex * 5}
-                        />
-                      </div>
-                    ))}
-                </div>
-              ))}
-
-              {/* Przycisk rozwijania/zwijania */}
-              {topSongs.length > 40 && (
-                <div className="flex justify-center mt-6">
-                  <button
-                    onClick={() => setIsExpanded(!isExpanded)}
-                    className="flex items-center gap-2 px-4 py-2 rounded-full bg-[rgb(24,24,24)] 
-                      hover:bg-[rgb(40,40,40)] transition-colors duration-200 text-white"
-                  >
-                    <span>{isExpanded ? "Pokaż mniej" : "Pokaż więcej"}</span>
-                    {isExpanded ? (
-                      <FaChevronUp className="w-4 h-4" />
-                    ) : (
-                      <FaChevronDown className="w-4 h-4" />
-                    )}
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Prawy banner */}
-        <div className="hidden xl:block">
-          <div className="w-full h-full bg-[rgb(18,18,18)] p-4 sm:p-6">
-            <div className="flex flex-col items-center justify-center w-full h-full border-2 border-dashed border-white/10">
-              <span className="text-white/50 text-sm sm:text-base text-center">
-                Przestrzeń reklamowa
-              </span>
-              <span className="text-white/50 text-xs mt-2">
-                300 x 600 px
-              </span>
-            </div>
+                  <span>{isExpanded ? "Pokaż mniej" : "Pokaż więcej"}</span>
+                  {isExpanded ? (
+                    <FaChevronUp className="w-4 h-4" />
+                  ) : (
+                    <FaChevronDown className="w-4 h-4" />
+                  )}
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -2,6 +2,7 @@
 // Layout jest współdzielony przez wszystkie podstrony w tej sekcji
 
 // Importujemy metadane SEO zdefiniowane w osobnym pliku
+import HeroBanner from "./components/HeroBanner";
 import { metadata } from "./metadata";
 
 // Eksportujemy metadane, aby Next.js mógł je wykorzystać
@@ -82,6 +83,7 @@ export default function Layout({
           __html: JSON.stringify(jsonLd),
         }}
       />
+      <HeroBanner />
       {/* Renderujemy właściwą zawartość podstrony */}
       {children}
     </>
