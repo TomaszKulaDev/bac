@@ -55,7 +55,7 @@ export const TopSongs: React.FC<TopSongsProps> = ({
     <li className="list-none">
       <div
         className={`
-        flex items-center gap-2 sm:gap-3 p-2 sm:p-3 rounded-xl transition-all duration-200
+        flex items-center gap-1 sm:gap-2 p-1.5 sm:p-2 rounded-xl transition-all duration-200
         ${
           currentSongId === song._id
             ? "bg-gradient-to-r from-[rgb(30,215,96)]/20 to-[rgb(24,24,24)]"
@@ -84,23 +84,23 @@ export const TopSongs: React.FC<TopSongsProps> = ({
         </div>
 
         {/* Miniatura */}
-        <div className="relative overflow-hidden rounded-lg w-10 h-10 flex-shrink-0">
+        <div className="relative overflow-hidden rounded-lg w-8 h-8 flex-shrink-0">
           <Image
             src={getYouTubeThumbnail(song.youtubeId)}
             alt=""
             fill
             className="object-cover"
-            sizes="40px"
+            sizes="32px"
             loading={index < 4 ? "eager" : "lazy"}
           />
         </div>
 
         {/* Informacje o utworze */}
-        <div className="flex-grow min-w-0">
-          <h3 className="font-medium text-sm text-white truncate">
+        <div className="flex-grow min-w-0 mr-2">
+          <h3 className="font-medium text-sm text-white truncate leading-tight">
             {song.title}
           </h3>
-          <p className="text-xs text-[rgb(167,167,167)] truncate">
+          <p className="text-xs text-[rgb(167,167,167)] truncate leading-tight">
             {song.artist}
           </p>
         </div>
@@ -109,16 +109,16 @@ export const TopSongs: React.FC<TopSongsProps> = ({
         {onSongSelect && (
           <button
             onClick={() => onSongSelect(song._id)}
-            className="p-1.5 text-[rgb(167,167,167)] hover:text-white 
+            className="p-1 text-[rgb(167,167,167)] hover:text-white 
               hover:bg-[rgb(40,40,40)] rounded-full transition-all duration-200"
             aria-label={
               currentSongId === song._id && isPlaying ? "Zatrzymaj" : "Odtwórz"
             }
           >
             {currentSongId === song._id && isPlaying ? (
-              <FaPause className="w-3.5 h-3.5" />
+              <FaPause className="w-3 h-3" />
             ) : (
-              <FaPlay className="w-3.5 h-3.5" />
+              <FaPlay className="w-3 h-3" />
             )}
           </button>
         )}
@@ -127,7 +127,7 @@ export const TopSongs: React.FC<TopSongsProps> = ({
         {isAuthenticated && (
           <button
             onClick={() => handleLike(song._id)}
-            className={`p-1.5 hover:bg-[rgb(40,40,40)] rounded-full transition-all duration-200
+            className={`p-1 hover:bg-[rgb(40,40,40)] rounded-full transition-all duration-200
               ${
                 song.isLiked
                   ? "text-[rgb(30,215,96)]"
@@ -138,9 +138,9 @@ export const TopSongs: React.FC<TopSongsProps> = ({
             }
           >
             {song.isLiked ? (
-              <FaHeart className="w-3.5 h-3.5" />
+              <FaHeart className="w-3 h-3" />
             ) : (
-              <FaRegHeart className="w-3.5 h-3.5" />
+              <FaRegHeart className="w-3 h-3" />
             )}
           </button>
         )}
@@ -156,13 +156,16 @@ export const TopSongs: React.FC<TopSongsProps> = ({
       </div>
 
       {/* Grid główny - zwiększamy szerokość */}
-      <div className="grid grid-cols-1 xl:grid-cols-[250px_1fr_250px]">
+      <div className="grid grid-cols-1 xl:grid-cols-[300px_1fr_300px]">
         {/* Lewy banner */}
         <div className="hidden xl:block">
           <div className="w-full h-full bg-[rgb(24,24,24)] p-4 sm:p-6">
-            <div className="flex items-center justify-center w-full h-full border-2 border-dashed border-[rgb(40,40,40)]">
+            <div className="flex flex-col items-center justify-center w-full h-full border-2 border-dashed border-[rgb(40,40,40)]">
               <span className="text-[rgb(167,167,167)] text-sm sm:text-base text-center">
                 Przestrzeń reklamowa
+              </span>
+              <span className="text-[rgb(167,167,167)] text-xs mt-2">
+                300 x 600 px
               </span>
             </div>
           </div>
@@ -181,23 +184,27 @@ export const TopSongs: React.FC<TopSongsProps> = ({
             </header>
             {/* Układamy utwory w rzędach z pełną szerokością */}
             <div className="flex flex-col gap-6">
-              {/* Pierwsze 40 utworów (zawsze widoczne) */}
-              {[...Array(8)].map((_, rowIndex) => (
+              {/* Wszystkie utwory w jednej pętli */}
+              {[...Array(Math.ceil(topSongs.length / 5))].map((_, rowIndex) => (
                 <div
                   key={rowIndex}
-                  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 w-full"
+                  className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 w-full
+                    ${rowIndex >= 8 && !isExpanded ? 'hidden' : ''}`}
                 >
                   {topSongs
                     .slice(rowIndex * 5, (rowIndex + 1) * 5)
                     .map((song, index) => (
                       <div key={song._id} className="w-full">
-                        <SongItem song={song} index={index + rowIndex * 5} />
+                        <SongItem 
+                          song={song} 
+                          index={index + rowIndex * 5}
+                        />
                       </div>
                     ))}
                 </div>
               ))}
 
-              {/* Przycisk rozwijania/zwijania jeśli jest więcej niż 40 utworów */}
+              {/* Przycisk rozwijania/zwijania */}
               {topSongs.length > 40 && (
                 <div className="flex justify-center mt-6">
                   <button
@@ -214,34 +221,6 @@ export const TopSongs: React.FC<TopSongsProps> = ({
                   </button>
                 </div>
               )}
-
-              {/* Rozwijana sekcja z pozostałymi utworami */}
-              {isExpanded && (
-                <div className="flex flex-col gap-6 mt-6">
-                  {[...Array(Math.ceil((topSongs.length - 40) / 5))].map(
-                    (_, rowIndex) => (
-                      <div
-                        key={rowIndex + 8}
-                        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-2"
-                      >
-                        {topSongs
-                          .slice(40 + rowIndex * 5, 40 + (rowIndex + 1) * 5)
-                          .map((song, index) => (
-                            <div
-                              key={song._id}
-                              className="list-none min-w-[270px]"
-                            >
-                              <SongItem
-                                song={song}
-                                index={index + 40 + rowIndex * 5}
-                              />
-                            </div>
-                          ))}
-                      </div>
-                    )
-                  )}
-                </div>
-              )}
             </div>
           </div>
         </div>
@@ -249,9 +228,12 @@ export const TopSongs: React.FC<TopSongsProps> = ({
         {/* Prawy banner */}
         <div className="hidden xl:block">
           <div className="w-full h-full bg-navy-800/50 p-4 sm:p-6 backdrop-blur-sm">
-            <div className="flex items-center justify-center w-full h-full border-2 border-dashed border-white/10">
+            <div className="flex flex-col items-center justify-center w-full h-full border-2 border-dashed border-white/10">
               <span className="text-white/50 text-sm sm:text-base text-center">
                 Przestrzeń reklamowa
+              </span>
+              <span className="text-white/50 text-xs mt-2">
+                300 x 600 px
               </span>
             </div>
           </div>
