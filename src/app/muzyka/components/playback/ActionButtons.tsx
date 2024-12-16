@@ -18,17 +18,17 @@ export default function ActionButtons({
   isAuthenticated,
 }: ActionButtonsProps) {
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center justify-between sm:justify-end sm:gap-4">
       <button
         onClick={onCreatePlaylist}
-        className="text-gray-500"
+        className="text-gray-500 px-5 sm:px-2"
         disabled={!isAuthenticated}
       >
         <FaPlus size={20} />
       </button>
       <button
         onClick={(e) => currentSongId && onAddToPlaylist(currentSongId)}
-        className="text-gray-500"
+        className="text-gray-500 px-5 sm:px-2"
         disabled={!isAuthenticated || !hasPlaylistsAndExpanded || !currentSongId}
       >
         <FaBookmark size={20} />

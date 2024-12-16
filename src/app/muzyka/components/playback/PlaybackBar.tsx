@@ -3,7 +3,7 @@ import { TrackInfo } from "./TrackInfo";
 import { PlaybackControls } from "./PlaybackControls";
 import { SeekBar } from "./SeekBar";
 import { VolumeControl } from "./VolumeControl";
-import ActionButtons from './ActionButtons';
+import ActionButtons from "./ActionButtons";
 import { Song, RepeatMode } from "../../types";
 
 interface PlaybackBarProps {
@@ -58,13 +58,17 @@ const PlaybackBar: React.FC<PlaybackBarProps> = ({
       aria-label="Kontrolki odtwarzacza"
     >
       <div className="flex flex-col sm:flex-row items-center justify-between max-w-7xl mx-auto gap-1 sm:gap-2">
-        <TrackInfo 
-          currentSong={currentSong ? {
-            id: currentSong.id,
-            title: currentSong.title,
-            artist: currentSong.artist,
-            thumbnail: currentSong.thumbnail || ''
-          } : null} 
+        <TrackInfo
+          currentSong={
+            currentSong
+              ? {
+                  id: currentSong.id,
+                  title: currentSong.title,
+                  artist: currentSong.artist,
+                  thumbnail: currentSong.thumbnail || "",
+                }
+              : null
+          }
         />
 
         <div className="w-full sm:w-2/5 flex flex-col items-center gap-1">
@@ -84,28 +88,24 @@ const PlaybackBar: React.FC<PlaybackBarProps> = ({
           />
         </div>
 
-        <div className="w-full sm:w-1/4 flex justify-center sm:justify-end items-center space-x-2">
-          <div className="sm:hidden">
-            <VolumeControl
-              volume={volume}
-              onVolumeChange={onVolumeChange}
+        <div className="w-full sm:w-1/4 flex justify-between sm:justify-end items-center">
+          <div className="sm:hidden ml-0">
+            <VolumeControl volume={volume} onVolumeChange={onVolumeChange} />
+          </div>
+
+          <div className="flex justify-end">
+            <ActionButtons
+              currentSongId={currentSong?.id}
+              onCreatePlaylist={onCreatePlaylist}
+              onAddToPlaylist={onAddToPlaylist}
+              playlistCount={playlistCount}
+              hasPlaylistsAndExpanded={hasPlaylistsAndExpanded}
+              isAuthenticated={isAuthenticated}
             />
           </div>
-          
-          <ActionButtons
-            currentSongId={currentSong?.id}
-            onCreatePlaylist={onCreatePlaylist}
-            onAddToPlaylist={onAddToPlaylist}
-            playlistCount={playlistCount}
-            hasPlaylistsAndExpanded={hasPlaylistsAndExpanded}
-            isAuthenticated={isAuthenticated}
-          />
-          
+
           <div className="hidden sm:block">
-            <VolumeControl
-              volume={volume}
-              onVolumeChange={onVolumeChange}
-            />
+            <VolumeControl volume={volume} onVolumeChange={onVolumeChange} />
           </div>
         </div>
       </div>
