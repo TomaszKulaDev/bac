@@ -47,7 +47,7 @@ export const styleConfig = {
   impro: {
     label: "Impro",
     color: "from-purple-400 to-purple-500",
-    icon: "💃",
+    icon: "👥",
     description: "Bachata Moderna/Fusion",
   },
 } as const;
