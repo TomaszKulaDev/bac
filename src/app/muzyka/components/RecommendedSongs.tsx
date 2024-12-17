@@ -81,7 +81,7 @@ const RecommendedSongs: React.FC<RecommendedSongsProps> = ({
         (a, b) =>
           new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       )
-      .slice(0, 10);
+      .slice(0, 15);
   };
 
   const recommendedSongs = getRecommendedSongs(songs);
@@ -97,6 +97,11 @@ const RecommendedSongs: React.FC<RecommendedSongsProps> = ({
   const duration8 = useVideoDuration(recommendedSongs[7]?.youtubeId || "");
   const duration9 = useVideoDuration(recommendedSongs[8]?.youtubeId || "");
   const duration10 = useVideoDuration(recommendedSongs[9]?.youtubeId || "");
+  const duration11 = useVideoDuration(recommendedSongs[10]?.youtubeId || "");
+  const duration12 = useVideoDuration(recommendedSongs[11]?.youtubeId || "");
+  const duration13 = useVideoDuration(recommendedSongs[12]?.youtubeId || "");
+  const duration14 = useVideoDuration(recommendedSongs[13]?.youtubeId || "");
+  const duration15 = useVideoDuration(recommendedSongs[14]?.youtubeId || "");
 
   const durations = useMemo(
     () => ({
@@ -110,6 +115,11 @@ const RecommendedSongs: React.FC<RecommendedSongsProps> = ({
       [recommendedSongs[7]?.id || ""]: duration8,
       [recommendedSongs[8]?.id || ""]: duration9,
       [recommendedSongs[9]?.id || ""]: duration10,
+      [recommendedSongs[10]?.id || ""]: duration11,
+      [recommendedSongs[11]?.id || ""]: duration12,
+      [recommendedSongs[12]?.id || ""]: duration13,
+      [recommendedSongs[13]?.id || ""]: duration14,
+      [recommendedSongs[14]?.id || ""]: duration15,
     }),
     [
       recommendedSongs,
@@ -123,6 +133,11 @@ const RecommendedSongs: React.FC<RecommendedSongsProps> = ({
       duration8,
       duration9,
       duration10,
+      duration11,
+      duration12,
+      duration13,
+      duration14,
+      duration15,
     ]
   );
 
@@ -162,9 +177,6 @@ const RecommendedSongs: React.FC<RecommendedSongsProps> = ({
     };
   }, [schemaMarkup]);
 
-  const leftColumnSongs = recommendedSongs.slice(0, 5);
-  const rightColumnSongs = recommendedSongs.slice(5, 10);
-
   return (
     <motion.div
       role="region"
@@ -196,9 +208,13 @@ const RecommendedSongs: React.FC<RecommendedSongsProps> = ({
       <div
         role="list"
         aria-labelledby="recommended-songs-title"
-        className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-6"
+        className="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-6"
       >
-        {[leftColumnSongs, rightColumnSongs].map((columnSongs, columnIndex) => (
+        {[
+          recommendedSongs.slice(0, 5),
+          recommendedSongs.slice(5, 10),
+          recommendedSongs.slice(10, 15),
+        ].map((columnSongs, columnIndex) => (
           <div key={columnIndex} className="space-y-2 md:space-y-2" role="list">
             {columnSongs.map((song, index) => {
               const isCurrentSong = song.id === currentSongId;
@@ -224,14 +240,14 @@ const RecommendedSongs: React.FC<RecommendedSongsProps> = ({
                     ${isCurrentSong ? "bg-[rgb(40,40,40)]" : ""}
                   `}
                 >
-                  <span 
+                  <span
                     className="flex-shrink-0 w-[28px] md:w-[32px] text-xs md:text-sm text-[rgb(167,167,167)]"
                     aria-label={`Numer utworu ${displayIndex}`}
                   >
-                    {displayIndex.toString().padStart(2, '0')}
+                    {displayIndex.toString().padStart(2, "0")}
                   </span>
 
-                  <div 
+                  <div
                     className="relative group w-10 h-10 md:w-12 md:h-12 flex-shrink-0"
                     role="img"
                   >
@@ -254,21 +270,27 @@ const RecommendedSongs: React.FC<RecommendedSongsProps> = ({
                       className="absolute inset-0 flex items-center justify-center bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity rounded-md"
                     >
                       {isCurrentSong && isPlaying ? (
-                        <FaPause className="w-5 h-5 text-white" aria-hidden="true" />
+                        <FaPause
+                          className="w-5 h-5 text-white"
+                          aria-hidden="true"
+                        />
                       ) : (
-                        <FaPlay className="w-5 h-5 text-white" aria-hidden="true" />
+                        <FaPlay
+                          className="w-5 h-5 text-white"
+                          aria-hidden="true"
+                        />
                       )}
                     </button>
                   </div>
 
                   <div className="min-w-0 ml-2 md:ml-3 flex-grow max-w-[45%]">
-                    <div 
+                    <div
                       className="font-medium text-sm md:text-base truncate text-white"
                       title={song.title}
                     >
                       {song.title}
                     </div>
-                    <div 
+                    <div
                       className="text-xs md:text-sm text-[rgb(167,167,167)] truncate"
                       title={song.artist}
                     >
@@ -295,7 +317,11 @@ const RecommendedSongs: React.FC<RecommendedSongsProps> = ({
                       }}
                       className={`p-1.5 md:p-2 flex items-center gap-1 transition-colors rounded-full 
                         hover:bg-[rgb(40,40,40)]
-                        ${song.isLiked ? "text-[rgb(30,215,96)]" : "text-[rgb(167,167,167)] hover:text-white"}
+                        ${
+                          song.isLiked
+                            ? "text-[rgb(30,215,96)]"
+                            : "text-[rgb(167,167,167)] hover:text-white"
+                        }
                       `}
                     >
                       {song.isLiked ? (
