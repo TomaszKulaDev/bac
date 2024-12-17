@@ -6,6 +6,7 @@ import {
   FaRegHeart,
   FaChevronDown,
   FaChevronUp,
+  FaHeadphones
 } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { useLike } from "../hooks/useLike";
@@ -157,7 +158,7 @@ export const TopSongs: React.FC<TopSongsProps> = ({
       <div className="px-3 sm:px-4">
         <div className="w-full">
           <header className="flex items-center gap-2 sm:gap-3 mb-8">
-            <FaCrown className="text-xl sm:text-2xl text-amber-400 flex-shrink-0" />
+            <FaHeadphones className="text-zinc-400 w-5 h-5 sm:w-6 sm:h-6" />
             <h1 className="text-lg sm:text-xl font-bold text-white truncate">
               Top 40 Najpopularniejszych
             </h1>
