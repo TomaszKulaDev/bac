@@ -108,7 +108,7 @@ const newsData: NewsItem[] = [
   {
     id: "12",
     title: "Bachata fusion - łączenie stylów i nowe trendy",
-    image: "/images/bachata-fusion.jpg",
+    image: "/images/bachata-history.jpg",
     source: "Dance Trends",
     isHot: true,
     category: "Style",
@@ -224,7 +224,7 @@ export default function Home() {
     setIsClient(true);
   }, []);
 
-  // Filtrowanie news��w według kategorii
+  // Filtrowanie newsów według kategorii
   const getFilteredNews = () => {
     if (activeCategory === "all") return newsData;
     return newsData.filter(
