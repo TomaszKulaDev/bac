@@ -150,7 +150,7 @@ const ArticleListItem = ({ news }: { news: NewsItem }) => {
 
         {/* Content */}
         <div className="pt-1 flex-1">
-          <h2 className="font-bold text-[15px] leading-tight mb-3 group-hover:text-blue-600 transition-colors">
+          <h2 className="font-bold text-[15px] leading-tight mb-3 group-hover:text-gray-900 transition-colors">
             {news.title}
           </h2>
           <div className="flex items-center justify-between">
@@ -183,33 +183,31 @@ const latestNewsData: LatestNews[] = [
   {
     id: "1",
     time: "22:34",
-    title:
-      "Światowi instruktorzy bachaty przybywają do Warszawy na BachatArt Festival",
+    title: "Światowi instruktorzy bachaty przybywają do Warszawy na BachatArt Festival",
     category: "WYDARZENIA",
-    categoryColor: "text-blue-600",
+    categoryColor: "text-blue-600"
   },
   {
     id: "2",
     time: "22:25",
     title: "Nowe zasady na World Bachata Masters 2024. Kontrowersyjna decyzja",
     category: "ZAWODY",
-    categoryColor: "text-orange-600",
+    categoryColor: "text-orange-600"
   },
   {
     id: "3",
     time: "22:14",
     title: "Romeo Santos zapowiada nowy album. 'To powrót do korzeni bachaty'",
     category: "MUZYKA",
-    categoryColor: "text-purple-600",
+    categoryColor: "text-purple-600"
   },
   {
     id: "4",
     time: "22:06",
-    title:
-      "Dominikańska technika vs styl europejski. Gorąca debata w świecie bachaty",
+    title: "Dominikańska technika vs styl europejski. Gorąca debata w świecie bachaty",
     category: "STYL",
-    categoryColor: "text-green-600",
-  },
+    categoryColor: "text-green-600"
+  }
 ];
 
 export default function Home() {
@@ -224,7 +222,7 @@ export default function Home() {
     setIsClient(true);
   }, []);
 
-  // Filtrowanie newsów według kategorii
+  // Filtrowanie news��w według kategorii
   const getFilteredNews = () => {
     if (activeCategory === "all") return newsData;
     return newsData.filter(
@@ -236,7 +234,7 @@ export default function Home() {
     <main className="min-h-screen bg-white">
       {/* Pasek najnowszych wiadomości */}
       <div className="bg-[#f5f5f5] border-b border-gray-200">
-        <div className="max-w-[1540px] mx-auto flex items-stretch">
+        <div className="max-w-[1240px] mx-auto flex items-stretch">
           {/* Sekcja NAJNOWSZE */}
           <div className="flex items-center border-r border-gray-200">
             <div className="px-4 py-2 flex items-center gap-2">
@@ -244,19 +242,8 @@ export default function Home() {
                 NAJNOWSZE
               </span>
               <button className="w-6 h-6 flex items-center justify-center hover:bg-gray-200 rounded-full transition-colors">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 19l-7-7 7-7"
-                  />
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
               </button>
             </div>
@@ -275,14 +262,10 @@ export default function Home() {
                     <span className="text-red-600 font-bold text-sm">
                       {news.time}
                     </span>
-                    <span className="text-sm text-gray-900 group-hover:text-blue-600 transition-colors">
+                    <span className="text-sm text-gray-900 group-hover:text-gray-900">
                       {news.title}
                     </span>
-                    <span
-                      className={`text-xs font-medium ${
-                        news.categoryColor || "text-gray-500"
-                      }`}
-                    >
+                    <span className={`text-xs font-medium ${news.categoryColor || 'text-gray-500'}`}>
                       {news.category}
                     </span>
                   </div>
@@ -299,14 +282,10 @@ export default function Home() {
                     <span className="text-red-600 font-bold text-sm">
                       {news.time}
                     </span>
-                    <span className="text-sm text-gray-900 group-hover:text-blue-600 transition-colors">
+                    <span className="text-sm text-gray-900 group-hover:text-gray-900">
                       {news.title}
                     </span>
-                    <span
-                      className={`text-xs font-medium ${
-                        news.categoryColor || "text-gray-500"
-                      }`}
-                    >
+                    <span className={`text-xs font-medium ${news.categoryColor || 'text-gray-500'}`}>
                       {news.category}
                     </span>
                   </div>
@@ -318,19 +297,8 @@ export default function Home() {
           {/* Przycisk następny */}
           <div className="border-l border-gray-200">
             <button className="h-full px-4 hover:bg-gray-200 transition-colors">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
             </button>
           </div>
@@ -348,7 +316,7 @@ export default function Home() {
                 </span>
               </div>
               <span className="font-bold text-[13px] tracking-wider text-gray-900">
-                TYM SIĘ MÓWI
+                POLECANE
               </span>
             </div>
 
@@ -422,7 +390,7 @@ export default function Home() {
                     </div>
                   )}
                   <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent text-white">
-                    <h2 className="text-2xl font-bold mb-2 group-hover:text-blue-400 transition-colors">
+                    <h2 className="text-2xl font-bold mb-2 text-white group-hover:text-white">
                       {newsData[0].title}
                     </h2>
                     <div className="flex items-center gap-2">
@@ -460,7 +428,7 @@ export default function Home() {
                       )}
                     </div>
                     <div className="pt-1 flex-1">
-                      <h2 className="font-bold text-[15px] leading-tight mb-3 group-hover:text-blue-600 transition-colors">
+                      <h2 className="font-bold text-[15px] leading-tight mb-3 text-gray-900 group-hover:text-gray-900">
                         {news.title}
                       </h2>
                       <div className="flex items-center justify-between">
@@ -500,7 +468,7 @@ export default function Home() {
                       className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                   </div>
-                  <h3 className="font-bold text-[15px] leading-tight mb-3 group-hover:text-blue-600 transition-colors">
+                  <h3 className="font-bold text-[15px] leading-tight mb-3 text-gray-900 group-hover:text-gray-900">
                     {news.title}
                   </h3>
                   <div className="flex items-center gap-2">
@@ -532,7 +500,7 @@ export default function Home() {
                       className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                   </div>
-                  <h3 className="text-[13px] font-bold leading-tight pt-0.5 group-hover:text-blue-600 transition-colors">
+                  <h3 className="text-[13px] font-bold leading-tight pt-0.5 text-gray-900 group-hover:text-gray-900">
                     {news.title}
                   </h3>
                 </div>
