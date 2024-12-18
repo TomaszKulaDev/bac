@@ -23,6 +23,10 @@ export const useSecuredPlaylistOperations = ({
       successMessage?: string;
     } = {}
   ): Promise<T | null> => {
+    if (!isAuthenticated) {
+      return null;
+    }
+
     if (requireAuth && !isAuthenticated) {
       showErrorToast(errorMessage);
       return null;

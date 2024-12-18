@@ -33,6 +33,7 @@ import SongGrid from "./components/songs/SongGrid";
 import { useSecuredPlaylistOperations } from "./hooks/useSecuredPlaylistOperations";
 import { useLike } from "@/app/muzyka/hooks/useLike";
 import { TopSongs } from "./components/TopSongs";
+import { useSession } from "next-auth/react";
 
 const generateUniqueId = () => {
   return Date.now().toString(36) + Math.random().toString(36).substr(2);
@@ -278,6 +279,8 @@ const MusicPage: React.FC = () => {
     // ...
   };
 
+  const { data: session } = useSession();
+
   if (status === "loading") {
     return <LoadingState error={error} />;
   }
@@ -409,7 +412,7 @@ const MusicPage: React.FC = () => {
             showSuccessToast={showSuccessToast}
             showErrorToast={showErrorToast}
             showInfoToast={showInfoToast}
-            isAuthenticated={isAuthenticated}
+            isAuthenticated={!!session}
             isPlaying={isPlaying}
             setIsPlaying={setIsPlaying}
             setPlaylists={setPlaylists}

@@ -66,6 +66,7 @@ import { setCurrentPlaylistId } from "@/store/slices/features/playlistSlice";
 import { deletePlaylistAndRefetch } from "@/store/slices/features/playlistSlice";
 import { AppDispatch } from "@/store/store";
 import { useSecuredPlaylistOperations } from "../hooks/useSecuredPlaylistOperations";
+import { usePlaylistManager } from "../hooks/usePlaylistManager";
 
 interface MusicPlayerProps {
   songs: Song[];
@@ -501,6 +502,22 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     setCurrentPlaylistId,
     isAuthenticated,
   ]);
+
+  const {
+    playlists: playlistsFromManager,
+    setPlaylists: setPlaylistsFromManager,
+    isPlaylistManagerVisible,
+    setIsPlaylistManagerVisible,
+    handlePlaylistCreated,
+    refreshPlaylists,
+  } = usePlaylistManager({ isAuthenticated });
+
+  const handlePlaylistRefresh = useCallback(() => {
+    if (!isAuthenticated) {
+      return;
+    }
+    refreshPlaylists();
+  }, [isAuthenticated, refreshPlaylists]);
 
   return (
     <PlayerErrorBoundary

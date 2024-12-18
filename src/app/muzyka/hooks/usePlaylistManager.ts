@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Playlist } from '../types';
 
-export const usePlaylistManager = () => {
+export const usePlaylistManager = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [isPlaylistManagerVisible, setIsPlaylistManagerVisible] = useState(false);
 
@@ -11,6 +11,9 @@ export const usePlaylistManager = () => {
   };
 
   const refreshPlaylists = async () => {
+    if (!isAuthenticated) {
+      return;
+    }
     try {
       const response = await fetch('/api/playlists');
       if (!response.ok) throw new Error('Failed to fetch playlists');

@@ -13,3 +13,8 @@ export interface PlayerControls {
   onPrevious: () => void;
   onNext: () => void;
 } 
+
+interface MusicPlayerProps {
+  // ... istniejące propsy
+  isAuthenticated: boolean;
+} 

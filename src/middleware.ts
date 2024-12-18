@@ -14,6 +14,10 @@ export function middleware(request: NextRequest) {
     return response;
   }
 
+  if (request.nextUrl.pathname.startsWith('/api/playlists')) {
+    // Sprawdź sesję i przekieruj jeśli brak autoryzacji
+  }
+
   return NextResponse.next();
 }
 
