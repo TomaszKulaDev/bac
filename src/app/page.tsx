@@ -234,7 +234,7 @@ export default function Home() {
     <main className="min-h-screen bg-white">
       {/* Pasek najnowszych wiadomości */}
       <div className="bg-[#f5f5f5] border-b border-gray-200">
-        <div className="max-w-[1240px] mx-auto flex items-stretch">
+        <div className="max-w-[1530px] mx-auto flex items-stretch">
           {/* Sekcja NAJNOWSZE */}
           <div className="flex items-center border-r border-gray-200">
             <div className="px-4 py-2 flex items-center gap-2">
