@@ -175,89 +175,42 @@ interface LatestNews {
   time: string;
   title: string;
   category: string;
+  categoryColor?: string;
 }
 
 // Dane najnowszych wiadomości
 const latestNewsData: LatestNews[] = [
   {
     id: "1",
-    time: "21:39",
-    title: "Światowe Mistrzostwa Bachaty 2024 ogłaszają nowe kategorie",
-    category: "WYDARZENIA"
+    time: "22:34",
+    title:
+      "Światowi instruktorzy bachaty przybywają do Warszawy na BachatArt Festival",
+    category: "WYDARZENIA",
+    categoryColor: "text-blue-600",
   },
   {
     id: "2",
-    time: "21:36",
-    title: "Jorge Burgos i Tanja Kensinger łączą siły w nowym projekcie",
-    category: "TANIEC"
+    time: "22:25",
+    title: "Nowe zasady na World Bachata Masters 2024. Kontrowersyjna decyzja",
+    category: "ZAWODY",
+    categoryColor: "text-orange-600",
   },
   {
     id: "3",
-    time: "21:13",
-    title: "Nowy festiwal bachaty w Warszawie już w czerwcu",
-    category: "WYDARZENIA"
+    time: "22:14",
+    title: "Romeo Santos zapowiada nowy album. 'To powrót do korzeni bachaty'",
+    category: "MUZYKA",
+    categoryColor: "text-purple-600",
   },
   {
     id: "4",
-    time: "21:00",
-    title: "Dominikańscy instruktorzy prowadzą warsztaty w Polsce",
-    category: "EDUKACJA"
-  }
+    time: "22:06",
+    title:
+      "Dominikańska technika vs styl europejski. Gorąca debata w świecie bachaty",
+    category: "STYL",
+    categoryColor: "text-green-600",
+  },
 ];
-
-// Komponent paska najnowszych wiadomości
-const LatestNewsBar = () => {
-  return (
-    <div className="bg-gray-50 border-b">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center">
-          <div className="py-2 pr-4 border-r">
-            <span className="text-red-500 font-bold text-sm">NAJNOWSZE</span>
-          </div>
-          
-          <div className="flex-1 relative overflow-hidden">
-            <div className="animate-marquee flex whitespace-nowrap">
-              {latestNewsData.map((news: LatestNews) => (
-                <Link 
-                  key={`first-${news.id}`}
-                  href={`/news/${news.id}`}
-                  className="flex items-center gap-3 px-4 py-2 min-w-max group"
-                >
-                  <span className="text-red-500 font-bold text-sm">
-                    {news.time}
-                  </span>
-                  <span className="text-sm group-hover:text-blue-600 transition-colors">
-                    {news.title}
-                  </span>
-                  <span className="text-xs text-gray-500 font-medium">
-                    {news.category}
-                  </span>
-                </Link>
-              ))}
-              {latestNewsData.map((news: LatestNews) => (
-                <Link 
-                  key={`second-${news.id}`}
-                  href={`/news/${news.id}`}
-                  className="flex items-center gap-3 px-4 py-2 min-w-max group"
-                >
-                  <span className="text-red-500 font-bold text-sm">
-                    {news.time}
-                  </span>
-                  <span className="text-sm group-hover:text-blue-600 transition-colors">
-                    {news.title}
-                  </span>
-                  <span className="text-xs text-gray-500 font-medium">
-                    {news.category}
-                  </span>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 export default function Home() {
   // Stan dla aktywnej kategorii
@@ -281,6 +234,109 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-white">
+      {/* Pasek najnowszych wiadomości */}
+      <div className="bg-[#f5f5f5] border-b border-gray-200">
+        <div className="max-w-[1540px] mx-auto flex items-stretch">
+          {/* Sekcja NAJNOWSZE */}
+          <div className="flex items-center border-r border-gray-200">
+            <div className="px-4 py-2 flex items-center gap-2">
+              <span className="text-red-600 font-bold text-sm tracking-wide">
+                NAJNOWSZE
+              </span>
+              <button className="w-6 h-6 flex items-center justify-center hover:bg-gray-200 rounded-full transition-colors">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          {/* Sekcja z przewijającymi się wiadomościami */}
+          <div className="flex-1 relative overflow-hidden">
+            <div className="animate-marquee flex items-stretch">
+              {latestNewsData.map((news) => (
+                <Link
+                  key={news.id}
+                  href={`/news/${news.id}`}
+                  className="flex items-center min-w-max border-r border-gray-200 group"
+                >
+                  <div className="px-4 py-2 flex items-center gap-3">
+                    <span className="text-red-600 font-bold text-sm">
+                      {news.time}
+                    </span>
+                    <span className="text-sm text-gray-900 group-hover:text-blue-600 transition-colors">
+                      {news.title}
+                    </span>
+                    <span
+                      className={`text-xs font-medium ${
+                        news.categoryColor || "text-gray-500"
+                      }`}
+                    >
+                      {news.category}
+                    </span>
+                  </div>
+                </Link>
+              ))}
+              {/* Duplikacja dla płynnego przewijania */}
+              {latestNewsData.map((news) => (
+                <Link
+                  key={`dup-${news.id}`}
+                  href={`/news/${news.id}`}
+                  className="flex items-center min-w-max border-r border-gray-200 group"
+                >
+                  <div className="px-4 py-2 flex items-center gap-3">
+                    <span className="text-red-600 font-bold text-sm">
+                      {news.time}
+                    </span>
+                    <span className="text-sm text-gray-900 group-hover:text-blue-600 transition-colors">
+                      {news.title}
+                    </span>
+                    <span
+                      className={`text-xs font-medium ${
+                        news.categoryColor || "text-gray-500"
+                      }`}
+                    >
+                      {news.category}
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Przycisk następny */}
+          <div className="border-l border-gray-200">
+            <button className="h-full px-4 hover:bg-gray-200 transition-colors">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
       {/* Header z rozwiniętym systemem kategorii */}
       <div className="sticky top-0 z-50 border-b border-gray-200 bg-white/95 backdrop-blur-sm">
         <div className="container mx-auto px-4 py-3">
@@ -349,45 +405,29 @@ export default function Home() {
           {/* Left Column - dodane statystyki */}
           <div className="w-[50%]">
             <div className="mb-7">
-              <Link href={`/news/${newsData[0].id}`} className="group block">
-                <div className="relative h-[360px] overflow-hidden rounded-sm shadow-md">
+              <Link href={`/news/${newsData[0].id}`} className="group">
+                <div className="relative h-[400px] overflow-hidden rounded-lg">
                   <Image
                     src={newsData[0].image}
                     alt={newsData[0].title}
                     fill
-                    priority
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    sizes="(max-width: 768px) 100vw, 800px"
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent">
-                    {/* Dodane oznaczenia popularności */}
-                    <div className="absolute top-4 left-4 flex gap-2">
-                      <span className="bg-blue-600 text-white px-3 py-1 text-[12px] font-medium rounded-full">
-                        {newsData[0].category}
-                      </span>
-                      <span className="bg-black/50 text-white px-3 py-1 text-[12px] font-medium rounded-full flex items-center gap-1.5">
-                        <FaEye size={12} />
-                        2.5k
+                  {newsData[0].isHot && (
+                    <div className="absolute top-3 left-3">
+                      <span className="bg-red-500 text-white px-2 py-0.5 text-sm font-medium rounded-full">
+                        Hot
                       </span>
                     </div>
-                    <div className="absolute bottom-0 p-5">
-                      <h1 className="text-[22px] font-bold text-white mb-3 leading-tight">
-                        {newsData[0].title}
-                      </h1>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <div className="flex items-center gap-2">
-                            <div className="w-6 h-6 rounded-full bg-gray-300/90" />
-                            <span className="text-[13px] text-gray-100">
-                              {newsData[0].source}
-                            </span>
-                          </div>
-                          <button className="px-3 py-1 text-[13px] text-white bg-black/40 hover:bg-black/50 rounded-full transition-colors">
-                            Obserwuj
-                          </button>
-                        </div>
-                       
-                      </div>
+                  )}
+                  <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent text-white">
+                    <h2 className="text-2xl font-bold mb-2 group-hover:text-blue-400 transition-colors">
+                      {newsData[0].title}
+                    </h2>
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 rounded-full bg-gray-200" />
+                      <span className="text-sm text-gray-200">{newsData[0].source}</span>
                     </div>
                   </div>
                 </div>
@@ -434,7 +474,6 @@ export default function Home() {
                           <FaRegClock size={12} />
                           <span className="text-[12px]">2 godz.</span>
                         </div>
-                      
                       </div>
                     </div>
                   </div>
@@ -470,7 +509,6 @@ export default function Home() {
                       {news.source}
                     </span>
                   </div>
-            
                 </div>
               </Link>
             ))}
@@ -498,7 +536,6 @@ export default function Home() {
                     {news.title}
                   </h3>
                 </div>
-               
               </Link>
             ))}
           </div>
