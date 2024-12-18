@@ -312,11 +312,11 @@ export default function Home() {
             <div className="flex items-center gap-2.5">
               <div className="bg-yellow-400 rounded-full w-[22px] h-[22px] flex items-center justify-center shadow-sm">
                 <span className="font-bold text-black text-[13px] leading-none">
-                  O
+                  INFO
                 </span>
               </div>
               <span className="font-bold text-[13px] tracking-wider text-gray-900">
-                POLECANE
+                PARKIET
               </span>
             </div>
 
