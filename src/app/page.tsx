@@ -113,6 +113,62 @@ const newsData: NewsItem[] = [
     isHot: true,
     category: "Style",
   },
+  {
+    id: "13",
+    title: "Nowe trendy w bachacie na 2024 rok. Co się zmieni w technice?",
+    image: "/images/bachata-trends.jpg",
+    source: "Dance Magazine",
+    isHot: false,
+    category: "Technika",
+  },
+  {
+    id: "14",
+    title: "Mistrzostwa Polski w Bachacie - zapisy już otwarte",
+    image: "/images/bachata-championship.jpg",
+    source: "Polski Związek Tańca",
+    isHot: true,
+    category: "Zawody",
+  },
+  {
+    id: "15",
+    title: "Dominikańscy instruktorzy prowadzą warsztaty w Polsce",
+    image: "/images/bachata-workshop.jpg", 
+    source: "Dance News",
+    isHot: false,
+    category: "Edukacja",
+  },
+  {
+    id: "16",
+    title: "Jak przygotować się do pierwszych zawodów bachaty?",
+    image: "/images/bachata-preparation.jpg",
+    source: "Pro Dance Tips",
+    isHot: false,
+    category: "Nauka",
+  },
+  {
+    id: "17", 
+    title: "10 najlepszych szkół bachaty w Polsce - ranking 2024",
+    image: "/images/bachata-schools.jpg",
+    source: "Dance Review",
+    isHot: true,
+    category: "Edukacja",
+  },
+  {
+    id: "18",
+    title: "Bachata dla początkujących - od czego zacząć?",
+    image: "/images/bachata-beginners.jpg",
+    source: "Dance Academy",
+    isHot: false,
+    category: "Nauka",
+  },
+  {
+    id: "19",
+    title: "Trening mentalny w bachacie - jak pokonać stres przed występem",
+    image: "/images/bachata-mental.jpg",
+    source: "Dance Psychology",
+    isHot: false,
+    category: "Rozwój",
+  },
 ];
 
 // Dodajemy stałe dla kategorii
@@ -124,6 +180,39 @@ const CATEGORIES = [
   { id: "education", label: "Edukacja" },
   { id: "music", label: "Muzyka" },
 ] as const;
+
+// Definicja typu dla liczników komentarzy
+type CommentCountsType = {
+  main: number;
+  secondary: Record<string, number>;
+};
+
+// Zdefiniowanie stałej z poprawnym typowaniem
+const COMMENT_COUNTS: CommentCountsType = {
+  main: 328,
+  secondary: {
+    "1": 245,
+    "2": 187,
+    "3": 222,
+    "4": 156,
+    "5": 198,
+    "6": 267,
+    "7": 312,
+    "8": 178,
+    "9": 234,
+    "10": 289,
+    "11": 167,
+    "12": 298,
+    "13": 345,
+    "14": 156,
+    "15": 234,
+    "16": 189,
+    "17": 467,
+    "18": 145,
+    "19": 178,
+    "20": 389
+  }
+};
 
 // Uproszczony komponent dla artykułu
 const ArticleListItem = ({ news }: { news: NewsItem }) => {
@@ -139,6 +228,9 @@ const ArticleListItem = ({ news }: { news: NewsItem }) => {
             sizes="180px"
             className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
+          <div className="absolute bottom-0 right-0 bg-white px-2 py-1 text-xs font-bold">
+            {COMMENT_COUNTS.secondary[news.id]}
+          </div>
           {news.isHot && (
             <div className="absolute top-2 left-2">
               <span className="bg-red-500 text-white px-2 py-0.5 text-[11px] font-medium rounded-full">
@@ -209,6 +301,97 @@ const latestNewsData: LatestNews[] = [
       "Dominikańska technika vs styl europejski. Gorąca debata w świecie bachaty",
     category: "STYL",
     categoryColor: "text-green-600",
+  },
+];
+
+// Dodajmy nowy interfejs dla tematów
+interface TopicItem {
+  id: string;
+  title: string;
+  category?: string;
+  isHighlighted?: boolean;
+}
+
+// Modyfikacja listy tematów z dodatkowymi kategoriami
+const topicsList: TopicItem[] = [
+  {
+    id: "1",
+    title: "Światowy Festiwal Bachaty ogłasza nowe gwiazdy. Lista instruktorów",
+    isHighlighted: true,
+  },
+  {
+    id: "2",
+    title: "Rosjanie zachwyceni bachatą. Nowy trend w Moskwie",
+    category: "ŚWIAT",
+  },
+  {
+    id: "3",
+    title:
+      "Dominikańscy tancerze zdziwieni europejskim stylem. Komentują technikę",
+    category: "STYL",
+  },
+  {
+    id: "4",
+    title: '"Bachata to nowe tango". Eksperci przewidują boom na styl',
+    category: "TRENDY",
+  },
+  {
+    id: "5",
+    title: 'Romeo Santos publikuje nowy teledysk. "To powrót do korzeni"',
+    category: "MUZYKA",
+  },
+  {
+    id: "6",
+    title: '"Współczesna bachata czci tradycję". Mocne słowa po festiwalu',
+    category: "WYDARZENIA",
+  },
+  {
+    id: "7",
+    category: "ŚWIAT",
+    title:
+      "Duński styl bije na alarm. Wskazuje na ryzyko utraty autentyczności",
+  },
+  {
+    id: "8",
+    title: "Nowa szkoła bachaty otworzona na osiedlu. Tłumy na otwarciu",
+    category: "POLSKA",
+  },
+  {
+    id: "9",
+    title: "Kanada ugina się pod wpływem bachaty. Ogłaszają zmiany",
+    category: "ŚWIAT",
+  },
+  {
+    id: "10",
+    category: "ŚWIAT",
+    title:
+      "Sensual vs Dominicana. Która wersja lepsza? Eksperci nie mają wątpliwości",
+  },
+];
+
+// Dodajmy nowy interfejs dla gorących tematów
+interface HotTopic {
+  id: string;
+  title: string;
+  image: string;
+  commentsCount: number;
+}
+
+// Dane dla gorących tematów
+const hotTopics: HotTopic[] = [
+  {
+    id: "1",
+    title:
+      'Daniel i Maya ZDOBYWAJĄ ZŁOTO na Mistrzostwach Świata w Bachacie: "Trenowali dzień i noc przez rok"',
+    image: "/images/bachata-couple.jpg",
+    commentsCount: 422,
+  },
+  {
+    id: "2",
+    title:
+      'Instruktorzy z Dominikany i Europy "wymienili się technikami i połączyli style". Powstał nowy trend',
+    image: "/images/bachata-fusion.jpg",
+    commentsCount: 584,
   },
 ];
 
@@ -405,24 +588,26 @@ export default function Home() {
           {/* Left Column - dodane statystyki */}
           <div className="w-[50%]">
             <div className="mb-7">
-              <Link href={`/news/${newsData[0].id}`} className="group">
-                <div className="relative h-[400px] overflow-hidden rounded-lg">
+              <Link href={`/news/${newsData[0].id}`} className="group mb-7">
+                <div className="relative h-[400px] overflow-hidden rounded-md">
                   <Image
                     src={newsData[0].image}
                     alt={newsData[0].title}
                     fill
+                    priority
                     sizes="(max-width: 768px) 100vw, 800px"
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    className="object-cover"
                   />
-                  {newsData[0].isHot && (
-                    <div className="absolute top-3 left-3">
-                      <span className="bg-red-500 text-white px-2 py-0.5 text-sm font-medium rounded-full">
-                        Hot
-                      </span>
-                    </div>
-                  )}
-                  <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent text-white">
-                    <h2 className="text-2xl font-bold mb-2 text-white group-hover:text-white">
+                  <div className="absolute bottom-3 right-3 bg-white rounded-sm px-2.5 py-1.5 text-xs font-bold shadow-sm">
+                    {COMMENT_COUNTS.main}
+                  </div>
+                  <div className="absolute top-3 left-3">
+                    <span className="bg-red-500 text-white px-2.5 py-1 text-xs font-medium rounded-md">
+                      Hot
+                    </span>
+                  </div>
+                  <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/90 via-black/50 to-transparent">
+                    <h2 className="text-2xl font-bold mb-3 text-white group-hover:text-white">
                       {newsData[0].title}
                     </h2>
                     <div className="flex items-center gap-2">
@@ -445,7 +630,7 @@ export default function Home() {
                   className="group block"
                 >
                   <div className="flex gap-5 group-hover:bg-gray-50 p-2 -mx-2 rounded-lg transition-colors">
-                    <div className="relative w-[180px] h-[120px] flex-shrink-0 overflow-hidden rounded-sm shadow-sm">
+                    <div className="relative w-[180px] h-[120px] flex-shrink-0 overflow-hidden rounded-sm">
                       <Image
                         src={news.image}
                         alt={news.title}
@@ -453,6 +638,9 @@ export default function Home() {
                         sizes="180px"
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
                       />
+                      <div className="absolute bottom-0 right-0 bg-white px-2 py-1 text-xs font-bold">
+                        {COMMENT_COUNTS.secondary[news.id]}
+                      </div>
                       {news.isHot && (
                         <div className="absolute top-2 left-2">
                           <span className="bg-red-500 text-white px-2 py-0.5 text-[11px] font-medium rounded-full">
@@ -501,6 +689,9 @@ export default function Home() {
                       sizes="25vw"
                       className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
+                    <div className="absolute bottom-0 right-0 bg-white px-2 py-1 text-xs font-bold">
+                      {COMMENT_COUNTS.secondary[news.id]}
+                    </div>
                   </div>
                   <h3 className="font-bold text-[15px] leading-tight mb-3 text-gray-900 group-hover:text-gray-900">
                     {news.title}
@@ -517,29 +708,75 @@ export default function Home() {
           </div>
 
           {/* Right Column - poprawione miniatury */}
-          <div className="w-[25%] space-y-[18px]">
-            {newsData.slice(5).map((news) => (
-              <Link
-                href={`/news/${news.id}`}
-                key={news.id}
-                className="group block"
-              >
-                <div className="flex gap-4">
-                  <div className="relative w-[100px] h-[70px] flex-shrink-0 overflow-hidden">
-                    <Image
-                      src={news.image}
-                      alt={news.title}
-                      fill
-                      sizes="100px"
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
+          <div className="w-[25%]">
+            {/* Gorące tematy */}
+            <div className="mb-8">
+              {hotTopics.map((topic) => (
+                <Link
+                  href={`/news/${topic.id}`}
+                  key={topic.id}
+                  className="group block mb-4 relative"
+                >
+                  <div className="relative">
+                    <div className="aspect-[3/2] relative overflow-hidden">
+                      <Image
+                        src={topic.image}
+                        alt={topic.title}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, 300px"
+                      />
+                    </div>
+                    <div className="absolute bottom-0 right-0 bg-white px-2 py-1 text-xs font-bold">
+                      {topic.commentsCount}
+                    </div>
                   </div>
-                  <h3 className="text-[13px] font-bold leading-tight pt-0.5 text-gray-900 group-hover:text-gray-900">
-                    {news.title}
+                  <h3 className="mt-2 text-[15px] font-bold leading-tight text-gray-900 group-hover:text-gray-900">
+                    {topic.title}
                   </h3>
+                </Link>
+              ))}
+            </div>
+
+            {/* Istniejący header TEMATY DNIA */}
+            <div className="mb-6">
+              <div className="flex items-center gap-2.5 pb-3 border-b border-gray-200">
+                <div className="bg-red-600 rounded-full w-[22px] h-[22px] flex items-center justify-center shadow-sm">
+                  <span className="font-bold text-white text-[13px] leading-none">
+                    T
+                  </span>
                 </div>
-              </Link>
-            ))}
+                <span className="font-bold text-[13px] tracking-wider text-gray-900">
+                  TEMATY DNIA
+                </span>
+              </div>
+            </div>
+
+            {/* Lista tematów */}
+            <div className="space-y-[18px]">
+              {topicsList.map((topic) => (
+                <Link
+                  href={`/news/${topic.id}`}
+                  key={topic.id}
+                  className="group block"
+                >
+                  <div className="flex flex-col gap-1">
+                    {topic.category && (
+                      <span className="text-[11px] font-bold text-blue-600">
+                        {topic.category}
+                      </span>
+                    )}
+                    <h3
+                      className={`text-[13px] leading-[1.4] ${
+                        topic.isHighlighted ? "font-bold" : "font-normal"
+                      } text-gray-900 group-hover:text-gray-900`}
+                    >
+                      {topic.title}
+                    </h3>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
 
