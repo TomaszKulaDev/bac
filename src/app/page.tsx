@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { FaRegComment, FaRegBookmark, FaRegClock, FaShare, FaEye, FaRegHeart, FaHeart, FaBookmark } from "react-icons/fa";
+import { FaRegComment, FaRegBookmark, FaBookmark, FaRegClock, FaShare, FaEye, FaRegHeart, FaHeart } from "react-icons/fa";
 
 // Interfejs dla danych artykułu
 interface NewsItem {
@@ -107,6 +107,50 @@ const newsData: NewsItem[] = [
     likes: 100,
     views: 1200
   },
+  {
+    id: "9",
+    title: "Najlepsze festiwale bachaty w Europie 2024",
+    image: "/images/bachata-festivals-europe.jpg",
+    source: "Festival Guide",
+    comments: 234,
+    isHot: true,
+    category: "Wydarzenia",
+    likes: 290,
+    views: 3100
+  },
+  {
+    id: "10",
+    title: "Technika prowadzenia w bachacie - wskazówki dla zaawansowanych",
+    image: "/images/bachata-leading.jpg",
+    source: "Pro Dance Tips",
+    comments: 178,
+    isHot: false,
+    category: "Technika",
+    likes: 160,
+    views: 1900
+  },
+  {
+    id: "11",
+    title: "Muzyka bachatowa - jak rozpoznać style i rytmy",
+    image: "/images/bachata-music-styles.jpg",
+    source: "Music Theory",
+    comments: 156,
+    isHot: false,
+    category: "Muzyka",
+    likes: 140,
+    views: 1600
+  },
+  {
+    id: "12",
+    title: "Bachata fusion - łączenie stylów i nowe trendy",
+    image: "/images/bachata-fusion.jpg",
+    source: "Dance Trends",
+    comments: 189,
+    isHot: true,
+    category: "Style",
+    likes: 170,
+    views: 2000
+  }
 ];
 
 // Dodajemy stałe dla kategorii
@@ -205,20 +249,27 @@ export default function Home() {
   // Stan dla aktywnej kategorii
   const [activeCategory, setActiveCategory] = useState<string>('all');
 
-  // Stan dla interakcji użytkownika
-  const [interactions, setInteractions] = useState<Record<string, ArticleInteractions>>(() => 
-    newsData.reduce((acc, news) => ({
-      ...acc,
-      [news.id]: {
-        id: news.id,
-        isBookmarked: false,
-        isLiked: false,
-        likes: Math.floor(Math.random() * 1000),
-        views: Math.floor(Math.random() * 10000),
-        timeToRead: '2 min',
-      }
-    }), {})
-  );
+  // Stan dla interakcji użytkownika z useMemo dla stabilnych wartości początkowych
+  const [interactions, setInteractions] = useState<Record<string, ArticleInteractions>>({});
+  const [isClient, setIsClient] = useState(false);
+
+  // Inicjalizacja stanu po stronie klienta
+  useEffect(() => {
+    setIsClient(true);
+    setInteractions(
+      newsData.reduce((acc, news) => ({
+        ...acc,
+        [news.id]: {
+          id: news.id,
+          isBookmarked: false,
+          isLiked: false,
+          likes: news.likes,
+          views: news.views,
+          timeToRead: '2 min',
+        }
+      }), {})
+    );
+  }, []);
 
   // Filtrowanie newsów według kategorii
   const getFilteredNews = () => {
@@ -250,23 +301,26 @@ export default function Home() {
     }));
   };
 
-  // Komponent dla przycisków interakcji - dodany margin top
+  // Komponent dla przycisków interakcji
   const InteractionButtons = ({ articleId, variant = 'default' }: { articleId: string, variant?: 'default' | 'compact' }) => {
+    const article = newsData.find(n => n.id === articleId);
     const interaction = interactions[articleId];
     
+    if (!isClient || !article) return null;
+
     if (variant === 'compact') {
       return (
         <div className="flex items-center gap-3 text-gray-500 text-[13px] mt-3">
           <div className="flex items-center gap-1.5">
             <FaRegHeart size={13} />
-            <span>{interaction.likes}</span>
+            <span>{article.likes}</span>
           </div>
           <div className="flex items-center gap-1.5">
             <FaRegBookmark size={13} />
           </div>
           <div className="flex items-center gap-1.5">
             <FaRegComment size={13} />
-            <span>{newsData[0].comments}</span>
+            <span>{article.comments}</span>
           </div>
         </div>
       );
@@ -281,19 +335,19 @@ export default function Home() {
               onClick={(e) => toggleLike(articleId, e)}
               className="flex items-center gap-1.5 text-gray-500 hover:text-red-500 transition-colors"
             >
-              {interaction.isLiked ? (
+              {interaction?.isLiked ? (
                 <FaHeart className="text-red-500" size={14} />
               ) : (
                 <FaRegHeart size={14} />
               )}
-              <span className="text-[13px]">{interaction.likes}</span>
+              <span className="text-[13px]">{article.likes}</span>
             </button>
 
             <button 
               onClick={(e) => toggleBookmark(articleId, e)}
               className="text-gray-500 hover:text-blue-500 transition-colors"
             >
-              {interaction.isBookmarked ? (
+              {interaction?.isBookmarked ? (
                 <FaBookmark className="text-blue-500" size={14} />
               ) : (
                 <FaRegBookmark size={14} />
@@ -302,7 +356,7 @@ export default function Home() {
 
             <div className="flex items-center gap-1.5 text-gray-500">
               <FaRegComment size={14} />
-              <span className="text-[13px]">{newsData[0].comments}</span>
+              <span className="text-[13px]">{article.comments}</span>
             </div>
           </div>
 
@@ -313,12 +367,12 @@ export default function Home() {
           <div className="flex items-center gap-4 text-gray-500">
             <div className="flex items-center gap-1.5">
               <FaEye size={14} />
-              <span className="text-[13px]">{interaction.views}</span>
+              <span className="text-[13px]">{article.views}</span>
             </div>
 
             <div className="flex items-center gap-1.5">
               <FaRegClock size={14} />
-              <span className="text-[13px]">{interaction.timeToRead}</span>
+              <span className="text-[13px]">2 min</span>
             </div>
 
             <button 
@@ -327,7 +381,7 @@ export default function Home() {
                 e.preventDefault();
                 if (navigator.share) {
                   navigator.share({
-                    title: newsData.find(n => n.id === articleId)?.title,
+                    title: article.title,
                     url: `/news/${articleId}`
                   });
                 }
