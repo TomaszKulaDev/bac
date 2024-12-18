@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Bachata Muzyka | Najlepsza muzyka do tańca Bachaty",
+  title: "Bachata Muzyka | Najlepsza muzyka do tańczenia Bachaty",
   description:
     "Odkryj największą kolekcję muzyki bachata online. Playlisty dla początkujących i zaawansowanych tancerzy bachaty, klasyczne hity i współczesne utwory.",
   keywords:
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Bachata Muzyka | Najlepsza muzyka do tańca Bachaty",
+    title: "Bachata Muzyka | Najlepsza muzyka do tańczenia Bachaty",
     description:
       "Odkryj największą kolekcję muzyki bachata online. Playlisty dla początkujących i zaawansowanych tancerzy.",
     type: 'website',
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Bachata Muzyka | Najlepsza muzyka do tańca Bachaty',
+    title: "Bachata Muzyka | Najlepsza muzyka do tańczenia Bachaty",
     description: 'Odkryj największą kolekcję muzyki bachata online.',
     images: ['/og-image.jpg'],
   },
