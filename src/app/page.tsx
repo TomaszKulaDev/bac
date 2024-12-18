@@ -15,7 +15,7 @@ export default function Home(): React.ReactElement {
           Baciata.pl
         </h1>
         <p className="text-xl text-center text-gray-700 mb-12">
-          Baciata.pl - Twoja przestrzeń do tańczenia bachaty
+          Baciata.pl - Twoja przestrzeń do tańczenia Bachaty
         </p>
 
         <div className="grid md:grid-cols-2 gap-8 mb-16">

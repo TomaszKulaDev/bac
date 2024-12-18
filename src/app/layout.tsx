@@ -75,7 +75,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 // Definiujemy metadane dla strony, takie jak tytuł i opis
 export const metadata = {
-  title: "Baciata.pl - Twoja przestrzeń do tańczenia bachaty", // Tytuł strony
+  title: "Baciata.pl - Twoja przestrzeń do tańczenia Bachaty", // Tytuł strony
   description:
     "Baciata.pl to platforma dla miłośników bachaty, oferująca informacje o wydarzeniach, szkołach tańca i społeczności bachateros w Polsce.", // Opis strony
 };
