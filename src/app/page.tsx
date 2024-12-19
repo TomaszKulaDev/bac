@@ -140,39 +140,6 @@ const NAVIGATION_LINKS = [
   { href: "/muzyka", label: "Muzyka" },
 ] as const;
 
-// Definicja typu dla liczników komentarzy
-type CommentCountsType = {
-  main: number;
-  secondary: Record<string, number>;
-};
-
-// Zdefiniowanie stałej z poprawnym typowaniem
-const COMMENT_COUNTS: CommentCountsType = {
-  main: 328,
-  secondary: {
-    "1": 245,
-    "2": 187,
-    "3": 222,
-    "4": 156,
-    "5": 198,
-    "6": 267,
-    "7": 312,
-    "8": 178,
-    "9": 234,
-    "10": 289,
-    "11": 167,
-    "12": 298,
-    "13": 345,
-    "14": 156,
-    "15": 234,
-    "16": 189,
-    "17": 467,
-    "18": 145,
-    "19": 178,
-    "20": 389,
-  },
-};
-
 // Uproszczony komponent dla artykułu
 const ArticleListItem = ({ news }: { news: NewsItem }) => {
   return (
@@ -305,32 +272,6 @@ const topicsList: TopicItem[] = [
     category: "ŚWIAT",
     title:
       "Sensual vs Dominicana. Która wersja lepsza? Eksperci nie mają wątpliwości",
-  },
-];
-
-// Dodajmy nowy interfejs dla gorących tematów
-interface HotTopic {
-  id: string;
-  title: string;
-  image: string;
-  commentsCount: number;
-}
-
-// Dane dla gorących tematów
-const hotTopics: HotTopic[] = [
-  {
-    id: "1",
-    title:
-      'Daniel i Maya ZDOBYWAJĄ ZŁOTO na Mistrzostwach Świata w Bachacie: "Trenowali dzień i noc przez rok"',
-    image: "/images/bachata-couple.jpg",
-    commentsCount: 422,
-  },
-  {
-    id: "2",
-    title:
-      'Instruktorzy z Dominikany i Europy "wymienili się technikami i połączyli style". Powstał nowy trend',
-    image: "/images/bachata-fusion.jpg",
-    commentsCount: 584,
   },
 ];
 
@@ -487,79 +428,6 @@ export default function Home() {
         <div className="flex gap-6">
           {/* Lewa strona - główne newsy */}
           <div className="w-[65%]">
-            {/* Górna sekcja - główny news + 2 mniejsze */}
-            <div className="flex gap-4 mb-4">
-              {/* Główny news */}
-              <div className="w-[630px] relative">
-                <Link href={`/news/${newsData[0].id}`} className="group">
-                  <div className="relative aspect-[16/9] overflow-hidden">
-                    <Image
-                      src={newsData[0].image}
-                      alt={newsData[0].title}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                    <div className="absolute bottom-0 left-0 right-0 p-6">
-                      <h1 className="text-2xl font-bold text-white leading-tight group-hover:underline">
-                        {newsData[0].title}
-                      </h1>
-                    </div>
-                  </div>
-                </Link>
-              </div>
-
-              {/* 2 mniejsze newsy obok głównego */}
-              <div className="w-[33%] space-y-4">
-                {newsData.slice(1, 3).map((news) => (
-                  <Link
-                    href={`/news/${news.id}`}
-                    key={news.id}
-                    className="group block"
-                  >
-                    <div className="relative h-[150px] overflow-hidden">
-                      <Image
-                        src={news.image}
-                        alt={news.title}
-                        fill
-                        className="object-cover"
-                      />
-                      <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/80 to-transparent">
-                        <h3 className="text-sm font-bold text-white">
-                          {news.title}
-                        </h3>
-                      </div>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </div>
-
-            {/* Dolna sekcja - 3 równe newsy */}
-            <div className="grid grid-cols-3 gap-4">
-              {newsData.slice(3, 6).map((news) => (
-                <Link
-                  href={`/news/${news.id}`}
-                  key={news.id}
-                  className="group block"
-                >
-                  <div className="relative h-[140px] overflow-hidden">
-                    <Image
-                      src={news.image}
-                      alt={news.title}
-                      fill
-                      className="object-cover"
-                    />
-                    <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/80 to-transparent">
-                      <h3 className="text-xs font-bold text-white">
-                        {news.title}
-                      </h3>
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-
             {/* Sekcja BACHATA NEWS */}
             <div className="w-full mt-8">
               <div className="bg-[#e90636] p-6">
@@ -630,169 +498,355 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Nowa sekcja ANKIETA */}
+            {/* Sekcja PILNE pod BACHATA NEWS */}
             <div className="w-full mt-8">
-              <div className="bg-white border rounded-lg p-6 shadow-sm">
-                <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-                  <svg
-                    className="w-5 h-5 text-[#e90636]"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path d="M7 2a2 2 0 012 2v12a2 2 0 01-2 2H3a2 2 0 01-2-2V4a2 2 0 012-2h4zm0 1H3a1 1 0 00-1 1v12a1 1 0 001 1h4a1 1 0 001-1V4a1 1 0 00-1-1zm8-1a2 2 0 012 2v12a2 2 0 01-2 2h-4a2 2 0 01-2-2V4a2 2 0 012-2h4zm0 1h-4a1 1 0 00-1 1v12a1 1 0 001 1h4a1 1 0 001-1V4a1 1 0 00-1-1z" />
-                  </svg>
-                  ANKIETA
-                </h2>
+              <div className="flex gap-6">
+                {/* Duży artykuł PILNE z filmem YouTube/Instagram */}
+                <div className="w-1/3">
+                  <Link href="/news/pilne-1" className="group block">
+                    <div className="relative">
+                      <div className="aspect-video rounded-lg overflow-hidden">
+                        {/* YouTube Embed */}
+                        <iframe
+                          width="100%"
+                          height="100%"
+                          src="https://www.youtube.com/embed/VIDEO_ID"
+                          title="Międzynarodowy Festiwal Bachaty 2024"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                          className="absolute top-0 left-0 w-full h-full"
+                        />
 
-                <div className="space-y-4">
-                  <p className="text-lg font-medium">
-                    Jaki styl bachaty preferujesz?
-                  </p>
-
-                  <div className="space-y-2">
-                    <label className="flex items-center gap-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
-                      <input
-                        type="radio"
-                        name="bachata-style"
-                        className="w-4 h-4 text-[#e90636]"
-                      />
-                      <span>Bachata Dominicana</span>
-                    </label>
-
-                    <label className="flex items-center gap-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
-                      <input
-                        type="radio"
-                        name="bachata-style"
-                        className="w-4 h-4 text-[#e90636]"
-                      />
-                      <span>Bachata Sensual</span>
-                    </label>
-
-                    <label className="flex items-center gap-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
-                      <input
-                        type="radio"
-                        name="bachata-style"
-                        className="w-4 h-4 text-[#e90636]"
-                      />
-                      <span>Bachata Moderna</span>
-                    </label>
-
-                    <label className="flex items-center gap-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
-                      <input
-                        type="radio"
-                        name="bachata-style"
-                        className="w-4 h-4 text-[#e90636]"
-                      />
-                      <span>Bachata Fusion</span>
-                    </label>
-                  </div>
-
-                  <button className="w-full mt-4 bg-[#e90636] text-white py-2 rounded-lg hover:bg-[#d00530] transition-colors">
-                    Zagłosuj
-                  </button>
-
-                  <div className="text-sm text-gray-500 text-center">
-                    Oddano już 1234 głosów
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Środkowa kolumna - 15% */}
-          <div className="w-[15%]">
-            {/* POPULARNE SZKOŁY - przeniesione na początek */}
-            <div className="border rounded-lg bg-white overflow-hidden mb-8">
-              <div className="bg-gray-50 border-b px-3 py-2">
-                <h2 className="text-sm font-bold text-gray-800">
-                  POPULARNE SZKOŁY
-                </h2>
-              </div>
-
-              <div className="p-3">
-                <div className="space-y-3">
-                  <Link href="/szkola-1" className="block group">
-                    <div className="relative aspect-square rounded-md overflow-hidden mb-2">
-                      <Image
-                        src="/images/school-1.jpg"
-                        alt="Szkoła Tańca Latino"
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform"
-                      />
-                    </div>
-                    <h3 className="text-sm font-medium group-hover:text-[#e90636] transition-colors">
-                      Szkoła Tańca Latino
-                    </h3>
-                    <p className="text-xs text-gray-500">Warszawa</p>
-                  </Link>
-
-                  <Link href="/szkola-2" className="block group">
-                    <div className="relative aspect-square rounded-md overflow-hidden mb-2">
-                      <Image
-                        src="/images/school-2.jpg"
-                        alt="Bachata Flow"
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform"
-                      />
-                    </div>
-                    <h3 className="text-sm font-medium group-hover:text-[#e90636] transition-colors">
-                      Bachata Flow
-                    </h3>
-                    <p className="text-xs text-gray-500">Kraków</p>
-                  </Link>
-
-                  <Link href="/szkola-3" className="block group">
-                    <div className="relative aspect-square rounded-md overflow-hidden mb-2">
-                      <Image
-                        src="/images/school-3.jpg"
-                        alt="Dance Zone"
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform"
-                      />
-                    </div>
-                    <h3 className="text-sm font-medium group-hover:text-[#e90636] transition-colors">
-                      Dance Zone
-                    </h3>
-                    <p className="text-xs text-gray-500">Wrocław</p>
-                  </Link>
-                </div>
-
-                <Link
-                  href="/wszystkie-szkoly"
-                  className="block text-center text-xs text-[#e90636] hover:underline mt-4"
-                >
-                  Zobacz wszystkie →
-                </Link>
-              </div>
-            </div>
-
-            {/* Newsy - 5 wpisów */}
-            <div className="space-y-4 mt-8">
-              {newsData.slice(0, 5).map((news) => (
-                <Link
-                  href={`/news/${news.id}`}
-                  key={news.id}
-                  className="group block"
-                >
-                  <div className="relative">
-                    <div className="relative h-[120px] overflow-hidden">
-                      <Image
-                        src={news.image}
-                        alt={news.title}
-                        fill
-                        sizes="15vw"
-                        className="object-cover"
-                      />
-                      <div className="absolute top-2 right-2 bg-white px-1.5 py-0.5 text-[11px] font-bold">
-                        {COMMENT_COUNTS.secondary[news.id] || 0}
+                        {/* Instagram Embed - zakomentowany, odkomentować w razie potrzeby */}
+                        {/* <iframe 
+                          src="https://www.instagram.com/p/POST_ID/embed"
+                          width="100%"
+                          height="100%"
+                          frameBorder="0"
+                          scrolling="no"
+                          allowTransparency
+                          className="absolute top-0 left-0 w-full h-full"
+                        /> */}
+                      </div>
+                      <div className="absolute top-6 left-6 z-10">
+                        <span className="text-white text-2xl font-bold bg-[#e90636] px-4 py-1 rounded">
+                          PILNE!
+                        </span>
+                        <h3 className="text-white text-xl font-bold leading-tight mt-4 group-hover:underline max-w-[300px]">
+                          Międzynarodowy Festiwal Bachaty 2024 ogłasza gwiazdy
+                          wieczoru!
+                        </h3>
                       </div>
                     </div>
-                    <h3 className="mt-1.5 text-[13px] font-bold leading-tight">
-                      {news.title}
-                    </h3>
+                  </Link>
+                </div>
+
+                {/* Środkowy artykuł z embedem Instagram */}
+                <div className="w-1/3">
+                  <Link href="/news/pilne-2" className="group block">
+                    <div className="relative">
+                      <div className="aspect-square overflow-hidden">
+                        <iframe
+                          src="https://www.instagram.com/p/C3WGHKWo7k_/embed/captioned"
+                          width="100%"
+                          height="100%"
+                          frameBorder="0"
+                          scrolling="no"
+                          allowTransparency
+                          className="absolute top-0 left-0 w-full h-full"
+                          loading="lazy"
+                          title="Instagram post"
+                          allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                        />
+                      </div>
+                      <div className="absolute top-3 left-3 bg-white px-2 py-1 rounded text-sm font-medium z-10">
+                        ALMA FESTIVAL
+                      </div>
+                      <h3 className="mt-3 text-lg font-bold leading-tight group-hover:text-[#e90636]">
+                        Największy festiwal bachaty w Europie - Alma Festival
+                        powraca w maju 2024
+                      </h3>
+                    </div>
+                  </Link>
+                </div>
+
+                {/* Prawa kolumna z mniejszymi newsami */}
+                <div className="w-1/3 space-y-4">
+                  {[
+                    {
+                      title:
+                        "Nowy trend w bachacie - fusion z elementami urban kizomby",
+                      image: "/images/bachata-fusion.jpg",
+                    },
+                    {
+                      title:
+                        "Jak dobrać idealne buty do tańca? Poradnik dla początkujących",
+                      image: "/images/bachata-shoes.jpg",
+                    },
+                    {
+                      title:
+                        "TOP 10 romantycznych piosenek do bachaty na 2024 rok",
+                      image: "/images/bachata-songs.jpg",
+                    },
+                  ].map((item, index) => (
+                    <Link
+                      key={index}
+                      href={`/news/mini-${index + 1}`}
+                      className="group flex items-center gap-3"
+                    >
+                      <div className="relative w-20 h-20 flex-shrink-0">
+                        <Image
+                          src={item.image}
+                          alt={item.title}
+                          fill
+                          className="object-cover rounded"
+                        />
+                      </div>
+                      <h4 className="text-sm font-bold leading-tight group-hover:text-[#e90636]">
+                        {item.title}
+                      </h4>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
+              {/* Sekcja newsów w stylu WP - układ 3-kolumnowy */}
+              <div className="w-full mt-8">
+                <div className="grid grid-cols-3 gap-4">
+                  {/* KOLUMNA 1 (LEWA) - Duży news zajmujący 2 rzędy w pionie */}
+                  <div className="row-span-2 relative group">
+                    <Link href="/news/bachata-main">
+                      <div className="relative h-full overflow-hidden">
+                        <Image
+                          src="/images/bachata-couple.jpg"
+                          alt="Para tańcząca bachatę"
+                          fill
+                          className="object-cover"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                        <div className="absolute bottom-4 left-4 right-4">
+                          <h2 className="text-white text-[18px] leading-[24px] font-bold">
+                            Walczy o tytuł mistrza świata. Popularny tancerz
+                            bachaty odpowiada krytykom
+                          </h2>
+                        </div>
+                      </div>
+                    </Link>
                   </div>
-                </Link>
-              ))}
+
+                  {/* KOLUMNA 2 (ŚRODKOWA) - Górny news */}
+                  <Link href="/news/bachata-1" className="block group">
+                    <div className="relative aspect-[16/9] overflow-hidden">
+                      <Image
+                        src="/images/bachata-festival.jpg"
+                        alt="Festival Bachaty"
+                        fill
+                        className="object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                      <div className="absolute bottom-3 left-3 right-3">
+                        <h3 className="text-white text-[18px] leading-[24px] font-bold">
+                          Już miała wygraną w kieszeni. Jak przegrała
+                          mistrzostwa bachaty?
+                        </h3>
+                      </div>
+                    </div>
+                  </Link>
+
+                  {/* KOLUMNA 3 (PRAWA) - Górny news */}
+                  <Link href="/news/bachata-2" className="block group">
+                    <div className="relative aspect-[16/9] overflow-hidden">
+                      <Image
+                        src="/images/bachata-schools.jpg"
+                        alt="Najlepsza szkoła bachaty"
+                        fill
+                        className="object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                      <div className="absolute bottom-3 left-3 right-3">
+                        <h3 className="text-white text-[18px] leading-[24px] font-bold">
+                          Najlepsza szkoła bachaty w Polsce. #1 w rankingu jest
+                          w tym mieście
+                        </h3>
+                      </div>
+                    </div>
+                  </Link>
+
+                  {/* KOLUMNA 2 (ŚRODKOWA) - Dolny news */}
+                  <Link href="/news/bachata-3" className="block group">
+                    <div className="relative aspect-[16/9] overflow-hidden">
+                      <Image
+                        src="/images/bachata-romance.jpg"
+                        alt="Ostrzeżenie dla tancerzy"
+                        fill
+                        className="object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                      <div className="absolute top-3 right-3 w-10 h-10 rounded-full overflow-hidden border-2 border-white">
+                        <Image
+                          src="/images/bachata-steps.jpg"
+                          alt="Avatar"
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                      <div className="absolute bottom-3 left-3 right-3">
+                        <h3 className="text-white text-[18px] leading-[24px] font-bold">
+                          Ostrzega przed tym krokiem w bachacie. Instruktorzy są
+                          zaniepokojeni
+                        </h3>
+                      </div>
+                    </div>
+                  </Link>
+
+                  {/* KOLUMNA 3 (PRAWA) - Dolny news */}
+                  <Link href="/news/bachata-4" className="block group">
+                    <div className="relative aspect-[16/9] overflow-hidden">
+                      <Image
+                        src="/images/bachata-history.jpg"
+                        alt="Współpraca z Romeo Santos"
+                        fill
+                        className="object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                      <div className="absolute bottom-3 left-3 right-3">
+                        <h3 className="text-white text-[18px] leading-[24px] font-bold">
+                          Pracował z Romeo Santos. Zdradza kulisy współpracy z
+                          królem bachaty
+                        </h3>
+                      </div>
+                    </div>
+                  </Link>
+
+                  {/* DOLNY RZĄD - 3 newsy (pełna szerokość) */}
+                  <div className="col-span-3 grid grid-cols-3 gap-4 mt-4">
+                    {/* Dolny rząd - News 1 */}
+                    <Link href="/news/bachata-5" className="block group">
+                      <div className="relative aspect-[16/9] overflow-hidden">
+                        <Image
+                          src="/images/bachata-fusion.jpg"
+                          alt="Nowy styl bachaty"
+                          fill
+                          className="object-cover"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                        <div className="absolute bottom-3 left-3 right-3">
+                          <h3 className="text-white text-[18px] leading-[24px] font-bold">
+                            Rewolucja w bachacie. Nowy styl podbija światowe
+                            parkiety
+                          </h3>
+                        </div>
+                      </div>
+                    </Link>
+
+                    {/* Dolny rząd - News 2 */}
+                    <Link href="/news/bachata-6" className="block group">
+                      <div className="relative aspect-[16/9] overflow-hidden">
+                        <Image
+                          src="/images/bachata-steps.jpg"
+                          alt="Smutny wpis instruktorki"
+                          fill
+                          className="object-cover"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                        <div className="absolute bottom-3 left-3 right-3">
+                          <h3 className="text-white text-[18px] leading-[24px] font-bold">
+                            Smutny wpis znanej instruktorki. Zamyka szkołę po 15
+                            latach
+                          </h3>
+                        </div>
+                      </div>
+                    </Link>
+
+                    {/* Dolny rząd - News 3 */}
+                    <Link href="/news/bachata-7" className="block group">
+                      <div className="relative aspect-[16/9] overflow-hidden">
+                        <Image
+                          src="/images/bachata-songs.jpg"
+                          alt="Przełamała barierę"
+                          fill
+                          className="object-cover"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                        <div className="absolute bottom-3 left-3 right-3">
+                          <h3 className="text-white text-[18px] leading-[24px] font-bold">
+                            Latami nie mogła się przełamać. Teraz jest
+                            mistrzynią bachaty
+                          </h3>
+                        </div>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+
+              {/* Nowa sekcja ANKIETA */}
+              <div className="w-full mt-8">
+                <div className="bg-white border rounded-lg p-6 shadow-sm">
+                  <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
+                    <svg
+                      className="w-5 h-5 text-[#e90636]"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M7 2a2 2 0 012 2v12a2 2 0 01-2 2H3a2 2 0 01-2-2V4a2 2 0 012-2h4zm0 1H3a1 1 0 00-1 1v12a1 1 0 001 1h4a1 1 0 001-1V4a1 1 0 00-1-1zm8-1a2 2 0 012 2v12a2 2 0 01-2 2h-4a2 2 0 01-2-2V4a2 2 0 012-2h4zm0 1h-4a1 1 0 00-1 1v12a1 1 0 001 1h4a1 1 0 001-1V4a1 1 0 00-1-1z" />
+                    </svg>
+                    ANKIETA
+                  </h2>
+
+                  <div className="space-y-4">
+                    <p className="text-lg font-medium">
+                      Jaki styl bachaty preferujesz?
+                    </p>
+
+                    <div className="space-y-2">
+                      <label className="flex items-center gap-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+                        <input
+                          type="radio"
+                          name="bachata-style"
+                          className="w-4 h-4 text-[#e90636]"
+                        />
+                        <span>Bachata Dominicana</span>
+                      </label>
+
+                      <label className="flex items-center gap-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+                        <input
+                          type="radio"
+                          name="bachata-style"
+                          className="w-4 h-4 text-[#e90636]"
+                        />
+                        <span>Bachata Sensual</span>
+                      </label>
+
+                      <label className="flex items-center gap-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+                        <input
+                          type="radio"
+                          name="bachata-style"
+                          className="w-4 h-4 text-[#e90636]"
+                        />
+                        <span>Bachata Moderna</span>
+                      </label>
+
+                      <label className="flex items-center gap-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+                        <input
+                          type="radio"
+                          name="bachata-style"
+                          className="w-4 h-4 text-[#e90636]"
+                        />
+                        <span>Bachata Fusion</span>
+                      </label>
+                    </div>
+
+                    <button className="w-full mt-4 bg-[#e90636] text-white py-2 rounded-lg hover:bg-[#d00530] transition-colors">
+                      Zagłosuj
+                    </button>
+
+                    <div className="text-sm text-gray-500 text-center">
+                      Oddano już 1234 głosów
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -889,10 +943,9 @@ export default function Home() {
             </div>
           </div>
         </div>
-        
+
         {/* Linia oddzielająca zamiast paginacji */}
-        <div className="w-full border-b border-gray-200 my-12">
-        </div>
+        <div className="w-full border-b border-gray-200 my-12"></div>
       </div>
     </main>
   );
