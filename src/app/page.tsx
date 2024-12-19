@@ -10,8 +10,7 @@ interface NewsItem {
   id: string;
   title: string;
   image: string;
-  source: string;
-  isHot: boolean;
+  isHot?: boolean;
   category: string;
 }
 
@@ -21,15 +20,12 @@ const newsData: NewsItem[] = [
     title:
       "Światowy Festiwal Bachaty 2024 - Największe wydarzenie roku już w czerwcu w Warszawie",
     image: "/images/bachata-festival.jpg",
-    source: "Redakcja Taneczna",
-    isHot: true,
     category: "Wydarzenia",
   },
   {
     id: "2",
     title: "Daniel i Maya zdobywają mistrzostwo świata w bachacie sensual",
     image: "/images/bachata-couple.jpg",
-    source: "Dance News",
     isHot: true,
     category: "Zawody",
   },
@@ -37,136 +33,102 @@ const newsData: NewsItem[] = [
     id: "3",
     title: "Bachata Romance - nowy kierunek w bachacie tradycyjnej",
     image: "/images/bachata-romance.jpg",
-    source: "Latin Dance Blog",
-    isHot: false,
     category: "Style",
   },
   {
     id: "4",
     title: "Top 10 szkół bachaty w Polsce - gdzie warto zacząć?",
     image: "/images/bachata-schools.jpg",
-    source: "Dance Review",
-    isHot: true,
     category: "Edukacja",
   },
   {
     id: "5",
     title: "Podstawowe kroki bachaty - przewodnik dla początkujących",
     image: "/images/bachata-steps.jpg",
-    source: "Dance Tutorial",
-    isHot: false,
     category: "Nauka",
   },
   {
     id: "6",
     title: "Co założyć na imprezę bachatową? Kompletny przewodnik",
     image: "/images/bachata-outfit.jpg",
-    source: "Style & Dance",
-    isHot: false,
     category: "Lifestyle",
   },
   {
     id: "7",
     title: "Top 20 piosenek bachatowych 2024 roku",
     image: "/images/bachata-songs.jpg",
-    source: "Latin Music",
-    isHot: true,
     category: "Muzyka",
   },
   {
     id: "8",
     title: "Historia bachaty - od dominikańskich korzeni po światową scenę",
     image: "/images/bachata-history.jpg",
-    source: "Dance History",
-    isHot: false,
     category: "Historia",
   },
   {
     id: "9",
     title: "Najlepsze festiwale bachaty w Europie 2024",
     image: "/images/bachata-festivals-europe.jpg",
-    source: "Festival Guide",
-    isHot: true,
     category: "Wydarzenia",
   },
   {
     id: "10",
     title: "Technika prowadzenia w bachacie - wskazówki dla zaawansowanych",
     image: "/images/bachata-leading.jpg",
-    source: "Pro Dance Tips",
-    isHot: false,
     category: "Technika",
   },
   {
     id: "11",
     title: "Muzyka bachatowa - jak rozpoznać style i rytmy",
     image: "/images/bachata-music-styles.jpg",
-    source: "Music Theory",
-    isHot: false,
     category: "Muzyka",
   },
   {
     id: "12",
     title: "Bachata fusion - łączenie stylów i nowe trendy",
     image: "/images/bachata-history.jpg",
-    source: "Dance Trends",
-    isHot: true,
     category: "Style",
   },
   {
     id: "13",
     title: "Nowe trendy w bachacie na 2024 rok. Co się zmieni w technice?",
     image: "/images/bachata-trends.jpg",
-    source: "Dance Magazine",
-    isHot: false,
     category: "Technika",
   },
   {
     id: "14",
     title: "Mistrzostwa Polski w Bachacie - zapisy już otwarte",
     image: "/images/bachata-championship.jpg",
-    source: "Polski Związek Tańca",
-    isHot: true,
     category: "Zawody",
   },
   {
     id: "15",
     title: "Dominikańscy instruktorzy prowadzą warsztaty w Polsce",
-    image: "/images/bachata-workshop.jpg", 
-    source: "Dance News",
-    isHot: false,
+    image: "/images/bachata-workshop.jpg",
     category: "Edukacja",
   },
   {
     id: "16",
     title: "Jak przygotować się do pierwszych zawodów bachaty?",
     image: "/images/bachata-preparation.jpg",
-    source: "Pro Dance Tips",
-    isHot: false,
     category: "Nauka",
   },
   {
-    id: "17", 
+    id: "17",
     title: "10 najlepszych szkół bachaty w Polsce - ranking 2024",
     image: "/images/bachata-schools.jpg",
-    source: "Dance Review",
-    isHot: true,
     category: "Edukacja",
   },
   {
     id: "18",
     title: "Bachata dla początkujących - od czego zacząć?",
     image: "/images/bachata-beginners.jpg",
-    source: "Dance Academy",
-    isHot: false,
     category: "Nauka",
   },
   {
     id: "19",
     title: "Trening mentalny w bachacie - jak pokonać stres przed występem",
     image: "/images/bachata-mental.jpg",
-    source: "Dance Psychology",
-    isHot: false,
     category: "Rozwój",
   },
 ];
@@ -210,8 +172,8 @@ const COMMENT_COUNTS: CommentCountsType = {
     "17": 467,
     "18": 145,
     "19": 178,
-    "20": 389
-  }
+    "20": 389,
+  },
 };
 
 // Uproszczony komponent dla artykułu
@@ -228,12 +190,9 @@ const ArticleListItem = ({ news }: { news: NewsItem }) => {
             sizes="180px"
             className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
-          <div className="absolute bottom-0 right-0 bg-white px-2 py-1 text-xs font-bold">
-            {COMMENT_COUNTS.secondary[news.id]}
-          </div>
           {news.isHot && (
             <div className="absolute top-2 left-2">
-              <span className="bg-red-500 text-white px-2 py-0.5 text-[11px] font-medium rounded-full">
+              <span className="bg-red-500 text-white px-2 py-0.5 text-[11px] font-medium">
                 Hot
               </span>
             </div>
@@ -245,16 +204,6 @@ const ArticleListItem = ({ news }: { news: NewsItem }) => {
           <h2 className="font-bold text-[15px] leading-tight mb-3 group-hover:text-gray-900 transition-colors">
             {news.title}
           </h2>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="w-5 h-5 rounded-full bg-gray-200" />
-              <span className="text-[13px] text-gray-500">{news.source}</span>
-            </div>
-            <div className="flex items-center gap-3 text-gray-400">
-              <FaRegClock size={12} />
-              <span className="text-[12px]">2 godz.</span>
-            </div>
-          </div>
         </div>
       </div>
     </Link>
@@ -582,163 +531,132 @@ export default function Home() {
         )}
       </div>
 
-      {/* Main Content - dodane animacje przy wejściu */}
+      {/* Main Content Container */}
       <div className="container mx-auto px-4 py-6">
-        <div className="flex gap-[24px]">
-          {/* Left Column - dodane statystyki */}
-          <div className="w-[50%]">
-            <div className="mb-7">
-              <Link href={`/news/${newsData[0].id}`} className="group mb-7">
-                <div className="relative h-[400px] overflow-hidden rounded-md">
-                  <Image
-                    src={newsData[0].image}
-                    alt={newsData[0].title}
-                    fill
-                    priority
-                    sizes="(max-width: 768px) 100vw, 800px"
-                    className="object-cover"
-                  />
-                  <div className="absolute bottom-3 right-3 bg-white rounded-sm px-2.5 py-1.5 text-xs font-bold shadow-sm">
-                    {COMMENT_COUNTS.main}
-                  </div>
-                  <div className="absolute top-3 left-3">
-                    <span className="bg-red-500 text-white px-2.5 py-1 text-xs font-medium rounded-md">
-                      Hot
-                    </span>
-                  </div>
-                  <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/90 via-black/50 to-transparent">
-                    <h2 className="text-2xl font-bold mb-3 text-white group-hover:text-white">
-                      {newsData[0].title}
-                    </h2>
-                    <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 rounded-full bg-gray-200" />
-                      <span className="text-sm text-gray-200">
-                        {newsData[0].source}
-                      </span>
+        <div className="flex gap-6">
+          {/* Lewa strona - główne newsy */}
+          <div className="w-[65%]">
+            {/* Górna sekcja - główny news + 2 mniejsze */}
+            <div className="flex gap-4 mb-4">
+              {/* Główny news */}
+              <div className="w-[60%]">
+                <Link href={`/news/${newsData[0].id}`} className="group block">
+                  <div className="relative h-[320px] overflow-hidden">
+                    <Image
+                      src={newsData[0].image}
+                      alt={newsData[0].title}
+                      fill
+                      priority
+                      className="object-cover"
+                    />
+                    <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 via-black/50 to-transparent">
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="w-6 h-6 rounded-full overflow-hidden">
+                          <Image
+                            src="/images/author.jpg"
+                            alt="Author"
+                            width={24}
+                            height={24}
+                          />
+                        </div>
+                        <span className="text-white text-xs">
+                          Dawid Serafin
+                        </span>
+                      </div>
+                      <h2 className="text-xl font-bold text-white">
+                        {newsData[0].title}
+                      </h2>
                     </div>
                   </div>
-                </div>
-              </Link>
+                </Link>
+              </div>
+
+              {/* 2 mniejsze newsy obok głównego */}
+              <div className="w-[40%] space-y-4">
+                {newsData.slice(1, 3).map((news) => (
+                  <Link
+                    href={`/news/${news.id}`}
+                    key={news.id}
+                    className="group block"
+                  >
+                    <div className="relative h-[150px] overflow-hidden">
+                      <Image
+                        src={news.image}
+                        alt={news.title}
+                        fill
+                        className="object-cover"
+                      />
+                      <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/80 to-transparent">
+                        <h3 className="text-sm font-bold text-white">
+                          {news.title}
+                        </h3>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
             </div>
 
-            {/* Two Articles Below - dodane efekty hover */}
-            <div className="space-y-6">
-              {newsData.slice(1, 3).map((news) => (
+            {/* Dolna sekcja - 3 równe newsy */}
+            <div className="grid grid-cols-3 gap-4">
+              {newsData.slice(3, 6).map((news) => (
                 <Link
                   href={`/news/${news.id}`}
                   key={news.id}
                   className="group block"
                 >
-                  <div className="flex gap-5 group-hover:bg-gray-50 p-2 -mx-2 rounded-lg transition-colors">
-                    <div className="relative w-[180px] h-[120px] flex-shrink-0 overflow-hidden rounded-sm">
-                      <Image
-                        src={news.image}
-                        alt={news.title}
-                        fill
-                        sizes="180px"
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                      <div className="absolute bottom-0 right-0 bg-white px-2 py-1 text-xs font-bold">
-                        {COMMENT_COUNTS.secondary[news.id]}
-                      </div>
-                      {news.isHot && (
-                        <div className="absolute top-2 left-2">
-                          <span className="bg-red-500 text-white px-2 py-0.5 text-[11px] font-medium rounded-full">
-                            Hot
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                    <div className="pt-1 flex-1">
-                      <h2 className="font-bold text-[15px] leading-tight mb-3 text-gray-900 group-hover:text-gray-900">
-                        {news.title}
-                      </h2>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <div className="w-5 h-5 rounded-full bg-gray-200" />
-                          <span className="text-[13px] text-gray-500">
-                            {news.source}
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-3 text-gray-400">
-                          <FaRegClock size={12} />
-                          <span className="text-[12px]">2 godz.</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          {/* Middle Column - poprawione proporcje zdjęć */}
-          <div className="w-[25%] space-y-6">
-            {newsData.slice(3, 5).map((news) => (
-              <Link
-                href={`/news/${news.id}`}
-                key={news.id}
-                className="group block"
-              >
-                <div>
-                  <div className="relative h-[160px] mb-3 overflow-hidden">
+                  <div className="relative h-[140px] overflow-hidden">
                     <Image
                       src={news.image}
                       alt={news.title}
                       fill
-                      sizes="25vw"
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      className="object-cover"
                     />
-                    <div className="absolute bottom-0 right-0 bg-white px-2 py-1 text-xs font-bold">
-                      {COMMENT_COUNTS.secondary[news.id]}
+                    <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/80 to-transparent">
+                      <h3 className="text-xs font-bold text-white">
+                        {news.title}
+                      </h3>
                     </div>
                   </div>
-                  <h3 className="font-bold text-[15px] leading-tight mb-3 text-gray-900 group-hover:text-gray-900">
-                    {news.title}
-                  </h3>
-                  <div className="flex items-center gap-2">
-                    <div className="w-5 h-5 rounded-full bg-gray-200" />
-                    <span className="text-[13px] text-gray-500">
-                      {news.source}
-                    </span>
-                  </div>
-                </div>
-              </Link>
-            ))}
+                </Link>
+              ))}
+            </div>
           </div>
 
-          {/* Right Column - poprawione miniatury */}
-          <div className="w-[25%]">
-            {/* Gorące tematy */}
-            <div className="mb-8">
+          {/* Środkowa kolumna - newsy z liczbami */}
+          <div className="w-[15%]">
+            <div className="space-y-4">
               {hotTopics.map((topic) => (
                 <Link
                   href={`/news/${topic.id}`}
                   key={topic.id}
-                  className="group block mb-4 relative"
+                  className="group block"
                 >
                   <div className="relative">
-                    <div className="aspect-[3/2] relative overflow-hidden">
+                    <div className="relative h-[120px] overflow-hidden">
                       <Image
                         src={topic.image}
                         alt={topic.title}
                         fill
+                        sizes="15vw"
                         className="object-cover"
-                        sizes="(max-width: 768px) 100vw, 300px"
                       />
+                      <div className="absolute top-2 right-2 bg-white px-1.5 py-0.5 text-[11px] font-bold">
+                        {topic.commentsCount}
+                      </div>
                     </div>
-                    <div className="absolute bottom-0 right-0 bg-white px-2 py-1 text-xs font-bold">
-                      {topic.commentsCount}
-                    </div>
+                    <h3 className="mt-1.5 text-[13px] font-bold leading-tight">
+                      {topic.title}
+                    </h3>
                   </div>
-                  <h3 className="mt-2 text-[15px] font-bold leading-tight text-gray-900 group-hover:text-gray-900">
-                    {topic.title}
-                  </h3>
                 </Link>
               ))}
             </div>
+          </div>
 
-            {/* Istniejący header TEMATY DNIA */}
+          {/* Prawa kolumna - TEMATY DNIA */}
+          <div className="w-[20%]">
+            {/* Header TEMATY DNIA */}
             <div className="mb-6">
               <div className="flex items-center gap-2.5 pb-3 border-b border-gray-200">
                 <div className="bg-red-600 rounded-full w-[22px] h-[22px] flex items-center justify-center shadow-sm">
@@ -779,29 +697,27 @@ export default function Home() {
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Dodany footer z paginacją */}
-        <div className="mt-8 border-t pt-6 flex justify-between items-center text-sm">
-          <button className="px-4 py-2 border rounded-lg hover:bg-gray-50 transition-colors">
-            Poprzednia strona
-          </button>
-          <div className="flex gap-2">
-            {[1, 2, 3, 4, 5].map((page) => (
-              <button
-                key={page}
-                className={`w-8 h-8 flex items-center justify-center rounded-lg transition-colors
-                  ${
-                    page === 1 ? "bg-blue-600 text-white" : "hover:bg-gray-50"
-                  }`}
-              >
-                {page}
-              </button>
-            ))}
-          </div>
-          <button className="px-4 py-2 border rounded-lg hover:bg-gray-50 transition-colors">
-            Następna strona
-          </button>
+      {/* Dodany footer z paginacją */}
+      <div className="mt-8 border-t pt-6 flex justify-between items-center text-sm">
+        <button className="px-4 py-2 border rounded-lg hover:bg-gray-50 transition-colors">
+          Poprzednia strona
+        </button>
+        <div className="flex gap-2">
+          {[1, 2, 3, 4, 5].map((page) => (
+            <button
+              key={page}
+              className={`w-8 h-8 flex items-center justify-center rounded-lg transition-colors
+                ${page === 1 ? "bg-blue-600 text-white" : "hover:bg-gray-50"}`}
+            >
+              {page}
+            </button>
+          ))}
         </div>
+        <button className="px-4 py-2 border rounded-lg hover:bg-gray-50 transition-colors">
+          Następna strona
+        </button>
       </div>
     </main>
   );
