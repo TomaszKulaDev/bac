@@ -238,7 +238,7 @@ const latestNewsData: LatestNews[] = [
   {
     id: "3",
     time: "22:14",
-    title: "Romeo Santos zapowiada nowy album. 'To powrót do korzeni bachaty'",
+    title: "Romeo Santos zapowiada nowy album. 'To powr��t do korzeni bachaty'",
     category: "MUZYKA",
     categoryColor: "text-purple-600",
   },
@@ -581,6 +581,76 @@ export default function Home() {
                 </Link>
               ))}
             </div>
+
+            {/* Sekcja BACHATA NEWS */}
+            <div className="w-full mt-8">
+              <div className="bg-[#e90636] p-6">
+                <h2 className="text-white text-3xl font-bold mb-6">
+                  BACHATA NEWS
+                </h2>
+
+                <div className="grid grid-cols-3 gap-4">
+                  {/* Artykuł 1 */}
+                  <Link href="/news/bachata-1" className="group">
+                    <div className="relative aspect-[16/9] overflow-hidden">
+                      <Image
+                        src="/images/bachata-festival.jpg"
+                        alt="Światowy Festiwal Bachaty 2024"
+                        fill
+                        className="object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                    </div>
+                    <div className="mt-3">
+                      <h3 className="text-white text-lg font-bold leading-tight group-hover:underline">
+                        Światowy Festiwal Bachaty 2024 - Największe wydarzenie
+                        roku już w czerwcu w Warszawie
+                      </h3>
+                      <div className="w-8 h-[2px] bg-white/80 mt-2" />
+                    </div>
+                  </Link>
+
+                  {/* Artykuł 2 */}
+                  <Link href="/news/bachata-2" className="group">
+                    <div className="relative aspect-[16/9] overflow-hidden">
+                      <Image
+                        src="/images/bachata-couple.jpg"
+                        alt="Daniel i Maya - Mistrzowie Świata"
+                        fill
+                        className="object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                    </div>
+                    <div className="mt-3">
+                      <h3 className="text-white text-lg font-bold leading-tight group-hover:underline">
+                        Daniel i Maya zdobywają mistrzostwo świata w bachacie
+                        sensual
+                      </h3>
+                      <div className="w-8 h-[2px] bg-white/80 mt-2" />
+                    </div>
+                  </Link>
+
+                  {/* Artykuł 3 */}
+                  <Link href="/news/bachata-3" className="group">
+                    <div className="relative aspect-[16/9] overflow-hidden">
+                      <Image
+                        src="/images/bachata-romance.jpg"
+                        alt="Nowy kierunek w bachacie"
+                        fill
+                        className="object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                    </div>
+                    <div className="mt-3">
+                      <h3 className="text-white text-lg font-bold leading-tight group-hover:underline">
+                        Bachata Romance - nowy kierunek w bachacie tradycyjnej
+                      </h3>
+                      <div className="w-8 h-[2px] bg-white/80 mt-2" />
+                    </div>
+                  </Link>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Środkowa kolumna - newsy z liczbami */}
@@ -657,27 +727,29 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Dodany footer z paginacją */}
-      <div className="mt-8 border-t pt-6 flex justify-between items-center text-sm">
-        <button className="px-4 py-2 border rounded-lg hover:bg-gray-50 transition-colors">
-          Poprzednia strona
-        </button>
-        <div className="flex gap-2">
-          {[1, 2, 3, 4, 5].map((page) => (
-            <button
-              key={page}
-              className={`w-8 h-8 flex items-center justify-center rounded-lg transition-colors
-                ${page === 1 ? "bg-blue-600 text-white" : "hover:bg-gray-50"}`}
-            >
-              {page}
-            </button>
-          ))}
+        {/* Dodany footer z paginacją */}
+        <div className="mt-8 border-t pt-6 flex justify-between items-center text-sm">
+          <button className="px-4 py-2 border rounded-lg hover:bg-gray-50 transition-colors">
+            Poprzednia strona
+          </button>
+          <div className="flex gap-2">
+            {[1, 2, 3, 4, 5].map((page) => (
+              <button
+                key={page}
+                className={`w-8 h-8 flex items-center justify-center rounded-lg transition-colors
+                  ${
+                    page === 1 ? "bg-blue-600 text-white" : "hover:bg-gray-50"
+                  }`}
+              >
+                {page}
+              </button>
+            ))}
+          </div>
+          <button className="px-4 py-2 border rounded-lg hover:bg-gray-50 transition-colors">
+            Następna strona
+          </button>
         </div>
-        <button className="px-4 py-2 border rounded-lg hover:bg-gray-50 transition-colors">
-          Następna strona
-        </button>
       </div>
     </main>
   );
