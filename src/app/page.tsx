@@ -10,8 +10,7 @@ interface NewsItem {
   id: string;
   title: string;
   image: string;
-  isHot?: boolean;
-  category: string;
+  url: string;
 }
 
 const newsData: NewsItem[] = [
@@ -20,116 +19,115 @@ const newsData: NewsItem[] = [
     title:
       "Światowy Festiwal Bachaty 2024 - Największe wydarzenie roku już w czerwcu w Warszawie",
     image: "/images/bachata-festival.jpg",
-    category: "Wydarzenia",
+    url: "/news/bachata-1",
   },
   {
     id: "2",
     title: "Daniel i Maya zdobywają mistrzostwo świata w bachacie sensual",
     image: "/images/bachata-couple.jpg",
-    isHot: true,
-    category: "Zawody",
+    url: "/news/bachata-2",
   },
   {
     id: "3",
     title: "Bachata Romance - nowy kierunek w bachacie tradycyjnej",
     image: "/images/bachata-romance.jpg",
-    category: "Style",
+    url: "/news/bachata-3",
   },
   {
     id: "4",
     title: "Top 10 szkół bachaty w Polsce - gdzie warto zacząć?",
     image: "/images/bachata-schools.jpg",
-    category: "Edukacja",
+    url: "/news/bachata-schools",
   },
   {
     id: "5",
     title: "Podstawowe kroki bachaty - przewodnik dla początkujących",
     image: "/images/bachata-steps.jpg",
-    category: "Nauka",
+    url: "/news/bachata-steps",
   },
   {
     id: "6",
     title: "Co założyć na imprezę bachatową? Kompletny przewodnik",
     image: "/images/bachata-outfit.jpg",
-    category: "Lifestyle",
+    url: "/news/bachata-outfit",
   },
   {
     id: "7",
     title: "Top 20 piosenek bachatowych 2024 roku",
     image: "/images/bachata-songs.jpg",
-    category: "Muzyka",
+    url: "/news/bachata-songs",
   },
   {
     id: "8",
     title: "Historia bachaty - od dominikańskich korzeni po światową scenę",
     image: "/images/bachata-history.jpg",
-    category: "Historia",
+    url: "/news/bachata-history",
   },
   {
     id: "9",
     title: "Najlepsze festiwale bachaty w Europie 2024",
     image: "/images/bachata-festivals-europe.jpg",
-    category: "Wydarzenia",
+    url: "/news/bachata-festivals-europe",
   },
   {
     id: "10",
     title: "Technika prowadzenia w bachacie - wskazówki dla zaawansowanych",
     image: "/images/bachata-leading.jpg",
-    category: "Technika",
+    url: "/news/bachata-leading",
   },
   {
     id: "11",
     title: "Muzyka bachatowa - jak rozpoznać style i rytmy",
     image: "/images/bachata-music-styles.jpg",
-    category: "Muzyka",
+    url: "/news/bachata-music-styles",
   },
   {
     id: "12",
     title: "Bachata fusion - łączenie stylów i nowe trendy",
     image: "/images/bachata-history.jpg",
-    category: "Style",
+    url: "/news/bachata-fusion",
   },
   {
     id: "13",
     title: "Nowe trendy w bachacie na 2024 rok. Co się zmieni w technice?",
     image: "/images/bachata-trends.jpg",
-    category: "Technika",
+    url: "/news/bachata-trends",
   },
   {
     id: "14",
     title: "Mistrzostwa Polski w Bachacie - zapisy już otwarte",
     image: "/images/bachata-championship.jpg",
-    category: "Zawody",
+    url: "/news/bachata-championship",
   },
   {
     id: "15",
     title: "Dominikańscy instruktorzy prowadzą warsztaty w Polsce",
     image: "/images/bachata-workshop.jpg",
-    category: "Edukacja",
+    url: "/news/bachata-workshop",
   },
   {
     id: "16",
     title: "Jak przygotować się do pierwszych zawodów bachaty?",
     image: "/images/bachata-preparation.jpg",
-    category: "Nauka",
+    url: "/news/bachata-preparation",
   },
   {
     id: "17",
     title: "10 najlepszych szkół bachaty w Polsce - ranking 2024",
     image: "/images/bachata-schools.jpg",
-    category: "Edukacja",
+    url: "/news/bachata-schools",
   },
   {
     id: "18",
     title: "Bachata dla początkujących - od czego zacząć?",
     image: "/images/bachata-beginners.jpg",
-    category: "Nauka",
+    url: "/news/bachata-beginners",
   },
   {
     id: "19",
     title: "Trening mentalny w bachacie - jak pokonać stres przed występem",
     image: "/images/bachata-mental.jpg",
-    category: "Rozwój",
+    url: "/news/bachata-mental",
   },
 ];
 
@@ -189,13 +187,6 @@ const ArticleListItem = ({ news }: { news: NewsItem }) => {
             sizes="180px"
             className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
-          {news.isHot && (
-            <div className="absolute top-2 left-2">
-              <span className="bg-red-500 text-white px-2 py-0.5 text-[11px] font-medium">
-                Hot
-              </span>
-            </div>
-          )}
         </div>
 
         {/* Content */}
@@ -238,7 +229,7 @@ const latestNewsData: LatestNews[] = [
   {
     id: "3",
     time: "22:14",
-    title: "Romeo Santos zapowiada nowy album. 'To powr��t do korzeni bachaty'",
+    title: "Romeo Santos zapowiada nowy album. 'To powrót do korzeni bachaty'",
     category: "MUZYKA",
     categoryColor: "text-purple-600",
   },
@@ -499,40 +490,27 @@ export default function Home() {
             {/* Górna sekcja - główny news + 2 mniejsze */}
             <div className="flex gap-4 mb-4">
               {/* Główny news */}
-              <div className="w-[60%]">
-                <Link href={`/news/${newsData[0].id}`} className="group block">
-                  <div className="relative h-[320px] overflow-hidden">
+              <div className="w-[630px] relative">
+                <Link href={`/news/${newsData[0].id}`} className="group">
+                  <div className="relative aspect-[16/9] overflow-hidden">
                     <Image
                       src={newsData[0].image}
                       alt={newsData[0].title}
                       fill
-                      priority
-                      className="object-cover"
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
                     />
-                    <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 via-black/50 to-transparent">
-                      <div className="flex items-center gap-2 mb-2">
-                        <div className="w-6 h-6 rounded-full overflow-hidden">
-                          <Image
-                            src="/images/author.jpg"
-                            alt="Author"
-                            width={24}
-                            height={24}
-                          />
-                        </div>
-                        <span className="text-white text-xs">
-                          Dawid Serafin
-                        </span>
-                      </div>
-                      <h2 className="text-xl font-bold text-white">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                    <div className="absolute bottom-0 left-0 right-0 p-6">
+                      <h1 className="text-2xl font-bold text-white leading-tight group-hover:underline">
                         {newsData[0].title}
-                      </h2>
+                      </h1>
                     </div>
                   </div>
                 </Link>
               </div>
 
               {/* 2 mniejsze newsy obok głównego */}
-              <div className="w-[40%] space-y-4">
+              <div className="w-[33%] space-y-4">
                 {newsData.slice(1, 3).map((news) => (
                   <Link
                     href={`/news/${news.id}`}
@@ -651,32 +629,166 @@ export default function Home() {
                 </div>
               </div>
             </div>
+
+            {/* Nowa sekcja ANKIETA */}
+            <div className="w-full mt-8">
+              <div className="bg-white border rounded-lg p-6 shadow-sm">
+                <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
+                  <svg
+                    className="w-5 h-5 text-[#e90636]"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M7 2a2 2 0 012 2v12a2 2 0 01-2 2H3a2 2 0 01-2-2V4a2 2 0 012-2h4zm0 1H3a1 1 0 00-1 1v12a1 1 0 001 1h4a1 1 0 001-1V4a1 1 0 00-1-1zm8-1a2 2 0 012 2v12a2 2 0 01-2 2h-4a2 2 0 01-2-2V4a2 2 0 012-2h4zm0 1h-4a1 1 0 00-1 1v12a1 1 0 001 1h4a1 1 0 001-1V4a1 1 0 00-1-1z" />
+                  </svg>
+                  ANKIETA
+                </h2>
+
+                <div className="space-y-4">
+                  <p className="text-lg font-medium">
+                    Jaki styl bachaty preferujesz?
+                  </p>
+
+                  <div className="space-y-2">
+                    <label className="flex items-center gap-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+                      <input
+                        type="radio"
+                        name="bachata-style"
+                        className="w-4 h-4 text-[#e90636]"
+                      />
+                      <span>Bachata Dominicana</span>
+                    </label>
+
+                    <label className="flex items-center gap-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+                      <input
+                        type="radio"
+                        name="bachata-style"
+                        className="w-4 h-4 text-[#e90636]"
+                      />
+                      <span>Bachata Sensual</span>
+                    </label>
+
+                    <label className="flex items-center gap-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+                      <input
+                        type="radio"
+                        name="bachata-style"
+                        className="w-4 h-4 text-[#e90636]"
+                      />
+                      <span>Bachata Moderna</span>
+                    </label>
+
+                    <label className="flex items-center gap-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+                      <input
+                        type="radio"
+                        name="bachata-style"
+                        className="w-4 h-4 text-[#e90636]"
+                      />
+                      <span>Bachata Fusion</span>
+                    </label>
+                  </div>
+
+                  <button className="w-full mt-4 bg-[#e90636] text-white py-2 rounded-lg hover:bg-[#d00530] transition-colors">
+                    Zagłosuj
+                  </button>
+
+                  <div className="text-sm text-gray-500 text-center">
+                    Oddano już 1234 głosów
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
-          {/* Środkowa kolumna - newsy z liczbami */}
+          {/* Środkowa kolumna - 15% */}
           <div className="w-[15%]">
-            <div className="space-y-4">
-              {hotTopics.map((topic) => (
+            {/* POPULARNE SZKOŁY - przeniesione na początek */}
+            <div className="border rounded-lg bg-white overflow-hidden mb-8">
+              <div className="bg-gray-50 border-b px-3 py-2">
+                <h2 className="text-sm font-bold text-gray-800">
+                  POPULARNE SZKOŁY
+                </h2>
+              </div>
+
+              <div className="p-3">
+                <div className="space-y-3">
+                  <Link href="/szkola-1" className="block group">
+                    <div className="relative aspect-square rounded-md overflow-hidden mb-2">
+                      <Image
+                        src="/images/school-1.jpg"
+                        alt="Szkoła Tańca Latino"
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform"
+                      />
+                    </div>
+                    <h3 className="text-sm font-medium group-hover:text-[#e90636] transition-colors">
+                      Szkoła Tańca Latino
+                    </h3>
+                    <p className="text-xs text-gray-500">Warszawa</p>
+                  </Link>
+
+                  <Link href="/szkola-2" className="block group">
+                    <div className="relative aspect-square rounded-md overflow-hidden mb-2">
+                      <Image
+                        src="/images/school-2.jpg"
+                        alt="Bachata Flow"
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform"
+                      />
+                    </div>
+                    <h3 className="text-sm font-medium group-hover:text-[#e90636] transition-colors">
+                      Bachata Flow
+                    </h3>
+                    <p className="text-xs text-gray-500">Kraków</p>
+                  </Link>
+
+                  <Link href="/szkola-3" className="block group">
+                    <div className="relative aspect-square rounded-md overflow-hidden mb-2">
+                      <Image
+                        src="/images/school-3.jpg"
+                        alt="Dance Zone"
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform"
+                      />
+                    </div>
+                    <h3 className="text-sm font-medium group-hover:text-[#e90636] transition-colors">
+                      Dance Zone
+                    </h3>
+                    <p className="text-xs text-gray-500">Wrocław</p>
+                  </Link>
+                </div>
+
                 <Link
-                  href={`/news/${topic.id}`}
-                  key={topic.id}
+                  href="/wszystkie-szkoly"
+                  className="block text-center text-xs text-[#e90636] hover:underline mt-4"
+                >
+                  Zobacz wszystkie →
+                </Link>
+              </div>
+            </div>
+
+            {/* Newsy - 5 wpisów */}
+            <div className="space-y-4 mt-8">
+              {newsData.slice(0, 5).map((news) => (
+                <Link
+                  href={`/news/${news.id}`}
+                  key={news.id}
                   className="group block"
                 >
                   <div className="relative">
                     <div className="relative h-[120px] overflow-hidden">
                       <Image
-                        src={topic.image}
-                        alt={topic.title}
+                        src={news.image}
+                        alt={news.title}
                         fill
                         sizes="15vw"
                         className="object-cover"
                       />
                       <div className="absolute top-2 right-2 bg-white px-1.5 py-0.5 text-[11px] font-bold">
-                        {topic.commentsCount}
+                        {COMMENT_COUNTS.secondary[news.id] || 0}
                       </div>
                     </div>
                     <h3 className="mt-1.5 text-[13px] font-bold leading-tight">
-                      {topic.title}
+                      {news.title}
                     </h3>
                   </div>
                 </Link>
@@ -725,30 +837,61 @@ export default function Home() {
                 </Link>
               ))}
             </div>
+
+            {/* Nowa sekcja REKLAMY z dodanym odstępem mt-8 */}
+            <div className="space-y-4 mt-8">
+              {/* Reklama 1 */}
+              <div className="border rounded-lg overflow-hidden bg-gray-50">
+                <div className="text-xs text-gray-500 px-2 py-1 border-b bg-white">
+                  REKLAMA
+                </div>
+                <div className="aspect-[4/5] relative">
+                  <Image
+                    src="/ads/ad-1.jpg"
+                    alt="Reklama"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              </div>
+
+              {/* Reklama 2 */}
+              <div className="border rounded-lg overflow-hidden bg-gray-50">
+                <div className="text-xs text-gray-500 px-2 py-1 border-b bg-white">
+                  REKLAMA
+                </div>
+                <div className="aspect-square relative">
+                  <Image
+                    src="/ads/ad-2.jpg"
+                    alt="Reklama"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              </div>
+
+              {/* Reklama 3 - wersja tekstowa */}
+              <div className="border rounded-lg overflow-hidden bg-white p-4">
+                <div className="text-xs text-gray-500 mb-2">REKLAMA</div>
+                <div className="space-y-2">
+                  <h3 className="font-bold text-sm">Szkoła Tańca Latino</h3>
+                  <p className="text-sm text-gray-600">
+                    Nowe kursy bachaty od podstaw. Zapisz się już dziś!
+                  </p>
+                  <a
+                    href="#"
+                    className="text-[#e90636] text-sm font-medium hover:underline"
+                  >
+                    Dowiedz się więcej →
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-
-        {/* Dodany footer z paginacją */}
-        <div className="mt-8 border-t pt-6 flex justify-between items-center text-sm">
-          <button className="px-4 py-2 border rounded-lg hover:bg-gray-50 transition-colors">
-            Poprzednia strona
-          </button>
-          <div className="flex gap-2">
-            {[1, 2, 3, 4, 5].map((page) => (
-              <button
-                key={page}
-                className={`w-8 h-8 flex items-center justify-center rounded-lg transition-colors
-                  ${
-                    page === 1 ? "bg-blue-600 text-white" : "hover:bg-gray-50"
-                  }`}
-              >
-                {page}
-              </button>
-            ))}
-          </div>
-          <button className="px-4 py-2 border rounded-lg hover:bg-gray-50 transition-colors">
-            Następna strona
-          </button>
+        
+        {/* Linia oddzielająca zamiast paginacji */}
+        <div className="w-full border-b border-gray-200 my-12">
         </div>
       </div>
     </main>
