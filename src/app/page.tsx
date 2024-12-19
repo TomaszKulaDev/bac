@@ -133,14 +133,13 @@ const newsData: NewsItem[] = [
   },
 ];
 
-// Dodajemy stałe dla kategorii
-const CATEGORIES = [
-  { id: "all", label: "Wszystkie" },
-  { id: "events", label: "Wydarzenia" },
-  { id: "competitions", label: "Zawody" },
-  { id: "styles", label: "Style" },
-  { id: "education", label: "Edukacja" },
-  { id: "music", label: "Muzyka" },
+// Dodajemy stałą dla linków nawigacyjnych
+const NAVIGATION_LINKS = [
+  { href: "/wydarzenia", label: "Wydarzenia" },
+  { href: "/zawody", label: "Zawody" },
+  { href: "/style", label: "Style" },
+  { href: "/edukacja", label: "Edukacja" },
+  { href: "/muzyka", label: "Muzyka" },
 ] as const;
 
 // Definicja typu dla liczników komentarzy
@@ -345,9 +344,6 @@ const hotTopics: HotTopic[] = [
 ];
 
 export default function Home() {
-  // Stan dla aktywnej kategorii
-  const [activeCategory, setActiveCategory] = useState<string>("all");
-
   // Stan dla interakcji użytkownika z useMemo dla stabilnych wartości początkowych
   const [isClient, setIsClient] = useState(false);
 
@@ -355,14 +351,6 @@ export default function Home() {
   useEffect(() => {
     setIsClient(true);
   }, []);
-
-  // Filtrowanie newsów według kategorii
-  const getFilteredNews = () => {
-    if (activeCategory === "all") return newsData;
-    return newsData.filter(
-      (news) => news.category.toLowerCase() === activeCategory
-    );
-  };
 
   return (
     <main className="min-h-screen bg-white">
@@ -473,6 +461,7 @@ export default function Home() {
       <div className="sticky top-0 z-50 border-b border-gray-200 bg-white/95 backdrop-blur-sm">
         <div className="container mx-auto px-4 py-3">
           <div className="flex items-center justify-between">
+            {/* Logo */}
             <div className="flex items-center gap-2.5">
               <div className="bg-blue-800 rounded-full w-[42px] h-[42px] flex items-center justify-center shadow-sm">
                 <span className="font-bold text-white text-[13px] leading-none">
@@ -484,51 +473,22 @@ export default function Home() {
               </span>
             </div>
 
-            {/* Rozbudowany system kategorii */}
-            <div className="flex gap-2">
-              {CATEGORIES.map((category) => (
-                <button
-                  key={category.id}
-                  onClick={() => setActiveCategory(category.id)}
-                  className={`
-                    px-3 py-1.5 rounded-full transition-all duration-200
-                    ${
-                      activeCategory === category.id
-                        ? "bg-blue-600 text-white shadow-sm"
-                        : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
-                    }
-                    text-[13px] font-medium
-                  `}
+            {/* Statyczne linki nawigacyjne */}
+            <nav className="flex gap-2">
+              {NAVIGATION_LINKS.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="px-3 py-1.5 rounded-full transition-all duration-200
+                    text-gray-600 hover:bg-gray-100 hover:text-gray-900
+                    text-[13px] font-medium"
                 >
-                  {category.label}
-                  {activeCategory === category.id && (
-                    <span className="ml-2 text-[11px] bg-white/20 px-1.5 py-0.5 rounded-full">
-                      {getFilteredNews().length}
-                    </span>
-                  )}
-                </button>
+                  {link.label}
+                </Link>
               ))}
-            </div>
+            </nav>
           </div>
         </div>
-
-        {/* Dodane podsumowanie filtrów */}
-        {activeCategory !== "all" && (
-          <div className="container mx-auto px-4 py-2 bg-gray-50 text-sm border-t">
-            <div className="flex items-center justify-between">
-              <span className="text-gray-600">
-                Pokazano {getFilteredNews().length} artykułów w kategorii &quot;
-                {CATEGORIES.find((c) => c.id === activeCategory)?.label}&quot;
-              </span>
-              <button
-                onClick={() => setActiveCategory("all")}
-                className="text-blue-600 hover:text-blue-700 text-[13px]"
-              >
-                Wyczyść filtr
-              </button>
-            </div>
-          </div>
-        )}
       </div>
 
       {/* Main Content Container */}
