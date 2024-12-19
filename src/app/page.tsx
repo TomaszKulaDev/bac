@@ -516,17 +516,6 @@ export default function Home() {
                           allowFullScreen
                           className="absolute top-0 left-0 w-full h-full"
                         />
-
-                        {/* Instagram Embed - zakomentowany, odkomentować w razie potrzeby */}
-                        {/* <iframe 
-                          src="https://www.instagram.com/p/POST_ID/embed"
-                          width="100%"
-                          height="100%"
-                          frameBorder="0"
-                          scrolling="no"
-                          allowTransparency
-                          className="absolute top-0 left-0 w-full h-full"
-                        /> */}
                       </div>
                       <div className="absolute top-6 left-6 z-10">
                         <span className="text-white text-2xl font-bold bg-[#e90636] px-4 py-1 rounded">
@@ -540,35 +529,7 @@ export default function Home() {
                     </div>
                   </Link>
                 </div>
-
-                {/* Środkowy artykuł z embedem Instagram */}
-                <div className="w-1/3">
-                  <Link href="/news/pilne-2" className="group block">
-                    <div className="relative">
-                      <div className="aspect-square overflow-hidden">
-                        <iframe
-                          src="https://www.instagram.com/p/C3WGHKWo7k_/embed/captioned"
-                          width="100%"
-                          height="100%"
-                          frameBorder="0"
-                          scrolling="no"
-                          allowTransparency
-                          className="absolute top-0 left-0 w-full h-full"
-                          loading="lazy"
-                          title="Instagram post"
-                          allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-                        />
-                      </div>
-                      <div className="absolute top-3 left-3 bg-white px-2 py-1 rounded text-sm font-medium z-10">
-                        ALMA FESTIVAL
-                      </div>
-                      <h3 className="mt-3 text-lg font-bold leading-tight group-hover:text-[#e90636]">
-                        Największy festiwal bachaty w Europie - Alma Festival
-                        powraca w maju 2024
-                      </h3>
-                    </div>
-                  </Link>
-                </div>
+                
 
                 {/* Prawa kolumna z mniejszymi newsami */}
                 <div className="w-1/3 space-y-4">
@@ -580,7 +541,7 @@ export default function Home() {
                     },
                     {
                       title:
-                        "Jak dobrać idealne buty do tańca? Poradnik dla początkujących",
+                        "Jak dobrać idealne buty do tańca? Poradnik dla początkujących", 
                       image: "/images/bachata-shoes.jpg",
                     },
                     {
@@ -594,7 +555,7 @@ export default function Home() {
                       href={`/news/mini-${index + 1}`}
                       className="group flex items-center gap-3"
                     >
-                      <div className="relative w-20 h-20 flex-shrink-0">
+                      <div className="relative w-32 h-20 flex-shrink-0">
                         <Image
                           src={item.image}
                           alt={item.title}
