@@ -451,7 +451,7 @@ export default function Home() {
         <div className="flex gap-6">
           {/* Lewa strona - główne newsy */}
           <div className="w-[65%]">
-            {/* Sekcja BACHATA NEWS */}
+            {/*------------------------  Sekcja BACHATA NEWS ------------------------  */}
             <div className="w-full mt-8">
               <div className="bg-[#e90636] p-6">
                 <h2 className="text-white text-3xl font-bold mb-6">
@@ -521,12 +521,9 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Sekcja PILNE pod BACHATA NEWS */}
+            {/* Sekcja 12 newsów w stylu WP - układ 3-kolumnowy  */}
             <div className="w-full mt-8">
-              {/* tutaj dodaj tą sekcje */}
-
-              {/* Sekcja newsów w stylu WP - układ 3-kolumnowy */}
-              <div className="w-full mt-8">
+              <div className="w-full mt-16">
                 <div className="grid grid-cols-3 gap-4">
                   {/* KOLUMNA 1 (LEWA) - Duży news zajmujący 2 rzędy w pionie */}
                   <div className="row-span-2 relative group">
@@ -534,167 +531,254 @@ export default function Home() {
                       <div className="relative w-[300px] h-full overflow-hidden">
                         <Image
                           src="/images/bachata-couple.jpg"
-                          alt="Para tańcząca bachatę"
+                          alt="Para tańcząca bachatę w mistrzowskim stylu"
                           fill
                           className="object-cover"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
                         <div className="absolute bottom-4 left-4 right-4">
                           <h2 className="text-white text-[18px] leading-[24px] font-bold">
-                            Walczy o tytuł mistrza świata. Popularny tancerz
-                            bachaty odpowiada krytykom
+                            Bachata Fusion 2024 - nowy styl podbija światowe
+                            parkiety. Zobacz jak łączy tradycję z nowoczesnością
                           </h2>
                         </div>
                       </div>
                     </Link>
                   </div>
-
                   {/* KOLUMNA 2 (ŚRODKOWA) - Górny news */}
                   <Link href="/news/bachata-1" className="block group">
                     <div className="relative w-[300px] h-[180px] overflow-hidden">
                       <Image
                         src="/images/bachata-festival.jpg"
-                        alt="Festival Bachaty"
+                        alt="Festival Bachaty 2024"
                         fill
                         className="object-cover"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
                       <div className="absolute bottom-3 left-3 right-3">
                         <h3 className="text-white text-[18px] leading-[24px] font-bold">
-                          Już miała wygraną w kieszeni. Jak przegrała
-                          mistrzostwa bachaty?
+                          1a. Światowa premiera w Warszawie. Ten festiwal
+                          przyciągnie gwiazdy bachaty z całego świata
                         </h3>
                       </div>
                     </div>
                   </Link>
-
                   {/* KOLUMNA 3 (PRAWA) - Górny news */}
                   <Link href="/news/bachata-2" className="block group">
                     <div className="relative w-[300px] h-[180px] overflow-hidden">
                       <Image
                         src="/images/bachata-schools.jpg"
-                        alt="Najlepsza szkoła bachaty"
+                        alt="Szkoła bachaty"
                         fill
                         className="object-cover"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
                       <div className="absolute bottom-3 left-3 right-3">
                         <h3 className="text-white text-[18px] leading-[24px] font-bold">
-                          Najlepsza szkoła bachaty w Polsce. #1 w rankingu jest
-                          w tym mieście
+                          2a. Tajniki bachaty dominikańskiej. Instruktor z Santo
+                          Domingo zdradza sekrety
                         </h3>
                       </div>
                     </div>
                   </Link>
-
                   {/* KOLUMNA 2 (ŚRODKOWA) - Dolny news */}
                   <Link href="/news/bachata-3" className="block group">
                     <div className="relative w-[300px] h-[180px] overflow-hidden">
                       <Image
-                        src="/images/bachata-romance.jpg"
-                        alt="Ostrzeżenie dla tancerzy"
+                        src="/images/bachata-shoes.jpg"
+                        alt="Buty do bachaty"
                         fill
                         className="object-cover"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                      <div className="absolute top-3 right-3 w-10 h-10 rounded-full overflow-hidden border-2 border-white">
-                        <Image
-                          src="/images/bachata-steps.jpg"
-                          alt="Avatar"
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
                       <div className="absolute bottom-3 left-3 right-3">
                         <h3 className="text-white text-[18px] leading-[24px] font-bold">
-                          Ostrzega przed tym krokiem w bachacie. Instruktorzy są
-                          zaniepokojeni
+                          3a. Buty do bachaty - jak wybrać idealne? Eksperci
+                          radzą na co zwrócić uwagę
                         </h3>
                       </div>
                     </div>
                   </Link>
-
+                  {/* KOLUMNA 3 (PRAWA) - Dolny news */}
+                  <Link href="/news/bachata-4" className="block group">
+                    <div className="relative w-[300px] h-[180px] overflow-hidden">
+                      <Image
+                        src="/images/bachata-romance.jpg"
+                        alt="Romantyczny taniec"
+                        fill
+                        className="object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                      <div className="absolute bottom-3 left-3 right-3">
+                        <h3 className="text-white text-[18px] leading-[24px] font-bold">
+                          4a. Romeo Santos w Polsce! Król bachaty wystąpi na
+                          wyjątkowym koncercie
+                        </h3>
+                      </div>
+                    </div>
+                  </Link>
+                  {/* KOLUMNA 3 (PRAWA) - Dolny news */}
+                  <Link href="/news/bachata-4" className="block group">
+                    <div className="relative w-[300px] h-[180px] overflow-hidden">
+                      <Image
+                        src="/images/bachata-steps.jpg"
+                        alt="Kroki bachaty"
+                        fill
+                        className="object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                      <div className="absolute bottom-3 left-3 right-3">
+                        <h3 className="text-white text-[18px] leading-[24px] font-bold">
+                          4a. Rewolucyjna metoda nauki bachaty. Ta technika
+                          zmienia sposób nauczania
+                        </h3>
+                      </div>
+                    </div>
+                  </Link>
                   {/* KOLUMNA 3 (PRAWA) - Dolny news */}
                   <Link href="/news/bachata-4" className="block group">
                     <div className="relative w-[300px] h-[180px] overflow-hidden">
                       <Image
                         src="/images/bachata-history.jpg"
-                        alt="Współpraca z Romeo Santos"
+                        alt="Historia bachaty"
                         fill
                         className="object-cover"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
                       <div className="absolute bottom-3 left-3 right-3">
                         <h3 className="text-white text-[18px] leading-[24px] font-bold">
-                          Pracował z Romeo Santos. Zdradza kulisy współpracy z
-                          królem bachaty
+                          4a. Historia bachaty - od muzyki zakazanej do
+                          światowego fenomenu
                         </h3>
                       </div>
                     </div>
                   </Link>
-
-                  {/* DOLNY RZĄD - 3 newsy (pełna szerokość) */}
-                  <div className="col-span-3 grid grid-cols-3 gap-4 mt-4">
-                    {/* Dolny rząd - News 1 */}
-                    <Link href="/news/bachata-5" className="block group">
-                      <div className="relative w-[300px] h-[180px] overflow-hidden">
-                        <Image
-                          src="/images/bachata-fusion.jpg"
-                          alt="Nowy styl bachaty"
-                          fill
-                          className="object-cover"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                        <div className="absolute bottom-3 left-3 right-3">
-                          <h3 className="text-white text-[18px] leading-[24px] font-bold">
-                            Rewolucja w bachacie. Nowy styl podbija światowe
-                            parkiety
-                          </h3>
-                        </div>
+                  {/* KOLUMNA 3 (PRAWA) - Dolny news */}
+                  <Link href="/news/bachata-4" className="block group">
+                    <div className="relative w-[300px] h-[180px] overflow-hidden">
+                      <Image
+                        src="/images/bachata-fusion.jpg"
+                        alt="Fuzja stylów"
+                        fill
+                        className="object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                      <div className="absolute bottom-3 left-3 right-3">
+                        <h3 className="text-white text-[18px] leading-[24px] font-bold">
+                          4a. Bachata i zdrowie - jak taniec wpływa na kondycję?
+                          Nowe badania
+                        </h3>
                       </div>
-                    </Link>
-
-                    {/* Dolny rząd - News 2 */}
-                    <Link href="/news/bachata-6" className="block group">
-                      <div className="relative w-[300px] h-[180px] overflow-hidden">
-                        <Image
-                          src="/images/bachata-steps.jpg"
-                          alt="Smutny wpis instruktorki"
-                          fill
-                          className="object-cover"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                        <div className="absolute bottom-3 left-3 right-3">
-                          <h3 className="text-white text-[18px] leading-[24px] font-bold">
-                            Smutny wpis znanej instruktorki. Zamyka szkołę po 15
-                            latach
-                          </h3>
-                        </div>
+                    </div>
+                  </Link>
+                  {/* KOLUMNA 3 (PRAWA) - Dolny news */}
+                  <Link href="/news/bachata-4" className="block group">
+                    <div className="relative w-[300px] h-[180px] overflow-hidden">
+                      <Image
+                        src="/images/bachata-songs.jpg"
+                        alt="Muzyka do bachaty"
+                        fill
+                        className="object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                      <div className="absolute bottom-3 left-3 right-3">
+                        <h3 className="text-white text-[18px] leading-[24px] font-bold">
+                          4a. Mistrzostwa Polski w Bachacie 2024 - poznaj
+                          faworytów
+                        </h3>
                       </div>
-                    </Link>
-
-                    {/* Dolny rząd - News 3 */}
-                    <Link href="/news/bachata-7" className="block group">
-                      <div className="relative w-[300px] h-[180px] overflow-hidden">
-                        <Image
-                          src="/images/bachata-songs.jpg"
-                          alt="Przełamała barierę"
-                          fill
-                          className="object-cover"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                        <div className="absolute bottom-3 left-3 right-3">
-                          <h3 className="text-white text-[18px] leading-[24px] font-bold">
-                            Latami nie mogła się przełamać. Teraz jest
-                            mistrzynią bachaty
-                          </h3>
-                        </div>
+                    </div>
+                  </Link>
+                  {/* KOLUMNA 3 (PRAWA) - Dolny news */}
+                  <Link href="/news/bachata-4" className="block group">
+                    <div className="relative w-[300px] h-[180px] overflow-hidden">
+                      <Image
+                        src="/images/bachata-outfit.jpg"
+                        alt="Moda w bachacie"
+                        fill
+                        className="object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                      <div className="absolute bottom-3 left-3 right-3">
+                        <h3 className="text-white text-[18px] leading-[24px] font-bold">
+                          4a. Moda w bachacie - trendy w strojach tanecznych na
+                          nowy sezon
+                        </h3>
                       </div>
-                    </Link>
-                  </div>
+                    </div>
+                  </Link>
+                  <Link href="/news/bachata-4" className="block group">
+                    <div className="relative w-[300px] h-[180px] overflow-hidden">
+                      <Image
+                        src="/images/bachata-outfit.jpg"
+                        alt="Moda w bachacie"
+                        fill
+                        className="object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                      <div className="absolute bottom-3 left-3 right-3">
+                        <h3 className="text-white text-[18px] leading-[24px] font-bold">
+                          4a. Moda w bachacie - trendy w strojach tanecznych na
+                          nowy sezon
+                        </h3>
+                      </div>
+                    </div>
+                  </Link>
+                  <Link href="/news/bachata-4" className="block group">
+                    <div className="relative w-[300px] h-[180px] overflow-hidden">
+                      <Image
+                        src="/images/bachata-outfit.jpg"
+                        alt="Moda w bachacie"
+                        fill
+                        className="object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                      <div className="absolute bottom-3 left-3 right-3">
+                        <h3 className="text-white text-[18px] leading-[24px] font-bold">
+                          4a. Moda w bachacie - trendy w strojach tanecznych na
+                          nowy sezon
+                        </h3>
+                      </div>
+                    </div>
+                  </Link>
+                  <Link href="/news/bachata-4" className="block group">
+                    <div className="relative w-[300px] h-[180px] overflow-hidden">
+                      <Image
+                        src="/images/bachata-outfit.jpg"
+                        alt="Moda w bachacie"
+                        fill
+                        className="object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                      <div className="absolute bottom-3 left-3 right-3">
+                        <h3 className="text-white text-[18px] leading-[24px] font-bold">
+                          4a. Moda w bachacie - trendy w strojach tanecznych na
+                          nowy sezon
+                        </h3>
+                      </div>
+                    </div>
+                  </Link>
+                  <Link href="/news/bachata-4" className="block group">
+                    <div className="relative w-[300px] h-[180px] overflow-hidden">
+                      <Image
+                        src="/images/bachata-outfit.jpg"
+                        alt="Moda w bachacie"
+                        fill
+                        className="object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                      <div className="absolute bottom-3 left-3 right-3">
+                        <h3 className="text-white text-[18px] leading-[24px] font-bold">
+                          4a. Moda w bachacie - trendy w strojach tanecznych na
+                          nowy sezon
+                        </h3>
+                      </div>
+                    </div>
+                  </Link>
                 </div>
               </div>
 
+              {/* --------------------------------------- Sekcja ANKIETY ------------------------------------ */}
               {/* Sekcja ANKIETY - 3 w poziomie */}
               <div className="w-full mt-8">
                 <div className="grid grid-cols-3 gap-6">
@@ -706,7 +790,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Prawa kolumna - TEMATY DNIA */}
+          {/* Prawa kolumna - TEMATY DNIA  Newsy pisane*/}
           <div className="w-[20%]">
             {/* Header TEMATY DNIA */}
             <div className="mb-6">
