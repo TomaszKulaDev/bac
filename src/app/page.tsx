@@ -285,10 +285,10 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-white font-['Roboto_Condensed',_'Roboto_Condensed-fallback',_Arial,_sans-serif]">
       {/* Pasek najnowszych wiadomości */}
       <div className="bg-[#f5f5f5] border-b border-gray-200">
-        <div className="max-w-[1530px] mx-auto flex items-stretch">
+        <div className="max-w-[1530px] mx-auto flex items-stretch font-['Roboto_Condensed']">
           {/* Sekcja NAJNOWSZE */}
           <div className="flex items-center border-r border-gray-200">
             <div className="px-4 py-2 flex items-center gap-2">
@@ -390,7 +390,7 @@ export default function Home() {
       </div>
 
       {/* Header z rozwiniętym systemem kategorii */}
-      <div className="sticky top-0 z-50 border-b border-gray-200 bg-white/95 backdrop-blur-sm">
+      <div className="sticky top-0 z-50 border-b border-gray-200 bg-white/95 backdrop-blur-sm font-['Roboto_Condensed']">
         <div className="container mx-auto px-4 py-3">
           <div className="flex items-center justify-between">
             {/* Logo */}
@@ -424,7 +424,7 @@ export default function Home() {
       </div>
 
       {/* Main Content Container */}
-      <div className="container mx-auto px-4 py-6">
+      <div className="container mx-auto px-4 py-6 font-['Roboto_Condensed']">
         <div className="flex gap-6">
           {/* Lewa strona - główne newsy */}
           <div className="w-[65%]">
@@ -500,76 +500,8 @@ export default function Home() {
 
             {/* Sekcja PILNE pod BACHATA NEWS */}
             <div className="w-full mt-8">
-              <div className="flex gap-6">
-                {/* Duży artykuł PILNE z filmem YouTube/Instagram */}
-                <div className="w-1/3">
-                  <Link href="/news/pilne-1" className="group block">
-                    <div className="relative">
-                      <div className="aspect-video rounded-lg overflow-hidden">
-                        {/* YouTube Embed */}
-                        <iframe
-                          width="100%"
-                          height="100%"
-                          src="https://www.youtube.com/embed/VIDEO_ID"
-                          title="Międzynarodowy Festiwal Bachaty 2024"
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          allowFullScreen
-                          className="absolute top-0 left-0 w-full h-full"
-                        />
-                      </div>
-                      <div className="absolute top-6 left-6 z-10">
-                        <span className="text-white text-2xl font-bold bg-[#e90636] px-4 py-1 rounded">
-                          PILNE!
-                        </span>
-                        <h3 className="text-white text-xl font-bold leading-tight mt-4 group-hover:underline max-w-[300px]">
-                          Międzynarodowy Festiwal Bachaty 2024 ogłasza gwiazdy
-                          wieczoru!
-                        </h3>
-                      </div>
-                    </div>
-                  </Link>
-                </div>
-                
-
-                {/* Prawa kolumna z mniejszymi newsami */}
-                <div className="w-1/3 space-y-4">
-                  {[
-                    {
-                      title:
-                        "Nowy trend w bachacie - fusion z elementami urban kizomby",
-                      image: "/images/bachata-fusion.jpg",
-                    },
-                    {
-                      title:
-                        "Jak dobrać idealne buty do tańca? Poradnik dla początkujących", 
-                      image: "/images/bachata-shoes.jpg",
-                    },
-                    {
-                      title:
-                        "TOP 10 romantycznych piosenek do bachaty na 2024 rok",
-                      image: "/images/bachata-songs.jpg",
-                    },
-                  ].map((item, index) => (
-                    <Link
-                      key={index}
-                      href={`/news/mini-${index + 1}`}
-                      className="group flex items-center gap-3"
-                    >
-                      <div className="relative w-32 h-20 flex-shrink-0">
-                        <Image
-                          src={item.image}
-                          alt={item.title}
-                          fill
-                          className="object-cover rounded"
-                        />
-                      </div>
-                      <h4 className="text-sm font-bold leading-tight group-hover:text-[#e90636]">
-                        {item.title}
-                      </h4>
-                    </Link>
-                  ))}
-                </div>
-              </div>
+              
+              {/* tutaj dodaj tą sekcje */}
 
               {/* Sekcja newsów w stylu WP - układ 3-kolumnowy */}
               <div className="w-full mt-8">
