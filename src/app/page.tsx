@@ -4,6 +4,8 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { FaEye, FaRegClock, FaShare } from "react-icons/fa";
+import { Poll, pollsData } from "@/components/poll";
+import { PollData } from "@/components/poll/types";
 
 // Uproszczony interfejs bez elementów społecznościowych
 interface NewsItem {
@@ -278,11 +280,32 @@ const topicsList: TopicItem[] = [
 export default function Home() {
   // Stan dla interakcji użytkownika z useMemo dla stabilnych wartości początkowych
   const [isClient, setIsClient] = useState(false);
+  const [polls, setPolls] = useState<PollData[]>(pollsData);
 
   // Inicjalizacja stanu po stronie klienta
   useEffect(() => {
     setIsClient(true);
   }, []);
+
+  const handleVote = (pollId: string, optionId: string) => {
+    setPolls((currentPolls) =>
+      currentPolls.map((poll) => {
+        if (poll.id === pollId) {
+          const updatedOptions = poll.options.map((option) => ({
+            ...option,
+            votes: option.id === optionId ? option.votes + 1 : option.votes,
+          }));
+
+          return {
+            ...poll,
+            options: updatedOptions,
+            totalVotes: poll.totalVotes + 1,
+          };
+        }
+        return poll;
+      })
+    );
+  };
 
   return (
     <main className="min-h-screen bg-white font-['Roboto_Condensed',_'Roboto_Condensed-fallback',_Arial,_sans-serif]">
@@ -500,7 +523,6 @@ export default function Home() {
 
             {/* Sekcja PILNE pod BACHATA NEWS */}
             <div className="w-full mt-8">
-              
               {/* tutaj dodaj tą sekcje */}
 
               {/* Sekcja newsów w stylu WP - układ 3-kolumnowy */}
@@ -509,7 +531,7 @@ export default function Home() {
                   {/* KOLUMNA 1 (LEWA) - Duży news zajmujący 2 rzędy w pionie */}
                   <div className="row-span-2 relative group">
                     <Link href="/news/bachata-main">
-                      <div className="relative h-full overflow-hidden">
+                      <div className="relative w-[300px] h-full overflow-hidden">
                         <Image
                           src="/images/bachata-couple.jpg"
                           alt="Para tańcząca bachatę"
@@ -529,7 +551,7 @@ export default function Home() {
 
                   {/* KOLUMNA 2 (ŚRODKOWA) - Górny news */}
                   <Link href="/news/bachata-1" className="block group">
-                    <div className="relative aspect-[16/9] overflow-hidden">
+                    <div className="relative w-[300px] h-[180px] overflow-hidden">
                       <Image
                         src="/images/bachata-festival.jpg"
                         alt="Festival Bachaty"
@@ -548,7 +570,7 @@ export default function Home() {
 
                   {/* KOLUMNA 3 (PRAWA) - Górny news */}
                   <Link href="/news/bachata-2" className="block group">
-                    <div className="relative aspect-[16/9] overflow-hidden">
+                    <div className="relative w-[300px] h-[180px] overflow-hidden">
                       <Image
                         src="/images/bachata-schools.jpg"
                         alt="Najlepsza szkoła bachaty"
@@ -567,7 +589,7 @@ export default function Home() {
 
                   {/* KOLUMNA 2 (ŚRODKOWA) - Dolny news */}
                   <Link href="/news/bachata-3" className="block group">
-                    <div className="relative aspect-[16/9] overflow-hidden">
+                    <div className="relative w-[300px] h-[180px] overflow-hidden">
                       <Image
                         src="/images/bachata-romance.jpg"
                         alt="Ostrzeżenie dla tancerzy"
@@ -594,7 +616,7 @@ export default function Home() {
 
                   {/* KOLUMNA 3 (PRAWA) - Dolny news */}
                   <Link href="/news/bachata-4" className="block group">
-                    <div className="relative aspect-[16/9] overflow-hidden">
+                    <div className="relative w-[300px] h-[180px] overflow-hidden">
                       <Image
                         src="/images/bachata-history.jpg"
                         alt="Współpraca z Romeo Santos"
@@ -615,7 +637,7 @@ export default function Home() {
                   <div className="col-span-3 grid grid-cols-3 gap-4 mt-4">
                     {/* Dolny rząd - News 1 */}
                     <Link href="/news/bachata-5" className="block group">
-                      <div className="relative aspect-[16/9] overflow-hidden">
+                      <div className="relative w-[300px] h-[180px] overflow-hidden">
                         <Image
                           src="/images/bachata-fusion.jpg"
                           alt="Nowy styl bachaty"
@@ -634,7 +656,7 @@ export default function Home() {
 
                     {/* Dolny rząd - News 2 */}
                     <Link href="/news/bachata-6" className="block group">
-                      <div className="relative aspect-[16/9] overflow-hidden">
+                      <div className="relative w-[300px] h-[180px] overflow-hidden">
                         <Image
                           src="/images/bachata-steps.jpg"
                           alt="Smutny wpis instruktorki"
@@ -653,7 +675,7 @@ export default function Home() {
 
                     {/* Dolny rząd - News 3 */}
                     <Link href="/news/bachata-7" className="block group">
-                      <div className="relative aspect-[16/9] overflow-hidden">
+                      <div className="relative w-[300px] h-[180px] overflow-hidden">
                         <Image
                           src="/images/bachata-songs.jpg"
                           alt="Przełamała barierę"
@@ -673,71 +695,12 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Nowa sekcja ANKIETA */}
+              {/* Sekcja ANKIETY - 3 w poziomie */}
               <div className="w-full mt-8">
-                <div className="bg-white border rounded-lg p-6 shadow-sm">
-                  <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-                    <svg
-                      className="w-5 h-5 text-[#e90636]"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M7 2a2 2 0 012 2v12a2 2 0 01-2 2H3a2 2 0 01-2-2V4a2 2 0 012-2h4zm0 1H3a1 1 0 00-1 1v12a1 1 0 001 1h4a1 1 0 001-1V4a1 1 0 00-1-1zm8-1a2 2 0 012 2v12a2 2 0 01-2 2h-4a2 2 0 01-2-2V4a2 2 0 012-2h4zm0 1h-4a1 1 0 00-1 1v12a1 1 0 001 1h4a1 1 0 001-1V4a1 1 0 00-1-1z" />
-                    </svg>
-                    ANKIETA
-                  </h2>
-
-                  <div className="space-y-4">
-                    <p className="text-lg font-medium">
-                      Jaki styl bachaty preferujesz?
-                    </p>
-
-                    <div className="space-y-2">
-                      <label className="flex items-center gap-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
-                        <input
-                          type="radio"
-                          name="bachata-style"
-                          className="w-4 h-4 text-[#e90636]"
-                        />
-                        <span>Bachata Dominicana</span>
-                      </label>
-
-                      <label className="flex items-center gap-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
-                        <input
-                          type="radio"
-                          name="bachata-style"
-                          className="w-4 h-4 text-[#e90636]"
-                        />
-                        <span>Bachata Sensual</span>
-                      </label>
-
-                      <label className="flex items-center gap-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
-                        <input
-                          type="radio"
-                          name="bachata-style"
-                          className="w-4 h-4 text-[#e90636]"
-                        />
-                        <span>Bachata Moderna</span>
-                      </label>
-
-                      <label className="flex items-center gap-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
-                        <input
-                          type="radio"
-                          name="bachata-style"
-                          className="w-4 h-4 text-[#e90636]"
-                        />
-                        <span>Bachata Fusion</span>
-                      </label>
-                    </div>
-
-                    <button className="w-full mt-4 bg-[#e90636] text-white py-2 rounded-lg hover:bg-[#d00530] transition-colors">
-                      Zagłosuj
-                    </button>
-
-                    <div className="text-sm text-gray-500 text-center">
-                      Oddano już 1234 głosów
-                    </div>
-                  </div>
+                <div className="grid grid-cols-3 gap-6">
+                  {polls.map((poll) => (
+                    <Poll key={poll.id} data={poll} onVote={handleVote} />
+                  ))}
                 </div>
               </div>
             </div>
