@@ -450,7 +450,7 @@ export default function Home() {
       <div className="container mx-auto px-4 py-6 font-['Roboto_Condensed']">
         <div className="flex gap-6">
           {/* Lewa strona - główne newsy */}
-          <div className="w-[65%]">
+          <div className="w-[62%]">
             {/*------------------------  Sekcja  Czerwone BACHATA NEWS ------------------------  */}
             <div className="w-full mt-8">
               <div className="bg-[#e90636] p-6">
