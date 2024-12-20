@@ -3,7 +3,7 @@ import { PollData } from "./types";
 export const pollsData: PollData[] = [
   {
     id: "style",
-    title: "ANKIETA", 
+    title: "ANKIETA",
     question: "Co najbardziej pociąga Cię w partnerze podczas tańca?",
     totalVotes: 145,
     options: [
@@ -35,34 +35,6 @@ export const pollsData: PollData[] = [
       { id: "heels", text: "Wysokie obcasy", votes: 62 },
       { id: "makeup", text: "Makijaż i biżuteria", votes: 34 },
       { id: "fit", text: "Dopasowany strój", votes: 23 },
-    ],
-  },
-  {
-    id: "news-poll",
-    title: "ANKIETA TYGODNIA",
-    question: "Który temat z Bachata News najbardziej Cię zainteresował?",
-    totalVotes: 234,
-    options: [
-      { 
-        id: "festival-2024", 
-        text: "Światowy Festiwal Bachaty 2024 w Warszawie", 
-        votes: 89 
-      },
-      { 
-        id: "championship", 
-        text: "Daniel i Maya - Mistrzostwo Świata", 
-        votes: 67 
-      },
-      { 
-        id: "romance", 
-        text: "Nowy kierunek: Bachata Romance", 
-        votes: 45 
-      },
-      { 
-        id: "schools", 
-        text: "Top 10 szkół bachaty w Polsce", 
-        votes: 33 
-      },
     ],
   },
 ];

@@ -451,7 +451,7 @@ export default function Home() {
         <div className="flex gap-6">
           {/* Lewa strona - główne newsy */}
           <div className="w-[65%]">
-            {/*------------------------  Sekcja BACHATA NEWS ------------------------  */}
+            {/*------------------------  Sekcja  Czerwone BACHATA NEWS ------------------------  */}
             <div className="w-full mt-8">
               <div className="bg-[#e90636] p-6">
                 <h2 className="text-white text-3xl font-bold mb-6">
@@ -521,7 +521,7 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Sekcja 12 newsów w stylu WP - układ 3-kolumnowy  */}
+            {/*------------------------  Sekcja 12 newsów w stylu WP - układ 3-kolumnowy ------------------------   */}
             <div className="w-full mt-8">
               <div className="w-full mt-16">
                 <div className="grid grid-cols-3 gap-4">
