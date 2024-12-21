@@ -12,6 +12,7 @@ import { BachataNews } from "@/app/news/components/BachataNews/BachataNews";
 import { bachataNewsData } from "@/app/news/components/BachataNews/data";
 import { DailyTopics } from "@/app/news/components/DailyTopics";
 import { topicsData } from "@/app/news/components/DailyTopics/data";
+import { AdColumn, adData } from "@/app/news/components/AddsRightCol";
 
 // Uproszczony interfejs bez elementów społecznościowych
 interface NewsItem {
@@ -182,63 +183,6 @@ interface TopicItem {
   category?: string;
   isHighlighted?: boolean;
 }
-
-// Modyfikacja listy tematów z dodatkowymi kategoriami
-const topicsList: TopicItem[] = [
-  {
-    id: "1",
-    title: "Światowy Festiwal Bachaty ogłasza nowe gwiazdy. Lista instruktorów",
-    isHighlighted: true,
-  },
-  {
-    id: "2",
-    title: "Rosjanie zachwyceni bachatą. Nowy trend w Moskwie",
-    category: "ŚWIAT",
-  },
-  {
-    id: "3",
-    title:
-      "Dominikańscy tancerze zdziwieni europejskim stylem. Komentują technikę",
-    category: "STYL",
-  },
-  {
-    id: "4",
-    title: '"Bachata to nowe tango". Eksperci przewidują boom na styl',
-    category: "TRENDY",
-  },
-  {
-    id: "5",
-    title: 'Romeo Santos publikuje nowy teledysk. "To powrót do korzeni"',
-    category: "MUZYKA",
-  },
-  {
-    id: "6",
-    title: '"Współczesna bachata czci tradycję". Mocne słowa po festiwalu',
-    category: "WYDARZENIA",
-  },
-  {
-    id: "7",
-    category: "ŚWIAT",
-    title:
-      "Duński styl bije na alarm. Wskazuje na ryzyko utraty autentyczności",
-  },
-  {
-    id: "8",
-    title: "Nowa szkoła bachaty otworzona na osiedlu. Tłumy na otwarciu",
-    category: "POLSKA",
-  },
-  {
-    id: "9",
-    title: "Kanada ugina się pod wpływem bachaty. Ogłaszają zmiany",
-    category: "ŚWIAT",
-  },
-  {
-    id: "10",
-    category: "ŚWIAT",
-    title:
-      "Sensual vs Dominicana. Która wersja lepsza? Eksperci nie mają wątpliwości",
-  },
-];
 
 export default function Home() {
   // Stan dla interakcji użytkownika z useMemo dla stabilnych wartości początkowych
@@ -589,56 +533,7 @@ export default function Home() {
           {/*  ------------- Prawa kolumna - TEMATY DNIA  -------------  */}
           <div className="w-[20%]">
             <DailyTopics topics={topicsData} />
-
-            {/* ------------- Nowa sekcja REKLAMY z dodanym odstępem mt-8 -------------  */}
-            <div className="space-y-4 mt-8">
-              {/* Reklama 1 */}
-              <div className="border rounded-lg overflow-hidden bg-gray-50">
-                <div className="text-xs text-gray-500 px-2 py-1 border-b bg-white">
-                  REKLAMA
-                </div>
-                <div className="aspect-[4/5] relative">
-                  <Image
-                    src="/ads/ad-1.jpg"
-                    alt="Reklama"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              </div>
-
-              {/* Reklama 2 */}
-              <div className="border rounded-lg overflow-hidden bg-gray-50">
-                <div className="text-xs text-gray-500 px-2 py-1 border-b bg-white">
-                  REKLAMA
-                </div>
-                <div className="aspect-square relative">
-                  <Image
-                    src="/ads/ad-2.jpg"
-                    alt="Reklama"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              </div>
-
-              {/* Reklama 3 - wersja tekstowa */}
-              <div className="border rounded-lg overflow-hidden bg-white p-4">
-                <div className="text-xs text-gray-500 mb-2">REKLAMA</div>
-                <div className="space-y-2">
-                  <h3 className="font-bold text-sm">Szkoła Tańca Latino</h3>
-                  <p className="text-sm text-gray-600">
-                    Nowe kursy bachaty od podstaw. Zapisz się już dziś!
-                  </p>
-                  <a
-                    href="#"
-                    className="text-[#e90636] text-sm font-medium hover:underline"
-                  >
-                    Dowiedz się więcej →
-                  </a>
-                </div>
-              </div>
-            </div>
+            <AdColumn {...adData} />
           </div>
         </div>
 
