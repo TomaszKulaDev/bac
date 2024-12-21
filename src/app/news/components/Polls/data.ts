@@ -1,8 +1,8 @@
-import { PollData } from "./types";
+import { PollsRecord } from "./types";
 
-export const pollsData: PollData[] = [
-  {
-    id: "style",
+export const polls: PollsRecord = {
+  partnerPoll: {
+    id: "partnerPoll",
     title: "ANKIETA",
     question: "Co najbardziej pociąga Cię w partnerze podczas tańca?",
     totalVotes: 145,
@@ -13,8 +13,8 @@ export const pollsData: PollData[] = [
       { id: "fusion", text: "Kreatywność i spontaniczność", votes: 20 },
     ],
   },
-  {
-    id: "frequency",
+  frequencyPoll: {
+    id: "frequencyPoll",
     title: "ANKIETA",
     question: "Ile razy w tygodniu tańczysz bachatę?",
     totalVotes: 98,
@@ -25,8 +25,8 @@ export const pollsData: PollData[] = [
       { id: "daily", text: "Codziennie", votes: 6 },
     ],
   },
-  {
-    id: "outfit",
+  outfitPoll: {
+    id: "outfitPoll",
     title: "ANKIETA",
     question: "Co najbardziej przyciąga uwagę w stroju tancerki bachaty?",
     totalVotes: 167,
@@ -37,4 +37,4 @@ export const pollsData: PollData[] = [
       { id: "fit", text: "Dopasowany strój", votes: 23 },
     ],
   },
-];
+};

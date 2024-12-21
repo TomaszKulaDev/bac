@@ -8,9 +8,13 @@ export interface PollData {
   id: string;
   title: string;
   question: string;
-  options: PollOption[];
   totalVotes: number;
+  options: PollOption[];
 }
+
+export type PollsRecord = {
+  [key: string]: PollData;
+};
 
 export interface PollProps {
   data: PollData;

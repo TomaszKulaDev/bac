@@ -4,8 +4,8 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { FaEye, FaRegClock, FaShare } from "react-icons/fa";
-import { Poll, pollsData } from "@/components/poll";
-import { PollData } from "@/components/poll/types";
+import { Poll, polls } from "@/app/news/components/Polls";
+import type { PollData } from "@/app/news/components/Polls/types";
 import { NewsTickerBar } from "@/app/news/components/NewsTickerBar/NewsTickerBar";
 import { latestNewsData as tickerNewsData } from "@/app/news/components/NewsTickerBar/data";
 import { BachataNews } from "@/app/news/components/BachataNews/BachataNews";
@@ -13,6 +13,7 @@ import { bachataNewsData } from "@/app/news/components/BachataNews/data";
 import { DailyTopics } from "@/app/news/components/DailyTopics";
 import { topicsData } from "@/app/news/components/DailyTopics/data";
 import { AdColumn, ads } from "@/app/news/components/AddsRightCol";
+import { PollsRecord } from "@/app/news/components/Polls/types";
 
 // Uproszczony interfejs bez elementów społecznościowych
 interface NewsItem {
@@ -187,7 +188,7 @@ interface TopicItem {
 export default function Home() {
   // Stan dla interakcji użytkownika z useMemo dla stabilnych wartości początkowych
   const [isClient, setIsClient] = useState(false);
-  const [polls, setPolls] = useState<PollData[]>(pollsData);
+  const [pollsState, setPollsState] = useState<PollsRecord>(polls);
 
   // Inicjalizacja stanu po stronie klienta
   useEffect(() => {
@@ -195,23 +196,25 @@ export default function Home() {
   }, []);
 
   const handleVote = (pollId: string, optionId: string) => {
-    setPolls((currentPolls) =>
-      currentPolls.map((poll) => {
-        if (poll.id === pollId) {
-          const updatedOptions = poll.options.map((option) => ({
+    setPollsState((currentPolls) => {
+      const poll = currentPolls[pollId];
+      if (!poll) {
+        console.error(`Poll with id ${pollId} not found`);
+        return currentPolls;
+      }
+
+      return {
+        ...currentPolls,
+        [pollId]: {
+          ...poll,
+          options: poll.options.map((option) => ({
             ...option,
             votes: option.id === optionId ? option.votes + 1 : option.votes,
-          }));
-
-          return {
-            ...poll,
-            options: updatedOptions,
-            totalVotes: poll.totalVotes + 1,
-          };
-        }
-        return poll;
-      })
-    );
+          })),
+          totalVotes: poll.totalVotes + 1,
+        },
+      };
+    });
   };
 
   return (
@@ -518,13 +521,12 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* --------------------------------------- Sekcja ANKIETY ------------------------------------ */}
-              {/* Sekcja ANKIETY - 3 w poziomie */}
+              {/* Sekcja ankiet */}
               <div className="w-full mt-8">
                 <div className="grid grid-cols-3 gap-6">
-                  {polls.map((poll) => (
-                    <Poll key={poll.id} data={poll} onVote={handleVote} />
-                  ))}
+                  <Poll data={pollsState.partnerPoll} onVote={handleVote} />
+                  <Poll data={pollsState.frequencyPoll} onVote={handleVote} />
+                  <Poll data={pollsState.outfitPoll} onVote={handleVote} />
                 </div>
               </div>
             </div>
@@ -536,6 +538,7 @@ export default function Home() {
             {/* ------------- Reklamy -------------  */}
             <AdColumn {...ads.schoolAd} /> {/* Szkoła tańca */}
             <AdColumn {...ads.courseAd} /> {/* Kurs online */}
+         
           </div>
         </div>
 
