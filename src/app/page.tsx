@@ -538,7 +538,6 @@ export default function Home() {
             {/* ------------- Reklamy -------------  */}
             <AdColumn {...ads.schoolAd} /> {/* Szkoła tańca */}
             <AdColumn {...ads.courseAd} /> {/* Kurs online */}
-         
           </div>
         </div>
 
