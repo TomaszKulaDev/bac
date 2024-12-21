@@ -9,42 +9,45 @@ interface DailyTopicsProps {
 
 export function DailyTopics({ topics }: DailyTopicsProps) {
   return (
-    <div>
-      {/* Header TEMATY DNIA */}
+    <div className="bg-white rounded-lg p-5">
+      {/* Header */}
       <div className="mb-6">
-        <div className="flex items-center gap-2.5 pb-3 border-b border-gray-200">
-          <div className="bg-red-600 rounded-full w-[22px] h-[22px] flex items-center justify-center shadow-sm">
-            <span className="font-bold text-white text-[13px] leading-none">
-              T
-            </span>
+        <div className="flex items-center gap-3 pb-4 border-b border-gray-100">
+          <div className="bg-[#e90636] rounded-md w-6 h-6 flex items-center justify-center">
+            <span className="font-semibold text-white text-sm">T</span>
           </div>
-          <span className="font-bold text-[13px] tracking-wider text-gray-900">
-            TEMATY DNIA
+          <span className="font-semibold text-base text-gray-900">
+            Tematy dnia
           </span>
         </div>
       </div>
 
       {/* Lista tematów */}
-      <div className="space-y-[18px]">
-        {topics.map((topic) => (
+      <div className="space-y-5">
+        {topics.map((topic, index) => (
           <Link
             href={`/news/${topic.id}`}
             key={topic.id}
             className="group block"
           >
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-1.5">
               {topic.category && (
-                <span className="text-[11px] font-bold text-blue-600">
+                <span className="text-xs font-medium text-[#e90636] uppercase tracking-wide">
                   {topic.category}
                 </span>
               )}
               <h3
-                className={`text-[13px] leading-[1.4] ${
-                  topic.isHighlighted ? "font-bold" : "font-normal"
-                } text-gray-900 group-hover:text-gray-900`}
+                className={`text-[15px] leading-tight ${
+                  topic.isHighlighted
+                    ? "font-medium text-gray-900"
+                    : "font-normal text-gray-700"
+                } group-hover:text-[#e90636] transition-colors duration-200`}
               >
                 {topic.title}
               </h3>
+              {index !== topics.length - 1 && (
+                <div className="pt-5 border-b border-gray-100" />
+              )}
             </div>
           </Link>
         ))}
