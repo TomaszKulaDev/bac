@@ -8,6 +8,8 @@ import { Poll, pollsData } from "@/components/poll";
 import { PollData } from "@/components/poll/types";
 import { NewsTickerBar } from "@/app/news/components/NewsTickerBar/NewsTickerBar";
 import { latestNewsData as tickerNewsData } from "@/app/news/components/NewsTickerBar/data";
+import { BachataNews } from "@/app/news/components/BachataNews/BachataNews";
+import { bachataNewsData } from "@/app/news/components/BachataNews/data";
 
 // Uproszczony interfejs bez elementów społecznościowych
 interface NewsItem {
@@ -268,7 +270,7 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-white font-['Roboto_Condensed',_'Roboto_Condensed-fallback',_Arial,_sans-serif]">
-      {/* Ruchomy pasek wiadomości - dodajemy NewsTickerBar jako pierwszy komponent */}
+      {/* -------------------------- Ruchomy pasek wiadomości - dodajemy NewsTickerBar jako pierwszy komponent --------------------------    */}
       <NewsTickerBar latestNews={tickerNewsData} />
 
       {/* Header z rozwiniętym systemem kategorii */}
@@ -311,74 +313,7 @@ export default function Home() {
           {/* Lewa strona - główne newsy */}
           <div className="w-[62%]">
             {/*------------------------  Sekcja  Czerwone BACHATA NEWS ------------------------  */}
-            <div className="w-full mt-8">
-              <div className="bg-[#e90636] p-6">
-                <h2 className="text-white text-3xl font-bold mb-6">
-                  BACHATA NEWS
-                </h2>
-
-                <div className="grid grid-cols-3 gap-4">
-                  {/* Artykuł 1 */}
-                  <Link href="/news/bachata-1" className="group">
-                    <div className="relative aspect-[16/9] overflow-hidden">
-                      <Image
-                        src="/images/bachata-festival.jpg"
-                        alt="Światowy Festiwal Bachaty 2024"
-                        fill
-                        className="object-cover"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                    </div>
-                    <div className="mt-3">
-                      <h3 className="text-white text-lg font-bold leading-tight group-hover:underline">
-                        Światowy Festiwal Bachaty 2024 - Największe wydarzenie
-                        roku już w czerwcu w Warszawie
-                      </h3>
-                      <div className="w-8 h-[2px] bg-white/80 mt-2" />
-                    </div>
-                  </Link>
-
-                  {/* Artykuł 2 */}
-                  <Link href="/news/bachata-2" className="group">
-                    <div className="relative aspect-[16/9] overflow-hidden">
-                      <Image
-                        src="/images/bachata-couple.jpg"
-                        alt="Daniel i Maya - Mistrzowie Świata"
-                        fill
-                        className="object-cover"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                    </div>
-                    <div className="mt-3">
-                      <h3 className="text-white text-lg font-bold leading-tight group-hover:underline">
-                        Daniel i Maya zdobywają mistrzostwo świata w bachacie
-                        sensual
-                      </h3>
-                      <div className="w-8 h-[2px] bg-white/80 mt-2" />
-                    </div>
-                  </Link>
-
-                  {/* Artykuł 3 */}
-                  <Link href="/news/bachata-3" className="group">
-                    <div className="relative aspect-[16/9] overflow-hidden">
-                      <Image
-                        src="/images/bachata-romance.jpg"
-                        alt="Nowy kierunek w bachacie"
-                        fill
-                        className="object-cover"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                    </div>
-                    <div className="mt-3">
-                      <h3 className="text-white text-lg font-bold leading-tight group-hover:underline">
-                        Bachata Romance - nowy kierunek w bachacie tradycyjnej
-                      </h3>
-                      <div className="w-8 h-[2px] bg-white/80 mt-2" />
-                    </div>
-                  </Link>
-                </div>
-              </div>
-            </div>
+            <BachataNews newsItems={bachataNewsData} />
 
             {/*------------------------  Sekcja 12 newsów w stylu WP - układ 3-kolumnowy ------------------------   */}
             <div className="w-full mt-8">
