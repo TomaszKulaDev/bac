@@ -40,21 +40,9 @@ export const polls: PollsRecord = {
     ],
   },
 
-
   // TRENDY W MODZIE TANECZNEJ DLA NIEJ
   // Ankiety dla niej
-  // outfitPollForHer: {
-  //   id: "outfitPollForHer",
-  //   title: "ANKIETA",
-  //   question: "Co najbardziej przyciąga uwagę w stroju tancerki bachaty?",
-  //   totalVotes: 167,
-  //   options: [
-  //     { id: "dress", text: "Zwiewna sukienka", votes: 48 },
-  //     { id: "heels", text: "Wysokie obcasy", votes: 62 },
-  //     { id: "makeup", text: "Makijaż i biżuteria", votes: 34 },
-  //     { id: "fit", text: "Dopasowany strój", votes: 23 },
-  //   ],
-  // },
+
   dressStylePollForHer: {
     id: "dressStylePollForHer",
     title: "ANKIETA",
@@ -91,6 +79,56 @@ export const polls: PollsRecord = {
       { id: "bracelet", text: "Bransoletka/Pierścionki", votes: 35 },
       { id: "minimal", text: "Minimalistyczna biżuteria", votes: 20 },
       { id: "none", text: "Żadna biżuteria - naturalny look", votes: 15 },
+    ],
+  },
+
+  // ZWYCIĘZCY I WYDARZENIA
+  // Relacje z najważniejszych turniejów i konkursów Bachatowych.
+
+  winnersPoll: {
+    id: "winnersPoll",
+    title: "ANKIETA",
+    question: "Który zwycięzca turnieju najbardziej Cię zaskoczył?",
+    totalVotes: 178,
+    options: [
+      {
+        id: "couple1",
+        text: "Para z Polski na World Bachata Masters",
+        votes: 52,
+      },
+      { id: "couple2", text: "Debiutanci na BachataStars", votes: 45 },
+      { id: "couple3", text: "Zwycięzcy Bachata Open", votes: 43 },
+      { id: "couple4", text: "Mistrzowie European Bachata Cup", votes: 38 },
+    ],
+  },
+
+  eventsPoll: {
+    id: "eventsPoll",
+    title: "ANKIETA",
+    question: "Jaki format turniejów preferujesz?",
+    totalVotes: 165,
+    options: [
+      { id: "jack", text: "Jack&Jill - losowe pary", votes: 48 },
+      { id: "showcase", text: "Pokazy choreograficzne", votes: 42 },
+      {
+        id: "pro",
+        text: "Rywalizacja profesjonalistów - własne pary",
+        votes: 35,
+      },
+      { id: "amateur", text: "Brak turniejów - wolę social dance", votes: 40 },
+    ],
+  },
+
+  judgingPoll: {
+    id: "judgingPoll",
+    title: "ANKIETA",
+    question: "Co jest najważniejsze w ocenie tańca?",
+    totalVotes: 189,
+    options: [
+      { id: "musicality", text: "Muzykalność i interpretacja", votes: 58 },
+      { id: "technique", text: "Technika i precyzja", votes: 52 },
+      { id: "chemistry", text: "Chemistry między partnerami", votes: 45 },
+      { id: "style", text: "Styl i osobowość", votes: 34 },
     ],
   },
 };

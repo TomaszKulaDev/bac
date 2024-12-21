@@ -219,7 +219,6 @@ export default function Home() {
                     data={pollsState.dressStylePollForHer}
                     onVote={handleVote}
                   />
-                  {/* Wymien te ankiete na ankiety dla niej z pytaniami o sukienki, buty i akcesoria do tańca */}
                 </div>
               </div>
             </div>
@@ -237,6 +236,13 @@ export default function Home() {
                 eventsItems={eventsWinnersData}
                 showHeader={false}
               />
+              <div className="w-full mt-8">
+                <div className="grid grid-cols-3 gap-6">
+                  <Poll data={pollsState.winnersPoll} onVote={handleVote} />
+                  <Poll data={pollsState.eventsPoll} onVote={handleVote} />
+                  <Poll data={pollsState.judgingPoll} onVote={handleVote} />
+                </div>
+              </div>
             </div>
           </div>
 
