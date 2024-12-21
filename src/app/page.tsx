@@ -18,6 +18,8 @@ import { NewsGrid } from "@/app/news/components/NewsGrid";
 import { newsGridData } from "@/app/news/components/NewsGrid/data";
 import { FashionGrid } from "@/app/news/components/FashionGrid";
 import { fashionGridData } from "@/app/news/components/FashionGrid/data";
+import { EventsWinnersGrid } from "@/app/news/components/EventsWinnersGrid";
+import { eventsWinnersData } from "@/app/news/components/EventsWinnersGrid/data";
 
 // Uproszczony interfejs bez elementów społecznościowych
 interface NewsItem {
@@ -220,6 +222,21 @@ export default function Home() {
                   {/* Wymien te ankiete na ankiety dla niej z pytaniami o sukienki, buty i akcesoria do tańca */}
                 </div>
               </div>
+            </div>
+            {/* Nowa sekcja zwycięzców i wydarzeń */}
+            <div className="w-full mt-8">
+              <div className="mb-4">
+                <h2 className="text-2xl font-semibold text-gray-900">
+                  ZWYCIĘZCY I WYDARZENIA
+                </h2>
+                <p className="text-base text-gray-600 mt-1">
+                  Relacje z najważniejszych turniejów i konkursów Bachatowych.
+                </p>
+              </div>
+              <EventsWinnersGrid
+                eventsItems={eventsWinnersData}
+                showHeader={false}
+              />
             </div>
           </div>
 

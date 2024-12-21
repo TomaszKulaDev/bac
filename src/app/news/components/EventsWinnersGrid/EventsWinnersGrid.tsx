@@ -2,17 +2,23 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { NewsGridProps } from "./types";
 import { GridAd } from "../GridAd";
 import { gridAds } from "../GridAd/ads";
+import { eventsWinnersData } from "./data";
 
-export function NewsGrid({
-  newsItems,
-  title = "NAJCIEKAWSZE W BACHACIE",
+interface EventsWinnersGridProps {
+  eventsItems: typeof eventsWinnersData;
+  title?: string;
+  showHeader?: boolean;
+}
+
+export function EventsWinnersGrid({
+  eventsItems,
+  title = "ZWYCIĘZCY I WYDARZENIA",
   showHeader = true,
-}: NewsGridProps) {
-  const limitedNewsItems = newsItems.slice(0, 13);
-  const [firstItem, ...restItems] = limitedNewsItems;
+}: EventsWinnersGridProps) {
+  const limitedItems = eventsItems.slice(0, 7);
+  const [firstItem, ...restItems] = limitedItems;
 
   return (
     <div className="w-full mt-8">
@@ -27,9 +33,9 @@ export function NewsGrid({
 
       <div className="w-full">
         <div className="grid grid-cols-3 grid-rows-2 gap-4">
-          {/* Pierwszy duży news */}
+          {/* Pierwszy duży artykuł */}
           <Link
-            href={`/news/${firstItem.url}`}
+            href={`/events/${firstItem.url}`}
             className="block group relative row-span-2"
           >
             <div className="relative w-[300px] h-[376px] overflow-hidden">
@@ -44,15 +50,20 @@ export function NewsGrid({
                 <h3 className="text-white text-2xl font-medium leading-tight group-hover:underline decoration-2 underline-offset-4">
                   {firstItem.title}
                 </h3>
+                {firstItem.description && (
+                  <p className="text-white/80 text-base mt-2">
+                    {firstItem.description}
+                  </p>
+                )}
               </div>
             </div>
           </Link>
 
-          {/* Pozostałe newsy */}
+          {/* Pozostałe artykuły */}
           {restItems.map((item) => (
             <Link
               key={item.id}
-              href={`/news/${item.url}`}
+              href={`/events/${item.url}`}
               className="block group relative"
             >
               <div className="relative w-[300px] h-[180px] overflow-hidden">
@@ -72,9 +83,32 @@ export function NewsGrid({
             </Link>
           ))}
 
-          {/* Miejsce na reklamę */}
+          {/* Reklama */}
           <GridAd {...gridAds.defaultAd} />
         </div>
+      </div>
+
+      {/* Link "Zobacz więcej" pod gridem */}
+      <div className="mt-4 flex justify-end">
+        <Link
+          href="/events"
+          className="text-sm text-gray-600 hover:text-[#e90636] transition-colors duration-200 flex items-center gap-1"
+        >
+          Zobacz więcej
+          <svg
+            className="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 5l7 7-7 7"
+            />
+          </svg>
+        </Link>
       </div>
     </div>
   );
