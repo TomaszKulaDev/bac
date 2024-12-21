@@ -11,7 +11,7 @@ export function NewsGrid({
   title = "NAJCIEKAWSZE W BACHACIE",
   showHeader = true,
 }: NewsGridProps) {
-  const limitedNewsItems = newsItems.slice(0, 13);
+  const limitedNewsItems = newsItems.slice(0, 10);
   const [firstItem, ...restItems] = limitedNewsItems;
 
   return (

@@ -20,6 +20,7 @@ import { FashionGrid } from "@/app/news/components/FashionGrid";
 import { fashionGridData } from "@/app/news/components/FashionGrid/data";
 import { EventsWinnersGrid } from "@/app/news/components/EventsWinnersGrid";
 import { eventsWinnersData } from "@/app/news/components/EventsWinnersGrid/data";
+import { Header } from "@/app/news/components/Header";
 
 // Uproszczony interfejs bez elementów społecznościowych
 interface NewsItem {
@@ -109,40 +110,7 @@ export default function Home() {
     <main className="min-h-screen bg-white font-['Roboto_Condensed',_'Roboto_Condensed-fallback',_Arial,_sans-serif]">
       {/* -------------------------- Ruchomy pasek wiadomości - dodajemy NewsTickerBar jako pierwszy komponent --------------------------    */}
       <NewsTickerBar latestNews={tickerNewsData} />
-
-      {/* Header z rozwiniętym systemem kategorii */}
-      <div className="sticky top-0 z-50 border-b border-gray-200 bg-white/95 backdrop-blur-sm font-['Roboto_Condensed']">
-        <div className="container mx-auto px-4 py-3">
-          <div className="flex items-center justify-between">
-            {/* Logo */}
-            <div className="flex items-center gap-2.5">
-              <div className="bg-blue-800 rounded-full w-[42px] h-[42px] flex items-center justify-center shadow-sm">
-                <span className="font-bold text-white text-[13px] leading-none">
-                  INFO
-                </span>
-              </div>
-              <span className="font-bold text-[13px] tracking-wider text-gray-900">
-                PARKIET
-              </span>
-            </div>
-
-            {/* Statyczne linki nawigacyjne */}
-            <nav className="flex gap-2">
-              {NAVIGATION_LINKS.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="px-3 py-1.5 rounded-full transition-all duration-200
-                    text-gray-600 hover:bg-gray-100 hover:text-gray-900
-                    text-[13px] font-medium"
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </nav>
-          </div>
-        </div>
-      </div>
+      <Header />
 
       {/* Main Content Container */}
       <div className="container mx-auto px-4 py-6 font-['Roboto_Condensed']">
