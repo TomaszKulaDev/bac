@@ -16,6 +16,8 @@ import { AdColumn, ads } from "@/app/news/components/AddsRightCol";
 import { PollsRecord } from "@/app/news/components/Polls/types";
 import { NewsGrid } from "@/app/news/components/NewsGrid";
 import { newsGridData } from "@/app/news/components/NewsGrid/data";
+import { FashionGrid } from "@/app/news/components/FashionGrid";
+import { fashionGridData } from "@/app/news/components/FashionGrid/data";
 
 // Uproszczony interfejs bez elementów społecznościowych
 interface NewsItem {
@@ -153,6 +155,22 @@ export default function Home() {
               <NewsGrid
                 newsItems={newsGridData}
                 title="NAJCIEKAWSZE W BACHACIE!"
+                showHeader={true}
+              />
+
+              {/*  ------------- Sekcja ankiet  -------------  */}
+              <div className="w-full mt-8">
+                <div className="grid grid-cols-3 gap-6">
+                  <Poll data={pollsState.partnerPoll} onVote={handleVote} />
+                  <Poll data={pollsState.frequencyPoll} onVote={handleVote} />
+                  <Poll data={pollsState.outfitPoll} onVote={handleVote} />
+                </div>
+              </div>
+
+              {/* Sekcja mody - przeniesiona pod ankiety */}
+              <FashionGrid
+                fashionItems={fashionGridData}
+                title="TRENDY W MODZIE TANECZNEJ"
                 showHeader={true}
               />
 
