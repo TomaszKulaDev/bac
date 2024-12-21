@@ -6,6 +6,8 @@ import Image from "next/image";
 import { FaEye, FaRegClock, FaShare } from "react-icons/fa";
 import { Poll, pollsData } from "@/components/poll";
 import { PollData } from "@/components/poll/types";
+import { NewsTickerBar } from "@/app/news/components/NewsTickerBar/NewsTickerBar";
+import { latestNewsData as tickerNewsData } from "@/app/news/components/NewsTickerBar/data";
 
 // Uproszczony interfejs bez elementów społecznościowych
 interface NewsItem {
@@ -169,49 +171,6 @@ const ArticleListItem = ({ news }: { news: NewsItem }) => {
   );
 };
 
-// Interfejs dla najnowszych wiadomości
-interface LatestNews {
-  id: string;
-  time: string;
-  title: string;
-  category: string;
-  categoryColor?: string;
-}
-
-// Dane najnowszych wiadomości
-const latestNewsData: LatestNews[] = [
-  {
-    id: "1",
-    time: "22:34",
-    title:
-      "Światowi instruktorzy bachaty przybywają do Warszawy na BachatArt Festival",
-    category: "WYDARZENIA",
-    categoryColor: "text-blue-600",
-  },
-  {
-    id: "2",
-    time: "22:25",
-    title: "Nowe zasady na World Bachata Masters 2024. Kontrowersyjna decyzja",
-    category: "ZAWODY",
-    categoryColor: "text-orange-600",
-  },
-  {
-    id: "3",
-    time: "22:14",
-    title: "Romeo Santos zapowiada nowy album. 'To powrót do korzeni bachaty'",
-    category: "MUZYKA",
-    categoryColor: "text-purple-600",
-  },
-  {
-    id: "4",
-    time: "22:06",
-    title:
-      "Dominikańska technika vs styl europejski. Gorąca debata w świecie bachaty",
-    category: "STYL",
-    categoryColor: "text-green-600",
-  },
-];
-
 // Dodajmy nowy interfejs dla tematów
 interface TopicItem {
   id: string;
@@ -309,108 +268,8 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-white font-['Roboto_Condensed',_'Roboto_Condensed-fallback',_Arial,_sans-serif]">
-      {/* Pasek najnowszych wiadomości */}
-      <div className="bg-[#f5f5f5] border-b border-gray-200">
-        <div className="max-w-[1530px] mx-auto flex items-stretch font-['Roboto_Condensed']">
-          {/* Sekcja NAJNOWSZE */}
-          <div className="flex items-center border-r border-gray-200">
-            <div className="px-4 py-2 flex items-center gap-2">
-              <span className="text-red-600 font-bold text-sm tracking-wide">
-                NAJNOWSZE
-              </span>
-              <button className="w-6 h-6 flex items-center justify-center hover:bg-gray-200 rounded-full transition-colors">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 19l-7-7 7-7"
-                  />
-                </svg>
-              </button>
-            </div>
-          </div>
-
-          {/* Sekcja z przewijającymi się wiadomościami */}
-          <div className="flex-1 relative overflow-hidden">
-            <div className="animate-marquee flex items-stretch">
-              {latestNewsData.map((news) => (
-                <Link
-                  key={news.id}
-                  href={`/news/${news.id}`}
-                  className="flex items-center min-w-max border-r border-gray-200 group"
-                >
-                  <div className="px-4 py-2 flex items-center gap-3">
-                    <span className="text-red-600 font-bold text-sm">
-                      {news.time}
-                    </span>
-                    <span className="text-sm text-gray-900 group-hover:text-gray-900">
-                      {news.title}
-                    </span>
-                    <span
-                      className={`text-xs font-medium ${
-                        news.categoryColor || "text-gray-500"
-                      }`}
-                    >
-                      {news.category}
-                    </span>
-                  </div>
-                </Link>
-              ))}
-              {/* Duplikacja dla płynnego przewijania */}
-              {latestNewsData.map((news) => (
-                <Link
-                  key={`dup-${news.id}`}
-                  href={`/news/${news.id}`}
-                  className="flex items-center min-w-max border-r border-gray-200 group"
-                >
-                  <div className="px-4 py-2 flex items-center gap-3">
-                    <span className="text-red-600 font-bold text-sm">
-                      {news.time}
-                    </span>
-                    <span className="text-sm text-gray-900 group-hover:text-gray-900">
-                      {news.title}
-                    </span>
-                    <span
-                      className={`text-xs font-medium ${
-                        news.categoryColor || "text-gray-500"
-                      }`}
-                    >
-                      {news.category}
-                    </span>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          {/* Przycisk następny */}
-          <div className="border-l border-gray-200">
-            <button className="h-full px-4 hover:bg-gray-200 transition-colors">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
+      {/* Ruchomy pasek wiadomości - dodajemy NewsTickerBar jako pierwszy komponent */}
+      <NewsTickerBar latestNews={tickerNewsData} />
 
       {/* Header z rozwiniętym systemem kategorii */}
       <div className="sticky top-0 z-50 border-b border-gray-200 bg-white/95 backdrop-blur-sm font-['Roboto_Condensed']">
