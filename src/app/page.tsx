@@ -163,7 +163,7 @@ export default function Home() {
                 <div className="grid grid-cols-3 gap-6">
                   <Poll data={pollsState.partnerPoll} onVote={handleVote} />
                   <Poll data={pollsState.frequencyPoll} onVote={handleVote} />
-                  <Poll data={pollsState.outfitPoll} onVote={handleVote} />
+                  <Poll data={pollsState.stylePoll} onVote={handleVote} />
                 </div>
               </div>
 
@@ -182,14 +182,41 @@ export default function Home() {
                   fashionItems={fashionGridData}
                   showHeader={false}
                 />
+                <div className="mt-4 flex justify-end">
+                  <Link
+                    href="/fashion"
+                    className="text-sm text-gray-600 hover:text-[#e90636] transition-colors duration-200 flex items-center gap-1"
+                  >
+                    Zobacz więcej
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </Link>
+                </div>
               </div>
 
-              {/*  ------------- Sekcja ankiet  -------------  */}
+              {/*  ------------- Sekcja ankiet - dla niej  -------------  */}
               <div className="w-full mt-8">
                 <div className="grid grid-cols-3 gap-6">
-                  <Poll data={pollsState.partnerPoll} onVote={handleVote} />
-                  <Poll data={pollsState.frequencyPoll} onVote={handleVote} />
-                  <Poll data={pollsState.outfitPoll} onVote={handleVote} />
+                  <Poll
+                    data={pollsState.accessoriesPollForHer}
+                    onVote={handleVote}
+                  />
+                  <Poll data={pollsState.shoesPollForHer} onVote={handleVote} />
+                  <Poll
+                    data={pollsState.dressStylePollForHer}
+                    onVote={handleVote}
+                  />
                   {/* Wymien te ankiete na ankiety dla niej z pytaniami o sukienki, buty i akcesoria do tańca */}
                 </div>
               </div>

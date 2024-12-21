@@ -5,16 +5,27 @@ import { PollProps } from "./types";
 import { FaCheckCircle } from "react-icons/fa";
 
 export function Poll({ data, onVote }: PollProps) {
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const [hasVoted, setHasVoted] = useState(false);
   const [showThankYou, setShowThankYou] = useState(false);
 
   const handleVote = (optionId: string) => {
     if (!hasVoted) {
-      setSelectedOption(optionId);
-      setHasVoted(true);
-      onVote(data.id, optionId);
+      setSelectedOptions((prev) => {
+        if (prev.includes(optionId)) {
+          return prev.filter((id) => id !== optionId);
+        }
+        return [...prev, optionId];
+      });
+    }
+  };
 
+  const handleSubmitVotes = () => {
+    if (selectedOptions.length > 0 && !hasVoted) {
+      selectedOptions.forEach((optionId) => {
+        onVote(data.id, optionId);
+      });
+      setHasVoted(true);
       setShowThankYou(true);
       setTimeout(() => setShowThankYou(false), 2000);
     }
@@ -32,7 +43,7 @@ export function Poll({ data, onVote }: PollProps) {
           <div className="text-center">
             <FaCheckCircle className="text-blue-600 text-4xl mx-auto mb-2" />
             <p className="text-blue-600 font-medium">
-              Dziękujemy za Twój głos!
+              Dziękujemy za Twoje głosy!
             </p>
           </div>
         </div>
@@ -53,17 +64,19 @@ export function Poll({ data, onVote }: PollProps) {
         <p className="text-lg font-bold text-gray-700 leading-tight">
           {data.question}
         </p>
+        <p className="text-sm text-gray-500">Możesz wybrać kilka odpowiedzi</p>
         <div className="space-y-2">
           {data.options.map((option) => {
             const percentage = calculatePercentage(option.votes);
+            const isSelected = selectedOptions.includes(option.id);
 
             return (
               <div key={option.id} className="relative">
                 <input
-                  type="radio"
+                  type="checkbox"
                   name={`poll-${data.id}`}
                   id={`${data.id}-${option.id}`}
-                  checked={selectedOption === option.id}
+                  checked={isSelected}
                   onChange={() => handleVote(option.id)}
                   disabled={hasVoted}
                   className="peer absolute opacity-0 w-full h-full cursor-pointer disabled:cursor-default"
@@ -77,7 +90,7 @@ export function Poll({ data, onVote }: PollProps) {
                         : "hover:bg-blue-50/50 cursor-pointer"
                     }
                     ${
-                      selectedOption === option.id
+                      isSelected
                         ? "border-blue-400 bg-blue-50/50"
                         : "border-gray-200"
                     }`}
@@ -92,18 +105,16 @@ export function Poll({ data, onVote }: PollProps) {
                   <div className="relative flex items-center justify-between">
                     <span className="flex items-center gap-3">
                       <span
-                        className={`w-4 h-4 border-2 rounded-full flex-shrink-0 transition-colors
+                        className={`w-4 h-4 border-2 rounded flex-shrink-0 transition-colors
                           ${
-                            selectedOption === option.id
+                            isSelected
                               ? "border-blue-500 bg-blue-500"
                               : "border-gray-300"
                           }`}
                       />
                       <span
                         className={`font-medium ${
-                          selectedOption === option.id
-                            ? "text-blue-700"
-                            : "text-gray-700"
+                          isSelected ? "text-blue-700" : "text-gray-700"
                         }`}
                       >
                         {option.text}
@@ -121,6 +132,16 @@ export function Poll({ data, onVote }: PollProps) {
             );
           })}
         </div>
+
+        {!hasVoted && selectedOptions.length > 0 && (
+          <button
+            onClick={handleSubmitVotes}
+            className="mt-4 w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
+          >
+            Zagłosuj ({selectedOptions.length}{" "}
+            {selectedOptions.length === 1 ? "wybór" : "wybory"})
+          </button>
+        )}
 
         {hasVoted && (
           <div className="mt-4 text-sm text-gray-500 flex items-center justify-between border-t border-gray-200 pt-4">
