@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-interface AdProps {
+export interface AdProps {
   imageUrl: string;
   title: string;
   description?: string;
@@ -12,10 +12,7 @@ interface AdProps {
 export function AdColumn({ imageUrl, title, description, link }: AdProps) {
   return (
     <div className="border rounded-lg overflow-hidden bg-white mt-8">
-      {/* Nagłówek reklamy */}
       <div className="text-xs text-gray-500 px-2 py-1 border-b">REKLAMA</div>
-
-      {/* Treść reklamy */}
       <a href={link} className="block group">
         <div className="relative aspect-[4/5]">
           <Image src={imageUrl} alt={title} fill className="object-cover" />

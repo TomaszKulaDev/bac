@@ -12,7 +12,7 @@ import { BachataNews } from "@/app/news/components/BachataNews/BachataNews";
 import { bachataNewsData } from "@/app/news/components/BachataNews/data";
 import { DailyTopics } from "@/app/news/components/DailyTopics";
 import { topicsData } from "@/app/news/components/DailyTopics/data";
-import { AdColumn, adData } from "@/app/news/components/AddsRightCol";
+import { AdColumn, ads } from "@/app/news/components/AddsRightCol";
 
 // Uproszczony interfejs bez elementów społecznościowych
 interface NewsItem {
@@ -533,7 +533,9 @@ export default function Home() {
           {/*  ------------- Prawa kolumna - TEMATY DNIA  -------------  */}
           <div className="w-[20%]">
             <DailyTopics topics={topicsData} />
-            <AdColumn {...adData} />
+            {/* ------------- Reklamy -------------  */}
+            <AdColumn {...ads.schoolAd} /> {/* Szkoła tańca */}
+            <AdColumn {...ads.courseAd} /> {/* Kurs online */}
           </div>
         </div>
 
