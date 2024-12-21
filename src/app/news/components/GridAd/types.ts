@@ -1,11 +1,11 @@
-export interface AdProps {
+export interface GridAdProps {
   imageUrl: string;
   title: string;
   description?: string;
   link: string;
 }
 
-export type Ad = {
+export type GridAd = {
   type: "image" | "text";
   title: string;
   link: string;
@@ -13,7 +13,3 @@ export type Ad = {
   | { type: "image"; imageUrl: string }
   | { type: "text"; description: string }
 );
-
-export interface AdColumnProps {
-  ads: Ad[];
-}

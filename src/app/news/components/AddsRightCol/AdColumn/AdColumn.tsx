@@ -12,7 +12,6 @@ export interface AdProps {
 export function AdColumn({ imageUrl, title, description, link }: AdProps) {
   return (
     <div className="border rounded-lg overflow-hidden bg-white mt-8">
-      <div className="text-xs text-gray-500 px-2 py-1 border-b">REKLAMA</div>
       <a href={link} className="block group">
         <div className="relative aspect-[4/5]">
           <Image src={imageUrl} alt={title} fill className="object-cover" />

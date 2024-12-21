@@ -7,4 +7,6 @@ export interface NewsGridItem {
 
 export interface NewsGridProps {
   newsItems: NewsGridItem[];
+  title?: string;
+  showHeader?: boolean;
 }
