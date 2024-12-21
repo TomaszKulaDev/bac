@@ -10,6 +10,8 @@ import { NewsTickerBar } from "@/app/news/components/NewsTickerBar/NewsTickerBar
 import { latestNewsData as tickerNewsData } from "@/app/news/components/NewsTickerBar/data";
 import { BachataNews } from "@/app/news/components/BachataNews/BachataNews";
 import { bachataNewsData } from "@/app/news/components/BachataNews/data";
+import { DailyTopics } from "@/app/news/components/DailyTopics";
+import { topicsData } from "@/app/news/components/DailyTopics/data";
 
 // Uproszczony interfejs bez elementów społecznościowych
 interface NewsItem {
@@ -584,49 +586,11 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Prawa kolumna - TEMATY DNIA  Newsy pisane*/}
+          {/*  ------------- Prawa kolumna - TEMATY DNIA  -------------  */}
           <div className="w-[20%]">
-            {/* Header TEMATY DNIA */}
-            <div className="mb-6">
-              <div className="flex items-center gap-2.5 pb-3 border-b border-gray-200">
-                <div className="bg-red-600 rounded-full w-[22px] h-[22px] flex items-center justify-center shadow-sm">
-                  <span className="font-bold text-white text-[13px] leading-none">
-                    T
-                  </span>
-                </div>
-                <span className="font-bold text-[13px] tracking-wider text-gray-900">
-                  TEMATY DNIA
-                </span>
-              </div>
-            </div>
+            <DailyTopics topics={topicsData} />
 
-            {/* Lista tematów */}
-            <div className="space-y-[18px]">
-              {topicsList.map((topic) => (
-                <Link
-                  href={`/news/${topic.id}`}
-                  key={topic.id}
-                  className="group block"
-                >
-                  <div className="flex flex-col gap-1">
-                    {topic.category && (
-                      <span className="text-[11px] font-bold text-blue-600">
-                        {topic.category}
-                      </span>
-                    )}
-                    <h3
-                      className={`text-[13px] leading-[1.4] ${
-                        topic.isHighlighted ? "font-bold" : "font-normal"
-                      } text-gray-900 group-hover:text-gray-900`}
-                    >
-                      {topic.title}
-                    </h3>
-                  </div>
-                </Link>
-              ))}
-            </div>
-
-            {/* Nowa sekcja REKLAMY z dodanym odstępem mt-8 */}
+            {/* ------------- Nowa sekcja REKLAMY z dodanym odstępem mt-8 -------------  */}
             <div className="space-y-4 mt-8">
               {/* Reklama 1 */}
               <div className="border rounded-lg overflow-hidden bg-gray-50">
