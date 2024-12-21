@@ -14,6 +14,8 @@ import { DailyTopics } from "@/app/news/components/DailyTopics";
 import { topicsData } from "@/app/news/components/DailyTopics/data";
 import { AdColumn, ads } from "@/app/news/components/AddsRightCol";
 import { PollsRecord } from "@/app/news/components/Polls/types";
+import { NewsGrid } from "@/app/news/components/NewsGrid";
+import { newsGridData } from "@/app/news/components/NewsGrid/data";
 
 // Uproszczony interfejs bez elementów społecznościowych
 interface NewsItem {
@@ -266,7 +268,37 @@ export default function Home() {
 
             {/*------------------------  Sekcja 12 newsów w stylu WP - układ 3-kolumnowy ------------------------   */}
             <div className="w-full mt-8">
-              <div className="w-full mt-16">
+              {/* Nagłówek sekcji - zmniejszone marginesy */}
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <h2 className="text-2xl font-bold text-gray-900">
+                    NAJCIEKAWSZE W BACHACIE
+                  </h2>
+                  <div className="h-2 w-2 rounded-full bg-[#e90636] animate-pulse" />
+                </div>
+                <Link
+                  href="/news"
+                  className="text-sm text-gray-600 hover:text-[#e90636] transition-colors duration-200 flex items-center gap-1"
+                >
+                  Zobacz wszystkie
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </Link>
+              </div>
+
+              {/* Istniejąca zawartość sekcji - usunięty górny margines */}
+              <div className="w-full">
                 <div className="grid grid-cols-3 gap-4">
                   {/* KOLUMNA 1 (LEWA) - Duży news zajmujący 2 rzędy w pionie */}
                   <div className="row-span-2 relative group">
@@ -501,23 +533,31 @@ export default function Home() {
                       </div>
                     </div>
                   </Link>
-                  <Link href="/news/bachata-4" className="block group">
-                    <div className="relative w-[300px] h-[180px] overflow-hidden">
+                  <div className="relative w-[300px] h-[180px] overflow-hidden">
+                    <div className="absolute top-0 left-0 bg-yellow-400 text-xs px-2 py-0.5 z-10 font-medium">
+                      REKLAMA
+                    </div>
+                    <a
+                      href="https://sklep-taneczny.pl/stroje"
+                      className="block group"
+                    >
                       <Image
-                        src="/images/bachata-outfit.jpg"
-                        alt="Moda w bachacie"
+                        src="/ads/stroje-taneczne.jpg"
+                        alt="Sklep ze strojami tanecznymi"
                         fill
-                        className="object-cover"
+                        className="object-cover transition-transform group-hover:scale-105"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
                       <div className="absolute bottom-3 left-3 right-3">
                         <h3 className="text-white text-[18px] leading-[24px] font-bold">
-                          4a. Moda w bachacie - trendy w strojach tanecznych na
-                          nowy sezon
+                          Nowa kolekcja strojów do bachaty - sprawdź teraz!
                         </h3>
+                        <p className="text-white/90 text-sm mt-1">
+                          Rabat 15% na pierwsze zakupy
+                        </p>
                       </div>
-                    </div>
-                  </Link>
+                    </a>
+                  </div>
                 </div>
               </div>
 
