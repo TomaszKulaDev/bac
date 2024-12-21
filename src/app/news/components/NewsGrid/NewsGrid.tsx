@@ -19,7 +19,7 @@ export function NewsGrid({
       {showHeader && (
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <h2 className="text-2xl font-bold text-gray-900">{title}</h2>
+            <h2 className="text-2xl font-semibold text-gray-900">{title}</h2>
             <div className="h-2 w-2 rounded-full bg-[#e90636] animate-pulse" />
           </div>
           <Link
@@ -44,7 +44,6 @@ export function NewsGrid({
         </div>
       )}
 
-      {/* Grid z newsami */}
       <div className="w-full">
         <div className="grid grid-cols-3 grid-rows-2 gap-4">
           {/* Pierwszy duży news */}
@@ -60,21 +59,14 @@ export function NewsGrid({
                 className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
               />
 
-              {/* Ciemny gradient */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/20" />
+              {/* Ciemny gradient - zmodyfikowany */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
 
-              {/* Tytuł */}
-              <div className="absolute bottom-0 left-0 right-0 p-6">
-                <h3 className="text-white text-2xl font-bold leading-tight group-hover:text-white/90 transition-colors duration-300">
+              {/* Tytuł - przesunięty niżej */}
+              <div className="absolute bottom-4 left-0 right-0 px-4">
+                <h3 className="text-white text-2xl font-medium leading-tight group-hover:underline decoration-2 underline-offset-4">
                   {firstItem.title}
                 </h3>
-                <div className="relative h-[2px] mt-3 overflow-hidden">
-                  <div
-                    className="absolute inset-0 bg-white w-35 -translate-x-full group-hover:translate-x-full 
-                             transition-transform duration-[850ms] ease-[cubic-bezier(0.4,0,0.2,1)] 
-                             opacity-0 group-hover:opacity-100"
-                  />
-                </div>
               </div>
             </div>
           </Link>
@@ -94,21 +86,14 @@ export function NewsGrid({
                   className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
                 />
 
-                {/* Ciemny gradient */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/20" />
+                {/* Ciemny gradient - zmodyfikowany */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
 
-                {/* Tytuł */}
-                <div className="absolute bottom-0 left-0 right-0 p-4">
-                  <h3 className="text-white text-lg font-bold leading-tight group-hover:text-white/90 transition-colors duration-300">
+                {/* Tytuł - przesunięty niżej */}
+                <div className="absolute bottom-3 left-0 right-0 px-3">
+                  <h3 className="text-white text-lg font-normal leading-tight group-hover:underline decoration-2 underline-offset-4">
                     {item.title}
                   </h3>
-                  <div className="relative h-[2px] mt-2 overflow-hidden">
-                    <div
-                      className="absolute inset-0 bg-white w-35 -translate-x-full group-hover:translate-x-full 
-                               transition-transform duration-[850ms] ease-[cubic-bezier(0.4,0,0.2,1)] 
-                               opacity-0 group-hover:opacity-100"
-                    />
-                  </div>
                 </div>
               </div>
             </Link>
