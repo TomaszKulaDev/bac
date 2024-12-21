@@ -167,12 +167,22 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Sekcja mody - przeniesiona pod ankiety */}
-              <FashionGrid
-                fashionItems={fashionGridData}
-                title="TRENDY W MODZIE TANECZNEJ"
-                showHeader={true}
-              />
+              {/* Sekcja mody - dla niej */}
+              <div className="w-full mt-8">
+                <div className="mb-4">
+                  <h2 className="text-2xl font-semibold text-gray-900">
+                    TRENDY W MODZIE TANECZNEJ DLA NIEJ
+                  </h2>
+                  <p className="text-base text-gray-600 mt-1">
+                    Odkryj najnowsze trendy w modzie tanecznej - sukienki, buty
+                    i akcesoria do tańca
+                  </p>
+                </div>
+                <FashionGrid
+                  fashionItems={fashionGridData}
+                  showHeader={false}
+                />
+              </div>
 
               {/*  ------------- Sekcja ankiet  -------------  */}
               <div className="w-full mt-8">
@@ -180,6 +190,7 @@ export default function Home() {
                   <Poll data={pollsState.partnerPoll} onVote={handleVote} />
                   <Poll data={pollsState.frequencyPoll} onVote={handleVote} />
                   <Poll data={pollsState.outfitPoll} onVote={handleVote} />
+                  {/* Wymien te ankiete na ankiety dla niej z pytaniami o sukienki, buty i akcesoria do tańca */}
                 </div>
               </div>
             </div>
