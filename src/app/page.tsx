@@ -93,7 +93,7 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-white font-['Roboto_Condensed',_'Roboto_Condensed-fallback',_Arial,_sans-serif]">
+    <main className="min-h-screen bg-white font-['Roboto_Condensed']">
       {/* -------------------------- SEKCJA 1: GÓRNY PASEK WIADOMOŚCI -------------------------- */}
       <NewsTickerBar latestNews={tickerNewsData} />
 
@@ -103,14 +103,14 @@ export default function Home() {
       {/* -------------------------- SEKCJA 3: WYRÓŻNIONE WIADOMOŚCI -------------------------- */}
       <DailyHighlights highlights={highlightsData} categories={categories} />
 
+      {/* -------------------------- SEKCJA 4: BACHATA NEWS -------------------------- */}
+      <BachataNews newsItems={bachataNewsData} />
+
       {/* Main Content Container */}
       <div className="container mx-auto px-4 py-6 font-['Roboto_Condensed']">
         <div className="flex gap-6">
-          {/* -------------------------- SEKCJA 4: LEWA KOLUMNA (62%) -------------------------- */}
+          {/* -------------------------- SEKCJA 5: LEWA KOLUMNA (62%) -------------------------- */}
           <div className="w-[62%]">
-            {/* -------- SEKCJA BACHATA NEWS - czerwone nagłówki -------- */}
-            <BachataNews newsItems={bachataNewsData} />
-
             {/* Siatka 12 newsów w stylu WP */}
             <div className="w-full mt-8">
               <NewsGrid
@@ -164,18 +164,17 @@ export default function Home() {
             </div>
           </div>
 
-          {/* -------------------------- SEKCJA 5: PRAWA KOLUMNA (20%) -------------------------- */}
+          {/* -------------------------- SEKCJA 6: PRAWA KOLUMNA (20%) -------------------------- */}
           <div className="w-[20%]">
             {/* -------- SEKCJA TEMATY DZIENNE -------- */}
             <DailyTopics topics={topicsData} />
-
             {/* -------- SEKCJA REKLAM -------- */}
             <AdColumn {...ads.schoolAd} /> {/* Reklama szkoły tańca */}
             <AdColumn {...ads.courseAd} /> {/* Reklama kursu online */}
           </div>
         </div>
 
-          {/* -------- LINIA ODDZIELAJĄCA -------- */}
+        {/* -------- LINIA ODDZIELAJĄCA -------- */}
         <div className="w-full border-b border-gray-200 my-12"></div>
       </div>
     </main>

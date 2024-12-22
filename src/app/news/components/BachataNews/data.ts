@@ -20,4 +20,16 @@ export const bachataNewsData: BachataNewsItem[] = [
     image: "/images/bachata-romance.jpg",
     url: "bachata-3",
   },
+  {
+    id: "4",
+    title: "Nowe trendy w muzyce bachaty - fuzja z muzyką elektroniczną",
+    image: "/images/bachata-music.jpg",
+    url: "bachata-4",
+  },
+  {
+    id: "5",
+    title: "Międzynarodowa Akademia Bachaty otwiera filię w Polsce",
+    image: "/images/bachata-academy.jpg",
+    url: "bachata-5",
+  }
 ];
