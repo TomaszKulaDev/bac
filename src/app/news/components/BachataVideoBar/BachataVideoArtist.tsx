@@ -22,6 +22,7 @@ export function BachataVideoArtist({ videos }: BachataVideoArtistProps) {
     }
   };
 
+  // Ograniczamy liczbę wyświetlanych filmów do pierwszych 5
   const limitedVideos = videos.slice(0, 5);
 
   return (
