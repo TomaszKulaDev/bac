@@ -19,6 +19,8 @@ import {
   highlightsData,
   categories,
 } from "@/app/news/components/DailyHighlights/data";
+import { PolishPromoArtist } from "@/app/news/components/PolishPromoArtist/PolishPromoArtist";
+import { polishArtistsData } from "@/app/news/components/PolishPromoArtist/data";
 
 // Uproszczony interfejs bez elementów społecznościowych
 interface NewsItem {
@@ -90,7 +92,7 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-white font-['Roboto_Condensed']">
       <BachataVideoArtist videos={bachataVideosData} />
-      {/* -------------------------- SEKCJA 1: GÓRNY PASEK WIADOMOŚCI -------------------------- */}
+      <PolishPromoArtist artists={polishArtistsData} />
       <NewsTickerBar latestNews={tickerNewsData} />
 
       {/* -------------------------- SEKCJA 2: NAGŁÓWEK -------------------------- */}

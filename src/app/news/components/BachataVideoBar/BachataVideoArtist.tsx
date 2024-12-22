@@ -22,6 +22,8 @@ export function BachataVideoArtist({ videos }: BachataVideoArtistProps) {
     }
   };
 
+  const limitedVideos = videos.slice(0, 5);
+
   return (
     <section className="w-full bg-[#0f0f0f] py-6">
       <div className="max-w-[1400px] mx-auto px-4">
@@ -87,7 +89,7 @@ export function BachataVideoArtist({ videos }: BachataVideoArtistProps) {
             ref={scrollContainerRef}
             className="flex gap-2 overflow-x-auto scrollbar-hide scroll-smooth snap-x snap-mandatory"
           >
-            {videos.map((video) => (
+            {limitedVideos.map((video) => (
               <Link
                 key={video.id}
                 href={`/videos/${video.url}`}
