@@ -3,9 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { FaEye, FaRegClock, FaShare } from "react-icons/fa";
 import { Poll, polls } from "@/app/news/components/Polls";
-import type { PollData } from "@/app/news/components/Polls/types";
 import { NewsTickerBar } from "@/app/news/components/NewsTickerBar/NewsTickerBar";
 import { latestNewsData as tickerNewsData } from "@/app/news/components/NewsTickerBar/data";
 import { BachataNews } from "@/app/news/components/BachataNews/BachataNews";
@@ -21,6 +19,11 @@ import { fashionGridData } from "@/app/news/components/FashionGrid/data";
 import { EventsWinnersGrid } from "@/app/news/components/EventsWinnersGrid";
 import { eventsWinnersData } from "@/app/news/components/EventsWinnersGrid/data";
 import { Header } from "@/app/news/components/Header";
+import { DailyHighlights } from "@/app/news/components/DailyHighlights/DailyHighlights";
+import {
+  highlightsData,
+  categories,
+} from "@/app/news/components/DailyHighlights/data";
 
 // Uproszczony interfejs bez elementów społecznościowych
 interface NewsItem {
@@ -29,15 +32,6 @@ interface NewsItem {
   image: string;
   url: string;
 }
-
-// Dodajemy stałą dla linków nawigacyjnych
-const NAVIGATION_LINKS = [
-  { href: "/wydarzenia", label: "Wydarzenia" },
-  { href: "/zawody", label: "Zawody" },
-  { href: "/style", label: "Style" },
-  { href: "/edukacja", label: "Edukacja" },
-  { href: "/muzyka", label: "Muzyka" },
-] as const;
 
 // Uproszczony komponent dla artykułu
 const ArticleListItem = ({ news }: { news: NewsItem }) => {
@@ -65,14 +59,6 @@ const ArticleListItem = ({ news }: { news: NewsItem }) => {
     </Link>
   );
 };
-
-// Dodajmy nowy interfejs dla tematów
-interface TopicItem {
-  id: string;
-  title: string;
-  category?: string;
-  isHighlighted?: boolean;
-}
 
 export default function Home() {
   // Stan dla interakcji użytkownika z useMemo dla stabilnych wartości początkowych
@@ -111,6 +97,7 @@ export default function Home() {
       {/* -------------------------- Ruchomy pasek wiadomości - dodajemy NewsTickerBar jako pierwszy komponent --------------------------    */}
       <NewsTickerBar latestNews={tickerNewsData} />
       <Header />
+      <DailyHighlights highlights={highlightsData} categories={categories} />
 
       {/* Main Content Container */}
       <div className="container mx-auto px-4 py-6 font-['Roboto_Condensed']">
