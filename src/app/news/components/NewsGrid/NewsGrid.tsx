@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { NewsGridProps } from "./types";
+import { NewsGridProps, NewsItem } from "./types";
 import { GridAd } from "../GridAd";
 import { gridAds } from "../GridAd/ads";
 
@@ -11,7 +11,12 @@ export function NewsGrid({
   title = "NAJCIEKAWSZE W BACHACIE",
   showHeader = true,
 }: NewsGridProps) {
-  const limitedNewsItems = newsItems.slice(0, 10);
+  // Sortujemy newsy od najnowszych do najstarszych
+  const sortedNews = [...newsItems].sort((a, b) => {
+    return new Date(b.date || "").getTime() - new Date(a.date || "").getTime();
+  });
+
+  const limitedNewsItems = sortedNews.slice(0, 10);
   const [firstItem, ...restItems] = limitedNewsItems;
 
   return (
@@ -49,7 +54,7 @@ export function NewsGrid({
           </Link>
 
           {/* Pozostałe newsy */}
-          {restItems.map((item) => (
+          {restItems.map((item: NewsItem) => (
             <Link
               key={item.id}
               href={`/news/${item.url}`}

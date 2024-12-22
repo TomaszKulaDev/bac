@@ -8,16 +8,11 @@ import { NewsTickerBar } from "@/app/news/components/NewsTickerBar/NewsTickerBar
 import { latestNewsData as tickerNewsData } from "@/app/news/components/NewsTickerBar/data";
 import { BachataNews } from "@/app/news/components/BachataNews/BachataNews";
 import { bachataNewsData } from "@/app/news/components/BachataNews/data";
-import { DailyTopics } from "@/app/news/components/DailyTopics";
-import { topicsData } from "@/app/news/components/DailyTopics/data";
-import { AdColumn, ads } from "@/app/news/components/AddsRightCol";
+import { RightSideBar } from "@/app/news/components/NewsGrid";
+import { topicsData } from "@/app/news/components/NewsGrid/data";
 import { PollsRecord } from "@/app/news/components/Polls/types";
 import { NewsGrid } from "@/app/news/components/NewsGrid";
 import { newsGridData } from "@/app/news/components/NewsGrid/data";
-import { FashionGrid } from "@/app/news/components/FashionGrid";
-import { fashionGridData } from "@/app/news/components/FashionGrid/data";
-import { EventsWinnersGrid } from "@/app/news/components/EventsWinnersGrid";
-import { eventsWinnersData } from "@/app/news/components/EventsWinnersGrid/data";
 import { Header } from "@/app/news/components/Header";
 import { DailyHighlights } from "@/app/news/components/DailyHighlights/DailyHighlights";
 import {
@@ -111,19 +106,15 @@ export default function Home() {
         <div className="flex gap-6">
           {/* -------------------------- SEKCJA 5: LEWA KOLUMNA (62%) -------------------------- */}
           <div className="w-[62%]">
-            {/* Siatka 12 newsów w stylu WP */}
+            {/* Główna siatka - najnowsze 10 newsów */}
             <div className="w-full mt-8">
-              <NewsGrid
-                newsItems={newsGridData}
-                title="NAJCIEKAWSZE W BACHACIE!"
-                showHeader={true}
-              />
+              <NewsGrid newsItems={newsGridData} />
             </div>
           </div>
           {/* -------------------------- SEKCJA 6: PRAWA KOLUMNA (20%) -------------------------- */}
           <div className="w-[20%]">
-            {/* -------- SEKCJA TEMATY DZIENNE -------- */}
-            <DailyTopics topics={topicsData} />
+            {/* Sidebar - starsze newsy */}
+            <RightSideBar topics={topicsData} />
           </div>
         </div>
       </div>
