@@ -94,20 +94,24 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-white font-['Roboto_Condensed',_'Roboto_Condensed-fallback',_Arial,_sans-serif]">
-      {/* -------------------------- Ruchomy pasek wiadomości - dodajemy NewsTickerBar jako pierwszy komponent --------------------------    */}
+      {/* -------------------------- SEKCJA 1: GÓRNY PASEK WIADOMOŚCI -------------------------- */}
       <NewsTickerBar latestNews={tickerNewsData} />
+
+      {/* -------------------------- SEKCJA 2: NAGŁÓWEK -------------------------- */}
       <Header />
+
+      {/* -------------------------- SEKCJA 3: WYRÓŻNIONE WIADOMOŚCI -------------------------- */}
       <DailyHighlights highlights={highlightsData} categories={categories} />
 
       {/* Main Content Container */}
       <div className="container mx-auto px-4 py-6 font-['Roboto_Condensed']">
         <div className="flex gap-6">
-          {/* Lewa strona - główne newsy */}
+          {/* -------------------------- SEKCJA 4: LEWA KOLUMNA (62%) -------------------------- */}
           <div className="w-[62%]">
-            {/*------------------------  Sekcja  Czerwone BACHATA NEWS ------------------------  */}
+            {/* -------- SEKCJA BACHATA NEWS - czerwone nagłówki -------- */}
             <BachataNews newsItems={bachataNewsData} />
 
-            {/*------------------------  Sekcja 12 newsów w stylu WP - układ 3-kolumnowy ------------------------   */}
+            {/* Siatka 12 newsów w stylu WP */}
             <div className="w-full mt-8">
               <NewsGrid
                 newsItems={newsGridData}
@@ -115,102 +119,63 @@ export default function Home() {
                 showHeader={true}
               />
 
-              {/*  ------------- Sekcja ankiet  -------------  */}
-              <div className="w-full mt-8">
-                <div className="grid grid-cols-3 gap-6">
-                  <Poll data={pollsState.partnerPoll} onVote={handleVote} />
-                  <Poll data={pollsState.frequencyPoll} onVote={handleVote} />
-                  <Poll data={pollsState.stylePoll} onVote={handleVote} />
-                </div>
+              {/* -------- SEKCJA ANKIET - OGÓLNE -------- */}
+              <div className="grid grid-cols-3 gap-6 mt-8">
+                <Poll data={pollsState.partnerPoll} onVote={handleVote} />
+                <Poll data={pollsState.frequencyPoll} onVote={handleVote} />
+                <Poll data={pollsState.stylePoll} onVote={handleVote} />
               </div>
 
-              {/* Sekcja mody - dla niej */}
+              {/* -------- SEKCJA MODY TANECZNEJ -------- */}
               <div className="w-full mt-8">
-                <div className="mb-4">
-                  <h2 className="text-2xl font-semibold text-gray-900">
-                    TRENDY W MODZIE TANECZNEJ DLA NIEJ
-                  </h2>
-                  <p className="text-base text-gray-600 mt-1">
-                    Odkryj najnowsze trendy w modzie tanecznej - sukienki, buty
-                    i akcesoria do tańca
-                  </p>
-                </div>
                 <FashionGrid
                   fashionItems={fashionGridData}
                   showHeader={false}
                 />
-                <div className="mt-4 flex justify-end">
-                  <Link
-                    href="/fashion"
-                    className="text-sm text-gray-600 hover:text-[#e90636] transition-colors duration-200 flex items-center gap-1"
-                  >
-                    Zobacz więcej
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
-                  </Link>
-                </div>
               </div>
 
-              {/*  ------------- Sekcja ankiet - dla niej  -------------  */}
-              <div className="w-full mt-8">
-                <div className="grid grid-cols-3 gap-6">
-                  <Poll
-                    data={pollsState.accessoriesPollForHer}
-                    onVote={handleVote}
-                  />
-                  <Poll data={pollsState.shoesPollForHer} onVote={handleVote} />
-                  <Poll
-                    data={pollsState.dressStylePollForHer}
-                    onVote={handleVote}
-                  />
-                </div>
+              {/* -------- SEKCJA ANKIET - MODA -------- */}
+              <div className="grid grid-cols-3 gap-6 mt-8">
+                <Poll
+                  data={pollsState.accessoriesPollForHer}
+                  onVote={handleVote}
+                />
+                <Poll data={pollsState.shoesPollForHer} onVote={handleVote} />
+                <Poll
+                  data={pollsState.dressStylePollForHer}
+                  onVote={handleVote}
+                />
               </div>
             </div>
-            {/* Nowa sekcja zwycięzców i wydarzeń */}
+
+            {/* -------- SEKCJA ZWYCIĘZCY I WYDARZENIA -------- */}
             <div className="w-full mt-8">
-              <div className="mb-4">
-                <h2 className="text-2xl font-semibold text-gray-900">
-                  ZWYCIĘZCY I WYDARZENIA
-                </h2>
-                <p className="text-base text-gray-600 mt-1">
-                  Relacje z najważniejszych turniejów i konkursów Bachatowych.
-                </p>
-              </div>
               <EventsWinnersGrid
                 eventsItems={eventsWinnersData}
                 showHeader={false}
               />
-              <div className="w-full mt-8">
-                <div className="grid grid-cols-3 gap-6">
-                  <Poll data={pollsState.winnersPoll} onVote={handleVote} />
-                  <Poll data={pollsState.eventsPoll} onVote={handleVote} />
-                  <Poll data={pollsState.judgingPoll} onVote={handleVote} />
-                </div>
+
+              {/* -------- SEKCJA ANKIET - WYDARZENIA -------- */}
+              <div className="grid grid-cols-3 gap-6 mt-8">
+                <Poll data={pollsState.winnersPoll} onVote={handleVote} />
+                <Poll data={pollsState.eventsPoll} onVote={handleVote} />
+                <Poll data={pollsState.judgingPoll} onVote={handleVote} />
               </div>
             </div>
           </div>
 
-          {/*  ------------- Prawa kolumna - TEMATY DNIA  -------------  */}
+          {/* -------------------------- SEKCJA 5: PRAWA KOLUMNA (20%) -------------------------- */}
           <div className="w-[20%]">
+            {/* -------- SEKCJA TEMATY DZIENNE -------- */}
             <DailyTopics topics={topicsData} />
-            {/* ------------- Reklamy -------------  */}
-            <AdColumn {...ads.schoolAd} /> {/* Szkoła tańca */}
-            <AdColumn {...ads.courseAd} /> {/* Kurs online */}
+
+            {/* -------- SEKCJA REKLAM -------- */}
+            <AdColumn {...ads.schoolAd} /> {/* Reklama szkoły tańca */}
+            <AdColumn {...ads.courseAd} /> {/* Reklama kursu online */}
           </div>
         </div>
 
-        {/* Linia oddzielająca zamiast paginacji */}
+          {/* -------- LINIA ODDZIELAJĄCA -------- */}
         <div className="w-full border-b border-gray-200 my-12"></div>
       </div>
     </main>
