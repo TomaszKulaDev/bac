@@ -1,67 +1,65 @@
 export const categories = [
-  { id: "1", name: "INTERIA BLIŻEJ ŚWIATA" },
-  { id: "2", name: "WYBORY PREZYDENCKIE 2025" },
-  { id: "3", name: "WOJNA W UKRAINIE" },
-  { id: "4", name: "SKOKI NARCIARSKIE" },
+  { id: "1", name: "BACHATA DOMINIKANA" },
+  { id: "2", name: "BACHATA MODERNA" },
+  { id: "3", name: "TURNIEJE I FESTIWALE" },
+  { id: "4", name: "SZKOŁY TAŃCA" },
 ];
 
 export const highlightsData = [
   {
     id: "1",
     title:
-      "Trump grozi przejęciem suwerennemu państwu. Chodzi o kluczową przeprawę",
-    image: "/images/bachata-history.jpg",
-    url: "/news/trump-panama",
+      "Daniel i Desiree zdobywają mistrzostwo świata w Bachata Sensual 2024",
+    image: "/images/bachata-couple.jpg",
+    url: "/news/world-championship-2024",
   },
   {
     id: "2",
-    title: '"To bydło nie będzie bezkarne". Prowadzący musiał reagować',
-    image: "/images/bachata-couple.jpg",
-    url: "/news/host-reaction",
+    title:
+      "Największy festiwal Bachaty w Polsce - Warsaw Bachata Festival 2024",
+    image: "/images/bachata-festival.jpg",
+    url: "/news/warsaw-bachata-festival",
   },
   {
     id: "3",
-    title: "Armagedon pogodowy w części kraju. Nowa prognoza",
-    image: "/images/bachata-festival.jpg",
-    url: "/news/weather-forecast",
+    title: "Historia Bachaty - od muzyki wiejskiej do światowych parkietów",
+    image: "/images/bachata-history.jpg",
+    url: "/news/bachata-history",
   },
   {
     id: "4",
-    title: "Potężny cios dla Rosji. Ukraińcy obrali strategiczny cel",
+    title: "Fusion w Bachacie - jak łączyć style i techniki",
     image: "/images/bachata-fusion.jpg",
-    url: "/news/ukraine-strike",
-    label: "CZYTAJ W INTERII",
+    url: "/news/bachata-fusion",
   },
   {
     id: "5",
-    title: "Który kandydat z zaproszeniem na Wigilię? Polacy zdecydowali",
-    image: "/images/bachata-romance.jpg",
-    url: "/news/christmas-poll",
+    title: "Najnowsze trendy w strojach do Bachaty na sezon 2024",
+    image: "/images/bachata-outfit.jpg",
+    url: "/news/bachata-fashion-trends",
   },
   {
     id: "6",
-    title:
-      "Willa latami popadała w ruinę. Dziś przyciąga turystów z całego świata",
+    title: "Top 10 szkół Bachaty w Polsce - gdzie warto się uczyć?",
     image: "/images/bachata-schools.jpg",
-    url: "/news/villa-tourism",
+    url: "/news/top-bachata-schools",
   },
   {
     id: "7",
-    title:
-      'Usyk zwrócił się do "wszystkich matek Ukrainy". Poruszenie po walce z Furym',
+    title: "Podstawowe kroki w Bachacie - przewodnik dla początkujących",
     image: "/images/bachata-steps.jpg",
-    url: "/news/usyk-statement",
+    url: "/news/basic-bachata-steps",
   },
   {
     id: "8",
-    title: "500 mln łapówki? Fico oskarża Zełenskiego",
-    image: "/images/bachata-outfit.jpg",
-    url: "/news/fico-accusation",
+    title: "Romantyczny wymiar Bachaty - jak taniec łączy ludzi",
+    image: "/images/bachata-romance.jpg",
+    url: "/news/bachata-romance",
   },
   {
     id: "9",
-    title: "Masowy problem w polskich domach. Połowa badanych chce zakazu",
+    title: "Jakie buty wybrać do Bachaty? Poradnik dla tancerzy",
     image: "/images/bachata-shoes.jpg",
-    url: "/news/homes-issue",
+    url: "/news/bachata-shoes-guide",
   },
 ];
