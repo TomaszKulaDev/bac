@@ -81,6 +81,21 @@ export function NewsGrid({
           <GridAd {...gridAds.defaultAd} />
         </div>
       </div>
+
+      {/* Zobacz więcej */}
+      <div className="relative mt-8">
+        <div className="absolute inset-0 flex items-center">
+          <div className="w-full border-t border-gray-200"></div>
+        </div>
+        <div className="relative flex justify-center">
+          <Link
+            href="/news/archive"
+            className="px-4 bg-white text-sm text-gray-500 hover:text-[#e90636] transition-colors duration-200"
+          >
+            ZOBACZ WIĘCEJ
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }
