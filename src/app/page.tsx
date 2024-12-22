@@ -110,6 +110,11 @@ export default function Home() {
             <div className="w-full mt-8">
               <NewsGrid newsItems={newsGridData} />
             </div>
+            <div className="grid grid-cols-3 gap-6 mt-8">
+              <Poll data={pollsState.partnerPoll} onVote={handleVote} />
+              <Poll data={pollsState.frequencyPoll} onVote={handleVote} />
+              <Poll data={pollsState.stylePoll} onVote={handleVote} />
+            </div>
           </div>
           {/* -------------------------- SEKCJA 6: PRAWA KOLUMNA (20%) -------------------------- */}
           <div className="w-[20%]">
