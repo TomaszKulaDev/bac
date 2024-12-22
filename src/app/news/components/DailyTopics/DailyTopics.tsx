@@ -8,6 +8,9 @@ interface DailyTopicsProps {
 }
 
 export function DailyTopics({ topics }: DailyTopicsProps) {
+  // Ograniczamy listę do pierwszych 8 tematów
+  const limitedTopics = topics.slice(0, 8);
+
   return (
     <div className="bg-white rounded-lg p-5">
       {/* Header */}
@@ -24,7 +27,7 @@ export function DailyTopics({ topics }: DailyTopicsProps) {
 
       {/* Lista tematów */}
       <div className="space-y-5">
-        {topics.map((topic, index) => (
+        {limitedTopics.map((topic, index) => (
           <Link
             href={`/news/${topic.id}`}
             key={topic.id}
@@ -45,7 +48,7 @@ export function DailyTopics({ topics }: DailyTopicsProps) {
               >
                 {topic.title}
               </h3>
-              {index !== topics.length - 1 && (
+              {index !== limitedTopics.length - 1 && (
                 <div className="pt-5 border-b border-gray-100" />
               )}
             </div>

@@ -118,61 +118,14 @@ export default function Home() {
                 title="NAJCIEKAWSZE W BACHACIE!"
                 showHeader={true}
               />
-
-              {/* -------- SEKCJA ANKIET - OGÓLNE -------- */}
-              <div className="grid grid-cols-3 gap-6 mt-8">
-                <Poll data={pollsState.partnerPoll} onVote={handleVote} />
-                <Poll data={pollsState.frequencyPoll} onVote={handleVote} />
-                <Poll data={pollsState.stylePoll} onVote={handleVote} />
-              </div>
-
-              {/* -------- SEKCJA MODY TANECZNEJ -------- */}
-              <div className="w-full mt-8">
-                <FashionGrid fashionItems={fashionGridData} showHeader={true} />
-              </div>
-
-              {/* -------- SEKCJA ANKIET - MODA -------- */}
-              <div className="grid grid-cols-3 gap-6 mt-8">
-                <Poll
-                  data={pollsState.accessoriesPollForHer}
-                  onVote={handleVote}
-                />
-                <Poll data={pollsState.shoesPollForHer} onVote={handleVote} />
-                <Poll
-                  data={pollsState.dressStylePollForHer}
-                  onVote={handleVote}
-                />
-              </div>
-            </div>
-
-            {/* -------- SEKCJA ZWYCIĘZCY I WYDARZENIA -------- */}
-            <div className="w-full mt-8">
-              <EventsWinnersGrid
-                eventsItems={eventsWinnersData}
-                showHeader={true}
-              />
-
-              {/* -------- SEKCJA ANKIET - WYDARZENIA -------- */}
-              <div className="grid grid-cols-3 gap-6 mt-8">
-                <Poll data={pollsState.winnersPoll} onVote={handleVote} />
-                <Poll data={pollsState.eventsPoll} onVote={handleVote} />
-                <Poll data={pollsState.judgingPoll} onVote={handleVote} />
-              </div>
             </div>
           </div>
-
           {/* -------------------------- SEKCJA 6: PRAWA KOLUMNA (20%) -------------------------- */}
-          {/* <div className="w-[20%]"> */}
+          <div className="w-[20%]">
             {/* -------- SEKCJA TEMATY DZIENNE -------- */}
-            {/* <DailyTopics topics={topicsData} />
-            {/* -------- SEKCJA REKLAM -------- */}
-            {/* <AdColumn {...ads.schoolAd} /> Reklama szkoły tańca */}
-            {/* <AdColumn {...ads.courseAd} /> Reklama kursu online */}
-          {/* </div> */}
+            <DailyTopics topics={topicsData} />
+          </div>
         </div>
-
-        {/* -------- LINIA ODDZIELAJĄCA -------- */}
-        <div className="w-full border-b border-gray-200 my-12"></div>
       </div>
     </main>
   );

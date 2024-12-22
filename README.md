@@ -107,3 +107,53 @@ Lista piosenek w panelu admina, prawdopodobnie wyświetla informację o impro
 
 src/app/muzyka/utils/youtube.ts
 Może zawierać funkcje pomocnicze związane z YouTube, które mogą być używane przy dodawaniu piosenek z impro
+
+{/_ -------- SEKCJA MODY TANECZNEJ -------- _/}
+
+<div className="w-full mt-8">
+<FashionGrid fashionItems={fashionGridData} showHeader={true} />
+</div>
+
+              {/* -------- SEKCJA ANKIET - MODA -------- */}
+              <div className="grid grid-cols-3 gap-6 mt-8">
+                <Poll
+                  data={pollsState.accessoriesPollForHer}
+                  onVote={handleVote}
+                />
+                <Poll data={pollsState.shoesPollForHer} onVote={handleVote} />
+                <Poll
+                  data={pollsState.dressStylePollForHer}
+                  onVote={handleVote}
+                />
+              </div>
+
+{/_ -------- SEKCJA ZWYCIĘZCY I WYDARZENIA -------- _/}
+
+<div className="w-full mt-8">
+<EventsWinnersGrid
+                eventsItems={eventsWinnersData}
+                showHeader={true}
+              />
+
+              {/* -------- SEKCJA ANKIET - WYDARZENIA -------- */}
+              <div className="grid grid-cols-3 gap-6 mt-8">
+                <Poll data={pollsState.winnersPoll} onVote={handleVote} />
+                <Poll data={pollsState.eventsPoll} onVote={handleVote} />
+                <Poll data={pollsState.judgingPoll} onVote={handleVote} />
+              </div>
+            </div>
+
+
+
+            {/* -------- SEKCJA REKLAM -------- */}
+            {/* <AdColumn {...ads.schoolAd} /> Reklama szkoły tańca */}
+            {/* <AdColumn {...ads.courseAd} /> Reklama kursu online */}
+             {/* -------- LINIA ODDZIELAJĄCA -------- */}
+        <div className="w-full border-b border-gray-200 my-12"></div>
+
+{/_ -------- SEKCJA ANKIET - OGÓLNE -------- _/}
+<div className="grid grid-cols-3 gap-6 mt-8">
+<Poll data={pollsState.partnerPoll} onVote={handleVote} />
+<Poll data={pollsState.frequencyPoll} onVote={handleVote} />
+<Poll data={pollsState.stylePoll} onVote={handleVote} />
+</div>
