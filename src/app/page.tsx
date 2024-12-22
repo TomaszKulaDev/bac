@@ -128,10 +128,7 @@ export default function Home() {
 
               {/* -------- SEKCJA MODY TANECZNEJ -------- */}
               <div className="w-full mt-8">
-                <FashionGrid
-                  fashionItems={fashionGridData}
-                  showHeader={false}
-                />
+                <FashionGrid fashionItems={fashionGridData} showHeader={true} />
               </div>
 
               {/* -------- SEKCJA ANKIET - MODA -------- */}
@@ -152,7 +149,7 @@ export default function Home() {
             <div className="w-full mt-8">
               <EventsWinnersGrid
                 eventsItems={eventsWinnersData}
-                showHeader={false}
+                showHeader={true}
               />
 
               {/* -------- SEKCJA ANKIET - WYDARZENIA -------- */}
@@ -165,13 +162,13 @@ export default function Home() {
           </div>
 
           {/* -------------------------- SEKCJA 6: PRAWA KOLUMNA (20%) -------------------------- */}
-          <div className="w-[20%]">
+          {/* <div className="w-[20%]"> */}
             {/* -------- SEKCJA TEMATY DZIENNE -------- */}
-            <DailyTopics topics={topicsData} />
+            {/* <DailyTopics topics={topicsData} />
             {/* -------- SEKCJA REKLAM -------- */}
-            <AdColumn {...ads.schoolAd} /> {/* Reklama szkoły tańca */}
-            <AdColumn {...ads.courseAd} /> {/* Reklama kursu online */}
-          </div>
+            {/* <AdColumn {...ads.schoolAd} /> Reklama szkoły tańca */}
+            {/* <AdColumn {...ads.courseAd} /> Reklama kursu online */}
+          {/* </div> */}
         </div>
 
         {/* -------- LINIA ODDZIELAJĄCA -------- */}
