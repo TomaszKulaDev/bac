@@ -1,3 +1,3 @@
-export * from "./BachataNews";
+export * from "./BachataVideoArtist";
 export * from "./types";
 export * from "./data";

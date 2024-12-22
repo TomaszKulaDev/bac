@@ -6,8 +6,8 @@ import Image from "next/image";
 import { Poll, polls } from "@/app/news/components/Polls";
 import { NewsTickerBar } from "@/app/news/components/NewsTickerBar/NewsTickerBar";
 import { latestNewsData as tickerNewsData } from "@/app/news/components/NewsTickerBar/data";
-import { BachataNews } from "@/app/news/components/BachataNews/BachataNews";
-import { bachataNewsData } from "@/app/news/components/BachataNews/data";
+import { BachataVideoArtist } from "@/app/news/components/BachataVideoBar/BachataVideoArtist";
+import { bachataVideosData } from "@/app/news/components/BachataVideoBar/data";
 import { RightSideBar } from "@/app/news/components/NewsGrid";
 import { topicsData } from "@/app/news/components/NewsGrid/data";
 import { PollsRecord } from "@/app/news/components/Polls/types";
@@ -99,7 +99,7 @@ export default function Home() {
       <DailyHighlights highlights={highlightsData} categories={categories} />
 
       {/* -------------------------- SEKCJA 4: BACHATA NEWS -------------------------- */}
-      <BachataNews newsItems={bachataNewsData} />
+      <BachataVideoArtist videos={bachataVideosData} />
 
       {/* Main Content Container */}
       <div className="container mx-auto px-4 py-6 font-['Roboto_Condensed']">
