@@ -89,6 +89,7 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-white font-['Roboto_Condensed']">
+      <BachataVideoArtist videos={bachataVideosData} />
       {/* -------------------------- SEKCJA 1: GÓRNY PASEK WIADOMOŚCI -------------------------- */}
       <NewsTickerBar latestNews={tickerNewsData} />
 
@@ -99,7 +100,6 @@ export default function Home() {
       <DailyHighlights highlights={highlightsData} categories={categories} />
 
       {/* -------------------------- SEKCJA 4: BACHATA NEWS -------------------------- */}
-      <BachataVideoArtist videos={bachataVideosData} />
 
       {/* Main Content Container */}
       <div className="container mx-auto px-4 py-6 font-['Roboto_Condensed']">

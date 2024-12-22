@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRef } from "react";
 import { BachataVideoItem } from "./types";
 
 interface BachataVideoArtistProps {
@@ -9,56 +10,125 @@ interface BachataVideoArtistProps {
 }
 
 export function BachataVideoArtist({ videos }: BachataVideoArtistProps) {
-  const limitedVideos = videos.slice(0, 8);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  const scroll = (direction: "left" | "right") => {
+    if (scrollContainerRef.current) {
+      const scrollAmount = scrollContainerRef.current.offsetWidth;
+      scrollContainerRef.current.scrollBy({
+        left: direction === "left" ? -scrollAmount : scrollAmount,
+        behavior: "smooth",
+      });
+    }
+  };
 
   return (
     <section className="w-full bg-[#0f0f0f] py-6">
       <div className="max-w-[1400px] mx-auto px-4">
-        {/* Nagłówek Shorts */}
-        <div className="flex items-center gap-2 mb-4">
-          <svg
-            className="w-5 h-5 text-red-600 fill-current"
-            viewBox="0 0 24 24"
-          >
-            <path d="M17.77 10.32c-.77-.32-1.2-.5-1.2-.5L18 9.06c1.84-.96 2.53-3.23 1.56-5.06s-3.24-2.53-5.07-1.56L6 6.94c-1.29.68-2.07 2.04-2 3.49.07 1.42.93 2.67 2.22 3.25.03.01 1.2.5 1.2.5L6 14.93c-1.83.97-2.53 3.24-1.56 5.07.97 1.83 3.24 2.53 5.07 1.56l8.5-4.5c1.29-.68 2.06-2.04 1.99-3.49-.07-1.42-.94-2.68-2.23-3.25zM10 14.65v-5.3L15 12l-5 2.65z" />
-          </svg>
-          <h2 className="text-white text-lg font-medium">
-            Top World Bachata Artist
-          </h2>
+        {/* Nagłówek z przyciskami nawigacji */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <svg
+              className="w-6 h-6 text-yellow-500 fill-current"
+              viewBox="0 0 24 24"
+            >
+              <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+            </svg>
+            <h2 className="text-white text-lg font-medium">
+              Top World Bachata Artist
+            </h2>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => scroll("left")}
+              className="p-2 rounded-full hover:bg-white/10 transition-colors"
+              aria-label="Przewiń w lewo"
+            >
+              <svg
+                className="w-6 h-6 text-white"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </button>
+            <button
+              onClick={() => scroll("right")}
+              className="p-2 rounded-full hover:bg-white/10 transition-colors"
+              aria-label="Przewiń w prawo"
+            >
+              <svg
+                className="w-6 h-6 text-white"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
 
-        {/* Grid z filmami */}
-        <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 gap-2">
-          {limitedVideos.map((video) => (
-            <Link
-              key={video.id}
-              href={`/videos/${video.url}`}
-              className="group relative aspect-[9/16] rounded-xl overflow-hidden bg-neutral-800"
-            >
-              {/* Thumbnail */}
-              <div className="absolute inset-0">
-                <iframe
-                  src={`https://www.youtube.com/embed/${video.youtubeId}?controls=0&showinfo=0&modestbranding=1&rel=0`}
-                  title={video.title}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className="w-full h-full"
-                />
-              </div>
-
-              {/* Tytuł na dole */}
-              <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/80 to-transparent">
-                <h3 className="text-white text-xs font-medium line-clamp-2">
-                  {video.title}
-                </h3>
-                <div className="text-white/60 text-[10px] mt-1">
-                  {video.subscriberCount?.split(" ")[0]} wyświetleń
+        {/* Kontener z przewijaniem */}
+        <div className="relative group">
+          <div
+            ref={scrollContainerRef}
+            className="flex gap-2 overflow-x-auto scrollbar-hide scroll-smooth snap-x snap-mandatory"
+          >
+            {videos.map((video) => (
+              <Link
+                key={video.id}
+                href={`/videos/${video.url}`}
+                className="flex-none w-[160px] snap-start group relative aspect-[9/16] rounded-xl overflow-hidden bg-neutral-800"
+              >
+                {/* Thumbnail */}
+                <div className="absolute inset-0">
+                  <iframe
+                    src={`https://www.youtube.com/embed/${video.youtubeId}?controls=0&showinfo=0&modestbranding=1&rel=0`}
+                    title={video.title}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="w-full h-full"
+                  />
                 </div>
-              </div>
-            </Link>
-          ))}
+
+                {/* Tytuł na dole */}
+                <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/80 to-transparent">
+                  <h3 className="text-white text-xs font-medium line-clamp-2">
+                    {video.title}
+                  </h3>
+                  <div className="text-white/60 text-[10px] mt-1">
+                    {video.subscriberCount?.split(" ")[0]} wyświetleń
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
+
+      {/* Style dla ukrycia scrollbara */}
+      <style jsx global>{`
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
     </section>
   );
 }
