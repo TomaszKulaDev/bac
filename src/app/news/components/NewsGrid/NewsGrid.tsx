@@ -82,19 +82,29 @@ export function NewsGrid({
         </div>
       </div>
 
-      {/* Zobacz więcej */}
-      <div className="relative mt-8">
-        <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-gray-200"></div>
-        </div>
-        <div className="relative flex justify-center">
-          <Link
-            href="/news/archive"
-            className="px-4 bg-white text-sm text-gray-500 hover:text-[#e90636] transition-colors duration-200"
-          >
+      {/* Zobacz więcej - z animacją */}
+      <div className="flex justify-end mt-6">
+        <Link
+          href="/news/archive"
+          className="group inline-flex items-center gap-2 text-sm text-gray-500 hover:text-[#e90636] transition-colors duration-200"
+        >
+          <span className="relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-px after:bg-[#e90636] after:origin-left after:scale-x-0 group-hover:after:scale-x-100 after:transition-transform after:duration-300">
             ZOBACZ WIĘCEJ
-          </Link>
-        </div>
+          </span>
+          <svg
+            className="w-4 h-4 transform transition-transform duration-200 group-hover:translate-x-1"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 5l7 7-7 7"
+            />
+          </svg>
+        </Link>
       </div>
     </div>
   );
