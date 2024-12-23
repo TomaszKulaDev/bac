@@ -2,18 +2,37 @@ import { PolishArtist } from "./types";
 
 export const polishArtistsData: PolishArtist[] = [
   {
+    // Unikalny identyfikator instruktora/pary
     id: "1",
+    
+    // Imiona instruktorów wyświetlane w interfejsie
     name: "Adrian & Sara",
+    
+    // Ścieżka do zdjęcia profilowego (względna do folderu public)
     image: "/images/default-avatar.png", 
+    
+    // Miasto w którym prowadzą zajęcia
     city: "Warszawa",
+    
+    // Nazwa szkoły/studia tańca
     school: "Salsa Sabrosa",
+    
+    // Flaga określająca czy instruktor jest aktywny (true) czy nie (false)
+    // Aktywni instruktorzy mają specjalne podświetlenie w UI
     isActive: true,
+    
+    // Specjalizacja taneczna instruktora
     specialty: "Bachata Sensual",
+    
+    // Liczba lat doświadczenia w nauczaniu
     experience: 8,
+    
+    // Linki do mediów społecznościowych
+    // Opcjonalne - mogą być puste lub pominięte
     socialLinks: {
-      instagram: "@adrian.sara.dance",
-      facebook: "adriansaradance",
-      youtube: "AdrianSaraDance",
+      instagram: "@adrian.sara.dance", // Nazwa użytkownika na Instagramie
+      facebook: "adriansaradance",     // Identyfikator strony na Facebooku
+      youtube: "AdrianSaraDance",      // Nazwa kanału YouTube
     },
   },
   {
@@ -33,7 +52,7 @@ export const polishArtistsData: PolishArtist[] = [
     image: "/images/default-avatar.png",
     city: "Poznań", 
     school: "Latino Flow",
-    isActive: false,
+    isActive: true,
     socialLinks: {
       facebook: "michalania.dance",
     },
