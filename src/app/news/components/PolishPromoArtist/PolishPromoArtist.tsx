@@ -51,11 +51,30 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
   };
 
   const handleShowMore = () => {
-    setDisplayCount((prev: number) => Math.min(prev + 5, artists.length));
+    setDisplayCount(artists.length);
   };
 
   const handleShowLess = () => {
     setDisplayCount(5);
+  };
+
+  const getTopThreeStyles = (index: number) => {
+    // Stałe rozmiary dla top 3
+    const sizes = {
+      0: { size: 200, textSize: "text-3xl", color: "text-yellow-400" },
+      1: { size: 160, textSize: "text-2xl", color: "text-gray-300" },
+      2: { size: 120, textSize: "text-xl", color: "text-amber-600" },
+    };
+
+    const { size, textSize, color } = sizes[index as keyof typeof sizes];
+
+    return {
+      containerStyle: {
+        width: `${size}px`,
+        height: `${size}px`,
+      },
+      textClass: `text-center font-bold ${textSize} ${color}`,
+    };
   };
 
   return (
@@ -66,7 +85,7 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
           <div className="flex items-center gap-3">
             <div className="text-red-500 text-3xl animate-pulse">★</div>
             <h2 className="text-white text-3xl font-bold tracking-tight">
-              {`Ranking Polskich Instruktorów Bachaty ${new Date().getFullYear()}`}
+              {`Ranking Instruktorów Bachaty w Polsce ${new Date().getFullYear()}`}
             </h2>
           </div>
           <div className="flex gap-4">
@@ -90,9 +109,55 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
               }`}
               disabled={displayCount >= artists.length}
             >
-              Pokaż więcej
+              Pokaż wszystkich
             </button>
           </div>
+        </div>
+
+        {/* Top 3 */}
+        <div className="flex justify-center items-end gap-8 mb-16">
+          {sortedArtists.slice(0, 3).map((artist, index) => {
+            const styles = getTopThreeStyles(index);
+            return (
+              <div key={artist.id} className="flex flex-col items-center">
+                <div
+                  className="relative transition-all duration-500"
+                  style={styles.containerStyle}
+                >
+                  <div
+                    className={`
+                    absolute inset-0 rounded-full 
+                    ${
+                      artist.isActive
+                        ? "bg-gradient-to-tr from-red-500 via-purple-500 to-fuchsia-400 p-[2px]"
+                        : "bg-gray-700 p-[1px]"
+                    }
+                  `}
+                  >
+                    <div className="relative w-full h-full rounded-full overflow-hidden bg-gray-900">
+                      <Image
+                        src={artist.image}
+                        alt={artist.name}
+                        fill
+                        className="object-cover"
+                        sizes={`${styles.containerStyle.width}px`}
+                        priority
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className={styles.textClass}>
+                  <div className="mt-4">#{index + 1}</div>
+                  <div className="mt-2">{votes[artist.id] || 0} głosów</div>
+                </div>
+
+                <p className="text-gray-200 text-sm font-medium mt-2">
+                  {artist.name}
+                </p>
+              </div>
+            );
+          })}
         </div>
 
         {/* Wykres słupkowy */}
@@ -102,7 +167,7 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
           ${
             displayCount <= 5
               ? "grid-cols-5"
-              : displayCount <= 10
+              : displayCount <= 20
               ? "grid-cols-10"
               : "grid-cols-[repeat(auto-fill,minmax(100px,1fr))]"
           }
