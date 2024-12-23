@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { PolishArtist } from "./types";
 
 interface PolishPromoArtistProps {
@@ -13,6 +13,14 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
   const [animatingId, setAnimatingId] = useState<string | null>(null);
   const [showAll, setShowAll] = useState(false);
   const [displayCount, setDisplayCount] = useState(5);
+  const listRef = useRef<HTMLDivElement>(null);
+
+  const scrollList = (direction: "left" | "right") => {
+    if (listRef.current) {
+      const scrollAmount = direction === "left" ? -400 : 400;
+      listRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
+    }
+  };
 
   const handleVote = (artistId: string) => {
     setAnimatingId(artistId);
@@ -43,7 +51,7 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
   };
 
   const handleShowMore = () => {
-    setDisplayCount((prev) => Math.min(prev + 5, artists.length));
+    setDisplayCount((prev: number) => Math.min(prev + 5, artists.length));
   };
 
   const handleShowLess = () => {
@@ -58,7 +66,7 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
           <div className="flex items-center gap-3">
             <div className="text-red-500 text-3xl animate-pulse">★</div>
             <h2 className="text-white text-3xl font-bold tracking-tight">
-              Ranking Instruktorów
+              {`Ranking Polskich Instruktorów Bachaty ${new Date().getFullYear()}`}
             </h2>
           </div>
           <div className="flex gap-4">
@@ -180,91 +188,131 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
           ))}
         </div>
 
-        {/* Lista wszystkich artystów ze scrollem */}
+        {/* Lista wszystkich artystów */}
         <div className="border-t border-gray-800/50 pt-8">
           <div className="flex justify-between items-center mb-6">
             <h3 className="text-white text-xl font-semibold">
               Wszyscy Instruktorzy ({artists.length})
             </h3>
-            <button
-              onClick={() => setShowAll(!showAll)}
-              className="text-purple-400 hover:text-purple-300 transition-colors"
-            >
-              {showAll ? "Pokaż mniej" : "Pokaż wszystkich"}
-            </button>
+            <div className="flex items-center gap-4">
+              {/* Przyciski nawigacji */}
+              <div className="flex gap-2">
+                <button
+                  onClick={() => scrollList("left")}
+                  className="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 text-white transition-colors"
+                >
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15 19l-7-7 7-7"
+                    />
+                  </svg>
+                </button>
+                <button
+                  onClick={() => scrollList("right")}
+                  className="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 text-white transition-colors"
+                >
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </button>
+              </div>
+
+              {/* Przycisk Pokaż wszystkich */}
+              <button
+                onClick={() => setShowAll(!showAll)}
+                className="text-sm px-4 py-2 rounded-lg transition-all
+                  bg-purple-600 hover:bg-purple-500 text-white"
+              >
+                {showAll ? "Zwiń listę" : "Pokaż wszystkich"}
+              </button>
+            </div>
           </div>
 
           <div
+            ref={listRef}
             className={`
-            grid gap-6 transition-all duration-500
-            ${
-              showAll
-                ? "grid-cols-5"
-                : "grid-cols-5 max-h-[200px] overflow-hidden"
-            }
-          `}
+              flex gap-6 overflow-x-auto scrollbar-hide snap-x snap-mandatory
+              scroll-smooth pb-4 transition-all duration-500
+              ${!showAll ? "max-h-[200px]" : "flex-wrap"}
+            `}
           >
             {artists.map((artist) => (
-              <div
-                key={artist.id}
-                className="flex flex-col items-center group p-4 rounded-lg hover:bg-gray-800/30 transition-all"
-              >
-                <button
-                  onClick={() => handleVote(artist.id)}
-                  className="relative w-20 h-20 mb-3 transform transition-all duration-300 hover:scale-105"
-                >
-                  {/* Gradient border z animacją */}
-                  <div
-                    className={`
-                    absolute inset-0 rounded-full 
-                    ${
-                      artist.isActive
-                        ? "bg-gradient-to-tr from-red-500 via-purple-500 to-fuchsia-400 p-[3px] animate-gradient-slow"
-                        : "bg-gray-700 p-[2px]"
-                    }
-                    ${animatingId === artist.id ? "animate-ping-short" : ""}
-                  `}
+              <div key={artist.id} className="flex-none w-[200px] snap-start">
+                <div className="flex flex-col items-center group p-4 rounded-lg hover:bg-gray-800/30 transition-all">
+                  <button
+                    onClick={() => handleVote(artist.id)}
+                    className="relative w-20 h-20 mb-3 transform transition-all duration-300 hover:scale-105"
                   >
-                    {/* Zdjęcie z efektem hover */}
-                    <div className="relative w-full h-full rounded-full overflow-hidden bg-[#1a1a1a] group-hover:opacity-90 transition-opacity">
-                      <Image
-                        src={artist.image}
-                        alt={artist.name}
-                        fill
-                        className="object-cover"
-                        sizes="(max-width: 768px) 100vw, 112px"
-                        priority={sortedArtists.indexOf(artist) < 5}
-                      />
-                      {/* Overlay z ikoną głosowania */}
-                      <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/20 transition-all">
-                        <svg
-                          className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transform scale-50 group-hover:scale-100 transition-all"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"
-                          />
-                        </svg>
+                    {/* Gradient border z animacją */}
+                    <div
+                      className={`
+                      absolute inset-0 rounded-full 
+                      ${
+                        artist.isActive
+                          ? "bg-gradient-to-tr from-red-500 via-purple-500 to-fuchsia-400 p-[3px] animate-gradient-slow"
+                          : "bg-gray-700 p-[2px]"
+                      }
+                      ${animatingId === artist.id ? "animate-ping-short" : ""}
+                    `}
+                    >
+                      {/* Zdjęcie z efektem hover */}
+                      <div className="relative w-full h-full rounded-full overflow-hidden bg-[#1a1a1a] group-hover:opacity-90 transition-opacity">
+                        <Image
+                          src={artist.image}
+                          alt={artist.name}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 100vw, 112px"
+                          priority={sortedArtists.indexOf(artist) < 5}
+                        />
+                        {/* Overlay z ikoną głosowania */}
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/20 transition-all">
+                          <svg
+                            className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transform scale-50 group-hover:scale-100 transition-all"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"
+                            />
+                          </svg>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </button>
+                  </button>
 
-                <div className="text-center">
-                  <p className="text-gray-200 text-sm font-medium mb-1">
-                    {artist.name}
-                  </p>
-                  <p className="text-gray-400 text-xs mb-1">
-                    {artist.city} • {artist.school}
-                  </p>
-                  <p className="text-gray-500 text-xs">{artist.specialty}</p>
-                  <p
-                    className={`
+                  <div className="text-center">
+                    <p className="text-gray-200 text-sm font-medium mb-1">
+                      {artist.name}
+                    </p>
+                    <p className="text-gray-400 text-xs mb-1">
+                      {artist.city} • {artist.school}
+                    </p>
+                    <p className="text-gray-500 text-xs">{artist.specialty}</p>
+                    <p
+                      className={`
                     text-sm font-medium mt-2 transition-all duration-300
                     ${
                       animatingId === artist.id
@@ -272,9 +320,10 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
                         : "text-gray-400"
                     }
                   `}
-                  >
-                    {votes[artist.id] || 0} głosów
-                  </p>
+                    >
+                      {votes[artist.id] || 0} głosów
+                    </p>
+                  </div>
                 </div>
               </div>
             ))}
@@ -322,6 +371,17 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
         }
         .animate-pulse-fast {
           animation: pulse 0.5s ease-in-out infinite;
+        }
+      `}</style>
+
+      {/* Style dla ukrycia scrollbara */}
+      <style jsx global>{`
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
         }
       `}</style>
     </section>

@@ -4,7 +4,7 @@ export const polishArtistsData: PolishArtist[] = [
   {
     id: "1",
     name: "Adrian & Sara",
-    image: "/images/default-avatar.png",
+    image: "/images/default-avatar.png", 
     city: "Warszawa",
     school: "Salsa Sabrosa",
     isActive: true,
@@ -17,7 +17,7 @@ export const polishArtistsData: PolishArtist[] = [
     },
   },
   {
-    id: "2",
+    id: "2", 
     name: "Kamil & Monika",
     image: "/images/default-avatar.png",
     city: "Kraków",
@@ -31,7 +31,7 @@ export const polishArtistsData: PolishArtist[] = [
     id: "3",
     name: "Michał & Ania",
     image: "/images/default-avatar.png",
-    city: "Poznań",
+    city: "Poznań", 
     school: "Latino Flow",
     isActive: false,
     socialLinks: {
@@ -51,7 +51,7 @@ export const polishArtistsData: PolishArtist[] = [
     name: "Paweł & Ola",
     image: "/images/default-avatar.png",
     city: "Gdańsk",
-    school: "Dance Zone",
+    school: "Dance Zone", 
     isActive: true,
     socialLinks: {
       instagram: "@pawelola.bachata",
@@ -81,7 +81,7 @@ export const polishArtistsData: PolishArtist[] = [
     experience: 5,
   },
   {
-    id: "20",
+    id: "8",
     name: "Daniel & Magda",
     image: "/images/default-avatar.png",
     city: "Białystok",
@@ -93,4 +93,93 @@ export const polishArtistsData: PolishArtist[] = [
       facebook: "danielmagda.dance",
     },
   },
+  {
+    id: "9",
+    name: "Bartek & Natalia",
+    image: "/images/default-avatar.png",
+    city: "Katowice",
+    school: "Sensual Dance Studio",
+    isActive: true,
+    specialty: "Bachata Sensual",
+    experience: 7,
+    socialLinks: {
+      instagram: "@bartek.natalia.dance",
+      youtube: "BartekNataliaDance"
+    },
+  },
+  {
+    id: "10",
+    name: "Adam & Zosia",
+    image: "/images/default-avatar.png",
+    city: "Lublin",
+    school: "Bachata Soul",
+    isActive: true,
+    specialty: "Bachata Moderna",
+    experience: 5,
+    socialLinks: {
+      facebook: "adamzosia.bachata",
+    },
+  },
+  {
+    id: "11",
+    name: "Piotr & Marta",
+    image: "/images/default-avatar.png",
+    city: "Bydgoszcz",
+    school: "Latino Power",
+    isActive: true,
+    specialty: "Bachata Fusion",
+    experience: 6,
+    socialLinks: {
+      instagram: "@piotr.marta.dance",
+    },
+  },
+  {
+    id: "12",
+    name: "Jakub & Alicja",
+    image: "/images/default-avatar.png",
+    city: "Rzeszów",
+    school: "Bachata Kings",
+    isActive: true,
+    specialty: "Bachata Traditional",
+    experience: 4,
+  },
+  {
+    id: "13",
+    name: "Marcin & Weronika",
+    image: "/images/default-avatar.png",
+    city: "Toruń",
+    school: "Dance Vida",
+    isActive: true,
+    specialty: "Bachata Sensual",
+    experience: 5,
+    socialLinks: {
+      instagram: "@marcin.weronika.bachata",
+    },
+  },
+  {
+    id: "14",
+    name: "Filip & Karolina",
+    image: "/images/default-avatar.png",
+    city: "Olsztyn",
+    school: "Salsa Rica",
+    isActive: true,
+    specialty: "Bachata Dominicana",
+    experience: 3,
+    socialLinks: {
+      facebook: "filipkarolina.dance",
+    },
+  },
+  {
+    id: "15",
+    name: "Szymon & Klaudia",
+    image: "/images/default-avatar.png",
+    city: "Radom",
+    school: "Bachata Flow",
+    isActive: true,
+    specialty: "Urban Bachata",
+    experience: 4,
+    socialLinks: {
+      instagram: "@szymon.klaudia.dance",
+    },
+  }
 ];
