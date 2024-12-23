@@ -5,8 +5,11 @@ export interface PolishArtist {
   city: string;
   school: string;
   isActive?: boolean;
+  specialty?: string;
+  experience?: number; // lata doświadczenia
   socialLinks?: {
     instagram?: string;
     facebook?: string;
+    youtube?: string;
   };
 }

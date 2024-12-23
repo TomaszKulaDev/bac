@@ -8,9 +8,12 @@ export const polishArtistsData: PolishArtist[] = [
     city: "Warszawa",
     school: "Salsa Sabrosa",
     isActive: true,
+    specialty: "Bachata Sensual",
+    experience: 8,
     socialLinks: {
       instagram: "@adrian.sara.dance",
       facebook: "adriansaradance",
+      youtube: "AdrianSaraDance",
     },
   },
   {
@@ -52,6 +55,42 @@ export const polishArtistsData: PolishArtist[] = [
     isActive: true,
     socialLinks: {
       instagram: "@pawelola.bachata",
+    },
+  },
+  {
+    id: "6",
+    name: "Marek & Julia",
+    image: "/images/default-avatar.png",
+    city: "Łódź",
+    school: "Dance Factory",
+    isActive: true,
+    specialty: "Bachata Dominicana",
+    experience: 6,
+    socialLinks: {
+      instagram: "@marekjulia.dance",
+    },
+  },
+  {
+    id: "7",
+    name: "Robert & Ewa",
+    image: "/images/default-avatar.png",
+    city: "Szczecin",
+    school: "Ritmo Latino",
+    isActive: true,
+    specialty: "Bachata Moderna",
+    experience: 5,
+  },
+  {
+    id: "20",
+    name: "Daniel & Magda",
+    image: "/images/default-avatar.png",
+    city: "Białystok",
+    school: "Salsa Fuerte",
+    isActive: true,
+    specialty: "Bachata Traditional",
+    experience: 4,
+    socialLinks: {
+      facebook: "danielmagda.dance",
     },
   },
 ];
