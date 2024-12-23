@@ -48,7 +48,7 @@ export const NavContent: React.FC = React.memo(function NavContent() {
             >
               <FaMusic className="text-red-600 text-2xl" />
               <span className="text-2xl font-bold tracking-tight text-red-600">
-                BACHATA
+                BACIATA
               </span>
               <span className="text-2xl font-light tracking-tight text-white">
                 .pl
