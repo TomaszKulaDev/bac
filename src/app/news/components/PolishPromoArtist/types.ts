@@ -6,7 +6,6 @@ export interface PolishArtist {
   school: string;
   isActive?: boolean;
   specialty?: string;
-  experience?: number; // lata doświadczenia
   socialLinks?: {
     instagram?: string;
     facebook?: string;
