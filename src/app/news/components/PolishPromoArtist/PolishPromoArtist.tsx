@@ -85,7 +85,8 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
       className={`
         w-full bg-[#1a1a1a] border-y border-gray-800 
         relative transition-all duration-500 ease-in-out
-        ${isExpanded ? "max-h-none" : "max-h-[800px] overflow-hidden"}
+        {/* Kontroluje wysokość sekcji - rozwinięta lub zwinięta z ukrytym przepełnieniem */}
+        ${isExpanded ? "max-h-none" : "max-h-[750px] overflow-hidden"}
       `}
     >
       <div className="max-w-[1400px] mx-auto px-8 py-10">
