@@ -107,12 +107,12 @@ export function BachataVideoArtist({ videos }: BachataVideoArtistProps) {
                   />
                 </div>
 
-                {/* Tytuł na dole */}
-                <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/80 to-transparent">
+                {/* Tytuł na dole - przesunięty wyżej */}
+                <div className="absolute bottom-2 left-0 right-0 p-2 bg-gradient-to-t from-black/90 via-black/60 to-transparent">
                   <h3 className="text-white text-xs font-medium line-clamp-2">
                     {video.title}
                   </h3>
-                  <div className="text-white/60 text-[10px] mt-1">
+                  <div className="text-white/60 text-[10px] mt-0.5">
                     {video.subscriberCount?.split(" ")[0]} wyświetleń
                   </div>
                 </div>
