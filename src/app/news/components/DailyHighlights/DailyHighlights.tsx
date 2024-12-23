@@ -20,7 +20,7 @@ export function DailyHighlights({
             {categories.map((category: Category) => (
               <span
                 key={category.id}
-                className="bg-[#e5e5e5] w-[137.109px] h-[17px] flex items-center justify-center text-[13px] leading-[17px] font-medium hover:bg-gray-300 cursor-pointer"
+                className="bg-[#e5e5e5] w-[137.109px] h-[28px] flex items-center justify-center text-[13px] leading-[17px] font-medium hover:bg-gray-300 cursor-pointer"
               >
                 {category.name}
               </span>
