@@ -14,6 +14,8 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
   const [showAll, setShowAll] = useState(false);
   const [displayCount, setDisplayCount] = useState(5);
   const listRef = useRef<HTMLDivElement>(null);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const scrollList = (direction: "left" | "right") => {
     if (listRef.current) {
@@ -78,8 +80,15 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
   };
 
   return (
-    <section className="w-full bg-[#1a1a1a] border-y border-gray-800 py-10">
-      <div className="max-w-[1400px] mx-auto px-8">
+    <section
+      ref={containerRef}
+      className={`
+        w-full bg-[#1a1a1a] border-y border-gray-800 
+        relative transition-all duration-500 ease-in-out
+        ${isExpanded ? "max-h-none" : "max-h-[800px] overflow-hidden"}
+      `}
+    >
+      <div className="max-w-[1400px] mx-auto px-8 py-10">
         {/* Nagłówek */}
         <div className="flex items-center justify-between mb-12">
           <div className="flex items-center gap-3">
@@ -458,6 +467,107 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
           )}
         </div>
       </div>
+
+      {/* Gradient i przycisk */}
+      <div
+        className={`
+          absolute bottom-0 left-0 right-0
+          transition-opacity duration-500
+          ${isExpanded ? "opacity-0 pointer-events-none" : "opacity-100"}
+        `}
+      >
+        {/* Gradient */}
+        <div className="h-40 bg-gradient-to-t from-[#1a1a1a] to-transparent" />
+
+        {/* Nowy, minimalistyczny przycisk */}
+        <div className="absolute bottom-0 left-0 right-0 flex justify-center pb-8">
+          <button
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="
+              flex flex-col items-center gap-2
+              text-gray-400 hover:text-white
+              transition-colors duration-300
+              group
+            "
+          >
+            <span className="text-sm">
+              {isExpanded ? "Pokaż mniej" : "Pokaż więcej"}
+            </span>
+            <div
+              className="
+              w-8 h-8 
+              rounded-full
+              border border-gray-700
+              flex items-center justify-center
+              group-hover:border-gray-500
+              transition-all duration-300
+            "
+            >
+              <svg
+                className={`
+                  w-4 h-4 
+                  transition-transform duration-300
+                  ${isExpanded ? "-rotate-180" : ""}
+                `}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      {/* Przycisk w stanie rozwiniętym */}
+      {isExpanded && (
+        <div className="flex justify-center py-8">
+          <button
+            onClick={() => {
+              setIsExpanded(false);
+              containerRef.current?.scrollIntoView({ behavior: "smooth" });
+            }}
+            className="
+              flex flex-col items-center gap-2
+              text-gray-400 hover:text-white
+              transition-colors duration-300
+              group
+            "
+          >
+            <span className="text-sm">Pokaż mniej</span>
+            <div
+              className="
+              w-8 h-8 
+              rounded-full
+              border border-gray-700
+              flex items-center justify-center
+              group-hover:border-gray-500
+              transition-all duration-300
+            "
+            >
+              <svg
+                className="w-4 h-4 -rotate-180"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </div>
+          </button>
+        </div>
+      )}
 
       {/* Style dla animacji */}
       <style jsx global>{`
