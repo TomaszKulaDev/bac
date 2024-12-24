@@ -14,6 +14,8 @@ const ratingCategories = {
   musicality: "Muzykalność",
   atmosphere: "Atmosfera na zajęciach",
   communication: "Komunikatywność",
+  studentDancing: "Tańczą z kursantami na zajęciach",
+  socialDancing: "Tańczą na imprezach/socjalach",
 };
 
 export const RatingModal = ({
@@ -28,6 +30,8 @@ export const RatingModal = ({
     musicality: 0,
     atmosphere: 0,
     communication: 0,
+    studentDancing: 0,
+    socialDancing: 0,
   });
 
   if (!isOpen) return null;

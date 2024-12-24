@@ -31,11 +31,13 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
 
   const calculateWeightedAverage = (rating: InstructorRating): number => {
     const weights = {
-      teaching: 0.3,
-      technique: 0.2,
-      musicality: 0.2,
+      teaching: 0.25,
+      technique: 0.15,
+      musicality: 0.15,
       atmosphere: 0.15,
-      communication: 0.15,
+      communication: 0.1,
+      studentDancing: 0.1,
+      socialDancing: 0.1,
     };
 
     const weightedSum = Object.entries(rating).reduce(
@@ -69,8 +71,6 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
   };
 
   const handleVote = (artistId: string) => {
-    if (ratings.votedInstructors.includes(artistId)) return;
-
     const artist = artists.find((a) => a.id === artistId);
     if (artist) {
       setSelectedArtist(artist);

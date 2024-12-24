@@ -19,6 +19,8 @@ export interface InstructorRating {
   musicality: number; // Muzykalność
   atmosphere: number; // Atmosfera na zajęciach
   communication: number; // Komunikatywność
+  studentDancing: number; // Tańczą z kursantami na zajęciach
+  socialDancing: number; // Tańczą na imprezach/socjalach
 }
 
 export interface RatingRecord {
