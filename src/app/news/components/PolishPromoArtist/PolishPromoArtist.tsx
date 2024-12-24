@@ -50,19 +50,6 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
     return weightedSum / 5;
   };
 
-  useEffect(() => {
-    const newVotes: Record<string, number> = {};
-    const newAverages: Record<string, number> = {};
-
-    Object.entries(ratings.ratings).forEach(([artistId, rating]) => {
-      newVotes[artistId] = (newVotes[artistId] || 0) + 1;
-      newAverages[artistId] = calculateWeightedAverage(rating);
-    });
-
-    setVotes(newVotes);
-    setAverageRatings(newAverages);
-  }, [ratings]);
-
   const scrollList = (direction: "left" | "right") => {
     if (listRef.current) {
       const scrollAmount = direction === "left" ? -400 : 400;
@@ -82,11 +69,23 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
     if (!selectedArtist) return;
 
     setRatings((prev) => ({
+      ...prev,
       ratings: {
         ...prev.ratings,
         [selectedArtist.id]: rating,
       },
       votedInstructors: [...prev.votedInstructors, selectedArtist.id],
+    }));
+
+    setVotes((prevVotes) => ({
+      ...prevVotes,
+      [selectedArtist.id]: (prevVotes[selectedArtist.id] || 0) + 1,
+    }));
+
+    const newAverage = calculateWeightedAverage(rating);
+    setAverageRatings((prevAverages) => ({
+      ...prevAverages,
+      [selectedArtist.id]: newAverage,
     }));
 
     setAnimatingId(selectedArtist.id);

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { PolishArtist, InstructorRating } from "../PolishPromoArtist/types";
 
 interface RatingModalProps {
@@ -34,6 +34,20 @@ export const RatingModal = ({
     socialDancing: 0,
   });
 
+  useEffect(() => {
+    if (!isOpen) {
+      setRatings({
+        teaching: 0,
+        technique: 0,
+        musicality: 0,
+        atmosphere: 0,
+        communication: 0,
+        studentDancing: 0,
+        socialDancing: 0,
+      });
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   const handleRatingChange = (
@@ -44,6 +58,17 @@ export const RatingModal = ({
       ...prev,
       [category]: value,
     }));
+  };
+
+  const handleSubmit = () => {
+    const hasAllRatings = Object.values(ratings).every((rating) => rating > 0);
+
+    if (!hasAllRatings) {
+      alert("Proszę ocenić wszystkie kategorie przed wysłaniem");
+      return;
+    }
+
+    onSubmit(ratings);
   };
 
   return (
@@ -89,7 +114,7 @@ export const RatingModal = ({
             Anuluj
           </button>
           <button
-            onClick={() => onSubmit(ratings)}
+            onClick={handleSubmit}
             className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
           >
             Oceń
