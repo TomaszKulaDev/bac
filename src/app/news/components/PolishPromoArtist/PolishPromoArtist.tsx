@@ -224,7 +224,7 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
               </h2>
             </div>
             <p className="text-gray-400 text-lg ml-10">
-              Głosuj na najlepsze duety instruktorskie bachaty w Polsce!
+              Głosuj na najlepsze duety instruktorskie Bachaty w Polsce!
             </p>
           </div>
           <div className="flex gap-4">
