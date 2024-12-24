@@ -23,7 +23,7 @@ export function BachataVideoArtist({ videos }: BachataVideoArtistProps) {
   };
 
   // Ograniczamy liczbę wyświetlanych filmów do pierwszych 5
-  const limitedVideos = videos.slice(0, 8);
+  const limitedVideos = videos.slice(0, 10);
 
   return (
     <section className="w-full bg-[#0f0f0f] py-6">
