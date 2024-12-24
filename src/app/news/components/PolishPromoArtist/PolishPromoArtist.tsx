@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import { InstructorRating, PolishArtist, RatingRecord } from "./types";
 import { RatingModal } from "../RatingModal/RatingModal";
+import { RatingBar } from "./components/RatingBar";
 
 interface PolishPromoArtistProps {
   artists: PolishArtist[];
@@ -147,6 +148,9 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
       textClass: `text-center font-bold ${textSize} ${color}`,
     };
   };
+
+  // Znajdujemy maksymalną liczbę głosów
+  const maxVotes = Math.max(...Object.values(votes));
 
   return (
     <section
@@ -318,25 +322,13 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
                 {artist.name}
               </p>
 
-              <div className="h-40 md:h-52 w-6 md:w-8 bg-gray-800/50 rounded-xl relative mb-3 overflow-hidden backdrop-blur-sm">
-                <div
-                  className={`
-                    absolute bottom-0 w-full 
-                    bg-gradient-to-t from-red-500 via-purple-500 to-fuchsia-400 
-                    rounded-xl transition-all duration-700 ease-out 
-                    shadow-lg shadow-purple-500/20
-                    ${animatingId === artist.id ? "animate-pulse-fast" : ""}
-                  `}
-                  style={{
-                    height: `${(averageRatings[artist.id] || 0) * 100}%`,
-                  }}
-                />
-                <div className="absolute inset-0 flex flex-col justify-between py-4">
-                  {[...Array(5)].map((_, i) => (
-                    <div key={i} className="w-full h-[1px] bg-gray-700/30" />
-                  ))}
-                </div>
-              </div>
+              <RatingBar
+                value={averageRatings[artist.id] || 0}
+                artistId={artist.id}
+                isAnimating={animatingId === artist.id}
+                votes={votes[artist.id] || 0}
+                maxVotes={maxVotes || 1}
+              />
 
               <div className="text-center space-y-1">
                 <div
