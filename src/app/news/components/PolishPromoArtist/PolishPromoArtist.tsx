@@ -285,24 +285,40 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
           {/* 2 miejsce - po lewej */}
           <div className="flex flex-col items-center translate-y-[-40px]">
             {renderTopArtist(sortedArtists[1], 1)}
-            <div className="h-[120px] w-[160px] bg-gradient-to-t from-gray-300 to-gray-200 rounded-t-lg mt-4 flex items-center justify-center">
-              <span className="text-4xl font-bold text-gray-600">2</span>
+            <div className="relative">
+              <div className="h-[120px] w-[160px] bg-gradient-to-t from-gray-300 to-gray-200 rounded-t-lg mt-4 flex items-center justify-center shadow-lg transform hover:scale-105 transition-all duration-300">
+                <span className="text-4xl font-bold text-gray-600 drop-shadow-md">
+                  2
+                </span>
+              </div>
+              <div className="absolute -bottom-2 left-0 right-0 h-4 bg-gradient-to-t from-gray-400 to-gray-300 blur-sm opacity-50" />
             </div>
           </div>
 
           {/* 1 miejsce - na środku i najwyżej */}
           <div className="flex flex-col items-center translate-y-[-80px]">
             {renderTopArtist(sortedArtists[0], 0)}
-            <div className="h-[160px] w-[160px] bg-gradient-to-t from-yellow-400 to-yellow-300 rounded-t-lg mt-4 flex items-center justify-center">
-              <span className="text-4xl font-bold text-yellow-700">1</span>
+            <div className="relative">
+              <div className="h-[160px] w-[160px] bg-gradient-to-t from-yellow-400 to-yellow-300 rounded-t-lg mt-4 flex items-center justify-center shadow-xl transform hover:scale-105 transition-all duration-300 border-t-2 border-yellow-200">
+                <div className="absolute inset-0 bg-[url('/images/confetti.png')] opacity-10 mix-blend-overlay animate-sparkle" />
+                <span className="text-5xl font-bold text-yellow-700 drop-shadow-lg">
+                  1
+                </span>
+              </div>
+              <div className="absolute -bottom-2 left-0 right-0 h-4 bg-gradient-to-t from-yellow-500 to-yellow-400 blur-sm opacity-50" />
             </div>
           </div>
 
           {/* 3 miejsce - po prawej */}
           <div className="flex flex-col items-center">
             {renderTopArtist(sortedArtists[2], 2)}
-            <div className="h-[80px] w-[160px] bg-gradient-to-t from-amber-700 to-amber-600 rounded-t-lg mt-4 flex items-center justify-center">
-              <span className="text-4xl font-bold text-amber-900">3</span>
+            <div className="relative">
+              <div className="h-[80px] w-[160px] bg-gradient-to-t from-amber-700 to-amber-600 rounded-t-lg mt-4 flex items-center justify-center shadow-lg transform hover:scale-105 transition-all duration-300">
+                <span className="text-4xl font-bold text-amber-900 drop-shadow-md">
+                  3
+                </span>
+              </div>
+              <div className="absolute -bottom-2 left-0 right-0 h-4 bg-gradient-to-t from-amber-800 to-amber-700 blur-sm opacity-50" />
             </div>
           </div>
         </div>
@@ -720,6 +736,17 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
         }
         .animate-pulse-fast {
           animation: pulse 0.5s ease-in-out infinite;
+        }
+        @keyframes sparkle {
+          0% {
+            background-position: 0 0;
+          }
+          100% {
+            background-position: 100% 100%;
+          }
+        }
+        .animate-sparkle {
+          animation: sparkle 20s linear infinite;
         }
       `}</style>
 
