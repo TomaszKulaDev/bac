@@ -28,6 +28,7 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
     ratings: {},
     votedInstructors: [],
   });
+  const [sortType, setSortType] = useState<"rating" | "votes">("rating");
 
   const calculateWeightedAverage = (rating: InstructorRating): number => {
     const weights = {
@@ -96,9 +97,15 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
   };
 
   const sortedArtists = [...artists].sort((a, b) => {
-    const aRating = averageRatings[a.id] || 0;
-    const bRating = averageRatings[b.id] || 0;
-    return bRating - aRating;
+    if (sortType === "rating") {
+      const aRating = averageRatings[a.id] || 0;
+      const bRating = averageRatings[b.id] || 0;
+      return bRating - aRating;
+    } else {
+      const aVotes = votes[a.id] || 0;
+      const bVotes = votes[b.id] || 0;
+      return bVotes - aVotes;
+    }
   });
 
   const getPositionClass = (index: number) => {
@@ -159,6 +166,28 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
             </h2>
           </div>
           <div className="flex gap-4">
+            <div className="flex bg-gray-800 rounded-lg p-1">
+              <button
+                onClick={() => setSortType("rating")}
+                className={`px-4 py-2 rounded-lg transition-all text-sm ${
+                  sortType === "rating"
+                    ? "bg-purple-600 text-white"
+                    : "text-gray-400 hover:text-white"
+                }`}
+              >
+                Najwyżej Oceniani
+              </button>
+              <button
+                onClick={() => setSortType("votes")}
+                className={`px-4 py-2 rounded-lg transition-all text-sm ${
+                  sortType === "votes"
+                    ? "bg-purple-600 text-white"
+                    : "text-gray-400 hover:text-white"
+                }`}
+              >
+                Najpopularniejsi
+              </button>
+            </div>
             <button
               onClick={handleShowLess}
               className={`text-sm px-4 py-2 rounded-lg transition-all ${
@@ -182,6 +211,11 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
               Pokaż wszystkich
             </button>
           </div>
+        </div>
+
+        <div className="text-gray-400 text-sm mb-6">
+          Sortowanie:{" "}
+          {sortType === "rating" ? "według ocen" : "według popularności"}
         </div>
 
         <div className="flex justify-center items-end gap-8 mb-16">
@@ -534,7 +568,7 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
           ${isExpanded ? "opacity-0 pointer-events-none" : "opacity-100"}
         `}
       >
-        <div className="h-40 bg-gradient-to-t from-[#1a1a1a] to-transparent" />
+        <div className="h-20 bg-gradient-to-t from-[#1a1a1a] to-transparent" />
 
         <div className="absolute bottom-0 left-0 right-0 flex justify-center pb-8">
           <button
