@@ -154,7 +154,9 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
       className={`
         w-full bg-[#1a1a1a] border-y border-gray-800 
         relative transition-all duration-500 ease-in-out
-        ${isExpanded ? "max-h-none" : "max-h-[750px] overflow-hidden"}
+        ${
+          isExpanded ? "max-h-none mb-8" : "max-h-[780px] overflow-hidden mb-10"
+        }
       `}
     >
       <div className="max-w-[1400px] mx-auto px-8 py-10">
@@ -568,13 +570,13 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
           ${isExpanded ? "opacity-0 pointer-events-none" : "opacity-100"}
         `}
       >
-        <div className="h-20 bg-gradient-to-t from-[#1a1a1a] to-transparent" />
+        <div className="h-12 bg-gradient-to-t from-[#1a1a1a] to-transparent" />
 
-        <div className="absolute bottom-0 left-0 right-0 flex justify-center pb-8">
+        <div className="absolute bottom-0 left-0 right-0 flex justify-center pb-0.5 mb-4">
           <button
             onClick={() => setIsExpanded(!isExpanded)}
             className="
-              flex flex-col items-center gap-2
+              flex flex-col items-center gap-1
               text-gray-400 hover:text-white
               transition-colors duration-300
               group
@@ -585,13 +587,13 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
             </span>
             <div
               className="
-              w-8 h-8 
-              rounded-full
-              border border-gray-700
-              flex items-center justify-center
-              group-hover:border-gray-500
-              transition-all duration-300
-            "
+                w-8 h-8 
+                rounded-full
+                border border-gray-700
+                flex items-center justify-center
+                group-hover:border-gray-500
+                transition-all duration-300
+              "
             >
               <svg
                 className={`
