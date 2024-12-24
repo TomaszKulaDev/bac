@@ -590,9 +590,9 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
           ${isExpanded ? "opacity-0 pointer-events-none" : "opacity-100"}
         `}
       >
-        <div className="h-12 bg-gradient-to-t from-[#1a1a1a] to-transparent" />
+        <div className="h-32 bg-gradient-to-t from-[#1a1a1a] to-transparent" />
 
-        <div className="absolute bottom-0 left-0 right-0 flex justify-center pb-0.5 mb-4">
+        <div className="absolute bottom-0 left-0 right-0 flex justify-center pb-2">
           <button
             onClick={() => setIsExpanded(!isExpanded)}
             className="
@@ -600,6 +600,7 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
               text-gray-400 hover:text-white
               transition-colors duration-300
               group
+              bg-[#1a1a1a] p-2 rounded-full
             "
           >
             <span className="text-sm">
