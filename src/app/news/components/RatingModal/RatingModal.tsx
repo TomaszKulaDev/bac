@@ -170,7 +170,15 @@ export const RatingModal = ({
                       }
                     `}
                   >
-                    {ratings.studentDancing ? "Zdecydowanie częściej tak" : <span className="text-red-500">Zdecydowanie częściej nie</span>}
+                    {ratings.studentDancing ? (
+                      <span className="text-green-500">
+                        Zdecydowanie częściej <strong>TAK</strong>
+                      </span>
+                    ) : (
+                      <span className="text-red-500">
+                        Zdecydowanie częściej <strong>NIE</strong>
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>
@@ -228,7 +236,15 @@ export const RatingModal = ({
                       }
                     `}
                   >
-                    {ratings.socialDancing ? "Zdecydowanie cześciej tak" : <span className="text-red-500">Zdecydowanie cześciej nie</span>}
+                    {ratings.socialDancing ? (
+                      <span className="text-green-500">
+                        Zdecydowanie cześciej <strong>TAK</strong>
+                      </span>
+                    ) : (
+                      <span className="text-red-500">
+                        Zdecydowanie cześciej <strong>NIE</strong>
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>
