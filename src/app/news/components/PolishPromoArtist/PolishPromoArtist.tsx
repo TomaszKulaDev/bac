@@ -138,14 +138,29 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
   };
 
   const getTopThreeStyles = (index: number) => {
-    // Stałe rozmiary dla top 3
     const sizes = {
-      0: { size: 200, textSize: "text-3xl", color: "text-yellow-400" },
-      1: { size: 160, textSize: "text-2xl", color: "text-gray-300" },
-      2: { size: 120, textSize: "text-xl", color: "text-amber-600" },
+      0: {
+        size: 200,
+        textSize: "text-3xl",
+        color: "text-yellow-400",
+        nameSize: "text-2xl",
+      },
+      1: {
+        size: 160,
+        textSize: "text-2xl",
+        color: "text-gray-300",
+        nameSize: "text-xl",
+      },
+      2: {
+        size: 120,
+        textSize: "text-xl",
+        color: "text-amber-600",
+        nameSize: "text-lg",
+      },
     };
 
-    const { size, textSize, color } = sizes[index as keyof typeof sizes];
+    const { size, textSize, color, nameSize } =
+      sizes[index as keyof typeof sizes];
 
     return {
       containerStyle: {
@@ -153,6 +168,7 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
         height: `${size}px`,
       },
       textClass: `text-center font-bold ${textSize} ${color}`,
+      nameClass: `text-center font-bold ${nameSize} text-white mb-2`,
     };
   };
 
@@ -188,17 +204,14 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
           </div>
         </div>
 
+        <p className={`${styles.nameClass} mt-4 mb-2`}>{artist.name}</p>
+
         <div className={styles.textClass}>
-          <div className="mt-4">#{index + 1}</div>
-          <div className="mt-2">{votes[artist.id] || 0} głosów</div>
+          <div className="mb-1">{votes[artist.id] || 0} głosów</div>
           {averageRatings[artist.id] ? (
-            <div className="mt-1 text-yellow-400">
-              {averageRatings[artist.id].toFixed(1)}/5.0
-            </div>
+            <div>{averageRatings[artist.id].toFixed(1)}/5.0</div>
           ) : null}
         </div>
-
-        <p className="text-gray-200 text-sm font-medium mt-2">{artist.name}</p>
       </>
     );
   };
