@@ -265,7 +265,7 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
                 Najpopularniejsi
               </button>
             </div>
-            <button
+            {/* <button
               onClick={handleShowLess}
               className={`text-sm px-4 py-2 rounded-lg transition-all ${
                 displayCount > 5
@@ -275,8 +275,8 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
               disabled={displayCount <= 5}
             >
               Top 5
-            </button>
-            <button
+            </button> */}
+            {/* <button
               onClick={handleShowMore}
               className={`text-sm px-4 py-2 rounded-lg transition-all ${
                 displayCount < artists.length
@@ -286,7 +286,7 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
               disabled={displayCount >= artists.length}
             >
               Pokaż wszystkich
-            </button>
+            </button> */}
           </div>
         </div>
 
@@ -295,7 +295,7 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
           {sortType === "rating" ? "według ocen" : "według popularności"}
         </div>
 
-        <div className="flex justify-between gap-14 mb-16">
+        <div className="flex justify-between gap-8 mb-12">
           {/* Lewa strona - Podium */}
           <div className="w-1/2">
             <h3 className="text-white text-xl font-semibold mb-6">TOP 3</h3>
