@@ -159,6 +159,50 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
   // Znajdujemy maksymalną liczbę głosów
   const maxVotes = Math.max(...Object.values(votes));
 
+  // Helper function do renderowania artysty
+  const renderTopArtist = (artist: PolishArtist, index: number) => {
+    const styles = getTopThreeStyles(index);
+    return (
+      <>
+        <div className="relative" style={styles.containerStyle}>
+          <div
+            className={`
+            absolute inset-0 rounded-full 
+            ${
+              artist.isActive
+                ? "bg-gradient-to-tr from-red-500 via-purple-500 to-fuchsia-400 p-[2px]"
+                : "bg-gray-700 p-[1px]"
+            }
+          `}
+          >
+            <div className="relative w-full h-full rounded-full overflow-hidden bg-gray-900">
+              <Image
+                src={artist.image}
+                alt={artist.name}
+                fill
+                className="object-cover"
+                sizes={`${styles.containerStyle.width}px`}
+                priority
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.textClass}>
+          <div className="mt-4">#{index + 1}</div>
+          <div className="mt-2">{votes[artist.id] || 0} głosów</div>
+          {averageRatings[artist.id] ? (
+            <div className="mt-1 text-yellow-400">
+              {averageRatings[artist.id].toFixed(1)}/5.0
+            </div>
+          ) : null}
+        </div>
+
+        <p className="text-gray-200 text-sm font-medium mt-2">{artist.name}</p>
+      </>
+    );
+  };
+
   return (
     <section
       ref={containerRef}
@@ -172,11 +216,17 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
     >
       <div className="max-w-[1400px] mx-auto px-8 py-10">
         <div className="flex items-center justify-between mb-12">
-          <div className="flex items-center gap-3">
-            <div className="text-red-500 text-3xl animate-pulse">★</div>
-            <h2 className="text-white text-3xl font-bold tracking-tight">
-              {`Ranking Instruktorów Bachaty w Polsce ${new Date().getFullYear()}`}
-            </h2>
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center gap-3">
+              <div className="text-red-500 text-3xl animate-pulse">★</div>
+              <h2 className="text-white text-3xl font-bold tracking-tight">
+                {`Ranking Duetów Instruktorów Bachaty w Polsce. ${new Date().getFullYear()}`}
+              </h2>
+            </div>
+            <p className="text-gray-400 text-lg ml-10">
+              Oceniaj swoich ulubionych instruktorów i zobacz kto jest najlepszy
+              w tym roku
+            </p>
           </div>
           <div className="flex gap-4">
             <div className="flex bg-gray-800 rounded-lg p-1">
@@ -231,54 +281,30 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
           {sortType === "rating" ? "według ocen" : "według popularności"}
         </div>
 
-        <div className="flex justify-center items-end gap-8 mb-16">
-          {sortedArtists.slice(0, 3).map((artist, index) => {
-            const styles = getTopThreeStyles(index);
-            return (
-              <div key={artist.id} className="flex flex-col items-center">
-                <div
-                  className="relative transition-all duration-500"
-                  style={styles.containerStyle}
-                >
-                  <div
-                    className={`
-                    absolute inset-0 rounded-full 
-                    ${
-                      artist.isActive
-                        ? "bg-gradient-to-tr from-red-500 via-purple-500 to-fuchsia-400 p-[2px]"
-                        : "bg-gray-700 p-[1px]"
-                    }
-                  `}
-                  >
-                    <div className="relative w-full h-full rounded-full overflow-hidden bg-gray-900">
-                      <Image
-                        src={artist.image}
-                        alt={artist.name}
-                        fill
-                        className="object-cover"
-                        sizes={`${styles.containerStyle.width}px`}
-                        priority
-                      />
-                    </div>
-                  </div>
-                </div>
+        <div className="flex justify-center items-end gap-8 mb-16 relative">
+          {/* 2 miejsce - po lewej */}
+          <div className="flex flex-col items-center translate-y-[-40px]">
+            {renderTopArtist(sortedArtists[1], 1)}
+            <div className="h-[120px] w-[160px] bg-gradient-to-t from-gray-300 to-gray-200 rounded-t-lg mt-4 flex items-center justify-center">
+              <span className="text-4xl font-bold text-gray-600">2</span>
+            </div>
+          </div>
 
-                <div className={styles.textClass}>
-                  <div className="mt-4">#{index + 1}</div>
-                  <div className="mt-2">{votes[artist.id] || 0} głosów</div>
-                  {averageRatings[artist.id] ? (
-                    <div className="mt-1 text-yellow-400">
-                      {averageRatings[artist.id].toFixed(1)}/5.0
-                    </div>
-                  ) : null}
-                </div>
+          {/* 1 miejsce - na środku i najwyżej */}
+          <div className="flex flex-col items-center translate-y-[-80px]">
+            {renderTopArtist(sortedArtists[0], 0)}
+            <div className="h-[160px] w-[160px] bg-gradient-to-t from-yellow-400 to-yellow-300 rounded-t-lg mt-4 flex items-center justify-center">
+              <span className="text-4xl font-bold text-yellow-700">1</span>
+            </div>
+          </div>
 
-                <p className="text-gray-200 text-sm font-medium mt-2">
-                  {artist.name}
-                </p>
-              </div>
-            );
-          })}
+          {/* 3 miejsce - po prawej */}
+          <div className="flex flex-col items-center">
+            {renderTopArtist(sortedArtists[2], 2)}
+            <div className="h-[80px] w-[160px] bg-gradient-to-t from-amber-700 to-amber-600 rounded-t-lg mt-4 flex items-center justify-center">
+              <span className="text-4xl font-bold text-amber-900">3</span>
+            </div>
+          </div>
         </div>
 
         <div
