@@ -219,6 +219,11 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
                 <div className={styles.textClass}>
                   <div className="mt-4">#{index + 1}</div>
                   <div className="mt-2">{votes[artist.id] || 0} głosów</div>
+                  {averageRatings[artist.id] ? (
+                    <div className="mt-1 text-yellow-400">
+                      {(averageRatings[artist.id] * 5).toFixed(1)}/5.0
+                    </div>
+                  ) : null}
                 </div>
 
                 <p className="text-gray-200 text-sm font-medium mt-2">
