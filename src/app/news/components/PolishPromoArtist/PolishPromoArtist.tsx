@@ -220,12 +220,11 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
             <div className="flex items-center gap-3">
               <div className="text-red-500 text-3xl animate-pulse">★</div>
               <h2 className="text-white text-3xl font-bold tracking-tight">
-                {`Ranking Duetów Instruktorów Bachaty w Polsce. ${new Date().getFullYear()}`}
+                {`Ranking Duetów Instruktorskich Bachaty w Polsce ${new Date().getFullYear()}`}
               </h2>
             </div>
             <p className="text-gray-400 text-lg ml-10">
-              Oceniaj swoich ulubionych instruktorów i zobacz kto jest najlepszy
-              w tym roku
+              Głosuj na najlepsze duety instruktorskie bachaty w Polsce!
             </p>
           </div>
           <div className="flex gap-4">
@@ -281,127 +280,94 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
           {sortType === "rating" ? "według ocen" : "według popularności"}
         </div>
 
-        <div className="flex justify-center items-end gap-8 mb-16 relative">
-          {/* 2 miejsce - po lewej */}
-          <div className="flex flex-col items-center translate-y-[-40px]">
-            {renderTopArtist(sortedArtists[1], 1)}
-            <div className="relative">
-              <div className="h-[120px] w-[160px] bg-gradient-to-t from-gray-300 to-gray-200 rounded-t-lg mt-4 flex items-center justify-center shadow-lg transform hover:scale-105 transition-all duration-300">
-                <span className="text-4xl font-bold text-gray-600 drop-shadow-md">
-                  2
-                </span>
+        <div className="flex justify-between gap-8 mb-12">
+          {/* Lewa strona - Podium */}
+          <div className="w-1/2">
+            <h3 className="text-white text-xl font-semibold mb-6">Podium</h3>
+            <div className="flex justify-center items-end gap-4 relative">
+              {/* 2 miejsce */}
+              <div className="flex flex-col items-center translate-y-[-20px]">
+                {renderTopArtist(sortedArtists[1], 1)}
+                <div className="h-[80px] w-[100px] bg-gradient-to-t from-gray-300 to-gray-200 rounded-t-lg mt-2" />
               </div>
-              <div className="absolute -bottom-2 left-0 right-0 h-4 bg-gradient-to-t from-gray-400 to-gray-300 blur-sm opacity-50" />
+
+              {/* 1 miejsce */}
+              <div className="flex flex-col items-center translate-y-[-40px]">
+                {renderTopArtist(sortedArtists[0], 0)}
+                <div className="h-[100px] w-[100px] bg-gradient-to-t from-yellow-400 to-yellow-300 rounded-t-lg mt-2" />
+              </div>
+
+              {/* 3 miejsce */}
+              <div className="flex flex-col items-center">
+                {renderTopArtist(sortedArtists[2], 2)}
+                <div className="h-[60px] w-[100px] bg-gradient-to-t from-amber-700 to-amber-600 rounded-t-lg mt-2" />
+              </div>
             </div>
           </div>
 
-          {/* 1 miejsce - na środku i najwyżej */}
-          <div className="flex flex-col items-center translate-y-[-80px]">
-            {renderTopArtist(sortedArtists[0], 0)}
-            <div className="relative">
-              <div className="h-[160px] w-[160px] bg-gradient-to-t from-yellow-400 to-yellow-300 rounded-t-lg mt-4 flex items-center justify-center shadow-xl transform hover:scale-105 transition-all duration-300 border-t-2 border-yellow-200">
-                <div className="absolute inset-0 bg-[url('/images/confetti.png')] opacity-10 mix-blend-overlay animate-sparkle" />
-                <span className="text-5xl font-bold text-yellow-700 drop-shadow-lg">
-                  1
-                </span>
-              </div>
-              <div className="absolute -bottom-2 left-0 right-0 h-4 bg-gradient-to-t from-yellow-500 to-yellow-400 blur-sm opacity-50" />
-            </div>
-          </div>
-
-          {/* 3 miejsce - po prawej */}
-          <div className="flex flex-col items-center">
-            {renderTopArtist(sortedArtists[2], 2)}
-            <div className="relative">
-              <div className="h-[80px] w-[160px] bg-gradient-to-t from-amber-700 to-amber-600 rounded-t-lg mt-4 flex items-center justify-center shadow-lg transform hover:scale-105 transition-all duration-300">
-                <span className="text-4xl font-bold text-amber-900 drop-shadow-md">
-                  3
-                </span>
-              </div>
-              <div className="absolute -bottom-2 left-0 right-0 h-4 bg-gradient-to-t from-amber-800 to-amber-700 blur-sm opacity-50" />
-            </div>
-          </div>
-        </div>
-
-        <div
-          className={`
-          grid gap-4 mb-16 transition-all duration-500
-          ${
-            displayCount <= 5
-              ? "grid-cols-5"
-              : displayCount <= 20
-              ? "grid-cols-10"
-              : "grid-cols-[repeat(auto-fill,minmax(100px,1fr))]"
-          }
-        `}
-        >
-          {sortedArtists.slice(0, displayCount).map((artist, index) => (
-            <div key={artist.id} className="flex flex-col items-center">
-              <div
-                className={`text-xl font-bold mb-2 ${getPositionClass(index)}`}
-              >
-                #{index + 1}
-              </div>
-
-              <div className="mb-3 relative w-12 h-12 md:w-16 md:h-16">
+          {/* Prawa strona - Top 5 */}
+          <div className="w-1/2">
+            <h3 className="text-white text-xl font-semibold mb-6">Top 5</h3>
+            <div className="space-y-4">
+              {sortedArtists.slice(0, 5).map((artist, index) => (
                 <div
+                  key={artist.id}
                   className={`
-                  absolute inset-0 rounded-full 
-                  ${
-                    artist.isActive
-                      ? "bg-gradient-to-tr from-red-500 via-purple-500 to-fuchsia-400 p-[2px]"
-                      : "bg-gray-700 p-[1px]"
-                  }
-                `}
-                >
-                  <div className="relative w-full h-full rounded-full overflow-hidden bg-[#1a1a1a]">
-                    <Image
-                      src={artist.image}
-                      alt={artist.name}
-                      fill
-                      className="object-cover"
-                      sizes="64px"
-                      priority
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <p className="text-gray-200 text-xs md:text-sm font-medium text-center mb-3 truncate max-w-[100px]">
-                {artist.name}
-              </p>
-
-              <RatingBar
-                value={averageRatings[artist.id] || 0}
-                artistId={artist.id}
-                isAnimating={animatingId === artist.id}
-                votes={votes[artist.id] || 0}
-                maxVotes={maxVotes || 1}
-              />
-
-              <div className="text-center space-y-1">
-                <div
-                  className={`
-                    text-white text-lg md:text-2xl font-bold
-                    transition-all duration-300
-                    ${
-                      animatingId === artist.id
-                        ? "scale-125 text-yellow-400"
-                        : ""
-                    }
+                    flex items-center gap-4 p-4 rounded-lg
+                    ${index < 3 ? "bg-gray-800/50" : "bg-gray-800/30"}
+                    hover:bg-gray-800/70 transition-all duration-300
                   `}
                 >
-                  {votes[artist.id] || 0}
-                  <span className="text-sm text-gray-400 ml-1">głosów</span>
-                </div>
-                {averageRatings[artist.id] ? (
-                  <div className="text-yellow-400 text-sm font-medium">
-                    {averageRatings[artist.id].toFixed(1)}/5.0
+                  {/* Numer pozycji */}
+                  <div
+                    className={`
+                    w-8 h-8 flex items-center justify-center rounded-full
+                    ${getPositionClass(index)} bg-gray-900/50 font-bold
+                  `}
+                  >
+                    {index + 1}
                   </div>
-                ) : null}
-              </div>
+
+                  {/* Zdjęcie */}
+                  <div className="relative w-12 h-12">
+                    <div
+                      className={`
+                      absolute inset-0 rounded-full
+                      ${
+                        artist.isActive
+                          ? "bg-gradient-to-tr from-red-500 via-purple-500 to-fuchsia-400 p-[2px]"
+                          : "bg-gray-700 p-[1px]"
+                      }
+                    `}
+                    >
+                      <div className="relative w-full h-full rounded-full overflow-hidden bg-gray-900">
+                        <Image
+                          src={artist.image}
+                          alt={artist.name}
+                          fill
+                          className="object-cover"
+                          sizes="48px"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Informacje */}
+                  <div className="flex-1">
+                    <div className="text-white font-medium">{artist.name}</div>
+                    <div className="flex items-center gap-3 text-sm">
+                      <span className="text-yellow-400">
+                        {averageRatings[artist.id]?.toFixed(1) || "0.0"}/5.0
+                      </span>
+                      <span className="text-gray-400">
+                        {votes[artist.id] || 0} głosów
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
 
         <div className="border-t border-gray-800/50 pt-8">
