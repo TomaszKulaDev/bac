@@ -11,6 +11,9 @@ interface PolishPromoArtistProps {
 
 export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
   const [votes, setVotes] = useState<Record<string, number>>({});
+  const [averageRatings, setAverageRatings] = useState<Record<string, number>>(
+    {}
+  );
   const [animatingId, setAnimatingId] = useState<string | null>(null);
   const [showAll, setShowAll] = useState(false);
   const [displayCount, setDisplayCount] = useState(5);
@@ -21,26 +24,41 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
     null
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [ratings, setRatings] = useState<RatingRecord>(() => {
-    if (typeof window === "undefined")
-      return {
-        ratings: {},
-        votedInstructors: [],
-      };
-
-    const saved = localStorage.getItem("artistRatings");
-    return saved
-      ? JSON.parse(saved)
-      : {
-          ratings: {},
-          votedInstructors: [],
-        };
+  const [ratings, setRatings] = useState<RatingRecord>({
+    ratings: {},
+    votedInstructors: [],
   });
 
+  const calculateWeightedAverage = (rating: InstructorRating): number => {
+    const weights = {
+      teaching: 0.3,
+      technique: 0.2,
+      musicality: 0.2,
+      atmosphere: 0.15,
+      communication: 0.15,
+    };
+
+    const weightedSum = Object.entries(rating).reduce(
+      (sum, [category, value]) => {
+        return sum + value * weights[category as keyof typeof weights];
+      },
+      0
+    );
+
+    return weightedSum / 5;
+  };
+
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      localStorage.setItem("artistRatings", JSON.stringify(ratings));
-    }
+    const newVotes: Record<string, number> = {};
+    const newAverages: Record<string, number> = {};
+
+    Object.entries(ratings.ratings).forEach(([artistId, rating]) => {
+      newVotes[artistId] = (newVotes[artistId] || 0) + 1;
+      newAverages[artistId] = calculateWeightedAverage(rating);
+    });
+
+    setVotes(newVotes);
+    setAverageRatings(newAverages);
   }, [ratings]);
 
   const scrollList = (direction: "left" | "right") => {
@@ -63,8 +81,6 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
   const handleRatingSubmit = (rating: InstructorRating) => {
     if (!selectedArtist) return;
 
-    const averageRating = Object.values(rating).reduce((a, b) => a + b, 0) / 5;
-
     setRatings((prev) => ({
       ratings: {
         ...prev.ratings,
@@ -73,13 +89,18 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
       votedInstructors: [...prev.votedInstructors, selectedArtist.id],
     }));
 
+    setAnimatingId(selectedArtist.id);
+    setTimeout(() => setAnimatingId(null), 500);
+
     setIsModalOpen(false);
     setSelectedArtist(null);
   };
 
-  const sortedArtists = [...artists].sort(
-    (a, b) => (votes[b.id] || 0) - (votes[a.id] || 0)
-  );
+  const sortedArtists = [...artists].sort((a, b) => {
+    const aRating = averageRatings[a.id] || 0;
+    const bRating = averageRatings[b.id] || 0;
+    return bRating - aRating;
+  });
 
   const getPositionClass = (index: number) => {
     switch (index) {
@@ -127,12 +148,10 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
       className={`
         w-full bg-[#1a1a1a] border-y border-gray-800 
         relative transition-all duration-500 ease-in-out
-        {/* Kontroluje wysokość sekcji - rozwinięta lub zwinięta z ukrytym przepełnieniem */}
         ${isExpanded ? "max-h-none" : "max-h-[750px] overflow-hidden"}
       `}
     >
       <div className="max-w-[1400px] mx-auto px-8 py-10">
-        {/* Nagłówek */}
         <div className="flex items-center justify-between mb-12">
           <div className="flex items-center gap-3">
             <div className="text-red-500 text-3xl animate-pulse">★</div>
@@ -166,7 +185,6 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
           </div>
         </div>
 
-        {/* Top 3 */}
         <div className="flex justify-center items-end gap-8 mb-16">
           {sortedArtists.slice(0, 3).map((artist, index) => {
             const styles = getTopThreeStyles(index);
@@ -212,7 +230,6 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
           })}
         </div>
 
-        {/* Wykres słupkowy */}
         <div
           className={`
           grid gap-4 mb-16 transition-all duration-500
@@ -227,14 +244,12 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
         >
           {sortedArtists.slice(0, displayCount).map((artist, index) => (
             <div key={artist.id} className="flex flex-col items-center">
-              {/* Pozycja */}
               <div
                 className={`text-xl font-bold mb-2 ${getPositionClass(index)}`}
               >
                 #{index + 1}
               </div>
 
-              {/* Zdjęcie nad słupkiem */}
               <div className="mb-3 relative w-12 h-12 md:w-16 md:h-16">
                 <div
                   className={`
@@ -259,12 +274,10 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
                 </div>
               </div>
 
-              {/* Nazwa nad słupkiem */}
               <p className="text-gray-200 text-xs md:text-sm font-medium text-center mb-3 truncate max-w-[100px]">
                 {artist.name}
               </p>
 
-              {/* Słupek */}
               <div className="h-40 md:h-52 w-6 md:w-8 bg-gray-800/50 rounded-xl relative mb-3 overflow-hidden backdrop-blur-sm">
                 <div
                   className={`
@@ -275,15 +288,9 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
                     ${animatingId === artist.id ? "animate-pulse-fast" : ""}
                   `}
                   style={{
-                    height: `${Math.min(
-                      ((votes[artist.id] || 0) /
-                        Math.max(...Object.values(votes), 1)) *
-                        100,
-                      100
-                    )}%`,
+                    height: `${(averageRatings[artist.id] || 0) * 100}%`,
                   }}
                 />
-                {/* Linie poziome w tle */}
                 <div className="absolute inset-0 flex flex-col justify-between py-4">
                   {[...Array(5)].map((_, i) => (
                     <div key={i} className="w-full h-[1px] bg-gray-700/30" />
@@ -291,28 +298,37 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
                 </div>
               </div>
 
-              {/* Liczba głosów */}
-              <div
-                className={`
-                text-white text-lg md:text-2xl font-bold
-                transition-all duration-300
-                ${animatingId === artist.id ? "scale-125 text-yellow-400" : ""}
-              `}
-              >
-                {votes[artist.id] || 0}
+              <div className="text-center space-y-1">
+                <div
+                  className={`
+                    text-white text-lg md:text-2xl font-bold
+                    transition-all duration-300
+                    ${
+                      animatingId === artist.id
+                        ? "scale-125 text-yellow-400"
+                        : ""
+                    }
+                  `}
+                >
+                  {votes[artist.id] || 0}
+                  <span className="text-sm text-gray-400 ml-1">g��osów</span>
+                </div>
+                {averageRatings[artist.id] ? (
+                  <div className="text-yellow-400 text-sm font-medium">
+                    {(averageRatings[artist.id] * 5).toFixed(1)}/5.0
+                  </div>
+                ) : null}
               </div>
             </div>
           ))}
         </div>
 
-        {/* Lista wszystkich artystów */}
         <div className="border-t border-gray-800/50 pt-8">
           <div className="flex justify-between items-center mb-6">
             <h3 className="text-white text-xl font-semibold">
               Wszyscy Instruktorzy ({artists.length})
             </h3>
             <div className="flex items-center gap-4">
-              {/* Przyciski nawigacji */}
               <div className="flex gap-2">
                 <button
                   onClick={() => scrollList("left")}
@@ -352,7 +368,6 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
                 </button>
               </div>
 
-              {/* Przycisk Pokaż wszystkich */}
               <button
                 onClick={() => setShowAll(!showAll)}
                 className="text-sm px-4 py-2 rounded-lg transition-all
@@ -378,7 +393,6 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
                     onClick={() => handleVote(artist.id)}
                     className="relative w-20 h-20 mb-3 transform transition-all duration-300 hover:scale-105"
                   >
-                    {/* Gradient border z animacją */}
                     <div
                       className={`
                       absolute inset-0 rounded-full 
@@ -390,7 +404,6 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
                       ${animatingId === artist.id ? "animate-ping-short" : ""}
                     `}
                     >
-                      {/* Zdjęcie z efektem hover */}
                       <div className="relative w-full h-full rounded-full overflow-hidden bg-[#1a1a1a] group-hover:opacity-90 transition-opacity">
                         <Image
                           src={artist.image}
@@ -400,7 +413,6 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
                           sizes="(max-width: 768px) 100vw, 112px"
                           priority={sortedArtists.indexOf(artist) < 5}
                         />
-                        {/* Overlay z ikoną głosowania */}
                         <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/20 transition-all">
                           <svg
                             className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transform scale-50 group-hover:scale-100 transition-all"
@@ -511,7 +523,6 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
         </div>
       </div>
 
-      {/* Gradient i przycisk */}
       <div
         className={`
           absolute bottom-0 left-0 right-0
@@ -519,10 +530,8 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
           ${isExpanded ? "opacity-0 pointer-events-none" : "opacity-100"}
         `}
       >
-        {/* Gradient */}
         <div className="h-40 bg-gradient-to-t from-[#1a1a1a] to-transparent" />
 
-        {/* Nowy, minimalistyczny przycisk */}
         <div className="absolute bottom-0 left-0 right-0 flex justify-center pb-8">
           <button
             onClick={() => setIsExpanded(!isExpanded)}
@@ -568,7 +577,6 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
         </div>
       </div>
 
-      {/* Przycisk w stanie rozwiniętym */}
       {isExpanded && (
         <div className="flex justify-center py-8">
           <button
@@ -612,7 +620,6 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
         </div>
       )}
 
-      {/* Style dla animacji */}
       <style jsx global>{`
         @keyframes gradient {
           0% {
@@ -651,7 +658,6 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
         }
       `}</style>
 
-      {/* Style dla ukrycia scrollbara */}
       <style jsx global>{`
         .scrollbar-hide {
           -ms-overflow-style: none;
