@@ -311,7 +311,7 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
                   `}
                 >
                   {votes[artist.id] || 0}
-                  <span className="text-sm text-gray-400 ml-1">g��osów</span>
+                  <span className="text-sm text-gray-400 ml-1">głosów</span>
                 </div>
                 {averageRatings[artist.id] ? (
                   <div className="text-yellow-400 text-sm font-medium">
