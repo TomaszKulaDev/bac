@@ -283,7 +283,7 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
         <div className="flex justify-between gap-8 mb-12">
           {/* Lewa strona - Podium */}
           <div className="w-1/2">
-            <h3 className="text-white text-xl font-semibold mb-6">Podium</h3>
+            <h3 className="text-white text-xl font-semibold mb-6">TOP 3</h3>
             <div className="flex justify-center items-end gap-4 relative">
               {/* 2 miejsce */}
               <div className="flex flex-col items-center translate-y-[-20px]">
