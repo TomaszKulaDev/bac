@@ -222,8 +222,10 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
       className={`
         w-full bg-[#1a1a1a] border-y border-gray-800 
         relative transition-all duration-500 ease-in-out
+        {/* Kontroluje wysokość sekcji - gdy rozwinięta (isExpanded=true) nie ma limitu wysokości,
+            gdy zwinięta (isExpanded=false) ma maksymalną wysokość 810px i ukrywa nadmiar treści */}
         ${
-          isExpanded ? "max-h-none mb-8" : "max-h-[780px] overflow-hidden mb-10"
+          isExpanded ? "max-h-none mb-8" : "max-h-[810px] overflow-hidden mb-10"
         }
       `}
     >
@@ -293,7 +295,7 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
           {sortType === "rating" ? "według ocen" : "według popularności"}
         </div>
 
-        <div className="flex justify-between gap-8 mb-12">
+        <div className="flex justify-between gap-14 mb-16">
           {/* Lewa strona - Podium */}
           <div className="w-1/2">
             <h3 className="text-white text-xl font-semibold mb-6">TOP 3</h3>
