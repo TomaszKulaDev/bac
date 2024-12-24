@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
-import { PolishArtist } from "./types";
+import { InstructorRating, PolishArtist, RatingRecord } from "./types";
+import { RatingModal } from "../RatingModal/RatingModal";
 
 interface PolishPromoArtistProps {
   artists: PolishArtist[];
@@ -16,6 +17,31 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
   const listRef = useRef<HTMLDivElement>(null);
   const [isExpanded, setIsExpanded] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [selectedArtist, setSelectedArtist] = useState<PolishArtist | null>(
+    null
+  );
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [ratings, setRatings] = useState<RatingRecord>(() => {
+    if (typeof window === "undefined")
+      return {
+        ratings: {},
+        votedInstructors: [],
+      };
+
+    const saved = localStorage.getItem("artistRatings");
+    return saved
+      ? JSON.parse(saved)
+      : {
+          ratings: {},
+          votedInstructors: [],
+        };
+  });
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("artistRatings", JSON.stringify(ratings));
+    }
+  }, [ratings]);
 
   const scrollList = (direction: "left" | "right") => {
     if (listRef.current) {
@@ -25,14 +51,30 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
   };
 
   const handleVote = (artistId: string) => {
-    setAnimatingId(artistId);
-    setVotes((prev) => ({
-      ...prev,
-      [artistId]: (prev[artistId] || 0) + 1,
+    if (ratings.votedInstructors.includes(artistId)) return;
+
+    const artist = artists.find((a) => a.id === artistId);
+    if (artist) {
+      setSelectedArtist(artist);
+      setIsModalOpen(true);
+    }
+  };
+
+  const handleRatingSubmit = (rating: InstructorRating) => {
+    if (!selectedArtist) return;
+
+    const averageRating = Object.values(rating).reduce((a, b) => a + b, 0) / 5;
+
+    setRatings((prev) => ({
+      ratings: {
+        ...prev.ratings,
+        [selectedArtist.id]: rating,
+      },
+      votedInstructors: [...prev.votedInstructors, selectedArtist.id],
     }));
 
-    // Reset animacji po 1s
-    setTimeout(() => setAnimatingId(null), 1000);
+    setIsModalOpen(false);
+    setSelectedArtist(null);
   };
 
   const sortedArtists = [...artists].sort(
@@ -619,6 +661,18 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
           display: none;
         }
       `}</style>
+
+      {selectedArtist && (
+        <RatingModal
+          artist={selectedArtist}
+          isOpen={isModalOpen}
+          onClose={() => {
+            setIsModalOpen(false);
+            setSelectedArtist(null);
+          }}
+          onSubmit={handleRatingSubmit}
+        />
+      )}
     </section>
   );
 }

@@ -12,3 +12,16 @@ export interface PolishArtist {
     youtube?: string;
   };
 }
+
+export interface InstructorRating {
+  teaching: number; // Umiejętności nauczania
+  technique: number; // Technika tańca
+  musicality: number; // Muzykalność
+  atmosphere: number; // Atmosfera na zajęciach
+  communication: number; // Komunikatywność
+}
+
+export interface RatingRecord {
+  ratings: Record<string, InstructorRating>;
+  votedInstructors: string[];
+}
