@@ -32,24 +32,31 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
   const [sortType, setSortType] = useState<"rating" | "votes">("rating");
 
   const calculateWeightedAverage = (rating: InstructorRating): number => {
-    const weights = {
-      teaching: 0.25,
-      technique: 0.15,
-      musicality: 0.15,
-      atmosphere: 0.15,
-      communication: 0.1,
-      studentDancing: 0.1,
-      socialDancing: 0.1,
+    // 1. Obliczanie głównej oceny (max 5 punktów)
+    const mainCategories = {
+      teaching: { weight: 0.4, value: rating.teaching },
+      technique: { weight: 0.3, value: rating.technique },
+      atmosphere: { weight: 0.3, value: rating.atmosphere },
     };
 
-    const weightedSum = Object.entries(rating).reduce(
-      (sum, [category, value]) => {
-        return sum + value * weights[category as keyof typeof weights];
-      },
+    const mainScore = Object.values(mainCategories).reduce(
+      (sum, { weight, value }) => sum + value * weight,
       0
     );
 
-    return weightedSum / 5;
+    // 2. Dodatkowe punkty (0 lub 1 punkt każdy)
+    const bonusPoints = [
+      rating.studentDancing ? 1 : 0,
+      rating.socialDancing ? 1 : 0,
+    ];
+
+    // 3. Obliczanie końcowej oceny
+    const totalScore =
+      mainScore + bonusPoints.reduce((sum, point) => sum + point, 0);
+    const maxPossibleScore = 5 + bonusPoints.length; // 5 za główne + max 2 za dodatkowe
+
+    // 4. Normalizacja do skali 0-5
+    return (totalScore / maxPossibleScore) * 5;
   };
 
   const scrollList = (direction: "left" | "right") => {
@@ -261,7 +268,7 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
                   <div className="mt-2">{votes[artist.id] || 0} głosów</div>
                   {averageRatings[artist.id] ? (
                     <div className="mt-1 text-yellow-400">
-                      {(averageRatings[artist.id] * 5).toFixed(1)}/5.0
+                      {averageRatings[artist.id].toFixed(1)}/5.0
                     </div>
                   ) : null}
                 </div>
@@ -347,7 +354,7 @@ export function PolishPromoArtist({ artists }: PolishPromoArtistProps) {
                 </div>
                 {averageRatings[artist.id] ? (
                   <div className="text-yellow-400 text-sm font-medium">
-                    {(averageRatings[artist.id] * 5).toFixed(1)}/5.0
+                    {averageRatings[artist.id].toFixed(1)}/5.0
                   </div>
                 ) : null}
               </div>

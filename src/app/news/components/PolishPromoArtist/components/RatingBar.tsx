@@ -19,10 +19,11 @@ export const RatingBar = ({
     const ratingWeight = 0.7;
     const votesWeight = 0.3;
 
-    const ratingValue = value;
-    const votesValue = votes / maxVotes;
+    // Normalizacja oceny do zakresu 0-1
+    const normalizedRating = value / 5;
+    const normalizedVotes = votes / maxVotes;
 
-    return ratingValue * ratingWeight + votesValue * votesWeight;
+    return normalizedRating * ratingWeight + normalizedVotes * votesWeight;
   };
 
   const { animatedValue, isAnimating: isBarAnimating } = useChartAnimation({

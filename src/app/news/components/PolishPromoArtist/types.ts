@@ -16,11 +16,9 @@ export interface PolishArtist {
 export interface InstructorRating {
   teaching: number; // Umiejętności nauczania
   technique: number; // Technika tańca
-  musicality: number; // Muzykalność
   atmosphere: number; // Atmosfera na zajęciach
-  communication: number; // Komunikatywność
-  studentDancing: number; // Tańczą z kursantami na zajęciach
-  socialDancing: number; // Tańczą na imprezach/socjalach
+  studentDancing: boolean; // Tańczą z kursantami na zajęciach
+  socialDancing: boolean; // Tańczą na imprezach/socjalach
 }
 
 export interface RatingRecord {

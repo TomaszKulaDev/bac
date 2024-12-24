@@ -11,11 +11,7 @@ interface RatingModalProps {
 const ratingCategories = {
   teaching: "Umiejętności nauczania",
   technique: "Technika tańca",
-  musicality: "Muzykalność",
   atmosphere: "Atmosfera na zajęciach",
-  communication: "Komunikatywność",
-  studentDancing: "Tańczą z kursantami na zajęciach",
-  socialDancing: "Tańczą z kursantami na imprezach/socjalach",
 };
 
 export const RatingModal = ({
@@ -27,11 +23,9 @@ export const RatingModal = ({
   const [ratings, setRatings] = useState<InstructorRating>({
     teaching: 0,
     technique: 0,
-    musicality: 0,
     atmosphere: 0,
-    communication: 0,
-    studentDancing: 0,
-    socialDancing: 0,
+    studentDancing: false,
+    socialDancing: false,
   });
 
   useEffect(() => {
@@ -39,11 +33,9 @@ export const RatingModal = ({
       setRatings({
         teaching: 0,
         technique: 0,
-        musicality: 0,
         atmosphere: 0,
-        communication: 0,
-        studentDancing: 0,
-        socialDancing: 0,
+        studentDancing: false,
+        socialDancing: false,
       });
     }
   }, [isOpen]);
@@ -51,7 +43,7 @@ export const RatingModal = ({
   if (!isOpen) return null;
 
   const handleRatingChange = (
-    category: keyof InstructorRating,
+    category: keyof typeof ratingCategories,
     value: number
   ) => {
     setRatings((prev) => ({
@@ -60,11 +52,21 @@ export const RatingModal = ({
     }));
   };
 
-  const handleSubmit = () => {
-    const hasAllRatings = Object.values(ratings).every((rating) => rating > 0);
+  const handleToggleChange = (field: "studentDancing" | "socialDancing") => {
+    setRatings((prev) => ({
+      ...prev,
+      [field]: !prev[field],
+    }));
+  };
 
-    if (!hasAllRatings) {
-      alert("Proszę ocenić wszystkie kategorie przed wysłaniem");
+  const handleSubmit = () => {
+    const hasValidRatings = Object.entries(ratingCategories).every(([key]) => {
+      const rating = ratings[key as keyof typeof ratingCategories];
+      return rating >= 1 && rating <= 5;
+    });
+
+    if (!hasValidRatings) {
+      alert("Proszę ocenić wszystkie kategorie w skali od 1 do 5 gwiazdek");
       return;
     }
 
@@ -84,16 +86,21 @@ export const RatingModal = ({
         <div className="space-y-6">
           {Object.entries(ratingCategories).map(([key, label]) => (
             <div key={key} className="space-y-2">
-              <p className="text-gray-300">{label}</p>
+              <p className="text-gray-300">
+                {label} <span className="text-red-500">*</span>
+              </p>
               <div className="flex gap-2">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <button
                     key={star}
                     onClick={() =>
-                      handleRatingChange(key as keyof InstructorRating, star)
+                      handleRatingChange(
+                        key as keyof typeof ratingCategories,
+                        star
+                      )
                     }
                     className={`text-2xl ${
-                      star <= ratings[key as keyof InstructorRating]
+                      star <= ratings[key as keyof typeof ratingCategories]
                         ? "text-yellow-400"
                         : "text-gray-600"
                     }`}
@@ -104,6 +111,129 @@ export const RatingModal = ({
               </div>
             </div>
           ))}
+
+          <div className="space-y-4 mt-8">
+            <h4 className="text-gray-300 mb-4 font-medium">
+              Informacje o prowadzeniu zajęć
+            </h4>
+            <div className="grid grid-cols-2 gap-4 mt-6">
+              <div
+                onClick={() => handleToggleChange("studentDancing")}
+                className={`
+                  p-4 rounded-xl cursor-pointer
+                  ${
+                    ratings.studentDancing
+                      ? "bg-green-900/30 border-green-500"
+                      : "bg-purple-900/30 border-purple-500"
+                  }
+                  border transition-all duration-300
+                  hover:border-opacity-100 border-opacity-50
+                `}
+              >
+                <div className="flex flex-col items-center gap-2">
+                  <svg
+                    className={`w-6 h-6 ${
+                      ratings.studentDancing
+                        ? "text-green-400"
+                        : "text-purple-400"
+                    }`}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1.5}
+                      d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                  <span
+                    className={`
+                      text-center text-sm font-medium
+                      ${
+                        ratings.studentDancing
+                          ? "text-green-400"
+                          : "text-purple-400"
+                      }
+                    `}
+                  >
+                    Czy tańczy z kursantami na zajęciach?
+                  </span>
+                  <div
+                    className={`
+                      mt-2 text-xs
+                      ${
+                        ratings.studentDancing
+                          ? "text-green-500"
+                          : "text-purple-500"
+                      }
+                    `}
+                  >
+                    {ratings.studentDancing ? "Zdecydowanie częściej tak" : <span className="text-red-500">Zdecydowanie częściej nie</span>}
+                  </div>
+                </div>
+              </div>
+
+              <div
+                onClick={() => handleToggleChange("socialDancing")}
+                className={`
+                  p-4 rounded-xl cursor-pointer
+                  ${
+                    ratings.socialDancing
+                      ? "bg-green-900/30 border-green-500"
+                      : "bg-purple-900/30 border-purple-500"
+                  }
+                  border transition-all duration-300
+                  hover:border-opacity-100 border-opacity-50
+                `}
+              >
+                <div className="flex flex-col items-center gap-2">
+                  <svg
+                    className={`w-6 h-6 ${
+                      ratings.socialDancing
+                        ? "text-green-400"
+                        : "text-purple-400"
+                    }`}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1.5}
+                      d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z M9 10h.01M15 10h.01M9.75 15a4 4 0 005.5 0"
+                    />
+                  </svg>
+                  <span
+                    className={`
+                      text-center text-sm font-medium
+                      ${
+                        ratings.socialDancing
+                          ? "text-green-400"
+                          : "text-purple-400"
+                      }
+                    `}
+                  >
+                    Czy tańczy z kursantami na imprezach?
+                  </span>
+                  <div
+                    className={`
+                      mt-2 text-xs
+                      ${
+                        ratings.socialDancing
+                          ? "text-green-500"
+                          : "text-purple-500"
+                      }
+                    `}
+                  >
+                    {ratings.socialDancing ? "Zdecydowanie cześciej tak" : <span className="text-red-500">Zdecydowanie cześciej nie</span>}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className="mt-6 flex justify-end gap-3">
