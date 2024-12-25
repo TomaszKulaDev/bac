@@ -108,7 +108,7 @@ export function BachataVideoArtist({ videos }: BachataVideoArtistProps) {
                 </div>
 
                 {/* Tytuł na dole - przesunięty wyżej */}
-                <div className="absolute bottom-2 left-0 right-0 p-2 bg-gradient-to-t from-black/90 via-black/60 to-transparent">
+                <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black via-black/100 to-black/0">
                   <h3 className="text-white text-xs font-medium line-clamp-2">
                     {video.title}
                   </h3>
