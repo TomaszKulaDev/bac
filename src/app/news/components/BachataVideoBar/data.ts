@@ -104,12 +104,12 @@ export const bachataVideosData: BachataVideoItem[] = [
   },
   {
     id: "12",
-    title: "Daniel & Carla",
-    youtubeId: "L3kDG1VU4PE",
-    url: "Daniel & Carla",
-    channelTitle: "Daniel & Carla",
+    title: "Ofir & Ofri",
+    youtubeId: "kyoMyksI5b0",
+    url: "Ofir & Ofri",
+    channelTitle: "Ofir & Ofri",
     subscriberCount: "89,7 tys. subskrybentów",
-    channelImage: "/images/channels/daniel-carla.jpg",
+    channelImage: "/images/channels/ofir-ofri.jpg",
   },
   {
     id: "13",
