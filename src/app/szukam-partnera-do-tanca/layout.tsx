@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import Link from "next/link";
 
 // Dodajemy strukturowane dane JSON-LD
 const jsonLd = {
@@ -107,14 +108,26 @@ export default function PartnerSearchLayout({
         <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md shadow-sm border-b border-gray-100">
           <div className="container mx-auto px-4 py-4">
             <div className="flex justify-between items-center">
-              <h1 className="text-2xl font-bold text-gray-900 hover:text-red-600 transition-colors cursor-pointer">
+              <Link
+                href="/szukam-partnera-do-tanca"
+                className="text-2xl font-bold text-gray-900 hover:text-red-600 transition-colors"
+              >
                 Szukam Partnera do Tańca
-              </h1>
+              </Link>
               <div className="flex items-center gap-4">
-                <button className="btn-secondary hidden sm:block">
+                <Link
+                  href="/szukam-partnera-do-tanca/jak-to-dziala"
+                  className="btn-secondary hidden sm:block hover:bg-amber-50 transition-colors"
+                >
                   Jak to działa?
-                </button>
-                <button className="btn-primary">Dodaj Ogłoszenie</button>
+                </Link>
+                <Link
+                  href="/dodaj-ogloszenie"
+                  className="btn-primary bg-gradient-to-r from-amber-500 to-red-500 
+                           hover:from-amber-600 hover:to-red-600 text-white"
+                >
+                  Dodaj Ogłoszenie
+                </Link>
               </div>
             </div>
           </div>
@@ -142,9 +155,30 @@ export default function PartnerSearchLayout({
                 <div>
                   <h3 className="font-semibold mb-4">O Serwisie</h3>
                   <ul className="space-y-2">
-                    <li>Jak to działa</li>
-                    <li>Zasady bezpieczeństwa</li>
-                    <li>Często zadawane pytania</li>
+                    <li>
+                      <Link
+                        href="/szukam-partnera-do-tanca/jak-to-dziala"
+                        className="text-gray-600 hover:text-amber-600 transition-colors"
+                      >
+                        Jak to działa
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/szukam-partnera-do-tanca/zasady-bezpieczenstwa"
+                        className="text-gray-600 hover:text-amber-600 transition-colors"
+                      >
+                        Zasady bezpieczeństwa
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/szukam-partnera-do-tanca/faq"
+                        className="text-gray-600 hover:text-amber-600 transition-colors"
+                      >
+                        Często zadawane pytania
+                      </Link>
+                    </li>
                   </ul>
                 </div>
                 <div>
