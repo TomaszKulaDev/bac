@@ -4,8 +4,9 @@ import { Metadata } from "next";
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  name: "Szukam Partnera do Tańca",
-  url: "https://baciata.pl/szukam-partnera-do-tanca",
+  name: "Baciata.pl - Szukam Partnera do Tańca",
+  url: "https://baciata.pl",
+  description: "Największa społeczność tancerzy Bachaty w Polsce",
   potentialAction: {
     "@type": "SearchAction",
     target: {
@@ -15,6 +16,17 @@ const jsonLd = {
     },
     "query-input": "required name=search_term_string",
   },
+  aggregateRating: {
+    "@type": "AggregateRating",
+    ratingValue: "4.8",
+    reviewCount: "2500",
+    bestRating: "5",
+    worstRating: "1",
+  },
+  sameAs: [
+    "https://www.facebook.com/Baciata",
+    "https://www.instagram.com/baciata_pl/",
+  ],
 };
 
 export const metadata: Metadata = {
@@ -23,10 +35,11 @@ export const metadata: Metadata = {
   description:
     "Największa społeczność tancerzy Bachaty w Polsce. Znajdź idealnego partnera do Bachaty w swojej okolicy.",
   keywords:
-    "partner do tańca, szukam partnera do bachaty, taniec, bachata, bachata sensual,",
+    "partner do tańca, szukam partnera do bachaty, bachata, nauka bachaty, szkoła tańca, kurs bachaty, partner do bachaty warszawa, partnerka do bachaty kraków, bachata sensual, bachata dominicana, bachata moderna, darmowe ogłoszenia taneczne",
   openGraph: {
-    title: "Szukam Partnera do Bachaty",
-    description: "Znajdź idealnego partnera do Bachaty w swojej okolicy",
+    title: "Szukam Partnera do Bachaty | Największa Społeczność Tancerzy",
+    description:
+      "Znajdź idealnego partnera do bachaty w swojej okolicy. Dołącz do społeczności 2500+ aktywnych tancerzy w Polsce!",
     images: [
       {
         url: "/images/og-image.jpg",
@@ -34,10 +47,17 @@ export const metadata: Metadata = {
         height: 630,
         alt: "Szukam Partnera do Bachaty - społeczność tancerzy",
       },
+      {
+        url: "/images/og-image-square.jpg",
+        width: 1080,
+        height: 1080,
+        alt: "Baciata.pl - znajdź partnera do tańca",
+      },
     ],
     locale: "pl_PL",
     type: "website",
-    siteName: "Szukam Partnera do Bachaty",
+    siteName: "Baciata.pl",
+    url: "https://baciata.pl/szukam-partnera-do-tanca",
   },
   twitter: {
     card: "summary_large_image",
