@@ -21,21 +21,21 @@ export function HeroSection() {
       aria-label="Główny banner"
       role="banner"
     >
-      {/* Overlay gradient */}
+      {/* Zmodyfikowany gradient overlay */}
       <div
-        className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40 z-10"
+        className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-transparent z-10"
         aria-hidden="true"
       />
 
-      {/* Animated background particles */}
-      <div className="absolute inset-0 z-0 opacity-30" aria-hidden="true">
+      {/* Zmodyfikowane animated particles */}
+      <div className="absolute inset-0 z-0 opacity-40" aria-hidden="true">
         <div
           className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] 
-                     from-red-500/20 via-transparent to-transparent animate-pulse-slow"
+                     from-cyan-500/30 via-transparent to-transparent animate-pulse-slow"
         />
         <div
           className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] 
-                     from-purple-500/20 via-transparent to-transparent animate-pulse-slow delay-1000"
+                     from-amber-500/30 via-transparent to-transparent animate-pulse-slow delay-1000"
         />
       </div>
 
@@ -57,13 +57,13 @@ export function HeroSection() {
         </video>
       </div>
 
-      {/* Content */}
+      {/* Content z nowymi kolorami */}
       <div className="relative z-20 container mx-auto px-4 h-full flex items-center">
         <div className="max-w-3xl mx-auto text-center">
           <div className="animate-fade-in-up space-y-6">
-            <h1 className="text-4xl md:text-7xl font-bold leading-tight">
+            <h1 className="text-4xl md:text-7xl font-bold leading-tight text-white">
               Znajdź Idealnego
-              <span className="text-red-500 animate-pulse-slow">
+              <span className="bg-gradient-to-r from-amber-500 to-red-500 text-transparent bg-clip-text animate-pulse-slow">
                 {" "}
                 Partnera{" "}
               </span>
@@ -74,10 +74,12 @@ export function HeroSection() {
               Dołącz do największej społeczności tancerzy bachaty w Polsce
             </p>
 
+            {/* Zmodyfikowane przyciski */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
               <Link
                 href="/dodaj-ogloszenie"
-                className="btn-hero-primary group"
+                className="btn-hero-primary group bg-gradient-to-r from-amber-500 to-red-500 hover:from-amber-600 hover:to-red-600 
+                         text-white px-8 py-3 rounded-full flex items-center gap-2 transition-all duration-300"
                 aria-label="Dodaj ogłoszenie"
               >
                 <FaUserPlus
@@ -89,7 +91,9 @@ export function HeroSection() {
 
               <Link
                 href="/szukaj"
-                className="btn-hero-secondary group"
+                className="btn-hero-secondary group bg-white/10 hover:bg-white/20 backdrop-blur-sm
+                         text-white px-8 py-3 rounded-full flex items-center gap-2 transition-all duration-300
+                         border border-white/30"
                 aria-label="Szukaj partnera"
               >
                 <FaSearch
@@ -100,19 +104,19 @@ export function HeroSection() {
               </Link>
             </div>
 
-            {/* Stats */}
-            <div className="grid grid-cols-3 gap-4 mt-12 text-white/90">
-              <div>
-                <div className="text-2xl font-bold">2,500+</div>
-                <div className="text-sm text-white/70">Aktywnych Tancerzy</div>
+            {/* Zmodyfikowane statystyki */}
+            <div className="grid grid-cols-3 gap-4 mt-12">
+              <div className="p-4 rounded-lg bg-white/5 backdrop-blur-sm">
+                <div className="text-2xl font-bold text-amber-400">2,500+</div>
+                <div className="text-sm text-white/80">Aktywnych Tancerzy</div>
               </div>
-              <div>
-                <div className="text-2xl font-bold">150+</div>
-                <div className="text-sm text-white/70">Miast</div>
+              <div className="p-4 rounded-lg bg-white/5 backdrop-blur-sm">
+                <div className="text-2xl font-bold text-amber-400">150+</div>
+                <div className="text-sm text-white/80">Miast</div>
               </div>
-              <div>
-                <div className="text-2xl font-bold">10,000+</div>
-                <div className="text-sm text-white/70">Połączonych Par</div>
+              <div className="p-4 rounded-lg bg-white/5 backdrop-blur-sm">
+                <div className="text-2xl font-bold text-amber-400">10,000+</div>
+                <div className="text-sm text-white/80">Połączonych Par</div>
               </div>
             </div>
           </div>
