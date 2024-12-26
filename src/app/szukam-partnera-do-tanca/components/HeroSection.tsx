@@ -71,7 +71,7 @@ export function HeroSection() {
             </h1>
 
             <p className="text-xl md:text-2xl text-gray-200 max-w-2xl mx-auto">
-              Dołącz do największej społeczności tancerzy bachaty w Polsce
+              Dołącz do największej społeczności tancerzy Bachaty w Polsce.
             </p>
 
             {/* Zmodyfikowane przyciski */}
