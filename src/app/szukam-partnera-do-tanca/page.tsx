@@ -3,6 +3,7 @@
 import { PartnerSearch } from "./components/PartnerSearch";
 import { HeroSection } from "./components/HeroSection";
 import { LatestProfiles } from "./components/LatestProfiles";
+import { QuickAds } from "./components/QuickAds";
 
 export default function PartnerSearchPage() {
   return (
@@ -14,6 +15,7 @@ export default function PartnerSearchPage() {
             <PartnerSearch />
           </div>
           <div className="lg:col-span-5">
+            <QuickAds />
             <LatestProfiles />
           </div>
         </div>
