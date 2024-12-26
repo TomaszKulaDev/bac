@@ -17,7 +17,11 @@ export function HeroSection() {
   }, []);
 
   return (
-    <div className="relative h-[85vh] min-h-[600px] flex items-center justify-center text-white overflow-hidden">
+    <section
+      className="relative h-[85vh] min-h-[600px]"
+      aria-label="Główny banner"
+      role="banner"
+    >
       <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40 z-10" />
 
       {/* Animated background particles */}
@@ -35,8 +39,10 @@ export function HeroSection() {
           playsInline
           className="w-full h-full object-cover scale-105 animate-slow-zoom"
           poster="/images/hero-poster.jpg"
+          aria-hidden="true"
         >
           <source src="/videos/bachata-hero.mp4" type="video/mp4" />
+          <track kind="captions" srcLang="pl" label="Polski" />
         </video>
       </div>
 
@@ -51,6 +57,10 @@ export function HeroSection() {
               </span>
               do Tańca
             </h1>
+            <meta
+              name="description"
+              content="Największa społeczność tancerzy w Polsce"
+            />
             <p className="text-xl md:text-2xl mb-12 text-gray-200 max-w-2xl mx-auto">
               Dołącz do największej społeczności tancerzy bachaty w Polsce
             </p>
@@ -90,6 +100,6 @@ export function HeroSection() {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

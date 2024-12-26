@@ -67,7 +67,7 @@ export function LatestProfiles() {
   });
 
   return (
-    <div className="space-y-8">
+    <section aria-label="Profile tancerzy" className="space-y-8">
       <div className="flex justify-between items-center mb-6">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">
@@ -89,17 +89,24 @@ export function LatestProfiles() {
                     }`}
       >
         {mockProfiles.map((profile) => (
-          <div
+          <article
             key={profile.id}
             className="group card-hover-effect bg-white rounded-lg shadow-sm overflow-hidden"
+            itemScope
+            itemType="http://schema.org/Person"
           >
-            {/* Zdjęcie profilowe */}
             <div className="relative aspect-[4/5]">
               <Image
                 src={profile.avatar}
-                alt={profile.name}
+                alt={`${profile.name} - ${profile.level} tancerz${
+                  profile.name.endsWith("a") ? "ka" : ""
+                } z miasta ${profile.city}`}
                 fill
+                priority={profile.id === "1"}
+                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                 className="object-cover transition-transform group-hover:scale-105"
+                loading={profile.id === "1" ? "eager" : "lazy"}
+                itemProp="image"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
 
@@ -139,9 +146,9 @@ export function LatestProfiles() {
                 </button>
               </div>
             </div>
-          </div>
+          </article>
         ))}
       </div>
-    </div>
+    </section>
   );
 }
