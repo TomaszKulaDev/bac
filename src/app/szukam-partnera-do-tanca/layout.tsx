@@ -104,102 +104,199 @@ export default function PartnerSearchLayout({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className="min-h-screen">
-        <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md shadow-sm border-b border-gray-100">
-          <div className="container mx-auto px-4 py-4">
-            <div className="flex justify-between items-center">
+      <div className="min-h-screen flex flex-col">
+        {/* Header */}
+        <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-amber-100">
+          <nav className="container mx-auto px-4 h-16">
+            <div className="flex justify-between items-center h-full">
               <Link
                 href="/szukam-partnera-do-tanca"
-                className="text-2xl font-bold text-gray-900 hover:text-red-600 transition-colors"
+                className="text-2xl font-bold text-gray-900 hover:text-amber-600 
+                         transition-colors flex items-center gap-2"
               >
-                Szukam Partnera do Tańca
+                <span
+                  className="bg-gradient-to-r from-amber-500 to-red-500 
+                             bg-clip-text text-transparent"
+                >
+                  Szukam Partnera do Tańca
+                </span>
               </Link>
-              <div className="flex items-center gap-4">
+
+              <div className="flex items-center gap-6">
                 <Link
                   href="/szukam-partnera-do-tanca/jak-to-dziala"
-                  className="btn-secondary hidden sm:block hover:bg-amber-50 transition-colors"
+                  className="hidden sm:flex items-center gap-2 text-gray-600 
+                           hover:text-amber-600 transition-colors"
                 >
                   Jak to działa?
                 </Link>
                 <Link
                   href="/dodaj-ogloszenie"
-                  className="btn-primary bg-gradient-to-r from-amber-500 to-red-500 
-                           hover:from-amber-600 hover:to-red-600 text-white"
+                  className="bg-gradient-to-r from-amber-500 to-red-500 
+                           text-white px-6 py-2 rounded-lg hover:from-amber-600 
+                           hover:to-red-600 transition-all duration-300 
+                           transform hover:scale-[1.02] shadow-lg 
+                           shadow-amber-500/20"
                 >
                   Dodaj Ogłoszenie
                 </Link>
               </div>
             </div>
-          </div>
+          </nav>
         </header>
 
+        {/* Main Content */}
         <main className="flex-grow">{children}</main>
 
-        <footer className="bg-gray-50 border-t">
-          <nav aria-label="Stopka">
-            <div className="container mx-auto px-4 py-12">
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div className="md:col-span-2">
-                  <h3 className="font-bold text-xl mb-4 text-gray-900">
-                    Szukam Partnera do Tańca
-                  </h3>
-                  <p className="text-gray-600 mb-4 max-w-md">
-                    Największa społeczność tancerzy w Polsce. Znajdź idealnego
-                    partnera do tańca i rozwijaj swoją pasję.
-                  </p>
-                  <div className="flex gap-4">
-                    <button className="btn-secondary">Newsletter</button>
-                    <button className="btn-primary">Dołącz do nas</button>
-                  </div>
-                </div>
-                <div>
-                  <h3 className="font-semibold mb-4">O Serwisie</h3>
-                  <ul className="space-y-2">
-                    <li>
-                      <Link
-                        href="/szukam-partnera-do-tanca/jak-to-dziala"
-                        className="text-gray-600 hover:text-amber-600 transition-colors"
+        {/* Footer */}
+        <footer className="bg-gradient-to-b from-white to-amber-50 border-t border-amber-100">
+          <div className="container mx-auto px-4 py-12">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+              {/* Brand Section */}
+              <div className="md:col-span-1">
+                <h3
+                  className="text-xl font-bold mb-4 bg-gradient-to-r 
+                             from-amber-500 to-red-500 bg-clip-text 
+                             text-transparent"
+                >
+                  Szukam Partnera do Tańca
+                </h3>
+                <p className="text-gray-600 mb-6">
+                  Największa społeczność tancerzy w Polsce.
+                </p>
+              </div>
+
+              {/* Quick Links */}
+              <div>
+                <h3 className="font-semibold mb-4 text-gray-800">O Serwisie</h3>
+                <ul className="space-y-2">
+                  <li>
+                    <Link
+                      href="/szukam-partnera-do-tanca/jak-to-dziala"
+                      className="text-gray-600 hover:text-amber-600 transition-colors"
+                    >
+                      Jak to działa
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/szukam-partnera-do-tanca/zasady-bezpieczenstwa"
+                      className="text-gray-600 hover:text-amber-600 transition-colors"
+                    >
+                      Zasady bezpieczeństwa
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/szukam-partnera-do-tanca/faq"
+                      className="text-gray-600 hover:text-amber-600 transition-colors"
+                    >
+                      FAQ
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Dancers Section */}
+              <div>
+                <h3 className="font-semibold mb-4 text-gray-800">
+                  Dla Tancerzy
+                </h3>
+                <ul className="space-y-2">
+                  <li>
+                    <Link
+                      href="/dodaj-ogloszenie"
+                      className="text-gray-600 hover:text-amber-600 transition-colors"
+                    >
+                      Dodaj ogłoszenie
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="https://www.baciata.pl/szukam-partnera-do-tanca"
+                      className="text-gray-600 hover:text-amber-600 transition-colors"
+                    >
+                      Szukaj partnera
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/wydarzenia"
+                      className="text-gray-600 hover:text-amber-600 transition-colors"
+                    >
+                      Wydarzenia taneczne
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Business Section */}
+              <div>
+                <h3 className="font-semibold mb-4 text-gray-800">
+                  Dla Biznesu
+                </h3>
+                <ul className="space-y-2">
+                  <li>
+                    <Link
+                      href="/oferta-reklamowa"
+                      className="text-gray-600 hover:text-amber-600 transition-colors 
+                               flex items-center gap-2"
+                    >
+                      <span>Oferta reklamowa</span>
+                      <span
+                        className="text-xs px-2 py-0.5 bg-amber-100 
+                                   text-amber-700 rounded-full"
                       >
-                        Jak to działa
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        href="/szukam-partnera-do-tanca/zasady-bezpieczenstwa"
-                        className="text-gray-600 hover:text-amber-600 transition-colors"
-                      >
-                        Zasady bezpieczeństwa
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        href="/szukam-partnera-do-tanca/faq"
-                        className="text-gray-600 hover:text-amber-600 transition-colors"
-                      >
-                        Często zadawane pytania
-                      </Link>
-                    </li>
-                  </ul>
-                </div>
-                <div>
-                  <h3 className="font-semibold mb-4">Dla Tancerzy</h3>
-                  <ul className="space-y-2">
-                    <li>Dodaj ogłoszenie</li>
-                    <li>Szukaj partnera</li>
-                    <li>Wydarzenia taneczne</li>
-                  </ul>
-                </div>
-                <div>
-                  <h3 className="font-semibold mb-4">Kontakt</h3>
-                  <ul className="space-y-2">
-                    <li>Pomoc</li>
-                    <li>Zgłoś problem</li>
-                    <li>Współpraca</li>
-                  </ul>
-                </div>
+                        New
+                      </span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/wspolpraca"
+                      className="text-gray-600 hover:text-amber-600 transition-colors"
+                    >
+                      Współpraca
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/kontakt"
+                      className="text-gray-600 hover:text-amber-600 transition-colors"
+                    >
+                      Kontakt biznesowy
+                    </Link>
+                  </li>
+                </ul>
               </div>
             </div>
-          </nav>
+
+            {/* Newsletter & Join Section */}
+            <div className="mt-8 pt-8 border-t border-amber-100">
+              <div className="flex flex-wrap justify-center gap-4">
+                <button
+                  className="px-4 py-2 rounded-lg border border-amber-200 
+                               text-amber-700 hover:bg-amber-50 transition-colors"
+                >
+                  Newsletter
+                </button>
+                <Link
+                  href="https://www.baciata.pl/register"
+                  className="px-4 py-2 rounded-lg bg-gradient-to-r 
+                           from-amber-500 to-red-500 text-white 
+                           hover:from-amber-600 hover:to-red-600 
+                           transition-colors"
+                >
+                  Dołącz do nas
+                </Link>
+              </div>
+            </div>
+
+            {/* Copyright */}
+            <div className="mt-12 pt-8 border-t border-amber-100 text-center text-gray-600">
+              © 2024 Baciata.pl - Wszystkie prawa zastrzeżone
+            </div>
+          </div>
         </footer>
       </div>
     </>
