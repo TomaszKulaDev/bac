@@ -3,11 +3,7 @@
 import { PageHeader } from "../szukam-partnera-do-tanca/components/PageHeader";
 import { useState } from "react";
 import { z } from "zod";
-import ReCAPTCHA from "react-google-recaptcha";
 import DOMPurify from "dompurify";
-
-// Dodajemy typy dla reCAPTCHA
-type RecaptchaValue = string | null;
 
 const contactSchema = z.object({
   name: z
@@ -53,12 +49,58 @@ export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitCount, setSubmitCount] = useState(0);
   const [lastSubmitTime, setLastSubmitTime] = useState(0);
-  const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null);
 
   const RATE_LIMIT = {
-    maxAttempts: 5,
-    timeWindow: 3600000,
-    minTimeBetween: 10000,
+    maxAttempts: 3,
+    timeWindow: 7200000,
+    minTimeBetween: 30000,
+    maxDailyAttempts: 10,
+    dailyResetTime: 24 * 60 * 60 * 1000,
+  };
+
+  const checkRateLimit = () => {
+    const now = Date.now();
+    const timeSinceLastSubmit = now - lastSubmitTime;
+
+    const dailyAttempts = parseInt(
+      localStorage.getItem("dailySubmitCount") || "0"
+    );
+    const lastResetTime = parseInt(
+      localStorage.getItem("lastResetTime") || "0"
+    );
+
+    if (now - lastResetTime >= RATE_LIMIT.dailyResetTime) {
+      localStorage.setItem("dailySubmitCount", "0");
+      localStorage.setItem("lastResetTime", now.toString());
+    } else if (dailyAttempts >= RATE_LIMIT.maxDailyAttempts) {
+      const hoursUntilReset = Math.ceil(
+        (RATE_LIMIT.dailyResetTime - (now - lastResetTime)) / (1000 * 60 * 60)
+      );
+      throw new Error(
+        `Przekroczono dzienny limit prób. Spróbuj ponownie za ${hoursUntilReset} godzin.`
+      );
+    }
+
+    if (submitCount >= RATE_LIMIT.maxAttempts) {
+      const timeRemaining = RATE_LIMIT.timeWindow - (now - lastSubmitTime);
+      if (timeRemaining > 0) {
+        const minutesRemaining = Math.ceil(timeRemaining / 60000);
+        throw new Error(
+          `Przekroczono limit prób. Spróbuj ponownie za ${minutesRemaining} minut.`
+        );
+      }
+    }
+
+    if (timeSinceLastSubmit < RATE_LIMIT.minTimeBetween) {
+      const secondsRemaining = Math.ceil(
+        (RATE_LIMIT.minTimeBetween - timeSinceLastSubmit) / 1000
+      );
+      throw new Error(
+        `Proszę odczekać ${secondsRemaining} sekund przed kolejną próbą.`
+      );
+    }
+
+    localStorage.setItem("dailySubmitCount", (dailyAttempts + 1).toString());
   };
 
   const sanitizeInput = (input: string) => {
@@ -92,36 +134,16 @@ export default function ContactPage() {
     }
   };
 
-  const checkRateLimit = () => {
-    const now = Date.now();
-
-    if (now - lastSubmitTime < RATE_LIMIT.minTimeBetween) {
-      throw new Error("Proszę poczekać przed kolejną próbą wysłania.");
-    }
-
-    if (submitCount >= RATE_LIMIT.maxAttempts) {
-      const timeElapsed = now - lastSubmitTime;
-      if (timeElapsed < RATE_LIMIT.timeWindow) {
-        throw new Error("Przekroczono limit prób. Spróbuj ponownie później.");
-      }
-      setSubmitCount(0);
-    }
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
       setIsSubmitting(true);
-
       checkRateLimit();
-
-      if (!recaptchaValue) {
-        throw new Error("Proszę potwierdzić, że nie jesteś robotem.");
-      }
 
       const isValid = await validateForm();
       if (!isValid) {
+        setIsSubmitting(false);
         return;
       }
 
@@ -132,20 +154,9 @@ export default function ContactPage() {
         company: sanitizeInput(formData.company),
         subject: sanitizeInput(formData.subject),
         message: sanitizeInput(formData.message),
-        recaptchaToken: recaptchaValue,
       };
 
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(sanitizedData),
-      });
-
-      if (!response.ok) {
-        throw new Error("Wystąpił błąd podczas wysyłania wiadomości.");
-      }
+      console.log("Form submitted:", sanitizedData);
 
       setSubmitCount((prev) => prev + 1);
       setLastSubmitTime(Date.now());
@@ -157,16 +168,13 @@ export default function ContactPage() {
         subject: "",
         message: "",
       });
-      setRecaptchaValue(null);
-
-      alert("Wiadomość została wysłana pomyślnie!");
     } catch (error) {
       if (error instanceof Error) {
-        alert(error.message);
-      } else {
-        alert("Wystąpił nieznany błąd.");
+        setErrors((prev) => ({
+          ...prev,
+          submit: error.message,
+        }));
       }
-    } finally {
       setIsSubmitting(false);
     }
   };
@@ -322,28 +330,6 @@ export default function ContactPage() {
               )}
             </div>
 
-            <div className="flex justify-center mb-6">
-              {process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ? (
-                <>
-                  <ReCAPTCHA
-                    sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
-                    onChange={(value: RecaptchaValue) =>
-                      setRecaptchaValue(value)
-                    }
-                  />
-                  {!recaptchaValue && errors.recaptcha && (
-                    <p className="mt-2 text-sm text-red-500">
-                      Proszę potwierdzić, że nie jesteś robotem
-                    </p>
-                  )}
-                </>
-              ) : (
-                <div className="text-amber-600 bg-amber-50 p-4 rounded-lg">
-                  Trwa ładowanie zabezpieczeń...
-                </div>
-              )}
-            </div>
-
             <div className="text-center">
               <button
                 type="submit"
@@ -366,7 +352,17 @@ export default function ContactPage() {
               Dane kontaktowe
             </h3>
             <p className="text-gray-600">
-              Email: kontakt@baciata.pl
+              Email:{" "}
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText("kontakt@baciata.pl");
+                  alert("Adres email został skopiowany do schowka!");
+                }}
+                className="text-amber-600 hover:text-amber-700 underline focus:outline-none"
+                title="Kliknij aby skopiować adres email"
+              >
+                Kliknij aby wyświetlić/skopiować email
+              </button>
               <br />
               Tel: +48 123 456 789
               <br />
