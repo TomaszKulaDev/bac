@@ -10,7 +10,7 @@ export function HeroSection() {
   const scrollToSearch = () => {
     const searchSection = document.getElementById("partner-search");
     if (searchSection) {
-      const offset = 200;
+      const offset = 160;
       const elementPosition = searchSection.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - offset;
 

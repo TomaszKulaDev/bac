@@ -120,8 +120,9 @@ export function PartnerSearch() {
 
   return (
     <div
+      id="partner-search"
       className="bg-white/95 backdrop-blur-sm rounded-xl shadow-lg overflow-hidden 
-                    border border-amber-500/10 w-full sticky top-24"
+                border border-amber-500/10 w-full sticky top-24"
     >
       <div className="p-6">
         <h2 className="text-xl font-bold text-gray-800 mb-6">Wyszukaj</h2>
