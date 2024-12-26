@@ -119,7 +119,7 @@ export const NavContent: React.FC = React.memo(function NavContent() {
                 Muzyka
               </Link>
               <Link
-                href="/szukam-partnera"
+                href="/szukam-partnera-do-tanca"
                 className="text-gray-300 hover:text-white transition-colors text-sm font-medium"
               >
                 Szukam Partnera
