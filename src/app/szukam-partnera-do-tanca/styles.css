@@ -144,12 +144,7 @@
 
 /* Ulepszenia dla kart */
 .card-hover-effect {
-  @apply relative overflow-hidden transition-all duration-300
-         hover:shadow-xl hover:-translate-y-1
-         before:absolute before:inset-0 
-         before:bg-gradient-to-r before:from-red-500/0 
-         before:to-purple-500/0 before:opacity-0 
-         before:transition-opacity hover:before:opacity-10;
+  @apply transform transition-all duration-300 hover:-translate-y-1 hover:shadow-lg;
 }
 
 /* Efekty dla ikon */
@@ -231,4 +226,36 @@
 /* Glassmorphism effect */
 .glass-effect {
   @apply backdrop-blur-md bg-white/80 border border-white/20 shadow-lg;
+}
+
+.profile-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.profile-image-container {
+  @apply relative overflow-hidden rounded-t-lg;
+  padding-top: 125%; /* Proporcje 4:5 */
+}
+
+.profile-stats {
+  @apply flex items-center justify-between px-3 py-2 text-sm text-gray-600;
+}
+
+.profile-action-button {
+  @apply flex items-center justify-center gap-1 px-4 py-1.5 
+         bg-gradient-to-r from-red-500 to-red-600 
+         text-white rounded-full text-sm font-medium 
+         transition-all hover:from-red-600 hover:to-red-700 
+         hover:shadow-md active:scale-95;
+}
+
+/* Animacja dla hover na zdjęciach */
+.image-zoom-effect {
+  @apply transition-transform duration-300 ease-out;
+}
+
+.group:hover .image-zoom-effect {
+  @apply scale-110;
 }
