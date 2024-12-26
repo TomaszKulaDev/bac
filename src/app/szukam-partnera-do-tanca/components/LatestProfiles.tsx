@@ -12,47 +12,47 @@ import {
   FaEye,
 } from "react-icons/fa";
 
-interface Profile {
+interface DancerInfo {
   id: string;
   name: string;
   age: number;
   info: {
-    wolna: boolean;
-    hetero: boolean;
-    wPrzyszlosci: boolean;
-    niePali: boolean;
-    towarzysko: boolean;
-    polski: boolean;
+    stylTanca: string;
+    dostepnosc: string;
+    preferowanyStyl: string;
+    jezyk: string;
     wzrost: string;
-    szkola: string;
-    kot: string;
-    katolik: boolean;
-    rak: boolean;
+    poziomZaawansowania: string;
+    doswiadczenie: string;
+    palenie: string;
+    praktyki: string;
+    zajecia: string;
+    socjale: string;
   };
   stats: {
-    views: number; // liczba wyświetleń
-    likes: number; // liczba polubień
+    views: number;
+    likes: number;
   };
   avatar: string;
 }
 
-const mockProfiles: Profile[] = [
+const mockProfiles: DancerInfo[] = [
   {
     id: "1",
     name: "Natka",
     age: 35,
     info: {
-      wolna: true,
-      hetero: true,
-      wPrzyszlosci: true,
-      niePali: true,
-      towarzysko: true,
-      polski: true,
+      stylTanca: "Bachata",
+      dostepnosc: "W przyszłości",
+      preferowanyStyl: "Towarzysko",
+      jezyk: "Polski",
       wzrost: "169 cm",
-      szkola: "Szkoła średnia",
-      kot: "Kot (lub kilka)",
-      katolik: true,
-      rak: true,
+      poziomZaawansowania: "Średniozaawansowany",
+      doswiadczenie: "2 lata",
+      palenie: "Nie palę",
+      praktyki: "2x w tygodniu",
+      zajecia: "Regularne zajęcia",
+      socjale: "Często na imprezach",
     },
     stats: {
       views: 516,
@@ -60,6 +60,7 @@ const mockProfiles: Profile[] = [
     },
     avatar: "/images/bachata-romance.jpg",
   },
+  // Możesz dodać więcej profili tutaj
 ];
 
 // Dodajmy też fallback w przypadku braku zdjęcia
@@ -93,7 +94,7 @@ export function LatestProfiles() {
                         : "opacity-0 translate-y-10"
                     }`}
       >
-        {mockProfiles.map((profile) => (
+        {mockProfiles.map((profile: DancerInfo) => (
           <article
             key={profile.id}
             className="group card-hover-effect bg-white rounded-lg shadow-sm overflow-hidden"
@@ -138,6 +139,21 @@ export function LatestProfiles() {
 
             {/* Statystyki i akcje */}
             <div className="p-3 bg-white">
+              {/* Dodane informacje o tancerzu */}
+              <div className="space-y-2 mb-3">
+                <div className="flex flex-wrap gap-2">
+                  {Object.entries(profile.info).map(([key, value]) => (
+                    <span
+                      key={key}
+                      className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800"
+                    >
+                      {value}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Istniejący kod statystyk */}
               <div className="px-4 py-3 border-t border-gray-100 flex justify-between items-center">
                 <div className="flex items-center gap-4 text-sm text-gray-500">
                   <span className="flex items-center gap-1">
