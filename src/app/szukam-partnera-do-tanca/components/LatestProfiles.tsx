@@ -10,11 +10,17 @@ import {
 } from "react-icons/fa";
 import { profiles, DancerInfo } from "../data/profiles";
 import { useFilters } from "../context/FilterContext";
+import { useEffect } from "react";
 
 const DEFAULT_AVATAR = "/images/profiles/bachatamen.jpg";
 
 export function LatestProfiles() {
-  const { selectedLocation, selectedDanceStyle, selectedLevel } = useFilters();
+  const {
+    selectedLocation,
+    selectedDanceStyle,
+    selectedLevel,
+    setFilteredCount,
+  } = useFilters();
   const { ref, inView } = useInView({
     triggerOnce: true,
     threshold: 0.1,
@@ -42,6 +48,10 @@ export function LatestProfiles() {
 
     return locationMatch && styleMatch && levelMatch;
   });
+
+  useEffect(() => {
+    setFilteredCount(filteredProfiles.length);
+  }, [filteredProfiles.length, setFilteredCount]);
 
   return (
     <section aria-label="Profile tancerzy" className="space-y-8">

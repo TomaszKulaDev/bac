@@ -9,6 +9,8 @@ interface FilterContextType {
   setSelectedDanceStyle: (style: string) => void;
   selectedLevel: string;
   setSelectedLevel: (level: string) => void;
+  filteredCount: number;
+  setFilteredCount: (count: number) => void;
 }
 
 const FilterContext = createContext<FilterContextType | undefined>(undefined);
@@ -17,6 +19,7 @@ export function FilterProvider({ children }: { children: ReactNode }) {
   const [selectedLocation, setSelectedLocation] = useState("");
   const [selectedDanceStyle, setSelectedDanceStyle] = useState("");
   const [selectedLevel, setSelectedLevel] = useState("");
+  const [filteredCount, setFilteredCount] = useState(0);
 
   const handleLocationChange = (location: string) => {
     console.log("FilterContext - handleLocationChange:", {
@@ -44,6 +47,8 @@ export function FilterProvider({ children }: { children: ReactNode }) {
         setSelectedDanceStyle,
         selectedLevel,
         setSelectedLevel,
+        filteredCount,
+        setFilteredCount,
       }}
     >
       {children}

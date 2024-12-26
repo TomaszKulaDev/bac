@@ -16,12 +16,43 @@ import { useFilters } from "../context/FilterContext";
 const searchOptions = {
   locations: [
     { value: "all", label: "Wszystkie miasta" },
-    { value: "Warszawa", label: "Warszawa" },
-    { value: "Kraków", label: "Kraków" },
-    { value: "Wrocław", label: "Wrocław" },
-    { value: "Poznań", label: "Poznań" },
+    { value: "Białystok", label: "Białystok" },
+    { value: "Bielsko-Biała", label: "Bielsko-Biała" },
+    { value: "Bytom", label: "Bytom" },
+    { value: "Bydgoszcz", label: "Bydgoszcz" },
+    { value: "Częstochowa", label: "Częstochowa" },
+    { value: "Dąbrowa Górnicza", label: "Dąbrowa Górnicza" },
+    { value: "Elbląg", label: "Elbląg" },
     { value: "Gdańsk", label: "Gdańsk" },
+    { value: "Gdynia", label: "Gdynia" },
+    { value: "Gliwice", label: "Gliwice" },
+    { value: "Gorzów Wielkopolski", label: "Gorzów Wielkopolski" },
+    { value: "Katowice", label: "Katowice" },
+    { value: "Kielce", label: "Kielce" },
+    { value: "Koszalin", label: "Koszalin" },
+    { value: "Kraków", label: "Kraków" },
+    { value: "Lublin", label: "Lublin" },
     { value: "Łódź", label: "Łódź" },
+    { value: "Mielec", label: "Mielec" },
+    { value: "Olsztyn", label: "Olsztyn" },
+    { value: "Opole", label: "Opole" },
+    { value: "Płock", label: "Płock" },
+    { value: "Poznań", label: "Poznań" },
+    { value: "Radom", label: "Radom" },
+    { value: "Ruda Śląska", label: "Ruda Śląska" },
+    { value: "Rybnik", label: "Rybnik" },
+    { value: "Rzeszów", label: "Rzeszów" },
+    { value: "Sosnowiec", label: "Sosnowiec" },
+    { value: "Szczecin", label: "Szczecin" },
+    { value: "Tarnów", label: "Tarnów" },
+    { value: "Toruń", label: "Toruń" },
+    { value: "Tychy", label: "Tychy" },
+    { value: "Wałbrzych", label: "Wałbrzych" },
+    { value: "Warszawa", label: "Warszawa" },
+    { value: "Włocławek", label: "Włocławek" },
+    { value: "Wrocław", label: "Wrocław" },
+    { value: "Zabrze", label: "Zabrze" },
+    { value: "Zielona Góra", label: "Zielona Góra" },
   ],
   danceStyle: [
     { value: "bachata", label: "Bachata" },
@@ -41,8 +72,12 @@ const searchOptions = {
 };
 
 export function PartnerSearch() {
-  const { setSelectedLocation, setSelectedDanceStyle, setSelectedLevel } =
-    useFilters();
+  const {
+    setSelectedLocation,
+    setSelectedDanceStyle,
+    setSelectedLevel,
+    filteredCount,
+  } = useFilters();
   const [openSelect, setOpenSelect] = useState<string | null>(null);
 
   // Stan dla wybranych wartości
@@ -241,9 +276,15 @@ export function PartnerSearch() {
       <div className="px-6 py-4 bg-gradient-to-r from-amber-50 to-red-50 border-t border-amber-100">
         <p className="text-sm text-gray-600 flex items-center gap-2">
           <span className="bg-amber-500/10 text-amber-600 px-2 py-0.5 rounded-full font-medium">
-            248
+            {filteredCount}
           </span>
-          znalezionych profili
+          {filteredCount === 1
+            ? "znaleziony profil"
+            : filteredCount % 10 >= 2 &&
+              filteredCount % 10 <= 4 &&
+              (filteredCount % 100 < 10 || filteredCount % 100 >= 20)
+            ? "znalezione profile"
+            : "znalezionych profili"}
         </p>
       </div>
     </div>
