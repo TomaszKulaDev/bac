@@ -6,6 +6,10 @@ export interface QuickAd {
   date: string;
   time: string;
   location: string;
+  venue?: {
+    name: string;
+    address?: string;
+  };
   author: {
     name: string;
     level: string;
@@ -16,7 +20,6 @@ export interface QuickAd {
 }
 
 export const quickAds: QuickAd[] = [
-  // Poprzednie ogłoszenia
   {
     id: "1",
     type: "practice",
@@ -25,7 +28,11 @@ export const quickAds: QuickAd[] = [
       "Praktis bachaty, poziom średniozaawansowany. Sala już opłacona.",
     date: "2024-03-15",
     time: "18:00-20:00",
-    location: "Warszawa, Studio Tańca XYZ",
+    location: "Warszawa",
+    venue: {
+      name: "Studio Tańca XYZ",
+      address: "ul. Taneczna 15",
+    },
     author: {
       name: "Anna K.",
       level: "Średniozaawansowany",
@@ -42,7 +49,11 @@ export const quickAds: QuickAd[] = [
       "Chcę przećwiczyć figury z ostatniego kursu P2. Mam dostęp do sali z lustrami.",
     date: "2024-03-18",
     time: "17:30-19:00",
-    location: "Łódź, Szkoła Tańca Ritmo",
+    location: "Kraków",
+    venue: {
+      name: "Szkoła Tańca Ritmo",
+      address: "ul. Piotrkowska 123",
+    },
     author: {
       name: "Marek L.",
       level: "Początkujący+",
@@ -59,7 +70,11 @@ export const quickAds: QuickAd[] = [
       "Szukam partnerki na cotygodniowe wyjścia do Soho. Głównie bachata i salsa.",
     date: "2024-03-19",
     time: "21:00-01:00",
-    location: "Soho Club, Katowice",
+    location: "Wrocław",
+    venue: {
+      name: "Soho Club",
+      address: "ul. Mariacka 5",
+    },
     author: {
       name: "Robert W.",
       level: "Średniozaawansowany",
@@ -76,7 +91,11 @@ export const quickAds: QuickAd[] = [
       "Szukam partnera do asysty na kursie Lady Styling. Mile widziane osoby z doświadczeniem.",
     date: "2024-03-21",
     time: "18:30-20:00",
-    location: "Szczecin Dance Studio",
+    location: "Poznań",
+    venue: {
+      name: "Dance Studio",
+      address: "ul. Baletowa 8",
+    },
     author: {
       name: "Natalia P.",
       level: "Zaawansowany",
@@ -93,7 +112,7 @@ export const quickAds: QuickAd[] = [
       "Poszukuję stałego partnera do regularnych wyjść na sociale i praktisy. Poziom INT.",
     date: "2024-03-31",
     time: "Elastyczne godziny",
-    location: "Bydgoszcz",
+    location: "Gdańsk",
     author: {
       name: "Magda S.",
       level: "Średniozaawansowany",
@@ -110,7 +129,11 @@ export const quickAds: QuickAd[] = [
       "Przygotowania do zawodów Bachata Stars. Potrzebuję partnerki na intensywne treningi.",
     date: "2024-03-22",
     time: "16:00-19:00",
-    location: "Białystok, Elite Dance",
+    location: "Łódź",
+    venue: {
+      name: "Elite Dance",
+      address: "ul. Example 1",
+    },
     author: {
       name: "Adam K.",
       level: "Zaawansowany+",
@@ -127,7 +150,11 @@ export const quickAds: QuickAd[] = [
       "Organizuję grupę na wieczór bachatowy. Szukamy 3 par do wspólnego stolika.",
     date: "2024-03-23",
     time: "20:00-02:00",
-    location: "El Cubano, Warszawa",
+    location: "Warszawa",
+    venue: {
+      name: "El Cubano",
+      address: "ul. Example 2",
+    },
     author: {
       name: "Karolina M.",
       level: "Średniozaawansowany",
@@ -144,7 +171,11 @@ export const quickAds: QuickAd[] = [
       "Szukam partnera na intensywne warsztaty z mistrzami świata. Wymagany poziom INT/ADV.",
     date: "2024-04-13",
     time: "10:00-18:00",
-    location: "Kraków, Akademia Tańca",
+    location: "Kraków",
+    venue: {
+      name: "Akademia Tańca",
+      address: "ul. Example 3",
+    },
     author: {
       name: "Julia W.",
       level: "Zaawansowany",
@@ -161,7 +192,11 @@ export const quickAds: QuickAd[] = [
       "Szukam partnerki do nagrania choreografii na YouTube. Styl: Bachata Sensual.",
     date: "2024-03-24",
     time: "14:00-17:00",
-    location: "Wrocław, Studio Filmowe",
+    location: "Wrocław",
+    venue: {
+      name: "Studio Filmowe",
+      address: "ul. Example 4",
+    },
     author: {
       name: "Paweł R.",
       level: "Zaawansowany+",

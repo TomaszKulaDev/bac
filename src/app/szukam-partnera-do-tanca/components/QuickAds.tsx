@@ -5,14 +5,33 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { FaCalendarAlt, FaMapMarkerAlt, FaClock, FaUser } from "react-icons/fa";
 import { quickAds, QuickAd } from "../data/quickAds";
+import { useFilters } from "../context/FilterContext";
 
 export function QuickAds() {
+  const { selectedLocation } = useFilters();
   const [filter, setFilter] = useState<
     "all" | "practice" | "social" | "course"
   >("all");
 
   const sortedAds = quickAds
-    .filter((ad) => filter === "all" || ad.type === filter)
+    .filter((ad) => {
+      console.log("QuickAds - Filtering:", {
+        selectedLocation,
+        adLocation: ad.location,
+        isLocationMatch: !selectedLocation || ad.location === selectedLocation,
+        locationComparison: {
+          selectedLocationCase: selectedLocation,
+          adLocationCase: ad.location,
+          areEqual: ad.location === selectedLocation,
+        },
+      });
+
+      const typeMatch = filter === "all" || ad.type === filter;
+      const locationMatch =
+        !selectedLocation || ad.location === selectedLocation;
+
+      return typeMatch && locationMatch;
+    })
     .sort(
       (a, b) =>
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()

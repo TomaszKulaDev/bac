@@ -10,43 +10,80 @@ import {
   FaCalendarAlt,
   FaChevronDown,
 } from "react-icons/fa";
+import { useFilters } from "../context/FilterContext";
+
+// Definicje opcji
+const searchOptions = {
+  locations: [
+    { value: "all", label: "Wszystkie miasta" },
+    { value: "Warszawa", label: "Warszawa" },
+    { value: "Kraków", label: "Kraków" },
+    { value: "Wrocław", label: "Wrocław" },
+    { value: "Poznań", label: "Poznań" },
+    { value: "Gdańsk", label: "Gdańsk" },
+    { value: "Łódź", label: "Łódź" },
+  ],
+  danceStyle: [
+    { value: "bachata", label: "Bachata" },
+    { value: "salsa", label: "Salsa" },
+    { value: "kizomba", label: "Kizomba" },
+    { value: "zouk", label: "Zouk" },
+  ],
+  level: [
+    { value: "beginner", label: "Początkujący" },
+    { value: "intermediate", label: "Średniozaawansowany" },
+    { value: "advanced", label: "Zaawansowany" },
+  ],
+  gender: [
+    { value: "partner", label: "Partnera" },
+    { value: "partnerka", label: "Partnerki" },
+  ],
+};
 
 export function PartnerSearch() {
+  const { setSelectedLocation, setSelectedDanceStyle, setSelectedLevel } =
+    useFilters();
   const [openSelect, setOpenSelect] = useState<string | null>(null);
-  const [selectedValues, setSelectedValues] = useState({
+
+  // Stan dla wybranych wartości
+  const [selectedValues, setSelectedValues] = useState<{
+    location: string;
+    danceStyle: string;
+    level: string;
+    gender: string;
+  }>({
     location: "",
     danceStyle: "",
     level: "",
     gender: "",
   });
 
-  const options = {
-    danceStyle: [
-      { value: "bachata", label: "Bachata" },
-      { value: "salsa", label: "Salsa" },
-      { value: "kizomba", label: "Kizomba" },
-      { value: "zouk", label: "Zouk" },
-    ],
-    level: [
-      { value: "poczatkujacy", label: "Początkujący" },
-      { value: "sredniozaawansowany", label: "Średniozaawansowany" },
-      { value: "zaawansowany", label: "Zaawansowany" },
-    ],
-    gender: [
-      { value: "partner", label: "Partnera" },
-      { value: "partnerka", label: "Partnerki" },
-    ],
-    locations: [
-      { value: "warszawa", label: "Warszawa" },
-      { value: "krakow", label: "Kraków" },
-      { value: "poznan", label: "Poznań" },
-      { value: "wroclaw", label: "Wrocław" },
-      { value: "gdansk", label: "Gdańsk" },
-    ],
-  };
-
   const handleSelect = (type: string, value: string, label: string) => {
-    setSelectedValues((prev) => ({ ...prev, [type]: label }));
+    console.log("handleSelect:", { type, value, label });
+
+    setSelectedValues((prev) => ({
+      ...prev,
+      [type]: label,
+    }));
+
+    switch (type) {
+      case "location":
+        console.log("Before setSelectedLocation:", {
+          value,
+          formattedValue:
+            value === "all"
+              ? ""
+              : value.charAt(0).toUpperCase() + value.slice(1),
+        });
+        setSelectedLocation(value);
+        break;
+      case "danceStyle":
+        setSelectedDanceStyle(value);
+        break;
+      case "level":
+        setSelectedLevel(value);
+        break;
+    }
     setOpenSelect(null);
   };
 
@@ -132,7 +169,7 @@ export function PartnerSearch() {
             type="location"
             label="Lokalizacja"
             icon={FaMapMarkerAlt}
-            options={options.locations}
+            options={searchOptions.locations}
             placeholder="Wybierz miasto"
           />
 
@@ -140,7 +177,7 @@ export function PartnerSearch() {
             type="danceStyle"
             label="Styl tańca"
             icon={FaMusic}
-            options={options.danceStyle}
+            options={searchOptions.danceStyle}
             placeholder="Wybierz styl"
           />
 
@@ -148,7 +185,7 @@ export function PartnerSearch() {
             type="level"
             label="Poziom"
             icon={FaUserGraduate}
-            options={options.level}
+            options={searchOptions.level}
             placeholder="Wybierz poziom"
           />
 
@@ -156,7 +193,7 @@ export function PartnerSearch() {
             type="gender"
             label="Szukam"
             icon={FaVenusMars}
-            options={options.gender}
+            options={searchOptions.gender}
             placeholder="Wybierz płeć"
           />
 

@@ -9,13 +9,38 @@ import {
   FaCalendarAlt,
 } from "react-icons/fa";
 import { profiles, DancerInfo } from "../data/profiles";
+import { useFilters } from "../context/FilterContext";
 
 const DEFAULT_AVATAR = "/images/profiles/bachatamen.jpg";
 
 export function LatestProfiles() {
+  const { selectedLocation, selectedDanceStyle, selectedLevel } = useFilters();
   const { ref, inView } = useInView({
     triggerOnce: true,
     threshold: 0.1,
+  });
+
+  const filteredProfiles = profiles.filter((profile) => {
+    console.log({
+      selectedLocation,
+      profileLocation: profile.info.lokalizacja,
+      isMatch:
+        !selectedLocation || profile.info.lokalizacja === selectedLocation,
+    });
+
+    const locationMatch =
+      !selectedLocation || profile.info.lokalizacja === selectedLocation;
+
+    const styleMatch =
+      !selectedDanceStyle ||
+      profile.info.stylTanca
+        .toLowerCase()
+        .includes(selectedDanceStyle.toLowerCase());
+
+    const levelMatch =
+      !selectedLevel || profile.info.poziomZaawansowania === selectedLevel;
+
+    return locationMatch && styleMatch && levelMatch;
   });
 
   return (
@@ -40,7 +65,7 @@ export function LatestProfiles() {
                         : "opacity-0 translate-y-10"
                     }`}
       >
-        {profiles.slice(0, 8).map((profile) => (
+        {filteredProfiles.slice(0, 8).map((profile) => (
           <article
             key={profile.id}
             className="group bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-all duration-300"
