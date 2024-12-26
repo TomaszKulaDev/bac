@@ -1,0 +1,234 @@
+@layer components {
+  .btn-primary {
+    @apply bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 
+           text-white px-6 py-2 rounded-lg transition-all transform hover:scale-105 
+           hover:shadow-lg active:scale-95 focus:ring-2 focus:ring-red-500 focus:ring-offset-2;
+  }
+
+  .btn-secondary {
+    @apply bg-white hover:bg-gray-50 text-gray-900 px-6 py-2 rounded-lg 
+           border border-gray-300 transition-all hover:shadow-md active:bg-gray-100 
+           focus:ring-2 focus:ring-gray-300 focus:ring-offset-2;
+  }
+
+  .card {
+    @apply bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 
+           overflow-hidden border border-gray-100 hover:border-gray-200;
+  }
+
+  .input-icon {
+    @apply absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none 
+           transition-colors group-hover:text-gray-500;
+  }
+
+  .select-custom {
+    @apply w-full pl-10 pr-4 py-3 rounded-lg border-gray-200 
+           focus:border-red-500 focus:ring-red-500 appearance-none 
+           bg-white hover:border-gray-300 transition-colors;
+  }
+}
+
+/* Animacje */
+@keyframes gradient-x {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-gradient-x {
+  animation: gradient-x 15s ease infinite;
+  background-size: 400% 400%;
+}
+
+/* Efekty hover */
+.hover-lift {
+  @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-lg;
+}
+
+.hover-scale {
+  @apply transition-all duration-300 hover:scale-105;
+}
+
+/* Stylizacja scrollbara */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-red-400 rounded-full hover:bg-red-500;
+}
+
+/* Dodatkowe style dla komponentów */
+.hero-overlay {
+  @apply absolute inset-0 bg-gradient-to-r from-black/70 to-black/50 
+         backdrop-filter backdrop-blur-[2px];
+}
+
+.stats-card {
+  @apply relative overflow-hidden rounded-xl p-6 
+         before:absolute before:inset-0 before:bg-gradient-to-r 
+         before:from-red-500/10 before:to-purple-500/10 
+         before:opacity-0 before:transition-opacity 
+         hover:before:opacity-100;
+}
+
+/* Dodaj nowe animacje */
+@keyframes slow-zoom {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.1);
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-slow {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.animate-slow-zoom {
+  animation: slow-zoom 20s linear infinite alternate;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 1s ease-out forwards;
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 3s ease-in-out infinite;
+}
+
+/* Nowe style przycisków */
+.btn-hero-primary {
+  @apply flex items-center justify-center gap-2 
+         bg-gradient-to-r from-red-500 to-red-600 
+         hover:from-red-600 hover:to-red-700 
+         text-white px-8 py-4 rounded-lg text-lg font-medium 
+         transition-all transform hover:scale-105 hover:shadow-xl 
+         active:scale-95 backdrop-blur-sm;
+}
+
+.btn-hero-secondary {
+  @apply flex items-center justify-center gap-2 
+         bg-white/10 hover:bg-white/20 
+         backdrop-blur-sm text-white px-8 py-4 rounded-lg 
+         text-lg font-medium transition-all 
+         border border-white/30 hover:border-white/50 
+         hover:shadow-lg active:scale-95;
+}
+
+/* Ulepszenia dla kart */
+.card-hover-effect {
+  @apply relative overflow-hidden transition-all duration-300
+         hover:shadow-xl hover:-translate-y-1
+         before:absolute before:inset-0 
+         before:bg-gradient-to-r before:from-red-500/0 
+         before:to-purple-500/0 before:opacity-0 
+         before:transition-opacity hover:before:opacity-10;
+}
+
+/* Efekty dla ikon */
+.icon-hover {
+  @apply transition-all duration-300 
+         hover:scale-110 hover:rotate-6 
+         hover:text-red-500;
+}
+
+/* Nowe animacje */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes shine {
+  from {
+    mask-position: 150%;
+  }
+  to {
+    mask-position: -50%;
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.shine-effect {
+  position: relative;
+  overflow: hidden;
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+    transform: translateX(-100%);
+    animation: shine 3s infinite;
+  }
+}
+
+/* Ulepszony scrollbar */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: theme("colors.red.400") theme("colors.gray.100");
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: theme("colors.gray.100");
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: theme("colors.red.400");
+    border-radius: 3px;
+
+    &:hover {
+      background-color: theme("colors.red.500");
+    }
+  }
+}
+
+/* Glassmorphism effect */
+.glass-effect {
+  @apply backdrop-blur-md bg-white/80 border border-white/20 shadow-lg;
+}

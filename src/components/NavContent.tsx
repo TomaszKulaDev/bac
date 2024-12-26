@@ -119,6 +119,12 @@ export const NavContent: React.FC = React.memo(function NavContent() {
                 Muzyka
               </Link>
               <Link
+                href="/szukam-partnera"
+                className="text-gray-300 hover:text-white transition-colors text-sm font-medium"
+              >
+                Szukam Partnera
+              </Link>
+              <Link
                 href="/taneczne-historie"
                 className="text-gray-300 hover:text-white transition-colors text-sm font-medium"
               >
@@ -153,6 +159,12 @@ export const NavContent: React.FC = React.memo(function NavContent() {
               className="block text-gray-300 hover:text-white transition-colors"
             >
               Muzyka
+            </Link>
+            <Link
+              href="/szukam-partnera"
+              className="block text-gray-300 hover:text-white transition-colors"
+            >
+              Szukam Partnera
             </Link>
             <Link
               href="/taneczne-historie"
