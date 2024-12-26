@@ -2,10 +2,15 @@
 
 import { useInView } from "react-intersection-observer";
 import Image from "next/image";
-import { FaMapMarkerAlt, FaComment } from "react-icons/fa";
+import {
+  FaMapMarkerAlt,
+  FaComment,
+  FaUser,
+  FaCalendarAlt,
+} from "react-icons/fa";
 import { profiles, DancerInfo } from "../data/profiles";
 
-const DEFAULT_AVATAR = "/images/default-avatar.png";
+const DEFAULT_AVATAR = "/images/profiles/bachatamen.jpg";
 
 export function LatestProfiles() {
   const { ref, inView } = useInView({
@@ -40,19 +45,14 @@ export function LatestProfiles() {
             key={profile.id}
             className="group bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-all duration-300"
           >
-            {/* Zdjęcie z gradientem */}
             <div className="relative aspect-[3/4]">
               <Image
-                src={profile.avatar}
+                src={profile.avatar || DEFAULT_AVATAR}
                 alt={`${profile.name}, ${profile.age} lat - ${profile.info.stylTanca}`}
                 fill
                 priority={profile.id === "1"}
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 className="object-cover transition-transform duration-300 group-hover:scale-105"
-                onError={(e) => {
-                  const img = e.target as HTMLImageElement;
-                  img.src = DEFAULT_AVATAR;
-                }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
 
@@ -64,7 +64,7 @@ export function LatestProfiles() {
                 <div className="flex flex-wrap gap-2 mt-2">
                   <span className="inline-flex items-center gap-1 text-sm">
                     <FaMapMarkerAlt className="text-amber-400" />
-                    {profile.info.wzrost}
+                    {profile.info.lokalizacja}
                   </span>
                 </div>
               </div>
@@ -73,27 +73,77 @@ export function LatestProfiles() {
             {/* Tagi z informacjami */}
             <div className="p-4">
               <div className="flex flex-wrap gap-2 mb-4">
-                {[
-                  profile.info.stylTanca,
-                  profile.info.poziomZaawansowania,
-                  profile.info.dostepnosc,
-                  profile.info.praktyki,
-                ].map((tag, index) => (
+                {/* Style tańca */}
+                {profile.info.stylTanca.split(", ").map((styl, index) => (
                   <span
                     key={index}
-                    className="px-2.5 py-1 text-xs font-medium text-gray-600 bg-gray-100 
-                             rounded-full hover:bg-gray-200 transition-colors"
+                    className="px-2.5 py-1 text-xs font-medium text-gray-600 bg-gray-100 rounded-full"
                   >
-                    {tag}
+                    Styl: {styl}
                   </span>
                 ))}
+
+                {/* Preferowany styl */}
+                <span className="px-2.5 py-1 text-xs font-medium text-gray-600 bg-gray-100 rounded-full">
+                  Cel: {profile.info.preferowanyStyl}
+                </span>
+
+                {/* Poziom */}
+                <span className="px-2.5 py-1 text-xs font-medium text-gray-600 bg-gray-100 rounded-full">
+                  Poziom: {profile.info.poziomZaawansowania}
+                </span>
+
+                {/* Doświadczenie */}
+                <span className="px-2.5 py-1 text-xs font-medium text-gray-600 bg-gray-100 rounded-full">
+                  Doświadczenie: {profile.info.doswiadczenie}
+                </span>
+
+                {/* Wzrost */}
+                <span className="px-2.5 py-1 text-xs font-medium text-gray-600 bg-gray-100 rounded-full">
+                  <FaUser className="inline-block mr-1 text-gray-500" />
+                  Wzrost: {profile.info.wzrost}
+                </span>
+
+                {/* Praktyki */}
+                <span className="px-2.5 py-1 text-xs font-medium text-gray-600 bg-gray-100 rounded-full">
+                  Praktyki: {profile.info.praktyki}
+                </span>
+
+                {/* Socjale */}
+                <span className="px-2.5 py-1 text-xs font-medium text-gray-600 bg-gray-100 rounded-full">
+                  Socjale: {profile.info.socjale}
+                </span>
+
+                {/* Dostępność */}
+                <span className="px-2.5 py-1 text-xs font-medium text-gray-600 bg-gray-100 rounded-full">
+                  <FaCalendarAlt className="inline-block mr-1 text-gray-500" />
+                  Dostępność: {profile.info.dostepnosc}
+                </span>
+
+                {/* Język */}
+                <span className="px-2.5 py-1 text-xs font-medium text-gray-600 bg-gray-100 rounded-full">
+                  Język: {profile.info.jezyk}
+                </span>
+
+                {/* Zajęcia */}
+                {profile.info.zajecia === "Instruktor" && (
+                  <span className="px-2.5 py-1 text-xs font-medium text-white bg-amber-500 rounded-full">
+                    Zajęcia: {profile.info.zajecia}
+                  </span>
+                )}
+
+                {/* Palenie */}
+                {profile.info.palenie === "Nie palę" && (
+                  <span className="px-2.5 py-1 text-xs font-medium text-green-600 bg-green-100 rounded-full">
+                    {profile.info.palenie}
+                  </span>
+                )}
               </div>
 
-              {/* Przycisk "Chcę porozmawiać" */}
               <button
                 className="w-full flex items-center justify-center gap-2 px-4 py-3 
-                         bg-gray-100 hover:bg-gray-200 rounded-xl text-gray-700 
-                         font-medium transition-colors"
+                               bg-gray-100 hover:bg-gray-200 rounded-xl text-gray-700 
+                               font-medium transition-colors"
               >
                 <FaComment className="text-gray-500" />
                 Chcę porozmawiać
