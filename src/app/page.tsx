@@ -57,6 +57,34 @@ const ArticleListItem = ({ news }: { news: NewsItem }) => {
   );
 };
 
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "Baciata.pl",
+  url: "https://baciata.pl",
+  potentialAction: {
+    "@type": "SearchAction",
+    target: {
+      "@type": "EntryPoint",
+      urlTemplate: "https://baciata.pl/search?q={search_term_string}",
+    },
+    "query-input": "required name=search_term_string",
+  },
+  sameAs: [
+    "https://www.facebook.com/Baciata/",
+    "https://www.instagram.com/baciata_pl/",
+    "https://www.youtube.com/@Baciata_pl",
+  ],
+  organization: {
+    "@type": "Organization",
+    name: "Baciata.pl",
+    logo: {
+      "@type": "ImageObject",
+      url: "https://baciata.pl/logo.png",
+    },
+  },
+};
+
 export default function Home() {
   // Stan dla interakcji użytkownika z useMemo dla stabilnych wartości początkowych
   const [isClient, setIsClient] = useState(false);
@@ -125,6 +153,11 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
     </main>
   );
 }

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { map } from "zod";
 
 // Funkcja generująca mapę strony w formacie XML
 function generateSiteMap(routes: string[]): string {
