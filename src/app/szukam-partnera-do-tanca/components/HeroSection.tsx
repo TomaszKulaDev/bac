@@ -48,7 +48,7 @@ export function HeroSection() {
           muted
           playsInline
           className="w-full h-full object-cover scale-105 animate-slow-zoom"
-          poster="/images/hero-poster.jpg"
+          poster="/images/Hero-szukam-partnera-do-tanca.webp"
           aria-hidden="true"
           preload="metadata"
         >
