@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import {
   FaSearch,
   FaMapMarkerAlt,
@@ -7,106 +8,158 @@ import {
   FaVenusMars,
   FaMusic,
   FaCalendarAlt,
+  FaChevronDown,
 } from "react-icons/fa";
 
 export function PartnerSearch() {
+  const [openSelect, setOpenSelect] = useState<string | null>(null);
+  const [selectedValues, setSelectedValues] = useState({
+    location: "",
+    danceStyle: "",
+    level: "",
+    gender: "",
+  });
+
+  const options = {
+    danceStyle: [
+      { value: "bachata", label: "Bachata" },
+      { value: "salsa", label: "Salsa" },
+      { value: "kizomba", label: "Kizomba" },
+      { value: "zouk", label: "Zouk" },
+    ],
+    level: [
+      { value: "poczatkujacy", label: "Początkujący" },
+      { value: "sredniozaawansowany", label: "Średniozaawansowany" },
+      { value: "zaawansowany", label: "Zaawansowany" },
+    ],
+    gender: [
+      { value: "partner", label: "Partnera" },
+      { value: "partnerka", label: "Partnerki" },
+    ],
+    locations: [
+      { value: "warszawa", label: "Warszawa" },
+      { value: "krakow", label: "Kraków" },
+      { value: "poznan", label: "Poznań" },
+      { value: "wroclaw", label: "Wrocław" },
+      { value: "gdansk", label: "Gdańsk" },
+    ],
+  };
+
+  const handleSelect = (type: string, value: string, label: string) => {
+    setSelectedValues((prev) => ({ ...prev, [type]: label }));
+    setOpenSelect(null);
+  };
+
+  const CustomSelect = ({
+    type,
+    label,
+    icon: Icon,
+    options,
+    placeholder,
+  }: {
+    type: string;
+    label: string;
+    icon: any;
+    options: Array<{ value: string; label: string }>;
+    placeholder: string;
+  }) => (
+    <div className="space-y-2">
+      <label className="text-sm font-medium text-gray-700 block">{label}</label>
+      <div className="relative">
+        <button
+          type="button"
+          onClick={() => setOpenSelect(openSelect === type ? null : type)}
+          className="w-full pl-10 pr-4 py-3 rounded-lg border border-amber-200 
+                    bg-white hover:border-amber-300 transition-colors
+                    flex items-center justify-between text-left"
+        >
+          <div className="flex items-center">
+            <Icon className="absolute left-3 text-amber-500" />
+            <span
+              className={
+                selectedValues[type as keyof typeof selectedValues]
+                  ? "text-gray-900"
+                  : "text-gray-500"
+              }
+            >
+              {selectedValues[type as keyof typeof selectedValues] ||
+                placeholder}
+            </span>
+          </div>
+          <FaChevronDown
+            className={`text-amber-500 transition-transform ${
+              openSelect === type ? "rotate-180" : ""
+            }`}
+          />
+        </button>
+
+        {openSelect === type && (
+          <div
+            className="absolute z-50 w-full mt-1 bg-white border border-amber-200 
+                         rounded-lg shadow-lg overflow-hidden"
+          >
+            <div className="max-h-60 overflow-y-auto">
+              {options.map((option) => (
+                <button
+                  key={option.value}
+                  type="button"
+                  onClick={() => handleSelect(type, option.value, option.label)}
+                  className="w-full px-4 py-3 text-left hover:bg-amber-50 
+                           transition-colors flex items-center gap-2
+                           text-gray-700 hover:text-gray-900"
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
   return (
     <div
-      id="partner-search"
-      role="search"
-      aria-label="Wyszukiwarka partnerów do tańca"
       className="bg-white/95 backdrop-blur-sm rounded-xl shadow-lg overflow-hidden 
-                border border-amber-500/10 w-full sticky top-24"
+                    border border-amber-500/10 w-full sticky top-24"
     >
       <div className="p-6">
-        <h2 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-          Wyszukaj
-        </h2>
+        <h2 className="text-xl font-bold text-gray-800 mb-6">Wyszukaj</h2>
 
         <form className="space-y-5">
-          {/* Lokalizacja */}
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700 block">
-              Lokalizacja
-            </label>
-            <div className="relative">
-              <FaMapMarkerAlt className="absolute left-3 top-1/2 -translate-y-1/2 text-amber-500" />
-              <select
-                className="w-full pl-10 pr-4 py-3 rounded-lg border-amber-200 
-                             focus:border-amber-500 focus:ring-amber-500 focus:ring-opacity-50
-                             bg-white hover:border-amber-300 transition-colors"
-              >
-                <option value="">Wybierz miasto</option>
-                <option value="warszawa">Warszawa</option>
-                <option value="krakow">Kraków</option>
-                <option value="poznan">Poznań</option>
-                <option value="wroclaw">Wrocław</option>
-                <option value="gdansk">Gdańsk</option>
-              </select>
-            </div>
-          </div>
+          <CustomSelect
+            type="location"
+            label="Lokalizacja"
+            icon={FaMapMarkerAlt}
+            options={options.locations}
+            placeholder="Wybierz miasto"
+          />
 
-          {/* Style tańca */}
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700 block">
-              Styl tańca
-            </label>
-            <div className="relative">
-              <FaMusic className="absolute left-3 top-1/2 -translate-y-1/2 text-amber-500" />
-              <select
-                className="w-full pl-10 pr-4 py-3 rounded-lg border-amber-200 
-                             focus:border-amber-500 focus:ring-amber-500 focus:ring-opacity-50
-                             bg-white hover:border-amber-300 transition-colors"
-              >
-                <option value="">Wybierz styl</option>
-                <option value="bachata">Bachata</option>
-                <option value="salsa">Salsa</option>
-                <option value="kizomba">Kizomba</option>
-                <option value="zouk">Zouk</option>
-              </select>
-            </div>
-          </div>
+          <CustomSelect
+            type="danceStyle"
+            label="Styl tańca"
+            icon={FaMusic}
+            options={options.danceStyle}
+            placeholder="Wybierz styl"
+          />
 
-          {/* Poziom zaawansowania */}
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700 block">
-              Poziom
-            </label>
-            <div className="relative">
-              <FaUserGraduate className="absolute left-3 top-1/2 -translate-y-1/2 text-amber-500" />
-              <select
-                className="w-full pl-10 pr-4 py-3 rounded-lg border-amber-200 
-                             focus:border-amber-500 focus:ring-amber-500 focus:ring-opacity-50
-                             bg-white hover:border-amber-300 transition-colors"
-              >
-                <option value="">Wybierz poziom</option>
-                <option value="poczatkujacy">Początkujący</option>
-                <option value="sredniozaawansowany">Średniozaawansowany</option>
-                <option value="zaawansowany">Zaawansowany</option>
-              </select>
-            </div>
-          </div>
+          <CustomSelect
+            type="level"
+            label="Poziom"
+            icon={FaUserGraduate}
+            options={options.level}
+            placeholder="Wybierz poziom"
+          />
 
-          {/* Płeć */}
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700 block">
-              Szukam
-            </label>
-            <div className="relative">
-              <FaVenusMars className="absolute left-3 top-1/2 -translate-y-1/2 text-amber-500" />
-              <select
-                className="w-full pl-10 pr-4 py-3 rounded-lg border-amber-200 
-                             focus:border-amber-500 focus:ring-amber-500 focus:ring-opacity-50
-                             bg-white hover:border-amber-300 transition-colors"
-              >
-                <option value="">Wybierz płeć</option>
-                <option value="partner">Partnera</option>
-                <option value="partnerka">Partnerki</option>
-              </select>
-            </div>
-          </div>
+          <CustomSelect
+            type="gender"
+            label="Szukam"
+            icon={FaVenusMars}
+            options={options.gender}
+            placeholder="Wybierz płeć"
+          />
 
-          {/* Wiek */}
+          {/* Przedział wiekowy */}
           <div className="space-y-2">
             <label className="text-sm font-medium text-gray-700 block">
               Przedział wiekowy
@@ -118,8 +171,8 @@ export function PartnerSearch() {
                 min="18"
                 max="100"
                 className="pl-4 pr-2 py-3 rounded-lg border-amber-200 
-                        focus:border-amber-500 focus:ring-amber-500 focus:ring-opacity-50
-                        bg-white hover:border-amber-300 transition-colors"
+                          focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20
+                          bg-white hover:border-amber-300 transition-colors"
               />
               <input
                 type="number"
@@ -127,8 +180,8 @@ export function PartnerSearch() {
                 min="18"
                 max="100"
                 className="pl-4 pr-2 py-3 rounded-lg border-amber-200 
-                        focus:border-amber-500 focus:ring-amber-500 focus:ring-opacity-50
-                        bg-white hover:border-amber-300 transition-colors"
+                          focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20
+                          bg-white hover:border-amber-300 transition-colors"
               />
             </div>
           </div>
