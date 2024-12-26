@@ -16,15 +16,24 @@ interface Profile {
   id: string;
   name: string;
   age: number;
-  city: string;
-  level: string;
-  description: string;
-  avatar: string;
-  lastActive: string;
-  stats: {
-    views: number;
-    likes: number;
+  info: {
+    wolna: boolean;
+    hetero: boolean;
+    wPrzyszlosci: boolean;
+    niePali: boolean;
+    towarzysko: boolean;
+    polski: boolean;
+    wzrost: string;
+    szkola: string;
+    kot: string;
+    katolik: boolean;
+    rak: boolean;
   };
+  stats: {
+    views: number; // liczba wyświetleń
+    likes: number; // liczba polubień
+  };
+  avatar: string;
 }
 
 const mockProfiles: Profile[] = [
@@ -32,59 +41,24 @@ const mockProfiles: Profile[] = [
     id: "1",
     name: "Natka",
     age: 35,
-    city: "Warszawa",
-    level: "Średniozaawansowany",
+    info: {
+      wolna: true,
+      hetero: true,
+      wPrzyszlosci: true,
+      niePali: true,
+      towarzysko: true,
+      polski: true,
+      wzrost: "169 cm",
+      szkola: "Szkoła średnia",
+      kot: "Kot (lub kilka)",
+      katolik: true,
+      rak: true,
+    },
+    stats: {
+      views: 516,
+      likes: 159,
+    },
     avatar: "/images/bachata-romance.jpg",
-    description:
-      "Szukam partnera do regularnych treningów bachaty. Preferuję styl sensual i dominicana.",
-    lastActive: "2024-03-21",
-    stats: {
-      views: 516,
-      likes: 159,
-    },
-  },
-  {
-    id: "2",
-    name: "Kasia",
-    age: 28,
-    city: "Kraków",
-    level: "Zaawansowany",
-    avatar: "/images/bachata-couple.jpg",
-    description: "Instruktor bachaty poszukuje partnerki do pokazów i zawodów.",
-    lastActive: "2024-03-20",
-    stats: {
-      views: 345,
-      likes: 100,
-    },
-  },
-  {
-    id: "3",
-    name: "Ania",
-    age: 31,
-    city: "Poznań",
-    level: "Zaawansowany",
-    avatar: "/images/bachata-festival.jpg",
-    description:
-      "Szukam partnera do regularnych treningów bachaty. Preferuję styl sensual i dominicana.",
-    lastActive: "2024-03-21",
-    stats: {
-      views: 516,
-      likes: 159,
-    },
-  },
-  {
-    id: "4",
-    name: "Monika",
-    age: 26,
-    city: "Wrocław",
-    level: "Średniozaawansowany",
-    avatar: "/images/bachata-steps.jpg",
-    description: "Instruktor bachaty poszukuje partnerki do pokazów i zawodów.",
-    lastActive: "2024-03-20",
-    stats: {
-      views: 345,
-      likes: 100,
-    },
   },
 ];
 
@@ -129,9 +103,9 @@ export function LatestProfiles() {
             <div className="relative aspect-[4/5]">
               <Image
                 src={profile.avatar}
-                alt={`${profile.name} - ${profile.level} tancerz${
+                alt={`${profile.name} - ${profile.age} tancerz${
                   profile.name.endsWith("a") ? "ka" : ""
-                } z miasta ${profile.city}`}
+                } z miasta ${profile.info.wzrost}`}
                 fill
                 priority={profile.id === "1"}
                 sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
@@ -157,26 +131,30 @@ export function LatestProfiles() {
                 </h3>
                 <div className="flex items-center text-sm mt-1">
                   <FaMapMarkerAlt className="mr-1" />
-                  {profile.city}
+                  {profile.info.wzrost}
                 </div>
               </div>
             </div>
 
             {/* Statystyki i akcje */}
             <div className="p-3 bg-white">
-              <div className="flex justify-between items-center text-sm text-gray-600">
-                <div className="flex items-center gap-3">
-                  <span className="flex items-center">
-                    <FaEye className="mr-1 text-gray-400" />
+              <div className="px-4 py-3 border-t border-gray-100 flex justify-between items-center">
+                <div className="flex items-center gap-4 text-sm text-gray-500">
+                  <span className="flex items-center gap-1">
+                    <FaEye className="text-gray-400" />
                     {profile.stats.views}
                   </span>
-                  <span className="flex items-center">
-                    <FaHeart className="mr-1 text-gray-400" />
+                  <span className="flex items-center gap-1">
+                    <FaHeart className="text-gray-400" />
                     {profile.stats.likes}
                   </span>
                 </div>
-                <button className="btn-primary text-sm px-4 py-1.5">
-                  <FaComment className="mr-1" />
+                <button
+                  className="flex items-center gap-2 px-4 py-1.5 bg-gray-100 
+                                 hover:bg-gray-200 rounded-full text-sm text-gray-700 
+                                 font-medium transition-colors"
+                >
+                  <FaComment className="text-gray-500" />
                   Napisz
                 </button>
               </div>
