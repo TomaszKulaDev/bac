@@ -8,12 +8,12 @@ export default function PartnerSearchPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-50 via-white to-gray-50">
       <HeroSection />
-      <section className="container mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+      <section className="max-w-[1920px] mx-auto pl-8 pr-4 py-16">
+        <div className="grid grid-cols-1 lg:grid-cols-6 gap-8">
           <div className="lg:col-span-1">
             <PartnerSearch />
           </div>
-          <div className="lg:col-span-4">
+          <div className="lg:col-span-5">
             <LatestProfiles />
           </div>
         </div>
