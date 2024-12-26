@@ -30,11 +30,11 @@ interface Profile {
 const mockProfiles: Profile[] = [
   {
     id: "1",
-    name: "Marta",
-    age: 28,
+    name: "Natka",
+    age: 35,
     city: "Warszawa",
     level: "Średniozaawansowany",
-    avatar: "/avatars/profile-1.jpg",
+    avatar: "/images/bachata-romance.jpg",
     description:
       "Szukam partnera do regularnych treningów bachaty. Preferuję styl sensual i dominicana.",
     lastActive: "2024-03-21",
@@ -45,11 +45,11 @@ const mockProfiles: Profile[] = [
   },
   {
     id: "2",
-    name: "Piotr",
-    age: 32,
+    name: "Kasia",
+    age: 28,
     city: "Kraków",
     level: "Zaawansowany",
-    avatar: "/avatars/profile-2.jpg",
+    avatar: "/images/bachata-couple.jpg",
     description: "Instruktor bachaty poszukuje partnerki do pokazów i zawodów.",
     lastActive: "2024-03-20",
     stats: {
@@ -57,8 +57,39 @@ const mockProfiles: Profile[] = [
       likes: 100,
     },
   },
-  // Dodaj więcej profili...
+  {
+    id: "3",
+    name: "Ania",
+    age: 31,
+    city: "Poznań",
+    level: "Zaawansowany",
+    avatar: "/images/bachata-festival.jpg",
+    description:
+      "Szukam partnera do regularnych treningów bachaty. Preferuję styl sensual i dominicana.",
+    lastActive: "2024-03-21",
+    stats: {
+      views: 516,
+      likes: 159,
+    },
+  },
+  {
+    id: "4",
+    name: "Monika",
+    age: 26,
+    city: "Wrocław",
+    level: "Średniozaawansowany",
+    avatar: "/images/bachata-steps.jpg",
+    description: "Instruktor bachaty poszukuje partnerki do pokazów i zawodów.",
+    lastActive: "2024-03-20",
+    stats: {
+      views: 345,
+      likes: 100,
+    },
+  },
 ];
+
+// Dodajmy też fallback w przypadku braku zdjęcia
+const DEFAULT_AVATAR = "/images/default-avatar.png";
 
 export function LatestProfiles() {
   const { ref, inView } = useInView({
@@ -107,6 +138,10 @@ export function LatestProfiles() {
                 className="object-cover transition-transform group-hover:scale-105"
                 loading={profile.id === "1" ? "eager" : "lazy"}
                 itemProp="image"
+                onError={(e) => {
+                  const img = e.target as HTMLImageElement;
+                  img.src = DEFAULT_AVATAR;
+                }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
 
