@@ -7,6 +7,20 @@ import Link from "next/link";
 export function HeroSection() {
   const videoRef = useRef<HTMLVideoElement>(null);
 
+  const scrollToSearch = () => {
+    const searchSection = document.getElementById("partner-search");
+    if (searchSection) {
+      const offset = 200;
+      const elementPosition = searchSection.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      });
+    }
+  };
+
   useEffect(() => {
     if (videoRef.current) {
       videoRef.current.play().catch(() => {
@@ -78,8 +92,9 @@ export function HeroSection() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
               <Link
                 href="/dodaj-ogloszenie"
-                className="btn-hero-primary group bg-gradient-to-r from-amber-500 to-red-500 hover:from-amber-600 hover:to-red-600 
-                         text-white px-8 py-3 rounded-full flex items-center gap-2 transition-all duration-300"
+                className="btn-hero-primary group bg-gradient-to-r from-amber-500 to-red-500 
+                         hover:from-amber-600 hover:to-red-600 text-white px-8 py-3 
+                         rounded-full flex items-center gap-2 transition-all duration-300"
                 aria-label="Dodaj ogłoszenie"
               >
                 <FaUserPlus
@@ -89,10 +104,11 @@ export function HeroSection() {
                 Dodaj Ogłoszenie
               </Link>
 
-              <Link
-                href="/szukaj"
-                className="btn-hero-secondary group bg-white/10 hover:bg-white/20 backdrop-blur-sm
-                         text-white px-8 py-3 rounded-full flex items-center gap-2 transition-all duration-300
+              <button
+                onClick={scrollToSearch}
+                className="btn-hero-secondary group bg-white/10 hover:bg-white/20 
+                         backdrop-blur-sm text-white px-8 py-3 rounded-full 
+                         flex items-center gap-2 transition-all duration-300
                          border border-white/30"
                 aria-label="Szukaj partnera"
               >
@@ -101,7 +117,7 @@ export function HeroSection() {
                   aria-hidden="true"
                 />
                 Szukaj Partnera
-              </Link>
+              </button>
             </div>
 
             {/* Zmodyfikowane statystyki */}
