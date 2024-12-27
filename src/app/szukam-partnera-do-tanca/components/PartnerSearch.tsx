@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   FaSearch,
   FaMapMarkerAlt,
@@ -66,19 +66,43 @@ const searchOptions = {
     { value: "advanced", label: "Zaawansowany" },
   ],
   gender: [
-    { value: "partner", label: "Partnera" },
-    { value: "partnerka", label: "Partnerki" },
+    { value: "all", label: "Wszyscy" },
+    { value: "partner", label: "Partner" },
+    { value: "partnerka", label: "Partnerka" },
   ],
 };
+
+interface SelectOption {
+  value: string;
+  label: string;
+}
 
 export function PartnerSearch() {
   const {
     setSelectedLocation,
     setSelectedDanceStyle,
     setSelectedLevel,
+    setSelectedGender,
     filteredCount,
   } = useFilters();
   const [openSelect, setOpenSelect] = useState<string | null>(null);
+  const selectRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        selectRef.current &&
+        !selectRef.current.contains(event.target as Node)
+      ) {
+        setOpenSelect(null);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   // Stan dla wybranych wartości
   const [selectedValues, setSelectedValues] = useState<{
@@ -93,33 +117,30 @@ export function PartnerSearch() {
     gender: "",
   });
 
-  const handleSelect = (type: string, value: string, label: string) => {
-    console.log("handleSelect:", { type, value, label });
+  const handleSelect = (type: string, value: string) => {
+    console.log("handleSelect:", { type, value });
 
-    setSelectedValues((prev) => ({
-      ...prev,
-      [type]: label,
-    }));
+    // Zamknij dropdown po wybraniu opcji
+    setOpenSelect(null);
 
     switch (type) {
       case "location":
-        console.log("Before setSelectedLocation:", {
-          value,
-          formattedValue:
-            value === "all"
-              ? ""
-              : value.charAt(0).toUpperCase() + value.slice(1),
-        });
+        setSelectedValues((prev) => ({ ...prev, location: value }));
         setSelectedLocation(value);
         break;
       case "danceStyle":
+        setSelectedValues((prev) => ({ ...prev, danceStyle: value }));
         setSelectedDanceStyle(value);
         break;
       case "level":
+        setSelectedValues((prev) => ({ ...prev, level: value }));
         setSelectedLevel(value);
         break;
+      case "gender":
+        setSelectedValues((prev) => ({ ...prev, gender: value }));
+        setSelectedGender(value);
+        break;
     }
-    setOpenSelect(null);
   };
 
   const CustomSelect = ({
@@ -128,12 +149,14 @@ export function PartnerSearch() {
     icon: Icon,
     options,
     placeholder,
+    onChange,
   }: {
     type: string;
     label: string;
     icon: any;
     options: Array<{ value: string; label: string }>;
     placeholder: string;
+    onChange: (value: string) => void;
   }) => (
     <div className="space-y-2">
       <label className="text-sm font-medium text-gray-700 block">{label}</label>
@@ -167,23 +190,23 @@ export function PartnerSearch() {
 
         {openSelect === type && (
           <div
-            className="absolute z-50 w-full mt-1 bg-white border border-amber-200 
-                         rounded-lg shadow-lg overflow-hidden"
+            className="absolute z-10 w-full mt-1 bg-white border border-gray-200 
+                        rounded-lg shadow-lg max-h-60 overflow-auto"
           >
-            <div className="max-h-60 overflow-y-auto">
-              {options.map((option) => (
-                <button
-                  key={option.value}
-                  type="button"
-                  onClick={() => handleSelect(type, option.value, option.label)}
-                  className="w-full px-4 py-3 text-left hover:bg-amber-50 
-                           transition-colors flex items-center gap-2
-                           text-gray-700 hover:text-gray-900"
-                >
-                  {option.label}
-                </button>
-              ))}
-            </div>
+            {options.map((option) => (
+              <button
+                key={option.value}
+                type="button"
+                onClick={() => {
+                  onChange(option.value);
+                  setOpenSelect(null); // Dodaj to aby zamknąć dropdown po wyborze
+                }}
+                className="w-full px-4 py-2 text-left hover:bg-amber-50 
+                         transition-colors text-gray-700"
+              >
+                {option.label}
+              </button>
+            ))}
           </div>
         )}
       </div>
@@ -191,45 +214,63 @@ export function PartnerSearch() {
   );
 
   return (
-    <div
-      id="partner-search"
-      className="bg-white/95 backdrop-blur-sm rounded-xl shadow-lg overflow-hidden 
-                border border-amber-500/10 w-full sticky top-24"
-    >
-      <div className="p-6">
-        <h2 className="text-xl font-bold text-gray-800 mb-6">Wyszukaj</h2>
+    <div ref={selectRef} className="sticky top-24">
+      <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+        <form className="p-6 space-y-6">
+          <div className="text-center mb-4">
+            <span className="text-sm text-gray-600">
+              Znaleziono{" "}
+              <span className="font-semibold text-amber-500">
+                {filteredCount}
+              </span>{" "}
+              {filteredCount === 1
+                ? "profil"
+                : filteredCount % 10 >= 2 &&
+                  filteredCount % 10 <= 4 &&
+                  (filteredCount % 100 < 10 || filteredCount % 100 >= 20)
+                ? "profile"
+                : "profili"}
+            </span>
+          </div>
 
-        <form className="space-y-5">
+          {/* Lokalizacja */}
           <CustomSelect
             type="location"
             label="Lokalizacja"
             icon={FaMapMarkerAlt}
             options={searchOptions.locations}
             placeholder="Wybierz miasto"
+            onChange={(value: string) => handleSelect("location", value)}
           />
 
+          {/* Style tańca */}
           <CustomSelect
             type="danceStyle"
             label="Styl tańca"
             icon={FaMusic}
             options={searchOptions.danceStyle}
             placeholder="Wybierz styl"
+            onChange={(value: string) => handleSelect("danceStyle", value)}
           />
 
+          {/* Poziom zaawansowania */}
           <CustomSelect
             type="level"
             label="Poziom"
             icon={FaUserGraduate}
             options={searchOptions.level}
             placeholder="Wybierz poziom"
+            onChange={(value: string) => handleSelect("level", value)}
           />
 
+          {/* Płeć */}
           <CustomSelect
             type="gender"
-            label="Szukam"
+            label="Płeć"
             icon={FaVenusMars}
             options={searchOptions.gender}
             placeholder="Wybierz płeć"
+            onChange={(value: string) => handleSelect("gender", value)}
           />
 
           {/* Przedział wiekowy */}
@@ -271,21 +312,6 @@ export function PartnerSearch() {
             Szukaj
           </button>
         </form>
-      </div>
-
-      <div className="px-6 py-4 bg-gradient-to-r from-amber-50 to-red-50 border-t border-amber-100">
-        <p className="text-sm text-gray-600 flex items-center gap-2">
-          <span className="bg-amber-500/10 text-amber-600 px-2 py-0.5 rounded-full font-medium">
-            {filteredCount}
-          </span>
-          {filteredCount === 1
-            ? "znaleziony profil"
-            : filteredCount % 10 >= 2 &&
-              filteredCount % 10 <= 4 &&
-              (filteredCount % 100 < 10 || filteredCount % 100 >= 20)
-            ? "znalezione profile"
-            : "znalezionych profili"}
-        </p>
       </div>
     </div>
   );

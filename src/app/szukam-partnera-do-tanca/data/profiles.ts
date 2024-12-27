@@ -2,6 +2,7 @@ export interface DancerInfo {
   id: string;
   name: string;
   age: number;
+  gender: "partner" | "partnerka";
   info: {
     stylTanca: string;
     dostepnosc: string;
@@ -24,6 +25,7 @@ export const profiles: DancerInfo[] = [
     id: "1",
     name: "Natalia",
     age: 28,
+    gender: "partnerka",
     info: {
       stylTanca: "Bachata, Salsa",
       dostepnosc: "Od zaraz",
@@ -44,6 +46,7 @@ export const profiles: DancerInfo[] = [
     id: "2",
     name: "Karolina",
     age: 25,
+    gender: "partnerka",
     info: {
       stylTanca: "Bachata",
       dostepnosc: "Od zaraz",
@@ -64,6 +67,7 @@ export const profiles: DancerInfo[] = [
     id: "3",
     name: "Michał",
     age: 32,
+    gender: "partner",
     info: {
       stylTanca: "Salsa, Bachata",
       dostepnosc: "Od zaraz",
@@ -84,6 +88,7 @@ export const profiles: DancerInfo[] = [
     id: "4",
     name: "Anna",
     age: 29,
+    gender: "partnerka",
     info: {
       stylTanca: "Kizomba",
       dostepnosc: "Od zaraz",
@@ -104,6 +109,7 @@ export const profiles: DancerInfo[] = [
     id: "5",
     name: "Piotr",
     age: 35,
+    gender: "partner",
     info: {
       stylTanca: "Zouk",
       dostepnosc: "Od zaraz",
@@ -124,6 +130,7 @@ export const profiles: DancerInfo[] = [
     id: "6",
     name: "Marta",
     age: 27,
+    gender: "partnerka",
     info: {
       stylTanca: "Bachata, Kizomba",
       dostepnosc: "Od zaraz",
@@ -144,6 +151,7 @@ export const profiles: DancerInfo[] = [
     id: "7",
     name: "Tomasz",
     age: 31,
+    gender: "partner",
     info: {
       stylTanca: "Salsa",
       dostepnosc: "Od zaraz",
@@ -164,6 +172,7 @@ export const profiles: DancerInfo[] = [
     id: "8",
     name: "Agnieszka",
     age: 26,
+    gender: "partnerka",
     info: {
       stylTanca: "Bachata",
       dostepnosc: "Od zaraz",
@@ -184,6 +193,7 @@ export const profiles: DancerInfo[] = [
     id: "9",
     name: "Marcin",
     age: 33,
+    gender: "partner",
     info: {
       stylTanca: "Bachata, Salsa",
       dostepnosc: "Od zaraz",
@@ -204,6 +214,7 @@ export const profiles: DancerInfo[] = [
     id: "10",
     name: "Monika",
     age: 30,
+    gender: "partnerka",
     info: {
       stylTanca: "Kizomba, Zouk",
       dostepnosc: "Od zaraz",
@@ -224,6 +235,7 @@ export const profiles: DancerInfo[] = [
     id: "11",
     name: "Kinga",
     age: 24,
+    gender: "partnerka",
     info: {
       stylTanca: "Bachata",
       dostepnosc: "Od zaraz",
@@ -244,6 +256,7 @@ export const profiles: DancerInfo[] = [
     id: "12",
     name: "Adam",
     age: 28,
+    gender: "partner",
     info: {
       stylTanca: "Salsa",
       dostepnosc: "Od zaraz",
@@ -264,6 +277,7 @@ export const profiles: DancerInfo[] = [
     id: "13",
     name: "Julia",
     age: 27,
+    gender: "partnerka",
     info: {
       stylTanca: "Kizomba",
       dostepnosc: "Od zaraz",
@@ -284,6 +298,7 @@ export const profiles: DancerInfo[] = [
     id: "14",
     name: "Paweł",
     age: 31,
+    gender: "partner",
     info: {
       stylTanca: "Zouk",
       dostepnosc: "Od zaraz",
@@ -304,6 +319,7 @@ export const profiles: DancerInfo[] = [
     id: "15",
     name: "Magdalena",
     age: 29,
+    gender: "partnerka",
     info: {
       stylTanca: "Bachata, Salsa",
       dostepnosc: "Od zaraz",
@@ -324,6 +340,7 @@ export const profiles: DancerInfo[] = [
     id: "16",
     name: "Krzysztof",
     age: 34,
+    gender: "partner",
     info: {
       stylTanca: "Kizomba",
       dostepnosc: "Od zaraz",
@@ -344,6 +361,7 @@ export const profiles: DancerInfo[] = [
     id: "17",
     name: "Alicja",
     age: 26,
+    gender: "partnerka",
     info: {
       stylTanca: "Bachata",
       dostepnosc: "Od zaraz",
@@ -364,6 +382,7 @@ export const profiles: DancerInfo[] = [
     id: "18",
     name: "Robert",
     age: 30,
+    gender: "partner",
     info: {
       stylTanca: "Salsa",
       dostepnosc: "Od zaraz",
@@ -384,6 +403,7 @@ export const profiles: DancerInfo[] = [
     id: "19",
     name: "Weronika",
     age: 25,
+    gender: "partnerka",
     info: {
       stylTanca: "Zouk",
       dostepnosc: "Od zaraz",
@@ -404,6 +424,7 @@ export const profiles: DancerInfo[] = [
     id: "20",
     name: "Kamil",
     age: 32,
+    gender: "partner",
     info: {
       stylTanca: "Bachata, Kizomba",
       dostepnosc: "Od zaraz",
@@ -424,6 +445,7 @@ export const profiles: DancerInfo[] = [
     id: "21",
     name: "Sandra",
     age: 28,
+    gender: "partnerka",
     info: {
       stylTanca: "Bachata, Salsa",
       dostepnosc: "Od zaraz",
@@ -444,6 +466,7 @@ export const profiles: DancerInfo[] = [
     id: "22",
     name: "Marek",
     age: 31,
+    gender: "partner",
     info: {
       stylTanca: "Zouk",
       dostepnosc: "Od zaraz",
@@ -464,6 +487,7 @@ export const profiles: DancerInfo[] = [
     id: "23",
     name: "Dominika",
     age: 26,
+    gender: "partnerka",
     info: {
       stylTanca: "Kizomba",
       dostepnosc: "Od zaraz",
@@ -484,6 +508,7 @@ export const profiles: DancerInfo[] = [
     id: "24",
     name: "Bartosz",
     age: 29,
+    gender: "partner",
     info: {
       stylTanca: "Salsa",
       dostepnosc: "Od zaraz",
@@ -504,6 +529,7 @@ export const profiles: DancerInfo[] = [
     id: "25",
     name: "Patrycja",
     age: 27,
+    gender: "partnerka",
     info: {
       stylTanca: "Bachata",
       dostepnosc: "Od zaraz",
@@ -524,6 +550,7 @@ export const profiles: DancerInfo[] = [
     id: "26",
     name: "Rafał",
     age: 33,
+    gender: "partner",
     info: {
       stylTanca: "Zouk, Salsa",
       dostepnosc: "Od zaraz",
@@ -544,6 +571,7 @@ export const profiles: DancerInfo[] = [
     id: "27",
     name: "Klaudia",
     age: 25,
+    gender: "partnerka",
     info: {
       stylTanca: "Bachata",
       dostepnosc: "Od zaraz",
@@ -564,6 +592,7 @@ export const profiles: DancerInfo[] = [
     id: "28",
     name: "Daniel",
     age: 30,
+    gender: "partner",
     info: {
       stylTanca: "Kizomba",
       dostepnosc: "Od zaraz",
@@ -584,6 +613,7 @@ export const profiles: DancerInfo[] = [
     id: "29",
     name: "Ewelina",
     age: 28,
+    gender: "partnerka",
     info: {
       stylTanca: "Salsa",
       dostepnosc: "Od zaraz",
@@ -604,6 +634,7 @@ export const profiles: DancerInfo[] = [
     id: "30",
     name: "Łukasz",
     age: 31,
+    gender: "partner",
     info: {
       stylTanca: "Bachata, Kizomba",
       dostepnosc: "Od zaraz",
@@ -624,6 +655,7 @@ export const profiles: DancerInfo[] = [
     id: "31",
     name: "Aleksandra",
     age: 27,
+    gender: "partnerka",
     info: {
       stylTanca: "Zouk",
       dostepnosc: "Od zaraz",
@@ -644,6 +676,7 @@ export const profiles: DancerInfo[] = [
     id: "32",
     name: "Mateusz",
     age: 29,
+    gender: "partner",
     info: {
       stylTanca: "Salsa",
       dostepnosc: "Od zaraz",
@@ -664,6 +697,7 @@ export const profiles: DancerInfo[] = [
     id: "33",
     name: "Karolina",
     age: 26,
+    gender: "partnerka",
     info: {
       stylTanca: "Bachata",
       dostepnosc: "Od zaraz",
@@ -684,6 +718,7 @@ export const profiles: DancerInfo[] = [
     id: "34",
     name: "Wojciech",
     age: 32,
+    gender: "partner",
     info: {
       stylTanca: "Kizomba",
       dostepnosc: "Od zaraz",
@@ -704,6 +739,7 @@ export const profiles: DancerInfo[] = [
     id: "35",
     name: "Natalia",
     age: 28,
+    gender: "partnerka",
     info: {
       stylTanca: "Bachata, Salsa",
       dostepnosc: "Od zaraz",
@@ -724,6 +760,7 @@ export const profiles: DancerInfo[] = [
     id: "36",
     name: "Damian",
     age: 30,
+    gender: "partner",
     info: {
       stylTanca: "Zouk",
       dostepnosc: "Od zaraz",
@@ -744,6 +781,7 @@ export const profiles: DancerInfo[] = [
     id: "37",
     name: "Paulina",
     age: 27,
+    gender: "partnerka",
     info: {
       stylTanca: "Salsa, Bachata",
       dostepnosc: "Od zaraz",

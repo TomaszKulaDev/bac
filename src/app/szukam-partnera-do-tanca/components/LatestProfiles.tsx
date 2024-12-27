@@ -19,6 +19,7 @@ export function LatestProfiles() {
     selectedLocation,
     selectedDanceStyle,
     selectedLevel,
+    selectedGender,
     setFilteredCount,
   } = useFilters();
   const { ref, inView } = useInView({
@@ -51,9 +52,17 @@ export function LatestProfiles() {
       const levelMatch =
         !selectedLevel || profile.info.poziomZaawansowania === selectedLevel;
 
-      return locationMatch && styleMatch && levelMatch;
+      const genderMatch = !selectedGender || profile.gender === selectedGender;
+
+      console.log("Gender filtering:", {
+        selectedGender,
+        profileGender: profile.gender,
+        isMatch: !selectedGender || profile.gender === selectedGender,
+      });
+
+      return locationMatch && styleMatch && levelMatch && genderMatch;
     });
-  }, [selectedLocation, selectedDanceStyle, selectedLevel]);
+  }, [selectedLocation, selectedDanceStyle, selectedLevel, selectedGender]);
 
   const paginatedProfiles = filteredProfiles.slice(0, page * PROFILES_PER_PAGE);
   const hasMoreProfiles = paginatedProfiles.length < filteredProfiles.length;

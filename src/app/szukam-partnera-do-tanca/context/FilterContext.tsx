@@ -11,6 +11,8 @@ interface FilterContextType {
   setSelectedLevel: (level: string) => void;
   filteredCount: number;
   setFilteredCount: (count: number) => void;
+  selectedGender: string;
+  setSelectedGender: (gender: string) => void;
 }
 
 const FilterContext = createContext<FilterContextType | undefined>(undefined);
@@ -19,6 +21,7 @@ export function FilterProvider({ children }: { children: ReactNode }) {
   const [selectedLocation, setSelectedLocation] = useState("");
   const [selectedDanceStyle, setSelectedDanceStyle] = useState("");
   const [selectedLevel, setSelectedLevel] = useState("");
+  const [selectedGender, setSelectedGender] = useState("");
   const [filteredCount, setFilteredCount] = useState(0);
 
   const handleLocationChange = (location: string) => {
@@ -38,6 +41,11 @@ export function FilterProvider({ children }: { children: ReactNode }) {
     setSelectedLocation(formattedLocation);
   };
 
+  const handleGenderChange = (gender: string) => {
+    console.log("Setting gender:", gender);
+    setSelectedGender(gender === "all" ? "" : gender);
+  };
+
   return (
     <FilterContext.Provider
       value={{
@@ -47,6 +55,8 @@ export function FilterProvider({ children }: { children: ReactNode }) {
         setSelectedDanceStyle,
         selectedLevel,
         setSelectedLevel,
+        selectedGender,
+        setSelectedGender: handleGenderChange,
         filteredCount,
         setFilteredCount,
       }}
