@@ -61,10 +61,10 @@ export function QuickAds() {
       : ads.filter((ad) => ad.type === selectedType);
 
   const typeColors = {
-    Praktis: "text-blue-600",
-    Social: "text-green-600",
+    Praktis: "bg-blue-100 text-blue-600 px-2 py-0.5 rounded-md",
+    Social: "bg-green-100 text-green-600 px-2 py-0.5 rounded-md",
     Kurs: "bg-purple-100 text-purple-600 px-2 py-0.5 rounded-md",
-    Inne: "text-gray-600",
+    Inne: "bg-gray-100 text-gray-600 px-2 py-0.5 rounded-md",
   } as const;
 
   const handleEdit = (ad: Advertisement) => {
