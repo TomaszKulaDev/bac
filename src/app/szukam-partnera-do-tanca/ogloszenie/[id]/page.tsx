@@ -20,6 +20,10 @@ async function getAdvertisement(id: string) {
     const url = new URL(`/api/advertisements/${id}`, baseUrl).toString();
     console.log("Fetching from URL:", url);
 
+    // Wykonujemy zapytanie HTTP do API w celu pobrania ogłoszenia
+    // - Używamy next.revalidate aby włączyć Incremental Static Regeneration (ISR)
+    // - Dane będą odświeżane co 5 minut (300 sekund)
+    // - Ustawiamy nagłówek Content-Type na application/json
     const res = await fetch(url, {
       next: {
         revalidate: 300, // 5 minut
