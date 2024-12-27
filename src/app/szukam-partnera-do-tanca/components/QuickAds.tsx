@@ -58,8 +58,9 @@ export function QuickAds() {
   const typeColors = {
     Praktis: "text-blue-600",
     Social: "text-green-600",
-    Kurs: "text-purple-600",
-  };
+    Kurs: "bg-purple-100 text-purple-600 px-2 py-0.5 rounded-md",
+    Inne: "text-gray-600",
+  } as const;
 
   if (isLoading) {
     return (
@@ -86,7 +87,7 @@ export function QuickAds() {
           </div>
 
           <div className="flex gap-2">
-            {["Wszystkie", "Praktis", "Social", "Kurs"].map((type) => (
+            {["Wszystkie", "Praktis", "Social", "Kurs", "Inne"].map((type) => (
               <button
                 key={type}
                 onClick={() =>
@@ -94,10 +95,8 @@ export function QuickAds() {
                 }
                 className={`px-4 py-2 rounded-full text-sm transition-colors ${
                   selectedType === type
-                    ? type === "Social"
-                      ? "bg-amber-500 text-white"
-                      : "bg-gray-100 text-gray-700"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    ? "bg-amber-500 text-white"
+                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                 }`}
               >
                 {type}

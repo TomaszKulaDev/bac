@@ -33,10 +33,13 @@ export function AddAdvertisementButton({
     <>
       <button
         onClick={handleClick}
-        className="inline-flex items-center px-4 py-2 bg-amber-500 
-                 text-white rounded-lg hover:bg-amber-600 transition-colors"
+        className="bg-gradient-to-r from-amber-500 to-red-500 
+                  hover:from-amber-600 hover:to-red-600 text-white 
+                  py-2 px-4 rounded-lg font-medium transition-all duration-300
+                  transform hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]
+                  flex items-center justify-center gap-2"
       >
-        <span className="mr-2">➕</span>
+
         Dodaj ogłoszenie
       </button>
 

@@ -1,4 +1,4 @@
-export type AdvertisementType = "Praktis" | "Social" | "Kurs";
+export type AdvertisementType = "Praktis" | "Social" | "Kurs" | "Inne";
 export type DanceLevel =
   | "Początkujący"
   | "Średniozaawansowany"

@@ -4,7 +4,7 @@ const advertisementSchema = new mongoose.Schema({
   type: {
     type: String,
     required: true,
-    enum: ["Praktis", "Social", "Kurs"],
+    enum: ["Praktis", "Social", "Kurs", "Inne"],
   },
   title: { type: String, required: true },
   date: { type: String, required: true },

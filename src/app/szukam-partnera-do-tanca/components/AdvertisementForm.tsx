@@ -117,6 +117,7 @@ export function AdvertisementForm({
             <option value="Praktis">Praktis</option>
             <option value="Social">Social</option>
             <option value="Kurs">Kurs</option>
+            <option value="Inne">Inne</option>
           </select>
         </div>
 
