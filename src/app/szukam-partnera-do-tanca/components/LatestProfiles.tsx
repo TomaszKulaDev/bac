@@ -10,7 +10,7 @@ import {
 } from "react-icons/fa";
 import { profiles, DancerInfo } from "../data/profiles";
 import { useFilters } from "../context/FilterContext";
-import { useEffect } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 
 const DEFAULT_AVATAR = "/images/profiles/bachatamen.jpg";
 
@@ -26,56 +26,54 @@ export function LatestProfiles() {
     threshold: 0.1,
   });
 
-  const filteredProfiles = profiles.filter((profile) => {
-    console.log({
-      selectedLocation,
-      profileLocation: profile.info.lokalizacja,
-      isMatch:
-        !selectedLocation || profile.info.lokalizacja === selectedLocation,
+  const [page, setPage] = useState(1);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const PROFILES_PER_PAGE = 12;
+
+  const filteredProfiles = useMemo(() => {
+    return profiles.filter((profile) => {
+      console.log({
+        selectedLocation,
+        profileLocation: profile.info.lokalizacja,
+        isMatch:
+          !selectedLocation || profile.info.lokalizacja === selectedLocation,
+      });
+
+      const locationMatch =
+        !selectedLocation || profile.info.lokalizacja === selectedLocation;
+
+      const styleMatch =
+        !selectedDanceStyle ||
+        profile.info.stylTanca
+          .toLowerCase()
+          .includes(selectedDanceStyle.toLowerCase());
+
+      const levelMatch =
+        !selectedLevel || profile.info.poziomZaawansowania === selectedLevel;
+
+      return locationMatch && styleMatch && levelMatch;
     });
+  }, [selectedLocation, selectedDanceStyle, selectedLevel]);
 
-    const locationMatch =
-      !selectedLocation || profile.info.lokalizacja === selectedLocation;
+  const paginatedProfiles = filteredProfiles.slice(0, page * PROFILES_PER_PAGE);
+  const hasMoreProfiles = paginatedProfiles.length < filteredProfiles.length;
 
-    const styleMatch =
-      !selectedDanceStyle ||
-      profile.info.stylTanca
-        .toLowerCase()
-        .includes(selectedDanceStyle.toLowerCase());
-
-    const levelMatch =
-      !selectedLevel || profile.info.poziomZaawansowania === selectedLevel;
-
-    return locationMatch && styleMatch && levelMatch;
-  });
+  const loadMore = useCallback(() => {
+    setIsLoadingMore(true);
+    setTimeout(() => {
+      setPage((prev) => prev + 1);
+      setIsLoadingMore(false);
+    }, 500);
+  }, []);
 
   useEffect(() => {
     setFilteredCount(filteredProfiles.length);
   }, [filteredProfiles.length, setFilteredCount]);
 
   return (
-    <section aria-label="Profile tancerzy" className="space-y-8">
-      <div className="flex justify-between items-center mb-6">
-        <div>
-          <h2 className="text-2xl font-bold text-gray-900">
-            Poznaj osoby w Twojej okolicy
-          </h2>
-          <p className="text-gray-500 mt-1">
-            Przeglądaj profile i nawiąż kontakt
-          </p>
-        </div>
-      </div>
-
-      <div
-        ref={ref}
-        className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 transition-all duration-1000
-                    ${
-                      inView
-                        ? "opacity-100 translate-y-0"
-                        : "opacity-0 translate-y-10"
-                    }`}
-      >
-        {filteredProfiles.slice(0, 8).map((profile) => (
+    <section className="mt-16">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {paginatedProfiles.map((profile) => (
           <article
             key={profile.id}
             className="group bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-all duration-300"
@@ -187,6 +185,44 @@ export function LatestProfiles() {
           </article>
         ))}
       </div>
+
+      {/* Przycisk "Pokaż więcej" */}
+      {hasMoreProfiles && (
+        <div className="mt-8 text-center">
+          <button
+            onClick={loadMore}
+            disabled={isLoadingMore}
+            className="px-6 py-3 bg-gradient-to-r from-amber-500 to-red-500 
+                     text-white rounded-lg font-medium hover:from-amber-600 
+                     hover:to-red-600 transition-all duration-300 
+                     disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isLoadingMore ? (
+              <span className="flex items-center gap-2">
+                <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                    fill="none"
+                  />
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  />
+                </svg>
+                Ładowanie...
+              </span>
+            ) : (
+              "Pokaż więcej profili"
+            )}
+          </button>
+        </div>
+      )}
     </section>
   );
 }

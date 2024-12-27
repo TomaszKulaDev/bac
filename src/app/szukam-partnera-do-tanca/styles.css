@@ -259,3 +259,16 @@
 .group:hover .image-zoom-effect {
   @apply scale-110;
 }
+
+/* Animacja dla przycisku "Pokaż więcej" */
+.load-more-button {
+  @apply transform transition-all duration-300;
+}
+
+.load-more-button:hover:not(:disabled) {
+  @apply -translate-y-1 shadow-lg;
+}
+
+.load-more-button:active:not(:disabled) {
+  @apply translate-y-0 shadow-md;
+}
