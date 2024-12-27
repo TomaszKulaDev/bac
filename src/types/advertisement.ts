@@ -8,6 +8,7 @@ export interface Advertisement {
   _id: string;
   type: AdvertisementType;
   title: string;
+  description: string;
   date: string;
   time: string;
   location: {

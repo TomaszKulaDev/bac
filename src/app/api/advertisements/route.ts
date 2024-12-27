@@ -31,6 +31,13 @@ export async function POST(request: Request) {
     await connectToDatabase();
     const data = await request.json();
 
+    if (!data.description || data.description.length > 255) {
+      return NextResponse.json(
+        { error: "Opis jest wymagany i nie może przekraczać 255 znaków" },
+        { status: 400 }
+      );
+    }
+
     const newAd = new Advertisement({
       ...data,
       author: {

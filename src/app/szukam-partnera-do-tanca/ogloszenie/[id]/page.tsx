@@ -58,7 +58,7 @@ export async function generateMetadata({
 
   return {
     title: ad?.title || "Ogłoszenie",
-    description: `${ad?.type} - ${ad?.location.city}, ${ad?.location.place}`,
+    description: ad?.description || `${ad?.type} - ${ad?.location.city}`,
   };
 }
 
@@ -85,6 +85,10 @@ export default async function AdvertisementPage({
 
       <div className="bg-white rounded-xl shadow-lg p-8">
         <h1 className="text-2xl font-bold text-gray-800 mb-4">{ad.title}</h1>
+
+        <p className="text-gray-600 mb-6 whitespace-pre-line">
+          {ad.description}
+        </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div>
