@@ -4,9 +4,15 @@ import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { toast } from "react-toastify";
 import { AdvertisementForm } from "./AdvertisementForm";
-import Modal from "@/components/ui/Modal"; // Zakładam, że mamy już komponent Modal
+import Modal from "@/components/ui/Modal";
 
-export function AddAdvertisementButton() {
+interface AddAdvertisementButtonProps {
+  onSuccess?: () => void;
+}
+
+export function AddAdvertisementButton({
+  onSuccess,
+}: AddAdvertisementButtonProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { data: session } = useSession();
 
@@ -16,6 +22,11 @@ export function AddAdvertisementButton() {
       return;
     }
     setIsModalOpen(true);
+  };
+
+  const handleSuccess = () => {
+    setIsModalOpen(false);
+    onSuccess?.();
   };
 
   return (
@@ -34,7 +45,7 @@ export function AddAdvertisementButton() {
         onClose={() => setIsModalOpen(false)}
         title="Dodaj nowe ogłoszenie"
       >
-        <AdvertisementForm mode="add" onSuccess={() => setIsModalOpen(false)} />
+        <AdvertisementForm mode="add" onSuccess={handleSuccess} />
       </Modal>
     </>
   );
