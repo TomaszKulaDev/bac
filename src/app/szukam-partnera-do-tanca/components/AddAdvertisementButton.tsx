@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { AdvertisementForm } from "./AdvertisementForm";
 import Modal from "@/components/ui/Modal";
@@ -15,10 +16,11 @@ export function AddAdvertisementButton({
 }: AddAdvertisementButtonProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { data: session } = useSession();
+  const router = useRouter();
 
   const handleClick = () => {
     if (!session) {
-      toast.error("Musisz być zalogowany, aby dodać ogłoszenie");
+      router.push("/login");
       return;
     }
     setIsModalOpen(true);
@@ -39,7 +41,6 @@ export function AddAdvertisementButton({
                   transform hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]
                   flex items-center justify-center gap-2"
       >
-
         Dodaj ogłoszenie
       </button>
 
