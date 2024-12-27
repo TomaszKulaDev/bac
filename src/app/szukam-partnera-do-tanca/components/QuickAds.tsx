@@ -14,6 +14,7 @@ import {
 } from "react-icons/fa";
 import { quickAds, QuickAd } from "../data/quickAds";
 import { useFilters } from "../context/FilterContext";
+import { AddAdvertisementButton } from "./AddAdvertisementButton";
 
 export function QuickAds() {
   const { selectedLocation } = useFilters();
@@ -74,16 +75,7 @@ export function QuickAds() {
               Znaleziono {filteredAds.length} ogłoszeń
             </p>
           </div>
-          <Link
-            href="/szukam-partnera-do-tanca/dodaj-ogloszenie"
-            className="px-4 py-2 bg-gradient-to-r from-amber-500 to-red-500 
-                     text-white rounded-lg font-medium hover:from-amber-600 
-                     hover:to-red-600 transition-all duration-300
-                     flex items-center gap-2 whitespace-nowrap"
-          >
-            <FaUser className="text-sm" />
-            Dodaj ogłoszenie
-          </Link>
+          <AddAdvertisementButton />
         </div>
 
         <div className="flex items-center gap-4">
