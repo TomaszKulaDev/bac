@@ -6,6 +6,8 @@ import Image from "next/image";
 import { AddAdvertisementButton } from "./AddAdvertisementButton";
 import { toast } from "react-toastify";
 import { Advertisement, AdvertisementType } from "@/types/advertisement";
+import Modal from "@/components/ui/Modal";
+import { AdvertisementForm } from "./AdvertisementForm";
 
 export function QuickAds() {
   const [ads, setAds] = useState<Advertisement[]>([]);
@@ -15,6 +17,8 @@ export function QuickAds() {
   const [visibleAds, setVisibleAds] = useState(8);
   const [isLoading, setIsLoading] = useState(true);
   const { data: session } = useSession();
+  const [editingAd, setEditingAd] = useState<Advertisement | null>(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   const fetchAds = async () => {
     try {
@@ -61,6 +65,17 @@ export function QuickAds() {
     Kurs: "bg-purple-100 text-purple-600 px-2 py-0.5 rounded-md",
     Inne: "text-gray-600",
   } as const;
+
+  const handleEdit = (ad: Advertisement) => {
+    setEditingAd(ad);
+    setIsEditModalOpen(true);
+  };
+
+  const handleEditSuccess = () => {
+    setIsEditModalOpen(false);
+    setEditingAd(null);
+    fetchAds(); // Odśwież listę ogłoszeń
+  };
 
   if (isLoading) {
     return (
@@ -174,9 +189,7 @@ export function QuickAds() {
                       Usuń
                     </button>
                     <button
-                      onClick={() => {
-                        /* TODO: Implement edit */
-                      }}
+                      onClick={() => handleEdit(ad)}
                       className="px-3 py-1.5 text-sm text-blue-600 hover:bg-blue-50 
                                rounded transition-colors"
                     >
@@ -207,6 +220,23 @@ export function QuickAds() {
           </div>
         )}
       </section>
+
+      <Modal
+        isOpen={isEditModalOpen}
+        onClose={() => {
+          setIsEditModalOpen(false);
+          setEditingAd(null);
+        }}
+        title="Edytuj ogłoszenie"
+      >
+        {editingAd && (
+          <AdvertisementForm
+            mode="edit"
+            initialData={editingAd}
+            onSuccess={handleEditSuccess}
+          />
+        )}
+      </Modal>
     </div>
   );
 }

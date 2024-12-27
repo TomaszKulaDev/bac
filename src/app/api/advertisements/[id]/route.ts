@@ -64,10 +64,6 @@ export async function PUT(
       {
         ...data,
         updatedAt: new Date(),
-        author: {
-          ...ad.author,
-          level: data.author.level,
-        },
       },
       { new: true }
     );

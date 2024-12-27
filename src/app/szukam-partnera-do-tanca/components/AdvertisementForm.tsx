@@ -18,6 +18,11 @@ interface AdvertisementFormProps {
       city: string;
       place: string;
     };
+    author?: {
+      name: string;
+      level: DanceLevel;
+      avatar?: string;
+    };
   };
   onSuccess?: () => void;
 }
@@ -40,7 +45,7 @@ export function AdvertisementForm({
       city: initialData?.location?.city || "",
       place: initialData?.location?.place || "",
     },
-    level: "Średniozaawansowany" as DanceLevel,
+    level: (initialData?.author?.level || "Średniozaawansowany") as DanceLevel,
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -89,7 +94,11 @@ export function AdvertisementForm({
       router.refresh();
     } catch (error) {
       console.error("Error submitting form:", error);
-      toast.error("Nie udało się zapisać ogłoszenia");
+      toast.error(
+        mode === "add"
+          ? "Nie udało się dodać ogłoszenia"
+          : "Nie udało się zaktualizować ogłoszenia"
+      );
     } finally {
       setIsSubmitting(false);
     }
