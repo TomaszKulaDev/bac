@@ -11,12 +11,12 @@ export default function PartnerSearchPage() {
     <FilterProvider>
       <div className="min-h-screen bg-gradient-to-b from-purple-50 via-white to-gray-50">
         <HeroSection />
-        <section className="max-w-[1920px] mx-auto pl-8 pr-4 py-16">
-          <div className="grid grid-cols-1 lg:grid-cols-6 gap-8">
-            <div className="lg:col-span-1">
+        <section className="max-w-[2200px] mx-auto pl-8 pr-4 py-16">
+          <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-8">
+            <div>
               <PartnerSearch />
             </div>
-            <div className="lg:col-span-5">
+            <div>
               <QuickAds />
               <LatestProfiles />
             </div>

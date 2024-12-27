@@ -29,7 +29,7 @@ export function LatestProfiles() {
 
   const [page, setPage] = useState(1);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
-  const PROFILES_PER_PAGE = 12;
+  const PROFILES_PER_PAGE = 15;
 
   const filteredProfiles = useMemo(() => {
     return profiles.filter((profile) => {
@@ -88,7 +88,7 @@ export function LatestProfiles() {
 
   return (
     <section className="mt-16">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
         {paginatedProfiles.map((profile) => (
           <article
             key={profile.id}
