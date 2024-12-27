@@ -8,6 +8,7 @@ import {
 } from "react-icons/fa";
 import Link from "next/link";
 import Image from "next/image";
+import { Metadata } from "next";
 
 async function getAdvertisement(id: string) {
   try {
@@ -37,6 +38,19 @@ async function getAdvertisement(id: string) {
     console.error("Error fetching advertisement:", error);
     return null;
   }
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { id: string };
+}): Promise<Metadata> {
+  const ad = await getAdvertisement(params.id);
+
+  return {
+    title: ad?.title || "Ogłoszenie",
+    description: `${ad?.type} - ${ad?.location.city}, ${ad?.location.place}`,
+  };
 }
 
 export default async function AdvertisementPage({
