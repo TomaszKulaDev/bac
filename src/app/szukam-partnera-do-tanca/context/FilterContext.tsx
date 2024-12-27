@@ -46,15 +46,24 @@ export function FilterProvider({ children }: { children: ReactNode }) {
     setSelectedGender(gender === "all" ? "" : gender);
   };
 
+  const handleDanceStyleChange = (style: string) => {
+    setSelectedDanceStyle(style === "all" ? "" : style);
+  };
+
+  const handleLevelChange = (level: string) => {
+    console.log("Setting level:", level);
+    setSelectedLevel(level === "all" ? "" : level);
+  };
+
   return (
     <FilterContext.Provider
       value={{
         selectedLocation,
         setSelectedLocation: handleLocationChange,
         selectedDanceStyle,
-        setSelectedDanceStyle,
+        setSelectedDanceStyle: handleDanceStyleChange,
         selectedLevel,
-        setSelectedLevel,
+        setSelectedLevel: handleLevelChange,
         selectedGender,
         setSelectedGender: handleGenderChange,
         filteredCount,

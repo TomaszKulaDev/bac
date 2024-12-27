@@ -55,15 +55,17 @@ const searchOptions = {
     { value: "Zielona Góra", label: "Zielona Góra" },
   ],
   danceStyle: [
+    { value: "all", label: "Wszystkie style" },
     { value: "bachata", label: "Bachata" },
     { value: "salsa", label: "Salsa" },
     { value: "kizomba", label: "Kizomba" },
     { value: "zouk", label: "Zouk" },
   ],
   level: [
-    { value: "beginner", label: "Początkujący" },
-    { value: "intermediate", label: "Średniozaawansowany" },
-    { value: "advanced", label: "Zaawansowany" },
+    { value: "all", label: "Wszystkie poziomy" },
+    { value: "Początkujący", label: "Początkujący" },
+    { value: "Średniozaawansowany", label: "Średniozaawansowany" },
+    { value: "Zaawansowany", label: "Zaawansowany" },
   ],
   gender: [
     { value: "all", label: "Wszyscy" },
@@ -119,8 +121,6 @@ export function PartnerSearch() {
 
   const handleSelect = (type: string, value: string) => {
     console.log("handleSelect:", { type, value });
-
-    // Zamknij dropdown po wybraniu opcji
     setOpenSelect(null);
 
     switch (type) {

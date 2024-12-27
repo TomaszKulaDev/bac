@@ -60,6 +60,13 @@ export function LatestProfiles() {
         isMatch: !selectedGender || profile.gender === selectedGender,
       });
 
+      console.log("Level filtering:", {
+        selectedLevel,
+        profileLevel: profile.info.poziomZaawansowania,
+        isMatch:
+          !selectedLevel || profile.info.poziomZaawansowania === selectedLevel,
+      });
+
       return locationMatch && styleMatch && levelMatch && genderMatch;
     });
   }, [selectedLocation, selectedDanceStyle, selectedLevel, selectedGender]);
