@@ -6,6 +6,17 @@ import { useSession } from "next-auth/react";
 import { toast } from "react-toastify";
 import { AdvertisementType, DanceLevel } from "@/types/advertisement";
 
+// Dodajemy interfejs dla błędów
+interface ValidationErrors {
+  title?: string;
+  date?: string;
+  time?: string;
+  location?: {
+    city?: string;
+    place?: string;
+  };
+}
+
 interface AdvertisementFormProps {
   mode: "add" | "edit";
   initialData?: {
@@ -35,6 +46,7 @@ export function AdvertisementForm({
   const router = useRouter();
   const { data: session } = useSession();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errors, setErrors] = useState<ValidationErrors>({}); // Dodajemy stan dla błędów
 
   const [formData, setFormData] = useState({
     type: initialData?.type || "Praktis",
@@ -104,6 +116,60 @@ export function AdvertisementForm({
     }
   };
 
+  const validateForm = (): boolean => {
+    const newErrors: ValidationErrors = {};
+
+    // Walidacja tytułu
+    if (!formData.title.trim()) {
+      newErrors.title = "Tytuł jest wymagany";
+    } else if (formData.title.length < 5) {
+      newErrors.title = "Tytuł musi mieć minimum 5 znaków";
+    } else if (formData.title.length > 24) {
+      newErrors.title = "Tytuł nie może być dłuższy niż 24 znaki";
+    }
+
+    // Walidacja czasu
+    if (!formData.time) {
+      newErrors.time = "Czas jest wymagany";
+    } else if (formData.time.length > 12) {
+      newErrors.time = "Czas nie może być dłuższy niż 12 znaków";
+    }
+
+    // Walidacja miasta
+    if (!formData.location.city.trim()) {
+      newErrors.location = {
+        ...newErrors.location,
+        city: "Miasto jest wymagane",
+      };
+    } else if (formData.location.city.length > 20) {
+      newErrors.location = {
+        ...newErrors.location,
+        city: "Nazwa miasta nie może być dłuższa niż 20 znaków",
+      };
+    }
+
+    // Walidacja miejsca
+    if (!formData.location.place.trim()) {
+      newErrors.location = {
+        ...newErrors.location,
+        place: "Miejsce jest wymagane",
+      };
+    } else if (formData.location.place.length < 3) {
+      newErrors.location = {
+        ...newErrors.location,
+        place: "Nazwa miejsca musi mieć minimum 3 znaki",
+      };
+    } else if (formData.location.place.length > 37) {
+      newErrors.location = {
+        ...newErrors.location,
+        place: "Nazwa miejsca nie może być dłuższa niż 37 znaków",
+      };
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   return (
     <form onSubmit={handleSubmit} className="max-w-2xl mx-auto space-y-6">
       <div className="bg-white p-6 rounded-lg shadow-md space-y-6">
@@ -144,6 +210,7 @@ export function AdvertisementForm({
                      focus:border-amber-500 focus:ring-amber-500"
             required
             placeholder="np. Trening Kizomby"
+            maxLength={24}
           />
         </div>
 
@@ -175,11 +242,16 @@ export function AdvertisementForm({
               onChange={(e) =>
                 setFormData({ ...formData, time: e.target.value })
               }
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm 
-                       focus:border-amber-500 focus:ring-amber-500"
+              className={`mt-1 block w-full rounded-md shadow-sm 
+                       ${errors.time ? "border-red-500" : "border-gray-300"}
+                       focus:border-amber-500 focus:ring-amber-500`}
               required
-              placeholder="np. 17:00-19:00"
+              maxLength={12}
+              placeholder="np. 19:00-20:00"
             />
+            {errors.time && (
+              <p className="mt-1 text-sm text-red-600">{errors.time}</p>
+            )}
           </div>
         </div>
 
@@ -197,11 +269,21 @@ export function AdvertisementForm({
                   location: { ...formData.location, city: e.target.value },
                 })
               }
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm 
-                       focus:border-amber-500 focus:ring-amber-500"
+              className={`mt-1 block w-full rounded-md shadow-sm 
+                       ${
+                         errors.location?.city
+                           ? "border-red-500"
+                           : "border-gray-300"
+                       }
+                       focus:border-amber-500 focus:ring-amber-500`}
               required
-              placeholder="np. Warszawa"
+              maxLength={20}
             />
+            {errors.location?.city && (
+              <p className="mt-1 text-sm text-red-600">
+                {errors.location.city}
+              </p>
+            )}
           </div>
 
           <div>
@@ -217,11 +299,22 @@ export function AdvertisementForm({
                   location: { ...formData.location, place: e.target.value },
                 })
               }
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm 
-                       focus:border-amber-500 focus:ring-amber-500"
+              className={`mt-1 block w-full rounded-md shadow-sm 
+                       ${
+                         errors.location?.place
+                           ? "border-red-500"
+                           : "border-gray-300"
+                       }
+                       focus:border-amber-500 focus:ring-amber-500`}
               required
-              placeholder="np. Szkoła Tańca XYZ"
+              minLength={3}
+              maxLength={37}
             />
+            {errors.location?.place && (
+              <p className="mt-1 text-sm text-red-600">
+                {errors.location.place}
+              </p>
+            )}
           </div>
         </div>
 
