@@ -1,36 +1,54 @@
-"use client";
-
-import { useParams } from "next/navigation";
-import Link from "next/link";
+import { Advertisement } from "@/types/advertisement";
+import { notFound } from "next/navigation";
 import {
   FaArrowLeft,
   FaCalendarAlt,
-  FaMapMarkerAlt,
   FaClock,
-  FaUser,
+  FaMapMarkerAlt,
 } from "react-icons/fa";
+import Link from "next/link";
+import Image from "next/image";
 
-export default function AdDetailsPage() {
-  const { id } = useParams();
+async function getAdvertisement(id: string) {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+    const url = new URL(`/api/advertisements/${id}`, baseUrl).toString();
 
-  // W rzeczywistej aplikacji dane byłyby pobierane z API
-  const ad = {
-    id: "1",
-    type: "practice",
-    title: "Szukam partnera na praktis",
-    description:
-      "Praktis bachaty, poziom średniozaawansowany. Sala już opłacona.",
-    date: "2024-03-15",
-    time: "18:00-20:00",
-    location: "Warszawa, Studio Tańca XYZ",
-    author: {
-      name: "Anna K.",
-      level: "Średniozaawansowany",
-      avatar: "/images/profiles/avatar1.jpg",
-    },
-    createdAt: "2024-03-10T12:00:00Z",
-    expiresAt: "2024-03-15T20:00:00Z",
-  };
+    console.log("Fetching from URL:", url);
+
+    const res = await fetch(url, {
+      cache: "no-store",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!res.ok) {
+      console.error(`Error status: ${res.status}`);
+      const errorData = await res.json();
+      console.error("Error details:", errorData);
+      throw new Error(`Failed to fetch advertisement: ${res.status}`);
+    }
+
+    const data = await res.json();
+    console.log("Fetched advertisement:", data);
+    return data;
+  } catch (error) {
+    console.error("Error fetching advertisement:", error);
+    return null;
+  }
+}
+
+export default async function AdvertisementPage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const ad = await getAdvertisement(params.id);
+
+  if (!ad) {
+    notFound();
+  }
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-12">
@@ -47,8 +65,6 @@ export default function AdDetailsPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div>
-            <p className="text-gray-600 mb-6">{ad.description}</p>
-
             <div className="space-y-4">
               <div className="flex items-center gap-2 text-gray-600">
                 <FaCalendarAlt className="text-amber-500" />
@@ -62,7 +78,9 @@ export default function AdDetailsPage() {
 
               <div className="flex items-center gap-2 text-gray-600">
                 <FaMapMarkerAlt className="text-amber-500" />
-                <span>{ad.location}</span>
+                <span>
+                  {ad.location.city} • {ad.location.place}
+                </span>
               </div>
             </div>
           </div>
@@ -74,10 +92,12 @@ export default function AdDetailsPage() {
 
             <div className="flex items-center gap-4">
               {ad.author.avatar && (
-                <img
+                <Image
                   src={ad.author.avatar}
                   alt={ad.author.name}
-                  className="w-16 h-16 rounded-full object-cover"
+                  width={64}
+                  height={64}
+                  className="rounded-full object-cover"
                 />
               )}
 

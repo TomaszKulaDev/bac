@@ -3,6 +3,26 @@ import { connectToDatabase } from "@/lib/mongodb";
 import { Advertisement } from "@/models/Advertisement";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth.config";
+import { Document } from "mongoose";
+
+interface MongoAdvertisement extends Document {
+  _id: any;
+  type: string;
+  title: string;
+  date: string;
+  time: string;
+  location: {
+    city: string;
+    place: string;
+  };
+  author: {
+    name: string;
+    level: string;
+    avatar?: string;
+  };
+  createdAt?: Date;
+  updatedAt?: Date;
+}
 
 // GET - Pobierz pojedyncze ogłoszenie
 export async function GET(
@@ -10,20 +30,50 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
+    console.log("Received request for ID:", params.id);
+
     await connectToDatabase();
-    const ad = await Advertisement.findById(params.id).lean();
+
+    // Sprawdzamy czy ID jest poprawne
+    if (!params.id.match(/^[0-9a-fA-F]{24}$/)) {
+      console.log("Invalid ID format");
+      return NextResponse.json(
+        { error: "Nieprawidłowy format ID" },
+        { status: 400 }
+      );
+    }
+
+    const ad = (await Advertisement.findById(params.id)) as MongoAdvertisement;
+    console.log("Found advertisement:", ad);
 
     if (!ad) {
+      console.log("Advertisement not found");
       return NextResponse.json(
         { error: "Nie znaleziono ogłoszenia" },
         { status: 404 }
       );
     }
 
-    return NextResponse.json(ad);
+    // Konwertujemy dokument MongoDB do zwykłego obiektu
+    const adObject = ad.toObject();
+
+    // Formatujemy daty jeśli istnieją
+    const formattedAd = {
+      ...adObject,
+      _id: adObject._id.toString(),
+      createdAt: adObject.createdAt
+        ? new Date(adObject.createdAt).toISOString()
+        : undefined,
+      updatedAt: adObject.updatedAt
+        ? new Date(adObject.updatedAt).toISOString()
+        : undefined,
+    };
+
+    return NextResponse.json(formattedAd);
   } catch (error) {
+    console.error("Detailed error:", error);
     return NextResponse.json(
-      { error: "Nie udało się pobrać ogłoszenia" },
+      { error: "Wystąpił błąd podczas pobierania ogłoszenia" },
       { status: 500 }
     );
   }
@@ -37,11 +87,22 @@ export async function PUT(
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json(
+        { error: "Wymagane zalogowanie" },
+        { status: 401 }
+      );
     }
 
     await connectToDatabase();
     const data = await request.json();
+
+    // Walidacja ID
+    if (!params.id.match(/^[0-9a-fA-F]{24}$/)) {
+      return NextResponse.json(
+        { error: "Nieprawidłowy format ID" },
+        { status: 400 }
+      );
+    }
 
     const ad = await Advertisement.findById(params.id);
     if (!ad) {
@@ -51,27 +112,30 @@ export async function PUT(
       );
     }
 
-    // Sprawdź czy użytkownik jest autorem
+    // Sprawdzenie uprawnień
     if (ad.author.name !== session.user.name) {
       return NextResponse.json(
-        { error: "Nie masz uprawnień do edycji tego ogłoszenia" },
+        { error: "Brak uprawnień do edycji tego ogłoszenia" },
         { status: 403 }
       );
     }
 
+    // Aktualizacja z zachowaniem autora
     const updatedAd = await Advertisement.findByIdAndUpdate(
       params.id,
       {
         ...data,
         updatedAt: new Date(),
+        author: ad.author, // Zachowujemy oryginalnego autora
       },
       { new: true }
     );
 
     return NextResponse.json(updatedAd);
   } catch (error) {
+    console.error("Error updating advertisement:", error);
     return NextResponse.json(
-      { error: "Nie udało się zaktualizować ogłoszenia" },
+      { error: "Wystąpił błąd podczas aktualizacji ogłoszenia" },
       { status: 500 }
     );
   }
@@ -85,10 +149,21 @@ export async function DELETE(
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json(
+        { error: "Wymagane zalogowanie" },
+        { status: 401 }
+      );
     }
 
     await connectToDatabase();
+
+    // Walidacja ID
+    if (!params.id.match(/^[0-9a-fA-F]{24}$/)) {
+      return NextResponse.json(
+        { error: "Nieprawidłowy format ID" },
+        { status: 400 }
+      );
+    }
 
     const ad = await Advertisement.findById(params.id);
     if (!ad) {
@@ -98,19 +173,22 @@ export async function DELETE(
       );
     }
 
-    // Sprawdź czy użytkownik jest autorem
+    // Sprawdzenie uprawnień
     if (ad.author.name !== session.user.name) {
       return NextResponse.json(
-        { error: "Nie masz uprawnień do usunięcia tego ogłoszenia" },
+        { error: "Brak uprawnień do usunięcia tego ogłoszenia" },
         { status: 403 }
       );
     }
 
     await Advertisement.findByIdAndDelete(params.id);
-    return NextResponse.json({ message: "Ogłoszenie zostało usunięte" });
+    return NextResponse.json({
+      message: "Ogłoszenie zostało pomyślnie usunięte",
+    });
   } catch (error) {
+    console.error("Error deleting advertisement:", error);
     return NextResponse.json(
-      { error: "Nie udało się usunąć ogłoszenia" },
+      { error: "Wystąpił błąd podczas usuwania ogłoszenia" },
       { status: 500 }
     );
   }

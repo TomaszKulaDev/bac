@@ -8,7 +8,13 @@ import { toast } from "react-toastify";
 import { Advertisement, AdvertisementType } from "@/types/advertisement";
 import Modal from "@/components/ui/Modal";
 import { AdvertisementForm } from "./AdvertisementForm";
-import { FaCalendarAlt, FaClock, FaMapMarkerAlt } from "react-icons/fa";
+import {
+  FaCalendarAlt,
+  FaClock,
+  FaMapMarkerAlt,
+  FaArrowRight,
+} from "react-icons/fa";
+import Link from "next/link";
 
 export function QuickAds() {
   const [ads, setAds] = useState<Advertisement[]>([]);
@@ -169,14 +175,14 @@ export function QuickAds() {
                   </div>
                 </div>
 
-                <button
-                  className="px-4 py-1.5 bg-gradient-to-r from-amber-500 to-red-500 
-                             hover:from-amber-600 hover:to-red-600 text-white text-sm 
-                             rounded-lg font-medium transition-all duration-300
-                             transform hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
+                <Link
+                  href={`/szukam-partnera-do-tanca/ogloszenie/${ad._id}`}
+                  className="px-3 py-1.5 text-sm text-amber-600 hover:bg-amber-50 
+                             rounded transition-colors inline-flex items-center gap-1"
                 >
                   Szczegóły
-                </button>
+                  <FaArrowRight className="text-xs" />
+                </Link>
               </div>
 
               {session?.user?.name === ad.author.name && (
