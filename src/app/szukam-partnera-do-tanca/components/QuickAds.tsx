@@ -65,7 +65,7 @@ export function QuickAds() {
   return (
     <section id="quick-ads" className="bg-white rounded-xl shadow-lg p-6 mb-8">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-        <div className="flex items-center justify-between w-full sm:w-auto">
+        <div className="flex items-center justify-between w-full sm:w-auto gap-4">
           <div>
             <h2 className="text-xl font-bold text-gray-800">
               Szybkie Ogłoszenia
@@ -74,17 +74,16 @@ export function QuickAds() {
               Znaleziono {filteredAds.length} ogłoszeń
             </p>
           </div>
-          <button
-            onClick={() => setIsCollapsed(!isCollapsed)}
-            className="sm:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors"
-            aria-label={isCollapsed ? "Rozwiń ogłoszenia" : "Zwiń ogłoszenia"}
+          <Link
+            href="/szukam-partnera-do-tanca/dodaj-ogloszenie"
+            className="px-4 py-2 bg-gradient-to-r from-amber-500 to-red-500 
+                     text-white rounded-lg font-medium hover:from-amber-600 
+                     hover:to-red-600 transition-all duration-300
+                     flex items-center gap-2 whitespace-nowrap"
           >
-            {isCollapsed ? (
-              <FaChevronDown className="text-gray-600" />
-            ) : (
-              <FaChevronUp className="text-gray-600" />
-            )}
-          </button>
+            <FaUser className="text-sm" />
+            Dodaj ogłoszenie
+          </Link>
         </div>
 
         <div className="flex items-center gap-4">
@@ -231,45 +230,36 @@ export function QuickAds() {
               ))}
             </div>
 
-            <div className="flex flex-col sm:flex-row justify-center gap-4 mt-6">
-              {visibleAds > INITIAL_ADS_COUNT ? (
-                <button
-                  onClick={showLess}
-                  className="px-6 py-2.5 bg-gradient-to-r from-amber-500 to-red-500 
-                           text-white rounded-lg font-medium hover:from-amber-600 
-                           hover:to-red-600 transition-all duration-300
-                           flex items-center justify-center gap-2"
-                >
-                  <FaChevronUp className="text-sm" />
-                  Pokaż mniej ogłoszeń
-                </button>
-              ) : hasMoreAds ? (
-                <button
-                  onClick={loadMore}
-                  className="px-6 py-2.5 bg-gradient-to-r from-amber-500 to-red-500 
-                           text-white rounded-lg font-medium hover:from-amber-600 
-                           hover:to-red-600 transition-all duration-300
-                           flex items-center justify-center gap-2"
-                >
-                  <FaChevronDown className="text-sm" />
-                  Pokaż więcej ogłoszeń
-                  <span className="text-sm opacity-75">
-                    ({filteredAds.length - visibleAds})
-                  </span>
-                </button>
-              ) : null}
-
-              <Link
-                href="/szukam-partnera-do-tanca/dodaj-ogloszenie"
-                className="px-6 py-2.5 bg-gradient-to-r from-amber-500 to-red-500 
-                         text-white rounded-lg font-medium hover:from-amber-600 
-                         hover:to-red-600 transition-all duration-300
-                         flex items-center justify-center gap-2"
-              >
-                <FaUser className="text-sm" />
-                Dodaj ogłoszenie
-              </Link>
-            </div>
+            {(hasMoreAds || visibleAds > INITIAL_ADS_COUNT) && (
+              <div className="mt-6 text-center">
+                {visibleAds > INITIAL_ADS_COUNT ? (
+                  <button
+                    onClick={showLess}
+                    className="px-6 py-2.5 bg-gradient-to-r from-amber-500 to-red-500 
+                             text-white rounded-lg font-medium hover:from-amber-600 
+                             hover:to-red-600 transition-all duration-300
+                             flex items-center justify-center gap-2 mx-auto"
+                  >
+                    <FaChevronUp className="text-sm" />
+                    Pokaż mniej ogłoszeń
+                  </button>
+                ) : (
+                  <button
+                    onClick={loadMore}
+                    className="px-6 py-2.5 bg-gradient-to-r from-amber-500 to-red-500 
+                             text-white rounded-lg font-medium hover:from-amber-600 
+                             hover:to-red-600 transition-all duration-300
+                             flex items-center justify-center gap-2 mx-auto"
+                  >
+                    <FaChevronDown className="text-sm" />
+                    Pokaż więcej ogłoszeń
+                    <span className="text-sm opacity-75">
+                      ({filteredAds.length - visibleAds})
+                    </span>
+                  </button>
+                )}
+              </div>
+            )}
           </motion.div>
         )}
       </AnimatePresence>
