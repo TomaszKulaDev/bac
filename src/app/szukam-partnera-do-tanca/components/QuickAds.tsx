@@ -126,7 +126,7 @@ export function QuickAds() {
               key={ad._id}
               className="group bg-white rounded-xl shadow-sm hover:shadow-md transition-all p-4 relative"
             >
-              <h3 className="text-lg font-medium text-amber-500 mb-3">
+              <h3 className="text-lg font-semibold text-[#1f2937] mb-3 hover:text-amber-500 transition-colors">
                 {ad.title}
               </h3>
 
