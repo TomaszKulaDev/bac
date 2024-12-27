@@ -73,36 +73,36 @@ export function QuickAds() {
     <div className="bg-white rounded-2xl shadow-lg">
       <section className="p-8">
         <div className="flex justify-between items-center mb-6">
-          <div>
-            <h2 className="text-2xl font-bold text-gray-800">
-              Szybkie Ogłoszenia
-            </h2>
-            <p className="text-gray-600">
-              Znaleziono {filteredAds.length} ogłoszeń
-            </p>
-          </div>
-
           <div className="flex items-center gap-4">
-            <div className="flex gap-2">
-              {["Wszystkie", "Praktis", "Social", "Kurs"].map((type) => (
-                <button
-                  key={type}
-                  onClick={() =>
-                    setSelectedType(type as AdvertisementType | "Wszystkie")
-                  }
-                  className={`px-4 py-2 rounded-full text-sm transition-colors ${
-                    selectedType === type
-                      ? type === "Social"
-                        ? "bg-amber-500 text-white"
-                        : "bg-gray-100 text-gray-700"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                  }`}
-                >
-                  {type}
-                </button>
-              ))}
+            <div>
+              <h2 className="text-2xl font-bold text-gray-800">
+                Szybkie Ogłoszenia
+              </h2>
+              <p className="text-gray-600">
+                Znaleziono {filteredAds.length} ogłoszeń
+              </p>
             </div>
             <AddAdvertisementButton onSuccess={fetchAds} />
+          </div>
+
+          <div className="flex gap-2">
+            {["Wszystkie", "Praktis", "Social", "Kurs"].map((type) => (
+              <button
+                key={type}
+                onClick={() =>
+                  setSelectedType(type as AdvertisementType | "Wszystkie")
+                }
+                className={`px-4 py-2 rounded-full text-sm transition-colors ${
+                  selectedType === type
+                    ? type === "Social"
+                      ? "bg-amber-500 text-white"
+                      : "bg-gray-100 text-gray-700"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                }`}
+              >
+                {type}
+              </button>
+            ))}
           </div>
         </div>
 
