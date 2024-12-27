@@ -170,8 +170,10 @@ export function QuickAds() {
                 </div>
 
                 <button
-                  className="px-4 py-1.5 bg-amber-500 text-white text-sm rounded-lg
-                           hover:bg-amber-600 transition-colors"
+                  className="px-4 py-1.5 bg-gradient-to-r from-amber-500 to-red-500 
+                             hover:from-amber-600 hover:to-red-600 text-white text-sm 
+                             rounded-lg font-medium transition-all duration-300
+                             transform hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]"
                 >
                   Szczegóły
                 </button>
