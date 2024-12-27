@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
+import { ScrollToTop } from "./components/ScrollToTop";
 
 // Dodajemy strukturowane dane JSON-LD
 const jsonLd = {
@@ -299,6 +300,7 @@ export default function PartnerSearchLayout({
           </div>
         </footer>
       </div>
+      <ScrollToTop />
     </>
   );
 }
