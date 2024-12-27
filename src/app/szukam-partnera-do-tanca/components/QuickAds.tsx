@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { Advertisement, AdvertisementType } from "@/types/advertisement";
 import Modal from "@/components/ui/Modal";
 import { AdvertisementForm } from "./AdvertisementForm";
+import { FaCalendarAlt, FaClock, FaMapMarkerAlt } from "react-icons/fa";
 
 export function QuickAds() {
   const [ads, setAds] = useState<Advertisement[]>([]);
@@ -131,17 +132,18 @@ export function QuickAds() {
               </h3>
 
               <div className="flex items-center gap-2 text-gray-600 text-sm mb-2">
-                <span className="text-amber-500">📅</span>
-                <span>{ad.date}</span>
+                <FaCalendarAlt className="text-amber-500" />
+                {ad.date}
                 <span className="text-gray-400 mx-1">•</span>
-                <span>{ad.time}</span>
+                <div className="flex items-center gap-2">
+                  <FaClock size={16} className="text-amber-500" />
+                  {ad.time}
+                </div>
               </div>
 
               <div className="flex items-center gap-2 text-gray-600 text-sm mb-4">
-                <span className="text-amber-500">📍</span>
-                <span>{ad.location.city}</span>
-                <span className="text-gray-400 mx-1">•</span>
-                <span>{ad.location.place}</span>
+                <FaMapMarkerAlt className="text-amber-500" />
+                {ad.location.city} • {ad.location.place}
               </div>
 
               <div className="flex items-center justify-between">
