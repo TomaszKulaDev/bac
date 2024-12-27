@@ -12,13 +12,18 @@ import { Metadata } from "next";
 
 async function getAdvertisement(id: string) {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
-    const url = new URL(`/api/advertisements/${id}`, baseUrl).toString();
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL;
+    if (!baseUrl) {
+      throw new Error("NEXT_PUBLIC_APP_URL is not defined");
+    }
 
+    const url = new URL(`/api/advertisements/${id}`, baseUrl).toString();
     console.log("Fetching from URL:", url);
 
     const res = await fetch(url, {
-      cache: "no-store",
+      next: {
+        revalidate: 300, // 5 minut
+      },
       headers: {
         "Content-Type": "application/json",
       },
