@@ -40,6 +40,35 @@ interface AdvertisementFormProps {
   onSuccess?: () => void;
 }
 
+// Przykładowe szablony opisów
+const descriptionTemplates = [
+  {
+    type: "Praktis",
+    template:
+      "Szukam partnera/ki do regularnych praktisów. Poziom: [poziom]. Preferowane dni: [dni tygodnia], godziny: [zakres]. Miejsce: [dzielnica/studio]. Cel: doskonalenie [figura/styl].",
+  },
+  {
+    type: "Social", 
+    template:
+      "Szukam partnera/ki na social dance w [miejsce]. Data: [data], od [godzina]. Poziom: [poziom]. Preferowane style: [style tańca]. Cel: wspólna zabawa i rozwój umiejętności.",
+  },
+  {
+    type: "Kurs",
+    template:
+      "Poszukuję osoby do wspólnego uczestnictwa w kursie [styl tańca]. Szkoła: [nazwa szkoły]. Start kursu: [data]. Poziom: [poziom]. Dni zajęć: [dni], godziny: [godziny].",
+  },
+  {
+    type: "Pokazy",
+    template:
+      "Szukam partnera/ki do przygotowania pokazu na [wydarzenie]. Styl: [styl]. Wymagany poziom: [poziom]. Planowane występy: [daty]. Próby: [częstotliwość] w [miejsce].",
+  },
+  {
+    type: "Inne",
+    template:
+      "Szukam partnera/ki do [cel/wydarzenie]. Styl tańca: [styl]. Poziom: [poziom]. Szczegóły: [dodatkowe informacje]. Preferowane miejsce: [lokalizacja]. Kontakt: [sposób kontaktu].",
+  }
+];
+
 export function AdvertisementForm({
   mode,
   initialData,
@@ -173,6 +202,13 @@ export function AdvertisementForm({
     return Object.keys(newErrors).length === 0;
   };
 
+  const handleTemplateSelect = (template: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      description: template,
+    }));
+  };
+
   return (
     <form onSubmit={handleSubmit} className="max-w-2xl mx-auto space-y-6">
       <div className="bg-white p-6 rounded-lg shadow-md space-y-6">
@@ -237,8 +273,40 @@ export function AdvertisementForm({
               className="mt-1 block w-full rounded-md border border-gray-300 
                        shadow-sm focus:border-amber-500 focus:ring-amber-500 
                        sm:text-sm p-2"
-              placeholder="Np.: Szukam partnera/ki do regularnych praktisów. Preferowane dni: pon/śr, poziom: średnio-zaawansowany."
+              placeholder="Opisz krótko czego szukasz (max 255 znaków)"
             />
+
+            {/* Szablony opisów */}
+            <div className="mt-4">
+              <p className="text-sm font-medium text-gray-700 mb-2">
+                Przykładowe szablony opisów:
+              </p>
+              <div className="space-y-2">
+                {descriptionTemplates
+                  .filter((template) => template.type === formData.type)
+                  .map((template, index) => (
+                    <div
+                      key={index}
+                      onClick={() => handleTemplateSelect(template.template)}
+                      className="p-3 border rounded-md cursor-pointer hover:bg-amber-50 
+                               text-sm text-gray-600 transition-colors"
+                    >
+                      {template.template}
+                      <button
+                        type="button"
+                        className="ml-2 text-amber-600 hover:text-amber-700 text-xs"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigator.clipboard.writeText(template.template);
+                        }}
+                      >
+                        Kopiuj
+                      </button>
+                    </div>
+                  ))}
+              </div>
+            </div>
+
             {errors.description && (
               <p className="mt-1 text-sm text-red-600">{errors.description}</p>
             )}
