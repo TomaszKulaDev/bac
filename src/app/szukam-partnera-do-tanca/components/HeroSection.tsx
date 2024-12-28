@@ -1,16 +1,28 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaSearch, FaUserPlus } from "react-icons/fa";
 import Link from "next/link";
+import { AdvertisementForm } from "./AdvertisementForm";
+import Modal from "@/components/ui/Modal";
+import { useAuth } from "@/hooks/useAuth";
+import { useUserProfile } from "@/hooks/useUserProfile";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { AdvertisementType, DanceLevel } from "@/types/advertisement";
 
 export function HeroSection() {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { user } = useAuth();
+  const { userProfile } = useUserProfile();
+  const { data: session } = useSession();
+  const router = useRouter();
 
   const scrollToSearch = () => {
-    const searchSection = document.getElementById("partner-search");
+    const searchSection = document.getElementById("search-section");
     if (searchSection) {
-      const offset = 160;
+      const offset = 80;
       const elementPosition = searchSection.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - offset;
 
@@ -19,6 +31,41 @@ export function HeroSection() {
         behavior: "smooth",
       });
     }
+  };
+
+  const handleAddAdvertisement = () => {
+    if (!session) {
+      router.push("/login");
+      return;
+    }
+    setIsModalOpen(true);
+  };
+
+  const handleSuccess = () => {
+    setIsModalOpen(false);
+  };
+
+  const getAvatar = (): string | undefined => {
+    if (userProfile?.avatar) return userProfile.avatar;
+    if (user?.image) return user.image;
+    return undefined;
+  };
+
+  const defaultInitialData = {
+    type: "Praktis" as AdvertisementType,
+    title: "",
+    description: "",
+    date: "",
+    time: "",
+    location: {
+      city: "",
+      place: "",
+    },
+    author: {
+      avatar: getAvatar(),
+      name: user?.name || "",
+      level: "Początkujący" as DanceLevel,
+    },
   };
 
   useEffect(() => {
@@ -91,20 +138,6 @@ export function HeroSection() {
 
             {/* Zmodyfikowane przyciski */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-              <Link
-                href="/dodaj-ogloszenie"
-                className="btn-hero-primary group bg-gradient-to-r from-amber-500 to-red-500 
-                         hover:from-amber-600 hover:to-red-600 text-white px-8 py-3 
-                         rounded-full flex items-center gap-2 transition-all duration-300"
-                aria-label="Dodaj ogłoszenie"
-              >
-                <FaUserPlus
-                  className="text-xl group-hover:rotate-12 transition-transform"
-                  aria-hidden="true"
-                />
-                Dodaj Ogłoszenie
-              </Link>
-
               <button
                 onClick={scrollToSearch}
                 className="btn-hero-secondary group bg-white/10 hover:bg-white/20 
@@ -118,6 +151,20 @@ export function HeroSection() {
                   aria-hidden="true"
                 />
                 Szukaj Partnera
+              </button>
+
+              <button
+                onClick={handleAddAdvertisement}
+                className="btn-hero-primary group bg-gradient-to-r from-amber-500 to-red-500 
+                         hover:from-amber-600 hover:to-red-600 text-white px-8 py-3 
+                         rounded-full flex items-center gap-2 transition-all duration-300"
+                aria-label="Dodaj ogłoszenie"
+              >
+                <FaUserPlus
+                  className="text-xl group-hover:rotate-12 transition-transform"
+                  aria-hidden="true"
+                />
+                Dodaj Ogłoszenie
               </button>
             </div>
 
@@ -139,6 +186,18 @@ export function HeroSection() {
           </div>
         </div>
       </div>
+
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title="Dodaj nowe ogłoszenie"
+      >
+        <AdvertisementForm
+          mode="add"
+          onSuccess={handleSuccess}
+          initialData={defaultInitialData}
+        />
+      </Modal>
     </section>
   );
 }
