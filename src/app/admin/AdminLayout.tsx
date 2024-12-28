@@ -15,6 +15,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   const navItems = [
     { href: "/admin", label: "Użytkownicy" },
     { href: "/admin/music", label: "Muzyka" },
+    { href: "/admin/announcements", label: "Szukam partner Ogłoszenia" },
   ];
 
   return (

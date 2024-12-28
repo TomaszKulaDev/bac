@@ -148,45 +148,29 @@ export async function DELETE(
 ) {
   try {
     const session = await getServerSession(authOptions);
-    if (!session?.user) {
-      return NextResponse.json(
-        { error: "Wymagane zalogowanie" },
-        { status: 401 }
-      );
+
+    // Sprawdź czy użytkownik jest zalogowany i ma uprawnienia admina
+    if (!session?.user || session.user.role !== "admin") {
+      return NextResponse.json({ error: "Brak uprawnień" }, { status: 403 });
     }
 
     await connectToDatabase();
 
-    // Walidacja ID
-    if (!params.id.match(/^[0-9a-fA-F]{24}$/)) {
-      return NextResponse.json(
-        { error: "Nieprawidłowy format ID" },
-        { status: 400 }
-      );
-    }
+    const deletedAd = await Advertisement.findByIdAndDelete(params.id);
 
-    const ad = await Advertisement.findById(params.id);
-    if (!ad) {
+    if (!deletedAd) {
       return NextResponse.json(
         { error: "Nie znaleziono ogłoszenia" },
         { status: 404 }
       );
     }
 
-    // Sprawdzenie uprawnień
-    if (ad.author.name !== session.user.name) {
-      return NextResponse.json(
-        { error: "Brak uprawnień do usunięcia tego ogłoszenia" },
-        { status: 403 }
-      );
-    }
-
-    await Advertisement.findByIdAndDelete(params.id);
-    return NextResponse.json({
-      message: "Ogłoszenie zostało pomyślnie usunięte",
-    });
+    return NextResponse.json(
+      { message: "Ogłoszenie zostało usunięte" },
+      { status: 200 }
+    );
   } catch (error) {
-    console.error("Error deleting advertisement:", error);
+    console.error("Błąd podczas usuwania ogłoszenia:", error);
     return NextResponse.json(
       { error: "Wystąpił błąd podczas usuwania ogłoszenia" },
       { status: 500 }
