@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import { toast } from "react-toastify";
 import { AdvertisementType, DanceLevel } from "@/types/advertisement";
 import { useAuth } from "@/hooks/useAuth";
+import { useUserProfile } from "@/hooks/useUserProfile";
 
 // Dodajemy interfejs dla błędów
 interface ValidationErrors {
@@ -96,6 +97,7 @@ export function AdvertisementForm({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<ValidationErrors>({}); // Dodajemy stan dla błędów
   const { user } = useAuth();
+  const { userProfile } = useUserProfile();
 
   const [formData, setFormData] = useState<FormData>({
     title: initialData?.title || "",
@@ -152,7 +154,7 @@ export function AdvertisementForm({
           author: {
             name: session.user.name,
             level: formData.author.level,
-            avatar: session.user.image,
+            avatar: userProfile?.avatar || session.user.image || null,
           },
         }),
       });

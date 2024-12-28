@@ -161,12 +161,16 @@ export function QuickAds() {
                       alt={ad.author.name}
                       width={24}
                       height={24}
-                      className="rounded-full"
+                      className="rounded-full object-cover"
+                      priority={true}
                     />
                   ) : (
-                    <div className="w-6 h-6 bg-gray-100 rounded-full flex items-center justify-center">
-                      <span className="text-gray-500 text-xs">
-                        {ad.author.name[0]}
+                    <div
+                      className="w-6 h-6 bg-gradient-to-r from-amber-500 to-red-500 
+                                    rounded-full flex items-center justify-center"
+                    >
+                      <span className="text-white text-xs font-medium">
+                        {ad.author.name[0]?.toUpperCase()}
                       </span>
                     </div>
                   )}

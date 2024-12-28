@@ -4,14 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { useSession } from "next-auth/react";
 import { useDispatch } from "react-redux";
 import { login } from "../store/slices/authSlice";
-
-interface UserProfile {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
-  image?: string;
-}
+import { UserProfile } from "@/types/user";
 
 export function useUserProfile() {
   const { data: session, update } = useSession();
@@ -93,5 +86,10 @@ export function useUserProfile() {
     }
   };
 
-  return { userProfile, isLoading, error, updateUserProfile };
+  return {
+    userProfile: userProfile as UserProfile,
+    isLoading,
+    error,
+    updateUserProfile,
+  };
 }

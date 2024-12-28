@@ -74,73 +74,168 @@ export default async function AdvertisementPage({
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-12">
-      <Link
-        href="/szukam-partnera-do-tanca"
-        className="inline-flex items-center gap-2 text-amber-600 hover:text-amber-700 mb-8"
-      >
-        <FaArrowLeft />
-        Powrót do ogłoszeń
-      </Link>
+    <div className="max-w-6xl mx-auto px-4 py-12">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        {/* ============= REKLAMA LEWA ============= */}
+        {/* Lewa kolumna - reklama pionowa format 160x600 */}
+        <div className="hidden lg:block">
+          <div className="sticky top-6 space-y-6">
+            <div
+              className="bg-white rounded-xl shadow-lg p-4"
+              id="ad-left-skyscraper"
+            >
+              <span className="text-sm text-gray-500">Reklama</span>
+              <div className="h-[600px] flex items-center justify-center">
+                {/* TODO: Zaimplementować skyscraper reklamowy Google AdSense/DFP 160x600 */}
+                <span className="text-gray-400">Reklama 160x600</span>
+              </div>
+            </div>
+          </div>
+        </div>
 
-      <div className="bg-white rounded-xl shadow-lg p-8">
-        <h1 className="text-2xl font-bold text-gray-800 mb-4">{ad.title}</h1>
+        {/* Główna treść - środkowa część */}
+        <div className="lg:col-span-2 space-y-6">
+          {/* Nawigacja */}
+          <Link
+            href="/szukam-partnera-do-tanca"
+            className="inline-flex items-center gap-2 text-amber-600 hover:text-amber-700"
+          >
+            <FaArrowLeft />
+            Powrót do ogłoszeń
+          </Link>
 
-        <p className="text-gray-600 mb-6 whitespace-pre-line">
-          {ad.description}
-        </p>
+          {/* Główna karta z tytułem i opisem */}
+          <div className="bg-white rounded-xl shadow-lg p-8">
+            <div className="flex justify-between items-start mb-6">
+              <h1 className="text-2xl font-bold text-gray-800">{ad.title}</h1>
+              <span className="px-3 py-1 bg-amber-100 text-amber-800 rounded-full text-sm">
+                {ad.type}
+              </span>
+            </div>
+            <p className="text-gray-600 whitespace-pre-line">
+              {ad.description}
+            </p>
+          </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div>
-            <div className="space-y-4">
-              <div className="flex items-center gap-2 text-gray-600">
-                <FaCalendarAlt className="text-amber-500" />
-                <span>{new Date(ad.date).toLocaleDateString("pl-PL")}</span>
+          {/* Karta ze szczegółami */}
+          <div className="bg-white rounded-xl shadow-lg p-8">
+            <h2 className="text-lg font-semibold text-gray-800 mb-6">
+              Szczegóły spotkania
+            </h2>
+            <div className="grid gap-6">
+              <div className="flex items-center gap-3 text-gray-600">
+                <FaCalendarAlt className="text-amber-500 w-5 h-5" />
+                <div>
+                  <p className="text-sm text-gray-500">Data</p>
+                  <p>{new Date(ad.date).toLocaleDateString("pl-PL")}</p>
+                </div>
               </div>
 
-              <div className="flex items-center gap-2 text-gray-600">
-                <FaClock className="text-amber-500" />
-                <span>{ad.time}</span>
+              <div className="flex items-center gap-3 text-gray-600">
+                <FaClock className="text-amber-500 w-5 h-5" />
+                <div>
+                  <p className="text-sm text-gray-500">Godzina</p>
+                  <p>{ad.time}</p>
+                </div>
               </div>
 
-              <div className="flex items-center gap-2 text-gray-600">
-                <FaMapMarkerAlt className="text-amber-500" />
-                <span>
-                  {ad.location.city} • {ad.location.place}
-                </span>
+              <div className="flex items-center gap-3 text-gray-600">
+                <FaMapMarkerAlt className="text-amber-500 w-5 h-5" />
+                <div>
+                  <p className="text-sm text-gray-500">Lokalizacja</p>
+                  <p>
+                    {ad.location.city} • {ad.location.place}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="bg-amber-50 p-6 rounded-lg">
-            <h2 className="font-semibold text-gray-800 mb-4">
+          {/* Sekcja partnerów biznesowych */}
+          <div className="bg-white rounded-xl shadow-lg p-8">
+            <h2 className="text-lg font-semibold text-gray-800 mb-6">
+              Polecane szkoły tańca
+            </h2>
+            <div className="grid grid-cols-3 gap-4">
+              {[1, 2, 3].map((partner) => (
+                <div
+                  key={partner}
+                  className="bg-white border border-gray-100 rounded-lg overflow-hidden hover:shadow-md transition-shadow"
+                >
+                  <div className="aspect-[4/3] bg-gray-100 relative">
+                    {/* Placeholder na zdjęcie */}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="text-gray-400">Logo</span>
+                    </div>
+                  </div>
+                  <div className="p-4">
+                    <h3 className="text-sm font-medium text-gray-800 mb-1">
+                      Szkoła Tańca {partner}
+                    </h3>
+                    <p className="text-xs text-gray-500">Partner</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Prawa kolumna - autor i reklamy */}
+        <div className="space-y-6">
+          {/* Karta autora */}
+          <div className="bg-white rounded-xl shadow-lg p-8 sticky top-6">
+            <h2 className="font-semibold text-gray-800 mb-6">
               Autor ogłoszenia
             </h2>
 
-            <div className="flex items-center gap-4">
-              {ad.author.avatar && (
+            <div className="flex items-center gap-4 mb-6">
+              {ad.author.avatar ? (
                 <Image
                   src={ad.author.avatar}
                   alt={ad.author.name}
-                  width={64}
-                  height={64}
+                  width={48}
+                  height={48}
                   className="rounded-full object-cover"
+                  priority={true}
                 />
+              ) : (
+                <div
+                  className="w-12 h-12 bg-gradient-to-r from-amber-500 to-red-500 
+                              rounded-full flex items-center justify-center"
+                >
+                  <span className="text-white text-lg font-medium">
+                    {ad.author.name[0]?.toUpperCase()}
+                  </span>
+                </div>
               )}
-
               <div>
-                <p className="font-medium text-gray-800">{ad.author.name}</p>
-                <p className="text-sm text-gray-600">{ad.author.level}</p>
+                <h2 className="text-xl font-semibold text-gray-900">
+                  {ad.author.name}
+                </h2>
+                <p className="text-gray-600">{ad.author.level}</p>
               </div>
             </div>
 
             <button
-              className="w-full mt-6 px-6 py-3 bg-gradient-to-r from-amber-500 to-red-500 
-                             text-white rounded-lg hover:from-amber-600 hover:to-red-600 
-                             transition-all duration-300"
+              className="w-full px-6 py-3 bg-gradient-to-r from-amber-500 to-red-500 
+                           text-white rounded-lg hover:from-amber-600 hover:to-red-600 
+                           transition-all duration-300"
             >
               Napisz wiadomość
             </button>
+          </div>
+
+          {/* ============= REKLAMA PRAWA ============= */}
+          {/* Reklama pod kartą autora - format 300x250 */}
+          <div
+            className="bg-white rounded-xl shadow-lg p-4"
+            id="ad-right-rectangle"
+          >
+            <span className="text-sm text-gray-500">Reklama</span>
+            <div className="h-[250px] flex items-center justify-center">
+              {/* TODO: Zaimplementować rectangle reklamowy Google AdSense/DFP 300x250 */}
+              <span className="text-gray-400">Reklama 300x250</span>
+            </div>
           </div>
         </div>
       </div>

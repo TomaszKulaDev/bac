@@ -7,15 +7,16 @@ import { toast } from "react-toastify";
 import { AdvertisementForm } from "./AdvertisementForm";
 import Modal from "@/components/ui/Modal";
 import { useAuth } from "@/hooks/useAuth";
-
-interface AddAdvertisementButtonProps {
-  onSuccess?: () => void;
-}
+import { useUserProfile } from "@/hooks/useUserProfile";
+import { AdvertisementType } from "@/types/advertisement";
 
 export function AddAdvertisementButton({
   onSuccess,
-}: AddAdvertisementButtonProps) {
+}: {
+  onSuccess?: () => void;
+}) {
   const { user } = useAuth();
+  const { userProfile } = useUserProfile();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { data: session } = useSession();
   const router = useRouter();
@@ -31,6 +32,30 @@ export function AddAdvertisementButton({
   const handleSuccess = () => {
     setIsModalOpen(false);
     onSuccess?.();
+  };
+
+  const getAvatar = (): string | undefined => {
+    if (userProfile?.avatar) return userProfile.avatar;
+    if (user?.image) return user.image;
+    return undefined;
+  };
+
+  // Domyślne wartości dla nowego ogłoszenia
+  const defaultInitialData = {
+    type: "Praktis" as AdvertisementType,
+    title: "",
+    description: "",
+    date: "",
+    time: "",
+    location: {
+      city: "",
+      place: "",
+    },
+    author: {
+      avatar: getAvatar(),
+      name: user?.name || "",
+      level: "Początkujący" as const,
+    },
   };
 
   return (
@@ -51,7 +76,11 @@ export function AddAdvertisementButton({
         onClose={() => setIsModalOpen(false)}
         title="Dodaj nowe ogłoszenie"
       >
-        <AdvertisementForm mode="add" onSuccess={handleSuccess} />
+        <AdvertisementForm
+          mode="add"
+          onSuccess={handleSuccess}
+          initialData={defaultInitialData}
+        />
       </Modal>
     </>
   );
