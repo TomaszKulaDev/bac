@@ -10,6 +10,7 @@ import { useAuth } from "../hooks/useAuth";
 import { UserMenu } from "./UserMenu";
 import { NavbarSkeleton } from "./NavbarSkeleton";
 import { useNavigation } from "@/hooks/useNavigation";
+import { useSession } from "next-auth/react";
 
 export const NavContent: React.FC = React.memo(function NavContent() {
   const {
@@ -19,6 +20,7 @@ export const NavContent: React.FC = React.memo(function NavContent() {
     isAuthenticated,
     handleLogout,
   } = useNavigation();
+  const { data: session } = useSession();
 
   useEffect(() => {
     const handleScroll = () => {

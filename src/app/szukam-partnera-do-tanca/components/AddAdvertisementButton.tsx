@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { AdvertisementForm } from "./AdvertisementForm";
 import Modal from "@/components/ui/Modal";
+import { useAuth } from "@/hooks/useAuth";
 
 interface AddAdvertisementButtonProps {
   onSuccess?: () => void;
@@ -14,6 +15,7 @@ interface AddAdvertisementButtonProps {
 export function AddAdvertisementButton({
   onSuccess,
 }: AddAdvertisementButtonProps) {
+  const { user } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { data: session } = useSession();
   const router = useRouter();

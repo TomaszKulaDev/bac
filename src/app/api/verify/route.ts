@@ -10,7 +10,6 @@ export async function GET(request: Request) {
 
   // Sprawdzanie, czy token jest prawidłowy
   if (!token || typeof token !== "string") {
-    console.error("Invalid token:", token);
     return NextResponse.json(
       { message: "Token is required and must be a string" },
       { status: 400 }
@@ -20,14 +19,12 @@ export async function GET(request: Request) {
   try {
     // Łączenie z bazą danych
     await connectToDatabase();
-    console.log("Connected to database");
 
     // Wyszukiwanie użytkownika na podstawie tokena weryfikacyjnego
     const user = await User.findOne({ verificationToken: token });
     if (!user) {
-      console.error("User not found or token expired:", token);
       return NextResponse.json(
-        { message: "Invalid or expired token" },
+        { message: "Invalid verification token" },
         { status: 400 }
       );
     }
@@ -36,15 +33,13 @@ export async function GET(request: Request) {
     user.isVerified = true;
     user.verificationToken = undefined; // Usuwamy token po weryfikacji
     await user.save();
-    console.log("User verified successfully:", user.email);
 
     // Wysyłanie odpowiedzi o pomyślnej weryfikacji
     return NextResponse.json({ message: "Account verified successfully" });
   } catch (error) {
     // Obsługa błędów podczas weryfikacji
-    console.error("Verification failed: ", error);
     return NextResponse.json(
-      { message: "Verification failed", error },
+      { message: "Verification failed" },
       { status: 500 }
     );
   }

@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { toast } from "react-toastify";
 import { AdvertisementType, DanceLevel } from "@/types/advertisement";
+import { useAuth } from "@/hooks/useAuth";
 
 // Dodajemy interfejs dla błędów
 interface ValidationErrors {
@@ -48,7 +49,7 @@ const descriptionTemplates = [
       "Szukam partnera/ki do regularnych praktisów. Poziom: [poziom]. Preferowane dni: [dni tygodnia], godziny: [zakres]. Miejsce: [dzielnica/studio]. Cel: doskonalenie [figura/styl].",
   },
   {
-    type: "Social", 
+    type: "Social",
     template:
       "Szukam partnera/ki na social dance w [miejsce]. Data: [data], od [godzina]. Poziom: [poziom]. Preferowane style: [style tańca]. Cel: wspólna zabawa i rozwój umiejętności.",
   },
@@ -66,8 +67,24 @@ const descriptionTemplates = [
     type: "Inne",
     template:
       "Szukam partnera/ki do [cel/wydarzenie]. Styl tańca: [styl]. Poziom: [poziom]. Szczegóły: [dodatkowe informacje]. Preferowane miejsce: [lokalizacja]. Kontakt: [sposób kontaktu].",
-  }
+  },
 ];
+
+interface FormData {
+  title: string;
+  description: string;
+  type: AdvertisementType;
+  date: string;
+  time: string;
+  location: {
+    city: string;
+    place: string;
+  };
+  author: {
+    name: string;
+    level: DanceLevel;
+  };
+}
 
 export function AdvertisementForm({
   mode,
@@ -78,19 +95,35 @@ export function AdvertisementForm({
   const { data: session } = useSession();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<ValidationErrors>({}); // Dodajemy stan dla błędów
+  const { user } = useAuth();
 
-  const [formData, setFormData] = useState({
-    type: initialData?.type || "Praktis",
+  const [formData, setFormData] = useState<FormData>({
     title: initialData?.title || "",
     description: initialData?.description || "",
+    type: initialData?.type || "Praktis",
     date: initialData?.date || "",
     time: initialData?.time || "",
     location: {
       city: initialData?.location?.city || "",
       place: initialData?.location?.place || "",
     },
-    level: (initialData?.author?.level || "Średniozaawansowany") as DanceLevel,
+    author: {
+      name: user?.name || "",
+      level: initialData?.author?.level || "Początkujący",
+    },
   });
+
+  useEffect(() => {
+    if (user) {
+      setFormData((prev) => ({
+        ...prev,
+        author: {
+          ...prev.author,
+          name: user.name || "",
+        },
+      }));
+    }
+  }, [user]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -118,7 +151,7 @@ export function AdvertisementForm({
           ...formData,
           author: {
             name: session.user.name,
-            level: formData.level,
+            level: formData.author.level,
             avatar: session.user.image,
           },
         }),
@@ -206,6 +239,16 @@ export function AdvertisementForm({
     setFormData((prev) => ({
       ...prev,
       description: template,
+    }));
+  };
+
+  const handleLevelChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setFormData((prev) => ({
+      ...prev,
+      author: {
+        ...prev.author,
+        level: e.target.value as DanceLevel,
+      },
     }));
   };
 
@@ -424,13 +467,8 @@ export function AdvertisementForm({
               Poziom zaawansowania
             </label>
             <select
-              value={formData.level}
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  level: e.target.value as DanceLevel,
-                })
-              }
+              value={formData.author.level}
+              onChange={handleLevelChange}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm 
                        focus:border-amber-500 focus:ring-amber-500"
               required

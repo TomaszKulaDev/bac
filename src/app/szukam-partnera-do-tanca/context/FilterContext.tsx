@@ -1,6 +1,12 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
 
 interface FilterContextType {
   selectedLocation: string;
@@ -54,6 +60,18 @@ export function FilterProvider({ children }: { children: ReactNode }) {
     console.log("Setting level:", level);
     setSelectedLevel(level === "all" ? "" : level);
   };
+
+  useEffect(() => {
+    const cleanupState = () => {
+      setSelectedLocation("");
+      setSelectedDanceStyle("");
+      setSelectedLevel("");
+      setSelectedGender("");
+      setFilteredCount(0);
+    };
+
+    return () => cleanupState();
+  }, []);
 
   return (
     <FilterContext.Provider

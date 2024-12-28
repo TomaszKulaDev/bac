@@ -8,14 +8,16 @@ export const useAuth = () => {
   const { data: session, status } = useSession();
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.auth.user);
-  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.auth.isAuthenticated
+  );
 
   const handleLogout = async () => {
     await signOut();
     dispatch(logout());
   };
 
-  const syncAuthState = () => {
+  const syncAuthState = async () => {
     if (session?.user) {
       const mappedUser = mapSessionToUser(session.user);
       dispatch(login({ user: mappedUser }));
@@ -28,6 +30,6 @@ export const useAuth = () => {
     user,
     isAuthenticated,
     handleLogout,
-    syncAuthState
+    syncAuthState,
   };
 };
