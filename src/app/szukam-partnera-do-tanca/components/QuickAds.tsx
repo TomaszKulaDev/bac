@@ -95,8 +95,8 @@ export function QuickAds() {
   return (
     <div className="bg-white rounded-2xl shadow-lg">
       <section className="p-8">
-        <div className="flex justify-between items-center mb-6">
-          <div className="flex items-center gap-4">
+        <div className="flex justify-between items-center mb-6 flex-col sm:flex-row gap-4">
+          <div className="flex items-center gap-4 w-full sm:w-auto">
             <div>
               <h2 className="text-2xl font-bold text-gray-800">
                 Szybkie Ogłoszenia
@@ -108,18 +108,19 @@ export function QuickAds() {
             <AddAdvertisementButton onSuccess={fetchAds} />
           </div>
 
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2 w-full sm:w-auto justify-center sm:justify-end">
             {["Wszystkie", "Praktis", "Social", "Kurs", "Inne"].map((type) => (
               <button
                 key={type}
                 onClick={() =>
                   setSelectedType(type as AdvertisementType | "Wszystkie")
                 }
-                className={`px-4 py-2 rounded-full text-sm transition-colors ${
-                  selectedType === type
-                    ? "bg-amber-500 text-white"
-                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                }`}
+                className={`px-3 py-1.5 rounded-full text-sm transition-colors whitespace-nowrap
+                  ${
+                    selectedType === type
+                      ? "bg-amber-500 text-white"
+                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                  }`}
               >
                 {type}
               </button>
