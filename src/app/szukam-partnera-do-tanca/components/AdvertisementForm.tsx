@@ -40,6 +40,7 @@ interface AdvertisementFormProps {
     };
   };
   onSuccess?: () => void;
+  onCancel?: () => void;
 }
 
 // Przykładowe szablony opisów
@@ -91,6 +92,7 @@ export function AdvertisementForm({
   mode,
   initialData,
   onSuccess,
+  onCancel,
 }: AdvertisementFormProps) {
   const router = useRouter();
   const { data: session } = useSession();
@@ -486,7 +488,7 @@ export function AdvertisementForm({
       <div className="flex justify-end gap-4">
         <button
           type="button"
-          onClick={() => router.back()}
+          onClick={onCancel}
           className="px-4 py-2 border border-gray-300 rounded-md shadow-sm 
                    text-sm font-medium text-gray-700 bg-white 
                    hover:bg-gray-50 transition-colors"

@@ -84,6 +84,11 @@ export function QuickAds() {
     fetchAds(); // Odśwież listę ogłoszeń
   };
 
+  const handleCloseModal = () => {
+    setIsEditModalOpen(false);
+    setEditingAd(null);
+  };
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-[200px]">
@@ -238,10 +243,7 @@ export function QuickAds() {
 
       <Modal
         isOpen={isEditModalOpen}
-        onClose={() => {
-          setIsEditModalOpen(false);
-          setEditingAd(null);
-        }}
+        onClose={handleCloseModal}
         title="Edytuj ogłoszenie"
       >
         {editingAd && (
@@ -249,6 +251,7 @@ export function QuickAds() {
             mode="edit"
             initialData={editingAd}
             onSuccess={handleEditSuccess}
+            onCancel={handleCloseModal}
           />
         )}
       </Modal>

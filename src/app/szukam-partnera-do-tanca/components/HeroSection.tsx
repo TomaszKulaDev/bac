@@ -195,6 +195,7 @@ export function HeroSection() {
         <AdvertisementForm
           mode="add"
           onSuccess={handleSuccess}
+          onCancel={() => setIsModalOpen(false)}
           initialData={defaultInitialData}
         />
       </Modal>

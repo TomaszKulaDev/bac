@@ -58,6 +58,10 @@ export function AddAdvertisementButton({
     },
   };
 
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <>
       <button
@@ -73,12 +77,13 @@ export function AddAdvertisementButton({
 
       <Modal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={handleCloseModal}
         title="Dodaj nowe ogłoszenie"
       >
         <AdvertisementForm
           mode="add"
           onSuccess={handleSuccess}
+          onCancel={handleCloseModal}
           initialData={defaultInitialData}
         />
       </Modal>
