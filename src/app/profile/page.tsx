@@ -7,7 +7,6 @@ import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { z } from "zod";
 import { FaEdit, FaSave, FaTimes, FaCamera } from "react-icons/fa";
-import LoadingSpinner from "@/components/LoadingSpinner";
 import { useRouter } from "next/navigation";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { UserProfile } from "@/types/user";
@@ -132,7 +131,9 @@ export default function ProfilePage() {
                             shadow-lg shadow-amber-500/10 border border-amber-500/10"
               >
                 {isLoading ? (
-                  <LoadingSpinner />
+                  <div className="flex justify-center items-center min-h-[200px]">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500"></div>
+                  </div>
                 ) : isEditing ? (
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
