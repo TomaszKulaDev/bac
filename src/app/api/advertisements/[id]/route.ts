@@ -148,32 +148,30 @@ export async function DELETE(
 ) {
   try {
     const session = await getServerSession(authOptions);
+    console.log("Session:", session);
 
-    // Sprawdź czy użytkownik jest zalogowany i ma uprawnienia admina
-    if (!session?.user || session.user.role !== "admin") {
-      return NextResponse.json({ error: "Brak uprawnień" }, { status: 403 });
+    if (!session) {
+      return new Response("Unauthorized", { status: 401 });
     }
 
-    await connectToDatabase();
+    const advertisement = await Advertisement.findById(params.id);
+    console.log("Advertisement:", advertisement);
 
-    const deletedAd = await Advertisement.findByIdAndDelete(params.id);
-
-    if (!deletedAd) {
-      return NextResponse.json(
-        { error: "Nie znaleziono ogłoszenia" },
-        { status: 404 }
-      );
+    if (!advertisement) {
+      return new Response("Advertisement not found", { status: 404 });
     }
 
-    return NextResponse.json(
-      { message: "Ogłoszenie zostało usunięte" },
-      { status: 200 }
-    );
+    console.log("Session user ID:", session.user.id);
+    console.log("Advertisement user ID:", advertisement.userId);
+
+    if (advertisement.userId !== session.user.id) {
+      return new Response("Forbidden", { status: 403 });
+    }
+
+    await Advertisement.findByIdAndDelete(params.id);
+    return new Response("OK", { status: 200 });
   } catch (error) {
-    console.error("Błąd podczas usuwania ogłoszenia:", error);
-    return NextResponse.json(
-      { error: "Wystąpił błąd podczas usuwania ogłoszenia" },
-      { status: 500 }
-    );
+    console.error("Error:", error);
+    return new Response("Internal Server Error", { status: 500 });
   }
 }
