@@ -10,6 +10,7 @@ import { FaEdit, FaSave, FaTimes, FaCamera } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { UserProfile } from "@/types/user";
+import { motion } from "framer-motion";
 
 const profileSchemaBase = z.object({
   name: z
@@ -55,19 +56,14 @@ type FormDataType = {
 export default function ProfilePage() {
   const { userProfile, isLoading, updateUserProfile } = useUserProfile();
   const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState<FormDataType>({
+  const [formData, setFormData] = useState({
     name: "",
     email: "",
     dancePreferences: {
-      styles: [],
+      styles: [] as string[],
       level: "",
       availability: "",
       location: "",
-    },
-    socialMedia: {
-      instagram: undefined,
-      facebook: undefined,
-      youtube: undefined,
     },
   });
 
@@ -83,19 +79,11 @@ export default function ProfilePage() {
           availability: "",
           location: "",
         },
-        socialMedia: {
-          instagram: userProfile.socialMedia?.instagram || "",
-          facebook: userProfile.socialMedia?.facebook || "",
-          youtube: userProfile.socialMedia?.youtube || "",
-        },
       });
     }
   }, [userProfile, isEditing]);
 
-  const handleEdit = () => {
-    setIsEditing(true);
-  };
-
+  const handleEdit = () => setIsEditing(true);
   const handleCancel = () => {
     setIsEditing(false);
     if (userProfile) {
@@ -108,57 +96,8 @@ export default function ProfilePage() {
           availability: "",
           location: "",
         },
-        socialMedia: {
-          instagram: userProfile.socialMedia?.instagram || "",
-          facebook: userProfile.socialMedia?.facebook || "",
-          youtube: userProfile.socialMedia?.youtube || "",
-        },
       });
     }
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-
-    if (name.includes(".")) {
-      const [parent, child] = name.split(".");
-      setFormData((prev) => ({
-        ...prev,
-        [parent]: {
-          ...(prev[parent as keyof FormDataType] as any),
-          [child]: value,
-        },
-      }));
-    } else {
-      setFormData((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
-    }
-  };
-
-  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      dancePreferences: {
-        ...prev.dancePreferences,
-        [name.replace("dancePreferences.", "")]: value,
-      },
-    }));
-  };
-
-  const handleMultiSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const values = Array.from(e.target.selectedOptions).map(
-      (option) => option.value
-    );
-    setFormData((prev) => ({
-      ...prev,
-      dancePreferences: {
-        ...prev.dancePreferences,
-        styles: values,
-      },
-    }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -181,21 +120,14 @@ export default function ProfilePage() {
             <div className="relative">
               <div className="w-[120px] h-[120px] md:w-[180px] md:h-[180px] rounded-full border-4 border-white bg-white shadow-lg overflow-hidden">
                 <Image
-                  src={
-                    (userProfile as UserProfile & { avatar?: string })
-                      ?.avatar ?? "/images/default-avatar.png"
-                  }
+                  src={userProfile?.image ?? "/images/default-avatar.png"}
                   alt={userProfile?.name ?? "Profile"}
                   fill
                   className="object-cover"
                 />
               </div>
               {!isEditing && (
-                <button
-                  className="absolute bottom-2 right-2 p-2 rounded-full bg-white shadow-md 
-                             hover:bg-gray-50 transition-colors"
-                  aria-label="Change profile photo"
-                >
+                <button className="absolute bottom-2 right-2 p-2 rounded-full bg-white shadow-md hover:bg-gray-50 transition-colors">
                   <FaCamera className="text-gray-600" />
                 </button>
               )}
@@ -205,239 +137,311 @@ export default function ProfilePage() {
 
         {/* Main Content */}
         <div className="max-w-3xl mx-auto">
-          {/* Profile Navigation */}
-          <div className="mb-8 border-b border-gray-200">
-            <nav className="flex justify-center space-x-8">
-              <button className="px-4 py-4 text-sm font-medium text-gray-900 border-b-2 border-amber-500">
-                Profil
-              </button>
-              <button className="px-4 py-4 text-sm font-medium text-gray-500 hover:text-gray-700">
-                Aktywność
-              </button>
-              <button className="px-4 py-4 text-sm font-medium text-gray-500 hover:text-gray-700">
-                Ogłoszenia
-              </button>
-              <button className="px-4 py-4 text-sm font-medium text-gray-500 hover:text-gray-700">
-                Ustawienia
-              </button>
-            </nav>
-          </div>
-
-          {/* Profile Content */}
-          <div className="grid grid-cols-1 md:grid-cols-[2fr,1fr] gap-8">
-            {/* Main Profile Info */}
-            <div className="space-y-6">
-              <div
-                className="bg-white/95 backdrop-blur-sm rounded-xl p-8 
-                            shadow-lg shadow-amber-500/10 border border-amber-500/10"
-              >
-                {isLoading ? (
-                  <div className="flex justify-center items-center min-h-[200px]">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500"></div>
-                  </div>
-                ) : isEditing ? (
-                  <form onSubmit={handleSubmit} className="space-y-6">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700">
-                        Imię
-                      </label>
-                      <input
-                        type="text"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleInputChange}
-                        className="mt-1 block w-full rounded-lg border-gray-300 
-                                 shadow-sm focus:border-amber-500 focus:ring-amber-500/20 
-                                 transition-colors"
-                      />
-                    </div>
-                    <div className="space-y-4">
-                      <h3 className="font-medium text-gray-900">
-                        Preferencje taneczne
-                      </h3>
-
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700">
-                          Style tańca
-                        </label>
-                        <select
-                          multiple
-                          name="dancePreferences.styles"
-                          value={formData.dancePreferences.styles}
-                          onChange={handleMultiSelect}
-                          className="mt-1 block w-full rounded-lg border-gray-300"
-                        >
-                          <option value="salsa">Salsa</option>
-                          <option value="bachata">Bachata</option>
-                          <option value="kizomba">Kizomba</option>
-                          {/* Dodaj więcej opcji */}
-                        </select>
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700">
-                          Poziom zaawansowania
-                        </label>
-                        <select
-                          name="dancePreferences.level"
-                          value={formData.dancePreferences.level}
-                          onChange={handleSelectChange}
-                          className="mt-1 block w-full rounded-lg border-gray-300"
-                        >
-                          <option value="">Wybierz poziom</option>
-                          <option value="beginner">Początkujący</option>
-                          <option value="intermediate">
-                            Średniozaawansowany
-                          </option>
-                          <option value="advanced">Zaawansowany</option>
-                        </select>
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700">
-                          Dostępność
-                        </label>
-                        <input
-                          type="text"
-                          name="dancePreferences.availability"
-                          value={formData.dancePreferences.availability}
-                          onChange={handleInputChange}
-                          placeholder="np. Wieczory w tygodniu, weekendy"
-                          className="mt-1 block w-full rounded-lg border-gray-300"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700">
-                          Lokalizacja
-                        </label>
-                        <input
-                          type="text"
-                          name="dancePreferences.location"
-                          value={formData.dancePreferences.location}
-                          onChange={handleInputChange}
-                          placeholder="np. Warszawa, Mokotów"
-                          className="mt-1 block w-full rounded-lg border-gray-300"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="space-y-4">
-                      <h3 className="font-medium text-gray-900">
-                        Social Media
-                      </h3>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700">
-                          Instagram
-                        </label>
-                        <input
-                          type="text"
-                          name="socialMedia.instagram"
-                          value={formData.socialMedia.instagram || ""}
-                          onChange={handleInputChange}
-                          placeholder="@username"
-                          className="mt-1 block w-full rounded-lg border-gray-300"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700">
-                          Facebook
-                        </label>
-                        <input
-                          type="text"
-                          name="socialMedia.facebook"
-                          value={formData.socialMedia.facebook || ""}
-                          onChange={handleInputChange}
-                          placeholder="profil facebook"
-                          className="mt-1 block w-full rounded-lg border-gray-300"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700">
-                          YouTube
-                        </label>
-                        <input
-                          type="text"
-                          name="socialMedia.youtube"
-                          value={formData.socialMedia.youtube || ""}
-                          onChange={handleInputChange}
-                          placeholder="kanał youtube"
-                          className="mt-1 block w-full rounded-lg border-gray-300"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="flex justify-end gap-4">
-                      <button
-                        type="button"
-                        onClick={handleCancel}
-                        className="px-4 py-2 rounded-lg border border-gray-300 
-                                 text-gray-700 hover:bg-gray-50 transition-all"
-                      >
-                        <FaTimes className="inline-block mr-2" />
-                        Anuluj
-                      </button>
-                      <button
-                        type="submit"
-                        className="px-4 py-2 rounded-lg bg-gradient-to-r 
-                                 from-amber-500 to-red-500 text-white 
-                                 hover:from-amber-600 hover:to-red-600 
-                                 transition-all"
-                      >
-                        <FaSave className="inline-block mr-2" />
-                        Zapisz
-                      </button>
-                    </div>
-                  </form>
-                ) : (
-                  <div className="space-y-6">
-                    <div className="flex justify-between items-center">
-                      <div>
-                        <h1 className="text-2xl font-bold text-gray-900">
-                          {userProfile?.name}
-                        </h1>
-                        <p className="text-gray-500">{userProfile?.email}</p>
-                      </div>
-                      <button
-                        onClick={handleEdit}
-                        className="px-4 py-2 rounded-lg bg-gradient-to-r 
-                                 from-amber-500 to-red-500 text-white 
-                                 hover:from-amber-600 hover:to-red-600 
-                                 transition-all"
-                      >
-                        <FaEdit className="inline-block mr-2" />
-                        Edytuj profil
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </div>
+          {isLoading ? (
+            <div className="flex justify-center items-center min-h-[200px]">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500"></div>
             </div>
+          ) : isEditing ? (
+            <motion.form
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+              onSubmit={handleSubmit}
+              className="bg-white rounded-lg shadow-lg p-6 space-y-8"
+            >
+              {/* Podstawowe informacje */}
+              <div className="space-y-4">
+                <h2 className="text-xl font-semibold text-gray-800">
+                  Podstawowe informacje
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Imię
+                    </label>
+                    <input
+                      type="text"
+                      name="name"
+                      value={formData.name}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          name: e.target.value,
+                        }))
+                      }
+                      className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500/20"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          email: e.target.value,
+                        }))
+                      }
+                      className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500/20"
+                    />
+                  </div>
+                </div>
+              </div>
 
-            {/* Sidebar */}
-            <div className="space-y-6">
-              <div
-                className="bg-white/95 backdrop-blur-sm rounded-xl p-6 
-                            shadow-lg shadow-amber-500/10 border border-amber-500/10"
-              >
-                <h2 className="text-lg font-semibold mb-4">Statystyki</h2>
-                <div className="space-y-3">
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Ogłoszenia</span>
-                    <span className="font-medium">0</span>
+              {/* Style tańca */}
+              <div className="space-y-4">
+                <h2 className="text-xl font-semibold text-gray-800">
+                  Preferencje taneczne
+                </h2>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-3">
+                    Style tańca
+                  </label>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                    {[
+                      { id: "bachata", label: "Bachata" },
+                      { id: "salsa", label: "Salsa" },
+                      { id: "kizomba", label: "Kizomba" },
+                      { id: "zouk", label: "Zouk" },
+                      { id: "merengue", label: "Merengue" },
+                    ].map((style) => (
+                      <div
+                        key={style.id}
+                        className={`
+                          relative flex items-center p-3 rounded-lg border-2 cursor-pointer
+                          ${
+                            formData.dancePreferences.styles.includes(style.id)
+                              ? "border-amber-500 bg-amber-50"
+                              : "border-gray-200 hover:border-amber-200 hover:bg-amber-50/50"
+                          }
+                          transition-all duration-200
+                        `}
+                        onClick={() => {
+                          const newStyles =
+                            formData.dancePreferences.styles.includes(style.id)
+                              ? formData.dancePreferences.styles.filter(
+                                  (s) => s !== style.id
+                                )
+                              : [...formData.dancePreferences.styles, style.id];
+
+                          setFormData((prev) => ({
+                            ...prev,
+                            dancePreferences: {
+                              ...prev.dancePreferences,
+                              styles: newStyles,
+                            },
+                          }));
+                        }}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={formData.dancePreferences.styles.includes(
+                            style.id
+                          )}
+                          onChange={() => {}}
+                          className="w-4 h-4 accent-amber-500 border-gray-300 rounded 
+                            focus:ring-amber-500 focus:ring-2 focus:ring-offset-2 focus:ring-offset-amber-50
+                            checked:bg-amber-500 checked:border-transparent checked:hover:bg-amber-600
+                            transition-colors duration-200"
+                        />
+                        <label className="ml-3 block text-sm font-medium text-gray-700">
+                          {style.label}
+                        </label>
+                        {formData.dancePreferences.styles.includes(
+                          style.id
+                        ) && (
+                          <motion.div
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            className="absolute -top-2 -right-2 w-5 h-5 bg-amber-500 rounded-full flex items-center justify-center shadow-sm"
+                          >
+                            <svg
+                              className="w-3 h-3 text-white"
+                              fill="none"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path d="M5 13l4 4L19 7" />
+                            </svg>
+                          </motion.div>
+                        )}
+                      </div>
+                    ))}
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Wiadomości</span>
-                    <span className="font-medium">0</span>
+                </div>
+
+                {/* Pozostałe preferencje */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Poziom zaawansowania
+                    </label>
+                    <select
+                      name="dancePreferences.level"
+                      value={formData.dancePreferences.level}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          dancePreferences: {
+                            ...prev.dancePreferences,
+                            level: e.target.value,
+                          },
+                        }))
+                      }
+                      className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500/20"
+                    >
+                      <option value="">Wybierz poziom</option>
+                      <option value="beginner">Początkujący</option>
+                      <option value="intermediate">Średniozaawansowany</option>
+                      <option value="advanced">Zaawansowany</option>
+                    </select>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Dołączono</span>
-                    <span className="font-medium">2024</span>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Dostępność
+                    </label>
+                    <select
+                      name="dancePreferences.availability"
+                      value={formData.dancePreferences.availability}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          dancePreferences: {
+                            ...prev.dancePreferences,
+                            availability: e.target.value,
+                          },
+                        }))
+                      }
+                      className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500/20"
+                    >
+                      <option value="">Wybierz dostępność</option>
+                      <option value="rano">Rano</option>
+                      <option value="popoludnie">Popołudnie</option>
+                      <option value="wieczor">Wieczór</option>
+                      <option value="weekend">Weekendy</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">
+                      Lokalizacja
+                    </label>
+                    <input
+                      type="text"
+                      name="dancePreferences.location"
+                      value={formData.dancePreferences.location}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          dancePreferences: {
+                            ...prev.dancePreferences,
+                            location: e.target.value,
+                          },
+                        }))
+                      }
+                      className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500/20"
+                      placeholder="Np. Warszawa, Mokotów"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Przyciski akcji */}
+              <div className="flex justify-end gap-4 pt-6 border-t">
+                <button
+                  type="button"
+                  onClick={handleCancel}
+                  className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors flex items-center gap-2"
+                >
+                  <FaTimes className="w-4 h-4" />
+                  Anuluj
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 rounded-lg bg-gradient-to-r from-amber-500 to-red-500 text-white hover:from-amber-600 hover:to-red-600 transition-all flex items-center gap-2"
+                >
+                  <FaSave className="w-4 h-4" />
+                  Zapisz zmiany
+                </button>
+              </div>
+            </motion.form>
+          ) : (
+            // Wyświetlanie profilu (tryb podglądu)
+            <div className="bg-white rounded-lg shadow-lg p-6 space-y-6">
+              <div className="flex justify-between items-center">
+                <div>
+                  <h1 className="text-2xl font-bold text-gray-900">
+                    {userProfile?.name}
+                  </h1>
+                  <p className="text-gray-500">{userProfile?.email}</p>
+                </div>
+                <button
+                  onClick={handleEdit}
+                  className="px-4 py-2 rounded-lg bg-gradient-to-r from-amber-500 to-red-500 text-white hover:from-amber-600 hover:to-red-600 transition-all flex items-center gap-2"
+                >
+                  <FaEdit className="w-4 h-4" />
+                  Edytuj profil
+                </button>
+              </div>
+
+              {/* Wyświetlanie preferencji tanecznych */}
+              <div className="mt-6">
+                <h2 className="text-xl font-semibold text-gray-800 mb-4">
+                  Preferencje taneczne
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-700">
+                      Style tańca
+                    </h3>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {userProfile?.dancePreferences?.styles.map((style) => (
+                        <span
+                          key={style}
+                          className="px-3 py-1 bg-amber-100 text-amber-800 rounded-full text-sm"
+                        >
+                          {style}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-700">
+                      Poziom zaawansowania
+                    </h3>
+                    <p className="mt-1 text-gray-900">
+                      {userProfile?.dancePreferences?.level}
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-700">
+                      Dostępność
+                    </h3>
+                    <p className="mt-1 text-gray-900">
+                      {userProfile?.dancePreferences?.availability}
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-700">
+                      Lokalizacja
+                    </h3>
+                    <p className="mt-1 text-gray-900">
+                      {userProfile?.dancePreferences?.location}
+                    </p>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>
