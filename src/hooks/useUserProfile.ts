@@ -1,6 +1,6 @@
 // src/hooks/useUserProfile.ts
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useDispatch } from "react-redux";
 import { login } from "../store/slices/authSlice";
@@ -12,13 +12,6 @@ export function useUserProfile() {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const updateInProgress = useRef(false);
-
-  useEffect(() => {
-    if (session?.user && !updateInProgress.current) {
-      fetchUserProfile();
-    }
-  }, [session]);
 
   const fetchUserProfile = async () => {
     try {
@@ -35,8 +28,13 @@ export function useUserProfile() {
     }
   };
 
+  useEffect(() => {
+    if (session?.user) {
+      fetchUserProfile();
+    }
+  }, [session]);
+
   const updateUserProfile = async (updatedData: Partial<UserProfile>) => {
-    updateInProgress.current = true;
     try {
       const response = await fetch("/api/users/update-profile", {
         method: "POST",
@@ -73,21 +71,20 @@ export function useUserProfile() {
             email: data.email,
             role: data.role,
             image: data.image,
+            dancePreferences: data.dancePreferences,
           },
         })
       );
 
-      updateInProgress.current = false;
       return data;
     } catch (err) {
-      updateInProgress.current = false;
       setError("Error updating user profile");
       throw err;
     }
   };
 
   return {
-    userProfile: userProfile as UserProfile,
+    userProfile,
     isLoading,
     error,
     updateUserProfile,

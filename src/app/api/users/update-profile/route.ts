@@ -6,11 +6,17 @@ import User from "@/models/User";
 import { z } from "zod";
 
 const updateProfileSchema = z.object({
-  name: z
-    .string()
-    .min(1, "Imię jest wymagane")
-    .max(50, "Imię nie może być dłuższe niż 50 znaków"),
+  name: z.string().min(1, "Imię jest wymagane"),
   email: z.string().email("Nieprawidłowy adres email"),
+  dancePreferences: z
+    .object({
+      styles: z.array(z.string()),
+      level: z.string(),
+      availability: z.string(),
+      location: z.string(),
+    })
+    .optional(),
+  image: z.string().optional(),
 });
 
 export async function GET(request: Request) {
@@ -63,38 +69,32 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  await connectToDatabase();
-
-  const session = await getServerSession(authOptions);
-
-  if (!session) {
-    return NextResponse.json(
-      { message: "Nie jesteś zalogowany" },
-      { status: 401 }
-    );
-  }
-
   try {
-    const body = await request.json();
-    const validationResult = updateProfileSchema.safeParse(body);
-    if (!validationResult.success) {
-      return NextResponse.json(
-        { message: validationResult.error.errors[0].message },
-        { status: 400 }
-      );
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.email) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
+    await connectToDatabase();
+    const data = await request.json();
+
+    const validatedData = updateProfileSchema.parse(data);
+
     const updatedUser = await User.findOneAndUpdate(
-      { email: session.user?.email },
-      { $set: validationResult.data },
-      { new: true, runValidators: true }
+      { email: session.user.email },
+      {
+        $set: {
+          name: validatedData.name,
+          email: validatedData.email,
+          image: validatedData.image,
+          dancePreferences: validatedData.dancePreferences,
+        },
+      },
+      { new: true }
     );
 
     if (!updatedUser) {
-      return NextResponse.json(
-        { message: "Nie znaleziono użytkownika" },
-        { status: 404 }
-      );
+      return NextResponse.json({ message: "User not found" }, { status: 404 });
     }
 
     return NextResponse.json({
@@ -102,14 +102,12 @@ export async function POST(request: Request) {
       name: updatedUser.name,
       email: updatedUser.email,
       image: updatedUser.image,
+      dancePreferences: updatedUser.dancePreferences,
     });
   } catch (error) {
     console.error("Profile update error:", error);
     return NextResponse.json(
-      {
-        message:
-          "Nie udało się zaktualizować profilu. Spróbuj ponownie później.",
-      },
+      { message: "Failed to update profile" },
       { status: 500 }
     );
   }

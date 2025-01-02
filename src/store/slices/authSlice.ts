@@ -1,11 +1,30 @@
 // src/store/slices/authSlice.ts
-import { createSlice, PayloadAction, createSelector } from "@reduxjs/toolkit";
-import { UserBasicInfo, AuthState } from "../../types/auth";
-import { RootState } from "../store";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+interface DancePreferences {
+  styles: string[];
+  level: string;
+  availability: string;
+  location: string;
+}
+
+export interface UserBasicInfo {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  image?: string;
+  dancePreferences?: DancePreferences;
+}
+
+interface AuthState {
+  user: UserBasicInfo | null;
+  isAuthenticated: boolean;
+}
 
 const initialState: AuthState = {
+  user: null,
   isAuthenticated: false,
-  user: null
 };
 
 const authSlice = createSlice({
@@ -13,20 +32,20 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     login: (state, action: PayloadAction<{ user: UserBasicInfo }>) => {
-      state.isAuthenticated = true;
       state.user = action.payload.user;
+      state.isAuthenticated = true;
     },
     logout: (state) => {
-      state.isAuthenticated = false;
       state.user = null;
-    }
-  }
+      state.isAuthenticated = false;
+    },
+    updateUser: (state, action: PayloadAction<Partial<UserBasicInfo>>) => {
+      if (state.user) {
+        state.user = { ...state.user, ...action.payload };
+      }
+    },
+  },
 });
 
-export const selectUser = createSelector(
-  [(state: RootState) => state.auth],
-  (auth) => auth.user
-);
-
-export const { login, logout } = authSlice.actions;
+export const { login, logout, updateUser } = authSlice.actions;
 export default authSlice.reducer;

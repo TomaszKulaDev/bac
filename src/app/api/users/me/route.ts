@@ -20,14 +20,13 @@ export async function GET(request: Request) {
       return NextResponse.json({ message: "User not found" }, { status: 404 });
     }
 
-    return NextResponse.json(
-      {
-        id: userDetails._id,
-        name: userDetails.name,
-        email: userDetails.email,
-      },
-      { status: 200 }
-    );
+    return NextResponse.json({
+      id: userDetails._id,
+      name: userDetails.name,
+      email: userDetails.email,
+      image: userDetails.image,
+      dancePreferences: userDetails.dancePreferences,
+    });
   } catch (error) {
     return NextResponse.json(
       { message: "Failed to fetch user data" },
