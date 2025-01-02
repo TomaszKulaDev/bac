@@ -29,12 +29,33 @@ export const NavContent: React.FC = React.memo(function NavContent() {
           <div className="nav-content">
             <div className="w-full h-full flex items-center justify-between px-4">
               {/* Logo */}
-              <div className="nav-item w-[100px]">
-                <Link href="/" className="flex items-center h-full">
-                  <div className="w-7 h-7 rounded-full bg-white flex items-center justify-center">
-                    <span className="text-[#E30613] font-bold text-sm">
-                      BAC
+              <div className="nav-item w-[180px] translate-y-4">
+                <Link href="/" className="flex items-center gap-4 group">
+                  <div className="relative">
+                    <div
+                      className="w-16 h-16 rounded-xl bg-white/95 flex items-center justify-center 
+                    transform rotate-3 group-hover:rotate-6 transition-all duration-300 shadow-lg"
+                    >
+                      <span
+                        className="text-red-600 font-bold text-[14px] tracking-wider leading-none 
+                      text-center"
+                      >
+                        BACIATA
+                      </span>
+                    </div>
+                    <div
+                      className="absolute -bottom-2 -right-2 w-8 h-8 rounded-lg bg-orange-500 
+                    flex items-center justify-center transform -rotate-12 group-hover:rotate-[-24deg] 
+                    transition-all duration-300"
+                    >
+                      <span className="text-white text-sm font-bold">PL</span>
+                    </div>
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-white font-bold text-2xl leading-none">
+                      DANCE
                     </span>
+                    <span className="text-white/80 text-sm">community</span>
                   </div>
                 </Link>
               </div>
