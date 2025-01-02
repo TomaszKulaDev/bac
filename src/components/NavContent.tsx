@@ -76,7 +76,7 @@ export const NavContent: React.FC = React.memo(function NavContent() {
               </div>
 
               {/* Przyciski logowania */}
-              <div className="nav-item w-[100px] hidden md:flex justify-end">
+              <div className="nav-item w-[200px] hidden md:flex justify-end gap-4">
                 {isAuthenticated && user ? (
                   <UserMenu
                     user={{
