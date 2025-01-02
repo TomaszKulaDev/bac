@@ -193,11 +193,9 @@ export default function ProfilePage() {
                 </div>
               </div>
 
-              {/* Style tańca */}
-              <div className="space-y-4">
-                <h2 className="text-xl font-semibold text-gray-800">
-                  Preferencje taneczne
-                </h2>
+              {/* Preferencje taneczne */}
+              <div className="space-y-8">
+                {/* Style tańca */}
                 <div className="col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-3">
                     Style tańca
@@ -213,7 +211,7 @@ export default function ProfilePage() {
                       <div
                         key={style.id}
                         className={`
-                          relative flex items-center p-3 rounded-lg border-2 cursor-pointer
+                          relative flex items-center p-4 rounded-lg border-2 cursor-pointer
                           ${
                             formData.dancePreferences.styles.includes(style.id)
                               ? "border-amber-500 bg-amber-50"
@@ -228,7 +226,6 @@ export default function ProfilePage() {
                                   (s) => s !== style.id
                                 )
                               : [...formData.dancePreferences.styles, style.id];
-
                           setFormData((prev) => ({
                             ...prev,
                             dancePreferences: {
@@ -244,10 +241,7 @@ export default function ProfilePage() {
                             style.id
                           )}
                           onChange={() => {}}
-                          className="w-4 h-4 accent-amber-500 border-gray-300 rounded 
-                            focus:ring-amber-500 focus:ring-2 focus:ring-offset-2 focus:ring-offset-amber-50
-                            checked:bg-amber-500 checked:border-transparent checked:hover:bg-amber-600
-                            transition-colors duration-200"
+                          className="w-4 h-4 accent-amber-500 border-gray-300 rounded"
                         />
                         <label className="ml-3 block text-sm font-medium text-gray-700">
                           {style.label}
@@ -258,7 +252,7 @@ export default function ProfilePage() {
                           <motion.div
                             initial={{ scale: 0 }}
                             animate={{ scale: 1 }}
-                            className="absolute -top-2 -right-2 w-5 h-5 bg-amber-500 rounded-full flex items-center justify-center shadow-sm"
+                            className="absolute -top-2 -right-2 w-5 h-5 bg-amber-500 rounded-full flex items-center justify-center"
                           >
                             <svg
                               className="w-3 h-3 text-white"
@@ -278,79 +272,136 @@ export default function ProfilePage() {
                   </div>
                 </div>
 
-                {/* Pozostałe preferencje */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Poziom zaawansowania
-                    </label>
-                    <select
-                      name="dancePreferences.level"
-                      value={formData.dancePreferences.level}
-                      onChange={(e) =>
-                        setFormData((prev) => ({
-                          ...prev,
-                          dancePreferences: {
-                            ...prev.dancePreferences,
-                            level: e.target.value,
-                          },
-                        }))
-                      }
-                      className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500/20"
-                    >
-                      <option value="">Wybierz poziom</option>
-                      <option value="beginner">Początkujący</option>
-                      <option value="intermediate">Średniozaawansowany</option>
-                      <option value="advanced">Zaawansowany</option>
-                    </select>
+                {/* Poziom zaawansowania */}
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-3">
+                    Poziom zaawansowania
+                  </label>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                    {[
+                      { id: "beginner", label: "Początkujący" },
+                      { id: "intermediate", label: "Średniozaawansowany" },
+                      { id: "advanced", label: "Zaawansowany" },
+                    ].map((level) => (
+                      <div
+                        key={level.id}
+                        className={`
+                          relative flex items-center p-4 rounded-lg border-2 cursor-pointer
+                          ${
+                            formData.dancePreferences.level === level.id
+                              ? "border-amber-500 bg-amber-50"
+                              : "border-gray-200 hover:border-amber-200 hover:bg-amber-50/50"
+                          }
+                          transition-all duration-200
+                        `}
+                        onClick={() => {
+                          setFormData((prev) => ({
+                            ...prev,
+                            dancePreferences: {
+                              ...prev.dancePreferences,
+                              level: level.id,
+                            },
+                          }));
+                        }}
+                      >
+                        <input
+                          type="radio"
+                          checked={formData.dancePreferences.level === level.id}
+                          onChange={() => {}}
+                          className="w-4 h-4 accent-amber-500 border-gray-300 rounded-full"
+                        />
+                        <label className="ml-3 block text-sm font-medium text-gray-700">
+                          {level.label}
+                        </label>
+                        {formData.dancePreferences.level === level.id && (
+                          <motion.div
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            className="absolute -top-2 -right-2 w-5 h-5 bg-amber-500 rounded-full flex items-center justify-center"
+                          >
+                            <svg
+                              className="w-3 h-3 text-white"
+                              fill="none"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path d="M5 13l4 4L19 7" />
+                            </svg>
+                          </motion.div>
+                        )}
+                      </div>
+                    ))}
                   </div>
+                </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Dostępność
-                    </label>
-                    <select
-                      name="dancePreferences.availability"
-                      value={formData.dancePreferences.availability}
-                      onChange={(e) =>
-                        setFormData((prev) => ({
-                          ...prev,
-                          dancePreferences: {
-                            ...prev.dancePreferences,
-                            availability: e.target.value,
-                          },
-                        }))
-                      }
-                      className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500/20"
-                    >
-                      <option value="">Wybierz dostępność</option>
-                      <option value="rano">Rano</option>
-                      <option value="popoludnie">Popołudnie</option>
-                      <option value="wieczor">Wieczór</option>
-                      <option value="weekend">Weekendy</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Lokalizacja
-                    </label>
-                    <input
-                      type="text"
-                      name="dancePreferences.location"
-                      value={formData.dancePreferences.location}
-                      onChange={(e) =>
-                        setFormData((prev) => ({
-                          ...prev,
-                          dancePreferences: {
-                            ...prev.dancePreferences,
-                            location: e.target.value,
-                          },
-                        }))
-                      }
-                      className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500/20"
-                      placeholder="Np. Warszawa, Mokotów"
-                    />
+                {/* Dostępność */}
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-3">
+                    Dostępność
+                  </label>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    {[
+                      { id: "rano", label: "Rano" },
+                      { id: "popoludnie", label: "Popołudnie" },
+                      { id: "wieczor", label: "Wieczór" },
+                      { id: "weekend", label: "Weekendy" },
+                    ].map((time) => (
+                      <div
+                        key={time.id}
+                        className={`
+                          relative flex items-center p-4 rounded-lg border-2 cursor-pointer
+                          ${
+                            formData.dancePreferences.availability === time.id
+                              ? "border-amber-500 bg-amber-50"
+                              : "border-gray-200 hover:border-amber-200 hover:bg-amber-50/50"
+                          }
+                          transition-all duration-200
+                        `}
+                        onClick={() => {
+                          setFormData((prev) => ({
+                            ...prev,
+                            dancePreferences: {
+                              ...prev.dancePreferences,
+                              availability: time.id,
+                            },
+                          }));
+                        }}
+                      >
+                        <input
+                          type="radio"
+                          checked={
+                            formData.dancePreferences.availability === time.id
+                          }
+                          onChange={() => {}}
+                          className="w-4 h-4 accent-amber-500 border-gray-300 rounded-full"
+                        />
+                        <label className="ml-3 block text-sm font-medium text-gray-700">
+                          {time.label}
+                        </label>
+                        {formData.dancePreferences.availability === time.id && (
+                          <motion.div
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            className="absolute -top-2 -right-2 w-5 h-5 bg-amber-500 rounded-full flex items-center justify-center"
+                          >
+                            <svg
+                              className="w-3 h-3 text-white"
+                              fill="none"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path d="M5 13l4 4L19 7" />
+                            </svg>
+                          </motion.div>
+                        )}
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>

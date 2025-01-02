@@ -2,11 +2,13 @@ import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { FaUser, FaCaretDown } from "react-icons/fa";
 import { createPortal } from "react-dom";
+import Image from "next/image";
 
 interface UserMenuProps {
   user: {
     name: string;
     role?: string;
+    image?: string;
   };
   onLogout: () => void;
 }
@@ -46,12 +48,13 @@ export const UserMenu: React.FC<UserMenuProps> = ({ user, onLogout }) => {
         aria-expanded={isOpen}
         aria-haspopup="true"
       >
-        <div
-          className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center
-        group-hover:bg-white/20 transition-all duration-200"
-        >
-          <FaUser className="w-4 h-4" />
-        </div>
+        <Image
+          src={user.image ?? "/images/default-avatar.png"}
+          alt={user.name}
+          width={32}
+          height={32}
+          className="rounded-full"
+        />
         <span>{user.name}</span>
         <FaCaretDown
           className={`w-4 h-4 transition-transform duration-200 

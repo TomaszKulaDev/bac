@@ -35,7 +35,7 @@ export const LatestProfiles = () => {
           <div className="flex items-center space-x-4">
             <div className="relative w-16 h-16">
               <Image
-                src={profile.avatar || "/default-avatar.png"}
+                src={profile.image ?? "/images/default-avatar.png"}
                 alt={profile.name}
                 fill
                 className="rounded-full object-cover"

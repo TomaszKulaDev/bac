@@ -2,7 +2,7 @@ export interface UserProfile {
   id: string;
   name: string;
   email: string;
-  avatar?: string;
+  image?: string;
   createdAt?: string;
   updatedAt?: string;
   dancePreferences?: {
