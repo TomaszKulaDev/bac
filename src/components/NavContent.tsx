@@ -129,7 +129,6 @@ export const NavContent: React.FC = React.memo(function NavContent() {
           </div>
         </div>
       </nav>
-      <div className="h-[45px]" />
     </Suspense>
   );
 });

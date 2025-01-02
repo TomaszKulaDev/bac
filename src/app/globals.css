@@ -21,7 +21,7 @@
 body {
   color: rgb(55, 65, 81);
   background: white;
-  margin-top: 45px;
+  padding-top: 45px;
 }
 
 @layer utilities {
