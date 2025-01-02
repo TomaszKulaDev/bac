@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { FaUser, FaCaretDown } from "react-icons/fa";
-import { createPortal } from 'react-dom';
+import { createPortal } from "react-dom";
 
 interface UserMenuProps {
   user: {
@@ -27,13 +27,12 @@ export const UserMenu: React.FC<UserMenuProps> = ({ user, onLogout }) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Funkcja do obliczania pozycji menu
   const getMenuPosition = () => {
     if (!buttonRef.current) return { top: 0, right: 0 };
     const rect = buttonRef.current.getBoundingClientRect();
     return {
-      top: `${rect.bottom + window.scrollY}px`,
-      right: `${window.innerWidth - rect.right}px`
+      top: `${rect.bottom + 8}px`,
+      right: `${window.innerWidth - rect.right}px`,
     };
   };
 
@@ -42,48 +41,67 @@ export const UserMenu: React.FC<UserMenuProps> = ({ user, onLogout }) => {
       <button
         ref={buttonRef}
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center space-x-2 hover:text-gray-300 transition duration-150 ease-in-out"
+        className="flex items-center gap-2 text-white/90 hover:text-white 
+        transition-all duration-200 text-[15px] tracking-wide font-medium group"
         aria-expanded={isOpen}
         aria-haspopup="true"
       >
-        <FaUser />
+        <div
+          className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center
+        group-hover:bg-white/20 transition-all duration-200"
+        >
+          <FaUser className="w-4 h-4" />
+        </div>
         <span>{user.name}</span>
+        <FaCaretDown
+          className={`w-4 h-4 transition-transform duration-200 
+        ${isOpen ? "rotate-180" : ""}`}
+        />
       </button>
 
-      {isOpen && createPortal(
-        <div 
-          ref={menuRef}
-          className="fixed w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
-          style={{
-            ...getMenuPosition(),
-            zIndex: 9999
-          }}
-        >
-          <div className="py-1" role="menu">
-            <Link
-              href="/profile"
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-            >
-              Profil
-            </Link>
-            {user.role === "admin" && (
+      {isOpen &&
+        createPortal(
+          <div
+            ref={menuRef}
+            className="fixed rounded-xl shadow-lg bg-white/95 backdrop-blur-sm
+          ring-1 ring-white/20 overflow-hidden"
+            style={{
+              ...getMenuPosition(),
+              zIndex: 9999,
+              width: "220px",
+            }}
+          >
+            <div className="py-1" role="menu">
               <Link
-                href="/admin"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                href="/profile"
+                className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 
+              hover:bg-gray-50 transition-colors duration-200"
               >
-                Panel Admin
+                <FaUser className="w-4 h-4 text-gray-400" />
+                Twój profil
               </Link>
-            )}
-            <button
-              onClick={onLogout}
-              className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-            >
-              Wyloguj
-            </button>
-          </div>
-        </div>,
-        document.body
-      )}
+              {user.role === "admin" && (
+                <Link
+                  href="/admin"
+                  className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 
+                hover:bg-gray-50 transition-colors duration-200"
+                >
+                  <FaUser className="w-4 h-4 text-gray-400" />
+                  Panel Admina
+                </Link>
+              )}
+              <button
+                onClick={onLogout}
+                className="w-full flex items-center gap-3 px-4 py-3 text-sm text-red-600 
+              hover:bg-red-50 transition-colors duration-200"
+              >
+                <FaUser className="w-4 h-4 text-red-400" />
+                Wyloguj się
+              </button>
+            </div>
+          </div>,
+          document.body
+        )}
     </>
   );
 };
