@@ -29,7 +29,7 @@ export const NavContent: React.FC = React.memo(function NavContent() {
           <div className="nav-content">
             <div className="w-full h-full flex items-center justify-between px-4">
               {/* Logo */}
-              <div className="nav-item w-[180px] translate-y-4">
+              <div className="nav-item w-[180px]">
                 <Link href="/" className="flex items-center gap-4 group">
                   <div className="relative">
                     <div
