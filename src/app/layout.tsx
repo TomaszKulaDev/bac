@@ -70,6 +70,7 @@ import { Inter } from "next/font/google";
 import { AuthSync } from "../components/AuthSync";
 import { NavbarSkeleton } from "../components/NavbarSkeleton";
 import { Metadata } from "next";
+import { CookieConsent } from "../components/CookieConsent/CookieConsent";
 
 // Inicjalizujemy czcionkę Inter z podzbiorem "latin", aby używać jej w aplikacji
 const inter = Inter({ subsets: ["latin"] });
@@ -159,6 +160,7 @@ export default function RootLayout({
             {/* Renderujemy dzieci przekazane do RootLayout */}
             {children}
           </ClientLayout>
+          <CookieConsent />
         </ClientProviders>
       </body>
     </html>

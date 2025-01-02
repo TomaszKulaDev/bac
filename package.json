@@ -23,6 +23,7 @@
     "@types/react-google-recaptcha": "^2.1.9",
     "@vercel/speed-insights": "^1.0.12",
     "bcryptjs": "^2.4.3",
+    "cookies-next": "^4.1.1",
     "dompurify": "^3.2.3",
     "dotenv": "^16.4.5",
     "express-rate-limit": "^7.4.0",
