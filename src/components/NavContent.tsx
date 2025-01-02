@@ -65,33 +65,58 @@ export const NavContent: React.FC = React.memo(function NavContent() {
                 <div className="flex items-center justify-between w-[600px]">
                   <Link
                     href="/muzyka"
-                    className="text-white text-[13px] tracking-wide font-medium hover:opacity-90 whitespace-nowrap"
+                    className="relative text-white text-[13px] tracking-wide font-medium 
+                    hover:opacity-90 whitespace-nowrap group"
                   >
-                    MUZYKA
+                    <span>MUZYKA</span>
+                    <span
+                      className="absolute bottom-0 left-0 w-0 h-[2px] bg-white 
+                    transition-all duration-300 group-hover:w-full"
+                    ></span>
                   </Link>
                   <Link
                     href="/szukam-partnera-do-tanca"
-                    className="text-white text-[13px] tracking-wide font-medium hover:opacity-90 whitespace-nowrap"
+                    className="relative text-white text-[13px] tracking-wide font-medium 
+                    hover:opacity-90 whitespace-nowrap group"
                   >
-                    SZUKAM PARTNERA
+                    <span>SZUKAM PARTNERA</span>
+                    <span
+                      className="absolute bottom-0 left-0 w-0 h-[2px] bg-white 
+                    transition-all duration-300 group-hover:w-full"
+                    ></span>
                   </Link>
                   <Link
                     href="/taneczne-historie"
-                    className="text-white text-[13px] tracking-wide font-medium hover:opacity-90 whitespace-nowrap"
+                    className="relative text-white text-[13px] tracking-wide font-medium 
+                    hover:opacity-90 whitespace-nowrap group"
                   >
-                    TANECZNE HISTORIE
+                    <span>TANECZNE HISTORIE</span>
+                    <span
+                      className="absolute bottom-0 left-0 w-0 h-[2px] bg-white 
+                    transition-all duration-300 group-hover:w-full"
+                    ></span>
                   </Link>
                   <Link
                     href="/wydarzenia"
-                    className="text-white text-[13px] tracking-wide font-medium hover:opacity-90 whitespace-nowrap"
+                    className="relative text-white text-[13px] tracking-wide font-medium 
+                    hover:opacity-90 whitespace-nowrap group"
                   >
-                    WYDARZENIA
+                    <span>WYDARZENIA</span>
+                    <span
+                      className="absolute bottom-0 left-0 w-0 h-[2px] bg-white 
+                    transition-all duration-300 group-hover:w-full"
+                    ></span>
                   </Link>
                   <Link
                     href="/szkoly"
-                    className="text-white text-[13px] tracking-wide font-medium hover:opacity-90 whitespace-nowrap"
+                    className="relative text-white text-[13px] tracking-wide font-medium 
+                    hover:opacity-90 whitespace-nowrap group"
                   >
-                    SZKOŁY TAŃCA
+                    <span>SZKOŁY TAŃCA</span>
+                    <span
+                      className="absolute bottom-0 left-0 w-0 h-[2px] bg-white 
+                    transition-all duration-300 group-hover:w-full"
+                    ></span>
                   </Link>
                 </div>
               </div>
