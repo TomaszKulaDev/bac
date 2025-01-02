@@ -8,11 +8,10 @@ export async function GET() {
     await connectToDatabase();
     const profiles = await User.find({
       isVerified: true,
-      // Możemy dodać więcej filtrów
     })
-      .select("name avatar createdAt")
+      .select("name avatar createdAt dancePreferences socialMedia")
       .sort({ createdAt: -1 })
-      .limit(6); // Limit dla najnowszych profili
+      .limit(6);
 
     return NextResponse.json(profiles);
   } catch (error) {

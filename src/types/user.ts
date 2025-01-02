@@ -11,4 +11,9 @@ export interface UserProfile {
     availability: string;
     location: string;
   };
+  socialMedia?: {
+    instagram?: string;
+    facebook?: string;
+    youtube?: string;
+  };
 }

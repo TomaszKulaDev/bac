@@ -17,22 +17,77 @@ const profileSchemaBase = z.object({
     .min(1, "Imię jest wymagane")
     .max(50, "Imię nie może być dłuższe niż 50 znaków"),
   email: z.string().email("Nieprawidłowy adres email"),
+  dancePreferences: z
+    .object({
+      styles: z
+        .array(z.string())
+        .min(1, "Wybierz przynajmniej jeden styl tańca"),
+      level: z.string().min(1, "Wybierz poziom zaawansowania"),
+      availability: z.string().min(1, "Określ swoją dostępność"),
+      location: z.string().min(1, "Podaj lokalizację"),
+    })
+    .optional(),
+  socialMedia: z
+    .object({
+      instagram: z.string().optional(),
+      facebook: z.string().optional(),
+      youtube: z.string().optional(),
+    })
+    .optional(),
 });
+
+type FormDataType = {
+  name: string;
+  email: string;
+  dancePreferences: {
+    styles: string[];
+    level: string;
+    availability: string;
+    location: string;
+  };
+  socialMedia: {
+    instagram: string | undefined;
+    facebook: string | undefined;
+    youtube: string | undefined;
+  };
+};
 
 export default function ProfilePage() {
   const { userProfile, isLoading, updateUserProfile } = useUserProfile();
   const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormDataType>({
     name: "",
     email: "",
+    dancePreferences: {
+      styles: [],
+      level: "",
+      availability: "",
+      location: "",
+    },
+    socialMedia: {
+      instagram: undefined,
+      facebook: undefined,
+      youtube: undefined,
+    },
   });
 
-  // Inicjalizuj dane formularza tylko raz, gdy userProfile się załaduje
+  // Inicjalizacja danych formularza
   useEffect(() => {
     if (userProfile && !isEditing) {
       setFormData({
         name: userProfile.name,
         email: userProfile.email,
+        dancePreferences: userProfile.dancePreferences || {
+          styles: [],
+          level: "",
+          availability: "",
+          location: "",
+        },
+        socialMedia: {
+          instagram: userProfile.socialMedia?.instagram || "",
+          facebook: userProfile.socialMedia?.facebook || "",
+          youtube: userProfile.socialMedia?.youtube || "",
+        },
       });
     }
   }, [userProfile, isEditing]);
@@ -43,20 +98,66 @@ export default function ProfilePage() {
 
   const handleCancel = () => {
     setIsEditing(false);
-    // Przywróć oryginalne wartości
     if (userProfile) {
       setFormData({
         name: userProfile.name,
         email: userProfile.email,
+        dancePreferences: userProfile.dancePreferences || {
+          styles: [],
+          level: "",
+          availability: "",
+          location: "",
+        },
+        socialMedia: {
+          instagram: userProfile.socialMedia?.instagram || "",
+          facebook: userProfile.socialMedia?.facebook || "",
+          youtube: userProfile.socialMedia?.youtube || "",
+        },
       });
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    if (name.includes(".")) {
+      const [parent, child] = name.split(".");
+      setFormData((prev) => ({
+        ...prev,
+        [parent]: {
+          ...(prev[parent as keyof FormDataType] as any),
+          [child]: value,
+        },
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
+  };
+
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      dancePreferences: {
+        ...prev.dancePreferences,
+        [name.replace("dancePreferences.", "")]: value,
+      },
+    }));
+  };
+
+  const handleMultiSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const values = Array.from(e.target.selectedOptions).map(
+      (option) => option.value
+    );
+    setFormData((prev) => ({
+      ...prev,
+      dancePreferences: {
+        ...prev.dancePreferences,
+        styles: values,
+      },
     }));
   };
 
@@ -144,26 +245,128 @@ export default function ProfilePage() {
                         type="text"
                         name="name"
                         value={formData.name}
-                        onChange={handleChange}
+                        onChange={handleInputChange}
                         className="mt-1 block w-full rounded-lg border-gray-300 
                                  shadow-sm focus:border-amber-500 focus:ring-amber-500/20 
                                  transition-colors"
                       />
                     </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700">
-                        Email
-                      </label>
-                      <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        className="mt-1 block w-full rounded-lg border-gray-300 
-                                 shadow-sm focus:border-amber-500 focus:ring-amber-500/20 
-                                 transition-colors"
-                      />
+                    <div className="space-y-4">
+                      <h3 className="font-medium text-gray-900">
+                        Preferencje taneczne
+                      </h3>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                          Style tańca
+                        </label>
+                        <select
+                          multiple
+                          name="dancePreferences.styles"
+                          value={formData.dancePreferences.styles}
+                          onChange={handleMultiSelect}
+                          className="mt-1 block w-full rounded-lg border-gray-300"
+                        >
+                          <option value="salsa">Salsa</option>
+                          <option value="bachata">Bachata</option>
+                          <option value="kizomba">Kizomba</option>
+                          {/* Dodaj więcej opcji */}
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                          Poziom zaawansowania
+                        </label>
+                        <select
+                          name="dancePreferences.level"
+                          value={formData.dancePreferences.level}
+                          onChange={handleSelectChange}
+                          className="mt-1 block w-full rounded-lg border-gray-300"
+                        >
+                          <option value="">Wybierz poziom</option>
+                          <option value="beginner">Początkujący</option>
+                          <option value="intermediate">
+                            Średniozaawansowany
+                          </option>
+                          <option value="advanced">Zaawansowany</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                          Dostępność
+                        </label>
+                        <input
+                          type="text"
+                          name="dancePreferences.availability"
+                          value={formData.dancePreferences.availability}
+                          onChange={handleInputChange}
+                          placeholder="np. Wieczory w tygodniu, weekendy"
+                          className="mt-1 block w-full rounded-lg border-gray-300"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                          Lokalizacja
+                        </label>
+                        <input
+                          type="text"
+                          name="dancePreferences.location"
+                          value={formData.dancePreferences.location}
+                          onChange={handleInputChange}
+                          placeholder="np. Warszawa, Mokotów"
+                          className="mt-1 block w-full rounded-lg border-gray-300"
+                        />
+                      </div>
                     </div>
+
+                    <div className="space-y-4">
+                      <h3 className="font-medium text-gray-900">
+                        Social Media
+                      </h3>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                          Instagram
+                        </label>
+                        <input
+                          type="text"
+                          name="socialMedia.instagram"
+                          value={formData.socialMedia.instagram || ""}
+                          onChange={handleInputChange}
+                          placeholder="@username"
+                          className="mt-1 block w-full rounded-lg border-gray-300"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                          Facebook
+                        </label>
+                        <input
+                          type="text"
+                          name="socialMedia.facebook"
+                          value={formData.socialMedia.facebook || ""}
+                          onChange={handleInputChange}
+                          placeholder="profil facebook"
+                          className="mt-1 block w-full rounded-lg border-gray-300"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                          YouTube
+                        </label>
+                        <input
+                          type="text"
+                          name="socialMedia.youtube"
+                          value={formData.socialMedia.youtube || ""}
+                          onChange={handleInputChange}
+                          placeholder="kanał youtube"
+                          className="mt-1 block w-full rounded-lg border-gray-300"
+                        />
+                      </div>
+                    </div>
+
                     <div className="flex justify-end gap-4">
                       <button
                         type="button"

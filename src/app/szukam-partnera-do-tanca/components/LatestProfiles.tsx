@@ -50,6 +50,30 @@ export const LatestProfiles = () => {
               </p>
             </div>
           </div>
+
+          {profile.dancePreferences && (
+            <div className="mt-4 space-y-2">
+              <div className="flex flex-wrap gap-2">
+                {profile.dancePreferences.styles.map((style) => (
+                  <span
+                    key={style}
+                    className="px-2 py-1 bg-amber-100 text-amber-800 rounded-full text-sm"
+                  >
+                    {style}
+                  </span>
+                ))}
+              </div>
+              <p className="text-sm text-gray-600">
+                Poziom: {profile.dancePreferences.level}
+              </p>
+              <p className="text-sm text-gray-600">
+                Lokalizacja: {profile.dancePreferences.location}
+              </p>
+              <p className="text-sm text-gray-600">
+                Dostępność: {profile.dancePreferences.availability}
+              </p>
+            </div>
+          )}
         </div>
       ))}
     </div>
