@@ -193,8 +193,8 @@ export function AdvertisementForm({
       newErrors.title = "Tytuł jest wymagany";
     } else if (formData.title.length < 5) {
       newErrors.title = "Tytuł musi mieć minimum 5 znaków";
-    } else if (formData.title.length > 24) {
-      newErrors.title = "Tytuł nie może być dłuższy niż 24 znaki";
+    } else if (formData.title.length > 70) {
+      newErrors.title = "Tytuł nie może być dłuższy niż 70 znaków";
     }
 
     // Walidacja czasu
@@ -296,7 +296,7 @@ export function AdvertisementForm({
                      focus:border-amber-500 focus:ring-amber-500"
             required
             placeholder="np. Trening Kizomby"
-            maxLength={24}
+            maxLength={70}
           />
         </div>
 
