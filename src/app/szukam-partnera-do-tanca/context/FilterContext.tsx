@@ -31,14 +31,6 @@ export function FilterProvider({ children }: { children: ReactNode }) {
   const [filteredCount, setFilteredCount] = useState(0);
 
   const handleLocationChange = (location: string) => {
-    console.log("FilterContext - handleLocationChange:", {
-      input: location,
-      formattedLocation:
-        location === "all"
-          ? ""
-          : location.charAt(0).toUpperCase() + location.slice(1),
-    });
-
     const formattedLocation =
       location === "all"
         ? ""

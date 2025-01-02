@@ -33,13 +33,6 @@ export function LatestProfiles() {
 
   const filteredProfiles = useMemo(() => {
     return profiles.filter((profile) => {
-      console.log({
-        selectedLocation,
-        profileLocation: profile.info.lokalizacja,
-        isMatch:
-          !selectedLocation || profile.info.lokalizacja === selectedLocation,
-      });
-
       const locationMatch =
         !selectedLocation || profile.info.lokalizacja === selectedLocation;
 
@@ -53,19 +46,6 @@ export function LatestProfiles() {
         !selectedLevel || profile.info.poziomZaawansowania === selectedLevel;
 
       const genderMatch = !selectedGender || profile.gender === selectedGender;
-
-      console.log("Gender filtering:", {
-        selectedGender,
-        profileGender: profile.gender,
-        isMatch: !selectedGender || profile.gender === selectedGender,
-      });
-
-      console.log("Level filtering:", {
-        selectedLevel,
-        profileLevel: profile.info.poziomZaawansowania,
-        isMatch:
-          !selectedLevel || profile.info.poziomZaawansowania === selectedLevel,
-      });
 
       return locationMatch && styleMatch && levelMatch && genderMatch;
     });
