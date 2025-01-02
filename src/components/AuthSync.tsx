@@ -52,5 +52,16 @@ export function AuthSync() {
     syncAuth();
   }, [session, status, dispatch]);
 
+  useEffect(() => {
+    if (session?.user?.email) {
+      try {
+        const mappedUser = mapSessionToUser(session.user);
+        dispatch(login({ user: mappedUser }));
+      } catch (error) {
+        console.error("Failed to map user:", error);
+      }
+    }
+  }, [session, dispatch]);
+
   return null; // Komponent nie renderuje niczego
 }

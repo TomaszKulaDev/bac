@@ -156,7 +156,7 @@ export function AdvertisementForm({
           author: {
             name: session.user.name,
             level: formData.author.level,
-            avatar: userProfile?.avatar || session.user.image || null,
+            avatar: userProfile?.image || session.user.image || null,
           },
         }),
       });

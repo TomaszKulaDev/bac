@@ -13,7 +13,7 @@ export interface UserBasicInfo {
   name: string;
   email: string;
   role: string;
-  image?: string;
+  image?: string | null;
   dancePreferences?: DancePreferences;
 }
 

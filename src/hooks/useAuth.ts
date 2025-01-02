@@ -17,10 +17,14 @@ export const useAuth = () => {
     dispatch(logout());
   };
 
-  const syncAuthState = async () => {
-    if (session?.user) {
-      const mappedUser = mapSessionToUser(session.user);
-      dispatch(login({ user: mappedUser }));
+  const syncAuthState = () => {
+    if (session?.user?.email) {
+      try {
+        const mappedUser = mapSessionToUser(session.user);
+        dispatch(login({ user: mappedUser }));
+      } catch (error) {
+        console.error("Failed to map user:", error);
+      }
     }
   };
 

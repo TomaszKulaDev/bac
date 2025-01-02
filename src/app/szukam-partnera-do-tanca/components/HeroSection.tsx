@@ -46,7 +46,7 @@ export function HeroSection() {
   };
 
   const getAvatar = (): string | undefined => {
-    if (userProfile?.avatar) return userProfile.avatar;
+    if (userProfile?.image) return userProfile.image;
     if (user?.image) return user.image;
     return undefined;
   };
