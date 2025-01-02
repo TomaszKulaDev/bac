@@ -8,6 +8,12 @@ export interface IUser extends Document {
   isVerified: boolean;
   verificationToken?: string;
   role: "user" | "admin";
+  dancePreferences: {
+    styles: string[];
+    level: string;
+    availability: string;
+    location: string;
+  };
 }
 
 const userSchema = new mongoose.Schema(
@@ -22,6 +28,12 @@ const userSchema = new mongoose.Schema(
     resetPasswordToken: String,
     resetPasswordExpires: Date,
     lastResetTokenRequest: Date,
+    dancePreferences: {
+      styles: [String],
+      level: String,
+      availability: String,
+      location: String,
+    },
   },
   {
     timestamps: true,

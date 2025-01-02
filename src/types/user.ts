@@ -5,4 +5,10 @@ export interface UserProfile {
   avatar?: string;
   createdAt?: string;
   updatedAt?: string;
+  dancePreferences?: {
+    styles: string[];
+    level: string;
+    availability: string;
+    location: string;
+  };
 }
