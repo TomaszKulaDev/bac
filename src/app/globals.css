@@ -19,8 +19,9 @@
 }
 
 body {
-  color: rgb(55, 65, 81); /* Ciemny szary kolor tekstu */
+  color: rgb(55, 65, 81);
   background: white;
+  margin-top: 45px;
 }
 
 @layer utilities {
@@ -36,6 +37,7 @@ body {
 
 .music-page {
   background: rgb(18, 18, 18);
+  padding-top: 45px;
 }
 
 .my-masonry-grid {
@@ -148,7 +150,23 @@ body {
 /* Dodanie critical CSS dla navbaru */
 @layer components {
   .nav-container {
-    @apply sticky top-0 z-40 bg-[rgb(18,18,18)] text-white transition-shadow duration-300;
+    @apply fixed top-0 left-0 right-0 w-full z-50;
+    height: 45px;
+  }
+
+  .nav-gradient {
+    @apply bg-gradient-to-r from-[#E30613] to-[#F39200];
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  .nav-content {
+    @apply max-w-7xl mx-auto h-full flex items-center;
+  }
+
+  .nav-item {
+    @apply h-full flex items-center;
   }
 
   .nav-container.scrolled {

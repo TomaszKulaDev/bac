@@ -22,198 +22,114 @@ export const NavContent: React.FC = React.memo(function NavContent() {
   } = useNavigation();
   const { data: session } = useSession();
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const navbar = document.querySelector(".nav-container");
-      if (navbar) {
-        if (window.scrollY > 0) {
-          navbar.classList.add("scrolled");
-        } else {
-          navbar.classList.remove("scrolled");
-        }
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   return (
     <Suspense fallback={<NavbarSkeleton />}>
-      <nav className="nav-container sticky top-0 z-50 bg-[#1a1a1a] font-['Roboto_Condensed'] border-b border-gray-800">
-        {/* Górny pasek z logo i przyciskami logowania */}
-        <div className="container mx-auto px-4">
-          <div className="h-16 flex items-center justify-between">
-            <Link
-              href="/"
-              className="flex items-center gap-1 hover:opacity-90 transition-opacity"
-            >
-              <FaMusic className="text-red-600 text-2xl" />
-              <span className="text-2xl font-bold tracking-tight text-red-600">
-                BACIATA
-              </span>
-              <span className="text-2xl font-light tracking-tight text-white">
-                .pl
-              </span>
-            </Link>
-
-            {/* Przyciski logowania/rejestracji - widoczne tylko na desktop */}
-            <div className="hidden md:flex items-center gap-4">
-              {isAuthenticated && user ? (
-                <UserMenu
-                  user={{
-                    name: user.name,
-                    role: user.role,
-                  }}
-                  onLogout={handleLogout}
-                />
-              ) : (
-                <>
-                  <Link
-                    href="/login"
-                    className="text-sm text-gray-300 hover:text-white transition-colors"
-                  >
-                    Zaloguj
-                  </Link>
-                  <Link
-                    href="/register"
-                    className="px-4 py-1.5 text-sm bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
-                  >
-                    Dołącz do nas
-                  </Link>
-                </>
-              )}
-            </div>
-
-            {/* Przycisk mobilny */}
-            <button
-              className="md:hidden text-gray-300 hover:text-white transition-colors"
-              onClick={handleMobileMenu}
-              aria-expanded={isMobileMenuOpen}
-              aria-controls="mobile-menu"
-              aria-label="Menu"
-            >
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
-            </button>
-          </div>
-        </div>
-
-        {/* Główne menu nawigacyjne */}
-        <div className="border-t border-gray-800 bg-[#1a1a1a]">
-          <div className="container mx-auto px-4">
-            <div className="hidden md:flex h-12 items-center space-x-8">
-              <Link
-                href="/muzyka"
-                className="text-gray-300 hover:text-white transition-colors text-sm font-medium"
-              >
-                Muzyka
-              </Link>
-              <Link
-                href="/szukam-partnera-do-tanca"
-                className="text-gray-300 hover:text-white transition-colors text-sm font-medium"
-              >
-                Szukam Partnera
-              </Link>
-              <Link
-                href="/taneczne-historie"
-                className="text-gray-300 hover:text-white transition-colors text-sm font-medium"
-              >
-                Taneczne historie
-              </Link>
-              <Link
-                href="/wydarzenia"
-                className="text-gray-300 hover:text-white transition-colors text-sm font-medium"
-              >
-                Wydarzenia
-              </Link>
-              <Link
-                href="/szkoly"
-                className="text-gray-300 hover:text-white transition-colors text-sm font-medium"
-              >
-                Szkoły tańca
-              </Link>
-            </div>
-          </div>
-        </div>
-
-        {/* Menu mobilne */}
-        <div
-          id="mobile-menu"
-          className={`${
-            isMobileMenuOpen ? "block" : "hidden"
-          } md:hidden border-t border-gray-800`}
-        >
-          <div className="px-4 py-3 space-y-3">
-            <Link
-              href="/muzyka"
-              className="block text-gray-300 hover:text-white transition-colors"
-            >
-              Muzyka
-            </Link>
-            <Link
-              href="/szukam-partnera"
-              className="block text-gray-300 hover:text-white transition-colors"
-            >
-              Szukam Partnera
-            </Link>
-            <Link
-              href="/taneczne-historie"
-              className="block text-gray-300 hover:text-white transition-colors"
-            >
-              Taneczne historie
-            </Link>
-            <Link
-              href="/wydarzenia"
-              className="block text-gray-300 hover:text-white transition-colors"
-            >
-              Wydarzenia
-            </Link>
-            <Link
-              href="/szkoly"
-              className="block text-gray-300 hover:text-white transition-colors"
-            >
-              Szkoły tańca
-            </Link>
-
-            {/* Przyciski logowania w menu mobilnym */}
-            {!isAuthenticated && (
-              <div className="pt-4 border-t border-gray-800 space-y-3">
-                <Link
-                  href="/login"
-                  className="block text-center py-2 text-gray-300 hover:text-white transition-colors"
-                >
-                  Zaloguj
-                </Link>
-                <Link
-                  href="/register"
-                  className="block text-center py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
-                >
-                  Dołącz do nas
+      <nav className="nav-container">
+        <div className="nav-gradient">
+          <div className="nav-content">
+            <div className="w-full h-full flex items-center justify-between px-4">
+              {/* Logo */}
+              <div className="nav-item w-[100px]">
+                <Link href="/" className="flex items-center h-full">
+                  <div className="w-7 h-7 rounded-full bg-white flex items-center justify-center">
+                    <span className="text-[#E30613] font-bold text-sm">
+                      BAC
+                    </span>
+                  </div>
                 </Link>
               </div>
-            )}
+
+              {/* Menu główne */}
+              <div className="nav-item hidden md:flex justify-center flex-1">
+                <div className="flex items-center justify-between w-[600px]">
+                  <Link
+                    href="/muzyka"
+                    className="text-white text-[13px] tracking-wide font-medium hover:opacity-90 whitespace-nowrap"
+                  >
+                    MUZYKA
+                  </Link>
+                  <Link
+                    href="/szukam-partnera-do-tanca"
+                    className="text-white text-[13px] tracking-wide font-medium hover:opacity-90 whitespace-nowrap"
+                  >
+                    SZUKAM PARTNERA
+                  </Link>
+                  <Link
+                    href="/taneczne-historie"
+                    className="text-white text-[13px] tracking-wide font-medium hover:opacity-90 whitespace-nowrap"
+                  >
+                    TANECZNE HISTORIE
+                  </Link>
+                  <Link
+                    href="/wydarzenia"
+                    className="text-white text-[13px] tracking-wide font-medium hover:opacity-90 whitespace-nowrap"
+                  >
+                    WYDARZENIA
+                  </Link>
+                  <Link
+                    href="/szkoly"
+                    className="text-white text-[13px] tracking-wide font-medium hover:opacity-90 whitespace-nowrap"
+                  >
+                    SZKOŁY TAŃCA
+                  </Link>
+                </div>
+              </div>
+
+              {/* Przyciski logowania */}
+              <div className="nav-item w-[100px] hidden md:flex justify-end">
+                {isAuthenticated && user ? (
+                  <UserMenu
+                    user={{
+                      name: user.name,
+                      role: user.role,
+                    }}
+                    onLogout={handleLogout}
+                  />
+                ) : (
+                  <>
+                    <Link
+                      href="/login"
+                      className="text-white text-[13px] font-medium hover:opacity-90"
+                    >
+                      Zaloguj
+                    </Link>
+                    <Link
+                      href="/register"
+                      className="text-white text-[13px] font-medium hover:opacity-90"
+                    >
+                      Dołącz do nas
+                    </Link>
+                  </>
+                )}
+              </div>
+
+              {/* Przycisk mobilny */}
+              <button
+                className="md:hidden text-white hover:opacity-90"
+                onClick={handleMobileMenu}
+                aria-expanded={isMobileMenuOpen}
+                aria-controls="mobile-menu"
+                aria-label="Menu"
+              >
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
-
-        <style jsx>{`
-          .nav-container.scrolled {
-            background-color: rgba(26, 26, 26, 0.95);
-            backdrop-filter: blur(8px);
-          }
-        `}</style>
       </nav>
+      <div className="h-[45px]" />
     </Suspense>
   );
 });
