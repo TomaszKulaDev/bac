@@ -427,6 +427,29 @@ export default function ProfilePage() {
                     ))}
                   </div>
                 </div>
+
+                {/* Lokalizacja */}
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-3">
+                    Lokalizacja
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.dancePreferences.location}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        dancePreferences: {
+                          ...prev.dancePreferences,
+                          location: e.target.value,
+                        },
+                      }))
+                    }
+                    className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm 
+                               focus:border-amber-500 focus:ring-amber-500/20"
+                    placeholder="Np. Warszawa, Mokotów"
+                  />
+                </div>
               </div>
 
               {/* Dodajemy nowe pole wieku */}
