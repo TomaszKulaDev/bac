@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { FaSearch, FaUserPlus } from "react-icons/fa";
 import Link from "next/link";
 import { AdvertisementForm } from "./AdvertisementForm";
@@ -12,7 +12,6 @@ import { useSession } from "next-auth/react";
 import { AdvertisementType, DanceLevel } from "@/types/advertisement";
 
 export function HeroSection() {
-  const videoRef = useRef<HTMLVideoElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { user } = useAuth();
   const { userProfile } = useUserProfile();
@@ -68,27 +67,19 @@ export function HeroSection() {
     },
   };
 
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.play().catch(() => {
-        console.log("Autoplay prevented");
-      });
-    }
-  }, []);
-
   return (
     <section
       className="relative h-[85vh] min-h-[600px]"
       aria-label="Główny banner"
       role="banner"
     >
-      {/* Zmodyfikowany gradient overlay */}
+      {/* Gradient overlay */}
       <div
         className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-transparent z-10"
         aria-hidden="true"
       />
 
-      {/* Zmodyfikowane animated particles */}
+      {/* Animated particles */}
       <div className="absolute inset-0 z-0 opacity-40" aria-hidden="true">
         <div
           className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] 
@@ -100,23 +91,14 @@ export function HeroSection() {
         />
       </div>
 
-      {/* Video background */}
-      <div className="absolute inset-0 overflow-hidden">
-        <video
-          ref={videoRef}
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-full h-full object-cover scale-105 animate-slow-zoom"
-          poster="/images/Hero-szukam-partnera-do-tanca.webp"
-          aria-hidden="true"
-          preload="metadata"
-        >
-          <source src="/videos/bachata-hero.mp4" type="video/mp4" />
-          <track kind="captions" srcLang="pl" label="Polski" />
-        </video>
-      </div>
+      {/* Statyczne tło zamiast wideo */}
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: 'url("/images/Hero-szukam-partnera-do-tanca.webp")',
+        }}
+        aria-hidden="true"
+      />
 
       {/* Content z nowymi kolorami */}
       <div className="relative z-20 container mx-auto px-4 h-full flex items-center">
