@@ -52,7 +52,7 @@ export const LatestProfiles = () => {
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-12">
       {profiles.map((profile) => (
         <motion.div
-          key={profile._id}
+          key={profile.id}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           className="relative group cursor-pointer"
@@ -119,7 +119,7 @@ export const LatestProfiles = () => {
 
           {/* Link do profilu */}
           <Link
-            href={`/szukam-partnera-do-tanca/profile/${profile._id}`}
+            href={`/profile/${profile.id}`}
             className="absolute inset-0 z-10"
           >
             <span className="sr-only">Zobacz profil</span>

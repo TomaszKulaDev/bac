@@ -6,17 +6,23 @@ import { NextResponse } from "next/server";
 export async function GET() {
   try {
     await connectToDatabase();
-    const profiles = await User.find({
-      isVerified: true,
-    })
-      .select("name avatar createdAt dancePreferences socialMedia")
-      .sort({ createdAt: -1 })
-      .limit(6);
+    const profiles = await User.find();
 
-    return NextResponse.json(profiles);
+    // Konwertujemy _id na id dla frontendu
+    const formattedProfiles = profiles.map((profile) => ({
+      id: profile._id.toString(),
+      name: profile.name,
+      email: profile.email,
+      image: profile.image,
+      dancePreferences: profile.dancePreferences,
+      // ... reszta pól
+    }));
+
+    return NextResponse.json(formattedProfiles);
   } catch (error) {
+    console.error("Error fetching profiles:", error);
     return NextResponse.json(
-      { message: "Nie udało się pobrać profili" },
+      { error: "Failed to fetch profiles" },
       { status: 500 }
     );
   }
