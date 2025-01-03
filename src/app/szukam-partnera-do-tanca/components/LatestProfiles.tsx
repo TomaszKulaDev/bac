@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaMapMarkerAlt } from "react-icons/fa";
+import { FaMapMarkerAlt, FaRuler } from "react-icons/fa";
 import { UserProfile } from "@/types/user";
 
 const translateLevel = (level: string) => {
@@ -37,6 +37,7 @@ export const LatestProfiles = () => {
       }
 
       const data = await response.json();
+      console.log("Pobrane profile:", data);
       setProfiles(data);
     } catch (error) {
       console.error("Błąd podczas pobierania profili:", error);
@@ -141,9 +142,18 @@ export const LatestProfiles = () => {
                     )}
                   </div>
 
-                  <div className="flex items-center gap-1.5 text-sm">
-                    <FaMapMarkerAlt className="text-amber-400" />
-                    <span>{profile.dancePreferences?.location}</span>
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-1.5 text-sm">
+                      <FaMapMarkerAlt className="text-amber-400" />
+                      <span>{profile.dancePreferences?.location}</span>
+                    </div>
+
+                    {profile.height && (
+                      <div className="flex items-center gap-1.5 text-sm">
+                        <FaRuler className="text-amber-400" />
+                        <span>{profile.height} cm</span>
+                      </div>
+                    )}
                   </div>
 
                   {renderStyles(profile.dancePreferences?.styles || [])}

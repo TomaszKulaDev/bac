@@ -6,33 +6,38 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 import { connectToDatabase } from "@/lib/mongodb";
 import User from "@/models/User";
 
-export async function GET(request: Request) {
+export async function GET() {
   try {
     await connectToDatabase();
-
     const session = await getServerSession(authOptions);
+
     if (!session?.user?.email) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    const userDetails = await User.findOne({ email: session.user.email });
-    if (!userDetails) {
-      return NextResponse.json({ message: "User not found" }, { status: 404 });
+    const userProfile = await User.findOne({ email: session.user.email });
+
+    if (!userProfile) {
+      return NextResponse.json(
+        { message: "Profile not found" },
+        { status: 404 }
+      );
     }
 
     return NextResponse.json({
-      id: userDetails._id,
-      name: userDetails.name,
-      email: userDetails.email,
-      image: userDetails.image,
-      dancePreferences: userDetails.dancePreferences,
-      age: userDetails.age,
-      gender: userDetails.gender,
-      bio: userDetails.bio,
+      id: userProfile._id.toString(),
+      name: userProfile.name,
+      email: userProfile.email,
+      image: userProfile.image,
+      dancePreferences: userProfile.dancePreferences,
+      age: userProfile.age,
+      height: userProfile.height,
+      gender: userProfile.gender,
+      bio: userProfile.bio,
     });
   } catch (error) {
     return NextResponse.json(
-      { message: "Failed to fetch user data" },
+      { message: "Failed to fetch profile" },
       { status: 500 }
     );
   }

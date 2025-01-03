@@ -16,6 +16,9 @@ export async function GET() {
         image: 1,
         dancePreferences: 1,
         age: 1,
+        height: 1,
+        gender: 1,
+        bio: 1,
       }
     ).sort({ createdAt: -1 });
 
@@ -26,6 +29,9 @@ export async function GET() {
       image: profile.image,
       dancePreferences: profile.dancePreferences,
       age: profile.age,
+      height: profile.height,
+      gender: profile.gender,
+      bio: profile.bio,
     }));
 
     return NextResponse.json(formattedProfiles, {

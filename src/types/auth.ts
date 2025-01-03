@@ -1,3 +1,5 @@
+import { Gender } from "./user";
+
 export interface DancePreferences {
   styles: string[];
   level: string;
@@ -13,6 +15,9 @@ export interface UserBasicInfo {
   image?: string | null | undefined;
   dancePreferences?: DancePreferences;
   age?: number;
+  gender?: Gender;
+  bio?: string;
+  height?: number;
 }
 
 export interface AuthState {
@@ -31,5 +36,10 @@ export const mapSessionToUser = (sessionUser: any): UserBasicInfo => {
     email: sessionUser.email,
     role: sessionUser.role || "user",
     image: sessionUser.image || undefined,
+    dancePreferences: sessionUser.dancePreferences,
+    age: sessionUser.age,
+    gender: sessionUser.gender,
+    bio: sessionUser.bio,
+    height: sessionUser.height,
   };
 };

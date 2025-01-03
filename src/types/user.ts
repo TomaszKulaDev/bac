@@ -6,6 +6,7 @@ export interface UserProfile {
   email: string;
   image?: string;
   bio?: string;
+  height?: number;
   createdAt?: string;
   updatedAt?: string;
   dancePreferences?: {

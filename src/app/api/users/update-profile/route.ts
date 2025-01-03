@@ -27,6 +27,11 @@ const updateProfileSchema = z.object({
     .string()
     .max(500, "Opis nie może być dłuższy niż 500 znaków")
     .optional(),
+  height: z
+    .number()
+    .min(140, "Wzrost nie może być mniejszy niż 140 cm")
+    .max(220, "Wzrost nie może być większy niż 220 cm")
+    .optional(),
 });
 
 export async function GET(request: Request) {
@@ -100,6 +105,8 @@ export async function POST(request: Request) {
           age: validatedData.age,
           gender: validatedData.gender,
           bio: validatedData.bio,
+          height: validatedData.height,
+          
         },
       },
       { new: true }
@@ -118,6 +125,7 @@ export async function POST(request: Request) {
       age: updatedUser.age,
       gender: updatedUser.gender,
       bio: updatedUser.bio,
+      height: updatedUser.height,
     });
   } catch (error) {
     return NextResponse.json(

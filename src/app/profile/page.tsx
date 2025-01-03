@@ -24,6 +24,7 @@ interface ProfileFormData {
   age?: number;
   gender?: Gender;
   bio?: string;
+  height?: number;
 }
 
 const translateLevel = (level: string) => {
@@ -92,6 +93,7 @@ export default function ProfilePage() {
     },
     age: userProfile?.age,
     bio: userProfile?.bio || "",
+    height: userProfile?.height,
   });
 
   // Inicjalizacja danych formularza
@@ -109,6 +111,7 @@ export default function ProfilePage() {
         },
         age: userProfile.age,
         bio: userProfile.bio || "",
+        height: userProfile.height,
       });
     }
   }, [userProfile, isEditing]);
@@ -129,6 +132,7 @@ export default function ProfilePage() {
         },
         age: userProfile.age,
         bio: userProfile.bio || "",
+        height: userProfile.height,
       });
     }
   };
@@ -253,6 +257,29 @@ export default function ProfilePage() {
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm 
                              focus:border-amber-500 focus:ring-amber-500 sm:text-sm"
                   placeholder="Wprowadź swój wiek"
+                />
+              </div>
+
+              <div className="mt-4">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Wzrost (cm)
+                </label>
+                <input
+                  type="number"
+                  value={formData.height || ""}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      height: e.target.value
+                        ? parseInt(e.target.value)
+                        : undefined,
+                    }))
+                  }
+                  className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm 
+                             focus:border-amber-500 focus:ring-amber-500/20"
+                  placeholder="Np. 175"
+                  min="140"
+                  max="220"
                 />
               </div>
 
@@ -677,6 +704,15 @@ export default function ProfilePage() {
                 <h3 className="text-sm font-medium text-gray-700">Wiek</h3>
                 <p className="mt-1 text-gray-900">
                   {userProfile?.age ? `${userProfile.age} lat` : "Nie podano"}
+                </p>
+              </div>
+
+              <div className="mt-4">
+                <h3 className="text-sm font-medium text-gray-700">Wzrost</h3>
+                <p className="mt-1 text-gray-900">
+                  {userProfile?.height
+                    ? `${userProfile.height} cm`
+                    : "Nie podano"}
                 </p>
               </div>
 

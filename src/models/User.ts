@@ -17,6 +17,7 @@ export interface IUser extends Document {
   age?: number;
   gender?: string;
   bio?: string;
+  height?: number;
 }
 
 const userSchema = new mongoose.Schema(
@@ -49,6 +50,11 @@ const userSchema = new mongoose.Schema(
     bio: {
       type: String,
       maxlength: [500, "Opis nie może być dłuższy niż 500 znaków"],
+    },
+    height: {
+      type: Number,
+      min: [140, "Wzrost nie może być mniejszy niż 140 cm"],
+      max: [220, "Wzrost nie może być większy niż 220 cm"],
     },
   },
   {

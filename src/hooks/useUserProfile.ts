@@ -43,7 +43,7 @@ export function useUserProfile() {
         },
         body: JSON.stringify({
           ...updatedData,
-          bio: updatedData.bio,
+          height: updatedData.height,
         }),
       });
 
@@ -77,6 +77,7 @@ export function useUserProfile() {
             image: data.image,
             dancePreferences: data.dancePreferences,
             age: data.age,
+            height: data.height,
           },
         })
       );
