@@ -2,6 +2,9 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { FaMapMarkerAlt } from "react-icons/fa";
 import { UserProfile } from "@/types/user";
 
 export const LatestProfiles = () => {
@@ -25,56 +28,90 @@ export const LatestProfiles = () => {
   }, []);
 
   if (isLoading) {
-    return <div>Ładowanie profili...</div>;
+    return (
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {[1, 2, 3, 4, 5, 6].map((i) => (
+          <div key={i} className="animate-pulse">
+            <div className="aspect-[3/4] rounded-xl bg-gray-200" />
+          </div>
+        ))}
+      </div>
+    );
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       {profiles.map((profile) => (
-        <div key={profile.id} className="bg-white rounded-lg shadow p-4">
-          <div className="flex items-center space-x-4">
-            <div className="relative w-16 h-16">
-              <Image
-                src={profile.image ?? "/images/default-avatar.png"}
-                alt={profile.name}
-                fill
-                className="rounded-full object-cover"
-                sizes="(max-width: 64px) 100vw, 64px"
-                priority={false}
-              />
+        <motion.div
+          key={profile._id}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="relative group cursor-pointer"
+        >
+          {/* Główne zdjęcie */}
+          <div className="relative aspect-[3/4] rounded-xl overflow-hidden">
+            <Image
+              src={profile.image ?? "/images/default-avatar.png"}
+              alt={profile.name}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 50vw, 25vw"
+            />
+
+            {/* Gradient overlay */}
+            <div
+              className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent 
+                          opacity-0 group-hover:opacity-100 transition-opacity"
+            />
+
+            {/* Informacje na hover */}
+            <div
+              className="absolute inset-0 p-4 flex flex-col justify-end opacity-0 
+                          group-hover:opacity-100 transition-opacity"
+            >
+              <div className="text-white space-y-2">
+                <div className="flex items-center gap-2">
+                  <h3 className="text-xl font-bold">{profile.name}</h3>
+                </div>
+
+                <div className="flex items-center gap-1.5 text-sm">
+                  <FaMapMarkerAlt className="text-amber-400" />
+                  <span>{profile.dancePreferences?.location}</span>
+                </div>
+
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {profile.dancePreferences?.styles.slice(0, 2).map((style) => (
+                    <span
+                      key={style}
+                      className="px-2 py-1 bg-amber-500/30 backdrop-blur-sm 
+                               rounded-full text-sm text-white"
+                    >
+                      {style}
+                    </span>
+                  ))}
+                </div>
+              </div>
             </div>
-            <div>
-              <h3 className="font-semibold">{profile.name}</h3>
-              <p className="text-sm text-gray-500">
-                Dołączył(a): {new Date(profile.createdAt!).toLocaleDateString()}
-              </p>
+
+            {/* Poziom zaawansowania */}
+            <div className="absolute top-3 left-3">
+              <span
+                className="bg-white/95 backdrop-blur-sm text-amber-700 px-2 py-1 
+                             rounded-full text-sm font-medium"
+              >
+                {profile.dancePreferences?.level}
+              </span>
             </div>
           </div>
 
-          {profile.dancePreferences && (
-            <div className="mt-4 space-y-2">
-              <div className="flex flex-wrap gap-2">
-                {profile.dancePreferences.styles.map((style) => (
-                  <span
-                    key={style}
-                    className="px-2 py-1 bg-amber-100 text-amber-800 rounded-full text-sm"
-                  >
-                    {style}
-                  </span>
-                ))}
-              </div>
-              <p className="text-sm text-gray-600">
-                Poziom: {profile.dancePreferences.level}
-              </p>
-              <p className="text-sm text-gray-600">
-                Lokalizacja: {profile.dancePreferences.location}
-              </p>
-              <p className="text-sm text-gray-600">
-                Dostępność: {profile.dancePreferences.availability}
-              </p>
-            </div>
-          )}
-        </div>
+          {/* Link do profilu */}
+          <Link
+            href={`/szukam-partnera-do-tanca/profile/${profile._id}`}
+            className="absolute inset-0 z-10"
+          >
+            <span className="sr-only">Zobacz profil</span>
+          </Link>
+        </motion.div>
       ))}
     </div>
   );
