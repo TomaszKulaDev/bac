@@ -12,6 +12,15 @@ import { useUserProfile } from "@/hooks/useUserProfile";
 import { UserProfile } from "@/types/user";
 import { motion } from "framer-motion";
 
+const translateLevel = (level: string) => {
+  const levels = {
+    beginner: "Początkujący",
+    intermediate: "Średniozaawansowany",
+    advanced: "Zaawansowany",
+  };
+  return levels[level as keyof typeof levels] || level;
+};
+
 const profileSchemaBase = z.object({
   name: z
     .string()
@@ -470,7 +479,9 @@ export default function ProfilePage() {
                       Poziom zaawansowania
                     </h3>
                     <p className="mt-1 text-gray-900">
-                      {userProfile?.dancePreferences?.level}
+                      {translateLevel(
+                        userProfile?.dancePreferences?.level || ""
+                      )}
                     </p>
                   </div>
                   <div>

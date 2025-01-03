@@ -10,6 +10,15 @@ import Link from "next/link";
 import Image from "next/image";
 import { Metadata } from "next";
 
+const translateLevel = (level: string) => {
+  const levels = {
+    beginner: "Początkujący",
+    intermediate: "Średniozaawansowany",
+    advanced: "Zaawansowany",
+  };
+  return levels[level as keyof typeof levels] || level;
+};
+
 async function getAdvertisement(id: string) {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL;
@@ -203,7 +212,9 @@ export default async function AdvertisementPage({
                 <h2 className="text-xl font-semibold text-gray-900">
                   {ad.author.name}
                 </h2>
-                <p className="text-gray-600">{ad.author.level}</p>
+                <p className="text-gray-600">
+                  {translateLevel(ad.author.level)}
+                </p>
               </div>
             </div>
 
