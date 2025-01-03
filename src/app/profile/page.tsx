@@ -225,11 +225,17 @@ export default function ProfilePage() {
                   </label>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                     {[
-                      { id: "bachata", label: "Bachata" },
-                      { id: "salsa", label: "Salsa" },
-                      { id: "kizomba", label: "Kizomba" },
-                      { id: "zouk", label: "Zouk" },
-                      { id: "merengue", label: "Merengue" },
+                      { id: "Bachata Sensual", label: "Bachata Sensual" },
+                      { id: "Bachata Dominicana", label: "Bachata Dominicana" },
+                      { id: "Bachata Impro", label: "Bachata Impro" },
+                      { id: "Salsa LA On2", label: "Salsa LA On2" },
+                      { id: "Salsa LA On1", label: "Salsa LA On1" },
+                      { id: "Salsa Cubana", label: "Salsa Cubana" },
+                      { id: "Salsa Rueda", label: "Rueda de Casino" },
+                      { id: "Kizomba", label: "Kizomba" },
+                      { id: "Urban Kiz", label: "Urban Kiz" },
+                      { id: "Zouk", label: "Zouk" },
+                      { id: "West Coast Swing ", label: "West Coast Swing" },
                     ].map((style) => (
                       <div
                         key={style.id}

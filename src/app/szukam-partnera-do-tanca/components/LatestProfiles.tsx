@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { UserProfile } from "@/types/user";
 
@@ -19,6 +19,8 @@ const translateLevel = (level: string) => {
 export const LatestProfiles = () => {
   const [profiles, setProfiles] = useState<UserProfile[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedStyles, setSelectedStyles] = useState<string[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchProfiles = async () => {
     try {
@@ -51,6 +53,43 @@ export const LatestProfiles = () => {
     return () => clearInterval(interval);
   }, []);
 
+  const renderStyles = (styles: string[]) => {
+    if (!styles?.length) return null;
+
+    const visibleStyles = styles.slice(0, 2);
+    const remainingCount = styles.length - 2;
+
+    return (
+      <div className="flex flex-wrap gap-2 mt-2">
+        {visibleStyles.map((style) => (
+          <span
+            key={style}
+            className="px-2 py-1 bg-amber-500/30 backdrop-blur-sm 
+                     rounded-full text-sm text-white"
+          >
+            {style}
+          </span>
+        ))}
+        {remainingCount > 0 && (
+          <button
+            onClick={(e) => {
+              e.preventDefault(); // Zapobiegamy nawigacji do profilu
+              e.stopPropagation(); // Zatrzymujemy propagację
+              const remainingStyles = styles.slice(2);
+              setSelectedStyles(remainingStyles);
+              setIsModalOpen(true);
+            }}
+            className="px-2 py-1 bg-amber-600/30 backdrop-blur-sm 
+                     rounded-full text-sm text-white hover:bg-amber-600/50 
+                     transition-colors duration-200 z-20"
+          >
+            +{remainingCount}
+          </button>
+        )}
+      </div>
+    );
+  };
+
   if (isLoading) {
     return (
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-12">
@@ -64,82 +103,116 @@ export const LatestProfiles = () => {
   }
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-12">
-      {profiles.map((profile) => (
-        <motion.div
-          key={profile.id}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="relative group cursor-pointer"
-        >
-          {/* Główne zdjęcie */}
-          <div
-            className="relative aspect-[3/4] rounded-xl overflow-hidden 
-                         ring-2 ring-transparent group-hover:ring-amber-500/50 
-                         transition-all duration-300"
+    <>
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-12">
+        {profiles.map((profile) => (
+          <motion.div
+            key={profile.id}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="relative group cursor-pointer"
           >
-            <Image
-              src={profile.image ?? "/images/default-avatar.png"}
-              alt={profile.name}
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 50vw, 25vw"
-            />
+            {/* Główne zdjęcie */}
+            <div
+              className="relative aspect-[3/4] rounded-xl overflow-hidden 
+                           ring-2 ring-transparent group-hover:ring-amber-500/50 
+                           transition-all duration-300"
+            >
+              <Image
+                src={profile.image ?? "/images/default-avatar.png"}
+                alt={profile.name}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 50vw, 25vw"
+              />
 
-            {/* Gradient overlay - zawsze widoczny */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-100" />
+              {/* Gradient overlay - zawsze widoczny */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-100" />
 
-            {/* Informacje - zawsze widoczne */}
-            <div className="absolute inset-0 p-4 flex flex-col justify-end">
-              <div className="text-white space-y-2">
-                <div className="flex items-center gap-2">
-                  <h3 className="text-xl font-bold">{profile.name}</h3>
-                  {profile.age && (
-                    <span className="text-sm text-gray-200">
-                      {profile.age} lat
-                    </span>
-                  )}
+              {/* Informacje - zawsze widoczne */}
+              <div className="absolute inset-0 p-4 flex flex-col justify-end">
+                <div className="text-white space-y-2">
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-xl font-bold">{profile.name}</h3>
+                    {profile.age && (
+                      <span className="text-sm text-gray-200">
+                        {profile.age} lat
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="flex items-center gap-1.5 text-sm">
+                    <FaMapMarkerAlt className="text-amber-400" />
+                    <span>{profile.dancePreferences?.location}</span>
+                  </div>
+
+                  {renderStyles(profile.dancePreferences?.styles || [])}
                 </div>
+              </div>
 
-                <div className="flex items-center gap-1.5 text-sm">
-                  <FaMapMarkerAlt className="text-amber-400" />
-                  <span>{profile.dancePreferences?.location}</span>
-                </div>
-
-                <div className="flex flex-wrap gap-2 mt-2">
-                  {profile.dancePreferences?.styles.slice(0, 2).map((style) => (
-                    <span
-                      key={style}
-                      className="px-2 py-1 bg-amber-500/30 backdrop-blur-sm 
-                               rounded-full text-sm text-white"
-                    >
-                      {style}
-                    </span>
-                  ))}
-                </div>
+              {/* Poziom zaawansowania - zawsze widoczny */}
+              <div className="absolute top-3 left-3">
+                <span
+                  className="bg-white/95 backdrop-blur-sm text-amber-700 px-2 py-1 
+                               rounded-full text-sm font-medium"
+                >
+                  {translateLevel(profile.dancePreferences?.level || "")}
+                </span>
               </div>
             </div>
 
-            {/* Poziom zaawansowania - zawsze widoczny */}
-            <div className="absolute top-3 left-3">
-              <span
-                className="bg-white/95 backdrop-blur-sm text-amber-700 px-2 py-1 
-                             rounded-full text-sm font-medium"
-              >
-                {translateLevel(profile.dancePreferences?.level || "")}
-              </span>
-            </div>
-          </div>
+            {/* Link do profilu */}
+            <Link
+              href={`/profile/${profile.id}`}
+              className="absolute inset-0 z-10"
+            >
+              <span className="sr-only">Zobacz profil</span>
+            </Link>
+          </motion.div>
+        ))}
+      </div>
 
-          {/* Link do profilu */}
-          <Link
-            href={`/profile/${profile.id}`}
-            className="absolute inset-0 z-10"
+      {/* Modal ze stylami */}
+      <AnimatePresence>
+        {isModalOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center"
+            onClick={() => setIsModalOpen(false)}
           >
-            <span className="sr-only">Zobacz profil</span>
-          </Link>
-        </motion.div>
-      ))}
-    </div>
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-white rounded-xl p-6 max-w-md w-full mx-4"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-lg font-semibold">Pozostałe style tańca</h3>
+                <button
+                  onClick={() => setIsModalOpen(false)}
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  ✕
+                </button>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {selectedStyles.map((style) => (
+                  <span
+                    key={style}
+                    className="px-3 py-1.5 bg-amber-100 text-amber-800 
+                             rounded-full text-sm"
+                  >
+                    {style}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
