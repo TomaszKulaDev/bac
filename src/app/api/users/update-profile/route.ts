@@ -23,6 +23,10 @@ const updateProfileSchema = z.object({
     .max(120, "Wprowadź prawidłowy wiek")
     .optional(),
   gender: z.enum(["male", "female"]).optional(),
+  bio: z
+    .string()
+    .max(500, "Opis nie może być dłuższy niż 500 znaków")
+    .optional(),
 });
 
 export async function GET(request: Request) {
@@ -83,7 +87,6 @@ export async function POST(request: Request) {
 
     await connectToDatabase();
     const data = await request.json();
-
     const validatedData = updateProfileSchema.parse(data);
 
     const updatedUser = await User.findOneAndUpdate(
@@ -96,6 +99,7 @@ export async function POST(request: Request) {
           dancePreferences: validatedData.dancePreferences,
           age: validatedData.age,
           gender: validatedData.gender,
+          bio: validatedData.bio,
         },
       },
       { new: true }
@@ -113,9 +117,9 @@ export async function POST(request: Request) {
       dancePreferences: updatedUser.dancePreferences,
       age: updatedUser.age,
       gender: updatedUser.gender,
+      bio: updatedUser.bio,
     });
   } catch (error) {
-    console.error("Profile update error:", error);
     return NextResponse.json(
       { message: "Failed to update profile" },
       { status: 500 }

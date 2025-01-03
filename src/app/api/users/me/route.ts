@@ -28,6 +28,7 @@ export async function GET(request: Request) {
       dancePreferences: userDetails.dancePreferences,
       age: userDetails.age,
       gender: userDetails.gender,
+      bio: userDetails.bio,
     });
   } catch (error) {
     return NextResponse.json(

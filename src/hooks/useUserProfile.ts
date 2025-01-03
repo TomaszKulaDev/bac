@@ -41,11 +41,15 @@ export function useUserProfile() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(updatedData),
+        body: JSON.stringify({
+          ...updatedData,
+          bio: updatedData.bio,
+        }),
       });
 
       if (!response.ok) {
-        throw new Error("Failed to update user profile");
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to update user profile");
       }
 
       const data = await response.json();
@@ -79,7 +83,6 @@ export function useUserProfile() {
 
       return data;
     } catch (err) {
-      setError("Error updating user profile");
       throw err;
     }
   };

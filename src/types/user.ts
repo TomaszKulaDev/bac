@@ -5,6 +5,7 @@ export interface UserProfile {
   name: string;
   email: string;
   image?: string;
+  bio?: string;
   createdAt?: string;
   updatedAt?: string;
   dancePreferences?: {

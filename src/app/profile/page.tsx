@@ -23,6 +23,7 @@ interface ProfileFormData {
   };
   age?: number;
   gender?: Gender;
+  bio?: string;
 }
 
 const translateLevel = (level: string) => {
@@ -90,6 +91,7 @@ export default function ProfilePage() {
       location: "",
     },
     age: userProfile?.age,
+    bio: userProfile?.bio || "",
   });
 
   // Inicjalizacja danych formularza
@@ -106,6 +108,7 @@ export default function ProfilePage() {
           location: "",
         },
         age: userProfile.age,
+        bio: userProfile.bio || "",
       });
     }
   }, [userProfile, isEditing]);
@@ -125,6 +128,7 @@ export default function ProfilePage() {
           location: "",
         },
         age: userProfile.age,
+        bio: userProfile.bio || "",
       });
     }
   };
@@ -132,6 +136,7 @@ export default function ProfilePage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      console.log("Wysyłane dane:", formData);
       await updateUserProfile(formData);
       setIsEditing(false);
     } catch (error) {
@@ -556,6 +561,30 @@ export default function ProfilePage() {
                 </div>
               </div>
 
+              {/* Dodaj to pole przed przyciskami akcji */}
+              <div className="mt-6">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  O mnie
+                </label>
+                <textarea
+                  value={formData.bio || ""}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      bio: e.target.value,
+                    }))
+                  }
+                  rows={4}
+                  className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm 
+                             focus:border-amber-500 focus:ring-amber-500/20 resize-none"
+                  placeholder="Napisz coś o sobie..."
+                  maxLength={500}
+                />
+                <p className="mt-1 text-sm text-gray-500 text-right">
+                  {formData.bio?.length || 0}/500 znaków
+                </p>
+              </div>
+
               {/* Przyciski akcji */}
               <div className="flex justify-end gap-4 pt-6 border-t">
                 <button
@@ -661,6 +690,15 @@ export default function ProfilePage() {
                     : "Nie podano"}
                 </p>
               </div>
+
+              {userProfile?.bio && (
+                <div className="mt-6">
+                  <h3 className="text-sm font-medium text-gray-700">O mnie</h3>
+                  <p className="mt-2 text-gray-900 whitespace-pre-wrap">
+                    {userProfile.bio}
+                  </p>
+                </div>
+              )}
             </div>
           )}
         </div>
