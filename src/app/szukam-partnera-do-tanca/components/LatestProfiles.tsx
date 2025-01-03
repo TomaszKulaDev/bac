@@ -20,20 +20,35 @@ export const LatestProfiles = () => {
   const [profiles, setProfiles] = useState<UserProfile[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchProfiles = async () => {
-      try {
-        const response = await fetch("/api/profiles");
-        const data = await response.json();
-        setProfiles(data);
-      } catch (error) {
-        console.error("Błąd podczas pobierania profili:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const fetchProfiles = async () => {
+    try {
+      const timestamp = new Date().getTime();
+      const response = await fetch(`/api/profiles?t=${timestamp}`, {
+        next: {
+          revalidate: 0,
+        },
+        cache: "no-store",
+      });
 
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await response.json();
+      setProfiles(data);
+    } catch (error) {
+      console.error("Błąd podczas pobierania profili:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchProfiles();
+
+    // Opcjonalnie: odświeżaj co jakiś czas
+    const interval = setInterval(fetchProfiles, 30000); // co 30 sekund
+    return () => clearInterval(interval);
   }, []);
 
   if (isLoading) {

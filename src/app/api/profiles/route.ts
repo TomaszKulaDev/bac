@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { connectToDatabase } from "@/lib/mongodb";
 import User from "@/models/User";
 import { NextResponse } from "next/server";
@@ -6,9 +8,17 @@ import { NextResponse } from "next/server";
 export async function GET() {
   try {
     await connectToDatabase();
-    const profiles = await User.find();
+    const profiles = await User.find(
+      {},
+      {
+        name: 1,
+        email: 1,
+        image: 1,
+        dancePreferences: 1,
+        age: 1,
+      }
+    ).sort({ createdAt: -1 });
 
-    // Konwertujemy _id na id dla frontendu
     const formattedProfiles = profiles.map((profile) => ({
       id: profile._id.toString(),
       name: profile.name,
@@ -16,10 +26,14 @@ export async function GET() {
       image: profile.image,
       dancePreferences: profile.dancePreferences,
       age: profile.age,
-      // ... reszta pól
     }));
 
-    return NextResponse.json(formattedProfiles);
+    return NextResponse.json(formattedProfiles, {
+      headers: {
+        "Cache-Control": "no-store, max-age=0",
+        "Surrogate-Control": "no-store",
+      },
+    });
   } catch (error) {
     console.error("Error fetching profiles:", error);
     return NextResponse.json(
