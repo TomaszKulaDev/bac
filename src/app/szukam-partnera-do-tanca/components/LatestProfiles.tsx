@@ -85,6 +85,11 @@ export const LatestProfiles = () => {
               <div className="text-white space-y-2">
                 <div className="flex items-center gap-2">
                   <h3 className="text-xl font-bold">{profile.name}</h3>
+                  {profile.age && (
+                    <span className="text-sm text-gray-200">
+                      {profile.age} lat
+                    </span>
+                  )}
                 </div>
 
                 <div className="flex items-center gap-1.5 text-sm">

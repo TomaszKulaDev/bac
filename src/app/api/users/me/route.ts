@@ -26,6 +26,7 @@ export async function GET(request: Request) {
       email: userDetails.email,
       image: userDetails.image,
       dancePreferences: userDetails.dancePreferences,
+      age: userDetails.age,
     });
   } catch (error) {
     return NextResponse.json(

@@ -17,6 +17,11 @@ const updateProfileSchema = z.object({
     })
     .optional(),
   image: z.string().optional(),
+  age: z
+    .number()
+    .min(16, "Musisz mieć co najmniej 16 lat")
+    .max(120, "Wprowadź prawidłowy wiek")
+    .optional(),
 });
 
 export async function GET(request: Request) {
@@ -88,6 +93,7 @@ export async function POST(request: Request) {
           email: validatedData.email,
           image: validatedData.image,
           dancePreferences: validatedData.dancePreferences,
+          age: validatedData.age,
         },
       },
       { new: true }

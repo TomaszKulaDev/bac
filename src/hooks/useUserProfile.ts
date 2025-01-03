@@ -72,6 +72,7 @@ export function useUserProfile() {
             role: data.role,
             image: data.image,
             dancePreferences: data.dancePreferences,
+            age: data.age,
           },
         })
       );

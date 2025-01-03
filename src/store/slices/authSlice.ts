@@ -13,8 +13,14 @@ export interface UserBasicInfo {
   name: string;
   email: string;
   role: string;
-  image?: string | null;
-  dancePreferences?: DancePreferences;
+  image?: string;
+  dancePreferences?: {
+    styles: string[];
+    level: string;
+    availability: string;
+    location: string;
+  };
+  age?: number;
 }
 
 interface AuthState {

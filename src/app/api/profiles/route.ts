@@ -15,6 +15,7 @@ export async function GET() {
       email: profile.email,
       image: profile.image,
       dancePreferences: profile.dancePreferences,
+      age: profile.age,
       // ... reszta pól
     }));
 

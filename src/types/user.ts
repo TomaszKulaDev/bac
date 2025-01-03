@@ -16,4 +16,5 @@ export interface UserProfile {
     facebook?: string;
     youtube?: string;
   };
+  age?: number;
 }

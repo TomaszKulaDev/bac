@@ -12,6 +12,18 @@ import { useUserProfile } from "@/hooks/useUserProfile";
 import { UserProfile } from "@/types/user";
 import { motion } from "framer-motion";
 
+interface ProfileFormData {
+  name: string;
+  email: string;
+  dancePreferences: {
+    styles: string[];
+    level: string;
+    availability: string;
+    location: string;
+  };
+  age?: number;
+}
+
 const translateLevel = (level: string) => {
   const levels = {
     beginner: "Początkujący",
@@ -60,20 +72,22 @@ type FormDataType = {
     facebook: string | undefined;
     youtube: string | undefined;
   };
+  age?: number;
 };
 
 export default function ProfilePage() {
   const { userProfile, isLoading, updateUserProfile } = useUserProfile();
   const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    dancePreferences: {
-      styles: [] as string[],
+  const [formData, setFormData] = useState<ProfileFormData>({
+    name: userProfile?.name || "",
+    email: userProfile?.email || "",
+    dancePreferences: userProfile?.dancePreferences || {
+      styles: [],
       level: "",
       availability: "",
       location: "",
     },
+    age: userProfile?.age,
   });
 
   // Inicjalizacja danych formularza
@@ -415,6 +429,35 @@ export default function ProfilePage() {
                 </div>
               </div>
 
+              {/* Dodajemy nowe pole wieku */}
+              <div className="mb-4">
+                <label
+                  htmlFor="age"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Wiek
+                </label>
+                <input
+                  type="number"
+                  id="age"
+                  name="age"
+                  min="16"
+                  max="120"
+                  value={formData.age || ""}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      age: e.target.value
+                        ? parseInt(e.target.value)
+                        : undefined,
+                    }))
+                  }
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm 
+                             focus:border-amber-500 focus:ring-amber-500 sm:text-sm"
+                  placeholder="Wprowadź swój wiek"
+                />
+              </div>
+
               {/* Przyciski akcji */}
               <div className="flex justify-end gap-4 pt-6 border-t">
                 <button
@@ -501,6 +544,13 @@ export default function ProfilePage() {
                     </p>
                   </div>
                 </div>
+              </div>
+
+              <div className="mt-4">
+                <h3 className="text-sm font-medium text-gray-700">Wiek</h3>
+                <p className="mt-1 text-gray-900">
+                  {userProfile?.age ? `${userProfile.age} lat` : "Nie podano"}
+                </p>
               </div>
             </div>
           )}
