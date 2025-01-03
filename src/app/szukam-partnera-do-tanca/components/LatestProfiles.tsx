@@ -29,7 +29,7 @@ export const LatestProfiles = () => {
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-12">
         {[1, 2, 3, 4, 5, 6].map((i) => (
           <div key={i} className="animate-pulse">
             <div className="aspect-[3/4] rounded-xl bg-gray-200" />
@@ -40,7 +40,7 @@ export const LatestProfiles = () => {
   }
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-12">
       {profiles.map((profile) => (
         <motion.div
           key={profile._id}
@@ -49,7 +49,11 @@ export const LatestProfiles = () => {
           className="relative group cursor-pointer"
         >
           {/* Główne zdjęcie */}
-          <div className="relative aspect-[3/4] rounded-xl overflow-hidden">
+          <div
+            className="relative aspect-[3/4] rounded-xl overflow-hidden 
+                         ring-2 ring-transparent group-hover:ring-amber-500/50 
+                         transition-all duration-300"
+          >
             <Image
               src={profile.image ?? "/images/default-avatar.png"}
               alt={profile.name}
