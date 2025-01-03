@@ -16,11 +16,11 @@ const advertisementSchema = new mongoose.Schema(
     },
     author: {
       name: { type: String, required: true },
+      image: { type: String, default: "/images/default-avatar.png" },
       level: {
         type: String,
         enum: ["Początkujący", "Średniozaawansowany", "Zaawansowany"],
       },
-      avatar: { type: String },
     },
     description: {
       type: String,

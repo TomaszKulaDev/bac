@@ -174,22 +174,16 @@ export function QuickAds() {
                   </td>
                   <td className="py-3">
                     <div className="flex items-center gap-2">
-                      {ad.author.avatar ? (
+                      <div className="w-6 h-6 flex-shrink-0">
                         <Image
-                          src={ad.author.avatar}
+                          src={ad.author.image || "/images/default-avatar.png"}
                           alt={ad.author.name}
                           width={24}
                           height={24}
-                          className="rounded-full"
+                          className="rounded-full object-cover w-full h-full"
+                          priority
                         />
-                      ) : (
-                        <div
-                          className="w-6 h-6 rounded-full bg-gradient-to-r from-amber-500 to-red-500 
-                                      flex items-center justify-center text-white text-xs"
-                        >
-                          {ad.author.name[0]?.toUpperCase()}
-                        </div>
-                      )}
+                      </div>
                       <span className="text-sm text-gray-600">
                         {ad.author.name}
                       </span>
@@ -248,22 +242,16 @@ export function QuickAds() {
                   {ad.type}
                 </span>
                 <div className="flex items-center gap-2">
-                  {ad.author.avatar ? (
+                  <div className="w-6 h-6 flex-shrink-0">
                     <Image
-                      src={ad.author.avatar}
+                      src={ad.author.image || "/images/default-avatar.png"}
                       alt={ad.author.name}
                       width={24}
                       height={24}
-                      className="rounded-full"
+                      className="rounded-full object-cover w-full h-full"
+                      priority
                     />
-                  ) : (
-                    <div
-                      className="w-6 h-6 rounded-full bg-gradient-to-r from-amber-500 to-red-500 
-                                  flex items-center justify-center text-white text-xs"
-                    >
-                      {ad.author.name[0]?.toUpperCase()}
-                    </div>
-                  )}
+                  </div>
                   <span className="text-sm text-gray-600">
                     {ad.author.name}
                   </span>

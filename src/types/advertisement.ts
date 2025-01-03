@@ -17,8 +17,8 @@ export interface Advertisement {
   };
   author: {
     name: string;
+    image?: string;
     level: DanceLevel;
-    avatar?: string;
   };
   createdAt: string;
 }

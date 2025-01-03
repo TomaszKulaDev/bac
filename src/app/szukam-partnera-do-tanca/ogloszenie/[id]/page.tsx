@@ -189,25 +189,16 @@ export default async function AdvertisementPage({
             </h2>
 
             <div className="flex items-center gap-4 mb-6">
-              {ad.author.avatar ? (
+              <div className="w-12 h-12 flex-shrink-0">
                 <Image
-                  src={ad.author.avatar}
+                  src={ad.author.image || "/images/default-avatar.png"}
                   alt={ad.author.name}
                   width={48}
                   height={48}
-                  className="rounded-full object-cover"
-                  priority={true}
+                  className="rounded-full object-cover w-full h-full"
+                  priority
                 />
-              ) : (
-                <div
-                  className="w-12 h-12 bg-gradient-to-r from-amber-500 to-red-500 
-                              rounded-full flex items-center justify-center"
-                >
-                  <span className="text-white text-lg font-medium">
-                    {ad.author.name[0]?.toUpperCase()}
-                  </span>
-                </div>
-              )}
+              </div>
               <div>
                 <h2 className="text-xl font-semibold text-gray-900">
                   {ad.author.name}

@@ -28,8 +28,12 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    console.log("Session user:", session.user); // Debugowanie
+
     await connectToDatabase();
     const data = await request.json();
+
+    console.log("Received data:", data); // Debugowanie
 
     if (!data.description || data.description.length > 255) {
       return NextResponse.json(
@@ -42,14 +46,17 @@ export async function POST(request: Request) {
       ...data,
       author: {
         name: session.user.name,
+        image: session.user.image || "/images/default-avatar.png",
         level: data.author.level,
-        avatar: session.user.image,
       },
     });
+
+    console.log("New ad:", newAd); // Debugowanie
 
     await newAd.save();
     return NextResponse.json(newAd);
   } catch (error) {
+    console.error("Error creating advertisement:", error);
     return NextResponse.json(
       { error: "Nie udało się dodać ogłoszenia" },
       { status: 500 }

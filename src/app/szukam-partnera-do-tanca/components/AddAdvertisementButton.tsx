@@ -34,10 +34,15 @@ export function AddAdvertisementButton({
     onSuccess?.();
   };
 
-  const getAvatar = (): string | undefined => {
+  const getUserImage = (): string => {
+    console.log("userProfile:", userProfile);
+    console.log("user:", user);
+
     if (userProfile?.image) return userProfile.image;
+    if (session?.user?.image) return session.user.image;
     if (user?.image) return user.image;
-    return undefined;
+
+    return "/images/default-avatar.png";
   };
 
   // Domyślne wartości dla nowego ogłoszenia
@@ -52,8 +57,8 @@ export function AddAdvertisementButton({
       place: "",
     },
     author: {
-      avatar: getAvatar(),
-      name: user?.name || "",
+      image: getUserImage(),
+      name: session?.user?.name || user?.name || "",
       level: "Początkujący" as const,
     },
   };
