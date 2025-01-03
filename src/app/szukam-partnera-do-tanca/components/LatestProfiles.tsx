@@ -7,6 +7,15 @@ import { motion } from "framer-motion";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { UserProfile } from "@/types/user";
 
+const translateLevel = (level: string) => {
+  const levels = {
+    beginner: "Początkujący",
+    intermediate: "Średniozaawansowany",
+    advanced: "Zaawansowany",
+  };
+  return levels[level as keyof typeof levels] || level;
+};
+
 export const LatestProfiles = () => {
   const [profiles, setProfiles] = useState<UserProfile[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -103,7 +112,7 @@ export const LatestProfiles = () => {
                 className="bg-white/95 backdrop-blur-sm text-amber-700 px-2 py-1 
                              rounded-full text-sm font-medium"
               >
-                {profile.dancePreferences?.level}
+                {translateLevel(profile.dancePreferences?.level || "")}
               </span>
             </div>
           </div>
