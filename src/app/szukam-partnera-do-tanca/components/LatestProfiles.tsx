@@ -86,17 +86,11 @@ export const LatestProfiles = () => {
               sizes="(max-width: 768px) 50vw, 25vw"
             />
 
-            {/* Gradient overlay */}
-            <div
-              className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent 
-                          opacity-0 group-hover:opacity-100 transition-opacity"
-            />
+            {/* Gradient overlay - zawsze widoczny */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-100" />
 
-            {/* Informacje na hover */}
-            <div
-              className="absolute inset-0 p-4 flex flex-col justify-end opacity-0 
-                          group-hover:opacity-100 transition-opacity"
-            >
+            {/* Informacje - zawsze widoczne */}
+            <div className="absolute inset-0 p-4 flex flex-col justify-end">
               <div className="text-white space-y-2">
                 <div className="flex items-center gap-2">
                   <h3 className="text-xl font-bold">{profile.name}</h3>
@@ -126,7 +120,7 @@ export const LatestProfiles = () => {
               </div>
             </div>
 
-            {/* Poziom zaawansowania */}
+            {/* Poziom zaawansowania - zawsze widoczny */}
             <div className="absolute top-3 left-3">
               <span
                 className="bg-white/95 backdrop-blur-sm text-amber-700 px-2 py-1 
