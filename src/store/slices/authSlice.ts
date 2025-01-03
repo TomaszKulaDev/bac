@@ -1,27 +1,6 @@
 // src/store/slices/authSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-interface DancePreferences {
-  styles: string[];
-  level: string;
-  availability: string;
-  location: string;
-}
-
-export interface UserBasicInfo {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
-  image?: string;
-  dancePreferences?: {
-    styles: string[];
-    level: string;
-    availability: string;
-    location: string;
-  };
-  age?: number;
-}
+import { UserBasicInfo } from "@/types/auth";
 
 interface AuthState {
   user: UserBasicInfo | null;

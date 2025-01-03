@@ -1,9 +1,18 @@
+export interface DancePreferences {
+  styles: string[];
+  level: string;
+  availability: string;
+  location: string;
+}
+
 export interface UserBasicInfo {
   id: string;
   name: string;
   email: string;
   role: string;
-  image?: string | null;
+  image?: string | null | undefined;
+  dancePreferences?: DancePreferences;
+  age?: number;
 }
 
 export interface AuthState {
@@ -21,6 +30,6 @@ export const mapSessionToUser = (sessionUser: any): UserBasicInfo => {
     name: sessionUser.name || "Użytkownik",
     email: sessionUser.email,
     role: sessionUser.role || "user",
-    image: sessionUser.image,
+    image: sessionUser.image || undefined,
   };
 };
