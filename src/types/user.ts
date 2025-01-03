@@ -1,3 +1,5 @@
+export type Gender = "male" | "female";
+
 export interface UserProfile {
   id: string;
   name: string;
@@ -17,4 +19,5 @@ export interface UserProfile {
     youtube?: string;
   };
   age?: number;
+  gender?: Gender;
 }

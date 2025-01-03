@@ -9,7 +9,7 @@ import { z } from "zod";
 import { FaEdit, FaSave, FaTimes, FaCamera } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { useUserProfile } from "@/hooks/useUserProfile";
-import { UserProfile } from "@/types/user";
+import { Gender, UserProfile } from "@/types/user";
 import { motion } from "framer-motion";
 
 interface ProfileFormData {
@@ -22,6 +22,7 @@ interface ProfileFormData {
     location: string;
   };
   age?: number;
+  gender?: Gender;
 }
 
 const translateLevel = (level: string) => {
@@ -81,6 +82,7 @@ export default function ProfilePage() {
   const [formData, setFormData] = useState<ProfileFormData>({
     name: userProfile?.name || "",
     email: userProfile?.email || "",
+    gender: userProfile?.gender,
     dancePreferences: userProfile?.dancePreferences || {
       styles: [],
       level: "",
@@ -96,12 +98,14 @@ export default function ProfilePage() {
       setFormData({
         name: userProfile.name,
         email: userProfile.email,
+        gender: userProfile.gender,
         dancePreferences: userProfile.dancePreferences || {
           styles: [],
           level: "",
           availability: "",
           location: "",
         },
+        age: userProfile.age,
       });
     }
   }, [userProfile, isEditing]);
@@ -113,12 +117,14 @@ export default function ProfilePage() {
       setFormData({
         name: userProfile.name,
         email: userProfile.email,
+        gender: userProfile.gender,
         dancePreferences: userProfile.dancePreferences || {
           styles: [],
           level: "",
           availability: "",
           location: "",
         },
+        age: userProfile.age,
       });
     }
   };
@@ -213,6 +219,98 @@ export default function ProfilePage() {
                       className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-amber-500 focus:ring-amber-500/20"
                     />
                   </div>
+                </div>
+              </div>
+
+              {/* Dodajemy nowe pole wieku */}
+              <div className="mb-4">
+                <label
+                  htmlFor="age"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Wiek
+                </label>
+                <input
+                  type="number"
+                  id="age"
+                  name="age"
+                  min="16"
+                  max="120"
+                  value={formData.age || ""}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      age: e.target.value
+                        ? parseInt(e.target.value)
+                        : undefined,
+                    }))
+                  }
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm 
+                             focus:border-amber-500 focus:ring-amber-500 sm:text-sm"
+                  placeholder="Wprowadź swój wiek"
+                />
+              </div>
+
+              {/* Płeć */}
+              <div className="col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-3">
+                  Płeć
+                </label>
+                <div className="grid grid-cols-2 md:grid-cols-2 gap-3">
+                  {[
+                    { id: "male", label: "Mężczyzna" },
+                    { id: "female", label: "Kobieta" },
+                  ].map((genderOption) => (
+                    <div
+                      key={genderOption.id}
+                      className={`
+                        relative flex items-center p-4 rounded-lg border-2 cursor-pointer
+                        ${
+                          formData.gender === genderOption.id
+                            ? "border-amber-500 bg-amber-50"
+                            : "border-gray-200 hover:border-amber-200 hover:bg-amber-50/50"
+                        }
+                        transition-all duration-200
+                      `}
+                      onClick={() => {
+                        setFormData((prev) => ({
+                          ...prev,
+                          gender: genderOption.id as Gender,
+                        }));
+                      }}
+                    >
+                      <input
+                        type="radio"
+                        name="gender"
+                        value={genderOption.id}
+                        checked={formData.gender === genderOption.id}
+                        onChange={() => {}} // Obsługa przez onClick na div
+                        className="w-4 h-4 accent-amber-500 border-gray-300 rounded-full"
+                      />
+                      <label className="ml-3 block text-sm font-medium text-gray-700">
+                        {genderOption.label}
+                      </label>
+                      {formData.gender === genderOption.id && (
+                        <motion.div
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          className="absolute -top-2 -right-2 w-5 h-5 bg-amber-500 rounded-full flex items-center justify-center"
+                        >
+                          <svg
+                            className="w-3 h-3 text-white"
+                            fill="none"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path d="M5 13l4 4L19 7" />
+                          </svg>
+                        </motion.div>
+                      )}
+                    </div>
+                  ))}
                 </div>
               </div>
 
@@ -458,35 +556,6 @@ export default function ProfilePage() {
                 </div>
               </div>
 
-              {/* Dodajemy nowe pole wieku */}
-              <div className="mb-4">
-                <label
-                  htmlFor="age"
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                >
-                  Wiek
-                </label>
-                <input
-                  type="number"
-                  id="age"
-                  name="age"
-                  min="16"
-                  max="120"
-                  value={formData.age || ""}
-                  onChange={(e) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      age: e.target.value
-                        ? parseInt(e.target.value)
-                        : undefined,
-                    }))
-                  }
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm 
-                             focus:border-amber-500 focus:ring-amber-500 sm:text-sm"
-                  placeholder="Wprowadź swój wiek"
-                />
-              </div>
-
               {/* Przyciski akcji */}
               <div className="flex justify-end gap-4 pt-6 border-t">
                 <button
@@ -579,6 +648,17 @@ export default function ProfilePage() {
                 <h3 className="text-sm font-medium text-gray-700">Wiek</h3>
                 <p className="mt-1 text-gray-900">
                   {userProfile?.age ? `${userProfile.age} lat` : "Nie podano"}
+                </p>
+              </div>
+
+              <div className="mt-4">
+                <h3 className="text-sm font-medium text-gray-700">Płeć</h3>
+                <p className="mt-1 text-gray-900">
+                  {userProfile?.gender === "male"
+                    ? "Mężczyzna"
+                    : userProfile?.gender === "female"
+                    ? "Kobieta"
+                    : "Nie podano"}
                 </p>
               </div>
             </div>

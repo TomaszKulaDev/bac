@@ -22,6 +22,7 @@ const updateProfileSchema = z.object({
     .min(16, "Musisz mieć co najmniej 16 lat")
     .max(120, "Wprowadź prawidłowy wiek")
     .optional(),
+  gender: z.enum(["male", "female"]).optional(),
 });
 
 export async function GET(request: Request) {
@@ -94,6 +95,7 @@ export async function POST(request: Request) {
           image: validatedData.image,
           dancePreferences: validatedData.dancePreferences,
           age: validatedData.age,
+          gender: validatedData.gender,
         },
       },
       { new: true }
@@ -109,6 +111,8 @@ export async function POST(request: Request) {
       email: updatedUser.email,
       image: updatedUser.image,
       dancePreferences: updatedUser.dancePreferences,
+      age: updatedUser.age,
+      gender: updatedUser.gender,
     });
   } catch (error) {
     console.error("Profile update error:", error);

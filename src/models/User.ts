@@ -15,6 +15,7 @@ export interface IUser extends Document {
     location: string;
   };
   age?: number;
+  gender?: string;
 }
 
 const userSchema = new mongoose.Schema(
@@ -39,6 +40,10 @@ const userSchema = new mongoose.Schema(
       type: Number,
       min: [16, "Musisz mieć co najmniej 16 lat"],
       max: [120, "Wprowadź prawidłowy wiek"],
+    },
+    gender: {
+      type: String,
+      enum: ["male", "female"],
     },
   },
   {
