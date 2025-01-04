@@ -19,6 +19,19 @@ import {
   FaMapMarkerAlt,
   FaBirthdayCake,
   FaRuler,
+  FaGraduationCap,
+  FaCalendarAlt,
+  FaMusic,
+  FaTicketAlt,
+  FaChalkboardTeacher,
+  FaImage,
+  FaTrophy,
+  FaUsers,
+  FaVideo,
+  FaCertificate,
+  FaMedal,
+  FaPhotoVideo,
+  FaHeart,
 } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { useUserProfile } from "@/hooks/useUserProfile";
@@ -803,61 +816,60 @@ export default function ProfilePage() {
           </div>
         </nav>
 
-        {/* Galeria pozostaje bez zmian */}
-        <div className="bg-white py-1 border-b">
-          <div
-            className="container mx-auto px-1"
-            style={{ maxWidth: "1200px" }}
-          >
-            <div className="grid grid-cols-6 md:grid-cols-8 lg:grid-cols-12 gap-0.5">
-              {/* Duży placeholder */}
-              <div className="relative aspect-[4/5] col-span-2 row-span-2 bg-gray-100 rounded-sm overflow-hidden group">
+        {/* Galeria na pełną szerokość */}
+        <div className="w-full bg-white py-1 border-b">
+          {/* Kontener o maksymalnej szerokości 1200px */}
+          <div className="max-w-[1200px] mx-auto">
+            {/* Grid galerii */}
+            <div className="grid grid-cols-12 gap-1">
+              {/* Główne zdjęcie - zajmuje 2 kolumny i 2 rzędy */}
+              <div className="col-span-2 row-span-2 relative aspect-[4/5] bg-gradient-to-br from-amber-500/10 to-amber-600/10 rounded-sm overflow-hidden group">
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-base">💃</span>
+                  <FaImage className="w-8 h-8 text-amber-500 group-hover:scale-110 transition-transform" />
+                </div>
+                <div className="absolute bottom-2 right-2">
+                  <span className="bg-white/90 backdrop-blur-sm text-gray-700 px-2 py-1 rounded-md text-xs font-medium flex items-center gap-1">
+                    <FaCamera className="w-3 h-3" />
+                    Główne
+                  </span>
                 </div>
               </div>
 
-              {/* Małe placeholdery */}
+              {/* Mniejsze elementy - każdy zajmuje 1 kolumnę */}
               {[
-                "🎵",
-                "🌟",
-                "🎭",
-                "🏆",
-                "✨",
-                "💫",
-                "🎪",
-                "🎨",
-                "🎼",
-                "🎡",
-                "🌈",
-                "🎶",
-                "🎬",
-                "🎸",
-                "🎯",
-                "🎪",
-                "🎨",
-                "🎭",
-                "🌟",
-                "✨",
-                "💫",
-                "🎪",
-                "🎵",
-                "🌟",
-                "🎭",
-                "🏆",
-                "✨",
-                "💫",
-                "🎪",
-                "🎨",
-                "🎼",
-                "🎡",
-              ].map((emoji, index) => (
+                { icon: FaMusic, label: "Występ" },
+                { icon: FaGraduationCap, label: "Warsztaty" },
+                { icon: FaTicketAlt, label: "Event" },
+                { icon: FaChalkboardTeacher, label: "Lekcja" },
+                { icon: FaTrophy, label: "Konkurs" },
+                { icon: FaUsers, label: "Grupa" },
+                { icon: FaVideo, label: "Film" },
+                { icon: FaCalendarAlt, label: "Wydarzenie" },
+                { icon: FaStar, label: "Wyróżnione" },
+                { icon: FaCertificate, label: "Certyfikat" },
+                { icon: FaMedal, label: "Osiągnięcie" },
+                { icon: FaPhotoVideo, label: "Media" },
+                { icon: FaImage, label: "Galeria" },
+                { icon: FaHeart, label: "Ulubione" },
+                { icon: FaCamera, label: "Zdjęcia" },
+                { icon: FaShareAlt, label: "Udostępnione" },
+                { icon: FaClock, label: "Ostatnie" },
+                { icon: FaFilter, label: "Filtry" },
+                { icon: FaSearch, label: "Szukaj" },
+                { icon: FaEdit, label: "Edytuj" },
+              ].map((item, index) => (
                 <div
                   key={index}
-                  className="relative aspect-square bg-gray-100 rounded-sm overflow-hidden"
+                  className="col-span-1 relative aspect-square bg-gradient-to-br from-gray-50 to-gray-100 rounded-sm overflow-hidden group cursor-pointer"
                 >
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-sm">{emoji}</span>
+                    <item.icon className="w-5 h-5 text-gray-400 group-hover:text-amber-500 group-hover:scale-110 transition-all duration-200" />
+                  </div>
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors" />
+                  <div className="absolute bottom-1 left-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span className="text-[10px] text-gray-500 font-medium block text-center truncate">
+                      {item.label}
+                    </span>
                   </div>
                 </div>
               ))}
@@ -921,7 +933,7 @@ export default function ProfilePage() {
 
           {/* Grid z informacjami i aktywnością */}
           <div className="grid grid-cols-12 gap-8 mt-8">
-            {/* Lewa kolumna */}
+            {/* Lewa kolumna - Ulubione wydarzenia */}
             <div className="col-span-12 md:col-span-4 space-y-6">
               {/* Informacje */}
               <div className="bg-white rounded-xl shadow-sm overflow-hidden">
@@ -976,85 +988,170 @@ export default function ProfilePage() {
                 </div>
               </div>
 
-              {/* Ulubione wydarzenia */}
+              {/* Ulepszone Ulubione wydarzenia */}
               <div className="bg-white rounded-xl shadow-sm overflow-hidden">
                 <div className="p-6 border-b">
-                  <h2 className="text-lg font-semibold text-gray-900">
-                    Ulubione wydarzenia
-                  </h2>
+                  <div className="flex items-center justify-between">
+                    <h2 className="text-lg font-semibold text-gray-900">
+                      Ulubione wydarzenia
+                    </h2>
+                    <span className="text-xs font-medium text-amber-600 bg-amber-50 px-2 py-1 rounded-full">
+                      3 nadchodzące
+                    </span>
+                  </div>
                 </div>
                 <div className="divide-y">
-                  <div className="p-4 hover:bg-gray-50 transition-colors cursor-pointer">
-                    <div className="flex items-center gap-3 mb-2">
-                      <span className="text-2xl">💃</span>
-                      <h3 className="font-medium text-gray-900">
-                        Warsaw Salsa Festival
-                      </h3>
-                    </div>
-                    <div className="ml-9 space-y-2">
-                      <p className="text-sm text-gray-500">
-                        Coroczne wydarzenie • Wrzesień
-                      </p>
-                      <div className="flex gap-2">
-                        <span className="px-2 py-1 bg-amber-50 text-amber-700 rounded-full text-xs font-medium">
-                          Salsa
-                        </span>
-                        <span className="px-2 py-1 bg-purple-50 text-purple-700 rounded-full text-xs font-medium">
-                          Festiwal
-                        </span>
+                  {/* Pojedyncze wydarzenie */}
+                  <div className="p-4 hover:bg-gray-50 transition-colors cursor-pointer group">
+                    <div className="flex items-start gap-4">
+                      {/* Data wydarzenia */}
+                      <div className="flex-shrink-0 w-14 text-center">
+                        <div className="text-2xl font-bold text-amber-500">
+                          15
+                        </div>
+                        <div className="text-xs font-medium text-gray-500 uppercase">
+                          KWI
+                        </div>
                       </div>
+
+                      {/* Szczegóły wydarzenia z ikonami */}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <FaCalendarAlt className="w-4 h-4 text-amber-500" />
+                          <h3 className="font-medium text-gray-900 truncate group-hover:text-amber-600 transition-colors">
+                            Warsaw Salsa Festival
+                          </h3>
+                          <span className="flex-shrink-0 w-2 h-2 rounded-full bg-green-500"></span>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
+                          <FaMapMarkerAlt className="w-3.5 h-3.5" />
+                          <span>Warszawa, Centrum</span>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          <span className="inline-flex items-center px-2 py-1 bg-amber-50 text-amber-700 rounded-full text-xs font-medium">
+                            <FaMusic className="w-3 h-3 mr-1" />
+                            Salsa
+                          </span>
+                          <span className="inline-flex items-center px-2 py-1 bg-purple-50 text-purple-700 rounded-full text-xs font-medium">
+                            <FaTicketAlt className="w-3 h-3 mr-1" />
+                            Festiwal
+                          </span>
+                          <span className="inline-flex items-center px-2 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-medium">
+                            <FaChalkboardTeacher className="w-3 h-3 mr-1" />
+                            Warsztaty
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Akcje */}
+                      <button className="p-2 text-gray-400 hover:text-amber-500 transition-colors">
+                        <FaStar className="w-5 h-5" />
+                      </button>
                     </div>
                   </div>
-                  {/* ... pozostałe wydarzenia ... */}
+
+                  {/* Kolejne wydarzenia w podobnym stylu */}
+                  {/* ... */}
+                </div>
+                <div className="p-4 bg-gray-50 border-t">
+                  <button className="w-full py-2 text-sm font-medium text-amber-600 hover:text-amber-700 transition-colors">
+                    Zobacz wszystkie wydarzenia
+                  </button>
                 </div>
               </div>
             </div>
 
-            {/* Prawa kolumna - Historia aktywności */}
+            {/* Prawa kolumna - Ulepszona Historia aktywności */}
             <div className="col-span-12 md:col-span-8">
               <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-                <div className="p-6">
-                  <h2 className="text-lg font-semibold text-gray-900 mb-6">
-                    Historia aktywności
-                  </h2>
-                  <div className="relative space-y-8">
-                    <div className="absolute left-8 top-0 bottom-0 w-px bg-gray-200" />
+                <div className="p-6 border-b">
+                  <div className="flex items-center justify-between">
+                    <h2 className="text-lg font-semibold text-gray-900">
+                      Historia aktywności
+                    </h2>
+                    <div className="flex gap-2">
+                      <button className="p-2 text-gray-500 hover:text-gray-700 rounded-lg hover:bg-gray-100 transition-colors">
+                        <FaFilter className="w-4 h-4" />
+                      </button>
+                      <button className="p-2 text-gray-500 hover:text-gray-700 rounded-lg hover:bg-gray-100 transition-colors">
+                        <FaSearch className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
 
-                    <div className="relative flex gap-6">
-                      <div className="w-16 h-16 rounded-full bg-amber-50 flex items-center justify-center flex-shrink-0 z-10">
-                        <span className="text-2xl">🎓</span>
+                <div className="p-6">
+                  <div className="relative space-y-8">
+                    {/* Linia timeline */}
+                    <div className="absolute left-8 top-0 bottom-0 w-px bg-gradient-to-b from-amber-500 to-amber-100" />
+
+                    {/* Pojedyncza aktywność */}
+                    <div className="relative flex gap-6 group">
+                      <div className="relative">
+                        <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center flex-shrink-0 z-10 group-hover:scale-105 transition-transform">
+                          <FaGraduationCap className="w-8 h-8 text-white" />
+                        </div>
+                        <div className="absolute -bottom-2 -right-2 w-6 h-6 bg-green-500 rounded-full border-2 border-white flex items-center justify-center">
+                          <FaStar className="w-3 h-3 text-white" />
+                        </div>
                       </div>
-                      <div className="flex-1 bg-gray-50 rounded-xl p-4">
+
+                      <div className="flex-1">
                         <div className="flex items-start justify-between mb-2">
                           <div>
-                            <span className="px-2 py-1 bg-green-50 text-green-700 rounded-full text-xs font-medium">
-                              Instruktor
-                            </span>
-                            <h3 className="text-lg font-medium mt-1">
+                            <div className="flex items-center gap-2 mb-1">
+                              <span className="px-2 py-1 bg-green-50 text-green-700 rounded-full text-xs font-medium">
+                                Instruktor
+                              </span>
+                              <span className="text-sm text-gray-500">•</span>
+                              <time className="text-sm text-gray-500">
+                                15 kwi 2024
+                              </time>
+                            </div>
+                            <h3 className="text-lg font-medium text-gray-900 group-hover:text-amber-600 transition-colors">
                               Technika Bachaty
                             </h3>
                           </div>
-                          <time className="text-sm text-gray-500">
-                            15 kwi 2024
-                          </time>
+                          <button className="p-2 text-gray-400 hover:text-amber-500 transition-colors rounded-lg hover:bg-gray-100">
+                            <FaShareAlt className="w-4 h-4" />
+                          </button>
                         </div>
-                        <p className="text-gray-600 text-sm mb-2">
+
+                        <p className="text-gray-600 text-sm mb-3 leading-relaxed">
                           Warsztaty z techniki prowadzenia i footworku w
-                          bachacie.
+                          bachacie. Zajęcia obejmowały zaawansowane techniki
+                          prowadzenia oraz złożone kombinacje kroków.
                         </p>
-                        <div className="flex gap-2">
-                          <span className="px-2 py-1 bg-amber-50 text-amber-700 rounded-full text-xs font-medium">
-                            Bachata
-                          </span>
-                          <span className="px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-xs font-medium">
-                            6 godzin
-                          </span>
+
+                        <div className="flex items-center gap-4">
+                          <div className="flex gap-2">
+                            <span className="px-2 py-1 bg-amber-50 text-amber-700 rounded-full text-xs font-medium">
+                              Bachata
+                            </span>
+                            <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium">
+                              6 godzin
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-1 text-gray-400">
+                            <FaStar className="w-4 h-4 text-amber-400" />
+                            <FaStar className="w-4 h-4 text-amber-400" />
+                            <FaStar className="w-4 h-4 text-amber-400" />
+                            <FaStar className="w-4 h-4 text-amber-400" />
+                            <FaStar className="w-4 h-4 text-amber-400" />
+                          </div>
                         </div>
                       </div>
                     </div>
 
-                    {/* ... pozostałe aktywności ... */}
+                    {/* Kolejne aktywności w podobnym stylu */}
+                    {/* ... */}
                   </div>
+                </div>
+
+                <div className="p-4 bg-gray-50 border-t">
+                  <button className="w-full py-2 text-sm font-medium text-amber-600 hover:text-amber-700 transition-colors">
+                    Załaduj więcej
+                  </button>
                 </div>
               </div>
             </div>
