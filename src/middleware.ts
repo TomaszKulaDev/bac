@@ -29,6 +29,10 @@ export async function middleware(request: NextRequest) {
     if (!token) {
       const url = new URL("/auth/signin", request.url);
       url.searchParams.set("callbackUrl", request.nextUrl.pathname);
+      url.searchParams.set(
+        "message",
+        "Musisz być zalogowany, aby zobaczyć profile tancerzy"
+      );
       return NextResponse.redirect(url);
     }
   }
