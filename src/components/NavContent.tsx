@@ -34,19 +34,22 @@ export const NavContent: React.FC = React.memo(function NavContent() {
   const pathname = usePathname();
 
   return (
-    <Suspense fallback={<NavbarSkeleton />}>
-      <nav className="nav-container sticky top-0 z-50">
-        {/* Górny pasek z dodatkowymi informacjami */}
-        <div className="bg-gradient-to-r from-amber-500 to-amber-600 text-white py-1">
-          <div className="max-w-[1200px] mx-auto px-4">
-            <div className="flex items-center justify-between text-xs">
+    <>
+      {/* Zmniejszony spacer dla nawigacji */}
+      <div className="h-[88px]" /> {/* 24px (top bar) + 64px (main nav) */}
+      {/* Nawigacja z cieńszym górnym paskiem */}
+      <div className="fixed top-0 left-0 right-0 z-[100]">
+        {/* Cieńszy górny pasek */}
+        <div className="bg-gradient-to-r from-amber-500 to-amber-600 text-white h-6">
+          <div className="max-w-[1200px] mx-auto px-4 h-full">
+            <div className="flex items-center justify-between text-[11px] h-full">
               <div className="flex items-center gap-4">
                 <span className="flex items-center gap-1">
-                  <FaCalendarAlt className="w-3 h-3" />
+                  <FaCalendarAlt className="w-2.5 h-2.5" />
                   Najbliższe wydarzenie: Warsaw Salsa Festival (15.04)
                 </span>
                 <span className="hidden sm:flex items-center gap-1">
-                  <FaUsers className="w-3 h-3" />
+                  <FaUsers className="w-2.5 h-2.5" />
                   2137 tancerzy online
                 </span>
               </div>
@@ -63,7 +66,7 @@ export const NavContent: React.FC = React.memo(function NavContent() {
         </div>
 
         {/* Główna nawigacja */}
-        <div className="bg-white border-b border-gray-100 shadow-sm">
+        <div className="bg-white border-b border-gray-100 shadow-sm h-16">
           <div className="max-w-[1200px] mx-auto">
             <div className="flex items-center justify-between h-16 px-4">
               {/* Logo */}
@@ -223,11 +226,10 @@ export const NavContent: React.FC = React.memo(function NavContent() {
             </div>
           </div>
         </div>
-      </nav>
-
-      {/* Menu mobilne z animacją */}
+      </div>
+      {/* Menu mobilne z poprawionym z-index */}
       <div
-        className={`fixed inset-0 bg-black/50 z-40 transition-opacity duration-300 md:hidden
+        className={`fixed inset-0 bg-black/50 z-[101] transition-opacity duration-300 md:hidden
           ${
             isMobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
           }`}
@@ -238,10 +240,103 @@ export const NavContent: React.FC = React.memo(function NavContent() {
             ${isMobileMenuOpen ? "translate-x-0" : "translate-x-full"}`}
           onClick={(e) => e.stopPropagation()}
         >
-          {/* Zawartość menu mobilnego */}
-          <div className="p-4 space-y-4">{/* ... */}</div>
+          <div className="p-4 space-y-4">
+            {/* Menu mobilne */}
+            <div className="space-y-2">
+              {[
+                {
+                  href: "/muzyka",
+                  label: "Muzyka",
+                  icon: FaMusic,
+                  badge: "Nowe",
+                },
+                {
+                  href: "/szukam-partnera-do-tanca",
+                  label: "Szukam Partnera",
+                  icon: FaUsers,
+                },
+                {
+                  href: "/taneczne-historie",
+                  label: "Historie",
+                  icon: FaBook,
+                },
+                {
+                  href: "/wydarzenia",
+                  label: "Wydarzenia",
+                  icon: FaCalendarAlt,
+                  badge: "3",
+                },
+                {
+                  href: "/szkoly",
+                  label: "Szkoły",
+                  icon: FaGraduationCap,
+                },
+              ].map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                    pathname === item.href
+                      ? "bg-amber-50 text-amber-600"
+                      : "text-gray-600 hover:bg-gray-50"
+                  }`}
+                >
+                  <item.icon className="w-5 h-5" />
+                  <span className="font-medium">{item.label}</span>
+                  {item.badge && (
+                    <span className="ml-auto px-2 py-0.5 text-xs font-medium bg-amber-500 text-white rounded-full">
+                      {item.badge}
+                    </span>
+                  )}
+                </Link>
+              ))}
+            </div>
+
+            {/* Przyciski w menu mobilnym */}
+            <div className="pt-4 border-t">
+              {isAuthenticated ? (
+                <div className="space-y-2">
+                  <Link
+                    href="/profil"
+                    className="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg transition-colors"
+                  >
+                    <div className="w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center">
+                      <span className="text-amber-600 font-medium">
+                        {user?.name?.[0]?.toUpperCase()}
+                      </span>
+                    </div>
+                    <div>
+                      <div className="font-medium">{user?.name}</div>
+                      <div className="text-xs text-gray-500">{user?.role}</div>
+                    </div>
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="w-full px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                  >
+                    Wyloguj się
+                  </button>
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  <Link
+                    href="/login"
+                    className="block w-full px-4 py-2 text-sm font-medium text-center text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
+                  >
+                    Zaloguj się
+                  </Link>
+                  <Link
+                    href="/register"
+                    className="block w-full px-4 py-2 text-sm font-medium text-center text-white bg-amber-500 hover:bg-amber-600 rounded-lg transition-colors"
+                  >
+                    Dołącz do nas
+                  </Link>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       </div>
-    </Suspense>
+    </>
   );
 });
