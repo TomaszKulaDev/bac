@@ -93,7 +93,7 @@ export const LatestProfiles = () => {
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-12">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-12">
         {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
           <div key={i} className="animate-pulse">
             <div className="aspect-[3/4] rounded-xl bg-gray-200" />
@@ -105,7 +105,7 @@ export const LatestProfiles = () => {
 
   return (
     <>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-8">
         {profiles.map((profile) => (
           <motion.div
             key={profile.id}
