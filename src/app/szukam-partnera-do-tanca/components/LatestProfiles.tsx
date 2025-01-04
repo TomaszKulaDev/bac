@@ -205,11 +205,11 @@ export const LatestProfiles = () => {
         ))}
       </div>
 
-      {/* Modal ze stylami */}
+      {/* Modal ze stylami - szerszy */}
       <AnimatePresence mode="wait">
         {isModalOpen && (
           <>
-            {/* Overlay z płynniejszą animacją */}
+            {/* Overlay z płynną animacją */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -219,7 +219,7 @@ export const LatestProfiles = () => {
               onClick={() => setIsModalOpen(false)}
             />
 
-            {/* Modal z płynniejszą animacją */}
+            {/* Szerszy modal z płynną animacją */}
             <motion.div
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
@@ -230,7 +230,7 @@ export const LatestProfiles = () => {
                 damping: 30,
                 duration: 0.4,
               }}
-              className="fixed inset-y-0 right-0 w-64 bg-white shadow-xl z-[102]"
+              className="fixed inset-y-0 right-0 w-80 sm:w-96 bg-white shadow-xl z-[102]"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Zawartość modalu z animacją */}
@@ -296,7 +296,7 @@ export const LatestProfiles = () => {
                   </div>
                   <div>
                     <div className="font-medium text-gray-900">
-                      Chcesz nauczyć się więcej?
+                      Chcesz nauczyć się więcej Styli?
                     </div>
                     <div className="text-xs text-gray-500">
                       Sprawdź szkołę tańca XYZ
