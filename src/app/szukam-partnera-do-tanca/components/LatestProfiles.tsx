@@ -105,7 +105,7 @@ export const LatestProfiles = () => {
 
   return (
     <>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-8">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-8">
         {profiles.map((profile) => (
           <motion.div
             key={profile.id}
@@ -205,41 +205,27 @@ export const LatestProfiles = () => {
         ))}
       </div>
 
-      {/* Modal ze stylami - szerszy */}
-      <AnimatePresence mode="wait">
+      {/* Modal ze stylami */}
+      <AnimatePresence>
         {isModalOpen && (
           <>
-            {/* Overlay z płynną animacją */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="fixed inset-0 bg-black/50 backdrop-blur-[2px] z-[101]"
+            {/* Overlay */}
+            <div
+              className={`fixed inset-0 bg-black/50 z-[101] transition-opacity duration-300
+                ${
+                  isModalOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+                }`}
               onClick={() => setIsModalOpen(false)}
             />
 
-            {/* Szerszy modal z płynną animacją */}
-            <motion.div
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{
-                type: "spring",
-                stiffness: 300,
-                damping: 30,
-                duration: 0.4,
-              }}
-              className="fixed inset-y-0 right-0 w-80 sm:w-96 bg-white shadow-xl z-[102]"
+            {/* Modal */}
+            <div
+              className={`fixed inset-y-0 right-0 w-64 bg-white shadow-xl z-[102]
+                transform transition-transform duration-300
+                ${isModalOpen ? "translate-x-0" : "translate-x-full"}`}
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Zawartość modalu z animacją */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.2 }}
-                className="p-4 space-y-4"
-              >
+              <div className="p-4 space-y-4">
                 {/* Nagłówek */}
                 <div className="flex items-center justify-between">
                   <h3 className="text-lg font-semibold text-gray-900">
@@ -296,7 +282,7 @@ export const LatestProfiles = () => {
                   </div>
                   <div>
                     <div className="font-medium text-gray-900">
-                      Chcesz nauczyć się więcej Styli?
+                      Chcesz nauczyć się więcej?
                     </div>
                     <div className="text-xs text-gray-500">
                       Sprawdź szkołę tańca XYZ
@@ -340,8 +326,8 @@ export const LatestProfiles = () => {
                     Zamknij
                   </button>
                 </div>
-              </motion.div>
-            </motion.div>
+              </div>
+            </div>
           </>
         )}
       </AnimatePresence>
