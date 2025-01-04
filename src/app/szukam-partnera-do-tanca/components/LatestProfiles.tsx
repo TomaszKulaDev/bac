@@ -24,6 +24,7 @@ export const LatestProfiles = () => {
 
   const fetchProfiles = async () => {
     try {
+      console.log("Rozpoczynam pobieranie profili");
       const timestamp = new Date().getTime();
       const response = await fetch(`/api/profiles?t=${timestamp}`, {
         next: {
@@ -33,7 +34,8 @@ export const LatestProfiles = () => {
       });
 
       if (!response.ok) {
-        throw new Error("Network response was not ok");
+        console.error("Błąd odpowiedzi:", response.status);
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const data = await response.json();
@@ -114,7 +116,12 @@ export const LatestProfiles = () => {
             className="relative group"
           >
             <Link
-              href={`/profile/${profile.id}`}
+              href={`/profile/${
+                profile.slug ||
+                encodeURIComponent(
+                  profile.name.toLowerCase().replace(/\s+/g, "-")
+                )
+              }`}
               className="block relative aspect-[3/4] rounded-xl overflow-hidden
                        ring-1 ring-gray-200 group-hover:ring-amber-500/50 
                        transition-all duration-300 bg-gray-100"

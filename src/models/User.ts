@@ -56,12 +56,24 @@ const userSchema = new mongoose.Schema(
       min: [140, "Wzrost nie może być mniejszy niż 140 cm"],
       max: [220, "Wzrost nie może być większy niż 220 cm"],
     },
+    slug: {
+      type: String,
+      unique: true,
+      sparse: true,
+    },
   },
   {
     timestamps: true,
     _id: true, // Upewniamy się, że MongoDB automatycznie generuje _id
   }
 );
+
+userSchema.pre("save", function (next) {
+  if (this.name && (!this.slug || this.isModified("name"))) {
+    this.slug = this.name.toLowerCase().replace(/\s+/g, "-");
+  }
+  next();
+});
 
 const User = mongoose.models.User || mongoose.model("User", userSchema);
 

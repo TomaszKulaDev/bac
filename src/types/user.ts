@@ -22,4 +22,5 @@ export interface UserProfile {
   };
   age?: number;
   gender?: Gender;
+  slug?: string;
 }
