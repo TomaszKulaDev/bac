@@ -95,8 +95,7 @@ export const LatestProfiles = () => {
 
   const handleProfileClick = (profileId: string) => {
     try {
-      console.log("Navigating to profile:", profileId); // Debugging
-      router.push(`/profile/${profileId}`);
+      router.push(`/profile?id=${profileId}`);
     } catch (error) {
       console.error("Error navigating to profile:", error);
     }
@@ -125,7 +124,7 @@ export const LatestProfiles = () => {
             className="relative group"
           >
             <Link
-              href={`/profile/${profile.id}`}
+              href={`/profile?id=${profile.id}`}
               className="block relative aspect-[3/4] rounded-xl overflow-hidden
                         ring-1 ring-gray-200 group-hover:ring-amber-500/50 
                         transition-all duration-300 bg-gray-100"
@@ -210,7 +209,7 @@ export const LatestProfiles = () => {
 
             {/* Link do profilu */}
             <Link
-              href={`/profile/${profile.id}`}
+              href={`/profile?id=${profile.id}`}
               className="absolute inset-0 z-10"
             >
               <span className="sr-only">Zobacz profil</span>

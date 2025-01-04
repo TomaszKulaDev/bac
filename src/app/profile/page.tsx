@@ -33,7 +33,7 @@ import {
   FaPhotoVideo,
   FaHeart,
 } from "react-icons/fa";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { Gender, UserProfile } from "@/types/user";
 import { motion } from "framer-motion";
@@ -104,43 +104,103 @@ type FormDataType = {
   age?: number;
 };
 
-export default function ProfilePage() {
-  const { userProfile, isLoading, updateUserProfile } = useUserProfile();
-  const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState<ProfileFormData>({
-    name: userProfile?.name || "",
-    email: userProfile?.email || "",
-    gender: userProfile?.gender,
-    dancePreferences: userProfile?.dancePreferences || {
-      styles: [],
-      level: "",
-      availability: "",
-      location: "",
-    },
-    age: userProfile?.age,
-    bio: userProfile?.bio || "",
-    height: userProfile?.height,
-  });
+// Definiujemy domyślne wartości dla dancePreferences
+const defaultDancePreferences = {
+  styles: [] as string[],
+  level: "",
+  availability: "",
+  location: "",
+};
 
-  // Inicjalizacja danych formularza
+// Definiujemy domyślne wartości dla formData
+const defaultFormData: Partial<UserProfile> = {
+  name: "",
+  email: "",
+  image: "",
+  bio: "",
+  height: undefined,
+  age: undefined,
+  gender: undefined,
+  dancePreferences: defaultDancePreferences,
+};
+
+export default function ProfilePage() {
+  const searchParams = useSearchParams();
+  const profileId = searchParams.get("id");
+  const {
+    userProfile,
+    isLoading: isUserProfileLoading,
+    updateUserProfile,
+  } = useUserProfile();
+  const [displayedProfile, setDisplayedProfile] = useState<UserProfile | null>(
+    null
+  );
+  const [isLoading, setIsLoading] = useState(true);
+  const [formData, setFormData] = useState<
+    Required<Pick<UserProfile, "dancePreferences">> & Partial<UserProfile>
+  >(
+    defaultFormData as Required<Pick<UserProfile, "dancePreferences">> &
+      Partial<UserProfile>
+  );
+  const [isEditing, setIsEditing] = useState(false);
+
+  // Efekt do ładowania odpowiedniego profilu
   useEffect(() => {
-    if (userProfile && !isEditing) {
-      setFormData({
-        name: userProfile.name,
-        email: userProfile.email,
-        gender: userProfile.gender,
-        dancePreferences: userProfile.dancePreferences || {
-          styles: [],
-          level: "",
-          availability: "",
-          location: "",
-        },
-        age: userProfile.age,
-        bio: userProfile.bio || "",
-        height: userProfile.height,
-      });
-    }
-  }, [userProfile, isEditing]);
+    const loadProfile = async () => {
+      try {
+        if (profileId) {
+          // Ładowanie profilu innego użytkownika
+          const response = await fetch(`/api/profiles/${profileId}`);
+          if (!response.ok) throw new Error("Failed to fetch profile");
+          const data = await response.json();
+          setDisplayedProfile(data);
+          setFormData({
+            ...data,
+            dancePreferences: {
+              ...defaultDancePreferences,
+              ...data.dancePreferences,
+            },
+          } as Required<Pick<UserProfile, "dancePreferences">> & Partial<UserProfile>);
+        } else if (userProfile) {
+          // Ładowanie własnego profilu
+          setDisplayedProfile(userProfile);
+          setFormData({
+            ...userProfile,
+            dancePreferences: {
+              ...defaultDancePreferences,
+              ...userProfile.dancePreferences,
+            },
+          } as Required<Pick<UserProfile, "dancePreferences">> & Partial<UserProfile>);
+        }
+      } catch (error) {
+        console.error("Error loading profile:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadProfile();
+  }, [profileId, userProfile]);
+
+  // Pokazujemy loader podczas ładowania
+  if (isLoading || isUserProfileLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-amber-500"></div>
+      </div>
+    );
+  }
+
+  // Pokazujemy informację jeśli nie znaleziono profilu
+  if (!displayedProfile) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-gray-500">Nie znaleziono profilu</div>
+      </div>
+    );
+  }
+
+  const isOwnProfile = !profileId;
 
   const handleEdit = () => setIsEditing(true);
   const handleCancel = () => {
@@ -174,18 +234,58 @@ export default function ProfilePage() {
     }
   };
 
+  // Handler dla aktualizacji stylów tańca
+  const handleStylesUpdate = (styles: string[]) => {
+    setFormData((prev) => ({
+      ...prev,
+      dancePreferences: {
+        ...prev.dancePreferences,
+        styles,
+      },
+    }));
+  };
+
+  // Handler dla aktualizacji poziomu
+  const handleLevelUpdate = (level: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      dancePreferences: {
+        ...prev.dancePreferences,
+        level,
+      },
+    }));
+  };
+
+  // Handler dla aktualizacji dostępności
+  const handleAvailabilityUpdate = (availability: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      dancePreferences: {
+        ...prev.dancePreferences,
+        availability,
+      },
+    }));
+  };
+
+  // Handler dla aktualizacji lokalizacji
+  const handleLocationUpdate = (location: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      dancePreferences: {
+        ...prev.dancePreferences,
+        location,
+      },
+    }));
+  };
+
   return (
     <>
-      {/* Modal edycji - na poziomie root */}
-      {isEditing && (
+      {isOwnProfile && isEditing && (
         <div className="fixed inset-0 z-50 overflow-y-auto">
           <div className="min-h-screen px-4 flex items-center justify-center">
-            {/* Backdrop z blur effect */}
             <div className="fixed inset-0 bg-black/30 backdrop-blur-sm transition-opacity" />
 
-            {/* Modal content */}
             <div className="relative bg-white rounded-xl max-w-2xl w-full shadow-2xl z-50">
-              {/* Header modala */}
               <div className="flex items-center justify-between p-4 border-b">
                 <h2 className="text-lg font-semibold text-gray-900">
                   Edytuj profil
@@ -198,7 +298,6 @@ export default function ProfilePage() {
                 </button>
               </div>
 
-              {/* Formularz */}
               <motion.form
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -207,7 +306,6 @@ export default function ProfilePage() {
                 onSubmit={handleSubmit}
                 className="p-6 space-y-6 max-h-[calc(100vh-12rem)] overflow-y-auto"
               >
-                {/* Sekcja zdjęcia profilowego */}
                 <div className="flex items-center space-x-6 mb-8">
                   <div className="relative">
                     <div className="w-24 h-24 rounded-full overflow-hidden">
@@ -236,7 +334,6 @@ export default function ProfilePage() {
                   </div>
                 </div>
 
-                {/* Podstawowe informacje */}
                 <div className="space-y-4">
                   <h2 className="text-xl font-semibold text-gray-800">
                     Podstawowe informacje
@@ -279,7 +376,6 @@ export default function ProfilePage() {
                   </div>
                 </div>
 
-                {/* Dodajemy nowe pole wieku */}
                 <div className="mb-4">
                   <label
                     htmlFor="age"
@@ -331,7 +427,6 @@ export default function ProfilePage() {
                   />
                 </div>
 
-                {/* Płeć */}
                 <div className="col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-3">
                     Płeć
@@ -364,7 +459,7 @@ export default function ProfilePage() {
                           name="gender"
                           value={genderOption.id}
                           checked={formData.gender === genderOption.id}
-                          onChange={() => {}} // Obsługa przez onClick na div
+                          onChange={() => {}}
                           className="w-4 h-4 accent-amber-500 border-gray-300 rounded-full"
                         />
                         <label className="ml-3 block text-sm font-medium text-gray-700">
@@ -394,9 +489,7 @@ export default function ProfilePage() {
                   </div>
                 </div>
 
-                {/* Preferencje taneczne */}
                 <div className="space-y-8">
-                  {/* Style tańca */}
                   <div className="col-span-2">
                     <label className="block text-sm font-medium text-gray-700 mb-3">
                       Style tańca
@@ -489,7 +582,6 @@ export default function ProfilePage() {
                     </div>
                   </div>
 
-                  {/* Poziom zaawansowania */}
                   <div className="col-span-2">
                     <label className="block text-sm font-medium text-gray-700 mb-3">
                       Poziom zaawansowania
@@ -556,7 +648,6 @@ export default function ProfilePage() {
                     </div>
                   </div>
 
-                  {/* Dostępność */}
                   <div className="col-span-2">
                     <label className="block text-sm font-medium text-gray-700 mb-3">
                       Dostępność
@@ -625,7 +716,6 @@ export default function ProfilePage() {
                     </div>
                   </div>
 
-                  {/* Lokalizacja */}
                   <div className="col-span-2">
                     <label className="block text-sm font-medium text-gray-700 mb-3">
                       Lokalizacja
@@ -649,7 +739,6 @@ export default function ProfilePage() {
                   </div>
                 </div>
 
-                {/* Dodaj to pole przed przyciskami akcji */}
                 <div className="mt-6">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     O mnie
@@ -673,7 +762,6 @@ export default function ProfilePage() {
                   </p>
                 </div>
 
-                {/* Footer modala */}
                 <div className="flex items-center justify-end gap-3 p-4 border-t bg-gray-50 sticky bottom-0">
                   <button
                     type="button"
@@ -696,18 +784,13 @@ export default function ProfilePage() {
       )}
 
       <div className="min-h-screen bg-gray-50">
-        {/* Nowy, bardziej elegancki header */}
         <header className="bg-white border-b">
-          <div
-            className="container mx-auto px-4 py-8"
-            style={{ maxWidth: "900px" }}
-          >
+          <div className="container mx-auto px-4 py-8">
             <div className="flex flex-col md:flex-row gap-8 items-center">
-              {/* Ulepszony Avatar */}
               <div className="relative group">
-                <div className="w-28 h-28 md:w-32 md:h-32 rounded-full overflow-hidden border-2 border-gray-200 transition-transform duration-300 group-hover:scale-105">
+                <div className="w-28 h-28 md:w-32 md:h-32 rounded-full overflow-hidden border-2 border-gray-200">
                   <Image
-                    src={userProfile?.image ?? "/images/default-avatar.png"}
+                    src={displayedProfile.image ?? "/images/default-avatar.png"}
                     alt="Profile"
                     width={128}
                     height={128}
@@ -715,17 +798,13 @@ export default function ProfilePage() {
                     priority
                   />
                 </div>
-                <div className="absolute bottom-0 right-0 bg-white rounded-full p-1 border-2 border-gray-200">
-                  <span className="block w-3 h-3 rounded-full bg-green-500"></span>
-                </div>
               </div>
 
-              {/* Ulepszone informacje profilowe */}
               <div className="flex-1 min-w-0">
                 <div className="flex flex-col md:flex-row items-center md:items-start gap-4 mb-6">
                   <div className="flex flex-col items-center md:items-start gap-1">
                     <h1 className="text-2xl font-semibold text-gray-900">
-                      {userProfile?.name}
+                      {displayedProfile.name}
                     </h1>
                     <p className="text-sm text-gray-500">
                       {/* {userProfile?.title || "Tancerz"} */}
@@ -745,7 +824,6 @@ export default function ProfilePage() {
                   </div>
                 </div>
 
-                {/* Ulepszone statystyki */}
                 <div className="grid grid-cols-3 gap-4 mb-6 max-w-md">
                   <div className="text-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
                     <div className="text-xl font-semibold text-gray-900">
@@ -767,14 +845,13 @@ export default function ProfilePage() {
                   </div>
                 </div>
 
-                {/* Bio i tagi */}
                 <div className="space-y-4">
                   <div className="text-sm text-gray-600 leading-relaxed">
-                    {userProfile?.bio ||
+                    {displayedProfile.bio ||
                       "Tancerka, instruktorka, choreografka, kursy online"}
                   </div>
                   <div className="flex flex-wrap gap-2">
-                    {userProfile?.dancePreferences?.styles?.map((style) => (
+                    {displayedProfile.dancePreferences?.styles?.map((style) => (
                       <span
                         key={style}
                         className="px-3 py-1 bg-amber-50 text-amber-700 rounded-full text-xs font-medium hover:bg-amber-100 transition-colors cursor-pointer"
@@ -789,7 +866,6 @@ export default function ProfilePage() {
           </div>
         </header>
 
-        {/* Ulepszony navbar pod headerem */}
         <nav className="bg-white border-b sticky top-0 z-40">
           <div className="container mx-auto" style={{ maxWidth: "900px" }}>
             <div className="flex items-center justify-between px-4">
@@ -816,13 +892,9 @@ export default function ProfilePage() {
           </div>
         </nav>
 
-        {/* Galeria na pełną szerokość */}
         <div className="w-full bg-white py-1 border-b">
-          {/* Kontener o maksymalnej szerokości 1200px */}
           <div className="max-w-[1200px] mx-auto">
-            {/* Grid galerii */}
             <div className="grid grid-cols-12 gap-1">
-              {/* Mniejsze elementy - pierwsze 5 */}
               {[
                 { icon: FaMusic, label: "Występ" },
                 { icon: FaGraduationCap, label: "Warsztaty" },
@@ -846,7 +918,6 @@ export default function ProfilePage() {
                 </div>
               ))}
 
-              {/* Główne zdjęcie na środku */}
               <div className="col-span-2 row-span-2 relative aspect-[4/5] bg-gradient-to-br from-amber-500/10 to-amber-600/10 rounded-sm overflow-hidden group">
                 <div className="absolute inset-0 flex items-center justify-center">
                   <FaImage className="w-8 h-8 text-amber-500 group-hover:scale-110 transition-transform" />
@@ -859,7 +930,6 @@ export default function ProfilePage() {
                 </div>
               </div>
 
-              {/* Mniejsze elementy - ostatnie 5 */}
               {[
                 { icon: FaUsers, label: "Grupa" },
                 { icon: FaVideo, label: "Film" },
@@ -883,7 +953,6 @@ export default function ProfilePage() {
                 </div>
               ))}
 
-              {/* Pozostałe elementy */}
               {[
                 { icon: FaMedal, label: "Osiągnięcie" },
                 { icon: FaPhotoVideo, label: "Media" },
@@ -915,7 +984,6 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        {/* Ulepszona sekcja dostępności */}
         <div
           className="container mx-auto px-4 py-8"
           style={{ maxWidth: "900px" }}
@@ -969,11 +1037,8 @@ export default function ProfilePage() {
             </div>
           </div>
 
-          {/* Grid z informacjami i aktywnością */}
           <div className="grid grid-cols-12 gap-8 mt-8">
-            {/* Lewa kolumna - Ulubione wydarzenia */}
             <div className="col-span-12 md:col-span-4 space-y-6">
-              {/* Informacje */}
               <div className="bg-white rounded-xl shadow-sm overflow-hidden">
                 <div className="p-6">
                   <h2 className="text-lg font-semibold text-gray-900 mb-4">
@@ -986,7 +1051,7 @@ export default function ProfilePage() {
                       </dt>
                       <dd className="text-sm text-gray-900">
                         {translateLevel(
-                          userProfile?.dancePreferences?.level || ""
+                          displayedProfile?.dancePreferences?.level || ""
                         )}
                       </dd>
                     </div>
@@ -995,7 +1060,7 @@ export default function ProfilePage() {
                         <FaClock className="w-4 h-4" />
                       </dt>
                       <dd className="text-sm text-gray-900">
-                        {userProfile?.dancePreferences?.availability}
+                        {displayedProfile?.dancePreferences?.availability}
                       </dd>
                     </div>
                     <div className="flex items-center gap-3">
@@ -1003,7 +1068,7 @@ export default function ProfilePage() {
                         <FaMapMarkerAlt className="w-4 h-4" />
                       </dt>
                       <dd className="text-sm text-gray-900">
-                        {userProfile?.dancePreferences?.location}
+                        {displayedProfile?.dancePreferences?.location}
                       </dd>
                     </div>
                     <div className="flex items-center gap-3">
@@ -1011,7 +1076,7 @@ export default function ProfilePage() {
                         <FaBirthdayCake className="w-4 h-4" />
                       </dt>
                       <dd className="text-sm text-gray-900">
-                        {userProfile?.age} lat
+                        {displayedProfile?.age} lat
                       </dd>
                     </div>
                     <div className="flex items-center gap-3">
@@ -1019,14 +1084,13 @@ export default function ProfilePage() {
                         <FaRuler className="w-4 h-4" />
                       </dt>
                       <dd className="text-sm text-gray-900">
-                        {userProfile?.height} cm
+                        {displayedProfile?.height} cm
                       </dd>
                     </div>
                   </dl>
                 </div>
               </div>
 
-              {/* Ulepszone Ulubione wydarzenia */}
               <div className="bg-white rounded-xl shadow-sm overflow-hidden">
                 <div className="p-6 border-b">
                   <div className="flex items-center justify-between">
@@ -1039,10 +1103,8 @@ export default function ProfilePage() {
                   </div>
                 </div>
                 <div className="divide-y">
-                  {/* Pojedyncze wydarzenie */}
                   <div className="p-4 hover:bg-gray-50 transition-colors cursor-pointer group">
                     <div className="flex items-start gap-4">
-                      {/* Data wydarzenia */}
                       <div className="flex-shrink-0 w-14 text-center">
                         <div className="text-2xl font-bold text-amber-500">
                           15
@@ -1052,7 +1114,6 @@ export default function ProfilePage() {
                         </div>
                       </div>
 
-                      {/* Szczegóły wydarzenia z ikonami */}
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
                           <FaCalendarAlt className="w-4 h-4 text-amber-500" />
@@ -1081,7 +1142,6 @@ export default function ProfilePage() {
                         </div>
                       </div>
 
-                      {/* Akcje */}
                       <button className="p-2 text-gray-400 hover:text-amber-500 transition-colors">
                         <FaStar className="w-5 h-5" />
                       </button>
@@ -1099,7 +1159,6 @@ export default function ProfilePage() {
               </div>
             </div>
 
-            {/* Prawa kolumna - Ulepszona Historia aktywności */}
             <div className="col-span-12 md:col-span-8">
               <div className="bg-white rounded-xl shadow-sm overflow-hidden">
                 <div className="p-6 border-b">
@@ -1120,10 +1179,8 @@ export default function ProfilePage() {
 
                 <div className="p-6">
                   <div className="relative space-y-8">
-                    {/* Linia timeline */}
                     <div className="absolute left-8 top-0 bottom-0 w-px bg-amber-500 to-amber-100" />
 
-                    {/* Pojedyncza aktywność */}
                     <div className="relative flex gap-6 group">
                       <div className="relative">
                         <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center flex-shrink-0 z-10 group-hover:scale-105 transition-transform">
