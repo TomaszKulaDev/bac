@@ -2,7 +2,13 @@
 
 import React, { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
-import { FaMusic, FaUsers, FaBook, FaCalendarAlt, FaGraduationCap } from "react-icons/fa";
+import {
+  FaMusic,
+  FaUsers,
+  FaBook,
+  FaCalendarAlt,
+  FaGraduationCap,
+} from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { logout, login } from "../store/slices/authSlice";
 import { RootState } from "../store/slices/types";
@@ -38,7 +44,9 @@ export const NavContent: React.FC = React.memo(function NavContent() {
                 </div>
               </div>
               <div className="flex flex-col">
-                <span className="text-gray-900 font-bold text-lg leading-none">BACIATA</span>
+                <span className="text-gray-900 font-bold text-lg leading-none">
+                  BACIATA
+                </span>
                 <span className="text-gray-500 text-xs">dance community</span>
               </div>
             </Link>
