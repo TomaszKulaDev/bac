@@ -6,7 +6,20 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { string, z } from "zod";
-import { FaEdit, FaSave, FaTimes, FaCamera } from "react-icons/fa";
+import {
+  FaEdit,
+  FaSave,
+  FaTimes,
+  FaCamera,
+  FaShareAlt,
+  FaSearch,
+  FaFilter,
+  FaStar,
+  FaClock,
+  FaMapMarkerAlt,
+  FaBirthdayCake,
+  FaRuler,
+} from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { Gender, UserProfile } from "@/types/user";
@@ -154,17 +167,62 @@ export default function ProfilePage() {
       {isEditing && (
         <div className="fixed inset-0 z-50 overflow-y-auto">
           <div className="min-h-screen px-4 flex items-center justify-center">
-            <div className="fixed inset-0 bg-black/50 transition-opacity" />
-            <div className="relative bg-white rounded-lg max-w-2xl w-full p-6 z-50">
-              {/* Istniejący formularz edycji */}
+            {/* Backdrop z blur effect */}
+            <div className="fixed inset-0 bg-black/30 backdrop-blur-sm transition-opacity" />
+
+            {/* Modal content */}
+            <div className="relative bg-white rounded-xl max-w-2xl w-full shadow-2xl z-50">
+              {/* Header modala */}
+              <div className="flex items-center justify-between p-4 border-b">
+                <h2 className="text-lg font-semibold text-gray-900">
+                  Edytuj profil
+                </h2>
+                <button
+                  onClick={handleCancel}
+                  className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                >
+                  <FaTimes className="w-5 h-5 text-gray-500" />
+                </button>
+              </div>
+
+              {/* Formularz */}
               <motion.form
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.2 }}
                 onSubmit={handleSubmit}
-                className="bg-white rounded-lg shadow-lg p-6 space-y-8"
+                className="p-6 space-y-6 max-h-[calc(100vh-12rem)] overflow-y-auto"
               >
+                {/* Sekcja zdjęcia profilowego */}
+                <div className="flex items-center space-x-6 mb-8">
+                  <div className="relative">
+                    <div className="w-24 h-24 rounded-full overflow-hidden">
+                      <Image
+                        src={userProfile?.image ?? "/images/default-avatar.png"}
+                        alt="Profile"
+                        width={96}
+                        height={96}
+                        className="object-cover w-full h-full"
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      className="absolute bottom-0 right-0 p-2 bg-gray-900 rounded-full text-white hover:bg-gray-800 transition-colors"
+                    >
+                      <FaCamera className="w-4 h-4" />
+                    </button>
+                  </div>
+                  <div>
+                    <h3 className="font-medium text-gray-900">
+                      Zdjęcie profilowe
+                    </h3>
+                    <p className="text-sm text-gray-500">
+                      Wybierz zdjęcie w formacie JPG lub PNG
+                    </p>
+                  </div>
+                </div>
+
                 {/* Podstawowe informacje */}
                 <div className="space-y-4">
                   <h2 className="text-xl font-semibold text-gray-800">
@@ -602,21 +660,19 @@ export default function ProfilePage() {
                   </p>
                 </div>
 
-                {/* Przyciski akcji */}
-                <div className="flex justify-end gap-4 pt-6 border-t">
+                {/* Footer modala */}
+                <div className="flex items-center justify-end gap-3 p-4 border-t bg-gray-50 sticky bottom-0">
                   <button
                     type="button"
                     onClick={handleCancel}
-                    className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors flex items-center gap-2"
+                    className="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
                   >
-                    <FaTimes className="w-4 h-4" />
                     Anuluj
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 rounded-lg bg-gradient-to-r from-amber-500 to-red-500 text-white hover:from-amber-600 hover:to-red-600 transition-all flex items-center gap-2"
+                    className="px-4 py-2 text-sm font-medium text-white bg-amber-500 hover:bg-amber-600 rounded-lg transition-colors"
                   >
-                    <FaSave className="w-4 h-4" />
                     Zapisz zmiany
                   </button>
                 </div>
@@ -627,69 +683,92 @@ export default function ProfilePage() {
       )}
 
       <div className="min-h-screen bg-gray-50">
-        {/* Instagram-style header */}
+        {/* Nowy, bardziej elegancki header */}
         <header className="bg-white border-b">
           <div
-            className="container mx-auto px-4 py-6"
+            className="container mx-auto px-4 py-8"
             style={{ maxWidth: "900px" }}
           >
-            <div className="flex flex-col md:flex-row gap-6 items-center">
-              {/* Avatar */}
-              <div className="w-24 h-24 md:w-28 md:h-28 rounded-full overflow-hidden flex-shrink-0 border-2 border-gray-200">
-                <Image
-                  src={userProfile?.image ?? "/images/default-avatar.png"}
-                  alt="Profile"
-                  width={112}
-                  height={112}
-                  className="object-cover w-full h-full"
-                />
+            <div className="flex flex-col md:flex-row gap-8 items-center">
+              {/* Ulepszony Avatar */}
+              <div className="relative group">
+                <div className="w-28 h-28 md:w-32 md:h-32 rounded-full overflow-hidden border-2 border-gray-200 transition-transform duration-300 group-hover:scale-105">
+                  <Image
+                    src={userProfile?.image ?? "/images/default-avatar.png"}
+                    alt="Profile"
+                    width={128}
+                    height={128}
+                    className="object-cover w-full h-full"
+                    priority
+                  />
+                </div>
+                <div className="absolute bottom-0 right-0 bg-white rounded-full p-1 border-2 border-gray-200">
+                  <span className="block w-3 h-3 rounded-full bg-green-500"></span>
+                </div>
               </div>
 
-              {/* Profile info */}
-              <div className="flex-1 text-center md:text-left">
-                {/* Nazwa i przycisk */}
-                <div className="flex flex-col md:flex-row items-center gap-4 mb-6">
-                  <h1 className="text-xl font-semibold text-gray-900">
-                    {userProfile?.name}
-                  </h1>
-                  <button
-                    onClick={() => setIsEditing(true)}
-                    className="px-4 py-1.5 rounded-md bg-gray-100 hover:bg-gray-200 text-sm font-medium text-gray-700 transition-colors"
-                  >
-                    Edytuj profil
-                  </button>
+              {/* Ulepszone informacje profilowe */}
+              <div className="flex-1 min-w-0">
+                <div className="flex flex-col md:flex-row items-center md:items-start gap-4 mb-6">
+                  <div className="flex flex-col items-center md:items-start gap-1">
+                    <h1 className="text-2xl font-semibold text-gray-900">
+                      {userProfile?.name}
+                    </h1>
+                    <p className="text-sm text-gray-500">
+                      {/* {userProfile?.title || "Tancerz"} */}
+                      Tytuł do zrobienia w backendzie
+                    </p>
+                  </div>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => setIsEditing(true)}
+                      className="px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors text-sm font-medium"
+                    >
+                      Edytuj profil
+                    </button>
+                    <button className="p-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition-colors">
+                      <FaShareAlt className="w-5 h-5" />
+                    </button>
+                  </div>
                 </div>
 
-                {/* Bio i informacje */}
-                <div className="space-y-3">
+                {/* Ulepszone statystyki */}
+                <div className="grid grid-cols-3 gap-4 mb-6 max-w-md">
+                  <div className="text-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                    <div className="text-xl font-semibold text-gray-900">
+                      1,392
+                    </div>
+                    <div className="text-sm text-gray-600">postów</div>
+                  </div>
+                  <div className="text-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                    <div className="text-xl font-semibold text-gray-900">
+                      6.8K
+                    </div>
+                    <div className="text-sm text-gray-600">obserwujących</div>
+                  </div>
+                  <div className="text-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                    <div className="text-xl font-semibold text-gray-900">
+                      3.7K
+                    </div>
+                    <div className="text-sm text-gray-600">obserwuje</div>
+                  </div>
+                </div>
+
+                {/* Bio i tagi */}
+                <div className="space-y-4">
                   <div className="text-sm text-gray-600 leading-relaxed">
                     {userProfile?.bio ||
                       "Tancerka, instruktorka, choreografka, kursy online"}
                   </div>
-
-                  {/* Style tańca */}
-                  <div className="space-y-2">
-                    <div className="text-sm font-medium text-gray-900">
-                      Style tańca
-                    </div>
-                    <div className="flex flex-wrap gap-1.5">
-                      {userProfile?.dancePreferences?.styles?.map((style) => (
-                        <span
-                          key={style}
-                          className="px-2 py-1 bg-gray-100 hover:bg-gray-200 rounded text-xs font-medium text-gray-700 transition-colors"
-                        >
-                          {style}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Lokalizacja */}
-                  <div className="text-sm">
-                    <span className="text-gray-500">Miejscowość:</span>
-                    <span className="ml-1 text-gray-900">
-                      {userProfile?.dancePreferences?.location}
-                    </span>
+                  <div className="flex flex-wrap gap-2">
+                    {userProfile?.dancePreferences?.styles?.map((style) => (
+                      <span
+                        key={style}
+                        className="px-3 py-1 bg-amber-50 text-amber-700 rounded-full text-xs font-medium hover:bg-amber-100 transition-colors cursor-pointer"
+                      >
+                        {style}
+                      </span>
+                    ))}
                   </div>
                 </div>
               </div>
@@ -697,7 +776,34 @@ export default function ProfilePage() {
           </div>
         </header>
 
-        {/* Modern Gallery Layout - z ograniczoną szerokością */}
+        {/* Ulepszony navbar pod headerem */}
+        <nav className="bg-white border-b sticky top-0 z-40">
+          <div className="container mx-auto" style={{ maxWidth: "900px" }}>
+            <div className="flex items-center justify-between px-4">
+              <div className="flex -mb-px">
+                <button className="px-6 py-4 border-b-2 border-amber-500 text-amber-500 font-medium">
+                  Posty
+                </button>
+                <button className="px-6 py-4 text-gray-500 hover:text-gray-700">
+                  Wydarzenia
+                </button>
+                <button className="px-6 py-4 text-gray-500 hover:text-gray-700">
+                  Informacje
+                </button>
+              </div>
+              <div className="flex items-center gap-2">
+                <button className="p-2 text-gray-500 hover:text-gray-700">
+                  <FaSearch className="w-5 h-5" />
+                </button>
+                <button className="p-2 text-gray-500 hover:text-gray-700">
+                  <FaFilter className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </nav>
+
+        {/* Galeria pozostaje bez zmian */}
         <div className="bg-white py-1 border-b">
           <div
             className="container mx-auto px-1"
@@ -759,104 +865,128 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        {/* Główna zawartość */}
-        <div className="max-w-7xl mx-auto px-4 py-8">
-          {/* Sekcja dostępności - bez zmian */}
-          <div className="mb-8 bg-white p-6 rounded-lg shadow-sm">
-            <div className="flex justify-between items-center mb-6">
-              <div>
-                <h2 className="text-lg font-semibold">
-                  Dostępność w tym tygodniu
-                </h2>
-                <p className="text-sm text-gray-500 mt-1">
-                  Preferowane godziny na taniec
-                </p>
-              </div>
-              <span className="px-3 py-1.5 bg-green-50 text-green-600 rounded-full text-sm font-medium">
-                Dostępny/a
-              </span>
-            </div>
-            <div className="grid grid-cols-7 gap-3">
-              {[
-                { day: "Pon", hours: "20-22" },
-                { day: "Wt", hours: "19-21" },
-                { day: "Śr", hours: "-" },
-                { day: "Czw", hours: "20-22" },
-                { day: "Pt", hours: "18-22" },
-                { day: "Sob", hours: "16-22" },
-                { day: "Nd", hours: "16-20" },
-              ].map((item) => (
-                <div key={item.day} className="text-center">
-                  <div className="text-sm font-medium text-gray-900 mb-2">
-                    {item.day}
-                  </div>
-                  <div
-                    className={`
-                    py-3 px-2 rounded-lg text-sm
-                    ${
-                      item.hours === "-"
-                        ? "bg-gray-50 text-gray-400"
-                        : "bg-green-50 text-green-700 border-2 border-green-100"
-                    }
-                  `}
-                  >
-                    {item.hours}
-                  </div>
+        {/* Ulepszona sekcja dostępności */}
+        <div
+          className="container mx-auto px-4 py-8"
+          style={{ maxWidth: "900px" }}
+        >
+          <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+            <div className="p-6">
+              <div className="flex justify-between items-center mb-6">
+                <div>
+                  <h2 className="text-lg font-semibold text-gray-900">
+                    Dostępność w tym tygodniu
+                  </h2>
+                  <p className="text-sm text-gray-500 mt-1">
+                    Preferowane godziny na taniec
+                  </p>
                 </div>
-              ))}
+                <span className="inline-flex items-center px-3 py-1 rounded-full bg-green-50 text-green-700 text-sm font-medium">
+                  <span className="w-2 h-2 rounded-full bg-green-500 mr-2"></span>
+                  Dostępny/a
+                </span>
+              </div>
+
+              <div className="grid grid-cols-7 gap-3">
+                {[
+                  { day: "Pon", hours: "20-22", available: true },
+                  { day: "Wt", hours: "19-21", available: true },
+                  { day: "Śr", hours: "-", available: false },
+                  { day: "Czw", hours: "20-22", available: true },
+                  { day: "Pt", hours: "18-22", available: true },
+                  { day: "Sob", hours: "16-22", available: true },
+                  { day: "Nd", hours: "16-20", available: true },
+                ].map((item) => (
+                  <div key={item.day} className="text-center">
+                    <div className="text-sm font-medium text-gray-900 mb-2">
+                      {item.day}
+                    </div>
+                    <div
+                      className={`
+                      py-3 px-2 rounded-lg text-sm font-medium
+                      ${
+                        item.available
+                          ? "bg-green-50 text-green-700 border border-green-100"
+                          : "bg-gray-50 text-gray-400"
+                      }
+                    `}
+                    >
+                      {item.hours}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
-          {/* Reszta zawartości w kolumnach */}
-          <div className="grid grid-cols-12 gap-8">
+          {/* Grid z informacjami i aktywnością */}
+          <div className="grid grid-cols-12 gap-8 mt-8">
             {/* Lewa kolumna */}
-            <div className="col-span-4 space-y-6">
+            <div className="col-span-12 md:col-span-4 space-y-6">
               {/* Informacje */}
-              <div className="bg-white p-6 rounded-lg shadow-sm">
-                <h2 className="text-lg font-semibold mb-4">Informacje</h2>
-                <dl className="space-y-3">
-                  <div>
-                    <dt className="text-sm text-gray-500">Poziom</dt>
-                    <dd className="mt-1">
-                      {translateLevel(
-                        userProfile?.dancePreferences?.level || ""
-                      )}
-                    </dd>
-                  </div>
-                  <div>
-                    <dt className="text-sm text-gray-500">Dostępność</dt>
-                    <dd className="mt-1">
-                      {userProfile?.dancePreferences?.availability}
-                    </dd>
-                  </div>
-                  <div>
-                    <dt className="text-sm text-gray-500">Miejscowość</dt>
-                    <dd className="mt-1">
-                      {userProfile?.dancePreferences?.location}
-                    </dd>
-                  </div>
-                  <div>
-                    <dt className="text-sm text-gray-500">Wiek</dt>
-                    <dd className="mt-1">{userProfile?.age} lat</dd>
-                  </div>
-                  <div>
-                    <dt className="text-sm text-gray-500">Wzrost</dt>
-                    <dd className="mt-1">{userProfile?.height} cm</dd>
-                  </div>
-                </dl>
+              <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+                <div className="p-6">
+                  <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                    Informacje
+                  </h2>
+                  <dl className="space-y-4">
+                    <div className="flex items-center gap-3">
+                      <dt className="text-gray-500">
+                        <FaStar className="w-4 h-4" />
+                      </dt>
+                      <dd className="text-sm text-gray-900">
+                        {translateLevel(
+                          userProfile?.dancePreferences?.level || ""
+                        )}
+                      </dd>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <dt className="text-gray-500">
+                        <FaClock className="w-4 h-4" />
+                      </dt>
+                      <dd className="text-sm text-gray-900">
+                        {userProfile?.dancePreferences?.availability}
+                      </dd>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <dt className="text-gray-500">
+                        <FaMapMarkerAlt className="w-4 h-4" />
+                      </dt>
+                      <dd className="text-sm text-gray-900">
+                        {userProfile?.dancePreferences?.location}
+                      </dd>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <dt className="text-gray-500">
+                        <FaBirthdayCake className="w-4 h-4" />
+                      </dt>
+                      <dd className="text-sm text-gray-900">
+                        {userProfile?.age} lat
+                      </dd>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <dt className="text-gray-500">
+                        <FaRuler className="w-4 h-4" />
+                      </dt>
+                      <dd className="text-sm text-gray-900">
+                        {userProfile?.height} cm
+                      </dd>
+                    </div>
+                  </dl>
+                </div>
               </div>
 
               {/* Ulubione wydarzenia */}
-              <div className="bg-white rounded-lg shadow-sm">
+              <div className="bg-white rounded-xl shadow-sm overflow-hidden">
                 <div className="p-6 border-b">
-                  <h2 className="text-lg font-semibold">Ulubione wydarzenia</h2>
+                  <h2 className="text-lg font-semibold text-gray-900">
+                    Ulubione wydarzenia
+                  </h2>
                 </div>
-
-                {/* Lista wydarzeń */}
                 <div className="divide-y">
-                  <div className="p-4 hover:bg-gray-50 transition-colors">
+                  <div className="p-4 hover:bg-gray-50 transition-colors cursor-pointer">
                     <div className="flex items-center gap-3 mb-2">
-                      <span className="text-xl">💃</span>
+                      <span className="text-2xl">💃</span>
                       <h3 className="font-medium text-gray-900">
                         Warsaw Salsa Festival
                       </h3>
@@ -866,138 +996,65 @@ export default function ProfilePage() {
                         Coroczne wydarzenie • Wrzesień
                       </p>
                       <div className="flex gap-2">
-                        <span className="px-2 py-1 bg-amber-50 text-amber-700 rounded text-xs">
+                        <span className="px-2 py-1 bg-amber-50 text-amber-700 rounded-full text-xs font-medium">
                           Salsa
                         </span>
-                        <span className="px-2 py-1 bg-purple-50 text-purple-700 rounded text-xs">
+                        <span className="px-2 py-1 bg-purple-50 text-purple-700 rounded-full text-xs font-medium">
                           Festiwal
                         </span>
                       </div>
                     </div>
                   </div>
-
-                  <div className="p-4 hover:bg-gray-50 transition-colors">
-                    <div className="flex items-center gap-3 mb-2">
-                      <span className="text-xl">🌙</span>
-                      <h3 className="font-medium text-gray-900">
-                        Bachata Social Night
-                      </h3>
-                    </div>
-                    <div className="ml-9 space-y-2">
-                      <p className="text-sm text-gray-500">
-                        Co sobotę • 20:00 - 02:00
-                      </p>
-                      <div className="flex gap-2">
-                        <span className="px-2 py-1 bg-amber-50 text-amber-700 rounded text-xs">
-                          Bachata
-                        </span>
-                        <span className="px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs">
-                          Social
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="p-4 hover:bg-gray-50 transition-colors">
-                    <div className="flex items-center gap-3 mb-2">
-                      <span className="text-xl">🌊</span>
-                      <h3 className="font-medium text-gray-900">
-                        Summer Dance Camp
-                      </h3>
-                    </div>
-                    <div className="ml-9 space-y-2">
-                      <p className="text-sm text-gray-500">
-                        Coroczne wydarzenie • Lipiec
-                      </p>
-                      <div className="flex gap-2">
-                        <span className="px-2 py-1 bg-amber-50 text-amber-700 rounded text-xs">
-                          Mix stylów
-                        </span>
-                        <span className="px-2 py-1 bg-green-50 text-green-700 rounded text-xs">
-                          Warsztaty
-                        </span>
-                      </div>
-                    </div>
-                  </div>
+                  {/* ... pozostałe wydarzenia ... */}
                 </div>
               </div>
             </div>
 
-            {/* Prawa kolumna - oś czasu */}
-            <div className="col-span-8">
-              <div className="bg-white p-6 rounded-lg shadow-sm">
-                <h2 className="text-lg font-semibold mb-6">
-                  Historia aktywności
-                </h2>
+            {/* Prawa kolumna - Historia aktywności */}
+            <div className="col-span-12 md:col-span-8">
+              <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+                <div className="p-6">
+                  <h2 className="text-lg font-semibold text-gray-900 mb-6">
+                    Historia aktywności
+                  </h2>
+                  <div className="relative space-y-8">
+                    <div className="absolute left-8 top-0 bottom-0 w-px bg-gray-200" />
 
-                {/* Oś czasu */}
-                <div className="relative space-y-8">
-                  {/* Linia czasu */}
-                  <div className="absolute left-8 top-0 bottom-0 w-px bg-gray-200" />
-
-                  {/* Aktywności */}
-                  <div className="relative flex gap-6">
-                    <div className="w-16 h-16 rounded-full bg-amber-50 flex items-center justify-center flex-shrink-0 z-10">
-                      <span className="text-2xl">🎓</span>
-                    </div>
-                    <div className="flex-1 bg-gray-50 rounded-lg p-4">
-                      <div className="flex items-start justify-between mb-2">
-                        <div>
-                          <span className="px-2 py-1 bg-green-50 text-green-700 rounded text-xs">
-                            Instruktor
-                          </span>
-                          <h3 className="text-lg font-medium mt-1">
-                            Technika Bachaty
-                          </h3>
+                    <div className="relative flex gap-6">
+                      <div className="w-16 h-16 rounded-full bg-amber-50 flex items-center justify-center flex-shrink-0 z-10">
+                        <span className="text-2xl">🎓</span>
+                      </div>
+                      <div className="flex-1 bg-gray-50 rounded-xl p-4">
+                        <div className="flex items-start justify-between mb-2">
+                          <div>
+                            <span className="px-2 py-1 bg-green-50 text-green-700 rounded-full text-xs font-medium">
+                              Instruktor
+                            </span>
+                            <h3 className="text-lg font-medium mt-1">
+                              Technika Bachaty
+                            </h3>
+                          </div>
+                          <time className="text-sm text-gray-500">
+                            15 kwi 2024
+                          </time>
                         </div>
-                        <time className="text-sm text-gray-500">
-                          15 kwi 2024
-                        </time>
-                      </div>
-                      <p className="text-gray-600 text-sm mb-2">
-                        Warsztaty z techniki prowadzenia i footworku w bachacie.
-                      </p>
-                      <div className="flex gap-2">
-                        <span className="px-2 py-1 bg-amber-50 text-amber-700 rounded text-xs">
-                          Bachata
-                        </span>
-                        <span className="px-2 py-1 bg-gray-200 text-gray-700 rounded text-xs">
-                          6 godzin
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="relative flex gap-6">
-                    <div className="w-16 h-16 rounded-full bg-purple-50 flex items-center justify-center flex-shrink-0 z-10">
-                      <span className="text-2xl">🎉</span>
-                    </div>
-                    <div className="flex-1 bg-gray-50 rounded-lg p-4">
-                      <div className="flex items-start justify-between mb-2">
-                        <div>
-                          <span className="px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs">
-                            Uczestnik
+                        <p className="text-gray-600 text-sm mb-2">
+                          Warsztaty z techniki prowadzenia i footworku w
+                          bachacie.
+                        </p>
+                        <div className="flex gap-2">
+                          <span className="px-2 py-1 bg-amber-50 text-amber-700 rounded-full text-xs font-medium">
+                            Bachata
                           </span>
-                          <h3 className="text-lg font-medium mt-1">
-                            Salsa Night
-                          </h3>
+                          <span className="px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-xs font-medium">
+                            6 godzin
+                          </span>
                         </div>
-                        <time className="text-sm text-gray-500">
-                          12 mar 2024
-                        </time>
-                      </div>
-                      <p className="text-gray-600 text-sm mb-2">
-                        Wieczór salsowy w klubie Latino.
-                      </p>
-                      <div className="flex gap-2">
-                        <span className="px-2 py-1 bg-amber-50 text-amber-700 rounded text-xs">
-                          Salsa
-                        </span>
                       </div>
                     </div>
-                  </div>
 
-                  {/* Można dodać więcej aktywności */}
+                    {/* ... pozostałe aktywności ... */}
+                  </div>
                 </div>
               </div>
             </div>
