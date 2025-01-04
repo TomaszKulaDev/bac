@@ -43,7 +43,7 @@ export const UserMenu: React.FC<UserMenuProps> = ({ user, onLogout }) => {
       <button
         ref={buttonRef}
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 text-white/90 hover:text-white 
+        className="flex items-center gap-2 text-gray-700 hover:text-gray-900 
         transition-all duration-200 text-[15px] tracking-wide font-medium group"
         aria-expanded={isOpen}
         aria-haspopup="true"
