@@ -27,7 +27,7 @@ export async function middleware(request: NextRequest) {
 
     // Jeśli użytkownik nie jest zalogowany, przekieruj do strony logowania
     if (!token) {
-      const url = new URL("/auth/signin", request.url);
+      const url = new URL("/login", request.url);
       url.searchParams.set("callbackUrl", request.nextUrl.pathname);
       url.searchParams.set(
         "message",
