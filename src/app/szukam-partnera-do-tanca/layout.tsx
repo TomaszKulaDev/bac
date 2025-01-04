@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { ScrollToTop } from "./components/ScrollToTop";
-import { Navbar } from "./components/Navbar";
 
 // Dodajemy strukturowane dane JSON-LD
 const jsonLd = {
@@ -106,7 +105,7 @@ export default function PartnerSearchLayout({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <div className="min-h-screen flex flex-col">
-        <Navbar />
+        
         <main className="flex-grow">{children}</main>
 
         {/* Footer */}
