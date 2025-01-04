@@ -19,7 +19,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // Sprawdź autoryzację dla chronionej ścieżki
-  if (request.nextUrl.pathname.startsWith("/tancerki-tancerze-bachaty")) {
+  if (request.nextUrl.pathname === "/tancerki-tancerze-bachaty") {
     const token = await getToken({
       req: request,
       secret: process.env.NEXTAUTH_SECRET,
