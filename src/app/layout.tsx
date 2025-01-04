@@ -165,7 +165,7 @@ export default function RootLayout({
             <ClientLayout>
               {/* Renderujemy nawigację za pomocą komponentu NavContent */}
               <DynamicNavContent />
-              {/* Renderujemy dzieci przekazane do RootLayout */}
+              {/* Renderujemy dzieci przekazane do RootLayout 333333333*/}
               {children}
             </ClientLayout>
             <CookieConsent />
