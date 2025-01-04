@@ -64,6 +64,6 @@ export const config = {
     "/muzyka/:path*",
     "/admin/:path*",
     "/",
-    "/tancerki-tancerze-bachaty/:path*",
+    "/tancerki-tancerze-bachaty",
   ],
 };
