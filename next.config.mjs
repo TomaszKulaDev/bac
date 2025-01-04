@@ -1,4 +1,4 @@
-import { config } from 'dotenv';
+import { config } from "dotenv";
 config();
 
 /** @type {import('next').NextConfig} */
@@ -7,9 +7,7 @@ const nextConfig = {
   // Włączenie trybu ścisłego Reacta, który pomaga w wykrywaniu potencjalnych problemów w aplikacji
   reactStrictMode: true,
   // Opcje eksperymentalne Next.js (obecnie puste)
-  experimental: {
- 
-  },
+  experimental: {},
   // Konfiguracja obsługi zdalnych obrazów
   images: {
     remotePatterns: [
@@ -67,6 +65,15 @@ const nextConfig = {
   },
   poweredByHeader: false,
   compress: true,
+  async redirects() {
+    return [
+      {
+        source: "/profile/:id",
+        destination: "/profile?id=:id",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 // Eksportowanie konfiguracji Next.js

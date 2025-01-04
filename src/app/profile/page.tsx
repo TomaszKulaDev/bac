@@ -130,12 +130,18 @@ export default function ProfilePage() {
   const {
     userProfile,
     isLoading: isUserProfileLoading,
+    error,
     updateUserProfile,
   } = useUserProfile();
+
+  // Dodajmy logi do debugowania
+  console.log("Profile ID:", profileId);
+  console.log("User Profile:", userProfile);
+
   const [displayedProfile, setDisplayedProfile] = useState<UserProfile | null>(
     null
   );
-  const [isLoading, setIsLoading] = useState(true);
+  const [isPageLoading, setIsPageLoading] = useState(true);
   const [formData, setFormData] = useState<
     Required<Pick<UserProfile, "dancePreferences">> & Partial<UserProfile>
   >(
@@ -160,7 +166,7 @@ export default function ProfilePage() {
               ...defaultDancePreferences,
               ...data.dancePreferences,
             },
-          } as Required<Pick<UserProfile, "dancePreferences">> & Partial<UserProfile>);
+          });
         } else if (userProfile) {
           // Ładowanie własnego profilu
           setDisplayedProfile(userProfile);
@@ -170,12 +176,12 @@ export default function ProfilePage() {
               ...defaultDancePreferences,
               ...userProfile.dancePreferences,
             },
-          } as Required<Pick<UserProfile, "dancePreferences">> & Partial<UserProfile>);
+          });
         }
       } catch (error) {
         console.error("Error loading profile:", error);
       } finally {
-        setIsLoading(false);
+        setIsPageLoading(false);
       }
     };
 
@@ -183,7 +189,7 @@ export default function ProfilePage() {
   }, [profileId, userProfile]);
 
   // Pokazujemy loader podczas ładowania
-  if (isLoading || isUserProfileLoading) {
+  if (isPageLoading || isUserProfileLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-amber-500"></div>

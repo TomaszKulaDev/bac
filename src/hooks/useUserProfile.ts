@@ -17,13 +17,21 @@ export function useUserProfile() {
     try {
       const response = await fetch("/api/users/me");
       if (!response.ok) {
-        throw new Error("Failed to fetch user profile");
+        const errorData = await response.json();
+        console.error("API Error:", errorData);
+        throw new Error(errorData.message || "Failed to fetch user profile");
       }
       const data = await response.json();
+      console.log("Fetched user profile:", data);
       setUserProfile(data);
-      setIsLoading(false);
-    } catch (err) {
-      setError("Error fetching user profile");
+    } catch (err: unknown) {
+      console.error("Fetch error:", err);
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("An unknown error occurred");
+      }
+    } finally {
       setIsLoading(false);
     }
   };
