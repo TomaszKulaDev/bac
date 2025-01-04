@@ -71,6 +71,7 @@ import { AuthSync } from "../components/AuthSync";
 import { NavbarSkeleton } from "../components/NavbarSkeleton";
 import { Metadata } from "next";
 import { CookieConsent } from "../components/CookieConsent/CookieConsent";
+import { Suspense } from "react";
 
 // Inicjalizujemy czcionkę Inter z podzbiorem "latin", aby używać jej w aplikacji
 const inter = Inter({ subsets: ["latin"] });
@@ -149,19 +150,27 @@ export default function RootLayout({
     <html lang="pl">
       {/* Ustawiamy klasę czcionki Inter i kolor tekstu na szary */}
       <body className={`${inter.className} bg-global-white`}>
-        {/* Owijamy aplikację w ClientProviders, aby dostarczyć kontekst dla klienta */}
-        <ClientProviders>
-          {/* Synchronizujemy stan autoryzacji za pomocą komponentu AuthSync */}
-          <AuthSync />
-          {/* Owijamy aplikację w ClientLayout, aby ustawić układ strony */}
-          <ClientLayout>
-            {/* Renderujemy nawigację za pomocą komponentu NavContent */}
-            <DynamicNavContent />
-            {/* Renderujemy dzieci przekazane do RootLayout */}
-            {children}
-          </ClientLayout>
-          <CookieConsent />
-        </ClientProviders>
+        <Suspense
+          fallback={
+            <div className="min-h-screen flex items-center justify-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-amber-500"></div>
+            </div>
+          }
+        >
+          {/* Owijamy aplikację w ClientProviders, aby dostarczyć kontekst dla klienta */}
+          <ClientProviders>
+            {/* Synchronizujemy stan autoryzacji za pomocą komponentu AuthSync */}
+            <AuthSync />
+            {/* Owijamy aplikację w ClientLayout, aby ustawić układ strony */}
+            <ClientLayout>
+              {/* Renderujemy nawigację za pomocą komponentu NavContent */}
+              <DynamicNavContent />
+              {/* Renderujemy dzieci przekazane do RootLayout */}
+              {children}
+            </ClientLayout>
+            <CookieConsent />
+          </ClientProviders>
+        </Suspense>
       </body>
     </html>
   );
