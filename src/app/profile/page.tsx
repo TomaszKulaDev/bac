@@ -822,7 +822,31 @@ export default function ProfilePage() {
           <div className="max-w-[1200px] mx-auto">
             {/* Grid galerii */}
             <div className="grid grid-cols-12 gap-1">
-              {/* Główne zdjęcie - zajmuje 2 kolumny i 2 rzędy */}
+              {/* Mniejsze elementy - pierwsze 5 */}
+              {[
+                { icon: FaMusic, label: "Występ" },
+                { icon: FaGraduationCap, label: "Warsztaty" },
+                { icon: FaTicketAlt, label: "Event" },
+                { icon: FaChalkboardTeacher, label: "Lekcja" },
+                { icon: FaTrophy, label: "Konkurs" },
+              ].map((item, index) => (
+                <div
+                  key={index}
+                  className="col-span-1 relative aspect-square bg-gradient-to-br from-gray-50 to-gray-100 rounded-sm overflow-hidden group cursor-pointer"
+                >
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <item.icon className="w-5 h-5 text-gray-400 group-hover:text-amber-500 group-hover:scale-110 transition-all duration-200" />
+                  </div>
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors" />
+                  <div className="absolute bottom-1 left-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span className="text-[10px] text-gray-500 font-medium block text-center truncate">
+                      {item.label}
+                    </span>
+                  </div>
+                </div>
+              ))}
+
+              {/* Główne zdjęcie na środku */}
               <div className="col-span-2 row-span-2 relative aspect-[4/5] bg-gradient-to-br from-amber-500/10 to-amber-600/10 rounded-sm overflow-hidden group">
                 <div className="absolute inset-0 flex items-center justify-center">
                   <FaImage className="w-8 h-8 text-amber-500 group-hover:scale-110 transition-transform" />
@@ -835,18 +859,32 @@ export default function ProfilePage() {
                 </div>
               </div>
 
-              {/* Mniejsze elementy - każdy zajmuje 1 kolumnę */}
+              {/* Mniejsze elementy - ostatnie 5 */}
               {[
-                { icon: FaMusic, label: "Występ" },
-                { icon: FaGraduationCap, label: "Warsztaty" },
-                { icon: FaTicketAlt, label: "Event" },
-                { icon: FaChalkboardTeacher, label: "Lekcja" },
-                { icon: FaTrophy, label: "Konkurs" },
                 { icon: FaUsers, label: "Grupa" },
                 { icon: FaVideo, label: "Film" },
                 { icon: FaCalendarAlt, label: "Wydarzenie" },
                 { icon: FaStar, label: "Wyróżnione" },
                 { icon: FaCertificate, label: "Certyfikat" },
+              ].map((item, index) => (
+                <div
+                  key={index}
+                  className="col-span-1 relative aspect-square bg-gradient-to-br from-gray-50 to-gray-100 rounded-sm overflow-hidden group cursor-pointer"
+                >
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <item.icon className="w-5 h-5 text-gray-400 group-hover:text-amber-500 group-hover:scale-110 transition-all duration-200" />
+                  </div>
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors" />
+                  <div className="absolute bottom-1 left-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span className="text-[10px] text-gray-500 font-medium block text-center truncate">
+                      {item.label}
+                    </span>
+                  </div>
+                </div>
+              ))}
+
+              {/* Pozostałe elementy */}
+              {[
                 { icon: FaMedal, label: "Osiągnięcie" },
                 { icon: FaPhotoVideo, label: "Media" },
                 { icon: FaImage, label: "Galeria" },
@@ -1083,7 +1121,7 @@ export default function ProfilePage() {
                 <div className="p-6">
                   <div className="relative space-y-8">
                     {/* Linia timeline */}
-                    <div className="absolute left-8 top-0 bottom-0 w-px bg-gradient-to-b from-amber-500 to-amber-100" />
+                    <div className="absolute left-8 top-0 bottom-0 w-px bg-amber-500 to-amber-100" />
 
                     {/* Pojedyncza aktywność */}
                     <div className="relative flex gap-6 group">
