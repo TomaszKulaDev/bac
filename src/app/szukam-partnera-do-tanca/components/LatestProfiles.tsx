@@ -105,7 +105,7 @@ export const LatestProfiles = () => {
 
   return (
     <>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-8">
         {profiles.map((profile) => (
           <motion.div
             key={profile.id}
@@ -113,11 +113,11 @@ export const LatestProfiles = () => {
             animate={{ opacity: 1, y: 0 }}
             className="relative group"
           >
-            {/* Karta profilu */}
-            <div
-              className="relative aspect-[3/4] rounded-xl overflow-hidden 
-                         ring-1 ring-gray-200 group-hover:ring-amber-500/50 
-                         transition-all duration-300 bg-gray-100"
+            <Link
+              href={`/profile/${profile.id}`}
+              className="block relative aspect-[3/4] rounded-xl overflow-hidden
+                       ring-1 ring-gray-200 group-hover:ring-amber-500/50 
+                       transition-all duration-300 bg-gray-100"
             >
               {/* Zdjęcie */}
               <Image
@@ -130,77 +130,51 @@ export const LatestProfiles = () => {
               />
 
               {/* Gradient overlay */}
-              <div
-                className="absolute inset-0 bg-gradient-to-t 
-                           from-black/90 via-black/40 to-transparent"
-              />
-
-              {/* Przycisk polubienia */}
-              <button
-                className="absolute top-3 right-3 p-2 rounded-full 
-                         bg-white/90 backdrop-blur-sm hover:bg-white 
-                         transition-colors z-20"
-                onClick={(e) => e.preventDefault()}
-              >
-                <FaHeart
-                  className="w-4 h-4 text-gray-400 
-                                hover:text-red-500 transition-colors"
-                />
-              </button>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
 
               {/* Informacje o profilu */}
-              <div className="absolute inset-x-0 bottom-0 p-4">
-                <div className="text-white space-y-2">
-                  {/* Imię i wiek */}
-                  <div className="flex items-center gap-2">
-                    <h3 className="text-lg font-bold leading-tight">
-                      {profile.name}
-                    </h3>
-                    {profile.age && (
-                      <span className="text-sm text-gray-300">
-                        {profile.age} lat
-                      </span>
-                    )}
-                  </div>
+              <div className="absolute inset-x-0 bottom-0 p-4 text-white">
+                <h3 className="font-semibold text-lg leading-tight mb-1">
+                  {profile.name}
+                </h3>
 
-                  {/* Lokalizacja i wzrost */}
-                  <div className="flex items-center gap-3 text-sm text-gray-300">
-                    <div className="flex items-center gap-1.5">
-                      <FaMapMarkerAlt className="w-3.5 h-3.5 text-amber-400" />
-                      <span>{profile.dancePreferences?.location}</span>
+                {/* Lokalizacja i wzrost */}
+                <div className="flex items-center gap-3 text-sm text-white/90 mb-2">
+                  {profile.dancePreferences?.location && (
+                    <div className="flex items-center gap-1">
+                      <FaMapMarkerAlt className="w-3.5 h-3.5" />
+                      <span>{profile.dancePreferences.location}</span>
                     </div>
-                    {profile.height && (
-                      <div className="flex items-center gap-1.5">
-                        <FaRuler className="w-3.5 h-3.5 text-amber-400" />
-                        <span>{profile.height} cm</span>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Style tańca */}
-                  {renderStyles(profile.dancePreferences?.styles || [])}
+                  )}
+                  {profile.height && (
+                    <div className="flex items-center gap-1">
+                      <FaRuler className="w-3.5 h-3.5" />
+                      <span>{profile.height} cm</span>
+                    </div>
+                  )}
                 </div>
-              </div>
 
-              {/* Poziom zaawansowania */}
-              <div className="absolute top-3 left-3">
-                <span
-                  className="px-2.5 py-1 text-xs font-medium 
-                             bg-white/90 backdrop-blur-sm text-amber-600 
-                             rounded-full"
-                >
-                  {translateLevel(profile.dancePreferences?.level || "")}
-                </span>
+                {/* Style tańca */}
+                {profile.dancePreferences?.styles &&
+                  renderStyles(profile.dancePreferences.styles)}
               </div>
-            </div>
-
-            {/* Link do profilu */}
-            <Link
-              href={`/profile/${profile.id}`}
-              className="absolute inset-0 z-10"
-            >
-              <span className="sr-only">Zobacz profil</span>
             </Link>
+
+            {/* Przycisk polubienia - poza Link */}
+            <button
+              className="absolute top-3 right-3 p-2 rounded-full 
+                        bg-white/90 backdrop-blur-sm hover:bg-white 
+                        transition-colors z-20"
+              onClick={(e) => {
+                e.stopPropagation();
+                // Logika polubienia - do zaimplementowania
+              }}
+            >
+              <FaHeart
+                className="w-4 h-4 text-gray-400 hover:text-red-500 
+                                 transition-colors"
+              />
+            </button>
           </motion.div>
         ))}
       </div>
