@@ -93,29 +93,24 @@ export const NavContent: React.FC = React.memo(function NavContent() {
                   {
                     href: "/muzyka",
                     label: "Muzyka",
-                    icon: FaMusic,
                     badge: "Nowe",
                   },
                   {
                     href: "/szukam-partnera-do-tanca",
                     label: "Szukam Partnera",
-                    icon: FaUsers,
                   },
                   {
                     href: "/taneczne-historie",
                     label: "Historie",
-                    icon: FaBook,
                   },
                   {
                     href: "/wydarzenia",
                     label: "Wydarzenia",
-                    icon: FaCalendarAlt,
                     badge: "3",
                   },
                   {
                     href: "/szkoly",
                     label: "Szkoły",
-                    icon: FaGraduationCap,
                   },
                 ].map((item) => (
                   <Link
@@ -129,7 +124,6 @@ export const NavContent: React.FC = React.memo(function NavContent() {
                       }`}
                   >
                     <span className="flex items-center gap-2">
-                      <item.icon className="w-4 h-4" />
                       {item.label}
                       {item.badge && (
                         <span className="px-1.5 py-0.5 text-[10px] font-medium bg-amber-500 text-white rounded-full">
