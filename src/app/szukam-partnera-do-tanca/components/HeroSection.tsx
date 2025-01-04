@@ -1,15 +1,20 @@
 "use client";
 
 import { useState } from "react";
-import { FaSearch, FaUserPlus } from "react-icons/fa";
-import Link from "next/link";
-import { AdvertisementForm } from "./AdvertisementForm";
+import {
+  FaSearch,
+  FaUserPlus,
+  FaHeart,
+  FaMapMarkerAlt,
+  FaUsers,
+} from "react-icons/fa";
 import Modal from "@/components/ui/Modal";
 import { useAuth } from "@/hooks/useAuth";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { AdvertisementType, DanceLevel } from "@/types/advertisement";
+import { AdvertisementForm } from "./AdvertisementForm";
 
 export function HeroSection() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -69,106 +74,96 @@ export function HeroSection() {
 
   return (
     <section
-      className="relative h-[85vh] min-h-[600px]"
+      className="relative min-h-[600px] bg-gray-900"
       aria-label="Główny banner"
-      role="banner"
     >
-      {/* Gradient overlay */}
-      <div
-        className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-transparent z-10"
-        aria-hidden="true"
-      />
+      {/* Tło z gradientem */}
+      <div className="absolute inset-0 overflow-hidden">
+        {/* Obrazek tła */}
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-105 transform blur-sm"
+          style={{
+            backgroundImage:
+              'url("/images/Hero-szukam-partnera-do-tanca.webp")',
+          }}
+        />
 
-      {/* Animated particles */}
-      <div className="absolute inset-0 z-0 opacity-40" aria-hidden="true">
-        <div
-          className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] 
-                     from-cyan-500/30 via-transparent to-transparent animate-pulse-slow"
-        />
-        <div
-          className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] 
-                     from-amber-500/30 via-transparent to-transparent animate-pulse-slow delay-1000"
-        />
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/80 to-black/60" />
+
+        {/* Animowane gradienty */}
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-gradient-to-r from-amber-500/10 to-transparent animate-pulse-slow" />
+          <div className="absolute inset-0 bg-gradient-to-l from-amber-600/10 to-transparent animate-pulse-slow delay-1000" />
+        </div>
       </div>
 
-      {/* Statyczne tło zamiast wideo */}
-      <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: 'url("/images/Hero-szukam-partnera-do-tanca.webp")',
-        }}
-        aria-hidden="true"
-      />
+      {/* Zawartość */}
+      <div className="relative z-10 max-w-[1200px] mx-auto px-4 py-20">
+        <div className="flex flex-col items-center text-center space-y-8">
+          {/* Nagłówek */}
+          <h1 className="text-4xl md:text-6xl font-bold text-white max-w-4xl leading-tight">
+            Znajdź Idealnego{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-amber-600">
+              Partnera do Tańca
+            </span>
+          </h1>
 
-      {/* Content z nowymi kolorami */}
-      <div className="relative z-20 container mx-auto px-4 h-full flex items-center">
-        <div className="max-w-3xl mx-auto text-center">
-          <div className="animate-fade-in-up space-y-6">
-            <h1 className="text-4xl md:text-7xl font-bold leading-tight text-white">
-              Znajdź Idealnego
-              <span className="bg-gradient-to-r from-amber-500 to-red-500 text-transparent bg-clip-text animate-pulse-slow">
-                {" "}
-                Partnera{" "}
-              </span>
-              do Tańca
-            </h1>
+          {/* Podtytuł */}
+          <p className="text-xl text-gray-300 max-w-2xl">
+            Dołącz do największej społeczności tancerzy Bachaty w Polsce. Znajdź
+            partnera na praktis lub do regularnych zajęć.
+          </p>
 
-            <p className="text-xl md:text-2xl text-gray-200 max-w-2xl mx-auto">
-              Dołącz do największej społeczności tancerzy <br /> Bachaty w
-              Polsce.
-            </p>
+          {/* Przyciski akcji */}
+          <div className="flex flex-col sm:flex-row gap-4 pt-6">
+            <button
+              onClick={scrollToSearch}
+              className="px-8 py-3 bg-white/10 hover:bg-white/15 text-white rounded-xl
+                       flex items-center justify-center gap-2 transition-all group
+                       border border-white/20 backdrop-blur-sm"
+            >
+              <FaSearch className="w-4 h-4 group-hover:scale-110 transition-transform" />
+              Szukaj Partnera
+            </button>
 
-            {/* Zmodyfikowane przyciski */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-              <button
-                onClick={scrollToSearch}
-                className="btn-hero-secondary group bg-white/10 hover:bg-white/20 
-                         backdrop-blur-sm text-white px-8 py-3 rounded-full 
-                         flex items-center gap-2 transition-all duration-300
-                         border border-white/30"
-                aria-label="Szukaj partnera"
+            <button
+              onClick={handleAddAdvertisement}
+              className="px-8 py-3 bg-gradient-to-r from-amber-500 to-amber-600 
+                       hover:from-amber-600 hover:to-amber-700 text-white rounded-xl
+                       flex items-center justify-center gap-2 transition-all group"
+            >
+              <FaUserPlus className="w-4 h-4 group-hover:rotate-12 transition-transform" />
+              Dodaj Ogłoszenie
+            </button>
+          </div>
+
+          {/* Statystyki */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-3xl mt-12">
+            {[
+              { icon: FaUsers, value: "0,5", label: "Aktywnych Tancerzy" },
+              { icon: FaMapMarkerAlt, value: "Tylko Mielec", label: "Miast" },
+              { icon: FaHeart, value: "Całe 0", label: "Połączonych Par" },
+            ].map((stat, index) => (
+              <div
+                key={index}
+                className="p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10
+                         hover:bg-white/10 transition-colors group"
               >
-                <FaSearch
-                  className="text-xl group-hover:scale-110 transition-transform"
-                  aria-hidden="true"
-                />
-                Szukaj Partnera
-              </button>
-
-              <button
-                onClick={handleAddAdvertisement}
-                className="btn-hero-primary group bg-gradient-to-r from-amber-500 to-red-500 
-                         hover:from-amber-600 hover:to-red-600 text-white px-8 py-3 
-                         rounded-full flex items-center gap-2 transition-all duration-300"
-                aria-label="Dodaj ogłoszenie"
-              >
-                <FaUserPlus
-                  className="text-xl group-hover:rotate-12 transition-transform"
-                  aria-hidden="true"
-                />
-                Dodaj Ogłoszenie
-              </button>
-            </div>
-
-            {/* Zmodyfikowane statystyki */}
-            <div className="grid grid-cols-3 gap-4 mt-12">
-              <div className="p-4 rounded-lg bg-white/5 backdrop-blur-sm">
-                <div className="text-2xl font-bold text-amber-400">2,500+</div>
-                <div className="text-sm text-white/80">Aktywnych Tancerzy</div>
+                <div className="flex flex-col items-center justify-center text-center">
+                  <stat.icon className="w-6 h-6 text-amber-400 mb-2 group-hover:scale-110 transition-transform" />
+                  <div className="text-2xl font-bold text-white mb-1">
+                    {stat.value}
+                  </div>
+                  <div className="text-sm text-gray-400">{stat.label}</div>
+                </div>
               </div>
-              <div className="p-4 rounded-lg bg-white/5 backdrop-blur-sm">
-                <div className="text-2xl font-bold text-amber-400">150+</div>
-                <div className="text-sm text-white/80">Miast</div>
-              </div>
-              <div className="p-4 rounded-lg bg-white/5 backdrop-blur-sm">
-                <div className="text-2xl font-bold text-amber-400">10,000+</div>
-                <div className="text-sm text-white/80">Połączonych Par</div>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
 
+      {/* Modal */}
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
