@@ -6,6 +6,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaMapMarkerAlt, FaRuler, FaHeart } from "react-icons/fa";
 import { UserProfile } from "@/types/user";
+import { useRouter } from "next/navigation";
 
 const translateLevel = (level: string) => {
   const levels = {
@@ -21,6 +22,7 @@ export const LatestProfiles = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedStyles, setSelectedStyles] = useState<string[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const router = useRouter();
 
   const fetchProfiles = async () => {
     try {
@@ -91,6 +93,15 @@ export const LatestProfiles = () => {
     );
   };
 
+  const handleProfileClick = (profileId: string) => {
+    try {
+      console.log("Navigating to profile:", profileId); // Debugging
+      router.push(`/profile/${profileId}`);
+    } catch (error) {
+      console.error("Error navigating to profile:", error);
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-12">
@@ -113,11 +124,11 @@ export const LatestProfiles = () => {
             animate={{ opacity: 1, y: 0 }}
             className="relative group"
           >
-            {/* Karta profilu */}
-            <div
-              className="relative aspect-[3/4] rounded-xl overflow-hidden 
-                         ring-1 ring-gray-200 group-hover:ring-amber-500/50 
-                         transition-all duration-300 bg-gray-100"
+            <Link
+              href={`/profile/${profile.id}`}
+              className="block relative aspect-[3/4] rounded-xl overflow-hidden
+                        ring-1 ring-gray-200 group-hover:ring-amber-500/50 
+                        transition-all duration-300 bg-gray-100"
             >
               {/* Zdjęcie */}
               <Image
@@ -125,7 +136,7 @@ export const LatestProfiles = () => {
                 alt={profile.name}
                 fill
                 className="object-cover transition-transform duration-300 
-                         group-hover:scale-105"
+                          group-hover:scale-105"
                 sizes="(max-width: 768px) 50vw, 25vw"
               />
 
@@ -138,9 +149,12 @@ export const LatestProfiles = () => {
               {/* Przycisk polubienia */}
               <button
                 className="absolute top-3 right-3 p-2 rounded-full 
-                         bg-white/90 backdrop-blur-sm hover:bg-white 
-                         transition-colors z-20"
-                onClick={(e) => e.preventDefault()}
+                          bg-white/90 backdrop-blur-sm hover:bg-white 
+                          transition-colors z-20"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  // Logika polubienia
+                }}
               >
                 <FaHeart
                   className="w-4 h-4 text-gray-400 
@@ -192,7 +206,7 @@ export const LatestProfiles = () => {
                   {translateLevel(profile.dancePreferences?.level || "")}
                 </span>
               </div>
-            </div>
+            </Link>
 
             {/* Link do profilu */}
             <Link
