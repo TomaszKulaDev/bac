@@ -8,7 +8,7 @@ export function ScrollToTop() {
 
   useEffect(() => {
     const toggleVisibility = () => {
-      if (window.pageYOffset > 500) {
+      if (window.pageYOffset > 300) {
         setIsVisible(true);
       } else {
         setIsVisible(false);
@@ -31,15 +31,32 @@ export function ScrollToTop() {
       {isVisible && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-6 right-6 z-50 p-3 rounded-full 
-                   bg-gradient-to-r from-amber-500 to-red-500 
-                   text-white shadow-lg hover:from-amber-600 
-                   hover:to-red-600 transition-all duration-300
-                   transform hover:scale-110 active:scale-95
-                   animate-fade-in"
+          className="fixed bottom-6 right-6 z-50 
+                   w-12 h-12 
+                   flex items-center justify-center
+                   bg-gradient-to-br from-amber-500 to-amber-600
+                   hover:from-amber-600 hover:to-amber-700
+                   text-white rounded-xl shadow-lg
+                   transform rotate-3 hover:rotate-6
+                   transition-all duration-300 group
+                   hover:shadow-amber-500/25"
           aria-label="Przewiń do góry"
         >
-          <FaArrowUp className="text-xl" />
+          <FaArrowUp
+            className="w-5 h-5 
+                     group-hover:scale-110 
+                     transition-transform duration-300"
+          />
+          <div
+            className="absolute -bottom-1 -right-1 
+                        w-5 h-5 bg-white rounded-lg 
+                        shadow-sm flex items-center 
+                        justify-center transform 
+                        -rotate-12 group-hover:rotate-[-24deg] 
+                        transition-all duration-300"
+          >
+            <span className="text-amber-600 text-[10px] font-bold">↑</span>
+          </div>
         </button>
       )}
     </>
