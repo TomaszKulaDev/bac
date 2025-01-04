@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaMapMarkerAlt, FaRuler } from "react-icons/fa";
+import { FaMapMarkerAlt, FaRuler, FaHeart } from "react-icons/fa";
 import { UserProfile } from "@/types/user";
 
 const translateLevel = (level: string) => {
@@ -105,66 +105,89 @@ export const LatestProfiles = () => {
 
   return (
     <>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-12">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-8">
         {profiles.map((profile) => (
           <motion.div
             key={profile.id}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="relative group cursor-pointer"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="relative group"
           >
-            {/* Główne zdjęcie */}
+            {/* Karta profilu */}
             <div
               className="relative aspect-[3/4] rounded-xl overflow-hidden 
-                           ring-2 ring-transparent group-hover:ring-amber-500/50 
-                           transition-all duration-300"
+                         ring-1 ring-gray-200 group-hover:ring-amber-500/50 
+                         transition-all duration-300 bg-gray-100"
             >
+              {/* Zdjęcie */}
               <Image
                 src={profile.image ?? "/images/default-avatar.png"}
                 alt={profile.name}
                 fill
-                className="object-cover"
+                className="object-cover transition-transform duration-300 
+                         group-hover:scale-105"
                 sizes="(max-width: 768px) 50vw, 25vw"
               />
 
-              {/* Gradient overlay - zawsze widoczny */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-100" />
+              {/* Gradient overlay */}
+              <div
+                className="absolute inset-0 bg-gradient-to-t 
+                           from-black/90 via-black/40 to-transparent"
+              />
 
-              {/* Informacje - zawsze widoczne */}
-              <div className="absolute inset-0 p-4 flex flex-col justify-end">
+              {/* Przycisk polubienia */}
+              <button
+                className="absolute top-3 right-3 p-2 rounded-full 
+                         bg-white/90 backdrop-blur-sm hover:bg-white 
+                         transition-colors z-20"
+                onClick={(e) => e.preventDefault()}
+              >
+                <FaHeart
+                  className="w-4 h-4 text-gray-400 
+                                hover:text-red-500 transition-colors"
+                />
+              </button>
+
+              {/* Informacje o profilu */}
+              <div className="absolute inset-x-0 bottom-0 p-4">
                 <div className="text-white space-y-2">
+                  {/* Imię i wiek */}
                   <div className="flex items-center gap-2">
-                    <h3 className="text-xl font-bold">{profile.name}</h3>
+                    <h3 className="text-lg font-bold leading-tight">
+                      {profile.name}
+                    </h3>
                     {profile.age && (
-                      <span className="text-sm text-gray-200">
+                      <span className="text-sm text-gray-300">
                         {profile.age} lat
                       </span>
                     )}
                   </div>
 
-                  <div className="flex items-center gap-3">
-                    <div className="flex items-center gap-1.5 text-sm">
-                      <FaMapMarkerAlt className="text-amber-400" />
+                  {/* Lokalizacja i wzrost */}
+                  <div className="flex items-center gap-3 text-sm text-gray-300">
+                    <div className="flex items-center gap-1.5">
+                      <FaMapMarkerAlt className="w-3.5 h-3.5 text-amber-400" />
                       <span>{profile.dancePreferences?.location}</span>
                     </div>
-
                     {profile.height && (
-                      <div className="flex items-center gap-1.5 text-sm">
-                        <FaRuler className="text-amber-400" />
+                      <div className="flex items-center gap-1.5">
+                        <FaRuler className="w-3.5 h-3.5 text-amber-400" />
                         <span>{profile.height} cm</span>
                       </div>
                     )}
                   </div>
 
+                  {/* Style tańca */}
                   {renderStyles(profile.dancePreferences?.styles || [])}
                 </div>
               </div>
 
-              {/* Poziom zaawansowania - zawsze widoczny */}
+              {/* Poziom zaawansowania */}
               <div className="absolute top-3 left-3">
                 <span
-                  className="bg-white/95 backdrop-blur-sm text-amber-700 px-2 py-1 
-                               rounded-full text-sm font-medium"
+                  className="px-2.5 py-1 text-xs font-medium 
+                             bg-white/90 backdrop-blur-sm text-amber-600 
+                             rounded-full"
                 >
                   {translateLevel(profile.dancePreferences?.level || "")}
                 </span>
@@ -183,26 +206,40 @@ export const LatestProfiles = () => {
       </div>
 
       {/* Modal ze stylami */}
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {isModalOpen && (
           <>
-            {/* Overlay */}
-            <div
-              className={`fixed inset-0 bg-black/50 z-[101] transition-opacity duration-300
-                ${
-                  isModalOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-                }`}
+            {/* Overlay z płynniejszą animacją */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="fixed inset-0 bg-black/50 backdrop-blur-[2px] z-[101]"
               onClick={() => setIsModalOpen(false)}
             />
 
-            {/* Modal */}
-            <div
-              className={`fixed inset-y-0 right-0 w-64 bg-white shadow-xl z-[102]
-                transform transition-transform duration-300
-                ${isModalOpen ? "translate-x-0" : "translate-x-full"}`}
+            {/* Modal z płynniejszą animacją */}
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{
+                type: "spring",
+                stiffness: 300,
+                damping: 30,
+                duration: 0.4,
+              }}
+              className="fixed inset-y-0 right-0 w-64 bg-white shadow-xl z-[102]"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="p-4 space-y-4">
+              {/* Zawartość modalu z animacją */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.2 }}
+                className="p-4 space-y-4"
+              >
                 {/* Nagłówek */}
                 <div className="flex items-center justify-between">
                   <h3 className="text-lg font-semibold text-gray-900">
@@ -303,8 +340,8 @@ export const LatestProfiles = () => {
                     Zamknij
                   </button>
                 </div>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           </>
         )}
       </AnimatePresence>
