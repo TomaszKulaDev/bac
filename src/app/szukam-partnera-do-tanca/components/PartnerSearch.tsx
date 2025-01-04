@@ -214,23 +214,33 @@ export function PartnerSearch() {
   );
 
   return (
-    <div id="search-section" className="py-16 bg-gray-50">
+    <div
+      id="search-section"
+      className="py-8 bg-gradient-to-b from-gray-50 to-white"
+    >
       <div ref={selectRef} className="sticky top-24">
-        <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+        <div
+          className="bg-white rounded-2xl shadow-lg shadow-gray-100/50 overflow-hidden 
+                     border border-gray-100 backdrop-blur-sm"
+        >
           <form className="p-6 space-y-6">
-            <div className="text-center mb-4">
-              <span className="text-sm text-gray-600">
-                Znaleziono{" "}
-                <span className="font-semibold text-amber-500">
-                  {filteredCount}
-                </span>{" "}
-                {filteredCount === 1
-                  ? "profil"
-                  : filteredCount % 10 >= 2 &&
-                    filteredCount % 10 <= 4 &&
-                    (filteredCount % 100 < 10 || filteredCount % 100 >= 20)
-                  ? "profile"
-                  : "profili"}
+            {/* Licznik wyników */}
+            <div className="text-center">
+              <span
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 
+                           rounded-full text-sm font-medium bg-amber-50 text-amber-600"
+              >
+                <span>Znaleziono</span>
+                <span className="font-semibold">{filteredCount}</span>
+                <span>
+                  {filteredCount === 1
+                    ? "profil"
+                    : filteredCount % 10 >= 2 &&
+                      filteredCount % 10 <= 4 &&
+                      (filteredCount % 100 < 10 || filteredCount % 100 >= 20)
+                    ? "profile"
+                    : "profili"}
+                </span>
               </span>
             </div>
 
@@ -280,37 +290,60 @@ export function PartnerSearch() {
                 Przedział wiekowy
               </label>
               <div className="grid grid-cols-2 gap-4">
-                <input
-                  type="number"
-                  placeholder="Od"
-                  min="18"
-                  max="100"
-                  className="pl-4 pr-2 py-3 rounded-lg border-amber-200 
+                <div className="relative">
+                  <input
+                    type="number"
+                    placeholder="Od"
+                    min="18"
+                    max="100"
+                    className="w-full pl-4 pr-2 py-3 rounded-lg border border-amber-200 
                             focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20
                             bg-white hover:border-amber-300 transition-colors"
-                />
-                <input
-                  type="number"
-                  placeholder="Do"
-                  min="18"
-                  max="100"
-                  className="pl-4 pr-2 py-3 rounded-lg border-amber-200 
+                  />
+                  <span
+                    className="absolute right-3 top-1/2 -translate-y-1/2 
+                                text-xs text-gray-400"
+                  >
+                    lat
+                  </span>
+                </div>
+                <div className="relative">
+                  <input
+                    type="number"
+                    placeholder="Do"
+                    min="18"
+                    max="100"
+                    className="w-full pl-4 pr-2 py-3 rounded-lg border border-amber-200 
                             focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20
                             bg-white hover:border-amber-300 transition-colors"
-                />
+                  />
+                  <span
+                    className="absolute right-3 top-1/2 -translate-y-1/2 
+                                text-xs text-gray-400"
+                  >
+                    lat
+                  </span>
+                </div>
               </div>
             </div>
 
+            {/* Przycisk wyszukiwania */}
             <button
               type="submit"
-              className="w-full bg-gradient-to-r from-amber-500 to-red-500 
-                       hover:from-amber-600 hover:to-red-600 text-white 
-                       py-3.5 rounded-lg font-medium transition-all duration-300
-                       transform hover:scale-[1.02] hover:shadow-lg active:scale-[0.98]
-                       flex items-center justify-center gap-2 mt-6"
+              className="w-full bg-gradient-to-r from-amber-500 to-amber-600 
+                       text-white py-3.5 rounded-lg font-medium 
+                       transition-all duration-300 relative
+                       hover:from-amber-600 hover:to-amber-700
+                       active:scale-[0.98] overflow-hidden group"
             >
-              <FaSearch className="text-lg" />
-              Szukaj
+              <div
+                className="absolute inset-0 bg-gradient-to-r from-amber-400 to-amber-500 
+                           opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              />
+              <span className="relative flex items-center justify-center gap-2">
+                <FaSearch className="text-lg" />
+                Szukaj
+              </span>
             </button>
           </form>
         </div>
