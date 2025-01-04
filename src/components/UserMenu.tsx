@@ -76,7 +76,7 @@ export const UserMenu: React.FC<UserMenuProps> = ({ user, onLogout }) => {
           >
             <div className="py-1" role="menu">
               <Link
-                href="/profile"
+                href="/tancerki-tancerze-bachaty"
                 className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 
               hover:bg-gray-50 transition-colors duration-200"
               >

@@ -260,7 +260,7 @@ export default function Login() {
       if (session.user.role === "admin") {
         router.push("/admin");
       } else {
-        router.push("/profile");
+        router.push("/");
       }
     }
   }, [status, session, router, dispatch]);
@@ -309,7 +309,7 @@ export default function Login() {
         setErrors({ form: result.error });
       } else {
         console.log("Login successful, redirecting to profile");
-        router.push("/profile");
+        router.push("/");
       }
     } catch (error) {
       console.error("Login error:", error);

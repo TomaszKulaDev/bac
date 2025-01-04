@@ -291,7 +291,7 @@ export const NavContent: React.FC = React.memo(function NavContent() {
               {isAuthenticated ? (
                 <div className="space-y-2">
                   <Link
-                    href="/profil"
+                    href="/tancerki-tancerze-bachaty"
                     className="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg transition-colors"
                   >
                     <div className="w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center">

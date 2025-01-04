@@ -11,7 +11,7 @@ export const authOptions: AuthOptions = {
       name: "Credentials",
       credentials: {
         email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" }
+        password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
@@ -25,7 +25,10 @@ export const authOptions: AuthOptions = {
           return null;
         }
 
-        const isValid = await bcrypt.compare(credentials.password, user.password);
+        const isValid = await bcrypt.compare(
+          credentials.password,
+          user.password
+        );
         if (!isValid) {
           return null;
         }
@@ -34,10 +37,10 @@ export const authOptions: AuthOptions = {
           id: user._id.toString(),
           email: user.email,
           name: user.name,
-          role: user.role as string
+          role: user.role as string,
         };
-      }
-    })
+      },
+    }),
   ],
   callbacks: {
     async jwt({ token, user }) {
@@ -51,12 +54,13 @@ export const authOptions: AuthOptions = {
         session.user.role = token.role as string;
       }
       return session;
-    }
+    },
   },
   pages: {
-    signIn: '/login',
+    signIn: "/login",
+    signOut: "/",
   },
   session: {
     strategy: "jwt",
-  }
+  },
 };

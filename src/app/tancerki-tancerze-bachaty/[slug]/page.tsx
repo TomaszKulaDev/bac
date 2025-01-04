@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { UserProfile } from "@/types/user";
 
-export default function ProfilePage() {
+export default function TancerzePage() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -14,7 +14,7 @@ export default function ProfilePage() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        console.log("Pobieranie profilu dla:", slug); // Debug log
+        console.log("Pobieranie profilu dla:", slug);
         const response = await fetch(`/api/profiles/by-name/${slug}`);
 
         if (!response.ok) {
@@ -22,7 +22,7 @@ export default function ProfilePage() {
         }
 
         const data = await response.json();
-        console.log("Otrzymane dane:", data); // Debug log
+        console.log("Otrzymane dane:", data);
         setProfile(data);
       } catch (error) {
         console.error("Błąd:", error);

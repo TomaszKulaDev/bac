@@ -116,7 +116,7 @@ export const LatestProfiles = () => {
             className="relative group"
           >
             <Link
-              href={`/profile/${
+              href={`/tancerki-tancerze-bachaty/${
                 profile.slug ||
                 encodeURIComponent(
                   profile.name.toLowerCase().replace(/\s+/g, "-")

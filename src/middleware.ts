@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { getToken } from "next-auth/jwt";
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   // Sprawdź czy to żądanie API
   if (request.nextUrl.pathname.startsWith("/api/")) {
     const response = NextResponse.next();
@@ -15,6 +16,21 @@ export function middleware(request: NextRequest) {
     response.headers.set("Expires", "0");
 
     return response;
+  }
+
+  // Sprawdź autoryzację dla chronionej ścieżki
+  if (request.nextUrl.pathname.startsWith("/tancerki-tancerze-bachaty")) {
+    const token = await getToken({
+      req: request,
+      secret: process.env.NEXTAUTH_SECRET,
+    });
+
+    // Jeśli użytkownik nie jest zalogowany, przekieruj do strony logowania
+    if (!token) {
+      const url = new URL("/auth/signin", request.url);
+      url.searchParams.set("callbackUrl", request.nextUrl.pathname);
+      return NextResponse.redirect(url);
+    }
   }
 
   if (request.nextUrl.pathname.startsWith("/api/playlists")) {
@@ -39,5 +55,11 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/api/:path*", "/muzyka/:path*", "/admin/:path*", "/"],
+  matcher: [
+    "/api/:path*",
+    "/muzyka/:path*",
+    "/admin/:path*",
+    "/",
+    "/tancerki-tancerze-bachaty/:path*",
+  ],
 };
