@@ -626,108 +626,382 @@ export default function ProfilePage() {
         </div>
       )}
 
-      {/* Nowy układ na całą szerokość */}
       <div className="min-h-screen bg-gray-50">
-        {/* Hero section */}
-        <div className="bg-white border-b">
-          <div className="max-w-7xl mx-auto px-4 py-8">
-            <div className="flex justify-between items-center">
-              <div className="flex items-center gap-6">
-                <div className="w-24 h-24 rounded-lg overflow-hidden">
-                  <Image
-                    src={userProfile?.image ?? "/images/default-avatar.png"}
-                    alt="Profile"
-                    width={96}
-                    height={96}
-                    className="object-cover"
-                  />
-                </div>
-                <div>
-                  <h1 className="text-2xl font-bold text-gray-900">
+        {/* Instagram-style header */}
+        <header className="bg-white border-b">
+          <div
+            className="container mx-auto px-4 py-6"
+            style={{ maxWidth: "900px" }}
+          >
+            <div className="flex flex-col md:flex-row gap-6 items-center">
+              {/* Avatar */}
+              <div className="w-24 h-24 md:w-28 md:h-28 rounded-full overflow-hidden flex-shrink-0 border-2 border-gray-200">
+                <Image
+                  src={userProfile?.image ?? "/images/default-avatar.png"}
+                  alt="Profile"
+                  width={112}
+                  height={112}
+                  className="object-cover w-full h-full"
+                />
+              </div>
+
+              {/* Profile info */}
+              <div className="flex-1 text-center md:text-left">
+                {/* Nazwa i przycisk */}
+                <div className="flex flex-col md:flex-row items-center gap-4 mb-6">
+                  <h1 className="text-xl font-semibold text-gray-900">
                     {userProfile?.name}
                   </h1>
-                  <p className="text-gray-500">
-                    {userProfile?.dancePreferences?.location}
-                  </p>
+                  <button
+                    onClick={() => setIsEditing(true)}
+                    className="px-4 py-1.5 rounded-md bg-gray-100 hover:bg-gray-200 text-sm font-medium text-gray-700 transition-colors"
+                  >
+                    Edytuj profil
+                  </button>
+                </div>
+
+                {/* Bio i informacje */}
+                <div className="space-y-3">
+                  <div className="text-sm text-gray-600 leading-relaxed">
+                    {userProfile?.bio ||
+                      "Tancerka, instruktorka, choreografka, kursy online"}
+                  </div>
+
+                  {/* Style tańca */}
+                  <div className="space-y-2">
+                    <div className="text-sm font-medium text-gray-900">
+                      Style tańca
+                    </div>
+                    <div className="flex flex-wrap gap-1.5">
+                      {userProfile?.dancePreferences?.styles?.map((style) => (
+                        <span
+                          key={style}
+                          className="px-2 py-1 bg-gray-100 hover:bg-gray-200 rounded text-xs font-medium text-gray-700 transition-colors"
+                        >
+                          {style}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Lokalizacja */}
+                  <div className="text-sm">
+                    <span className="text-gray-500">Miejscowość:</span>
+                    <span className="ml-1 text-gray-900">
+                      {userProfile?.dancePreferences?.location}
+                    </span>
+                  </div>
                 </div>
               </div>
-              <button
-                onClick={() => setIsEditing(true)}
-                className="px-4 py-2 bg-amber-50 text-amber-600 rounded-lg hover:bg-amber-100
-                         transition-colors flex items-center gap-2"
-              >
-                <FaEdit /> Edytuj profil
-              </button>
+            </div>
+          </div>
+        </header>
+
+        {/* Modern Gallery Layout - z ograniczoną szerokością */}
+        <div className="bg-white py-1 border-b">
+          <div
+            className="container mx-auto px-1"
+            style={{ maxWidth: "1200px" }}
+          >
+            <div className="grid grid-cols-6 md:grid-cols-8 lg:grid-cols-12 gap-0.5">
+              {/* Duży placeholder */}
+              <div className="relative aspect-[4/5] col-span-2 row-span-2 bg-gray-100 rounded-sm overflow-hidden group">
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-base">💃</span>
+                </div>
+              </div>
+
+              {/* Małe placeholdery */}
+              {[
+                "🎵",
+                "🌟",
+                "🎭",
+                "🏆",
+                "✨",
+                "💫",
+                "🎪",
+                "🎨",
+                "🎼",
+                "🎡",
+                "🌈",
+                "🎶",
+                "🎬",
+                "🎸",
+                "🎯",
+                "🎪",
+                "🎨",
+                "🎭",
+                "🌟",
+                "✨",
+                "💫",
+                "🎪",
+                "🎵",
+                "🌟",
+                "🎭",
+                "🏆",
+                "✨",
+                "💫",
+                "🎪",
+                "🎨",
+                "🎼",
+                "🎡",
+              ].map((emoji, index) => (
+                <div
+                  key={index}
+                  className="relative aspect-square bg-gray-100 rounded-sm overflow-hidden"
+                >
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span className="text-sm">{emoji}</span>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
 
-        {/* Sekcje informacji */}
+        {/* Główna zawartość */}
         <div className="max-w-7xl mx-auto px-4 py-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Sekcja 1: Style tańca */}
-            <div className="bg-white p-6 rounded-lg border">
-              <h2 className="text-lg font-semibold mb-4">Style tańca</h2>
-              <div className="flex flex-wrap gap-2">
-                {userProfile?.dancePreferences?.styles.map((style) => (
-                  <span
-                    key={style}
-                    className="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-md text-sm"
-                  >
-                    {style}
-                  </span>
-                ))}
+          {/* Sekcja dostępności - bez zmian */}
+          <div className="mb-8 bg-white p-6 rounded-lg shadow-sm">
+            <div className="flex justify-between items-center mb-6">
+              <div>
+                <h2 className="text-lg font-semibold">
+                  Dostępność w tym tygodniu
+                </h2>
+                <p className="text-sm text-gray-500 mt-1">
+                  Preferowane godziny na taniec
+                </p>
               </div>
+              <span className="px-3 py-1.5 bg-green-50 text-green-600 rounded-full text-sm font-medium">
+                Dostępny/a
+              </span>
             </div>
-
-            {/* Sekcja 2: Informacje o tańcu */}
-            <div className="bg-white p-6 rounded-lg border">
-              <h2 className="text-lg font-semibold mb-4">Informacje o tańcu</h2>
-              <dl className="space-y-4">
-                <div>
-                  <dt className="text-sm text-gray-500">Poziom</dt>
-                  <dd className="mt-1">
-                    {translateLevel(userProfile?.dancePreferences?.level || "")}
-                  </dd>
+            <div className="grid grid-cols-7 gap-3">
+              {[
+                { day: "Pon", hours: "20-22" },
+                { day: "Wt", hours: "19-21" },
+                { day: "Śr", hours: "-" },
+                { day: "Czw", hours: "20-22" },
+                { day: "Pt", hours: "18-22" },
+                { day: "Sob", hours: "16-22" },
+                { day: "Nd", hours: "16-20" },
+              ].map((item) => (
+                <div key={item.day} className="text-center">
+                  <div className="text-sm font-medium text-gray-900 mb-2">
+                    {item.day}
+                  </div>
+                  <div
+                    className={`
+                    py-3 px-2 rounded-lg text-sm
+                    ${
+                      item.hours === "-"
+                        ? "bg-gray-50 text-gray-400"
+                        : "bg-green-50 text-green-700 border-2 border-green-100"
+                    }
+                  `}
+                  >
+                    {item.hours}
+                  </div>
                 </div>
-                <div>
-                  <dt className="text-sm text-gray-500">Dostępność</dt>
-                  <dd className="mt-1">
-                    {userProfile?.dancePreferences?.availability}
-                  </dd>
-                </div>
-              </dl>
-            </div>
-
-            {/* Sekcja 3: Dane osobowe */}
-            <div className="bg-white p-6 rounded-lg border">
-              <h2 className="text-lg font-semibold mb-4">Dane osobowe</h2>
-              <dl className="space-y-4">
-                <div>
-                  <dt className="text-sm text-gray-500">Wiek</dt>
-                  <dd className="mt-1">
-                    {userProfile?.age ? `${userProfile.age} lat` : "-"}
-                  </dd>
-                </div>
-                <div>
-                  <dt className="text-sm text-gray-500">Wzrost</dt>
-                  <dd className="mt-1">
-                    {userProfile?.height ? `${userProfile.height} cm` : "-"}
-                  </dd>
-                </div>
-              </dl>
+              ))}
             </div>
           </div>
 
-          {/* Bio na całą szerokość */}
-          {userProfile?.bio && (
-            <div className="mt-8 bg-white p-6 rounded-lg border">
-              <h2 className="text-lg font-semibold mb-4">O mnie</h2>
-              <p className="text-gray-600 whitespace-pre-wrap">
-                {userProfile.bio}
-              </p>
+          {/* Reszta zawartości w kolumnach */}
+          <div className="grid grid-cols-12 gap-8">
+            {/* Lewa kolumna */}
+            <div className="col-span-4 space-y-6">
+              {/* Informacje */}
+              <div className="bg-white p-6 rounded-lg shadow-sm">
+                <h2 className="text-lg font-semibold mb-4">Informacje</h2>
+                <dl className="space-y-3">
+                  <div>
+                    <dt className="text-sm text-gray-500">Poziom</dt>
+                    <dd className="mt-1">
+                      {translateLevel(
+                        userProfile?.dancePreferences?.level || ""
+                      )}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="text-sm text-gray-500">Dostępność</dt>
+                    <dd className="mt-1">
+                      {userProfile?.dancePreferences?.availability}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="text-sm text-gray-500">Miejscowość</dt>
+                    <dd className="mt-1">
+                      {userProfile?.dancePreferences?.location}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="text-sm text-gray-500">Wiek</dt>
+                    <dd className="mt-1">{userProfile?.age} lat</dd>
+                  </div>
+                  <div>
+                    <dt className="text-sm text-gray-500">Wzrost</dt>
+                    <dd className="mt-1">{userProfile?.height} cm</dd>
+                  </div>
+                </dl>
+              </div>
+
+              {/* Ulubione wydarzenia */}
+              <div className="bg-white rounded-lg shadow-sm">
+                <div className="p-6 border-b">
+                  <h2 className="text-lg font-semibold">Ulubione wydarzenia</h2>
+                </div>
+
+                {/* Lista wydarzeń */}
+                <div className="divide-y">
+                  <div className="p-4 hover:bg-gray-50 transition-colors">
+                    <div className="flex items-center gap-3 mb-2">
+                      <span className="text-xl">💃</span>
+                      <h3 className="font-medium text-gray-900">
+                        Warsaw Salsa Festival
+                      </h3>
+                    </div>
+                    <div className="ml-9 space-y-2">
+                      <p className="text-sm text-gray-500">
+                        Coroczne wydarzenie • Wrzesień
+                      </p>
+                      <div className="flex gap-2">
+                        <span className="px-2 py-1 bg-amber-50 text-amber-700 rounded text-xs">
+                          Salsa
+                        </span>
+                        <span className="px-2 py-1 bg-purple-50 text-purple-700 rounded text-xs">
+                          Festiwal
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-4 hover:bg-gray-50 transition-colors">
+                    <div className="flex items-center gap-3 mb-2">
+                      <span className="text-xl">🌙</span>
+                      <h3 className="font-medium text-gray-900">
+                        Bachata Social Night
+                      </h3>
+                    </div>
+                    <div className="ml-9 space-y-2">
+                      <p className="text-sm text-gray-500">
+                        Co sobotę • 20:00 - 02:00
+                      </p>
+                      <div className="flex gap-2">
+                        <span className="px-2 py-1 bg-amber-50 text-amber-700 rounded text-xs">
+                          Bachata
+                        </span>
+                        <span className="px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs">
+                          Social
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-4 hover:bg-gray-50 transition-colors">
+                    <div className="flex items-center gap-3 mb-2">
+                      <span className="text-xl">🌊</span>
+                      <h3 className="font-medium text-gray-900">
+                        Summer Dance Camp
+                      </h3>
+                    </div>
+                    <div className="ml-9 space-y-2">
+                      <p className="text-sm text-gray-500">
+                        Coroczne wydarzenie • Lipiec
+                      </p>
+                      <div className="flex gap-2">
+                        <span className="px-2 py-1 bg-amber-50 text-amber-700 rounded text-xs">
+                          Mix stylów
+                        </span>
+                        <span className="px-2 py-1 bg-green-50 text-green-700 rounded text-xs">
+                          Warsztaty
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-          )}
+
+            {/* Prawa kolumna - oś czasu */}
+            <div className="col-span-8">
+              <div className="bg-white p-6 rounded-lg shadow-sm">
+                <h2 className="text-lg font-semibold mb-6">
+                  Historia aktywności
+                </h2>
+
+                {/* Oś czasu */}
+                <div className="relative space-y-8">
+                  {/* Linia czasu */}
+                  <div className="absolute left-8 top-0 bottom-0 w-px bg-gray-200" />
+
+                  {/* Aktywności */}
+                  <div className="relative flex gap-6">
+                    <div className="w-16 h-16 rounded-full bg-amber-50 flex items-center justify-center flex-shrink-0 z-10">
+                      <span className="text-2xl">🎓</span>
+                    </div>
+                    <div className="flex-1 bg-gray-50 rounded-lg p-4">
+                      <div className="flex items-start justify-between mb-2">
+                        <div>
+                          <span className="px-2 py-1 bg-green-50 text-green-700 rounded text-xs">
+                            Instruktor
+                          </span>
+                          <h3 className="text-lg font-medium mt-1">
+                            Technika Bachaty
+                          </h3>
+                        </div>
+                        <time className="text-sm text-gray-500">
+                          15 kwi 2024
+                        </time>
+                      </div>
+                      <p className="text-gray-600 text-sm mb-2">
+                        Warsztaty z techniki prowadzenia i footworku w bachacie.
+                      </p>
+                      <div className="flex gap-2">
+                        <span className="px-2 py-1 bg-amber-50 text-amber-700 rounded text-xs">
+                          Bachata
+                        </span>
+                        <span className="px-2 py-1 bg-gray-200 text-gray-700 rounded text-xs">
+                          6 godzin
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="relative flex gap-6">
+                    <div className="w-16 h-16 rounded-full bg-purple-50 flex items-center justify-center flex-shrink-0 z-10">
+                      <span className="text-2xl">🎉</span>
+                    </div>
+                    <div className="flex-1 bg-gray-50 rounded-lg p-4">
+                      <div className="flex items-start justify-between mb-2">
+                        <div>
+                          <span className="px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs">
+                            Uczestnik
+                          </span>
+                          <h3 className="text-lg font-medium mt-1">
+                            Salsa Night
+                          </h3>
+                        </div>
+                        <time className="text-sm text-gray-500">
+                          12 mar 2024
+                        </time>
+                      </div>
+                      <p className="text-gray-600 text-sm mb-2">
+                        Wieczór salsowy w klubie Latino.
+                      </p>
+                      <div className="flex gap-2">
+                        <span className="px-2 py-1 bg-amber-50 text-amber-700 rounded text-xs">
+                          Salsa
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Można dodać więcej aktywności */}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </>
