@@ -163,6 +163,15 @@ export function QuickAds() {
     }
   };
 
+  // Dodajemy funkcję pomocniczą do porównywania dat
+  const getDateDifference = (date: string) => {
+    const eventDate = new Date(date);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    eventDate.setHours(0, 0, 0, 0);
+    return Math.abs(eventDate.getTime() - today.getTime());
+  };
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-[200px]">
@@ -246,11 +255,22 @@ export function QuickAds() {
             {/* Lista ogłoszeń */}
             <div className="pl-5 space-y-1.5">
               {cityAds
-                .sort(
-                  (a, b) =>
-                    new Date(b.createdAt).getTime() -
-                    new Date(a.createdAt).getTime()
-                )
+                .sort((a, b) => {
+                  // Najpierw sortujemy po dacie wydarzenia
+                  const diffA = getDateDifference(a.date);
+                  const diffB = getDateDifference(b.date);
+
+                  if (diffA === diffB) {
+                    // Jeśli daty są takie same, sortujemy po dacie utworzenia (najnowsze pierwsze)
+                    return (
+                      new Date(b.createdAt).getTime() -
+                      new Date(a.createdAt).getTime()
+                    );
+                  }
+
+                  // Sortujemy po najbliższej dacie wydarzenia
+                  return diffA - diffB;
+                })
                 .map((ad) => (
                   <div
                     key={ad._id}
@@ -261,7 +281,12 @@ export function QuickAds() {
                       className="flex-1 text-sm text-gray-600 hover:text-amber-600 
                                transition-colors line-clamp-2"
                     >
-                      {ad.title}
+                      <span className="flex items-center gap-2">
+                        <span>{ad.title}</span>
+                        <span className="text-xs text-gray-400">
+                          {new Date(ad.date).toLocaleDateString("pl-PL")}
+                        </span>
+                      </span>
                     </Link>
 
                     {isAuthor(ad) && (
