@@ -44,8 +44,13 @@ const renderStyles = (styles: string[]) => {
 };
 
 export const LatestProfiles = () => {
-  const { sortOrder, selectedGender, selectedLevel, selectedDanceStyle } =
-    useFilters();
+  const {
+    sortOrder,
+    selectedGender,
+    selectedLevel,
+    selectedDanceStyle,
+    selectedLocation,
+  } = useFilters();
 
   const [profiles, setProfiles] = useState<UserProfile[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -54,6 +59,9 @@ export const LatestProfiles = () => {
   const filterProfiles = useCallback(
     (data: UserProfile[]) => {
       return data.filter((profile) => {
+        const locationMatch =
+          !selectedLocation ||
+          profile.dancePreferences?.location === selectedLocation;
         const genderMatch =
           !selectedGender || profile.gender === selectedGender;
         const levelMatch =
@@ -62,10 +70,10 @@ export const LatestProfiles = () => {
           !selectedDanceStyle ||
           profile.dancePreferences?.styles.includes(selectedDanceStyle);
 
-        return genderMatch && levelMatch && styleMatch;
+        return locationMatch && genderMatch && levelMatch && styleMatch;
       });
     },
-    [selectedGender, selectedLevel, selectedDanceStyle]
+    [selectedLocation, selectedGender, selectedLevel, selectedDanceStyle]
   );
 
   const sortProfiles = useCallback(
@@ -129,8 +137,8 @@ export const LatestProfiles = () => {
       <SortingButtons profilesCount={profiles.length} />
 
       {isLoading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {[1, 2, 3, 4].map((i) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+          {[1, 2, 3, 4, 5].map((i) => (
             <div
               key={i}
               className="animate-pulse bg-gray-200 h-64 rounded-lg"
@@ -142,7 +150,7 @@ export const LatestProfiles = () => {
           Nie znaleziono profili spełniających kryteria
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
           {profiles.map((profile) => (
             <motion.div
               key={profile.id}

@@ -86,13 +86,13 @@ export function QuickAds() {
       {/* Nagłówek z filtrami */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-          <h2 className="text-2xl font-bold text-gray-800">
+          <h2 className="text-2xl font-semibold text-gray-800">
             Szybkie Ogłoszenia
           </h2>
           <AddAdvertisementButton onSuccess={fetchAds} />
         </div>
 
-        {/* Filtry z nową stylizacją */}
+        {/* Filtry z poprawioną stylizacją */}
         <div className="w-full sm:w-auto overflow-x-auto pb-2 sm:pb-0">
           <div className="flex gap-2 min-w-max">
             {["Wszystkie", "Praktis", "Social", "Kurs", "Inne"].map((type) => (
@@ -105,7 +105,7 @@ export function QuickAds() {
                   ${
                     selectedType === type
                       ? "text-amber-600 bg-amber-50"
-                      : "text-gray-700 hover:bg-gray-100 hover:text-amber-600"
+                      : "text-gray-600 hover:bg-gray-50 hover:text-amber-600"
                   }`}
               >
                 {type}
@@ -124,7 +124,7 @@ export function QuickAds() {
         </div>
       </div>
 
-      {/* Tabela desktop z nową stylizacją */}
+      {/* Tabela desktop z poprawioną stylizacją */}
       <div className="hidden md:block">
         <table className="w-full">
           <thead>
@@ -154,8 +154,7 @@ export function QuickAds() {
               <tr key={ad._id} className="group hover:bg-gray-50">
                 <td className="py-3">
                   <span
-                    className={`px-3 py-1 text-sm font-medium rounded-full
-                    ${typeColors[ad.type]}`}
+                    className={`text-sm font-medium ${typeColors[ad.type]}`}
                   >
                     {ad.type}
                   </span>
@@ -163,7 +162,7 @@ export function QuickAds() {
                 <td className="py-3">
                   <Link
                     href={`/szukam-partnera-do-tanca/ogloszenie/${ad._id}`}
-                    className="text-gray-900 hover:text-amber-600 font-medium transition-colors"
+                    className="text-gray-600 hover:text-amber-600 text-sm transition-colors"
                   >
                     {ad.title}
                   </Link>
@@ -182,7 +181,7 @@ export function QuickAds() {
                 </td>
                 <td className="py-3">
                   <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center">
+                    <div className="w-8 h-8 bg-amber-50 rounded-full flex items-center justify-center">
                       <Image
                         src={ad.author.image || "/images/default-avatar.png"}
                         alt={ad.author.name}
@@ -191,7 +190,7 @@ export function QuickAds() {
                         className="rounded-full object-cover"
                       />
                     </div>
-                    <span className="text-sm text-gray-600">
+                    <span className="text-sm text-gray-600 font-medium">
                       {ad.author.name}
                     </span>
                   </div>

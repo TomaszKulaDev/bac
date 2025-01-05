@@ -37,6 +37,7 @@ import { useRouter } from "next/navigation";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { Gender, UserProfile } from "@/types/user";
 import { motion } from "framer-motion";
+import { CITIES } from "@/constants/cities";
 
 interface ProfileFormData {
   name: string;
@@ -630,9 +631,8 @@ export default function ProfilePage() {
                     <label className="block text-sm font-medium text-gray-700 mb-3">
                       Lokalizacja
                     </label>
-                    <input
-                      type="text"
-                      value={formData.dancePreferences.location}
+                    <select
+                      value={formData.dancePreferences?.location || ""}
                       onChange={(e) =>
                         setFormData((prev) => ({
                           ...prev,
@@ -643,9 +643,15 @@ export default function ProfilePage() {
                         }))
                       }
                       className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm 
-                                 focus:border-amber-500 focus:ring-amber-500/20"
-                      placeholder="Np. Warszawa, Mokotów"
-                    />
+                               focus:border-amber-500 focus:ring-amber-500/20"
+                    >
+                      <option value="">Wybierz miasto</option>
+                      {CITIES.map((city) => (
+                        <option key={city.value} value={city.value}>
+                          {city.label}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 </div>
 

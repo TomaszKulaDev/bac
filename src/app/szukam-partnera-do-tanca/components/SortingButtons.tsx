@@ -8,8 +8,10 @@ import {
   FaVenusMars,
   FaGraduationCap,
   FaMusic,
+  FaMapMarkerAlt,
 } from "react-icons/fa";
 import { motion } from "framer-motion";
+import { CITIES } from "@/constants/cities";
 
 interface SortingButtonsProps {
   profilesCount?: number;
@@ -39,6 +41,8 @@ export const SortingButtons = ({ profilesCount }: SortingButtonsProps) => {
     setSelectedLevel,
     selectedDanceStyle,
     setSelectedDanceStyle,
+    selectedLocation,
+    setSelectedLocation,
   } = useFilters();
 
   return (
@@ -110,6 +114,27 @@ export const SortingButtons = ({ profilesCount }: SortingButtonsProps) => {
             <option value="beginner">Początkujący</option>
             <option value="intermediate">Średniozaawansowany</option>
             <option value="advanced">Zaawansowany</option>
+          </select>
+        </div>
+
+        <div className="relative group flex-1 sm:flex-none">
+          <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+            <FaMapMarkerAlt className="h-5 w-5 text-gray-400 group-hover:text-amber-500 transition-colors" />
+          </div>
+          <select
+            value={selectedLocation}
+            onChange={(e) => setSelectedLocation(e.target.value)}
+            className="block w-full pl-10 pr-4 py-2.5 text-base
+                     border-gray-200 rounded-lg shadow-sm
+                     focus:border-amber-500 focus:ring-amber-500
+                     bg-white hover:border-amber-300 transition-colors
+                     cursor-pointer"
+          >
+            {CITIES.map((city) => (
+              <option key={city.value} value={city.value}>
+                {city.label}
+              </option>
+            ))}
           </select>
         </div>
 
