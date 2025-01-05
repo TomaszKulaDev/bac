@@ -148,23 +148,22 @@ export async function DELETE(
 ) {
   try {
     const session = await getServerSession(authOptions);
-    console.log("Session:", session);
-
-    if (!session) {
+    if (!session?.user?.email) {
       return new Response("Unauthorized", { status: 401 });
     }
 
-    const advertisement = await Advertisement.findById(params.id);
-    console.log("Advertisement:", advertisement);
+    await connectToDatabase();
 
+    const advertisement = await Advertisement.findById(params.id);
     if (!advertisement) {
       return new Response("Advertisement not found", { status: 404 });
     }
 
-    console.log("Session user ID:", session.user.id);
-    console.log("Advertisement user ID:", advertisement.userId);
+    // Sprawdzamy czy użytkownik jest adminem lub autorem ogłoszenia
+    const isAdmin = session.user.role === "admin";
+    const isAuthor = advertisement.author.email === session.user.email;
 
-    if (advertisement.userId !== session.user.id) {
+    if (!isAdmin && !isAuthor) {
       return new Response("Forbidden", { status: 403 });
     }
 

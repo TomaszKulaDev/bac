@@ -8,7 +8,7 @@ const advertisementSchema = new mongoose.Schema(
       enum: ["Praktis", "Social", "Kurs", "Inne"],
     },
     title: { type: String, required: true },
-    date: { type: String, required: true },
+    date: { type: Date, required: true },
     time: { type: String, required: true },
     location: {
       city: { type: String, required: true },
@@ -16,11 +16,9 @@ const advertisementSchema = new mongoose.Schema(
     },
     author: {
       name: { type: String, required: true },
-      image: { type: String, default: "/images/default-avatar.png" },
-      level: {
-        type: String,
-        enum: ["Początkujący", "Średniozaawansowany", "Zaawansowany"],
-      },
+      email: { type: String, required: true },
+      image: String,
+      level: { type: String, required: true },
     },
     description: {
       type: String,
@@ -34,6 +32,12 @@ const advertisementSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+// Dodajmy middleware do logowania przy zapisie
+advertisementSchema.pre("save", function (next) {
+  console.log("Saving advertisement with author:", this.author);
+  next();
+});
 
 export const Advertisement =
   mongoose.models.Advertisement ||

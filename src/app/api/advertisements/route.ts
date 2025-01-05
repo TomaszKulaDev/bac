@@ -8,11 +8,23 @@ import { authOptions } from "@/lib/auth.config";
 export async function GET() {
   try {
     await connectToDatabase();
-    const ads = await Advertisement.find()
-      .sort({ date: 1, time: 1 }) // Sortuj po dacie i czasie
-      .lean();
-    return NextResponse.json(ads);
+    const ads = await Advertisement.find().exec();
+
+    const plainAds = ads.map((ad) => ({
+      ...ad.toObject(),
+      _id: ad._id.toString(),
+    }));
+
+    console.log("API: Pierwsze ogłoszenie:", {
+      id: plainAds[0]?._id,
+      authorComplete: plainAds[0]?.author,
+      hasEmail: Boolean(plainAds[0]?.author?.email),
+      rawAuthor: JSON.stringify(plainAds[0]?.author),
+    });
+
+    return NextResponse.json(plainAds);
   } catch (error) {
+    console.error("Error fetching ads:", error);
     return NextResponse.json(
       { error: "Nie udało się pobrać ogłoszeń" },
       { status: 500 }
@@ -24,16 +36,12 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const session = await getServerSession(authOptions);
-    if (!session?.user) {
+    if (!session?.user?.email) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    console.log("Session user:", session.user); // Debugowanie
-
     await connectToDatabase();
     const data = await request.json();
-
-    console.log("Received data:", data); // Debugowanie
 
     if (!data.description || data.description.length > 255) {
       return NextResponse.json(
@@ -46,15 +54,26 @@ export async function POST(request: Request) {
       ...data,
       author: {
         name: session.user.name,
+        email: session.user.email,
         image: session.user.image || "/images/default-avatar.png",
         level: data.author.level,
       },
     });
 
-    console.log("New ad:", newAd); // Debugowanie
+    const savedAd = await newAd.save();
 
-    await newAd.save();
-    return NextResponse.json(newAd);
+    const plainSavedAd = {
+      ...savedAd.toObject(),
+      _id: savedAd._id.toString(),
+    };
+
+    console.log("Saved ad:", {
+      id: plainSavedAd._id,
+      author: plainSavedAd.author,
+      hasEmail: Boolean(plainSavedAd.author?.email),
+    });
+
+    return NextResponse.json(plainSavedAd);
   } catch (error) {
     console.error("Error creating advertisement:", error);
     return NextResponse.json(

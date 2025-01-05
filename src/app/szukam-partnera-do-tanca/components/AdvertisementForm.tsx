@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { AdvertisementType, DanceLevel } from "@/types/advertisement";
 import { useAuth } from "@/hooks/useAuth";
 import { useUserProfile } from "@/hooks/useUserProfile";
+import { CITIES } from "@/constants/cities";
 
 // Dodajemy interfejs dla błędów
 interface ValidationErrors {
@@ -205,15 +206,15 @@ export function AdvertisementForm({
     }
 
     // Walidacja miasta
-    if (!formData.location.city.trim()) {
+    if (!formData.location.city) {
       newErrors.location = {
         ...newErrors.location,
-        city: "Miasto jest wymagane",
+        city: "Wybierz miasto z listy",
       };
-    } else if (formData.location.city.length > 20) {
+    } else if (!CITIES.some((city) => city.value === formData.location.city)) {
       newErrors.location = {
         ...newErrors.location,
-        city: "Nazwa miasta nie może być dłuższa niż 20 znaków",
+        city: "Wybierz prawidłowe miasto z listy",
       };
     }
 
@@ -408,8 +409,7 @@ export function AdvertisementForm({
               <label className="block text-sm font-medium text-gray-700">
                 Miasto
               </label>
-              <input
-                type="text"
+              <select
                 value={formData.location.city}
                 onChange={(e) =>
                   setFormData({
@@ -425,8 +425,16 @@ export function AdvertisementForm({
                          }
                          focus:border-amber-500 focus:ring-amber-500`}
                 required
-                maxLength={20}
-              />
+              >
+                <option value="" disabled>
+                  Wybierz miasto
+                </option>
+                {CITIES.filter((city) => city.value !== "").map((city) => (
+                  <option key={city.value} value={city.value}>
+                    {city.label}
+                  </option>
+                ))}
+              </select>
               {errors.location?.city && (
                 <p className="mt-1 text-sm text-red-600">
                   {errors.location.city}
