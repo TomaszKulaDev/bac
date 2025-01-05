@@ -172,6 +172,48 @@ export function QuickAds() {
     return Math.abs(eventDate.getTime() - today.getTime());
   };
 
+  // Dodajemy funkcję pomocniczą do określania statusu wydarzenia
+  const getEventStatus = (date: string) => {
+    const eventDate = new Date(date);
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const nextWeek = new Date(today);
+    nextWeek.setDate(nextWeek.getDate() + 7);
+
+    // Resetujemy godziny dla poprawnego porównania dat
+    today.setHours(0, 0, 0, 0);
+    tomorrow.setHours(0, 0, 0, 0);
+    eventDate.setHours(0, 0, 0, 0);
+
+    if (eventDate.getTime() === today.getTime()) {
+      return {
+        type: "today",
+        label: "Dziś",
+        color: "bg-green-100 text-green-800",
+      };
+    } else if (eventDate.getTime() === tomorrow.getTime()) {
+      return {
+        type: "tomorrow",
+        label: "Jutro",
+        color: "bg-blue-100 text-blue-800",
+      };
+    } else if (eventDate < today) {
+      return {
+        type: "past",
+        label: "Zakończone",
+        color: "bg-gray-100 text-gray-600",
+      };
+    } else if (eventDate <= nextWeek) {
+      return {
+        type: "soon",
+        label: "Wkrótce",
+        color: "bg-amber-100 text-amber-800",
+      };
+    }
+    return { type: "future", label: "", color: "" };
+  };
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-[200px]">
@@ -256,63 +298,89 @@ export function QuickAds() {
             <div className="pl-5 space-y-1.5">
               {cityAds
                 .sort((a, b) => {
-                  // Najpierw sortujemy po dacie wydarzenia
                   const diffA = getDateDifference(a.date);
                   const diffB = getDateDifference(b.date);
 
                   if (diffA === diffB) {
-                    // Jeśli daty są takie same, sortujemy po dacie utworzenia (najnowsze pierwsze)
                     return (
                       new Date(b.createdAt).getTime() -
                       new Date(a.createdAt).getTime()
                     );
                   }
-
-                  // Sortujemy po najbliższej dacie wydarzenia
                   return diffA - diffB;
                 })
-                .map((ad) => (
-                  <div
-                    key={ad._id}
-                    className="group flex items-start justify-between gap-2"
-                  >
-                    <Link
-                      href={`/szukam-partnera-do-tanca/ogloszenie/${ad._id}`}
-                      className="flex-1 text-sm text-gray-600 hover:text-amber-600 
-                               transition-colors line-clamp-2"
-                    >
-                      <span className="flex items-center gap-2">
-                        <span>{ad.title}</span>
-                        <span className="text-xs text-gray-400">
-                          {new Date(ad.date).toLocaleDateString("pl-PL")}
-                        </span>
-                      </span>
-                    </Link>
+                .map((ad) => {
+                  const eventStatus = getEventStatus(ad.date);
 
-                    {isAuthor(ad) && (
-                      <div
-                        className="flex items-center gap-2 opacity-0 group-hover:opacity-100 
-                                    transition-opacity"
+                  return (
+                    <div
+                      key={ad._id}
+                      className="group flex items-start justify-between gap-2 p-2 rounded-lg hover:bg-gray-50 transition-all min-w-0 max-w-full"
+                    >
+                      <Link
+                        href={`/szukam-partnera-do-tanca/ogloszenie/${ad._id}`}
+                        className="flex-1 text-sm text-gray-600 hover:text-amber-600 
+                                 transition-colors min-w-0"
                       >
-                        <button
-                          onClick={() => {
-                            setEditingAd(ad);
-                            setIsEditModalOpen(true);
-                          }}
-                          className="p-1 text-gray-400 hover:text-amber-500 transition-colors"
+                        <div className="flex flex-col gap-1 min-w-0">
+                          <div className="flex items-start gap-2 min-w-0">
+                            <div className="flex-1 min-w-0">
+                              <h3 className="line-clamp-2 break-words">
+                                {ad.title}
+                              </h3>
+                            </div>
+                            {eventStatus.label && (
+                              <span
+                                className={`text-xs px-2 py-0.5 rounded-full whitespace-nowrap flex-shrink-0 ${eventStatus.color}`}
+                              >
+                                {eventStatus.label}
+                              </span>
+                            )}
+                          </div>
+                          <div className="flex items-center gap-2 text-xs text-gray-400 flex-wrap">
+                            <span className="flex items-center gap-1 whitespace-nowrap">
+                              <FaCalendarAlt className="w-3 h-3 flex-shrink-0" />
+                              <span>
+                                {new Date(ad.date).toLocaleDateString("pl-PL")}
+                              </span>
+                            </span>
+                            {ad.time && (
+                              <span className="flex items-center gap-1 whitespace-nowrap">
+                                <FaClock className="w-3 h-3 flex-shrink-0" />
+                                <span>{ad.time}</span>
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </Link>
+
+                      {isAuthor(ad) && (
+                        <div
+                          className="flex items-center gap-2 opacity-0 group-hover:opacity-100 
+                                       transition-opacity flex-shrink-0 ml-2"
                         >
-                          <FaEdit className="w-3.5 h-3.5" />
-                        </button>
-                        <button
-                          onClick={() => handleDelete(ad._id, ad.author.email)}
-                          className="p-1 text-gray-400 hover:text-red-500 transition-colors"
-                        >
-                          <FaTrash className="w-3.5 h-3.5" />
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                ))}
+                          <button
+                            onClick={() => {
+                              setEditingAd(ad);
+                              setIsEditModalOpen(true);
+                            }}
+                            className="p-1 text-gray-400 hover:text-amber-500 transition-colors"
+                          >
+                            <FaEdit className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            onClick={() =>
+                              handleDelete(ad._id, ad.author.email)
+                            }
+                            className="p-1 text-gray-400 hover:text-red-500 transition-colors"
+                          >
+                            <FaTrash className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
             </div>
           </div>
         ))}
