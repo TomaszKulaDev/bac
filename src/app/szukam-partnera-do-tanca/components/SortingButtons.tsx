@@ -22,6 +22,7 @@ const DANCE_STYLES = [
   { value: "Bachata Sensual", label: "Bachata Sensual" },
   { value: "Bachata Dominicana", label: "Bachata Dominicana" },
   { value: "Bachata Impro", label: "Bachata Impro" },
+  { value: "Salsa Cubana", label: "Salsa Cubana" },
   { value: "Salsa LA On1", label: "Salsa LA On1" },
   { value: "Salsa LA On2", label: "Salsa LA On2" },
   { value: "Salsa Rueda", label: "Salsa Rueda" },
