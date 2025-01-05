@@ -1,5 +1,5 @@
 export const CITIES = [
-  { value: "", label: "Wszystkie miasta" },
+  { value: "", label: "Miejscowość" },
   { value: "Warszawa", label: "Warszawa" },
   { value: "Kraków", label: "Kraków" },
   { value: "Łódź", label: "Łódź" },

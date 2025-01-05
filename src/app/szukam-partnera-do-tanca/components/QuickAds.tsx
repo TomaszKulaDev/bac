@@ -92,7 +92,7 @@ export function QuickAds() {
           <AddAdvertisementButton onSuccess={fetchAds} />
         </div>
 
-        {/* Filtry z poprawioną stylizacją */}
+        {/* Filtry z delikatnie zmodyfikowaną stylizacją dla mobile */}
         <div className="w-full sm:w-auto overflow-x-auto pb-2 sm:pb-0">
           <div className="flex gap-2 min-w-max">
             {["Wszystkie", "Praktis", "Social", "Kurs", "Inne"].map((type) => (
@@ -101,7 +101,7 @@ export function QuickAds() {
                 onClick={() =>
                   setSelectedType(type as AdvertisementType | "Wszystkie")
                 }
-                className={`px-4 py-2 text-sm font-medium rounded-lg transition-all relative group
+                className={`px-3 sm:px-4 py-2 text-sm font-medium rounded-lg transition-all relative group
                   ${
                     selectedType === type
                       ? "text-amber-600 bg-amber-50"
