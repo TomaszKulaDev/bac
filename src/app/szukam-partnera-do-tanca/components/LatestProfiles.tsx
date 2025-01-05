@@ -9,6 +9,7 @@ import { Gender, UserProfile } from "@/types/user";
 import { useFilters } from "@/app/szukam-partnera-do-tanca/context/FilterContext";
 import { sortBy } from "lodash";
 import { SortingButtons } from "./SortingButtons";
+import Modal from "@/components/ui/Modal";
 
 const translateLevel = (level: string) => {
   const levels = {
@@ -17,30 +18,6 @@ const translateLevel = (level: string) => {
     advanced: "Zaawansowany",
   };
   return levels[level as keyof typeof levels] || level;
-};
-
-const renderStyles = (styles: string[]) => {
-  return (
-    <div className="flex flex-wrap gap-1">
-      {styles.slice(0, 3).map((style, index) => (
-        <span
-          key={index}
-          className="inline-block px-2 py-1 text-xs font-medium 
-                   bg-white/10 backdrop-blur-sm rounded-full"
-        >
-          {style}
-        </span>
-      ))}
-      {styles.length > 3 && (
-        <span
-          className="inline-block px-2 py-1 text-xs font-medium 
-                      bg-white/10 backdrop-blur-sm rounded-full"
-        >
-          +{styles.length - 3}
-        </span>
-      )}
-    </div>
-  );
 };
 
 export const LatestProfiles = () => {
@@ -55,6 +32,8 @@ export const LatestProfiles = () => {
   const [profiles, setProfiles] = useState<UserProfile[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedStyles, setSelectedStyles] = useState<string[]>([]);
+  const [isStylesModalOpen, setIsStylesModalOpen] = useState(false);
 
   const filterProfiles = useCallback(
     (data: UserProfile[]) => {
@@ -117,6 +96,40 @@ export const LatestProfiles = () => {
 
     fetchProfiles();
   }, [filterProfiles, sortProfiles]);
+
+  const renderStyles = useCallback((styles: string[]) => {
+    if (!styles || styles.length === 0) return null;
+
+    return (
+      <div className="flex flex-wrap gap-1">
+        {styles.slice(0, 3).map((style, index) => (
+          <span
+            key={index}
+            className="inline-block px-2 py-1 text-xs font-medium 
+                     bg-white/10 backdrop-blur-sm rounded-full"
+          >
+            {style}
+          </span>
+        ))}
+        {styles.length > 3 && (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setSelectedStyles(styles);
+              setIsStylesModalOpen(true);
+            }}
+            className="inline-block px-2 py-1 text-xs font-medium 
+                     bg-white/10 backdrop-blur-sm rounded-full
+                     hover:bg-white/20 transition-colors"
+          >
+            +{styles.length - 3}
+          </button>
+        )}
+      </div>
+    );
+  }, []);
 
   if (error) {
     return (
@@ -229,6 +242,62 @@ export const LatestProfiles = () => {
           ))}
         </div>
       )}
+
+      {/* Modal ze stylami */}
+      <Modal
+        isOpen={isStylesModalOpen}
+        onClose={() => {
+          setIsStylesModalOpen(false);
+          setSelectedStyles([]);
+        }}
+        title="Style tańca"
+      >
+        <div className="flex flex-col divide-y divide-gray-100">
+          {/* Sekcja ze stylami */}
+          <div className="p-6">
+            <div className="flex flex-wrap gap-2">
+              {selectedStyles.map((style, index) => (
+                <span
+                  key={index}
+                  className="inline-flex items-center px-4 py-2 
+                           bg-white border border-gray-200 
+                           text-sm font-medium text-gray-700 
+                           rounded-full shadow-sm hover:bg-gray-50 
+                           transition-colors duration-150"
+                >
+                  {style}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Sekcja z reklamą */}
+          <div className="p-6 bg-gradient-to-r from-amber-50 to-amber-100">
+            <div className="flex items-center justify-between">
+              <div className="space-y-1">
+                <h3 className="text-lg font-semibold text-gray-900">
+                  Chcesz nauczyć się nowego stylu?
+                </h3>
+                <p className="text-sm text-gray-600">
+                  Znajdź najlepszych instruktorów w Twojej okolicy
+                </p>
+              </div>
+              <button
+                onClick={() => {
+                  // Tutaj logika przekierowania do wyszukiwarki instruktorów
+                  setIsStylesModalOpen(false);
+                }}
+                className="px-4 py-2 bg-amber-500 text-white 
+                         font-medium rounded-lg shadow-sm 
+                         hover:bg-amber-600 transition-colors 
+                         duration-150"
+              >
+                Znajdź instruktora
+              </button>
+            </div>
+          </div>
+        </div>
+      </Modal>
     </>
   );
 };
