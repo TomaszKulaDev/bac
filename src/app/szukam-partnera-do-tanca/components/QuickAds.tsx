@@ -173,34 +173,46 @@ export function QuickAds() {
 
   return (
     <div className="bg-white rounded-xl p-8 shadow-sm">
-      {/* Nagłówek z opcjami */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-          <h2 className="text-2xl font-semibold text-gray-800">
-            Szybkie Ogłoszenia
-          </h2>
+      {/* Sekcja nagłówka */}
+      <div className="mb-8 space-y-6">
+        {/* Górny pasek */}
+        <div
+          className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 
+                        border-b border-gray-100 pb-4"
+        >
+          <div className="flex items-center gap-4">
+            <h2 className="text-2xl font-semibold text-gray-800">
+              Szybkie Ogłoszenia
+            </h2>
+            <span className="text-sm text-gray-500">Łącznie: {ads.length}</span>
+          </div>
           <AddAdvertisementButton onSuccess={fetchAds} />
         </div>
 
-        {/* Filtry */}
-        <div className="w-full sm:w-auto overflow-x-auto pb-2 sm:pb-0">
-          <div className="flex gap-2 min-w-max">
-            {["Wszystkie", "Praktis", "Social", "Kurs", "Inne"].map((type) => (
-              <button
-                key={type}
-                onClick={() =>
-                  setSelectedType(type as AdvertisementType | "Wszystkie")
-                }
-                className={`px-3 py-2 text-sm font-medium rounded-lg transition-all
-                  ${
-                    selectedType === type
-                      ? "bg-amber-50 text-amber-600 hover:bg-amber-100"
-                      : "text-gray-600 hover:bg-amber-50/50"
-                  }`}
-              >
-                {type}
-              </button>
-            ))}
+        {/* Filtry i statystyki */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div className="flex items-center gap-2 text-sm text-gray-600">
+            <span>Filtry:</span>
+            <div className="flex gap-2 flex-wrap">
+              {["Wszystkie", "Praktis", "Social", "Kurs", "Inne"].map(
+                (type) => (
+                  <button
+                    key={type}
+                    onClick={() =>
+                      setSelectedType(type as AdvertisementType | "Wszystkie")
+                    }
+                    className={`px-3 py-1.5 rounded-full transition-all
+                    ${
+                      selectedType === type
+                        ? "bg-amber-50 text-amber-600 ring-1 ring-amber-200"
+                        : "hover:bg-gray-50"
+                    }`}
+                  >
+                    {type}
+                  </button>
+                )
+              )}
+            </div>
           </div>
         </div>
       </div>
