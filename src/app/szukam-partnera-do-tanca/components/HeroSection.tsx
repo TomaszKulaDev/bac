@@ -37,6 +37,20 @@ export function HeroSection() {
     }
   };
 
+  const scrollToProfiles = () => {
+    const profilesSection = document.getElementById("profiles-section");
+    if (profilesSection) {
+      const offset = 80;
+      const elementPosition = profilesSection.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      });
+    }
+  };
+
   const handleAddAdvertisement = () => {
     if (!session) {
       router.push("/login");
@@ -118,7 +132,7 @@ export function HeroSection() {
           {/* Przyciski akcji */}
           <div className="flex flex-col sm:flex-row gap-4 pt-6">
             <button
-              onClick={scrollToSearch}
+              onClick={scrollToProfiles}
               className="px-8 py-3 bg-white/10 hover:bg-white/15 text-white rounded-xl
                        flex items-center justify-center gap-2 transition-all group
                        border border-white/20 backdrop-blur-sm"

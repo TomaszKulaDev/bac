@@ -146,7 +146,7 @@ export const LatestProfiles = () => {
   }
 
   return (
-    <>
+    <div id="profiles-section">
       <SortingButtons profilesCount={profiles.length} />
 
       {isLoading ? (
@@ -298,6 +298,6 @@ export const LatestProfiles = () => {
           </div>
         </div>
       </Modal>
-    </>
+    </div>
   );
 };
