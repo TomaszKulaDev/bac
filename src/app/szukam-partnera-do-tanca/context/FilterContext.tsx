@@ -1,5 +1,6 @@
 "use client";
 
+import { Gender } from "@/types/user";
 import {
   createContext,
   useContext,
@@ -17,8 +18,10 @@ interface FilterContextType {
   setSelectedLevel: (level: string) => void;
   filteredCount: number;
   setFilteredCount: (count: number) => void;
-  selectedGender: string;
-  setSelectedGender: (gender: string) => void;
+  selectedGender: Gender | "";
+  setSelectedGender: (gender: Gender | "") => void;
+  sortOrder: "newest" | "oldest";
+  setSortOrder: (order: "newest" | "oldest") => void;
 }
 
 const FilterContext = createContext<FilterContextType | undefined>(undefined);
@@ -27,8 +30,9 @@ export function FilterProvider({ children }: { children: ReactNode }) {
   const [selectedLocation, setSelectedLocation] = useState("");
   const [selectedDanceStyle, setSelectedDanceStyle] = useState("");
   const [selectedLevel, setSelectedLevel] = useState("");
-  const [selectedGender, setSelectedGender] = useState("");
+  const [selectedGender, setSelectedGender] = useState<Gender | "">("");
   const [filteredCount, setFilteredCount] = useState(0);
+  const [sortOrder, setSortOrder] = useState<"newest" | "oldest">("newest");
 
   const handleLocationChange = (location: string) => {
     const formattedLocation =
@@ -39,9 +43,8 @@ export function FilterProvider({ children }: { children: ReactNode }) {
     setSelectedLocation(formattedLocation);
   };
 
-  const handleGenderChange = (gender: string) => {
-    console.log("Setting gender:", gender);
-    setSelectedGender(gender === "all" ? "" : gender);
+  const handleGenderChange = (gender: Gender | "") => {
+    setSelectedGender(gender);
   };
 
   const handleDanceStyleChange = (style: string) => {
@@ -49,8 +52,7 @@ export function FilterProvider({ children }: { children: ReactNode }) {
   };
 
   const handleLevelChange = (level: string) => {
-    console.log("Setting level:", level);
-    setSelectedLevel(level === "all" ? "" : level);
+    setSelectedLevel(level);
   };
 
   useEffect(() => {
@@ -78,6 +80,8 @@ export function FilterProvider({ children }: { children: ReactNode }) {
         setSelectedGender: handleGenderChange,
         filteredCount,
         setFilteredCount,
+        sortOrder,
+        setSortOrder,
       }}
     >
       {children}

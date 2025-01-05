@@ -19,6 +19,7 @@ export async function GET() {
         height: 1,
         gender: 1,
         bio: 1,
+        createdAt: 1,
       }
     ).sort({ createdAt: -1 });
 
@@ -32,6 +33,7 @@ export async function GET() {
       height: profile.height,
       gender: profile.gender,
       bio: profile.bio,
+      createdAt: profile.createdAt,
     }));
 
     return NextResponse.json(formattedProfiles, {

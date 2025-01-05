@@ -416,7 +416,7 @@ export default function ProfilePage() {
                         { id: "Kizomba", label: "Kizomba" },
                         { id: "Urban Kiz", label: "Urban Kiz" },
                         { id: "Zouk", label: "Zouk" },
-                        { id: "West Coast Swing ", label: "West Coast Swing" },
+                        { id: "West Coast Swing", label: "West Coast Swing" },
                       ].map((style) => (
                         <div
                           key={style.id}

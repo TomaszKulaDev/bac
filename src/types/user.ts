@@ -7,7 +7,7 @@ export interface UserProfile {
   image?: string;
   bio?: string;
   height?: number;
-  createdAt?: string;
+  createdAt: string | Date;
   updatedAt?: string;
   dancePreferences?: {
     styles: string[];
