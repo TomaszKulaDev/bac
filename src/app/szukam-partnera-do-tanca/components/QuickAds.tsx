@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
@@ -13,6 +13,7 @@ import {
   FaTrash,
   FaBell,
   FaBellSlash,
+  FaHeart,
 } from "react-icons/fa";
 import { AddAdvertisementButton } from "./AddAdvertisementButton";
 import Modal from "@/components/ui/Modal";
@@ -38,6 +39,64 @@ interface ExtendedAdvertisement extends Omit<Advertisement, "author"> {
   author: ExtendedAuthor;
 }
 
+// Komponent reklamowy
+const CityAdCard = () => (
+  <div className="bg-white rounded-xl p-4 border-2 border-amber-100 hover:border-amber-200 transition-all">
+    {/* Nagłówek */}
+    <div className="flex items-center gap-2 mb-3">
+      <div className="bg-amber-100 p-2 rounded-lg">
+        <FaHeart className="w-4 h-4 text-amber-500" />
+      </div>
+      <h3 className="font-medium text-gray-900">Dołącz do społeczności</h3>
+    </div>
+
+    {/* Treść */}
+    <p className="text-sm text-gray-600 mb-4">
+      Stwórz profil i znajdź partnera do tańca w Twojej okolicy!
+    </p>
+
+    {/* Przycisk */}
+    <Link
+      href="/szukam-partnera-do-tanca/dodaj-profil"
+      className="inline-flex items-center gap-2 text-sm font-medium text-amber-600 
+                hover:text-amber-700 group"
+    >
+      Stwórz profil
+      <FaArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+    </Link>
+  </div>
+);
+
+// Nowy komponent reklamowy z gradientem
+const AdCard = () => (
+  <div className="bg-gradient-to-br from-amber-50 to-amber-100/50 rounded-xl p-4 relative overflow-hidden group">
+    <div className="absolute inset-0 bg-gradient-to-r from-amber-500/10 to-transparent animate-pulse-slow" />
+
+    {/* Treść reklamy */}
+    <div className="relative z-10">
+      <div className="flex items-center gap-2 mb-3">
+        <div className="bg-amber-500/10 p-1.5 rounded-lg">
+          <FaHeart className="w-4 h-4 text-amber-500" />
+        </div>
+        <h3 className="font-medium text-amber-900">Szukasz Partnera?</h3>
+      </div>
+
+      <p className="text-sm text-amber-800/80 mb-4">
+        Dodaj swój profil i znajdź idealnego partnera do tańca w Twojej okolicy!
+      </p>
+
+      <Link
+        href="/szukam-partnera-do-tanca/dodaj-profil"
+        className="inline-flex items-center gap-2 text-sm font-medium text-amber-600 
+                 hover:text-amber-700 transition-colors group-hover:gap-3"
+      >
+        Stwórz profil
+        <FaArrowRight className="w-3.5 h-3.5 transition-all" />
+      </Link>
+    </div>
+  </div>
+);
+
 export function QuickAds() {
   const [ads, setAds] = useState<ExtendedAdvertisement[]>([]);
   const [selectedType, setSelectedType] = useState<
@@ -57,7 +116,7 @@ export function QuickAds() {
     return [];
   });
 
-  // Pobieranie ogłoszeń z logowaniem
+  // Pobieranie ogłoszeń
   const fetchAds = useCallback(async () => {
     try {
       const response = await fetch("/api/advertisements");
@@ -136,13 +195,6 @@ export function QuickAds() {
 
   // Funkcja usuwania ogłoszenia
   const handleDelete = async (adId: string, authorEmail: string) => {
-    console.log("Delete attempt:", {
-      sessionEmail: session?.user?.email,
-      authorEmail,
-      adId,
-    });
-
-    // Sprawdzamy czy użytkownik ma prawo usunąć ogłoszenie
     if (session?.user?.email !== authorEmail) {
       toast.error("Nie masz uprawnień do usunięcia tego ogłoszenia");
       return;
@@ -314,132 +366,139 @@ export function QuickAds() {
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 
                     gap-6 auto-rows-start"
       >
-        {organizedAds.map(([city, cityAds]) => (
-          <div
-            key={city}
-            className="bg-gray-50/50 rounded-xl p-4 hover:bg-gray-50 transition-colors"
-          >
-            {/* Nagłówek miasta */}
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-2">
-                <div className="bg-white p-1.5 rounded-lg shadow-sm">
-                  <FaMapMarkerAlt className="w-4 h-4 text-amber-500" />
+        {organizedAds.map(([city, cityAds], index) => (
+          <React.Fragment key={city}>
+            {/* Co 4 miasta dodajemy reklamę */}
+            {index > 0 && index % 4 === 0 && <AdCard />}
+
+            {/* Reklama po trzecim mieście */}
+            {index === 2 && <CityAdCard />}
+
+            <div className="bg-gray-50/50 rounded-xl p-4 hover:bg-gray-50 transition-colors">
+              {/* Nagłówek miasta */}
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <div className="bg-white p-1.5 rounded-lg shadow-sm">
+                    <FaMapMarkerAlt className="w-4 h-4 text-amber-500" />
+                  </div>
+                  <div>
+                    <h3 className="font-medium text-gray-900">{city}</h3>
+                    <span className="text-xs text-gray-500">
+                      {cityAds.length}{" "}
+                      {cityAds.length === 1 ? "ogłoszenie" : "ogłoszeń"}
+                    </span>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="font-medium text-gray-900">{city}</h3>
-                  <span className="text-xs text-gray-500">
-                    {cityAds.length}{" "}
-                    {cityAds.length === 1 ? "ogłoszenie" : "ogłoszeń"}
-                  </span>
-                </div>
+
+                {session?.user && (
+                  <button
+                    onClick={() => toggleCitySubscription(city)}
+                    className={`p-2 rounded-lg transition-all
+                      ${
+                        subscribedCities.includes(city)
+                          ? "text-amber-500 hover:text-amber-600 bg-amber-50"
+                          : "text-gray-400 hover:text-gray-600 hover:bg-gray-50"
+                      }`}
+                    title={
+                      subscribedCities.includes(city)
+                        ? `Wyłącz powiadomienia dla ${city}`
+                        : `Włącz powiadomienia dla ${city}`
+                    }
+                  >
+                    {subscribedCities.includes(city) ? (
+                      <FaBell className="w-4 h-4" />
+                    ) : (
+                      <FaBellSlash className="w-4 h-4" />
+                    )}
+                  </button>
+                )}
               </div>
 
-              {session?.user && (
-                <button
-                  onClick={() => toggleCitySubscription(city)}
-                  className={`p-2 rounded-lg transition-all
-                    ${
-                      subscribedCities.includes(city)
-                        ? "text-amber-500 hover:text-amber-600 bg-amber-50"
-                        : "text-gray-400 hover:text-gray-600 hover:bg-gray-50"
-                    }`}
-                  title={
-                    subscribedCities.includes(city)
-                      ? `Wyłącz powiadomienia dla ${city}`
-                      : `Włącz powiadomienia dla ${city}`
-                  }
-                >
-                  {subscribedCities.includes(city) ? (
-                    <FaBell className="w-4 h-4" />
-                  ) : (
-                    <FaBellSlash className="w-4 h-4" />
-                  )}
-                </button>
-              )}
-            </div>
+              {/* Lista ogłoszeń */}
+              <div className="space-y-2">
+                {cityAds
+                  .sort((a, b) => {
+                    const diffA = getDateDifference(a.date);
+                    const diffB = getDateDifference(b.date);
+                    return diffA - diffB;
+                  })
+                  .map((ad) => {
+                    const eventStatus = getEventStatus(ad.date);
 
-            {/* Lista ogłoszeń */}
-            <div className="space-y-2">
-              {cityAds
-                .sort((a, b) => {
-                  const diffA = getDateDifference(a.date);
-                  const diffB = getDateDifference(b.date);
-                  return diffA - diffB;
-                })
-                .map((ad) => {
-                  const eventStatus = getEventStatus(ad.date);
-
-                  return (
-                    <div
-                      key={ad._id}
-                      className="group relative bg-white rounded-lg p-3 hover:shadow-md transition-all"
-                    >
-                      <Link
-                        href={`/szukam-partnera-do-tanca/ogloszenie/${ad._id}`}
-                        className="flex-1 text-sm text-gray-600 hover:text-amber-600 
-                                 transition-colors min-w-0"
+                    return (
+                      <div
+                        key={ad._id}
+                        className="group relative bg-white rounded-lg p-3 hover:shadow-md transition-all"
                       >
-                        <div className="flex flex-col gap-1 min-w-0">
-                          <div className="flex items-start gap-2 min-w-0">
-                            <div className="flex-1 min-w-0">
-                              <h3 className="line-clamp-2 break-words">
-                                {ad.title}
-                              </h3>
-                            </div>
-                            {eventStatus.label && (
-                              <span
-                                className={`text-xs px-2 py-0.5 rounded-full whitespace-nowrap flex-shrink-0 ${eventStatus.color}`}
-                              >
-                                {eventStatus.label}
-                              </span>
-                            )}
-                          </div>
-                          <div className="flex items-center gap-2 text-xs text-gray-400 flex-wrap">
-                            <span className="flex items-center gap-1 whitespace-nowrap">
-                              <FaCalendarAlt className="w-3 h-3 flex-shrink-0" />
-                              <span>
-                                {new Date(ad.date).toLocaleDateString("pl-PL")}
-                              </span>
-                            </span>
-                            {ad.time && (
-                              <span className="flex items-center gap-1 whitespace-nowrap">
-                                <FaClock className="w-3 h-3 flex-shrink-0" />
-                                <span>{ad.time}</span>
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                      </Link>
-
-                      {canEditAd(ad) && (
-                        <div
-                          className="flex items-center gap-2 opacity-0 group-hover:opacity-100 
-                                       transition-opacity flex-shrink-0 ml-2"
+                        <Link
+                          href={`/szukam-partnera-do-tanca/ogloszenie/${ad._id}`}
+                          className="flex-1 text-sm text-gray-600 hover:text-amber-600 
+                                   transition-colors min-w-0"
                         >
-                          <button
-                            onClick={() => {
-                              setEditingAd(ad);
-                              setIsEditModalOpen(true);
-                            }}
-                            className="p-1 text-gray-400 hover:text-amber-500 transition-colors"
+                          <div className="flex flex-col gap-1 min-w-0">
+                            <div className="flex items-start gap-2 min-w-0">
+                              <div className="flex-1 min-w-0">
+                                <h3 className="line-clamp-2 break-words">
+                                  {ad.title}
+                                </h3>
+                              </div>
+                              {eventStatus.label && (
+                                <span
+                                  className={`text-xs px-2 py-0.5 rounded-full whitespace-nowrap flex-shrink-0 ${eventStatus.color}`}
+                                >
+                                  {eventStatus.label}
+                                </span>
+                              )}
+                            </div>
+                            <div className="flex items-center gap-2 text-xs text-gray-400 flex-wrap">
+                              <span className="flex items-center gap-1 whitespace-nowrap">
+                                <FaCalendarAlt className="w-3 h-3 flex-shrink-0" />
+                                <span>
+                                  {new Date(ad.date).toLocaleDateString(
+                                    "pl-PL"
+                                  )}
+                                </span>
+                              </span>
+                              {ad.time && (
+                                <span className="flex items-center gap-1 whitespace-nowrap">
+                                  <FaClock className="w-3 h-3 flex-shrink-0" />
+                                  <span>{ad.time}</span>
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </Link>
+
+                        {canEditAd(ad) && (
+                          <div
+                            className="flex items-center gap-2 opacity-0 group-hover:opacity-100 
+                                         transition-opacity flex-shrink-0 ml-2"
                           >
-                            <FaEdit className="w-3.5 h-3.5" />
-                          </button>
-                          <button
-                            onClick={() =>
-                              handleDelete(ad._id, ad.author.email)
-                            }
-                            className="p-1 text-gray-400 hover:text-red-500 transition-colors"
-                          >
-                            <FaTrash className="w-3.5 h-3.5" />
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
+                            <button
+                              onClick={() => {
+                                setEditingAd(ad);
+                                setIsEditModalOpen(true);
+                              }}
+                              className="p-1 text-gray-400 hover:text-amber-500 transition-colors"
+                            >
+                              <FaEdit className="w-3.5 h-3.5" />
+                            </button>
+                            <button
+                              onClick={() =>
+                                handleDelete(ad._id, ad.author.email)
+                              }
+                              className="p-1 text-gray-400 hover:text-red-500 transition-colors"
+                            >
+                              <FaTrash className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+              </div>
             </div>
-          </div>
+          </React.Fragment>
         ))}
       </div>
 
