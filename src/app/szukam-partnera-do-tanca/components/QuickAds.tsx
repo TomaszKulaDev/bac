@@ -92,15 +92,20 @@ export function QuickAds() {
       return acc;
     }, new Map<string, ExtendedAdvertisement[]>());
 
-    // 2. Sortujemy miasta według kolejności w CITIES
-    return Array.from(grouped.entries()).sort(([cityA], [cityB]) => {
-      const indexA = CITIES.findIndex((c) => c.value === cityA);
-      const indexB = CITIES.findIndex((c) => c.value === cityB);
-      if (indexA === -1 && indexB === -1) return cityA.localeCompare(cityB);
-      if (indexA === -1) return 1;
-      if (indexB === -1) return -1;
-      return indexA - indexB;
-    });
+    // 2. Sortujemy miasta według liczby ogłoszeń (malejąco)
+    return Array.from(grouped.entries()).sort(
+      ([cityA, adsA], [cityB, adsB]) => {
+        // Najpierw sortujemy po liczbie ogłoszeń
+        const countDiff = adsB.length - adsA.length;
+
+        // Jeśli liczba ogłoszeń jest taka sama, sortujemy alfabetycznie
+        if (countDiff === 0) {
+          return cityA.localeCompare(cityB);
+        }
+
+        return countDiff;
+      }
+    );
   };
 
   // Filtrowanie i organizacja ogłoszeń
