@@ -22,7 +22,7 @@ export function middleware(request: NextRequest) {
   }
   //TODO --------------------------------- usunac po sylwestrze --------------------------------------
   // Data końca przekierowania
-  const endDate = new Date("2025-01-07"); // przykładowa data
+  const endDate = new Date("2025-07-07"); // przykładowa data
   const now = new Date();
 
   if (request.nextUrl.pathname === "/" && now < endDate) {
