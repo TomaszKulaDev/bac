@@ -112,19 +112,28 @@ export function QuickAds() {
   const organizedAds = organizeAds(filteredAds);
 
   // Funkcja sprawdzająca czy użytkownik jest autorem
-  const isAuthor = useCallback(
-    (ad: ExtendedAdvertisement) => {
-      console.log("Checking author:", {
-        sessionEmail: session?.user?.email,
-        adAuthorEmail: ad.author?.email,
-        adAuthor: ad.author,
-        isMatch: session?.user?.email === ad.author?.email,
-      });
+  const isAuthor = (ad: ExtendedAdvertisement) => {
+    // Sprawdzamy czy użytkownik jest zalogowany
+    if (!session?.user?.email) {
+      return false;
+    }
 
-      return session?.user?.email === ad.author?.email;
-    },
-    [session?.user?.email]
-  );
+    // Sprawdzamy czy użytkownik jest autorem ogłoszenia
+    return ad.author.email === session.user.email;
+  };
+
+  // Funkcja sprawdzająca uprawnienia do edycji
+  const canEditAd = (ad: ExtendedAdvertisement) => {
+    if (!session?.user?.email) {
+      return false;
+    }
+
+    // Sprawdzamy czy użytkownik jest adminem lub autorem
+    const isAdmin = session.user.role === "admin";
+    const isAuthor = ad.author.email === session.user.email;
+
+    return isAdmin || isAuthor;
+  };
 
   // Funkcja usuwania ogłoszenia
   const handleDelete = async (adId: string, authorEmail: string) => {
@@ -270,43 +279,36 @@ export function QuickAds() {
 
       {/* Lista miast */}
       <div
-        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 
-                    gap-x-8 gap-y-6 auto-rows-start"
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 
+                    gap-6 auto-rows-start"
       >
         {organizedAds.map(([city, cityAds]) => (
-          <div key={city} className="space-y-4">
+          <div
+            key={city}
+            className="bg-gray-50/50 rounded-xl p-4 hover:bg-gray-50 transition-colors"
+          >
             {/* Nagłówek miasta */}
-            <div className="flex items-center justify-between group">
+            <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
-                <FaMapMarkerAlt
-                  className="w-3.5 h-3.5 text-amber-500 
-                           group-hover:text-amber-600 transition-colors"
-                />
-                <span
-                  className="text-gray-700 text-sm font-medium 
-                           group-hover:text-amber-600 transition-colors"
-                >
-                  {city}
-                </span>
+                <div className="bg-white p-1.5 rounded-lg shadow-sm">
+                  <FaMapMarkerAlt className="w-4 h-4 text-amber-500" />
+                </div>
+                <div>
+                  <h3 className="font-medium text-gray-900">{city}</h3>
+                  <span className="text-xs text-gray-500">
+                    {cityAds.length}{" "}
+                    {cityAds.length === 1 ? "ogłoszenie" : "ogłoszeń"}
+                  </span>
+                </div>
               </div>
-              <span className="text-amber-500/70 text-sm font-medium">
-                ({cityAds.length})
-              </span>
             </div>
 
             {/* Lista ogłoszeń */}
-            <div className="pl-5 space-y-1.5">
+            <div className="space-y-2">
               {cityAds
                 .sort((a, b) => {
                   const diffA = getDateDifference(a.date);
                   const diffB = getDateDifference(b.date);
-
-                  if (diffA === diffB) {
-                    return (
-                      new Date(b.createdAt).getTime() -
-                      new Date(a.createdAt).getTime()
-                    );
-                  }
                   return diffA - diffB;
                 })
                 .map((ad) => {
@@ -315,7 +317,7 @@ export function QuickAds() {
                   return (
                     <div
                       key={ad._id}
-                      className="group flex items-start justify-between gap-2 p-2 rounded-lg hover:bg-gray-50 transition-all min-w-0 max-w-full"
+                      className="group relative bg-white rounded-lg p-3 hover:shadow-md transition-all"
                     >
                       <Link
                         href={`/szukam-partnera-do-tanca/ogloszenie/${ad._id}`}
@@ -354,7 +356,7 @@ export function QuickAds() {
                         </div>
                       </Link>
 
-                      {isAuthor(ad) && (
+                      {canEditAd(ad) && (
                         <div
                           className="flex items-center gap-2 opacity-0 group-hover:opacity-100 
                                        transition-opacity flex-shrink-0 ml-2"
