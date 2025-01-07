@@ -119,7 +119,7 @@ export function HeroSection() {
           <h1 className="text-4xl md:text-6xl font-bold text-white max-w-4xl leading-tight">
             Znajdź Idealnego{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-amber-600">
-              Partnera do Tańca
+              Partnera do <span className="inline-block mt-2">Tańca</span>
             </span>
           </h1>
 

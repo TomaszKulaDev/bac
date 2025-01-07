@@ -11,6 +11,8 @@ import {
   FaArrowRight,
   FaEdit,
   FaTrash,
+  FaBell,
+  FaBellSlash,
 } from "react-icons/fa";
 import { AddAdvertisementButton } from "./AddAdvertisementButton";
 import Modal from "@/components/ui/Modal";
@@ -47,34 +49,26 @@ export function QuickAds() {
     null
   );
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [subscribedCities, setSubscribedCities] = useState<string[]>(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("subscribedCities");
+      return saved ? JSON.parse(saved) : [];
+    }
+    return [];
+  });
 
   // Pobieranie ogłoszeń z logowaniem
   const fetchAds = useCallback(async () => {
     try {
       const response = await fetch("/api/advertisements");
       const data = await response.json();
-
-      console.log("Pierwsze ogłoszenie:", {
-        id: data[0]?._id,
-        title: data[0]?.title,
-        author: {
-          name: data[0]?.author?.name,
-          email: data[0]?.author?.email,
-        },
-        sessionUser: {
-          name: session?.user?.name,
-          email: session?.user?.email,
-        },
-      });
-
       setAds(data);
     } catch (error) {
-      console.error("Fetch error:", error);
       toast.error("Nie udało się pobrać ogłoszeń");
     } finally {
       setIsLoading(false);
     }
-  }, [session?.user]);
+  }, []);
 
   useEffect(() => {
     fetchAds();
@@ -228,6 +222,39 @@ export function QuickAds() {
     return { type: "future", label: "", color: "" };
   };
 
+  // Funkcja do zarządzania subskrypcją miasta
+  const toggleCitySubscription = useCallback(
+    async (city: string) => {
+      if (!session?.user) {
+        toast.error("Musisz być zalogowany, aby otrzymywać powiadomienia");
+        return;
+      }
+
+      try {
+        if (subscribedCities.includes(city)) {
+          const newSubscribed = subscribedCities.filter((c) => c !== city);
+          setSubscribedCities(newSubscribed);
+          localStorage.setItem(
+            "subscribedCities",
+            JSON.stringify(newSubscribed)
+          );
+          toast.success(`Wyłączono powiadomienia dla miasta ${city}`);
+        } else {
+          const newSubscribed = [...subscribedCities, city];
+          setSubscribedCities(newSubscribed);
+          localStorage.setItem(
+            "subscribedCities",
+            JSON.stringify(newSubscribed)
+          );
+          toast.success(`Włączono powiadomienia dla miasta ${city}`);
+        }
+      } catch (error) {
+        toast.error("Nie udało się zmienić ustawień powiadomień");
+      }
+    },
+    [subscribedCities, session?.user]
+  );
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-[200px]">
@@ -306,6 +333,29 @@ export function QuickAds() {
                   </span>
                 </div>
               </div>
+
+              {session?.user && (
+                <button
+                  onClick={() => toggleCitySubscription(city)}
+                  className={`p-2 rounded-lg transition-all
+                    ${
+                      subscribedCities.includes(city)
+                        ? "text-amber-500 hover:text-amber-600 bg-amber-50"
+                        : "text-gray-400 hover:text-gray-600 hover:bg-gray-50"
+                    }`}
+                  title={
+                    subscribedCities.includes(city)
+                      ? `Wyłącz powiadomienia dla ${city}`
+                      : `Włącz powiadomienia dla ${city}`
+                  }
+                >
+                  {subscribedCities.includes(city) ? (
+                    <FaBell className="w-4 h-4" />
+                  ) : (
+                    <FaBellSlash className="w-4 h-4" />
+                  )}
+                </button>
+              )}
             </div>
 
             {/* Lista ogłoszeń */}
