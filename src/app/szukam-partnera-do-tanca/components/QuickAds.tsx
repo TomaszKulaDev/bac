@@ -362,19 +362,24 @@ export function QuickAds() {
       </div>
 
       {/* Lista miast */}
-      <div
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 
-                    gap-6 auto-rows-start"
-      >
+      <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6 [column-fill:_balance]">
         {organizedAds.map(([city, cityAds], index) => (
           <React.Fragment key={city}>
             {/* Co 4 miasta dodajemy reklamę */}
-            {index > 0 && index % 4 === 0 && <AdCard />}
+            {index > 0 && index % 4 === 0 && (
+              <div className="break-inside-avoid mb-6">
+                <AdCard />
+              </div>
+            )}
 
             {/* Reklama po trzecim mieście */}
-            {index === 2 && <CityAdCard />}
+            {index === 2 && (
+              <div className="break-inside-avoid mb-6">
+                <CityAdCard />
+              </div>
+            )}
 
-            <div className="bg-gray-50/50 rounded-xl p-4 hover:bg-gray-50 transition-colors">
+            <div className="break-inside-avoid mb-6 bg-gray-50/50 rounded-xl p-4 hover:bg-gray-50 transition-colors">
               {/* Nagłówek miasta */}
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
@@ -390,6 +395,7 @@ export function QuickAds() {
                   </div>
                 </div>
 
+                {/* Przycisk powiadomień */}
                 {session?.user && (
                   <button
                     onClick={() => toggleCitySubscription(city)}
@@ -416,86 +422,92 @@ export function QuickAds() {
 
               {/* Lista ogłoszeń */}
               <div className="space-y-2">
-                {cityAds
-                  .sort((a, b) => {
-                    const diffA = getDateDifference(a.date);
-                    const diffB = getDateDifference(b.date);
-                    return diffA - diffB;
-                  })
-                  .map((ad) => {
-                    const eventStatus = getEventStatus(ad.date);
+                {cityAds.length > 0 ? (
+                  cityAds
+                    .sort((a, b) => {
+                      const diffA = getDateDifference(a.date);
+                      const diffB = getDateDifference(b.date);
+                      return diffA - diffB;
+                    })
+                    .map((ad) => {
+                      const eventStatus = getEventStatus(ad.date);
 
-                    return (
-                      <div
-                        key={ad._id}
-                        className="group relative bg-white rounded-lg p-3 hover:shadow-md transition-all"
-                      >
-                        <Link
-                          href={`/szukam-partnera-do-tanca/ogloszenie/${ad._id}`}
-                          className="flex-1 text-sm text-gray-600 hover:text-amber-600 
-                                   transition-colors min-w-0"
+                      return (
+                        <div
+                          key={ad._id}
+                          className="group relative bg-white rounded-lg p-3 hover:shadow-md transition-all"
                         >
-                          <div className="flex flex-col gap-1 min-w-0">
-                            <div className="flex items-start gap-2 min-w-0">
-                              <div className="flex-1 min-w-0">
-                                <h3 className="line-clamp-2 break-words">
-                                  {ad.title}
-                                </h3>
-                              </div>
-                              {eventStatus.label && (
-                                <span
-                                  className={`text-xs px-2 py-0.5 rounded-full whitespace-nowrap flex-shrink-0 ${eventStatus.color}`}
-                                >
-                                  {eventStatus.label}
-                                </span>
-                              )}
-                            </div>
-                            <div className="flex items-center gap-2 text-xs text-gray-400 flex-wrap">
-                              <span className="flex items-center gap-1 whitespace-nowrap">
-                                <FaCalendarAlt className="w-3 h-3 flex-shrink-0" />
-                                <span>
-                                  {new Date(ad.date).toLocaleDateString(
-                                    "pl-PL"
-                                  )}
-                                </span>
-                              </span>
-                              {ad.time && (
-                                <span className="flex items-center gap-1 whitespace-nowrap">
-                                  <FaClock className="w-3 h-3 flex-shrink-0" />
-                                  <span>{ad.time}</span>
-                                </span>
-                              )}
-                            </div>
-                          </div>
-                        </Link>
-
-                        {canEditAd(ad) && (
-                          <div
-                            className="flex items-center gap-2 opacity-0 group-hover:opacity-100 
-                                         transition-opacity flex-shrink-0 ml-2"
+                          <Link
+                            href={`/szukam-partnera-do-tanca/ogloszenie/${ad._id}`}
+                            className="flex-1 text-sm text-gray-600 hover:text-amber-600 
+                                     transition-colors min-w-0"
                           >
-                            <button
-                              onClick={() => {
-                                setEditingAd(ad);
-                                setIsEditModalOpen(true);
-                              }}
-                              className="p-1 text-gray-400 hover:text-amber-500 transition-colors"
+                            <div className="flex flex-col gap-1 min-w-0">
+                              <div className="flex items-start gap-2 min-w-0">
+                                <div className="flex-1 min-w-0">
+                                  <h3 className="line-clamp-2 break-words">
+                                    {ad.title}
+                                  </h3>
+                                </div>
+                                {eventStatus.label && (
+                                  <span
+                                    className={`text-xs px-2 py-0.5 rounded-full whitespace-nowrap flex-shrink-0 ${eventStatus.color}`}
+                                  >
+                                    {eventStatus.label}
+                                  </span>
+                                )}
+                              </div>
+                              <div className="flex items-center gap-2 text-xs text-gray-400 flex-wrap">
+                                <span className="flex items-center gap-1 whitespace-nowrap">
+                                  <FaCalendarAlt className="w-3 h-3 flex-shrink-0" />
+                                  <span>
+                                    {new Date(ad.date).toLocaleDateString(
+                                      "pl-PL"
+                                    )}
+                                  </span>
+                                </span>
+                                {ad.time && (
+                                  <span className="flex items-center gap-1 whitespace-nowrap">
+                                    <FaClock className="w-3 h-3 flex-shrink-0" />
+                                    <span>{ad.time}</span>
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          </Link>
+
+                          {canEditAd(ad) && (
+                            <div
+                              className="flex items-center gap-2 opacity-0 group-hover:opacity-100 
+                                           transition-opacity flex-shrink-0 ml-2"
                             >
-                              <FaEdit className="w-3.5 h-3.5" />
-                            </button>
-                            <button
-                              onClick={() =>
-                                handleDelete(ad._id, ad.author.email)
-                              }
-                              className="p-1 text-gray-400 hover:text-red-500 transition-colors"
-                            >
-                              <FaTrash className="w-3.5 h-3.5" />
-                            </button>
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
+                              <button
+                                onClick={() => {
+                                  setEditingAd(ad);
+                                  setIsEditModalOpen(true);
+                                }}
+                                className="p-1 text-gray-400 hover:text-amber-500 transition-colors"
+                              >
+                                <FaEdit className="w-3.5 h-3.5" />
+                              </button>
+                              <button
+                                onClick={() =>
+                                  handleDelete(ad._id, ad.author.email)
+                                }
+                                className="p-1 text-gray-400 hover:text-red-500 transition-colors"
+                              >
+                                <FaTrash className="w-3.5 h-3.5" />
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })
+                ) : (
+                  <p className="text-sm text-gray-500 text-center py-2">
+                    Brak aktywnych ogłoszeń
+                  </p>
+                )}
               </div>
             </div>
           </React.Fragment>
