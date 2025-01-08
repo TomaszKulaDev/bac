@@ -25,6 +25,7 @@ import type {
 } from "@/types/advertisement";
 import { toast } from "react-toastify";
 import { CITIES } from "@/constants/cities";
+import { generateSlug } from "@/utils/slug";
 
 // Rozszerzamy typ Advertisement o pełne dane autora
 interface ExtendedAuthor {
@@ -438,7 +439,9 @@ export function QuickAds() {
                           className="group relative bg-white rounded-lg p-3 hover:shadow-md transition-all"
                         >
                           <Link
-                            href={`/szukam-partnera-do-tanca/ogloszenie/${ad._id}`}
+                            href={`/szukam-partnera-do-tanca/ogloszenie/${
+                              ad._id
+                            }/${generateSlug(ad.title)}`}
                             className="flex-1 text-sm text-gray-600 hover:text-amber-600 
                                      transition-colors min-w-0"
                           >
