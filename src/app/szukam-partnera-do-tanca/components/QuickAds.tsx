@@ -433,18 +433,31 @@ export function QuickAds() {
                     .map((ad) => {
                       const eventStatus = getEventStatus(ad.date);
 
+                      console.log("Title:", ad.title);
+                      console.log("Generated slug:", generateSlug(ad.title));
+                      console.log(
+                        "Full URL:",
+                        `/szukam-partnera-do-tanca/ogloszenie/${generateSlug(
+                          ad.title
+                        )}-${ad._id}`
+                      );
+
+                      const adLink = `/szukam-partnera-do-tanca/ogloszenie/${generateSlug(
+                        ad.title
+                      )}-${ad._id}`;
+                      console.log("Generowany link:", {
+                        title: ad.title,
+                        slug: generateSlug(ad.title),
+                        id: ad._id,
+                        fullLink: adLink,
+                      });
+
                       return (
                         <div
                           key={ad._id}
                           className="group relative bg-white rounded-lg p-3 hover:shadow-md transition-all"
                         >
-                          <Link
-                            href={`/szukam-partnera-do-tanca/ogloszenie/${
-                              ad._id
-                            }/${generateSlug(ad.title)}`}
-                            className="flex-1 text-sm text-gray-600 hover:text-amber-600 
-                                     transition-colors min-w-0"
-                          >
+                          <Link href={adLink} className="block group">
                             <div className="flex flex-col gap-1 min-w-0">
                               <div className="flex items-start gap-2 min-w-0">
                                 <div className="flex-1 min-w-0">

@@ -29,10 +29,14 @@ async function getAdvertisement(id: string): Promise<Advertisement | null> {
 
     const url = new URL(`/api/advertisements/${id}`, baseUrl).toString();
     const res = await fetch(url, {
-      next: { revalidate: 300 }, // 5 minut cache
+      next: {
+        revalidate: 0,
+        tags: ["advertisement"],
+      },
       headers: {
         "Content-Type": "application/json",
       },
+      cache: "no-store",
     });
 
     if (!res.ok) {
@@ -50,9 +54,10 @@ async function getAdvertisement(id: string): Promise<Advertisement | null> {
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string[] };
+  params: { slug: string };
 }): Promise<Metadata> {
-  const [id] = params.slug;
+  const slugParts = params.slug.split("-");
+  const id = slugParts[slugParts.length - 1];
   const ad = await getAdvertisement(id);
 
   if (!ad) {
@@ -63,15 +68,15 @@ export async function generateMetadata({
   }
 
   return {
-    title: ad.title,
+    title: `${ad.title} | Baciata.pl`,
     description: ad.description,
     openGraph: {
       title: ad.title,
       description: ad.description,
       type: "article",
-      url: `https://baciata.pl/szukam-partnera-do-tanca/ogloszenie/${id}/${generateSlug(
+      url: `https://baciata.pl/szukam-partnera-do-tanca/ogloszenie/${generateSlug(
         ad.title
-      )}`,
+      )}-${id}`,
       images: [
         {
           url: ad.author.image || "/images/default-og-image.jpg",
@@ -87,22 +92,36 @@ export async function generateMetadata({
 export default async function AdvertisementPage({
   params,
 }: {
-  params: { slug: string[] };
+  params: { slug: string };
 }) {
-  const [id, ...slugParts] = params.slug;
+  const slugParts = params.slug.split("-");
+  const id = slugParts[slugParts.length - 1];
+
+  console.log("Fetching advertisement with ID:", id);
+
   const ad = await getAdvertisement(id);
 
   if (!ad) {
     notFound();
   }
 
-  // Sprawdzamy czy URL jest poprawny
-  const expectedSlug = generateSlug(ad.title);
-  const currentSlug = slugParts.join("-");
+  console.log("Current advertisement title:", ad.title);
 
-  if (currentSlug && currentSlug !== expectedSlug) {
-    redirect(`/szukam-partnera-do-tanca/ogloszenie/${id}/${expectedSlug}`);
+  const expectedSlug = `${generateSlug(ad.title)}-${id}`;
+
+  if (params.slug !== expectedSlug) {
+    console.log("Redirecting:");
+    console.log("Current slug:", params.slug);
+    console.log("Expected slug:", expectedSlug);
+    console.log("Advertisement title:", ad.title);
+
+    redirect(`/szukam-partnera-do-tanca/ogloszenie/${expectedSlug}`);
   }
+
+  console.log("Params:", params);
+  console.log("ID:", id);
+  console.log("Ad:", ad);
+  console.log("Expected slug:", expectedSlug);
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-12">
