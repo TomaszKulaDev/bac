@@ -1,195 +1,238 @@
 "use client";
 
+import { motion } from "framer-motion";
+import Image from "next/image";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import {
   FaSearch,
-  FaUserPlus,
-  FaHeart,
   FaMapMarkerAlt,
-  FaUsers,
+  FaGraduationCap,
+  FaMusic,
+  FaVenusMars,
 } from "react-icons/fa";
-import Modal from "@/components/ui/Modal";
-import { useAuth } from "@/hooks/useAuth";
-import { useUserProfile } from "@/hooks/useUserProfile";
+import { CITIES } from "@/constants/cities";
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
-import { AdvertisementType, DanceLevel } from "@/types/advertisement";
-import { AdvertisementForm } from "./AdvertisementForm";
+import { useFilters } from "../context/FilterContext";
+import { LoginPromptModal } from "./LoginPromptModal";
+import { Gender } from "@/types/user";
 
-export function HeroSection() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const { user } = useAuth();
-  const { userProfile } = useUserProfile();
-  const { data: session } = useSession();
+const DANCE_STYLES = [
+  { value: "", label: "Wszystkie style" },
+  { value: "Bachata Sensual", label: "Bachata Sensual" },
+  { value: "Bachata Dominicana", label: "Bachata Dominicana" },
+  { value: "Bachata Impro", label: "Bachata Impro" },
+  { value: "Salsa Cubana", label: "Salsa Cubana" },
+  { value: "Salsa LA On1", label: "Salsa LA On1" },
+  { value: "Salsa LA On2", label: "Salsa LA On2" },
+  { value: "Salsa Rueda", label: "Salsa Rueda" },
+  { value: "Zouk", label: "Zouk" },
+  { value: "Kizomba", label: "Kizomba" },
+  { value: "Urban Kiz", label: "Urban Kiz" },
+  { value: "West Coast Swing", label: "West Coast Swing" },
+];
+
+export const HeroSection = () => {
   const router = useRouter();
+  const { data: session } = useSession();
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
-  const scrollToSearch = () => {
-    const searchSection = document.getElementById("search-section");
-    if (searchSection) {
-      const offset = 80;
-      const elementPosition = searchSection.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - offset;
+  const {
+    selectedGender,
+    setSelectedGender,
+    selectedLevel,
+    setSelectedLevel,
+    selectedDanceStyle,
+    setSelectedDanceStyle,
+    selectedLocation,
+    setSelectedLocation,
+  } = useFilters();
 
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth",
-      });
-    }
-  };
-
-  const scrollToProfiles = () => {
-    const profilesSection = document.getElementById("profiles-section");
-    if (profilesSection) {
-      const offset = 80;
-      const elementPosition = profilesSection.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth",
-      });
-    }
-  };
-
-  const handleAddAdvertisement = () => {
+  const handleFilterClick = (action: () => void) => {
     if (!session) {
-      router.push("/login");
+      setShowLoginModal(true);
       return;
     }
-    setIsModalOpen(true);
+    action();
   };
 
-  const handleSuccess = () => {
-    setIsModalOpen(false);
-  };
+  const handleSearch = () => {
+    const params = new URLSearchParams();
+    if (selectedLocation) params.append("location", selectedLocation);
+    if (selectedDanceStyle) params.append("style", selectedDanceStyle);
+    if (selectedLevel) params.append("level", selectedLevel);
+    if (selectedGender) params.append("gender", selectedGender);
 
-  const getAvatar = (): string | undefined => {
-    if (userProfile?.image) return userProfile.image;
-    if (user?.image) return user.image;
-    return undefined;
-  };
-
-  const defaultInitialData = {
-    type: "Praktis" as AdvertisementType,
-    title: "",
-    description: "",
-    date: "",
-    time: "",
-    location: {
-      city: "",
-      place: "",
-    },
-    author: {
-      avatar: getAvatar(),
-      name: user?.name || "",
-      level: "Początkujący" as DanceLevel,
-    },
+    router.push(`/szukam-partnera-do-tanca/wyniki?${params.toString()}`);
   };
 
   return (
-    <section
-      className="relative min-h-[600px] bg-gray-900"
-      aria-label="Główny banner"
-    >
-      {/* Tło z gradientem */}
-      <div className="absolute inset-0 overflow-hidden">
-        {/* Obrazek tła */}
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-105 transform blur-sm"
-          style={{
-            backgroundImage:
-              'url("/images/Hero-szukam-partnera-do-tanca.webp")',
-          }}
+    <div className="relative bg-gray-900">
+      {/* Tło */}
+      <div className="absolute inset-0">
+        <Image
+          src="/images/Hero-szukam-partnera-do-tanca.webp"
+          alt="Tancerze bachaty"
+          fill
+          className="object-cover object-center brightness-[0.3]"
+          priority
+          quality={90}
         />
-
-        {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/80 to-black/60" />
-
-        {/* Animowane gradienty */}
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-r from-amber-500/10 to-transparent animate-pulse-slow" />
-          <div className="absolute inset-0 bg-gradient-to-l from-amber-600/10 to-transparent animate-pulse-slow delay-1000" />
-        </div>
       </div>
 
       {/* Zawartość */}
-      <div className="relative z-10 max-w-[1200px] mx-auto px-4 py-20">
-        <div className="flex flex-col items-center text-center space-y-8">
-          {/* Nagłówek */}
-          <h1 className="text-4xl md:text-6xl font-bold text-white max-w-4xl leading-tight">
-            Znajdź Idealnego{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-amber-600">
-              Partnera do <span className="inline-block mt-2">Tańca</span>
-            </span>
-          </h1>
+      <div className="relative max-w-screen-xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8">
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl text-center mb-8"
+        >
+          Znajdź partnera do tańca
+        </motion.h1>
 
-          {/* Podtytuł */}
-          <p className="text-xl text-gray-300 max-w-2xl">
-            Dołącz do największej społeczności tancerzy Bachaty w Polsce. Znajdź
-            partnera na praktis lub do regularnych zajęć.
-          </p>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="mt-6 max-w-lg mx-auto text-xl text-gray-300 text-center mb-12"
+        >
+          Dołącz do społeczności tancerzy i znajdź idealnego partnera do tańca w
+          Twojej okolicy
+        </motion.p>
 
-          {/* Przyciski akcji */}
-          <div className="flex flex-col sm:flex-row gap-4 pt-6">
-            <button
-              onClick={scrollToProfiles}
-              className="px-8 py-3 bg-white/10 hover:bg-white/15 text-white rounded-xl
-                       flex items-center justify-center gap-2 transition-all group
-                       border border-white/20 backdrop-blur-sm"
-            >
-              <FaSearch className="w-4 h-4 group-hover:scale-110 transition-transform" />
-              Szukaj Partnera
-            </button>
-
-            <button
-              onClick={handleAddAdvertisement}
-              className="px-8 py-3 bg-gradient-to-r from-amber-500 to-amber-600 
-                       hover:from-amber-600 hover:to-amber-700 text-white rounded-xl
-                       flex items-center justify-center gap-2 transition-all group"
-            >
-              <FaUserPlus className="w-4 h-4 group-hover:rotate-12 transition-transform" />
-              Dodaj Ogłoszenie
-            </button>
-          </div>
-
-          {/* Statystyki */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-3xl mt-12">
-            {[
-              { icon: FaUsers, value: "0,5", label: "Aktywnych Tancerzy" },
-              { icon: FaMapMarkerAlt, value: "Tylko Mielec", label: "Miast" },
-              { icon: FaHeart, value: "Całe 0", label: "Połączonych Par" },
-            ].map((stat, index) => (
-              <div
-                key={index}
-                className="p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10
-                         hover:bg-white/10 transition-colors group"
-              >
-                <div className="flex flex-col items-center justify-center text-center">
-                  <stat.icon className="w-6 h-6 text-amber-400 mb-2 group-hover:scale-110 transition-transform" />
-                  <div className="text-2xl font-bold text-white mb-1">
-                    {stat.value}
-                  </div>
-                  <div className="text-sm text-gray-400">{stat.label}</div>
+        {/* Wyszukiwarka */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="max-w-5xl mx-auto"
+        >
+          <div className="bg-white shadow-xl rounded-lg p-6">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
+              {/* Płeć */}
+              <div className="relative">
+                <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+                  <FaVenusMars className="h-5 w-5 text-gray-400" />
                 </div>
+                <select
+                  value={selectedGender}
+                  onChange={(e) =>
+                    handleFilterClick(() =>
+                      setSelectedGender(e.target.value as Gender | "")
+                    )
+                  }
+                  className="block w-full pl-10 pr-3 py-3.5 text-base border-0
+                           focus:ring-2 focus:ring-amber-500 rounded-md"
+                >
+                  <option value="">Wszyscy</option>
+                  <option value="male">Partnerzy</option>
+                  <option value="female">Partnerki</option>
+                </select>
               </div>
-            ))}
+
+              {/* Lokalizacja */}
+              <div className="relative">
+                <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+                  <FaMapMarkerAlt className="h-5 w-5 text-gray-400" />
+                </div>
+                <select
+                  value={selectedLocation}
+                  onChange={(e) =>
+                    handleFilterClick(() => setSelectedLocation(e.target.value))
+                  }
+                  className="block w-full pl-10 pr-3 py-3.5 text-base border-0
+                           focus:ring-2 focus:ring-amber-500 rounded-md"
+                >
+                  {CITIES.map((city) => (
+                    <option key={city.value} value={city.value}>
+                      {city.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Styl tańca */}
+              <div className="relative">
+                <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+                  <FaMusic className="h-5 w-5 text-gray-400" />
+                </div>
+                <select
+                  value={selectedDanceStyle}
+                  onChange={(e) =>
+                    handleFilterClick(() =>
+                      setSelectedDanceStyle(e.target.value)
+                    )
+                  }
+                  className="block w-full pl-10 pr-3 py-3.5 text-base border-0
+                           focus:ring-2 focus:ring-amber-500 rounded-md"
+                >
+                  {DANCE_STYLES.map((style) => (
+                    <option key={style.value} value={style.value}>
+                      {style.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Poziom */}
+              <div className="relative">
+                <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+                  <FaGraduationCap className="h-5 w-5 text-gray-400" />
+                </div>
+                <select
+                  value={selectedLevel}
+                  onChange={(e) =>
+                    handleFilterClick(() => setSelectedLevel(e.target.value))
+                  }
+                  className="block w-full pl-10 pr-3 py-3.5 text-base border-0
+                           focus:ring-2 focus:ring-amber-500 rounded-md"
+                >
+                  <option value="">Poziom</option>
+                  <option value="beginner">Początkujący</option>
+                  <option value="intermediate">Średniozaawansowany</option>
+                  <option value="advanced">Zaawansowany</option>
+                </select>
+              </div>
+
+              {/* Przycisk wyszukiwania */}
+              <button
+                onClick={handleSearch}
+                className="w-full bg-amber-500 text-white p-3.5 rounded-md
+                         hover:bg-amber-600 transition-colors duration-200
+                         flex items-center justify-center gap-2 font-medium"
+              >
+                <FaSearch className="h-5 w-5" />
+                <span>Szukaj</span>
+              </button>
+            </div>
           </div>
+        </motion.div>
+
+        {/* Statystyki */}
+        <div className="mt-12 grid grid-cols-3 gap-8 max-w-3xl mx-auto">
+          {[
+            { value: "500+", label: "Aktywnych tancerzy" },
+            { value: "12", label: "Miast w Polsce" },
+            { value: "3", label: "Style tańca" },
+          ].map((stat, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 + index * 0.1 }}
+              className="text-center"
+            >
+              <p className="text-2xl font-bold text-amber-400">{stat.value}</p>
+              <p className="text-sm text-gray-300">{stat.label}</p>
+            </motion.div>
+          ))}
         </div>
       </div>
 
-      {/* Modal */}
-      <Modal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        title="Dodaj nowe ogłoszenie"
-      >
-        <AdvertisementForm
-          mode="add"
-          onSuccess={handleSuccess}
-          onCancel={() => setIsModalOpen(false)}
-          initialData={defaultInitialData}
-        />
-      </Modal>
-    </section>
+      <LoginPromptModal
+        isOpen={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
+      />
+    </div>
   );
-}
+};
