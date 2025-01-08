@@ -146,24 +146,29 @@ export const LatestProfiles = () => {
   }
 
   return (
-    <div id="profiles-section">
-      <SortingButtons profilesCount={profiles.length} />
+    <div
+      id="profiles-section"
+      className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+    >
+      <div className="mb-8">
+        <SortingButtons profilesCount={profiles.length} />
+      </div>
 
       {isLoading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
-          {[1, 2, 3, 4, 5].map((i) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+          {[1, 2, 3, 4].map((i) => (
             <div
               key={i}
-              className="animate-pulse bg-gray-200 h-64 rounded-lg"
+              className="animate-pulse bg-gray-200 h-48 rounded-lg"
             />
           ))}
         </div>
       ) : profiles.length === 0 ? (
-        <div className="text-center py-8 text-gray-500">
+        <div className="text-center py-12 text-gray-500">
           Nie znaleziono profili spełniających kryteria
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
           {profiles.map((profile) => (
             <motion.div
               key={profile.id}
@@ -178,7 +183,7 @@ export const LatestProfiles = () => {
                     profile.name.toLowerCase().replace(/\s+/g, "-")
                   )
                 }`}
-                className="block relative aspect-[3/4] rounded-xl overflow-hidden
+                className="block relative aspect-[4/5] rounded-lg overflow-hidden
                          ring-1 ring-gray-200 group-hover:ring-amber-500/50 
                          transition-all duration-300 bg-gray-100"
               >
@@ -189,52 +194,54 @@ export const LatestProfiles = () => {
                   fill
                   className="object-cover transition-transform duration-300 
                            group-hover:scale-105"
-                  sizes="(max-width: 768px) 50vw, 25vw"
+                  sizes="(max-width: 640px) 100vw, 
+                         (max-width: 768px) 50vw,
+                         (max-width: 1024px) 33vw,
+                         25vw"
                 />
 
-                {/* Gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                {/* Gradient overlay - delikatniejszy */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
-                {/* Informacje o profilu */}
-                <div className="absolute inset-x-0 bottom-0 p-4 text-white">
-                  <h3 className="font-semibold text-lg leading-tight mb-1">
+                {/* Informacje o profilu - mniejsze i bardziej kompaktowe */}
+                <div className="absolute inset-x-0 bottom-0 p-3 text-white">
+                  <h3 className="font-medium text-base leading-tight mb-0.5">
                     {profile.name}
                   </h3>
 
                   {/* Lokalizacja i wzrost */}
-                  <div className="flex items-center gap-3 text-sm text-white/90 mb-2">
+                  <div className="flex items-center gap-2 text-xs text-white/90 mb-1.5">
                     {profile.dancePreferences?.location && (
                       <div className="flex items-center gap-1">
-                        <FaMapMarkerAlt className="w-3.5 h-3.5" />
+                        <FaMapMarkerAlt className="w-3 h-3" />
                         <span>{profile.dancePreferences.location}</span>
                       </div>
                     )}
                     {profile.height && (
                       <div className="flex items-center gap-1">
-                        <FaRuler className="w-3.5 h-3.5" />
+                        <FaRuler className="w-3 h-3" />
                         <span>{profile.height} cm</span>
                       </div>
                     )}
                   </div>
 
-                  {/* Style tańca */}
+                  {/* Style tańca - mniejsze tagi */}
                   {profile.dancePreferences?.styles &&
                     renderStyles(profile.dancePreferences.styles)}
                 </div>
               </Link>
 
-              {/* Przycisk polubienia - poza Link */}
+              {/* Przycisk polubienia - mniejszy */}
               <button
-                className="absolute top-3 right-3 p-2 rounded-full 
+                className="absolute top-2 right-2 p-1.5 rounded-full 
                           bg-white/90 backdrop-blur-sm hover:bg-white 
                           transition-colors z-20"
                 onClick={(e) => {
                   e.stopPropagation();
-                  // Logika polubienia - do zaimplementowania
                 }}
               >
                 <FaHeart
-                  className="w-4 h-4 text-gray-400 hover:text-red-500 
+                  className="w-3.5 h-3.5 text-gray-400 hover:text-red-500 
                                    transition-colors"
                 />
               </button>
