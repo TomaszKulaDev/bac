@@ -83,7 +83,7 @@ export const NavContent: React.FC = React.memo(function NavContent() {
                   <span className="text-gray-900 font-bold text-lg leading-none">
                     BACIATA
                   </span>
-                  <span className="text-gray-500 text-xs">dance community</span>
+                  <span className="text-gray-500 text-xs">Dance Community</span>
                 </div>
               </Link>
 
@@ -91,26 +91,13 @@ export const NavContent: React.FC = React.memo(function NavContent() {
               <div className="hidden md:flex items-center gap-1 flex-1 justify-center max-w-2xl">
                 {[
                   {
-                    href: "/muzyka",
-                    label: "Muzyka",
-                    badge: "Nowe",
-                  },
-                  {
                     href: "/szukam-partnera-do-tanca",
                     label: "Szukam Partnera",
                   },
                   {
-                    href: "/taneczne-historie",
-                    label: "Historie",
-                  },
-                  {
-                    href: "/wydarzenia",
-                    label: "Wydarzenia",
-                    badge: "3",
-                  },
-                  {
-                    href: "/szkoly",
-                    label: "Szkoły",
+                    href: "/muzyka",
+                    label: "Muzyka",
+                    badge: "Nowe",
                   },
                 ].map((item) => (
                   <Link
