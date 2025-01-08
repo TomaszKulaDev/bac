@@ -328,7 +328,7 @@ export function QuickAds() {
         >
           <div className="flex items-center gap-4">
             <h2 className="text-2xl font-semibold text-gray-800">
-              Szybkie Ogłoszenia
+              Baciatowe Ogłoszenia
             </h2>
             <span className="text-sm text-gray-500">Łącznie: {ads.length}</span>
           </div>

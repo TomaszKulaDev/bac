@@ -33,7 +33,7 @@ export const InviteBanner = () => {
         {/* Lewa strona - tekst */}
         <div className="flex-1 text-center md:text-left">
           <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">
-            Znajdź partnera do tańca w swojej okolicy
+            Znajdź partnera do Bachaty w swojej okolicy
           </h2>
           <p className="text-gray-600 mb-0 md:pr-8">
             Dołącz do społeczności tancerzy i rozwijaj swoją pasję. Czekają na
