@@ -59,7 +59,7 @@ const CityAdCard = () => (
 
     {/* Przycisk */}
     <Link
-      href="/szukam-partnera-do-tanca/dodaj-profil"
+      href="/register"
       className="inline-flex items-center gap-2 text-sm font-medium text-amber-600 
                 hover:text-amber-700 group"
     >
@@ -88,7 +88,7 @@ const AdCard = () => (
       </p>
 
       <Link
-        href="/szukam-partnera-do-tanca/dodaj-profil"
+        href="/register"
         className="inline-flex items-center gap-2 text-sm font-medium text-amber-600 
                  hover:text-amber-700 transition-colors group-hover:gap-3"
       >
