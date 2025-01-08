@@ -9,7 +9,7 @@ import {
   FaSortAmountUp,
   FaVenusMars,
   FaGraduationCap,
-  FaMusic,
+  FaPeopleArrows,
   FaMapMarkerAlt,
 } from "react-icons/fa";
 import { motion } from "framer-motion";
@@ -148,7 +148,7 @@ export const SortingButtons = ({ profilesCount }: SortingButtonsProps) => {
           {/* Styl tańca */}
           <div className="relative">
             <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-              <FaMusic className="h-5 w-5 text-gray-400" />
+              <FaPeopleArrows className="h-5 w-5 text-gray-400" />
             </div>
             <select
               value={selectedDanceStyle}

@@ -10,6 +10,9 @@ import {
   FaGraduationCap,
   FaMusic,
   FaVenusMars,
+  FaRunning,
+  FaPeopleArrows,
+  FaUserFriends,
 } from "react-icons/fa";
 import { CITIES } from "@/constants/cities";
 import { useRouter } from "next/navigation";
@@ -154,7 +157,7 @@ export const HeroSection = () => {
               {/* Styl tańca */}
               <div className="relative">
                 <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-                  <FaMusic className="h-5 w-5 text-gray-400" />
+                  <FaPeopleArrows className="h-5 w-5 text-gray-400" />
                 </div>
                 <select
                   value={selectedDanceStyle}
