@@ -1,6 +1,6 @@
 export function shortenId(longId: string): string {
-  // Bierzemy pierwsze 8 znaków z ID
-  return longId.slice(0, 8);
+  // Bierzemy pierwsze 4 znaki z ID
+  return longId.slice(0, 4);
 }
 
 export function getFullId(shortId: string, allIds: string[]): string | null {
