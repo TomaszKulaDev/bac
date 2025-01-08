@@ -69,6 +69,20 @@ export const HeroSection = () => {
     }
   };
 
+  const iconClassName =
+    "h-5 w-5 text-gray-400 transition-colors duration-200 group-hover:text-amber-500";
+
+  const selectClassName = `
+    block w-full pl-10 pr-3 py-3.5 text-base border-0
+    focus:ring-2 focus:ring-amber-500 rounded-md
+    bg-white text-gray-700
+    transition-all duration-200 ease-in-out
+    hover:bg-gray-50
+    focus:border-amber-500 focus:outline-none
+    disabled:opacity-50 disabled:cursor-not-allowed
+    appearance-none cursor-pointer
+  `;
+
   return (
     <div className="relative bg-gray-900">
       {/* Tło */}
@@ -113,9 +127,9 @@ export const HeroSection = () => {
           <div className="bg-white shadow-xl rounded-lg p-6">
             <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
               {/* Płeć */}
-              <div className="relative">
-                <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-                  <FaVenusMars className="h-5 w-5 text-gray-400" />
+              <div className="relative group">
+                <div className="absolute inset-y-0 left-3 flex items-center z-10">
+                  <FaVenusMars className={iconClassName} />
                 </div>
                 <select
                   value={selectedGender}
@@ -124,8 +138,7 @@ export const HeroSection = () => {
                       setSelectedGender(e.target.value as Gender | "")
                     )
                   }
-                  className="block w-full pl-10 pr-3 py-3.5 text-base border-0
-                           focus:ring-2 focus:ring-amber-500 rounded-md"
+                  className={selectClassName}
                 >
                   <option value="">Wszyscy</option>
                   <option value="male">Partnerzy</option>
@@ -134,17 +147,16 @@ export const HeroSection = () => {
               </div>
 
               {/* Lokalizacja */}
-              <div className="relative">
-                <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-                  <FaMapMarkerAlt className="h-5 w-5 text-gray-400" />
+              <div className="relative group">
+                <div className="absolute inset-y-0 left-3 flex items-center z-10">
+                  <FaMapMarkerAlt className={iconClassName} />
                 </div>
                 <select
                   value={selectedLocation}
                   onChange={(e) =>
                     handleFilterClick(() => setSelectedLocation(e.target.value))
                   }
-                  className="block w-full pl-10 pr-3 py-3.5 text-base border-0
-                           focus:ring-2 focus:ring-amber-500 rounded-md"
+                  className={selectClassName}
                 >
                   {CITIES.map((city) => (
                     <option key={city.value} value={city.value}>
@@ -155,9 +167,9 @@ export const HeroSection = () => {
               </div>
 
               {/* Styl tańca */}
-              <div className="relative">
-                <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-                  <FaPeopleArrows className="h-5 w-5 text-gray-400" />
+              <div className="relative group">
+                <div className="absolute inset-y-0 left-3 flex items-center z-10">
+                  <FaPeopleArrows className={iconClassName} />
                 </div>
                 <select
                   value={selectedDanceStyle}
@@ -166,8 +178,7 @@ export const HeroSection = () => {
                       setSelectedDanceStyle(e.target.value)
                     )
                   }
-                  className="block w-full pl-10 pr-3 py-3.5 text-base border-0
-                           focus:ring-2 focus:ring-amber-500 rounded-md"
+                  className={selectClassName}
                 >
                   {DANCE_STYLES.map((style) => (
                     <option key={style.value} value={style.value}>
@@ -178,17 +189,16 @@ export const HeroSection = () => {
               </div>
 
               {/* Poziom */}
-              <div className="relative">
-                <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-                  <FaGraduationCap className="h-5 w-5 text-gray-400" />
+              <div className="relative group">
+                <div className="absolute inset-y-0 left-3 flex items-center z-10">
+                  <FaGraduationCap className={iconClassName} />
                 </div>
                 <select
                   value={selectedLevel}
                   onChange={(e) =>
                     handleFilterClick(() => setSelectedLevel(e.target.value))
                   }
-                  className="block w-full pl-10 pr-3 py-3.5 text-base border-0
-                           focus:ring-2 focus:ring-amber-500 rounded-md"
+                  className={selectClassName}
                 >
                   <option value="">Poziom</option>
                   <option value="beginner">Początkujący</option>
@@ -202,7 +212,8 @@ export const HeroSection = () => {
                 onClick={handleSearch}
                 className="w-full bg-amber-500 text-white p-3.5 rounded-md
                          hover:bg-amber-600 transition-colors duration-200
-                         flex items-center justify-center gap-2 font-medium"
+                         flex items-center justify-center gap-2 font-medium
+                         shadow-sm hover:shadow-md"
               >
                 <FaSearch className="h-5 w-5" />
                 <span>Szukaj</span>

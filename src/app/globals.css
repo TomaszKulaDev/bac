@@ -233,3 +233,150 @@ body {
 .animate-fade-in {
   animation: fade-in 0.3s ease-out;
 }
+
+/* Style dla selectów */
+select {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  background-color: white;
+  border-radius: 0.375rem;
+  font-size: 0.95rem;
+  color: rgb(55, 65, 81);
+  min-height: 3.5rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+select:hover {
+  background-color: rgb(249, 250, 251);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+select:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2);
+  background-color: white;
+  transform: translateY(0);
+}
+
+/* Stylowanie opcji w select */
+select option {
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  background-color: white;
+  color: rgb(55, 65, 81);
+  border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+  font-size: 0.95rem;
+  line-height: 1.4;
+  margin: 2px 0;
+}
+
+select option:first-child {
+  font-weight: 500;
+  color: rgb(107, 114, 128);
+  border-bottom: 2px solid rgba(229, 231, 235, 0.8);
+}
+
+select option:hover {
+  background-color: rgb(255, 247, 237) !important;
+  color: rgb(194, 65, 12);
+  padding-left: 20px;
+}
+
+select option:checked {
+  background-color: rgb(255, 237, 213) !important;
+  color: rgb(194, 65, 12);
+  font-weight: 500;
+  padding-left: 20px;
+}
+
+/* Animacja dla rozwijanego menu */
+@keyframes selectOpen {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+select[size]:not([size="1"]) {
+  animation: selectOpen 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  border-radius: 0.5rem;
+  max-height: 300px;
+  border: 1px solid rgba(229, 231, 235, 0.3);
+}
+
+/* Customowa strzałka dla selecta */
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236B7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+  background-position: right 0.75rem center;
+  background-repeat: no-repeat;
+  background-size: 1.25em 1.25em;
+  padding-right: 2.75rem;
+}
+
+/* Stylowanie scrollbara w select */
+select::-webkit-scrollbar {
+  width: 8px;
+}
+
+select::-webkit-scrollbar-track {
+  background: #f8fafc;
+  border-radius: 6px;
+}
+
+select::-webkit-scrollbar-thumb {
+  background: #e2e8f0;
+  border-radius: 6px;
+  border: 2px solid #f8fafc;
+}
+
+select::-webkit-scrollbar-thumb:hover {
+  background: #cbd5e1;
+}
+
+/* Disabled state */
+select:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  background-color: rgb(249, 250, 251);
+}
+
+select:disabled:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+/* Focus-visible dla dostępności */
+select:focus-visible {
+  outline: 2px solid rgb(245, 158, 11);
+  outline-offset: 2px;
+}
+
+/* Grupa opcji */
+select optgroup {
+  font-weight: 600;
+  color: rgb(75, 85, 99);
+  padding: 8px;
+  background-color: rgb(249, 250, 251);
+}
+
+/* Responsywność na mobile */
+@media (max-width: 640px) {
+  select {
+    font-size: 1rem; /* Większy tekst na mobile */
+    min-height: 3.75rem; /* Większy obszar kliknięcia */
+  }
+
+  select option {
+    padding: 16px; /* Większy padding na mobile */
+  }
+}

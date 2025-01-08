@@ -67,26 +67,46 @@ export const SortingButtons = ({ profilesCount }: SortingButtonsProps) => {
     setSortOrder(sortOrder === "newest" ? "oldest" : "newest");
   };
 
+  const selectClassName = `
+    block w-full pl-10 pr-3 py-3.5 text-base 
+    border-0 rounded-md shadow-sm
+    bg-white text-gray-700
+    transition-all duration-200 ease-in-out
+    hover:bg-gray-50
+    focus:ring-2 focus:ring-amber-500 focus:ring-opacity-50
+    focus:border-amber-500 focus:outline-none
+    disabled:opacity-50 disabled:cursor-not-allowed
+    appearance-none cursor-pointer
+  `;
+
+  const iconClassName =
+    "h-5 w-5 text-gray-400 transition-colors duration-200 group-hover:text-amber-500";
+
   return (
     <>
       <div className="flex flex-col gap-4 bg-white p-6 rounded-lg shadow-xl">
         <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <h2 className="text-xl sm:text-2xl font-semibold text-gray-800">
               Bachateros & Bachateras
             </h2>
-            <span className="px-3 py-1 bg-amber-100 text-amber-800 rounded-full text-sm font-medium">
+            <motion.span
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="px-3 py-1 bg-amber-100 text-amber-800 rounded-full text-sm font-medium"
+            >
               {profilesCount ?? 0}
-            </span>
+            </motion.span>
           </div>
 
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={handleSortClick}
-            className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-3.5 rounded-md
-                     bg-amber-500 text-white font-medium
-                     hover:bg-amber-600 transition-colors duration-200"
+            className="w-full sm:w-auto flex items-center justify-center gap-2 
+                     px-4 py-3.5 rounded-md bg-amber-500 text-white font-medium
+                     hover:bg-amber-600 transition-all duration-200
+                     shadow-sm hover:shadow-md"
           >
             {sortOrder === "newest" ? (
               <>
@@ -102,11 +122,11 @@ export const SortingButtons = ({ profilesCount }: SortingButtonsProps) => {
           </motion.button>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {/* Płeć */}
-          <div className="relative">
-            <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-              <FaVenusMars className="h-5 w-5 text-gray-400" />
+          <div className="relative group">
+            <div className="absolute inset-y-0 left-3 flex items-center z-10">
+              <FaVenusMars className={iconClassName} />
             </div>
             <select
               value={selectedGender}
@@ -115,8 +135,7 @@ export const SortingButtons = ({ profilesCount }: SortingButtonsProps) => {
                   setSelectedGender(e.target.value as Gender | "")
                 )
               }
-              className="block w-full pl-10 pr-3 py-3.5 text-base border-0
-                     focus:ring-2 focus:ring-amber-500 rounded-md"
+              className={selectClassName}
             >
               <option value="">Wszyscy</option>
               <option value="male">Partnerzy</option>
@@ -125,17 +144,16 @@ export const SortingButtons = ({ profilesCount }: SortingButtonsProps) => {
           </div>
 
           {/* Lokalizacja */}
-          <div className="relative">
-            <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-              <FaMapMarkerAlt className="h-5 w-5 text-gray-400" />
+          <div className="relative group">
+            <div className="absolute inset-y-0 left-3 flex items-center z-10">
+              <FaMapMarkerAlt className={iconClassName} />
             </div>
             <select
               value={selectedLocation}
               onChange={(e) =>
                 handleFilterClick(() => setSelectedLocation(e.target.value))
               }
-              className="block w-full pl-10 pr-3 py-3.5 text-base border-0
-                     focus:ring-2 focus:ring-amber-500 rounded-md"
+              className={selectClassName}
             >
               {CITIES.map((city) => (
                 <option key={city.value} value={city.value}>
@@ -146,17 +164,16 @@ export const SortingButtons = ({ profilesCount }: SortingButtonsProps) => {
           </div>
 
           {/* Styl tańca */}
-          <div className="relative">
-            <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-              <FaPeopleArrows className="h-5 w-5 text-gray-400" />
+          <div className="relative group">
+            <div className="absolute inset-y-0 left-3 flex items-center z-10">
+              <FaPeopleArrows className={iconClassName} />
             </div>
             <select
               value={selectedDanceStyle}
               onChange={(e) =>
                 handleFilterClick(() => setSelectedDanceStyle(e.target.value))
               }
-              className="block w-full pl-10 pr-3 py-3.5 text-base border-0
-                     focus:ring-2 focus:ring-amber-500 rounded-md"
+              className={selectClassName}
             >
               {DANCE_STYLES.map((style) => (
                 <option key={style.value} value={style.value}>
@@ -167,17 +184,16 @@ export const SortingButtons = ({ profilesCount }: SortingButtonsProps) => {
           </div>
 
           {/* Poziom */}
-          <div className="relative">
-            <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-              <FaGraduationCap className="h-5 w-5 text-gray-400" />
+          <div className="relative group">
+            <div className="absolute inset-y-0 left-3 flex items-center z-10">
+              <FaGraduationCap className={iconClassName} />
             </div>
             <select
               value={selectedLevel}
               onChange={(e) =>
                 handleFilterClick(() => setSelectedLevel(e.target.value))
               }
-              className="block w-full pl-10 pr-3 py-3.5 text-base border-0
-                     focus:ring-2 focus:ring-amber-500 rounded-md"
+              className={selectClassName}
             >
               <option value="">Poziom</option>
               <option value="beginner">Początkujący</option>
