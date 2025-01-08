@@ -54,7 +54,10 @@ export const NavContent: React.FC = React.memo(function NavContent() {
                 </span>
               </div>
               <div className="flex items-center gap-4">
-                <Link href="/pomoc" className="hover:underline">
+                <Link
+                  href="/szukam-partnera-do-tanca/faq"
+                  className="hover:underline"
+                >
                   Pomoc
                 </Link>
                 <Link href="/kontakt" className="hover:underline">
