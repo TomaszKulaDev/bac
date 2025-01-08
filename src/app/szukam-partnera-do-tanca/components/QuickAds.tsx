@@ -26,6 +26,7 @@ import type {
 import { toast } from "react-toastify";
 import { CITIES } from "@/constants/cities";
 import { generateSlug } from "@/utils/slug";
+import { shortenId } from "@/utils/shortId";
 
 // Rozszerzamy typ Advertisement o pełne dane autora
 interface ExtendedAuthor {
@@ -457,7 +458,12 @@ export function QuickAds() {
                           key={ad._id}
                           className="group relative bg-white rounded-lg p-3 hover:shadow-md transition-all"
                         >
-                          <Link href={adLink} className="block group">
+                          <Link
+                            href={`/szukam-partnera-do-tanca/ogloszenie/${generateSlug(
+                              ad.title
+                            )}-${shortenId(ad._id)}`}
+                            className="block group"
+                          >
                             <div className="flex flex-col gap-1 min-w-0">
                               <div className="flex items-start gap-2 min-w-0">
                                 <div className="flex-1 min-w-0">

@@ -10,6 +10,7 @@ import {
   FaClock,
   FaMapMarkerAlt,
 } from "react-icons/fa";
+import { shortenId } from "@/utils/shortId";
 
 const translateLevel = (level: string) => {
   const levels = {
@@ -47,6 +48,19 @@ async function getAdvertisement(id: string): Promise<Advertisement | null> {
     return res.json();
   } catch (error) {
     console.error("Error fetching advertisement:", error);
+    return null;
+  }
+}
+
+async function getFullAdvertisementId(shortId: string): Promise<string | null> {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL;
+    const res = await fetch(`${baseUrl}/api/advertisements`);
+    const ads = await res.json();
+    const allIds = ads.map((ad: Advertisement) => ad._id);
+    return allIds.find((id: string) => id.startsWith(shortId)) || null;
+  } catch (error) {
+    console.error("Error fetching full ID:", error);
     return null;
   }
 }
@@ -95,11 +109,14 @@ export default async function AdvertisementPage({
   params: { slug: string };
 }) {
   const slugParts = params.slug.split("-");
-  const id = slugParts[slugParts.length - 1];
+  const shortId = slugParts[slugParts.length - 1];
 
-  console.log("Fetching advertisement with ID:", id);
+  const fullId = await getFullAdvertisementId(shortId);
+  if (!fullId) {
+    notFound();
+  }
 
-  const ad = await getAdvertisement(id);
+  const ad = await getAdvertisement(fullId);
 
   if (!ad) {
     notFound();
@@ -107,7 +124,7 @@ export default async function AdvertisementPage({
 
   console.log("Current advertisement title:", ad.title);
 
-  const expectedSlug = `${generateSlug(ad.title)}-${id}`;
+  const expectedSlug = `${generateSlug(ad.title)}-${shortenId(ad._id)}`;
 
   if (params.slug !== expectedSlug) {
     console.log("Redirecting:");
@@ -119,7 +136,7 @@ export default async function AdvertisementPage({
   }
 
   console.log("Params:", params);
-  console.log("ID:", id);
+  console.log("ID:", fullId);
   console.log("Ad:", ad);
   console.log("Expected slug:", expectedSlug);
 
