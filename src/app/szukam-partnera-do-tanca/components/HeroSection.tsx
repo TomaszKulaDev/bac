@@ -57,13 +57,13 @@ export const HeroSection = () => {
   };
 
   const handleSearch = () => {
-    const params = new URLSearchParams();
-    if (selectedLocation) params.append("location", selectedLocation);
-    if (selectedDanceStyle) params.append("style", selectedDanceStyle);
-    if (selectedLevel) params.append("level", selectedLevel);
-    if (selectedGender) params.append("gender", selectedGender);
-
-    router.push(`/szukam-partnera-do-tanca/wyniki?${params.toString()}`);
+    const profilesSection = document.getElementById("profiles-section");
+    if (profilesSection) {
+      profilesSection.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
   };
 
   return (
