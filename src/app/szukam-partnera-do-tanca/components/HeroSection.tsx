@@ -225,9 +225,9 @@ export const HeroSection = () => {
         {/* Statystyki */}
         <div className="mt-12 grid grid-cols-3 gap-8 max-w-3xl mx-auto">
           {[
-            { value: "500+", label: "Aktywnych tancerzy" },
-            { value: "12", label: "Miast w Polsce" },
-            { value: "3", label: "Style tańca" },
+            { value: "XXX+", label: "Aktywnych tancerzy" },
+            { value: "20", label: "Miast w Polsce" },
+            { value: "11", label: "Styli tańca" },
           ].map((stat, index) => (
             <motion.div
               key={index}

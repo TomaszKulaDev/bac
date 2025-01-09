@@ -98,7 +98,7 @@ export const NavContent: React.FC = React.memo(function NavContent() {
                     label: "Szukam Partnera",
                   },
                   {
-                    href: "/muzyka",
+                    href: "/muzykaaa",
                     label: "Muzyka",
                     badge: "Nowe",
                   },
