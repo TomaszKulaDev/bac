@@ -5,10 +5,13 @@ import { useSession } from "next-auth/react";
 import { toast } from "react-toastify";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { DEFAULT_SETTINGS } from "@/types/user";
+import ChangePasswordModal from "../../components/ChangePasswordModal";
 
 export default function SettingsPage() {
   const { data: session } = useSession();
   const { userProfile, updateUserProfile } = useUserProfile();
+  const [isChangePasswordModalOpen, setIsChangePasswordModalOpen] =
+    useState(false);
 
   if (!userProfile) return null;
 
@@ -125,7 +128,10 @@ export default function SettingsPage() {
       <div className="bg-white rounded-xl shadow-sm p-6">
         <h3 className="text-lg font-semibold mb-4">Bezpieczeństwo</h3>
         <div className="space-y-4">
-          <button className="w-full p-4 border rounded-lg text-left hover:bg-gray-50 transition-colors">
+          <button
+            onClick={() => setIsChangePasswordModalOpen(true)}
+            className="w-full p-4 border rounded-lg text-left hover:bg-gray-50 transition-colors"
+          >
             <h4 className="font-medium">Zmień hasło</h4>
             <p className="text-sm text-gray-500">
               Zaktualizuj swoje hasło do konta
@@ -140,6 +146,12 @@ export default function SettingsPage() {
           </button>
         </div>
       </div>
+
+      {isChangePasswordModalOpen && (
+        <ChangePasswordModal
+          onClose={() => setIsChangePasswordModalOpen(false)}
+        />
+      )}
     </div>
   );
 }

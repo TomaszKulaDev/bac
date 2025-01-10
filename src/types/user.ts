@@ -49,6 +49,7 @@ export interface UserProfile {
   gender?: Gender;
   slug?: string;
   settings?: UserSettings;
+  instructorProfile?: InstructorProfile;
 }
 
 // Poprawiona definicja typu NestedKeyOf
@@ -89,4 +90,25 @@ export type UserProfileNestedPaths = NestedKeyOf<UserProfile>;
 export interface EditProfileFormData
   extends Omit<UserProfile, "id" | "createdAt" | "updatedAt"> {
   // Pola, które można edytować
+}
+
+export interface InstructorProfile {
+  isInstructor: boolean;
+  specializations: string[];
+  experience: string;
+  certificates: {
+    name: string;
+    issuer: string;
+    year: number;
+  }[];
+  classes: {
+    name: string;
+    description: string;
+    level: string;
+    maxParticipants: number;
+  }[];
+  pricing: {
+    privateClass: number;
+    groupClass: number;
+  };
 }

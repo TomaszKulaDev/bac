@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 
 const tabs = [
   { name: "Profil taneczny", href: "/profile/edit" },
+  { name: "Instruktor", href: "/profile/edit/instructor" },
   { name: "Ustawienia", href: "/profile/edit/settings" },
 ];
 
