@@ -6,7 +6,7 @@ import { FaEdit, FaCheck, FaTimes } from "react-icons/fa";
 import Image from "next/image";
 import { toast } from "react-toastify";
 import { useUserProfile } from "@/hooks/useUserProfile";
-import { UserProfile, UserProfilePaths } from "@/types/user";
+import { Gender, UserProfile, UserProfilePaths } from "@/types/user";
 import { CITIES } from "@/constants/cities";
 import { DANCE_STYLES } from "@/constants/danceStyles";
 
@@ -112,6 +112,38 @@ const DanceStyleCheckbox = ({
         {isSelected && <FaCheck className="w-3 h-3 text-white" />}
       </div>
       <span className="text-sm">{style.label}</span>
+    </label>
+  </div>
+);
+
+const GenderOption = ({
+  value,
+  label,
+  isSelected,
+  onSelect,
+}: {
+  value: Gender;  
+  label: string;
+  isSelected: boolean;
+  onSelect: (value: Gender) => void;
+}) => (
+  <div
+    className={`p-4 border rounded-lg cursor-pointer transition-all ${
+      isSelected
+        ? "border-amber-500 bg-amber-50"
+        : "border-gray-200 hover:border-gray-300"
+    }`}
+    onClick={() => onSelect(value)}
+  >
+    <label className="flex items-center gap-2 cursor-pointer">
+      <div
+        className={`w-4 h-4 border rounded-full flex items-center justify-center ${
+          isSelected ? "bg-amber-500 border-amber-500" : "border-gray-300"
+        }`}
+      >
+        {isSelected && <div className="w-2 h-2 bg-white rounded-full" />}
+      </div>
+      <span className="text-sm">{label}</span>
     </label>
   </div>
 );
@@ -235,16 +267,21 @@ export default function ProfilePage() {
               />
             </div>
             <div>
-              <label className="text-sm text-gray-500">Płeć</label>
-              <select
-                value={profile.gender || ""}
-                onChange={(e) => handleFieldUpdate("gender", e.target.value)}
-                className="rounded-lg border-gray-300 text-sm"
-              >
-                <option value="">Wybierz płeć</option>
-                <option value="male">Mężczyzna</option>
-                <option value="female">Kobieta</option>
-              </select>
+              <label className="text-sm text-gray-500 mb-2 block">Płeć</label>
+              <div className="grid grid-cols-2 gap-3">
+                <GenderOption
+                  value="male"
+                  label="Mężczyzna"
+                  isSelected={profile.gender === "male"}
+                  onSelect={(value) => handleFieldUpdate("gender", value)}
+                />
+                <GenderOption
+                  value="female"
+                  label="Kobieta"
+                  isSelected={profile.gender === "female"}
+                  onSelect={(value) => handleFieldUpdate("gender", value)}
+                />
+              </div>
             </div>
           </div>
         </div>
