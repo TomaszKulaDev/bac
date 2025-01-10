@@ -6,31 +6,13 @@ import { FaEdit, FaCheck, FaTimes } from "react-icons/fa";
 import Image from "next/image";
 import { toast } from "react-toastify";
 import { useUserProfile } from "@/hooks/useUserProfile";
-import { UserProfile } from "@/types/user";
-
-// Typ dla zagnieżdżonych ścieżek
-type Join<K, P> = K extends string | number
-  ? P extends string | number
-    ? `${K}${"" extends P ? "" : "."}${P}`
-    : never
-  : never;
-
-type Prev = [never, 0, 1, 2, 3, 4, 5, ...0[]];
-
-type Paths<T, D extends number = 3> = [D] extends [never]
-  ? never
-  : T extends object
-  ? {
-      [K in keyof T]-?: K extends string | number
-        ? `${K}` | Join<K, Paths<T[K], Prev[D]>>
-        : never;
-    }[keyof T]
-  : "";
+import { UserProfile, UserProfilePaths } from "@/types/user";
+import { CITIES } from "@/constants/cities";
 
 interface EditableFieldProps {
   value: string | number | undefined;
-  field: Paths<UserProfile>;
-  onSave: (field: Paths<UserProfile>, value: string | number) => Promise<void>;
+  field: UserProfilePaths;
+  onSave: (field: UserProfilePaths, value: string | number) => Promise<void>;
   type?: "text" | "number";
   label: string;
 }
@@ -55,36 +37,36 @@ const EditableField = ({
     }
   };
 
-  if (isEditing) {
-    return (
-      <div className="flex items-center gap-2">
-        <input
-          type={type}
-          value={editValue}
-          onChange={(e) => setEditValue(e.target.value)}
-          className="rounded-lg border-gray-300 text-sm"
-          autoFocus
-        />
-        <button
-          onClick={handleSave}
-          className="p-1 text-green-600 hover:bg-green-50 rounded"
-        >
-          <FaCheck className="w-4 h-4" />
-        </button>
-        <button
-          onClick={() => {
-            setIsEditing(false);
-            setEditValue(value);
-          }}
-          className="p-1 text-red-600 hover:bg-red-50 rounded"
-        >
-          <FaTimes className="w-4 h-4" />
-        </button>
-      </div>
-    );
-  }
-
-  return (
+  return isEditing ? (
+    <div className="flex items-center gap-2">
+      <input
+        type={type}
+        value={editValue}
+        onChange={(e) =>
+          setEditValue(
+            type === "number" ? Number(e.target.value) : e.target.value
+          )
+        }
+        className="rounded-lg border-gray-300 text-sm"
+        autoFocus
+      />
+      <button
+        onClick={handleSave}
+        className="p-1 text-green-600 hover:bg-green-50 rounded"
+      >
+        <FaCheck className="w-4 h-4" />
+      </button>
+      <button
+        onClick={() => {
+          setIsEditing(false);
+          setEditValue(value);
+        }}
+        className="p-1 text-red-600 hover:bg-red-50 rounded"
+      >
+        <FaTimes className="w-4 h-4" />
+      </button>
+    </div>
+  ) : (
     <div className="flex items-center gap-2">
       <span>{value}</span>
       <button
@@ -98,59 +80,45 @@ const EditableField = ({
 };
 
 export default function ProfilePage() {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const {
     userProfile: profile,
     isLoading,
     updateUserProfile,
   } = useUserProfile();
-  const [isChangingPassword, setIsChangingPassword] = useState(false);
 
   const handleFieldUpdate = async (
-    field: Paths<UserProfile>,
+    field: UserProfilePaths,
     value: string | number
   ) => {
     if (!profile) return;
 
-    // Tworzymy kopię profilu
-    const updatedProfile = { ...profile };
+    try {
+      const updatedData = { ...profile };
+      const fieldPath = field.split(".");
 
-    // Funkcja do bezpiecznej aktualizacji zagnieżdżonych pól
-    const setNestedValue = (obj: any, path: string, value: any) => {
-      const keys = path.split(".");
-      let current = obj;
-
-      // Przechodzimy przez wszystkie klucze oprócz ostatniego
-      for (let i = 0; i < keys.length - 1; i++) {
-        const key = keys[i];
-        // Tworzymy obiekt jeśli nie istnieje
-        current[key] = current[key] || {};
-        current = current[key];
+      if (fieldPath.length === 1) {
+        (updatedData as any)[field] = value;
+      } else {
+        let current: any = updatedData;
+        for (let i = 0; i < fieldPath.length - 1; i++) {
+          if (!current[fieldPath[i]]) {
+            current[fieldPath[i]] = {};
+          }
+          current = current[fieldPath[i]];
+        }
+        current[fieldPath[fieldPath.length - 1]] = value;
       }
 
-      // Ustawiamy wartość na ostatnim poziomie
-      const lastKey = keys[keys.length - 1];
-      current[lastKey] = value;
-    };
-
-    // Aktualizujemy wartość
-    setNestedValue(updatedProfile, field, value);
-
-    try {
-      // Debugowanie
-      console.log("Wysyłane dane:", updatedProfile);
-
-      // Aktualizujemy profil
-      await updateUserProfile(updatedProfile);
-
-      toast.success(`${field} zaktualizowane pomyślnie`);
+      await updateUserProfile(updatedData);
+      toast.success(`Zaktualizowano pomyślnie`);
     } catch (error) {
       console.error("Błąd aktualizacji:", error);
-      toast.error(`Błąd podczas aktualizacji: ${field}`);
+      toast.error(`Błąd podczas aktualizacji`);
     }
   };
 
-  if (status === "unauthenticated") {
+  if (!session) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <a href="/auth/signin" className="text-amber-600 hover:underline">
@@ -160,7 +128,7 @@ export default function ProfilePage() {
     );
   }
 
-  if (status === "loading" || isLoading) {
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-gray-600">Ładowanie...</div>
@@ -175,17 +143,17 @@ export default function ProfilePage() {
       <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
         <div className="flex items-start gap-6">
           <Image
-            src={profile?.image || "/images/default-avatar.png"}
-            alt={profile?.name || ""}
+            src={profile.image || "/images/default-avatar.png"}
+            alt={profile.name}
             width={120}
             height={120}
             className="rounded-full"
           />
-          <div className="space-y-2">
+          <div className="space-y-4">
             <div>
               <label className="text-sm text-gray-500">Imię</label>
               <EditableField
-                value={profile?.name}
+                value={profile.name}
                 field="name"
                 onSave={handleFieldUpdate}
                 label="Imię"
@@ -194,13 +162,44 @@ export default function ProfilePage() {
             <div>
               <label className="text-sm text-gray-500">Bio</label>
               <EditableField
-                value={profile?.bio}
+                value={profile.bio}
                 field="bio"
                 onSave={handleFieldUpdate}
                 label="Bio"
               />
             </div>
-            {/* Dodaj więcej pól */}
+            <div>
+              <label className="text-sm text-gray-500">Wzrost (cm)</label>
+              <EditableField
+                value={profile.height}
+                field="height"
+                onSave={handleFieldUpdate}
+                type="number"
+                label="Wzrost"
+              />
+            </div>
+            <div>
+              <label className="text-sm text-gray-500">Wiek</label>
+              <EditableField
+                value={profile.age}
+                field="age"
+                onSave={handleFieldUpdate}
+                type="number"
+                label="Wiek"
+              />
+            </div>
+            <div>
+              <label className="text-sm text-gray-500">Płeć</label>
+              <select
+                value={profile.gender || ""}
+                onChange={(e) => handleFieldUpdate("gender", e.target.value)}
+                className="rounded-lg border-gray-300 text-sm"
+              >
+                <option value="">Wybierz płeć</option>
+                <option value="male">Mężczyzna</option>
+                <option value="female">Kobieta</option>
+              </select>
+            </div>
           </div>
         </div>
       </div>
@@ -209,21 +208,76 @@ export default function ProfilePage() {
       <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
         <h3 className="text-lg font-semibold mb-4">Preferencje taneczne</h3>
         <div className="grid grid-cols-2 gap-4">
-          {/* Przykład dla jednego pola */}
           <div>
             <label className="text-sm text-gray-500">Poziom</label>
             <EditableField
-              value={profile?.dancePreferences?.level}
+              value={profile.dancePreferences?.level}
               field="dancePreferences.level"
               onSave={handleFieldUpdate}
               label="Poziom"
             />
           </div>
-          {/* Dodaj więcej pól */}
+          <div>
+            <label className="text-sm text-gray-500">Dostępność</label>
+            <EditableField
+              value={profile.dancePreferences?.availability}
+              field="dancePreferences.availability"
+              onSave={handleFieldUpdate}
+              label="Dostępność"
+            />
+          </div>
+          <div>
+            <label className="text-sm text-gray-500">Lokalizacja</label>
+            <select
+              value={profile.dancePreferences?.location || ""}
+              onChange={(e) =>
+                handleFieldUpdate("dancePreferences.location", e.target.value)
+              }
+              className="rounded-lg border-gray-300 text-sm w-full"
+            >
+              {CITIES.map((city) => (
+                <option key={city.value} value={city.value}>
+                  {city.label}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
 
-      {/* Pozostałe sekcje... */}
+      {/* Sekcja social media */}
+      <div className="bg-white rounded-xl shadow-sm p-6">
+        <h3 className="text-lg font-semibold mb-4">Media społecznościowe</h3>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="text-sm text-gray-500">Instagram</label>
+            <EditableField
+              value={profile.socialMedia?.instagram}
+              field="socialMedia.instagram"
+              onSave={handleFieldUpdate}
+              label="Instagram"
+            />
+          </div>
+          <div>
+            <label className="text-sm text-gray-500">Facebook</label>
+            <EditableField
+              value={profile.socialMedia?.facebook}
+              field="socialMedia.facebook"
+              onSave={handleFieldUpdate}
+              label="Facebook"
+            />
+          </div>
+          <div>
+            <label className="text-sm text-gray-500">YouTube</label>
+            <EditableField
+              value={profile.socialMedia?.youtube}
+              field="socialMedia.youtube"
+              onSave={handleFieldUpdate}
+              label="YouTube"
+            />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
