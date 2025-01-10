@@ -13,6 +13,27 @@ export interface SocialMedia {
   youtube?: string;
 }
 
+export interface UserSettings {
+  notifications: {
+    email: boolean;
+    push: boolean;
+  };
+  privacy: {
+    isPublic: boolean;
+  };
+}
+
+// Dodajemy domyślne wartości
+export const DEFAULT_SETTINGS: UserSettings = {
+  notifications: {
+    email: false,
+    push: false,
+  },
+  privacy: {
+    isPublic: false,
+  },
+};
+
 export interface UserProfile {
   id: string;
   name: string;
@@ -27,6 +48,7 @@ export interface UserProfile {
   age?: number;
   gender?: Gender;
   slug?: string;
+  settings?: UserSettings;
 }
 
 // Poprawiona definicja typu NestedKeyOf
