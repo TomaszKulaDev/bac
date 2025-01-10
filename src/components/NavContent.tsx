@@ -33,6 +33,25 @@ export const NavContent: React.FC = React.memo(function NavContent() {
   const router = useRouter();
   const pathname = usePathname();
 
+  const menuItems = [
+    {
+      href: "/szukam-partnera-do-tanca",
+      label: "Szukam Partnera",
+      icon: FaUsers,
+    },
+    {
+      href: "/instruktorzy-bachaty",
+      label: "Instruktorzy Bachaty",
+      icon: FaGraduationCap,
+    },
+    {
+      href: "/muzyka",
+      label: "Muzyka",
+      icon: FaMusic,
+      badge: "Nowe",
+    },
+  ];
+
   return (
     <>
       {/* Zmniejszony spacer dla nawigacji */}
@@ -92,17 +111,7 @@ export const NavContent: React.FC = React.memo(function NavContent() {
 
               {/* Menu główne - desktop */}
               <div className="hidden md:flex items-center gap-1 flex-1 justify-center max-w-2xl">
-                {[
-                  {
-                    href: "/szukam-partnera-do-tanca",
-                    label: "Szukam Partnera",
-                  },
-                  {
-                    href: "/muzykaaa",
-                    label: "Muzyka",
-                    badge: "Nowe",
-                  },
-                ].map((item) => (
+                {menuItems.map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}
@@ -114,6 +123,7 @@ export const NavContent: React.FC = React.memo(function NavContent() {
                       }`}
                   >
                     <span className="flex items-center gap-2">
+                      {item.icon && <item.icon className="w-4 h-4" />}
                       {item.label}
                       {item.badge && (
                         <span className="px-1.5 py-0.5 text-[10px] font-medium bg-amber-500 text-white rounded-full">
@@ -229,15 +239,20 @@ export const NavContent: React.FC = React.memo(function NavContent() {
             <div className="space-y-2">
               {[
                 {
+                  href: "/szukam-partnera-do-tanca",
+                  label: "Szukam Partnera",
+                  icon: FaUsers,
+                },
+                {
+                  href: "/instruktorzy-bachaty",
+                  label: "Instruktorzy Bachaty",
+                  icon: FaGraduationCap,
+                },
+                {
                   href: "/muzyka",
                   label: "Muzyka",
                   icon: FaMusic,
                   badge: "Nowe",
-                },
-                {
-                  href: "/szukam-partnera-do-tanca",
-                  label: "Szukam Partnera",
-                  icon: FaUsers,
                 },
                 {
                   href: "/taneczne-historie",

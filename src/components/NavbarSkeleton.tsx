@@ -41,7 +41,7 @@ export const NavbarSkeleton = () => {
 
               {/* Menu główne skeleton - desktop */}
               <div className="hidden md:flex items-center gap-1 flex-1 justify-center max-w-2xl">
-                {[...Array(5)].map((_, index) => (
+                {[...Array(4)].map((_, index) => (
                   <div
                     key={index}
                     className="px-4 py-2 w-28 h-9 bg-gray-100 rounded-lg animate-pulse"
