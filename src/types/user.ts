@@ -1,5 +1,18 @@
 export type Gender = "male" | "female";
 
+export interface DancePreferences {
+  styles: string[];
+  level: string;
+  availability: string;
+  location: string;
+}
+
+export interface SocialMedia {
+  instagram?: string;
+  facebook?: string;
+  youtube?: string;
+}
+
 export interface UserProfile {
   id: string;
   name: string;
@@ -9,21 +22,42 @@ export interface UserProfile {
   height?: number;
   createdAt: string | Date;
   updatedAt?: string;
-  dancePreferences?: {
-    styles: string[];
-    level: string;
-    availability: string;
-    location: string;
-  };
-  socialMedia?: {
-    instagram?: string;
-    facebook?: string;
-    youtube?: string;
-  };
+  dancePreferences?: DancePreferences;
+  socialMedia?: SocialMedia;
   age?: number;
   gender?: Gender;
   slug?: string;
 }
+
+// Poprawiona definicja typu NestedKeyOf
+export type NestedKeyOf<T> = T extends object
+  ? {
+      [K in keyof T]: K extends string | number
+        ? T[K] extends object
+          ? K | `${K}.${NestedKeyOf<T[K]>}`
+          : K
+        : never;
+    }[keyof T & (string | number)]
+  : never;
+
+// Zachowujemy również poprzednie typy
+export type DotPrefix<T extends string> = T extends "" ? "" : `.${T}`;
+
+export type DotNestedKeys<T> = (
+  T extends object
+    ? {
+        [K in Exclude<keyof T, symbol>]: `${K}${DotPrefix<
+          DotNestedKeys<T[K]>
+        >}`;
+      }[Exclude<keyof T, symbol>]
+    : ""
+) extends infer D
+  ? Extract<D, string>
+  : never;
+
+// Możemy używać obu typów
+export type UserProfilePaths = DotNestedKeys<UserProfile>;
+export type UserProfileNestedPaths = NestedKeyOf<UserProfile>;
 
 export interface EditProfileFormData
   extends Omit<UserProfile, "id" | "createdAt" | "updatedAt"> {

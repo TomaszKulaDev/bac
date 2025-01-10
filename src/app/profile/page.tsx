@@ -1,13 +1,101 @@
 "use client";
 
-import { useSession } from "next-auth/react";
 import { useState } from "react";
-import { toast } from "react-toastify";
+import { useSession } from "next-auth/react";
+import { FaEdit, FaCheck, FaTimes } from "react-icons/fa";
 import Image from "next/image";
-import { FaEdit, FaKey } from "react-icons/fa";
-import EditProfileModal from "./components/EditProfileModal";
-import ChangePasswordModal from "./components/ChangePasswordModal";
+import { toast } from "react-toastify";
 import { useUserProfile } from "@/hooks/useUserProfile";
+import { UserProfile } from "@/types/user";
+
+// Typ dla zagnieżdżonych ścieżek
+type Join<K, P> = K extends string | number
+  ? P extends string | number
+    ? `${K}${"" extends P ? "" : "."}${P}`
+    : never
+  : never;
+
+type Prev = [never, 0, 1, 2, 3, 4, 5, ...0[]];
+
+type Paths<T, D extends number = 3> = [D] extends [never]
+  ? never
+  : T extends object
+  ? {
+      [K in keyof T]-?: K extends string | number
+        ? `${K}` | Join<K, Paths<T[K], Prev[D]>>
+        : never;
+    }[keyof T]
+  : "";
+
+interface EditableFieldProps {
+  value: string | number | undefined;
+  field: Paths<UserProfile>;
+  onSave: (field: Paths<UserProfile>, value: string | number) => Promise<void>;
+  type?: "text" | "number";
+  label: string;
+}
+
+const EditableField = ({
+  value = "",
+  field,
+  onSave,
+  type = "text",
+  label,
+}: EditableFieldProps) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editValue, setEditValue] = useState<string | number>(value);
+
+  const handleSave = async () => {
+    try {
+      await onSave(field, editValue);
+      setIsEditing(false);
+      toast.success(`${label} zaktualizowane`);
+    } catch (error) {
+      toast.error(`Błąd podczas aktualizacji: ${label}`);
+    }
+  };
+
+  if (isEditing) {
+    return (
+      <div className="flex items-center gap-2">
+        <input
+          type={type}
+          value={editValue}
+          onChange={(e) => setEditValue(e.target.value)}
+          className="rounded-lg border-gray-300 text-sm"
+          autoFocus
+        />
+        <button
+          onClick={handleSave}
+          className="p-1 text-green-600 hover:bg-green-50 rounded"
+        >
+          <FaCheck className="w-4 h-4" />
+        </button>
+        <button
+          onClick={() => {
+            setIsEditing(false);
+            setEditValue(value);
+          }}
+          className="p-1 text-red-600 hover:bg-red-50 rounded"
+        >
+          <FaTimes className="w-4 h-4" />
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex items-center gap-2">
+      <span>{value}</span>
+      <button
+        onClick={() => setIsEditing(true)}
+        className="p-1 text-gray-400 hover:text-amber-600 rounded"
+      >
+        <FaEdit className="w-4 h-4" />
+      </button>
+    </div>
+  );
+};
 
 export default function ProfilePage() {
   const { data: session, status } = useSession();
@@ -15,12 +103,52 @@ export default function ProfilePage() {
     userProfile: profile,
     isLoading,
     updateUserProfile,
-    isModalOpen,
-    openModal,
-    closeModal,
   } = useUserProfile();
   const [isChangingPassword, setIsChangingPassword] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
+
+  const handleFieldUpdate = async (
+    field: Paths<UserProfile>,
+    value: string | number
+  ) => {
+    if (!profile) return;
+
+    // Tworzymy kopię profilu
+    const updatedProfile = { ...profile };
+
+    // Funkcja do bezpiecznej aktualizacji zagnieżdżonych pól
+    const setNestedValue = (obj: any, path: string, value: any) => {
+      const keys = path.split(".");
+      let current = obj;
+
+      // Przechodzimy przez wszystkie klucze oprócz ostatniego
+      for (let i = 0; i < keys.length - 1; i++) {
+        const key = keys[i];
+        // Tworzymy obiekt jeśli nie istnieje
+        current[key] = current[key] || {};
+        current = current[key];
+      }
+
+      // Ustawiamy wartość na ostatnim poziomie
+      const lastKey = keys[keys.length - 1];
+      current[lastKey] = value;
+    };
+
+    // Aktualizujemy wartość
+    setNestedValue(updatedProfile, field, value);
+
+    try {
+      // Debugowanie
+      console.log("Wysyłane dane:", updatedProfile);
+
+      // Aktualizujemy profil
+      await updateUserProfile(updatedProfile);
+
+      toast.success(`${field} zaktualizowane pomyślnie`);
+    } catch (error) {
+      console.error("Błąd aktualizacji:", error);
+      toast.error(`Błąd podczas aktualizacji: ${field}`);
+    }
+  };
 
   if (status === "unauthenticated") {
     return (
@@ -44,111 +172,58 @@ export default function ProfilePage() {
 
   return (
     <div className="container mx-auto p-4 max-w-4xl">
-      {/* Nagłówek z akcjami */}
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Twój profil</h1>
-        <div className="space-x-3">
-          <button
-            onClick={() => setIsChangingPassword(true)}
-            className="px-4 py-2 text-amber-600 border border-amber-500 rounded-lg hover:bg-amber-50 flex items-center gap-2"
-          >
-            <FaKey /> Zmień hasło
-          </button>
-          <button
-            onClick={() => setIsEditing(true)}
-            className="px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600 flex items-center gap-2"
-          >
-            <FaEdit /> Edytuj profil
-          </button>
-        </div>
-      </div>
-
-      {/* Główne informacje */}
       <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
         <div className="flex items-start gap-6">
           <Image
-            src={profile.image || "/images/default-avatar.png"}
-            alt={profile.name}
+            src={profile?.image || "/images/default-avatar.png"}
+            alt={profile?.name || ""}
             width={120}
             height={120}
             className="rounded-full"
           />
-          <div>
-            <h2 className="text-xl font-semibold">{profile.name}</h2>
-            <p className="text-gray-600">{profile.email}</p>
-            {profile.bio && <p className="mt-2">{profile.bio}</p>}
+          <div className="space-y-2">
+            <div>
+              <label className="text-sm text-gray-500">Imię</label>
+              <EditableField
+                value={profile?.name}
+                field="name"
+                onSave={handleFieldUpdate}
+                label="Imię"
+              />
+            </div>
+            <div>
+              <label className="text-sm text-gray-500">Bio</label>
+              <EditableField
+                value={profile?.bio}
+                field="bio"
+                onSave={handleFieldUpdate}
+                label="Bio"
+              />
+            </div>
+            {/* Dodaj więcej pól */}
           </div>
         </div>
       </div>
 
-      {/* Informacje o tańcu */}
-      {profile.dancePreferences && (
-        <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
-          <h3 className="text-lg font-semibold mb-4">Preferencje taneczne</h3>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <span className="font-medium">Style:</span>{" "}
-              {profile.dancePreferences.styles.join(", ")}
-            </div>
-            <div>
-              <span className="font-medium">Poziom:</span>{" "}
-              {profile.dancePreferences.level}
-            </div>
-            <div>
-              <span className="font-medium">Lokalizacja:</span>{" "}
-              {profile.dancePreferences.location}
-            </div>
-            <div>
-              <span className="font-medium">Dostępność:</span>{" "}
-              {profile.dancePreferences.availability}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Informacje osobiste */}
-      <div className="bg-white rounded-xl shadow-sm p-6">
-        <h3 className="text-lg font-semibold mb-4">Informacje osobiste</h3>
+      {/* Sekcja preferencji tanecznych */}
+      <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
+        <h3 className="text-lg font-semibold mb-4">Preferencje taneczne</h3>
         <div className="grid grid-cols-2 gap-4">
-          {profile.age && (
-            <div>
-              <span className="font-medium">Wiek:</span> {profile.age} lat
-            </div>
-          )}
-          {profile.height && (
-            <div>
-              <span className="font-medium">Wzrost:</span> {profile.height} cm
-            </div>
-          )}
-          {profile.gender && (
-            <div>
-              <span className="font-medium">Płeć:</span>{" "}
-              {profile.gender === "male" ? "Mężczyzna" : "Kobieta"}
-            </div>
-          )}
+          {/* Przykład dla jednego pola */}
+          <div>
+            <label className="text-sm text-gray-500">Poziom</label>
+            <EditableField
+              value={profile?.dancePreferences?.level}
+              field="dancePreferences.level"
+              onSave={handleFieldUpdate}
+              label="Poziom"
+            />
+          </div>
+          {/* Dodaj więcej pól */}
         </div>
       </div>
 
-      {/* Modale */}
-      {isEditing && (
-        <EditProfileModal
-          profile={profile}
-          onClose={() => setIsEditing(false)}
-          onSubmit={async (updatedProfile) => {
-            try {
-              await updateUserProfile(updatedProfile);
-              setIsEditing(false);
-              toast.success("Profil zaktualizowany");
-            } catch (error) {
-              toast.error("Błąd podczas aktualizacji profilu");
-            }
-          }}
-        />
-      )}
-
-      {isChangingPassword && (
-        <ChangePasswordModal onClose={() => setIsChangingPassword(false)} />
-      )}
+      {/* Pozostałe sekcje... */}
     </div>
   );
 }
