@@ -24,3 +24,8 @@ export interface UserProfile {
   gender?: Gender;
   slug?: string;
 }
+
+export interface EditProfileFormData
+  extends Omit<UserProfile, "id" | "createdAt" | "updatedAt"> {
+  // Pola, które można edytować
+}

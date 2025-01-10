@@ -12,6 +12,7 @@ export function useUserProfile() {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchUserProfile = async () => {
     try {
@@ -88,10 +89,16 @@ export function useUserProfile() {
     }
   };
 
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
   return {
     userProfile,
     isLoading,
     error,
     updateUserProfile,
+    isModalOpen,
+    openModal,
+    closeModal,
   };
 }
