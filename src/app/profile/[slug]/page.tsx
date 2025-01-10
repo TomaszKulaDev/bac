@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { UserProfile } from "@/types/user";
 import Image from "next/image";
+import { DANCE_LEVELS } from "@/constants/levels";
 
 export default function PublicProfilePage() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
@@ -107,10 +108,14 @@ export default function PublicProfilePage() {
         <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
           <h2 className="text-lg font-semibold mb-4">Preferencje taneczne</h2>
           <div className="grid grid-cols-2 gap-4">
-            {profile.dancePreferences.level && (
+            {profile.dancePreferences?.level && (
               <div>
                 <span className="text-sm text-gray-500">Poziom</span>
-                <p>{profile.dancePreferences.level}</p>
+                <p>
+                  {DANCE_LEVELS.find(
+                    (l) => l.value === profile.dancePreferences?.level
+                  )?.label || profile.dancePreferences.level}
+                </p>
               </div>
             )}
             {profile.dancePreferences.availability && (

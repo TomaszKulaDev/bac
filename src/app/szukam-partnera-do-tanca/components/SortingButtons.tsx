@@ -15,6 +15,7 @@ import {
 import { motion } from "framer-motion";
 import { CITIES } from "@/constants/cities";
 import { LoginPromptModal } from "./LoginPromptModal";
+import { DANCE_LEVELS } from "@/constants/levels";
 
 interface SortingButtonsProps {
   profilesCount?: number;
@@ -195,10 +196,11 @@ export const SortingButtons = ({ profilesCount }: SortingButtonsProps) => {
               }
               className={selectClassName}
             >
-              <option value="">Poziom</option>
-              <option value="beginner">Początkujący</option>
-              <option value="intermediate">Średniozaawansowany</option>
-              <option value="advanced">Zaawansowany</option>
+              {DANCE_LEVELS.map((level) => (
+                <option key={level.value} value={level.value}>
+                  {level.label}
+                </option>
+              ))}
             </select>
           </div>
         </div>

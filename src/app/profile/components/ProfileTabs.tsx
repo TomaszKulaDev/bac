@@ -2,33 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useSession } from "next-auth/react";
-import { useUserProfile } from "@/hooks/useUserProfile";
 
 const tabs = [
-  { name: "Profil taneczny", href: "/profile" },
-  { name: "Ustawienia", href: "/profile/settings" },
+  { name: "Profil taneczny", href: "/profile/edit" },
+  { name: "Ustawienia", href: "/profile/edit/settings" },
 ];
 
 export default function ProfileTabs() {
   const pathname = usePathname();
-  const { data: session } = useSession();
-  const { userProfile } = useUserProfile();
-
-  // Dodajmy console.log do debugowania
-  console.log({
-    sessionUserId: session?.user?.id,
-    userProfileId: userProfile?.id,
-    session,
-    userProfile,
-  });
-
-  // Pokazuj zakładki dla zalogowanego użytkownika na stronie /profile
-  const isProfilePage = pathname.startsWith("/profile");
-  const isLoggedIn = !!session?.user;
-
-  // Jeśli jesteśmy na stronie profilu i użytkownik jest zalogowany, pokazujemy zakładki
-  if (!isProfilePage || !isLoggedIn) return null;
 
   return (
     <div className="border-b border-gray-200 mb-6">
