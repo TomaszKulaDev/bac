@@ -8,10 +8,11 @@ import { toast } from "react-toastify";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { UserProfile, UserProfilePaths } from "@/types/user";
 import { CITIES } from "@/constants/cities";
+import { DANCE_STYLES } from "@/constants/danceStyles";
 
 interface EditableFieldProps {
   value: string | number | undefined;
-  field: UserProfilePaths;
+  field: Exclude<UserProfilePaths, "dancePreferences.styles">;
   onSave: (field: UserProfilePaths, value: string | number) => Promise<void>;
   type?: "text" | "number";
   label: string;
@@ -79,6 +80,42 @@ const EditableField = ({
   );
 };
 
+const DanceStyleCheckbox = ({
+  style,
+  isSelected,
+  onToggle,
+}: {
+  style: { value: string; label: string };
+  isSelected: boolean;
+  onToggle: (value: string) => void;
+}) => (
+  <div
+    className={`p-4 border rounded-lg cursor-pointer transition-all ${
+      isSelected
+        ? "border-amber-500 bg-amber-50"
+        : "border-gray-200 hover:border-gray-300"
+    }`}
+    onClick={() => onToggle(style.value)}
+  >
+    <label className="flex items-center gap-2 cursor-pointer">
+      <input
+        type="checkbox"
+        checked={isSelected}
+        onChange={() => onToggle(style.value)}
+        className="hidden"
+      />
+      <div
+        className={`w-4 h-4 border rounded flex items-center justify-center ${
+          isSelected ? "bg-amber-500 border-amber-500" : "border-gray-300"
+        }`}
+      >
+        {isSelected && <FaCheck className="w-3 h-3 text-white" />}
+      </div>
+      <span className="text-sm">{style.label}</span>
+    </label>
+  </div>
+);
+
 export default function ProfilePage() {
   const { data: session } = useSession();
   const {
@@ -89,7 +126,7 @@ export default function ProfilePage() {
 
   const handleFieldUpdate = async (
     field: UserProfilePaths,
-    value: string | number
+    value: string | number | string[]
   ) => {
     if (!profile) return;
 
@@ -116,6 +153,15 @@ export default function ProfilePage() {
       console.error("Błąd aktualizacji:", error);
       toast.error(`Błąd podczas aktualizacji`);
     }
+  };
+
+  const handleStyleToggle = (styleValue: string) => {
+    const currentStyles = profile?.dancePreferences?.styles || [];
+    const updatedStyles = currentStyles.includes(styleValue)
+      ? currentStyles.filter((s) => s !== styleValue)
+      : [...currentStyles, styleValue];
+
+    handleFieldUpdate("dancePreferences.styles", updatedStyles);
   };
 
   if (!session) {
@@ -207,7 +253,26 @@ export default function ProfilePage() {
       {/* Sekcja preferencji tanecznych */}
       <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
         <h3 className="text-lg font-semibold mb-4">Preferencje taneczne</h3>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-4">
+          <div>
+            <label className="text-sm text-gray-500 mb-2 block">
+              Style tańca
+            </label>
+            <div className="grid grid-cols-3 gap-3">
+              {DANCE_STYLES.filter((style) => style.value !== "").map(
+                (style) => (
+                  <DanceStyleCheckbox
+                    key={style.value}
+                    style={style}
+                    isSelected={(
+                      profile.dancePreferences?.styles || []
+                    ).includes(style.value)}
+                    onToggle={handleStyleToggle}
+                  />
+                )
+              )}
+            </div>
+          </div>
           <div>
             <label className="text-sm text-gray-500">Poziom</label>
             <EditableField

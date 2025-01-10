@@ -55,8 +55,13 @@ export type DotNestedKeys<T> = (
   ? Extract<D, string>
   : never;
 
-// Możemy używać obu typów
-export type UserProfilePaths = DotNestedKeys<UserProfile>;
+// Dodajemy specjalny typ dla pól tablicowych
+type ArrayFields = {
+  "dancePreferences.styles": string[];
+};
+
+// Rozszerzamy UserProfilePaths o pola tablicowe
+export type UserProfilePaths = DotNestedKeys<UserProfile> | keyof ArrayFields;
 export type UserProfileNestedPaths = NestedKeyOf<UserProfile>;
 
 export interface EditProfileFormData
