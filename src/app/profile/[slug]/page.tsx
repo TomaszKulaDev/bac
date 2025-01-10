@@ -19,7 +19,7 @@ export default function PublicProfilePage() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await fetch(`/api/profiles/by-name/${slug}`);
+        const response = await fetch(`/api/profiles/${slug}`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
