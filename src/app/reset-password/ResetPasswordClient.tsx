@@ -25,7 +25,10 @@ const resetPasswordSchema = z
 
 export default function ResetPassword() {
   const router = useRouter();
-  const token = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('token') : null;
+  const token =
+    typeof window !== "undefined"
+      ? new URLSearchParams(window.location.search).get("token")
+      : null;
   console.log("Received token:", token);
 
   const [password, setPassword] = useState("");
@@ -74,7 +77,7 @@ export default function ResetPassword() {
 
     try {
       console.log("Sending reset request with token:", token);
-      const response = await fetch(`/api/reset-password?token=${token}`, {
+      const response = await fetch(`/api/auth/reset-password?token=${token}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ password }),

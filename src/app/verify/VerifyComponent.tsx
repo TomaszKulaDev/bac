@@ -14,7 +14,7 @@ export default function VerifyComponent() {
   useEffect(() => {
     if (token) {
       // Wysyłanie żądania do API w celu weryfikacji konta
-      fetch(`/api/verify?token=${token}`)
+      fetch(`/api/auth/verify?token=${token}`)
         .then((res) => res.json())
         .then((data) => {
           if (data.message === "Account verified successfully") {

@@ -53,6 +53,7 @@ export interface UserProfile {
 }
 
 // Poprawiona definicja typu NestedKeyOf
+
 export type NestedKeyOf<T> = T extends object
   ? {
       [K in keyof T]: K extends string | number

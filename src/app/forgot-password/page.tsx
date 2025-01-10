@@ -45,7 +45,7 @@ export default function ForgotPassword() {
     }
 
     try {
-      const response = await fetch("/api/forgot-password", {
+      const response = await fetch("/api/auth/forgot-password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
@@ -95,9 +95,13 @@ export default function ForgotPassword() {
               <span className="text-white font-medium text-lg">Baciata.pl</span>
             </div>
           </motion.div>
-          
-          <h1 className="text-4xl font-bold mb-4 text-white">Zapomniałeś hasła?</h1>
-          <p className="text-white/70">Podaj swój email, aby zresetować hasło</p>
+
+          <h1 className="text-4xl font-bold mb-4 text-white">
+            Zapomniałeś hasła?
+          </h1>
+          <p className="text-white/70">
+            Podaj swój email, aby zresetować hasło
+          </p>
         </motion.div>
 
         {/* Form */}
@@ -129,7 +133,9 @@ export default function ForgotPassword() {
           )}
 
           <div className="mb-6">
-            <label className="block text-white/80 mb-2 font-medium">Email</label>
+            <label className="block text-white/80 mb-2 font-medium">
+              Email
+            </label>
             <input
               type="email"
               value={email}
