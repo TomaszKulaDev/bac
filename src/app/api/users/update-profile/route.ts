@@ -92,44 +92,61 @@ export async function POST(request: Request) {
 
     await connectToDatabase();
     const data = await request.json();
-    const validatedData = updateProfileSchema.parse(data);
+    console.log("Otrzymane dane:", data);
+
+    // Sprawdź czy użytkownik istnieje
+    let user = await User.findOne({ email: session.user.email });
+
+    // Jeśli nie istnieje, stwórz nowy dokument
+    if (!user) {
+      user = await User.create({
+        email: session.user.email,
+        name: session.user.name,
+        image: session.user.image,
+        dancePreferences: {
+          styles: [],
+          level: "",
+          availability: "",
+          location: "",
+        },
+        socialMedia: {
+          instagram: "",
+          facebook: "",
+          youtube: "",
+        },
+      });
+    }
+
+    // Aktualizuj tylko przesłane pola
+    const updateData: Record<string, any> = {};
+    Object.entries(data).forEach(([key, value]) => {
+      if (value !== undefined) {
+        if (key.includes(".")) {
+          const [parent, child] = key.split(".");
+          if (!updateData[parent]) {
+            updateData[parent] = {};
+          }
+          (updateData[parent] as Record<string, any>)[child] = value;
+        } else {
+          updateData[key] = value;
+        }
+      }
+    });
 
     const updatedUser = await User.findOneAndUpdate(
       { email: session.user.email },
-      {
-        $set: {
-          name: validatedData.name,
-          email: validatedData.email,
-          image: validatedData.image,
-          dancePreferences: validatedData.dancePreferences,
-          age: validatedData.age,
-          gender: validatedData.gender,
-          bio: validatedData.bio,
-          height: validatedData.height,
-          
-        },
-      },
-      { new: true }
+      { $set: updateData },
+      { new: true, upsert: true }
     );
 
-    if (!updatedUser) {
-      return NextResponse.json({ message: "User not found" }, { status: 404 });
-    }
-
-    return NextResponse.json({
-      id: updatedUser._id.toString(),
-      name: updatedUser.name,
-      email: updatedUser.email,
-      image: updatedUser.image,
-      dancePreferences: updatedUser.dancePreferences,
-      age: updatedUser.age,
-      gender: updatedUser.gender,
-      bio: updatedUser.bio,
-      height: updatedUser.height,
-    });
+    return NextResponse.json(updatedUser);
   } catch (error) {
+    console.error("Update profile error:", error);
     return NextResponse.json(
-      { message: "Failed to update profile" },
+      {
+        message: "Failed to update profile",
+        error: error instanceof Error ? error.message : "Unknown error",
+      },
       { status: 500 }
     );
   }
