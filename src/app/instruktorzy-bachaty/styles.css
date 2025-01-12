@@ -1,0 +1,18 @@
+@layer components {
+  .instructor-card {
+    @apply relative rounded-xl overflow-hidden shadow-xl transition-all duration-300;
+  }
+
+  .instructor-card-gradient {
+    @apply absolute inset-0 opacity-90 mix-blend-multiply transition-opacity duration-300;
+  }
+
+  .instructor-card:hover .instructor-card-gradient {
+    @apply opacity-100;
+  }
+
+  .instructor-social-button {
+    @apply p-2 rounded-full shadow-lg text-white transition-all duration-300
+           hover:shadow-xl transform hover:scale-110;
+  }
+}
