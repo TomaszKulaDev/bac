@@ -8,7 +8,7 @@ export async function PUT(
   request: Request,
   { params }: { params: { id: string } }
 ) {
-  console.log("PUT /api/playlists/[id]: Start", { id: params.id });
+  console.log("PUT /api/musisite/playlists/[id]: Start", { id: params.id });
   
   try {
     const session = await getServerSession(authOptions);
@@ -21,7 +21,7 @@ export async function PUT(
     }
 
     await connectToDatabase();
-    console.log("PUT /api/playlists/[id]: Connected to database");
+    console.log("PUT /api/musisite/playlists/[id]: Connected to database");
     
     const playlist = await Playlist.findOne({
       _id: params.id,
@@ -36,7 +36,7 @@ export async function PUT(
     }
 
     const { songId } = await request.json();
-    console.log("PUT /api/playlists/[id]: Received data", { songId });
+    console.log("PUT /api/musisite/playlists/[id]: Received data", { songId });
 
     if (!songId) {
       return NextResponse.json(
@@ -57,7 +57,7 @@ export async function PUT(
 
     return NextResponse.json(updatedPlaylist);
   } catch (error) {
-    console.error("PUT /api/playlists/[id]: Error", error);
+    console.error("PUT /api/musisite/playlists/[id]: Error", error);
     return NextResponse.json(
       { error: "Nie udało się zaktualizować playlisty" },
       { status: 500 }
@@ -69,7 +69,7 @@ export async function DELETE(
   request: Request,
   { params }: { params: { id: string } }
 ) {
-  console.log("DELETE /api/playlists/[id]: Start", { id: params.id });
+  console.log("DELETE /api/musisite/playlists/[id]: Start", { id: params.id });
   
   try {
     const session = await getServerSession(authOptions);

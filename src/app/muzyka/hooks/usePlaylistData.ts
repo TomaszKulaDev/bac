@@ -14,7 +14,7 @@ export const usePlaylistData = ({ isAuthenticated }: { isAuthenticated: boolean 
     }
 
     try {
-      const response = await fetch('/api/playlists');
+      const response = await fetch('/api/musisite/playlists');
       if (!response.ok) throw new Error('Błąd pobierania playlist');
       const data = await response.json();
       setPlaylists(data);

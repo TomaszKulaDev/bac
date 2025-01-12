@@ -48,7 +48,7 @@ export const usePlaylistManagement = ({
   const { secureOperation } = useSecuredPlaylistOperations({
     isAuthenticated,
     showErrorToast,
-    showSuccessToast
+    showSuccessToast,
   });
 
   const handleDragEnd = useCallback(
@@ -78,16 +78,19 @@ export const usePlaylistManagement = ({
         );
 
         try {
-          const response = await fetch(`/api/playlists/${currentPlaylist.id}/reorder`, {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ newOrder: newSongs }),
-          });
+          const response = await fetch(
+            `/api/musisite/playlists/${currentPlaylist.id}/reorder`,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ newOrder: newSongs }),
+            }
+          );
 
           if (!response.ok) {
-            throw new Error('Failed to update playlist order');
+            throw new Error("Failed to update playlist order");
           }
 
           const updatedPlaylist = await response.json();
@@ -115,7 +118,9 @@ export const usePlaylistManagement = ({
             throw new Error("Nieprawidłowe dane utworu lub playlisty");
           }
 
-          const playlist = playlists.find((p) => (p._id || p.id) === playlistId);
+          const playlist = playlists.find(
+            (p) => (p._id || p.id) === playlistId
+          );
           const song = songs.find((s) => (s._id || s.id) === songId);
 
           if (!playlist || !song) {
@@ -123,31 +128,38 @@ export const usePlaylistManagement = ({
           }
 
           if (playlist.songs.includes(songId)) {
-            showInfoToast(`Utwór "${song.title}" jest już w playliście "${playlist.name}"`);
+            showInfoToast(
+              `Utwór "${song.title}" jest już w playliście "${playlist.name}"`
+            );
             return;
           }
 
-          const response = await fetch(`/api/playlists/${playlistId}`, {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ songId }),
-          });
+          const response = await fetch(
+            `/api/musisite/playlists/${playlistId}`,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ songId }),
+            }
+          );
 
           if (!response.ok) {
-            throw new Error('Nie udało się dodać utworu do playlisty');
+            throw new Error("Nie udało się dodać utworu do playlisty");
           }
 
           onUpdatePlaylists((prevPlaylists) =>
             prevPlaylists.map((p) =>
-              (p._id || p.id) === playlistId ? { ...p, songs: [...p.songs, songId] } : p
+              (p._id || p.id) === playlistId
+                ? { ...p, songs: [...p.songs, songId] }
+                : p
             )
           );
         },
         {
           errorMessage: "Nie udało się dodać utworu do playlisty",
-          successMessage: "Utwór został dodany do playlisty"
+          successMessage: "Utwór został dodany do playlisty",
         }
       );
     },
@@ -164,17 +176,22 @@ export const usePlaylistManagement = ({
       try {
         await secureOperation(
           async () => {
-            const response = await fetch(`/api/playlists/${playlistId}/songs/${songId}`, {
-              method: 'DELETE',
-              headers: {
-                'Content-Type': 'application/json',
-                'Cache-Control': 'no-cache'
+            const response = await fetch(
+              `/api/musisite/playlists/${playlistId}/songs/${songId}`,
+              {
+                method: "DELETE",
+                headers: {
+                  "Content-Type": "application/json",
+                  "Cache-Control": "no-cache",
+                },
               }
-            });
+            );
 
             if (!response.ok) {
               const errorData = await response.json();
-              throw new Error(errorData.error || 'Nie udało się usunąć utworu z playlisty');
+              throw new Error(
+                errorData.error || "Nie udało się usunąć utworu z playlisty"
+              );
             }
 
             onUpdatePlaylists((prevPlaylists) =>
@@ -190,12 +207,12 @@ export const usePlaylistManagement = ({
           },
           {
             requireAuth: true,
-            successMessage: 'Utwór został usunięty z playlisty',
-            errorMessage: 'Nie udało się usunąć utworu z playlisty'
+            successMessage: "Utwór został usunięty z playlisty",
+            errorMessage: "Nie udało się usunąć utworu z playlisty",
           }
         );
       } catch (error) {
-        console.error('Błąd podczas usuwania utworu:', error);
+        console.error("Błąd podczas usuwania utworu:", error);
         showErrorToast("Nie udało się usunąć utworu z playlisty");
       }
     },
@@ -230,14 +247,22 @@ export const usePlaylistManagement = ({
       }
 
       onUpdatePlaylists((prevPlaylists) =>
-        prevPlaylists.filter((playlist) => (playlist._id || playlist.id) !== playlistId)
+        prevPlaylists.filter(
+          (playlist) => (playlist._id || playlist.id) !== playlistId
+        )
       );
 
       if (currentPlaylistId === playlistId) {
         setCurrentPlaylistId(null);
       }
     },
-    [onUpdatePlaylists, currentPlaylistId, isAuthenticated, showErrorToast, setCurrentPlaylistId]
+    [
+      onUpdatePlaylists,
+      currentPlaylistId,
+      isAuthenticated,
+      showErrorToast,
+      setCurrentPlaylistId,
+    ]
   );
 
   const handleCreateEmptyPlaylist = useCallback(() => {
@@ -256,7 +281,9 @@ export const usePlaylistManagement = ({
   const isInPlaylist = useCallback(
     (songId: string, playlistId: string | null) => {
       if (!playlistId || !songId) return false;
-      const playlist = playlists.find(p => p._id === playlistId || p.id === playlistId);
+      const playlist = playlists.find(
+        (p) => p._id === playlistId || p.id === playlistId
+      );
       return playlist ? playlist.songs.includes(songId) : false;
     },
     [playlists]
@@ -264,26 +291,30 @@ export const usePlaylistManagement = ({
 
   const handlePlaylistUpdate = async (playlistId: string, songId: string) => {
     try {
-      const response = await fetch(`/api/playlists/${playlistId}`, {
-        method: 'PUT',
+      const response = await fetch(`/api/musisite/playlists/${playlistId}`, {
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ songId }),
       });
 
       if (!response.ok) {
-        throw new Error('Błąd aktualizacji playlisty');
+        throw new Error("Błąd aktualizacji playlisty");
       }
 
       const updatedPlaylist = await response.json();
-      onUpdatePlaylists(prev => 
-        prev.map(p => (p._id || p.id) === playlistId ? { ...updatedPlaylist, id: updatedPlaylist._id } : p)
+      onUpdatePlaylists((prev) =>
+        prev.map((p) =>
+          (p._id || p.id) === playlistId
+            ? { ...updatedPlaylist, id: updatedPlaylist._id }
+            : p
+        )
       );
-      
+
       return true;
     } catch (error) {
-      console.error('Błąd podczas aktualizacji playlisty:', error);
+      console.error("Błąd podczas aktualizacji playlisty:", error);
       return false;
     }
   };

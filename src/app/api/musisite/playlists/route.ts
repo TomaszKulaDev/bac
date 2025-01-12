@@ -14,7 +14,7 @@ interface IPlaylistDocument {
 }
 
 export async function POST(request: Request) {
-  console.log("POST /api/playlists: Start");
+  console.log("POST /api/musisite/playlists: Start");
   try {
     const session = await getServerSession(authOptions);
     
@@ -26,10 +26,10 @@ export async function POST(request: Request) {
     }
 
     await connectToDatabase();
-    console.log("POST /api/playlists: Connected to database");
+    console.log("POST /api/musisite/playlists: Connected to database");
     
     const { name, songs } = await request.json();
-    console.log("POST /api/playlists: Received data", { name, songs });
+    console.log("POST /api/musisite/playlists: Received data", { name, songs });
     
     const newPlaylist = new Playlist({
       name,
@@ -39,7 +39,7 @@ export async function POST(request: Request) {
     });
 
     await newPlaylist.save();
-    console.log("POST /api/playlists: Playlist saved", newPlaylist);
+    console.log("POST /api/musisite/playlists: Playlist saved", newPlaylist);
 
     return NextResponse.json({
       playlist: {
@@ -52,7 +52,7 @@ export async function POST(request: Request) {
       }
     }, { status: 201 });
   } catch (error) {
-    console.error("POST /api/playlists: Error", error);
+    console.error("POST /api/musisite/playlists: Error", error);
     return NextResponse.json(
       { error: "Nie udało się utworzyć playlisty" },
       { status: 500 }
@@ -61,7 +61,7 @@ export async function POST(request: Request) {
 }
 
 export async function GET() {
-  console.log("GET /api/playlists: Start");
+  console.log("GET /api/musisite/playlists: Start");
   try {
     const session = await getServerSession(authOptions);
     
@@ -73,8 +73,8 @@ export async function GET() {
     }
 
     await connectToDatabase();
-    console.log("GET /api/playlists: Connected to database");
-    
+    console.log("GET /api/musisite/playlists: Connected to database");
+
     const playlists = await Playlist.find({ userId: session.user.email })
       .populate({
         path: 'songs',
@@ -96,7 +96,7 @@ export async function GET() {
       createdAt: playlist.createdAt
     }));
 
-    console.log("GET /api/playlists: Fetched playlists count:", normalizedPlaylists.length);
+    console.log("GET /api/musisite/playlists: Fetched playlists count:", normalizedPlaylists.length);
     return NextResponse.json(normalizedPlaylists, {
       headers: {
         'Cache-Control': 'no-store, no-cache, must-revalidate',
@@ -104,7 +104,7 @@ export async function GET() {
       }
     });
   } catch (error) {
-    console.error("GET /api/playlists: Error", error);
+    console.error("GET /api/musisite/playlists: Error", error);
     return NextResponse.json(
       { error: "Nie udało się pobrać playlist" },
       { status: 500 }

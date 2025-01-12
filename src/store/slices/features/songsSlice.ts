@@ -8,7 +8,7 @@ export const fetchSongs = createAsyncThunk(
   'songs/fetchSongs',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch('/api/songs');
+      const response = await fetch('/api/musisite/songs');
       
       if (!response.ok) {
         const errorData = await response.json();
@@ -41,7 +41,7 @@ export const deleteSongAndRefetch = createAsyncThunk(
   'songs/deleteSongAndRefetch',
   async (id: string, { dispatch, rejectWithValue }) => {
     try {
-      const response = await fetch(`/api/songs/${id}`, { 
+      const response = await fetch(`/api/musisite/songs/${id}`, { 
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'

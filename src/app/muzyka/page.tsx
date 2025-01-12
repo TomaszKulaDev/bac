@@ -112,7 +112,7 @@ const MusicPage: React.FC = () => {
   const refreshPlaylists = useCallback(async () => {
     await secureOperation(
       async () => {
-        const response = await fetch("/api/playlists", {
+        const response = await fetch("/api/musisite/playlists", {
           cache: "no-store",
           headers: {
             "Cache-Control": "no-cache",
@@ -137,7 +137,7 @@ const MusicPage: React.FC = () => {
 
   const handleCreateEmptyPlaylist = async (name: string) => {
     try {
-      const response = await fetch("/api/playlists", {
+      const response = await fetch("/api/musisite/playlists", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -221,7 +221,7 @@ const MusicPage: React.FC = () => {
 
   const handleDeletePlaylist = async (playlistId: string) => {
     try {
-      const response = await fetch(`/api/playlists/${playlistId}`, {
+      const response = await fetch(`/api/musisite/playlists/${playlistId}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -271,8 +271,24 @@ const MusicPage: React.FC = () => {
     // ...
   };
 
-  const handleAddToPlaylist = (songId: string) => {
-    // ...
+  const handleAddToPlaylist = async (playlistId: string, songId: string) => {
+    try {
+      const response = await fetch(`/api/musisite/playlists/${playlistId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ songId }),
+      });
+
+      if (!response.ok) throw new Error("Błąd dodawania utworu do playlisty");
+
+      await refreshPlaylists();
+      showSuccessToast("Utwór został dodany do playlisty");
+    } catch (error) {
+      console.error("Błąd podczas dodawania utworu do playlisty:", error);
+      showErrorToast("Nie udało się dodać utworu do playlisty");
+    }
   };
 
   const handleToggleFavorite = (songId: string) => {
@@ -296,7 +312,6 @@ const MusicPage: React.FC = () => {
       itemScope
       itemType="https://schema.org/MusicPlaylist"
     >
-  
       <TopSongs
         currentSongId={songs[currentSongIndex]?.id}
         isPlaying={isPlaying}

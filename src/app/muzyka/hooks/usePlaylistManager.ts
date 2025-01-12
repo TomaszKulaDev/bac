@@ -15,7 +15,7 @@ export const usePlaylistManager = ({ isAuthenticated }: { isAuthenticated: boole
       return;
     }
     try {
-      const response = await fetch('/api/playlists');
+      const response = await fetch('/api/musisite/playlists');
       if (!response.ok) throw new Error('Failed to fetch playlists');
       const data = await response.json();
       setPlaylists(data);

@@ -13,10 +13,10 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 
 export async function GET() {
-  console.log("GET /api/songs: Start");
+  console.log("GET /api/musisite/songs: Start");
   try {
     await connectToDatabase();
-    console.log("GET /api/songs: Connected to database");
+    console.log("GET /api/musisite/songs: Connected to database");
 
     const session = await getServerSession(authOptions);
     const userEmail = session?.user?.email;
@@ -73,7 +73,7 @@ export async function GET() {
       },
     });
   } catch (error) {
-    console.error("GET /api/songs: Error", error);
+    console.error("GET /api/musisite/songs: Error", error);
     return new NextResponse(
       JSON.stringify({ error: "Internal Server Error" }),
       { status: 500 }

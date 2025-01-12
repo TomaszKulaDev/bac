@@ -29,7 +29,7 @@ export const fetchPlaylists = createAsyncThunk(
   'playlists/fetchPlaylists',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch('/api/playlists');
+      const response = await fetch('/api/musisite/playlists');
       if (!response.ok) {
         throw new Error('Nie udało się pobrać playlist');
       }
@@ -104,7 +104,7 @@ export const deletePlaylistAndRefetch = createAsyncThunk<
 >('playlists/deletePlaylistAndRefetch',
   async (id, { dispatch, rejectWithValue }) => {
     try {
-      const response = await fetch(`/api/playlists/${id}`, { 
+      const response = await fetch(`/api/musisite/playlists/${id}`, { 
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'

@@ -14,7 +14,7 @@ export async function DELETE(
     }
 
     const { id } = params;
-    console.log("DELETE /api/songs/[id]: Attempting to delete song with ID:", id);
+    console.log("DELETE /api/musisite/songs/[id]: Attempting to delete song with ID:", id);
 
     await Like.deleteMany({ songId: id });
     const result = await Song.findByIdAndDelete(id);
@@ -24,7 +24,7 @@ export async function DELETE(
       return NextResponse.json({ error: "Piosenka nie została znaleziona" }, { status: 404 });
     }
 
-    console.log("DELETE /api/songs/[id]: Song deleted", id);
+    console.log("DELETE /api/musisite/songs/[id]: Song deleted", id);
     return NextResponse.json({ message: "Piosenka została usunięta" });
   } catch (error) {
     console.error("Błąd podczas usuwania piosenki:", error);

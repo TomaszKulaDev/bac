@@ -39,16 +39,16 @@ export async function POST(request: Request) {
     if (!db) {
       throw new Error("Nie udało się połączyć z bazą danych");
     }
-    console.log("POST /api/submit-song: Start");
+    console.log("POST /api/musisite/submit-song: Start");
     const { title, artist, youtubeLink } = await request.json();
-    console.log("POST /api/submit-song: Received data", {
+    console.log("POST /api/musisite/submit-song: Received data", {
       title,
       artist,
       youtubeLink,
     });
 
     if (!title || !artist || !youtubeLink) {
-      console.log("POST /api/submit-song: Missing fields");
+      console.log("POST /api/musisite/submit-song: Missing fields");
       return NextResponse.json(
         { message: "Proszę wypełnić wszystkie pola, aby zgłosić utwór" },
         { status: 400 }
@@ -58,7 +58,7 @@ export async function POST(request: Request) {
     // Wyodrębnij youtubeId z youtubeLink
     const youtubeId = youtubeLink.split("v=")[1];
     if (!youtubeId) {
-      console.log("POST /api/submit-song: Invalid YouTube link");
+      console.log("POST /api/musisite/submit-song: Invalid YouTube link");
       return NextResponse.json(
         { message: "Nieprawidłowy link do YouTube" },
         { status: 400 }
@@ -72,7 +72,7 @@ export async function POST(request: Request) {
     });
 
     await newSong.save();
-    console.log("POST /api/submit-song: Song saved");
+    console.log("POST /api/musisite/submit-song: Song saved");
 
     return NextResponse.json({ message: "Utwór został zgłoszony pomyślnie" });
   } catch (error) {
