@@ -1,96 +1,136 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { FaStar, FaMapMarkerAlt, FaInstagram, FaCrown } from "react-icons/fa";
+import { FaStar, FaMapMarkerAlt, FaInstagram } from "react-icons/fa";
 import { Instructor, InstructorLevel } from "@/types/instructor";
 
 interface InstructorCardProps {
   instructor: Instructor;
-  isHovered: boolean;
-  onHover: (id: string | null) => void;
+  lightMode?: boolean;
 }
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-  hover: { scale: 1.05, transition: { duration: 0.3 } },
-};
 
 const getGradientClass = (level: InstructorLevel): string => {
   const gradients = {
-    master: "bg-gradient-to-br from-amber-500/10 to-red-500/10",
-    expert: "bg-gradient-to-br from-purple-500/10 to-pink-500/10",
-    advanced: "bg-gradient-to-br from-blue-500/10 to-cyan-500/10",
+    master: "from-amber-500 to-red-500",
+    expert: "from-purple-500 to-pink-500",
+    advanced: "from-blue-500 to-cyan-500",
   };
   return gradients[level] || gradients.advanced;
 };
 
 export function InstructorCard({
   instructor,
-  isHovered,
-  onHover,
+  lightMode = false,
 }: InstructorCardProps) {
-  const gradientClass = getGradientClass(instructor.level);
-
   return (
     <motion.div
-      variants={cardVariants}
-      initial="hidden"
-      animate="visible"
-      whileHover="hover"
-      onHoverStart={() => onHover(instructor.id)}
-      onHoverEnd={() => onHover(null)}
-      className="bg-white/95 backdrop-blur-sm rounded-xl overflow-hidden 
-                shadow-lg shadow-amber-500/10 border border-amber-500/10 
-                hover:shadow-xl transition-all duration-300"
+      className={`rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300
+        ${lightMode ? "bg-white" : "bg-white/10 backdrop-blur-sm"}
+        border border-amber-100/50`}
+      whileHover={{ y: -5, transition: { duration: 0.2 } }}
     >
-      {/* Zdjęcie instruktora */}
-      <div className="relative aspect-[3/4]">
+      {/* Zdjęcie */}
+      <div className="relative aspect-[4/3]">
         <Image
           src={instructor.image}
           alt={instructor.name}
           fill
           className="object-cover"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+        <div className="absolute top-4 right-4 flex gap-2">
+          <span
+            className={`px-3 py-1 rounded-full text-sm font-medium shadow-md
+            ${
+              lightMode ? "bg-white text-gray-900" : "bg-white/90 text-gray-900"
+            }`}
+          >
+            {instructor.hourlyRate} zł/h
+          </span>
+        </div>
       </div>
 
-      {/* Informacje o instruktorze */}
-      <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-        <h3 className="text-2xl font-bold mb-2">{instructor.name}</h3>
-        <div className="flex items-center gap-2 mb-3">
-          <FaMapMarkerAlt className="text-amber-400" />
-          <span className="text-sm">{instructor.location}</span>
+      {/* Informacje */}
+      <div className="p-6">
+        <div className="flex justify-between items-start mb-4">
+          <div>
+            <h3
+              className={`text-xl font-bold mb-1
+              ${lightMode ? "text-gray-900" : "text-white"}`}
+            >
+              {instructor.name}
+            </h3>
+            <p className="text-amber-500 text-sm">{instructor.level}</p>
+          </div>
+          <div className="flex items-center gap-1">
+            <FaStar className="text-amber-400" />
+            <span
+              className={`font-medium
+              ${lightMode ? "text-gray-900" : "text-white"}`}
+            >
+              {instructor.rating}
+            </span>
+            <span
+              className={`text-sm
+              ${lightMode ? "text-gray-500" : "text-gray-400"}`}
+            >
+              ({instructor.reviewCount})
+            </span>
+          </div>
         </div>
 
         {/* Specjalizacje */}
         <div className="flex flex-wrap gap-2 mb-4">
-          {instructor.specialization.map((spec, index) => (
+          {instructor.specialization.map((spec) => (
             <span
-              key={index}
-              className="px-3 py-1 bg-gradient-to-r from-amber-500/20 to-red-500/20 
-                       rounded-full text-xs backdrop-blur-sm"
+              key={spec}
+              className={`px-3 py-1 rounded-full text-sm
+                ${
+                  lightMode
+                    ? "bg-amber-50 text-amber-700"
+                    : "bg-white/10 text-white/80"
+                }`}
             >
               {spec}
             </span>
           ))}
         </div>
-      </div>
 
-      {/* Social media & achievements */}
-      <div className="absolute top-4 right-4 flex flex-col gap-2">
-        {instructor.instagram && (
-          <motion.a
-            href={`https://instagram.com/${instructor.instagram}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            whileHover={{ scale: 1.1 }}
-            className="bg-gradient-to-r from-amber-500 to-red-500 p-2 
-                     rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+        {/* Dostępność */}
+        <div className="mb-4">
+          <h4
+            className={`text-sm mb-2
+            ${lightMode ? "text-gray-600" : "text-white/80"}`}
           >
-            <FaInstagram className="text-white w-5 h-5" />
-          </motion.a>
-        )}
+            Dostępność:
+          </h4>
+          <div className="flex flex-wrap gap-2">
+            {instructor.availability.map((day) => (
+              <span
+                key={day}
+                className={`text-sm
+                ${lightMode ? "text-gray-500" : "text-white/60"}`}
+              >
+                {day}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Przyciski akcji */}
+        <div className="flex gap-3 mt-6">
+          <button className="flex-1 bg-amber-500 hover:bg-amber-600 text-white py-2 rounded-lg font-medium transition-colors">
+            Umów lekcję
+          </button>
+          <button
+            className={`p-2 rounded-lg transition-colors
+            ${
+              lightMode
+                ? "bg-gray-100 hover:bg-gray-200 text-gray-600"
+                : "bg-white/10 hover:bg-white/20 text-white"
+            }`}
+          >
+            <FaInstagram className="w-5 h-5" />
+          </button>
+        </div>
       </div>
     </motion.div>
   );

@@ -7,8 +7,11 @@ export interface Instructor {
   location: string;
   level: InstructorLevel;
   specialization: string[];
-  instagram?: string;
-  achievements?: string[];
-  description?: string;
-  featured?: boolean;
+  instagram: string;
+  achievements: string[];
+  description: string;
+  hourlyRate: number;
+  availability: string[];
+  rating: number;
+  reviewCount: number;
 }
