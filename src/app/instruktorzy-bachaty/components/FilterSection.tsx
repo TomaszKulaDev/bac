@@ -1,6 +1,9 @@
+import { motion } from "framer-motion";
+
 interface FilterOption {
   id: string;
   label: string;
+  count?: number; // liczba instruktorów dla danej opcji
 }
 
 interface FilterSectionProps {
@@ -21,30 +24,49 @@ export function FilterSection({
   lightMode = false,
 }: FilterSectionProps) {
   return (
-    <div className="mb-6">
-      <h3
-        className={`flex items-center gap-2 text-sm font-medium mb-4
-        ${lightMode ? "text-gray-700" : "text-white/80"}`}
-      >
+    <div className="mb-8">
+      <h3 className="flex items-center gap-2 text-sm font-semibold mb-4 text-gray-800">
         {icon}
         {title}
       </h3>
-      <div className="space-y-2">
+      <div className="space-y-1.5">
         {options.map((option) => (
-          <button
+          <motion.button
             key={option.id}
             onClick={() => onChange(option.id)}
-            className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors
+            whileHover={{ x: 4 }}
+            whileTap={{ scale: 0.98 }}
+            className={`w-full flex items-center justify-between px-4 py-2.5 rounded-lg text-sm 
+              transition-all duration-200 group
               ${
                 selected === option.id
-                  ? "bg-amber-500/20 text-amber-500"
-                  : lightMode
-                  ? "text-gray-600 hover:bg-gray-100"
-                  : "text-white/60 hover:bg-white/5"
+                  ? "bg-amber-50 text-amber-700 font-medium shadow-sm"
+                  : "text-gray-600 hover:bg-gray-50"
               }`}
           >
-            {option.label}
-          </button>
+            <span className="flex items-center gap-2">
+              {selected === option.id && (
+                <motion.span
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  className="w-1.5 h-1.5 rounded-full bg-amber-500"
+                />
+              )}
+              {option.label}
+            </span>
+            {option.count && (
+              <span
+                className={`text-xs px-2 py-1 rounded-full 
+                ${
+                  selected === option.id
+                    ? "bg-amber-100 text-amber-700"
+                    : "bg-gray-100 text-gray-500"
+                }`}
+              >
+                {option.count}
+              </span>
+            )}
+          </motion.button>
         ))}
       </div>
     </div>

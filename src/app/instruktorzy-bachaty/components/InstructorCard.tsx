@@ -1,21 +1,12 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { FaStar, FaMapMarkerAlt, FaInstagram } from "react-icons/fa";
-import { Instructor, InstructorLevel } from "@/types/instructor";
+import { Instructor } from "@/types/instructor";
 
 interface InstructorCardProps {
   instructor: Instructor;
   lightMode?: boolean;
 }
-
-const getGradientClass = (level: InstructorLevel): string => {
-  const gradients = {
-    master: "from-amber-500 to-red-500",
-    expert: "from-purple-500 to-pink-500",
-    advanced: "from-blue-500 to-cyan-500",
-  };
-  return gradients[level] || gradients.advanced;
-};
 
 export function InstructorCard({
   instructor,
@@ -23,25 +14,25 @@ export function InstructorCard({
 }: InstructorCardProps) {
   return (
     <motion.div
-      className={`rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300
-        ${lightMode ? "bg-white" : "bg-white/10 backdrop-blur-sm"}
-        border border-amber-100/50`}
-      whileHover={{ y: -5, transition: { duration: 0.2 } }}
+      className="group relative rounded-xl overflow-hidden bg-white shadow-md hover:shadow-xl 
+                 transition-all duration-300 border border-gray-100"
+      whileHover={{ y: -4, transition: { duration: 0.2 } }}
     >
-      {/* Zdjęcie */}
-      <div className="relative aspect-[4/3]">
+      {/* Zdjęcie z gradientem */}
+      <div className="relative aspect-[3/4]">
         <Image
           src={instructor.image}
           alt={instructor.name}
           fill
-          className="object-cover"
+          className="object-cover transition-transform duration-300 group-hover:scale-105"
         />
-        <div className="absolute top-4 right-4 flex gap-2">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+
+        {/* Badge z ceną */}
+        <div className="absolute top-4 right-4">
           <span
-            className={`px-3 py-1 rounded-full text-sm font-medium shadow-md
-            ${
-              lightMode ? "bg-white text-gray-900" : "bg-white/90 text-gray-900"
-            }`}
+            className="px-3 py-1.5 rounded-full text-sm font-medium bg-white/90 
+                        text-gray-900 shadow-lg backdrop-blur-sm"
           >
             {instructor.hourlyRate} zł/h
           </span>
@@ -53,24 +44,30 @@ export function InstructorCard({
         <div className="flex justify-between items-start mb-4">
           <div>
             <h3
-              className={`text-xl font-bold mb-1
-              ${lightMode ? "text-gray-900" : "text-white"}`}
+              className={`text-xl font-bold mb-1 ${
+                lightMode ? "text-gray-900" : "text-white"
+              }`}
             >
               {instructor.name}
             </h3>
-            <p className="text-amber-500 text-sm">{instructor.level}</p>
+            <div className="flex items-center gap-1 text-gray-500">
+              <FaMapMarkerAlt className="w-4 h-4 text-amber-500" />
+              <span className="text-sm">{instructor.location}</span>
+            </div>
           </div>
           <div className="flex items-center gap-1">
             <FaStar className="text-amber-400" />
             <span
-              className={`font-medium
-              ${lightMode ? "text-gray-900" : "text-white"}`}
+              className={`font-medium ${
+                lightMode ? "text-gray-900" : "text-white"
+              }`}
             >
               {instructor.rating}
             </span>
             <span
-              className={`text-sm
-              ${lightMode ? "text-gray-500" : "text-gray-400"}`}
+              className={`text-sm ${
+                lightMode ? "text-gray-500" : "text-gray-400"
+              }`}
             >
               ({instructor.reviewCount})
             </span>
@@ -97,8 +94,9 @@ export function InstructorCard({
         {/* Dostępność */}
         <div className="mb-4">
           <h4
-            className={`text-sm mb-2
-            ${lightMode ? "text-gray-600" : "text-white/80"}`}
+            className={`text-sm mb-2 ${
+              lightMode ? "text-gray-600" : "text-white/80"
+            }`}
           >
             Dostępność:
           </h4>
@@ -106,8 +104,9 @@ export function InstructorCard({
             {instructor.availability.map((day) => (
               <span
                 key={day}
-                className={`text-sm
-                ${lightMode ? "text-gray-500" : "text-white/60"}`}
+                className={`text-sm ${
+                  lightMode ? "text-gray-500" : "text-white/60"
+                }`}
               >
                 {day}
               </span>

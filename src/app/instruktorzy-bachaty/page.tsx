@@ -1,105 +1,170 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { InstructorCard } from "./components/InstructorCard";
 import { SearchBar } from "./components/SearchBar";
 import { FilterSidebar } from "./components/FilterSidebar";
 import { PageHeader } from "./components/PageHeader";
 import { StatsSection } from "./components/StatsSection";
-import { instructors } from "@/data/instructors";
+import { instructors } from "./data/instructors";
 
 export default function InstructorsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedFilters, setSelectedFilters] = useState({
     style: "all",
     priceRange: "all",
+    location: "all",
   });
 
+  // Obliczanie liczników dla filtrów
+  const filterCounts = useMemo(() => {
+    return {
+      // Lokalizacje
+      warszawa: instructors.filter((i) => i.location === "Warszawa").length,
+      krakow: instructors.filter((i) => i.location === "Kraków").length,
+      wroclaw: instructors.filter((i) => i.location === "Wrocław").length,
+      poznan: instructors.filter((i) => i.location === "Poznań").length,
+      gdansk: instructors.filter((i) => i.location === "Gdańsk").length,
+
+      // Style
+      sensual: instructors.filter((i) =>
+        i.specialization.includes("Bachata Sensual")
+      ).length,
+      dominicana: instructors.filter((i) =>
+        i.specialization.includes("Bachata Dominicana")
+      ).length,
+      moderna: instructors.filter((i) =>
+        i.specialization.includes("Bachata Moderna")
+      ).length,
+
+      // Przedziały cenowe
+      price100: instructors.filter((i) => i.hourlyRate <= 100).length,
+      price150: instructors.filter(
+        (i) => i.hourlyRate > 100 && i.hourlyRate <= 150
+      ).length,
+      price200: instructors.filter(
+        (i) => i.hourlyRate > 150 && i.hourlyRate <= 200
+      ).length,
+      price200plus: instructors.filter((i) => i.hourlyRate > 200).length,
+    };
+  }, []);
+
+  // Filtrowanie instruktorów
+  const filteredInstructors = useMemo(() => {
+    return instructors.filter((instructor) => {
+      const matchesStyle =
+        selectedFilters.style === "all" ||
+        instructor.specialization.some(
+          (spec: string) => spec.toLowerCase() === selectedFilters.style
+        );
+
+      const matchesPriceRange =
+        selectedFilters.priceRange === "all" ||
+        (selectedFilters.priceRange === "100" &&
+          instructor.hourlyRate <= 100) ||
+        (selectedFilters.priceRange === "150" &&
+          instructor.hourlyRate > 100 &&
+          instructor.hourlyRate <= 150) ||
+        (selectedFilters.priceRange === "200" &&
+          instructor.hourlyRate > 150 &&
+          instructor.hourlyRate <= 200) ||
+        (selectedFilters.priceRange === "200+" && instructor.hourlyRate > 200);
+
+      const matchesLocation =
+        selectedFilters.location === "all" ||
+        instructor.location.toLowerCase() === selectedFilters.location;
+
+      const matchesSearch =
+        searchQuery === "" ||
+        instructor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        instructor.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        instructor.specialization.some((spec: string) =>
+          spec.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+
+      return (
+        matchesStyle && matchesPriceRange && matchesLocation && matchesSearch
+      );
+    });
+  }, [selectedFilters, searchQuery]);
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-amber-50">
-      {/* Header z wyszukiwarką */}
-      <div className="bg-white shadow-md">
-        <div className="container mx-auto px-4 py-16">
-          <PageHeader
-            title="Znajdź Swojego Instruktora Bachaty"
-            subtitle="Profesjonalni instruktorzy, elastyczne terminy, spersonalizowane lekcje"
-            gradient="from-amber-500 via-amber-400 to-amber-600"
-          />
-          <div className="max-w-2xl mx-auto mt-12">
-            <SearchBar
-              value={searchQuery}
-              onChange={setSearchQuery}
-              placeholder="Szukaj po nazwie, lokalizacji lub stylu tańca..."
-              lightMode
-            />
-          </div>
-        </div>
-      </div>
+    <div className="min-h-screen bg-white">
+      <PageHeader
+        title="Instruktorzy Bachaty"
+        subtitle="Znajdź swojego idealnego instruktora bachaty i rozpocznij taneczną przygodę już dziś!"
+      />
 
-      {/* Główna zawartość */}
-      <div className="container mx-auto px-4 py-16">
-        <div className="flex flex-col lg:flex-row gap-8">
-          {/* Sidebar z filtrami */}
-          <div className="lg:w-1/4 lg:sticky lg:top-8 lg:self-start">
-            <FilterSidebar
-              selectedFilters={selectedFilters}
-              onFilterChange={(type, value) =>
-                setSelectedFilters((prev) => ({ ...prev, [type]: value }))
-              }
-              lightMode
-            />
-          </div>
+      <section id="search-section" className="relative py-12 lg:py-20">
+        <div className="max-w-[1920px] mx-auto px-6 lg:px-12">
+          <div className="flex flex-col lg:flex-row gap-8">
+            <div className="lg:w-[300px]">
+              <div className="sticky top-4">
+                <FilterSidebar
+                  selectedFilters={selectedFilters}
+                  onFilterChange={(type, value) => {
+                    if (type === "reset") {
+                      setSelectedFilters({
+                        style: "all",
+                        priceRange: "all",
+                        location: "all",
+                      });
+                    } else {
+                      setSelectedFilters((prev) => ({
+                        ...prev,
+                        [type]: value,
+                      }));
+                    }
+                  }}
+                  filterCounts={filterCounts}
+                />
+              </div>
+            </div>
 
-          {/* Lista instruktorów */}
-          <div className="lg:w-3/4">
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-              <AnimatePresence>
-                {instructors
-                  .filter((instructor) => {
-                    const matchesStyle =
-                      selectedFilters.style === "all" ||
-                      instructor.specialization.includes(selectedFilters.style);
+            <div className="flex-1">
+              <div className="space-y-8">
+                <div className="max-w-2xl">
+                  <SearchBar
+                    value={searchQuery}
+                    onChange={setSearchQuery}
+                    placeholder="Szukaj po nazwie, lokalizacji lub stylu tańca..."
+                    lightMode
+                  />
+                </div>
 
-                    const matchesPriceRange =
-                      selectedFilters.priceRange === "all" ||
-                      (selectedFilters.priceRange === "100" &&
-                        instructor.hourlyRate <= 100) ||
-                      (selectedFilters.priceRange === "150" &&
-                        instructor.hourlyRate > 100 &&
-                        instructor.hourlyRate <= 150) ||
-                      (selectedFilters.priceRange === "200" &&
-                        instructor.hourlyRate > 150 &&
-                        instructor.hourlyRate <= 200) ||
-                      (selectedFilters.priceRange === "200+" &&
-                        instructor.hourlyRate > 200);
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                  <AnimatePresence>
+                    {filteredInstructors.map((instructor) => (
+                      <motion.div
+                        key={instructor.id}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <InstructorCard instructor={instructor} lightMode />
+                      </motion.div>
+                    ))}
+                  </AnimatePresence>
+                </div>
 
-                    const matchesSearch =
-                      searchQuery === "" ||
-                      instructor.name
-                        .toLowerCase()
-                        .includes(searchQuery.toLowerCase()) ||
-                      instructor.location
-                        .toLowerCase()
-                        .includes(searchQuery.toLowerCase()) ||
-                      instructor.specialization.some((spec) =>
-                        spec.toLowerCase().includes(searchQuery.toLowerCase())
-                      );
-
-                    return matchesStyle && matchesPriceRange && matchesSearch;
-                  })
-                  .map((instructor) => (
-                    <InstructorCard
-                      key={instructor.id}
-                      instructor={instructor}
-                      lightMode
-                    />
-                  ))}
-              </AnimatePresence>
+                {filteredInstructors.length === 0 && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="text-center py-12"
+                  >
+                    <p className="text-gray-500 text-lg">
+                      Nie znaleziono instruktorów spełniających podane kryteria.
+                    </p>
+                  </motion.div>
+                )}
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
       {/* Sekcja statystyk */}
       <div className="bg-gradient-to-b from-amber-50 to-white">

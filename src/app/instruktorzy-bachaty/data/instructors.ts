@@ -6,7 +6,7 @@ export const instructors: Instructor[] = [
     name: "Anna Kowalska",
     image: "/images/instructors/anna-kowalska.jpg",
     location: "Warszawa",
-    level: "master",
+
     specialization: ["Bachata Sensual", "Ladies Styling"],
     instagram: "@anna.bachata",
     achievements: ["Mistrzyni Polski 2023"],
@@ -22,7 +22,7 @@ export const instructors: Instructor[] = [
     name: "Marcin Nowak",
     image: "/images/instructors/marcin-nowak.jpg",
     location: "Kraków",
-    level: "expert",
+
     specialization: ["Bachata Dominicana", "Bachata Moderna"],
     instagram: "@marcin.baila",
     achievements: ["2 miejsce World Bachata Masters 2022"],
@@ -38,7 +38,7 @@ export const instructors: Instructor[] = [
     name: "Anna Kowalska",
     image: "/images/bachata-romance.jpg",
     location: "Warszawa",
-    level: "master",
+
     specialization: ["Bachata Sensual", "Ladies Styling"],
     instagram: "@anna.bachata",
     achievements: ["Mistrzyni Polski 2023"],
@@ -54,7 +54,7 @@ export const instructors: Instructor[] = [
     name: "Marcin Nowak",
     image: "/images/bachata-instructor-2.jpg",
     location: "Kraków",
-    level: "expert",
+ 
     specialization: ["Bachata Dominicana", "Bachata Moderna"],
     instagram: "@marcin.baila",
     achievements: ["2 miejsce World Bachata Masters 2022"],
@@ -70,7 +70,7 @@ export const instructors: Instructor[] = [
     name: "Karolina Wiśniewska",
     image: "/images/bachata-instructor-3.jpg",
     location: "Wrocław",
-    level: "master",
+
     specialization: ["Bachata Sensual", "Bachata Moderna"],
     instagram: "@karolina.dance",
     achievements: ["Instruktor Roku 2023"],
@@ -85,7 +85,7 @@ export const instructors: Instructor[] = [
     name: "Piotr Zieliński",
     image: "/images/bachata-instructor-4.jpg",
     location: "Poznań",
-    level: "advanced",
+
     specialization: ["Bachata Dominicana", "Partnerowanie"],
     instagram: "@piotr.bachata",
     achievements: ["Top 10 Polish Bachata Championship"],
@@ -101,7 +101,7 @@ export const instructors: Instructor[] = [
     name: "Julia Adamczyk",
     image: "/images/bachata-instructor-5.jpg",
     location: "Warszawa",
-    level: "expert",
+  
     specialization: ["Ladies Styling", "Bachata Sensual"],
     instagram: "@julia.baila",
     achievements: ["Mistrzyni Ladies Styling 2023"],
@@ -116,7 +116,7 @@ export const instructors: Instructor[] = [
     name: "Tomasz Kaczmarek",
     image: "/images/bachata-instructor-6.jpg",
     location: "Gdańsk",
-    level: "master",
+    
     specialization: ["Bachata Moderna", "Bachata Fusion"],
     instagram: "@tomasz.dance",
     achievements: ["Zwycięzca Bachata Masters Europe"],
@@ -131,7 +131,7 @@ export const instructors: Instructor[] = [
     name: "Magdalena Szymańska",
     image: "/images/bachata-instructor-7.jpg",
     location: "Kraków",
-    level: "expert",
+
     specialization: ["Bachata Sensual", "Choreografia"],
     instagram: "@magda.baila",
     achievements: ["Choreograf Roku 2022"],
@@ -146,7 +146,7 @@ export const instructors: Instructor[] = [
     name: "Adam Kowalczyk",
     image: "/images/bachata-instructor-8.jpg",
     location: "Wrocław",
-    level: "advanced",
+   
     specialization: ["Bachata Dominicana", "Musicality"],
     instagram: "@adam.bachata",
     achievements: ["Finalista Polish Bachata Cup"],
@@ -161,7 +161,7 @@ export const instructors: Instructor[] = [
     name: "Natalia Lewandowska",
     image: "/images/bachata-instructor-9.jpg",
     location: "Warszawa",
-    level: "master",
+ 
     specialization: ["Bachata Sensual", "Ladies Styling"],
     instagram: "@natalia.dance",
     achievements: ["World Bachata Show Champion"],
@@ -176,7 +176,7 @@ export const instructors: Instructor[] = [
     name: "Krzysztof Wójcik",
     image: "/images/bachata-instructor-10.jpg",
     location: "Poznań",
-    level: "expert",
+ 
     specialization: ["Bachata Moderna", "Urban Style"],
     instagram: "@krzysztof.baila",
     achievements: ["Pioneer w Urban Bachata"],
@@ -191,7 +191,7 @@ export const instructors: Instructor[] = [
     name: "Monika Jabłońska",
     image: "/images/instructors/monika-jablonska.jpg",
     location: "Gdańsk",
-    level: "master",
+    
     specialization: ["Bachata Sensual", "Choreografia Grupowa"],
     instagram: "@monika.dance",
     achievements: ["Choreograf European Bachata Show"],
@@ -206,7 +206,7 @@ export const instructors: Instructor[] = [
     name: "Robert Mazurek",
     image: "/images/instructors/robert-mazurek.jpg",
     location: "Łódź",
-    level: "expert",
+  
     specialization: ["Bachata Dominicana", "Musicality"],
     instagram: "@robert.baila",
     achievements: ["Instruktor Roku 2022 - Dominicana Style"],
@@ -221,7 +221,7 @@ export const instructors: Instructor[] = [
     name: "Alicja Kwiatkowska",
     image: "/images/instructors/alicja-kwiatkowska.jpg",
     location: "Warszawa",
-    level: "advanced",
+
     specialization: ["Ladies Styling", "Bachata Moderna"],
     instagram: "@alicja.dance",
     achievements: ["Finalistka Ladies Styling Championship"],
@@ -236,7 +236,7 @@ export const instructors: Instructor[] = [
     name: "Kamil Wojciechowski",
     image: "/images/instructors/kamil-wojciechowski.jpg",
     location: "Kraków",
-    level: "master",
+
     specialization: ["Bachata Fusion", "Urban Bachata"],
     instagram: "@kamil.baila",
     achievements: ["Creator of Urban Bachata Style"],
@@ -251,7 +251,6 @@ export const instructors: Instructor[] = [
     name: "Zofia Nowakowska",
     image: "/images/instructors/zofia-nowakowska.jpg",
     location: "Wrocław",
-    level: "expert",
     specialization: ["Bachata Sensual", "Partnerowanie"],
     instagram: "@zofia.dance",
     achievements: ["Best Sensual Bachata Teacher 2023"],
