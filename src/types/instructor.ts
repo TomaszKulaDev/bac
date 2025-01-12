@@ -10,5 +10,5 @@ export interface Instructor {
   instagram?: string;
   achievements?: string[];
   description?: string;
-  rating?: number;
+  featured?: boolean;
 }
