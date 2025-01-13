@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { ScrollToTop } from "./components/ScrollToTop";
 
-// Dodajemy strukturowane dane JSON-LD
+// Dodajemy strukturowane dane JSON-LDd
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "WebSite",
