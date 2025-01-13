@@ -1,4 +1,4 @@
-import { config } from 'dotenv';
+import { config } from "dotenv";
 config();
 
 /** @type {import('next').NextConfig} */
@@ -8,7 +8,7 @@ const nextConfig = {
   reactStrictMode: true,
   // Opcje eksperymentalne Next.js (obecnie puste)
   experimental: {
- 
+    serverActions: true,
   },
   // Konfiguracja obsługi zdalnych obrazów
   images: {
@@ -16,7 +16,7 @@ const nextConfig = {
       {
         // Wzorzec dla obrazów z via.placeholder.com
         protocol: "https",
-        hostname: "via.placeholder.com",
+        hostname: "**",
         port: "",
         pathname: "/**",
       },
