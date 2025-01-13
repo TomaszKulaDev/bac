@@ -107,155 +107,170 @@ export default async function AdvertisementPage({
 }: {
   params: { slug: string };
 }) {
-  const slugParts = params.slug.split("-");
-  const shortId = slugParts[slugParts.length - 1];
+  try {
+    console.log("1. Rozpoczynam renderowanie strony");
+    console.log("2. Otrzymany slug:", params.slug);
 
-  const ad = await getAdvertisement(shortId);
+    // Wyciągamy ID z końca sluga
+    const slugParts = params.slug.split("-");
+    const shortId = slugParts[slugParts.length - 1];
+    console.log("3. Wyciągnięte ID:", shortId);
 
-  if (!ad) {
-    notFound();
-  }
+    // Pobieramy ogłoszenie
+    const ad = await getAdvertisement(shortId);
+    console.log("4. Pobrane ogłoszenie:", ad ? "TAK" : "NIE");
 
-  // Sprawdzamy czy URL jest poprawny
-  const expectedSlug = `${generateSlug(ad.title)}-${shortenId(ad._id)}`;
-  if (params.slug !== expectedSlug) {
-    redirect(`/szukam-partnera-do-tanca/ogloszenie/${expectedSlug}`);
-  }
+    if (!ad) {
+      console.log("5. Nie znaleziono ogłoszenia - przekierowuję do 404");
+      notFound();
+      return null;
+    }
 
-  console.log("Current advertisement title:", ad.title);
+    // Generujemy poprawny slug
+    const expectedSlug = `${generateSlug(ad.title)}-${shortenId(ad._id)}`;
+    console.log("6. Oczekiwany slug:", expectedSlug);
+    console.log("7. Aktualny slug:", params.slug);
 
-  console.log("Params:", params);
-  console.log("ID:", shortId);
-  console.log("Ad:", ad);
-  console.log("Expected slug:", expectedSlug);
+    // Jeśli slug się nie zgadza, przekierowujemy
+    if (params.slug !== expectedSlug) {
+      console.log("8. Slug się nie zgadza - przekierowuję");
+      redirect(`/szukam-partnera-do-tanca/ogloszenie/${expectedSlug}`);
+      return null;
+    }
 
-  return (
-    <div className="max-w-6xl mx-auto px-4 py-12">
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-        {/* Lewa kolumna - reklama pionowa */}
-        <div className="hidden lg:block">
-          <div className="bg-white rounded-xl shadow-lg p-4">
-            <span className="text-sm text-gray-500">Reklama</span>
-            <div className="h-[600px] flex items-center justify-center">
-              <span className="text-gray-400">Reklama 160x600</span>
+    console.log("9. Renderuję stronę z ogłoszeniem");
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          {/* Lewa kolumna - reklama pionowa */}
+          <div className="hidden lg:block">
+            <div className="bg-white rounded-xl shadow-lg p-4">
+              <span className="text-sm text-gray-500">Reklama</span>
+              <div className="h-[600px] flex items-center justify-center">
+                <span className="text-gray-400">Reklama 160x600</span>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Środkowa kolumna - treść ogłoszenia */}
-        <div className="lg:col-span-2 space-y-6">
-          <div className="bg-white rounded-xl shadow-lg p-8">
-            <Link
-              href="/szukam-partnera-do-tanca"
-              className="inline-flex items-center gap-2 text-amber-600 hover:text-amber-700 mb-6"
-            >
-              <FaArrowLeft />
-              Wróć do listy ogłoszeń
-            </Link>
+          {/* Środkowa kolumna - treść ogłoszenia */}
+          <div className="lg:col-span-2 space-y-6">
+            <div className="bg-white rounded-xl shadow-lg p-8">
+              <Link
+                href="/szukam-partnera-do-tanca"
+                className="inline-flex items-center gap-2 text-amber-600 hover:text-amber-700 mb-6"
+              >
+                <FaArrowLeft />
+                Wróć do listy ogłoszeń
+              </Link>
 
-            <h1 className="text-3xl font-bold text-gray-900 mb-6">
-              {ad.title}
-            </h1>
+              <h1 className="text-3xl font-bold text-gray-900 mb-6">
+                {ad.title}
+              </h1>
 
-            <div className="flex flex-wrap gap-4 text-sm text-gray-600 mb-8">
-              <div className="flex items-center gap-2">
-                <FaCalendarAlt className="text-amber-500" />
-                <span>{new Date(ad.date).toLocaleDateString("pl-PL")}</span>
-              </div>
-              {ad.time && (
+              <div className="flex flex-wrap gap-4 text-sm text-gray-600 mb-8">
                 <div className="flex items-center gap-2">
-                  <FaClock className="text-amber-500" />
-                  <span>{ad.time}</span>
+                  <FaCalendarAlt className="text-amber-500" />
+                  <span>{new Date(ad.date).toLocaleDateString("pl-PL")}</span>
                 </div>
-              )}
-              <div className="flex items-center gap-2">
-                <FaMapMarkerAlt className="text-amber-500" />
-                <span>
-                  {ad.location.city}, {ad.location.place}
-                </span>
+                {ad.time && (
+                  <div className="flex items-center gap-2">
+                    <FaClock className="text-amber-500" />
+                    <span>{ad.time}</span>
+                  </div>
+                )}
+                <div className="flex items-center gap-2">
+                  <FaMapMarkerAlt className="text-amber-500" />
+                  <span>
+                    {ad.location.city}, {ad.location.place}
+                  </span>
+                </div>
+              </div>
+
+              <div className="prose max-w-none">
+                <p>{ad.description}</p>
               </div>
             </div>
 
-            <div className="prose max-w-none">
-              <p>{ad.description}</p>
-            </div>
-          </div>
-
-          {/* Sekcja partnerów biznesowych */}
-          <div className="bg-white rounded-xl shadow-lg p-8">
-            <h2 className="text-lg font-semibold text-gray-800 mb-6">
-              Polecane szkoły tańca
-            </h2>
-            <div className="grid grid-cols-3 gap-4">
-              {[1, 2, 3].map((partner) => (
-                <div
-                  key={partner}
-                  className="bg-white border border-gray-100 rounded-lg overflow-hidden hover:shadow-md transition-shadow"
-                >
-                  <div className="aspect-[4/3] bg-gray-100 relative">
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="text-gray-400">Logo</span>
+            {/* Sekcja partnerów biznesowych */}
+            <div className="bg-white rounded-xl shadow-lg p-8">
+              <h2 className="text-lg font-semibold text-gray-800 mb-6">
+                Polecane szkoły tańca
+              </h2>
+              <div className="grid grid-cols-3 gap-4">
+                {[1, 2, 3].map((partner) => (
+                  <div
+                    key={partner}
+                    className="bg-white border border-gray-100 rounded-lg overflow-hidden hover:shadow-md transition-shadow"
+                  >
+                    <div className="aspect-[4/3] bg-gray-100 relative">
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <span className="text-gray-400">Logo</span>
+                      </div>
+                    </div>
+                    <div className="p-4">
+                      <h3 className="text-sm font-medium text-gray-800 mb-1">
+                        Szkoła Tańca {partner}
+                      </h3>
+                      <p className="text-xs text-gray-500">Partner</p>
                     </div>
                   </div>
-                  <div className="p-4">
-                    <h3 className="text-sm font-medium text-gray-800 mb-1">
-                      Szkoła Tańca {partner}
-                    </h3>
-                    <p className="text-xs text-gray-500">Partner</p>
-                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Prawa kolumna - autor i reklamy */}
+          <div className="space-y-6">
+            {/* Karta autora */}
+            <div className="bg-white rounded-xl shadow-lg p-8 sticky top-6">
+              <h2 className="font-semibold text-gray-800 mb-6">
+                Autor ogłoszenia
+              </h2>
+
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-12 h-12 flex-shrink-0">
+                  <Image
+                    src={ad.author.image || "/images/default-avatar.png"}
+                    alt={ad.author.name}
+                    width={48}
+                    height={48}
+                    className="rounded-full object-cover w-full h-full"
+                    priority
+                  />
                 </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Prawa kolumna - autor i reklamy */}
-        <div className="space-y-6">
-          {/* Karta autora */}
-          <div className="bg-white rounded-xl shadow-lg p-8 sticky top-6">
-            <h2 className="font-semibold text-gray-800 mb-6">
-              Autor ogłoszenia
-            </h2>
-
-            <div className="flex items-center gap-4 mb-6">
-              <div className="w-12 h-12 flex-shrink-0">
-                <Image
-                  src={ad.author.image || "/images/default-avatar.png"}
-                  alt={ad.author.name}
-                  width={48}
-                  height={48}
-                  className="rounded-full object-cover w-full h-full"
-                  priority
-                />
+                <div>
+                  <h2 className="text-xl font-semibold text-gray-900">
+                    {ad.author.name}
+                  </h2>
+                  <p className="text-gray-600">
+                    {translateLevel(ad.author.level)}
+                  </p>
+                </div>
               </div>
-              <div>
-                <h2 className="text-xl font-semibold text-gray-900">
-                  {ad.author.name}
-                </h2>
-                <p className="text-gray-600">
-                  {translateLevel(ad.author.level)}
-                </p>
-              </div>
+
+              <button
+                className="w-full px-6 py-3 bg-gradient-to-r from-amber-500 to-red-500 
+                             text-white rounded-lg hover:from-amber-600 hover:to-red-600 
+                             transition-all duration-300"
+              >
+                Napisz wiadomość
+              </button>
             </div>
 
-            <button
-              className="w-full px-6 py-3 bg-gradient-to-r from-amber-500 to-red-500 
-                           text-white rounded-lg hover:from-amber-600 hover:to-red-600 
-                           transition-all duration-300"
-            >
-              Napisz wiadomość
-            </button>
-          </div>
-
-          {/* Reklama pod kartą autora */}
-          <div className="bg-white rounded-xl shadow-lg p-4">
-            <span className="text-sm text-gray-500">Reklama</span>
-            <div className="h-[250px] flex items-center justify-center">
-              <span className="text-gray-400">Reklama 300x250</span>
+            {/* Reklama pod kartą autora */}
+            <div className="bg-white rounded-xl shadow-lg p-4">
+              <span className="text-sm text-gray-500">Reklama</span>
+              <div className="h-[250px] flex items-center justify-center">
+                <span className="text-gray-400">Reklama 300x250</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  } catch (error) {
+    console.error("ERROR w komponencie strony:", error);
+    notFound();
+    return null;
+  }
 }
