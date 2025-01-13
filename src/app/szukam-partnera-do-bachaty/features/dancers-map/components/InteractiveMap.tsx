@@ -30,7 +30,6 @@ export function InteractiveMap() {
 
   return (
     <div className="flex gap-4">
-      {/* Kontrolki filtrów i legenda - obok mapy */}
       <div className="w-64 shrink-0 space-y-4">
         <MapControls
           filters={filters}
@@ -40,7 +39,6 @@ export function InteractiveMap() {
         <MapLegend />
       </div>
 
-      {/* Kontener mapy */}
       <div className="relative flex-1 h-[700px] bg-white rounded-xl shadow-lg overflow-hidden">
         <MapContainer
           center={POLAND_CENTER}
@@ -53,8 +51,8 @@ export function InteractiveMap() {
           maxBoundsViscosity={1.0}
         >
           <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            url={`https://tile.thunderforest.com/atlas/{z}/{x}/{y}.png?apikey=${process.env.NEXT_PUBLIC_THUNDERFOREST_API_KEY}`}
+            attribution='&copy; <a href="http://www.thunderforest.com/">Thunderforest</a>, &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
           />
           <ZoomControl position="bottomright" />
           <DancerMarkers
