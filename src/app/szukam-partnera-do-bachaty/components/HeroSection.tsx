@@ -170,7 +170,7 @@ export const HeroSection = () => {
                       setSelectedDanceStyle(e.target.value)
                     )
                   }
-                  className={selectClassName}
+                  className={`${selectClassName} min-w-[195px]`}
                 >
                   {DANCE_STYLES.map((style) => (
                     <option key={style.value} value={style.value}>
