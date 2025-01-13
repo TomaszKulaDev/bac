@@ -30,38 +30,33 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    console.log("1. Rozpoczynam pobieranie ogłoszenia");
-    console.log("2. Otrzymane ID:", params.id);
+    console.log("1. Otrzymane ID:", params.id);
 
     await connectToDatabase();
-    console.log("3. Połączono z bazą danych");
+    console.log("2. Połączono z bazą danych");
 
-    // Jeśli ID jest krótkie, szukamy pełnego ID
-    if (params.id.length < 24) {
+    // Najpierw próbujemy znaleźć po pełnym ID
+    let ad = await Advertisement.findById(params.id).catch(() => null);
+    console.log("3. Próba znalezienia po pełnym ID:", ad ? "TAK" : "NIE");
+
+    // Jeśli nie znaleziono, szukamy po krótkim ID
+    if (!ad) {
       console.log("4. Szukam po krótkim ID");
       const allAds = await Advertisement.find();
-      console.log("5. Znaleziono ogłoszeń:", allAds.length);
-
-      const ad = allAds.find((ad) => ad._id.toString().includes(params.id));
-
-      console.log("6. Znaleziono ogłoszenie:", ad ? "TAK" : "NIE");
-      if (ad) {
-        return NextResponse.json(ad);
-      }
-    } else {
-      console.log("4. Szukam po pełnym ID");
-      const ad = await Advertisement.findById(params.id);
-      console.log("5. Znaleziono ogłoszenie:", ad ? "TAK" : "NIE");
-      if (ad) {
-        return NextResponse.json(ad);
-      }
+      ad = allAds.find((a) => a._id.toString().includes(params.id));
+      console.log("5. Znaleziono po krótkim ID:", ad ? "TAK" : "NIE");
     }
 
-    console.log("7. Nie znaleziono ogłoszenia");
-    return NextResponse.json(
-      { error: "Nie znaleziono ogłoszenia" },
-      { status: 404 }
-    );
+    if (!ad) {
+      console.log("6. Nie znaleziono ogłoszenia");
+      return NextResponse.json(
+        { error: "Nie znaleziono ogłoszenia" },
+        { status: 404 }
+      );
+    }
+
+    console.log("7. Zwracam ogłoszenie");
+    return NextResponse.json(ad);
   } catch (error) {
     console.error("ERROR:", error);
     return NextResponse.json(
