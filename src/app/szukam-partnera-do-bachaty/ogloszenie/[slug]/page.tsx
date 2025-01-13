@@ -55,20 +55,23 @@ async function getAdvertisement(id: string): Promise<Advertisement | null> {
 async function getFullAdvertisementId(shortId: string): Promise<string | null> {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL;
+    console.log("Using baseUrl:", baseUrl);
+
     const res = await fetch(`${baseUrl}/api/advertisements`);
-
-    if (!res.ok) {
-      console.error("Failed to fetch advertisements");
-      return null;
-    }
-
     const ads = await res.json();
-    console.log(`Found ${ads.length} advertisements`);
+
+    console.log(
+      "All advertisements:",
+      ads.map((ad: Advertisement) => ({
+        id: ad._id,
+        shortId: ad._id.substring(0, 5),
+      }))
+    );
 
     // Szukamy ogłoszenia z pasującym ID
     const foundAd = ads.find((ad: Advertisement) => {
       const adShortId = ad._id.substring(0, 5);
-      console.log(`Comparing short IDs: ${adShortId} with ${shortId}`);
+      console.log(`Comparing: ${adShortId} with ${shortId}`);
       return adShortId === shortId;
     });
 
@@ -77,7 +80,7 @@ async function getFullAdvertisementId(shortId: string): Promise<string | null> {
       return null;
     }
 
-    console.log("Found advertisement with ID:", foundAd._id);
+    console.log("Found advertisement:", foundAd);
     return foundAd._id;
   } catch (error) {
     console.error("Error fetching full ID:", error);

@@ -7,26 +7,30 @@ import { authOptions } from "@/lib/auth.config";
 // GET - Pobierz wszystkie ogłoszenia
 export async function GET() {
   try {
+    console.log("Connecting to MongoDB...");
     await connectToDatabase();
-    const ads = await Advertisement.find().exec();
 
-    // Jeśli nie ma ogłoszeń, zwróć pustą tablicę
-    if (!ads || ads.length === 0) {
-      console.log("No advertisements found in database");
-      return NextResponse.json([]);
-    }
+    console.log("Fetching advertisements...");
+    const ads = await Advertisement.find().sort({ createdAt: -1 }).exec();
+
+    console.log("Found advertisements:", {
+      count: ads.length,
+      ids: ads.map((ad) => ({
+        fullId: ad._id.toString(),
+        shortId: ad._id.toString().substring(0, 5),
+      })),
+    });
 
     const plainAds = ads.map((ad) => ({
       ...ad.toObject(),
       _id: ad._id.toString(),
     }));
 
-    console.log(`Found ${plainAds.length} advertisements`);
     return NextResponse.json(plainAds);
   } catch (error) {
-    console.error("Error fetching ads:", error);
+    console.error("Error fetching advertisements:", error);
     return NextResponse.json(
-      { error: "Nie udało się pobrać ogłoszeń" },
+      { error: "Failed to fetch advertisements" },
       { status: 500 }
     );
   }
