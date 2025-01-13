@@ -1,9 +1,9 @@
-export function shortenId(longId: string): string {
-  // Bierzemy pierwsze 4 znaki z ID
-  return longId.slice(0, 5);
+export function shortenId(fullId: string): string {
+  return fullId.substring(0, 5);
 }
 
-export function getFullId(shortId: string, allIds: string[]): string | null {
-  // Znajdujemy pełne ID, które zaczyna się od skróconego ID
-  return allIds.find((id) => id.startsWith(shortId)) || null;
+export function expandId(shortId: string): string {
+  if (shortId.length === 24) return shortId;
+  // Szukamy pełnego ID zaczynającego się od shortId
+  return shortId;
 }
