@@ -30,48 +30,34 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    console.log("Received request for ID:", params.id);
-
     await connectToDatabase();
 
-    // Sprawdzamy czy ID jest poprawne
-    if (!params.id.match(/^[0-9a-fA-F]{24}$/)) {
-      console.log("Invalid ID format");
-      return NextResponse.json(
-        { error: "Nieprawidłowy format ID" },
-        { status: 400 }
-      );
-    }
+    // Dodajemy logowanie
+    console.log("Szukam ogłoszenia z ID:", params.id);
 
-    const ad = (await Advertisement.findById(params.id)) as MongoAdvertisement;
-    console.log("Found advertisement:", ad);
+    // Najpierw próbujemy znaleźć wszystkie ogłoszenia
+    const allAds = await Advertisement.find();
+
+    // Szukamy ogłoszenia, którego ID zaczyna się od podanego fragmentu
+    const ad = allAds.find((ad) => ad._id.toString().startsWith(params.id));
 
     if (!ad) {
-      console.log("Advertisement not found");
+      console.log("Nie znaleziono ogłoszenia dla ID:", params.id);
       return NextResponse.json(
         { error: "Nie znaleziono ogłoszenia" },
         { status: 404 }
       );
     }
 
-    // Konwertujemy dokument MongoDB do zwykłego obiektu
-    const adObject = ad.toObject();
-
-    // Formatujemy daty jeśli istnieją
-    const formattedAd = {
-      ...adObject,
-      _id: adObject._id.toString(),
-      createdAt: adObject.createdAt
-        ? new Date(adObject.createdAt).toISOString()
-        : undefined,
-      updatedAt: adObject.updatedAt
-        ? new Date(adObject.updatedAt).toISOString()
-        : undefined,
+    // Konwertujemy dokument na zwykły obiekt
+    const plainAd = {
+      ...ad.toObject(),
+      _id: ad._id.toString(),
     };
 
-    return NextResponse.json(formattedAd);
+    return NextResponse.json(plainAd);
   } catch (error) {
-    console.error("Detailed error:", error);
+    console.error("Error:", error);
     return NextResponse.json(
       { error: "Wystąpił błąd podczas pobierania ogłoszenia" },
       { status: 500 }
