@@ -36,7 +36,7 @@ export const NavContent: React.FC = React.memo(function NavContent() {
   const menuItems = [
     {
       href: "/szukam-partnera-do-bachaty",
-      label: "Szukam Partnera",
+      label: "Znajdź Partnera do Bachaty",
       icon: FaUsers,
     },
     {
