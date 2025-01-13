@@ -6,10 +6,6 @@ config();
 const nextConfig = {
   // Włączenie trybu ścisłego Reacta, który pomaga w wykrywaniu potencjalnych problemów w aplikacji
   reactStrictMode: true,
-  // Opcje eksperymentalne Next.js (obecnie puste)
-  experimental: {
-    serverActions: true,
-  },
   // Konfiguracja obsługi zdalnych obrazów
   images: {
     remotePatterns: [

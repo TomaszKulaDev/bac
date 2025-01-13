@@ -71,6 +71,7 @@ import { AuthSync } from "../components/AuthSync";
 import { NavbarSkeleton } from "../components/NavbarSkeleton";
 import { Metadata } from "next";
 import { CookieConsent } from "../components/CookieConsent/CookieConsent";
+import 'leaflet/dist/leaflet.css';
 
 // Inicjalizujemy czcionkę Inter z podzbiorem "latin", aby używać jej w aplikacji
 const inter = Inter({ subsets: ["latin"] });
