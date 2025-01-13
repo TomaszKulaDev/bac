@@ -22,7 +22,7 @@ import {
 import { PolishPromoArtist } from "@/app/news/components/PolishPromoArtist/PolishPromoArtist";
 import { polishArtistsData } from "@/app/news/components/PolishPromoArtist/data";
 
-// Uproszczony interfejs bez elementów społecznościowych
+// Uproszczony interfejs bez elementów społecznościowychyyyy
 interface NewsItem {
   id: string;
   title: string;
