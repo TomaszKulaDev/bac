@@ -23,7 +23,12 @@ const translateLevel = (level: string) => {
 
 async function getAdvertisement(id: string): Promise<Advertisement | null> {
   try {
-    const res = await fetch(`/api/advertisements/${id}`, {
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+    const url = new URL(`/api/advertisements/${id}`, baseUrl);
+
+    console.log("Fetching from URL:", url.toString());
+
+    const res = await fetch(url, {
       cache: "no-store",
       headers: {
         "Content-Type": "application/json",
