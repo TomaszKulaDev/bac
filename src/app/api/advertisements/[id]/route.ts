@@ -30,35 +30,31 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    console.log("1. Otrzymane ID:", params.id);
-
     await connectToDatabase();
-    console.log("2. Połączono z bazą danych");
 
     // Najpierw próbujemy znaleźć po pełnym ID
     let ad = await Advertisement.findById(params.id).catch(() => null);
-    console.log("3. Próba znalezienia po pełnym ID:", ad ? "TAK" : "NIE");
 
     // Jeśli nie znaleziono, szukamy po krótkim ID
     if (!ad) {
-      console.log("4. Szukam po krótkim ID");
       const allAds = await Advertisement.find();
       ad = allAds.find((a) => a._id.toString().includes(params.id));
-      console.log("5. Znaleziono po krótkim ID:", ad ? "TAK" : "NIE");
     }
 
     if (!ad) {
-      console.log("6. Nie znaleziono ogłoszenia");
       return NextResponse.json(
         { error: "Nie znaleziono ogłoszenia" },
         { status: 404 }
       );
     }
 
-    console.log("7. Zwracam ogłoszenie");
-    return NextResponse.json(ad);
+    // Konwertujemy _id na string
+    const adObject = ad.toObject();
+    adObject._id = adObject._id.toString();
+
+    return NextResponse.json(adObject);
   } catch (error) {
-    console.error("ERROR:", error);
+    console.error("Error:", error);
     return NextResponse.json(
       { error: "Wystąpił błąd podczas pobierania ogłoszenia" },
       { status: 500 }

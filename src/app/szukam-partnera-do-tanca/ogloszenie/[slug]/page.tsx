@@ -23,28 +23,16 @@ const translateLevel = (level: string) => {
 
 async function getAdvertisement(id: string): Promise<Advertisement | null> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
-    const url = new URL(`/api/advertisements/${id}`, baseUrl);
-
-    console.log("Fetching from URL:", url.toString());
-
-    const res = await fetch(url, {
+    const res = await fetch(`/api/advertisements/${id}`, {
       cache: "no-store",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      next: { revalidate: 0 },
     });
 
-    console.log("Response status:", res.status);
-
     if (!res.ok) {
-      console.error(`Error status: ${res.status}`);
-      throw new Error(`Failed to fetch advertisement: ${res.status}`);
+      return null;
     }
 
-    const data = await res.json();
-    console.log("Fetched data:", data);
-    return data;
+    return await res.json();
   } catch (error) {
     console.error("Error fetching advertisement:", error);
     return null;
@@ -53,13 +41,20 @@ async function getAdvertisement(id: string): Promise<Advertisement | null> {
 
 async function getFullAdvertisementId(shortId: string): Promise<string | null> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL;
-    const res = await fetch(`${baseUrl}/api/advertisements`);
+    const res = await fetch(`/api/advertisements`, {
+      cache: "no-store",
+      next: { revalidate: 0 },
+    });
+
+    if (!res.ok) {
+      return null;
+    }
+
     const ads = await res.json();
-    const allIds = ads.map((ad: Advertisement) => ad._id);
-    return allIds.find((id: string) => id.startsWith(shortId)) || null;
+    const ad = ads.find((ad: any) => ad._id.toString().includes(shortId));
+    return ad ? ad._id : null;
   } catch (error) {
-    console.error("Error fetching full ID:", error);
+    console.error("Error getting full ID:", error);
     return null;
   }
 }
@@ -108,37 +103,31 @@ export default async function AdvertisementPage({
   params: { slug: string };
 }) {
   try {
-    console.log("1. Rozpoczynam renderowanie strony");
-    console.log("2. Otrzymany slug:", params.slug);
+    console.log("1. Otrzymany slug:", params.slug);
 
     // Wyciągamy ID z końca sluga
     const slugParts = params.slug.split("-");
     const shortId = slugParts[slugParts.length - 1];
-    console.log("3. Wyciągnięte ID:", shortId);
+    console.log("2. Krótkie ID:", shortId);
 
-    // Pobieramy ogłoszenie
-    const ad = await getAdvertisement(shortId);
-    console.log("4. Pobrane ogłoszenie:", ad ? "TAK" : "NIE");
+    // Pobieramy pełne ID
+    const fullId = await getFullAdvertisementId(shortId);
+    console.log("3. Pełne ID:", fullId);
+
+    if (!fullId) {
+      console.log("4. Nie znaleziono pełnego ID");
+      return notFound();
+    }
+
+    // Pobieramy ogłoszenie używając pełnego ID
+    const ad = await getAdvertisement(fullId);
+    console.log("5. Pobrane ogłoszenie:", ad ? "TAK" : "NIE");
 
     if (!ad) {
-      console.log("5. Nie znaleziono ogłoszenia - przekierowuję do 404");
-      notFound();
-      return null;
+      console.log("6. Nie znaleziono ogłoszenia");
+      return notFound();
     }
 
-    // Generujemy poprawny slug
-    const expectedSlug = `${generateSlug(ad.title)}-${shortenId(ad._id)}`;
-    console.log("6. Oczekiwany slug:", expectedSlug);
-    console.log("7. Aktualny slug:", params.slug);
-
-    // Jeśli slug się nie zgadza, przekierowujemy
-    if (params.slug !== expectedSlug) {
-      console.log("8. Slug się nie zgadza - przekierowuję");
-      redirect(`/szukam-partnera-do-tanca/ogloszenie/${expectedSlug}`);
-      return null;
-    }
-
-    console.log("9. Renderuję stronę z ogłoszeniem");
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
@@ -269,8 +258,7 @@ export default async function AdvertisementPage({
       </div>
     );
   } catch (error) {
-    console.error("ERROR w komponencie strony:", error);
-    notFound();
-    return null;
+    console.error("ERROR:", error);
+    return notFound();
   }
 }
