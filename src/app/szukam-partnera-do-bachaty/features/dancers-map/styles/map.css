@@ -1,0 +1,15 @@
+.leaflet-control-zoom {
+  border-color: #f59e0b !important; /* amber-500 */
+}
+
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out {
+  color: #f59e0b !important; /* amber-500 */
+  border-color: #f59e0b !important; /* amber-500 */
+}
+
+.leaflet-control-zoom-in:hover,
+.leaflet-control-zoom-out:hover {
+  background-color: #fef3c7 !important; /* amber-100 */
+  color: #d97706 !important; /* amber-600 */
+}

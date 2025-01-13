@@ -20,13 +20,22 @@ export function DancerMarkers({
   const { filters } = useMapFilters();
   const { markers, isLoading } = useDancerMarkers(filters);
 
+  const getMarkerStyle = (count: number) => ({
+    radius: count < 10 ? 8 : count < 50 ? 12 : 16,
+    fillColor: "#F59E0B", // amber-500
+    color: "#D97706", // amber-600
+    weight: 2,
+    opacity: 1,
+    fillOpacity: 0.6,
+  });
+
   const customIcon = (count: number) => {
     const size = count > 50 ? "w-10 h-10" : count > 20 ? "w-8 h-8" : "w-6 h-6";
     return divIcon({
       html: `
-        <div class="bg-purple-600 text-white rounded-full ${size} flex items-center justify-center
+        <div class="bg-amber-500 text-white rounded-full ${size} flex items-center justify-center
                    font-medium shadow-lg border-2 border-white transform transition-all duration-200
-                   hover:scale-110 hover:bg-purple-700 cursor-pointer">
+                   hover:scale-110 hover:bg-amber-600 cursor-pointer">
           ${count}
         </div>
       `,
@@ -60,7 +69,7 @@ export function DancerMarkers({
               <div className="space-y-2">
                 <p className="text-gray-600">
                   Aktywni tancerze:{" "}
-                  <span className="font-semibold text-purple-600">
+                  <span className="font-semibold text-amber-600">
                     {marker.stats.activeDancers}
                   </span>
                 </p>
@@ -71,7 +80,7 @@ export function DancerMarkers({
                       <span
                         key={style.name}
                         className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                                 bg-purple-100 text-purple-800 hover:bg-purple-200 transition-colors"
+                                 bg-amber-100 text-amber-800 hover:bg-amber-200 transition-colors"
                       >
                         {style.name} ({style.count})
                       </span>

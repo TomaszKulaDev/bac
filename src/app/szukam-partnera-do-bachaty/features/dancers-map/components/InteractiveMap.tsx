@@ -8,6 +8,8 @@ import { MapLegend } from "./MapLegend";
 import { useMapFilters } from "../hooks/useMapFilters";
 import { LatLngTuple } from "leaflet";
 import "leaflet/dist/leaflet.css";
+import "../styles/map.css";
+import { LoadingSpinner } from "./LoadingSpinner";
 
 const POLAND_CENTER: LatLngTuple = [52.0685, 19.0409];
 const POLAND_BOUNDS = {
@@ -27,6 +29,7 @@ const MAP_CONFIG = {
 export function InteractiveMap() {
   const { filters, updateFilters, resetFilters } = useMapFilters();
   const [selectedCity, setSelectedCity] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <div className="flex gap-4">
@@ -60,6 +63,7 @@ export function InteractiveMap() {
             onCitySelect={setSelectedCity}
           />
         </MapContainer>
+        {isLoading && <LoadingSpinner />}
       </div>
     </div>
   );
