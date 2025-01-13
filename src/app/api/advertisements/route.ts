@@ -10,18 +10,18 @@ export async function GET() {
     await connectToDatabase();
     const ads = await Advertisement.find().exec();
 
+    // Jeśli nie ma ogłoszeń, zwróć pustą tablicę
+    if (!ads || ads.length === 0) {
+      console.log("No advertisements found in database");
+      return NextResponse.json([]);
+    }
+
     const plainAds = ads.map((ad) => ({
       ...ad.toObject(),
       _id: ad._id.toString(),
     }));
 
-    console.log("API: Pierwsze ogłoszenie:", {
-      id: plainAds[0]?._id,
-      authorComplete: plainAds[0]?.author,
-      hasEmail: Boolean(plainAds[0]?.author?.email),
-      rawAuthor: JSON.stringify(plainAds[0]?.author),
-    });
-
+    console.log(`Found ${plainAds.length} advertisements`);
     return NextResponse.json(plainAds);
   } catch (error) {
     console.error("Error fetching ads:", error);

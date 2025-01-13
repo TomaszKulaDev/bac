@@ -31,19 +31,28 @@ export async function GET(
 ) {
   try {
     console.log("Received request for ID:", params.id);
-
     await connectToDatabase();
 
     // Sprawdzamy czy ID jest poprawne
     if (!params.id.match(/^[0-9a-fA-F]{24}$/)) {
-      console.log("Invalid ID format");
-      return NextResponse.json(
-        { error: "Nieprawidłowy format ID" },
-        { status: 400 }
-      );
+      const shortId = params.id;
+      // Próbujemy znaleźć pełne ID
+      const ads = await Advertisement.find().exec();
+      const foundAd = ads.find((ad) => ad._id.toString().endsWith(shortId));
+
+      if (!foundAd) {
+        console.log("Invalid ID format and no matching advertisement found");
+        return NextResponse.json(
+          { error: "Nie znaleziono ogłoszenia" },
+          { status: 404 }
+        );
+      }
+
+      // Jeśli znaleźliśmy ogłoszenie, używamy jego pełnego ID
+      params.id = foundAd._id.toString();
     }
 
-    const ad = (await Advertisement.findById(params.id)) as MongoAdvertisement;
+    const ad = await Advertisement.findById(params.id);
     console.log("Found advertisement:", ad);
 
     if (!ad) {
