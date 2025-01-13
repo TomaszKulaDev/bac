@@ -96,26 +96,18 @@ export default function InstructorsPage() {
         subtitle="Znajdź swojego idealnego instruktora bachaty i rozpocznij taneczną przygodę już dziś!"
       />
 
-      <section id="search-section" className="relative py-12 lg:py-20">
-        <div className="max-w-[1920px] mx-auto px-6 lg:px-12">
+      <section id="search-section" className="py-12">
+        <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-12">
           <div className="flex flex-col lg:flex-row gap-8">
-            <div className="lg:w-[300px]">
+            <div className="lg:w-[300px] flex-shrink-0">
               <div className="sticky top-4">
                 <FilterSidebar
                   selectedFilters={selectedFilters}
                   onFilterChange={(type, value) => {
-                    if (type === "reset") {
-                      setSelectedFilters({
-                        style: "all",
-                        priceRange: "all",
-                        location: "all",
-                      });
-                    } else {
-                      setSelectedFilters((prev) => ({
-                        ...prev,
-                        [type]: value,
-                      }));
-                    }
+                    setSelectedFilters((prev) => ({
+                      ...prev,
+                      [type]: value,
+                    }));
                   }}
                   filterCounts={filterCounts}
                 />
@@ -123,44 +115,78 @@ export default function InstructorsPage() {
             </div>
 
             <div className="flex-1">
-              <div className="space-y-8">
-                <div className="max-w-2xl">
-                  <SearchBar
-                    value={searchQuery}
-                    onChange={setSearchQuery}
-                    placeholder="Szukaj po nazwie, lokalizacji lub stylu tańca..."
-                    lightMode
-                  />
-                </div>
+              <div className="mb-8">
+                <SearchBar
+                  value={searchQuery}
+                  onChange={setSearchQuery}
+                  placeholder="Wyszukaj instruktora..."
+                  lightMode
+                />
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                  <AnimatePresence>
-                    {filteredInstructors.map((instructor) => (
-                      <motion.div
-                        key={instructor.id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        <InstructorCard instructor={instructor} lightMode />
-                      </motion.div>
-                    ))}
-                  </AnimatePresence>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {Object.entries(selectedFilters).map(
+                    ([key, value]) =>
+                      value !== "all" && (
+                        <button
+                          key={key}
+                          onClick={() =>
+                            setSelectedFilters((prev) => ({
+                              ...prev,
+                              [key]: "all",
+                            }))
+                          }
+                          className="inline-flex items-center px-3 py-1.5 
+                                 bg-amber-50 text-amber-800 rounded-full text-sm
+                                 hover:bg-amber-100 transition-colors"
+                        >
+                          {value}
+                          <span className="ml-1.5">×</span>
+                        </button>
+                      )
+                  )}
                 </div>
-
-                {filteredInstructors.length === 0 && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="text-center py-12"
-                  >
-                    <p className="text-gray-500 text-lg">
-                      Nie znaleziono instruktorów spełniających podane kryteria.
-                    </p>
-                  </motion.div>
-                )}
               </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                <AnimatePresence>
+                  {filteredInstructors.map((instructor) => (
+                    <motion.div
+                      key={instructor.id}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <InstructorCard instructor={instructor} lightMode />
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+              </div>
+
+              {filteredInstructors.length === 0 && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="text-center py-12"
+                >
+                  <p className="text-gray-600 mb-3">
+                    Nie znaleziono instruktorów spełniających wybrane kryteria
+                  </p>
+                  <button
+                    onClick={() => {
+                      setSearchQuery("");
+                      setSelectedFilters({
+                        style: "all",
+                        priceRange: "all",
+                        location: "all",
+                      });
+                    }}
+                    className="text-amber-600 hover:text-amber-700 font-medium"
+                  >
+                    Wyczyść filtry
+                  </button>
+                </motion.div>
+              )}
             </div>
           </div>
         </div>
