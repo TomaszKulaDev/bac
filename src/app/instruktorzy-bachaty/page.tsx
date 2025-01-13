@@ -98,10 +98,16 @@ export default function InstructorsPage() {
       />
 
       <div className="min-h-screen bg-white">
-        <PageHeader
-          title="Instruktorzy Bachaty"
-          subtitle="Znajdź swojego idealnego instruktora bachaty i rozpocznij taneczną przygodę już dziś!"
-        />
+        {/* Hero Section z mapą Polski */}
+        <div className="relative">
+        
+
+          {/* Główna zawartość hero section */}
+          <PageHeader
+            title="Instruktorzy Bachaty"
+            subtitle="Znajdź swojego idealnego instruktora bachaty i rozpocznij taneczną przygodę już dziś!"
+          />
+        </div>
 
         <section id="search-section" className="py-12">
           <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-12">
