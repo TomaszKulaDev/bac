@@ -21,31 +21,20 @@ const translateLevel = (level: string) => {
   return levels[level as keyof typeof levels] || level;
 };
 
-async function getAdvertisement(id: string): Promise<Advertisement | null> {
+async function getAdvertisement(shortId: string) {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL;
-    if (!baseUrl) {
-      throw new Error("NEXT_PUBLIC_APP_URL is not defined");
-    }
-
-    const url = new URL(`/api/advertisements/${id}`, baseUrl).toString();
-    const res = await fetch(url, {
-      next: {
-        revalidate: 0,
-        tags: ["advertisement"],
-      },
-      headers: {
-        "Content-Type": "application/json",
-      },
+    const res = await fetch(`${baseUrl}/api/advertisements/${shortId}`, {
       cache: "no-store",
     });
 
     if (!res.ok) {
-      console.error(`Error status: ${res.status}`);
+      console.error("Error status:", res.status);
       throw new Error(`Failed to fetch advertisement: ${res.status}`);
     }
 
-    return res.json();
+    const data = await res.json();
+    return data;
   } catch (error) {
     console.error("Error fetching advertisement:", error);
     return null;
