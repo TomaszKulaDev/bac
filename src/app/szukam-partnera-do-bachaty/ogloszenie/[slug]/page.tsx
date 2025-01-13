@@ -102,18 +102,26 @@ export default async function AdvertisementPage({
 }: {
   params: { slug: string };
 }) {
-  // Wyciągamy ID ze sluga (wszystko po ostatnim myślniku)
+  // Wyciągamy ID z końca sluga (wszystko po ostatnim myślniku)
   const parts = params.slug.split("-");
-  const id = parts[parts.length - 1];
-  console.log("Extracted ID from slug:", id);
+  const fullId = parts[parts.length - 1];
+  console.log("Full ID from slug:", fullId);
 
-  if (!id) {
+  // Pobieramy bezpośrednio z API używając pełnego ID
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL;
+  const res = await fetch(`${baseUrl}/api/advertisements/${fullId}`, {
+    next: { revalidate: 60 },
+  });
+
+  if (!res.ok) {
+    console.error(`Error fetching advertisement: ${res.status}`);
     notFound();
   }
 
-  const ad = await getAdvertisement(id);
+  const ad = await res.json();
 
   if (!ad) {
+    console.log("Advertisement not found");
     notFound();
   }
 
@@ -131,7 +139,7 @@ export default async function AdvertisementPage({
   }
 
   console.log("Params:", params);
-  console.log("ID:", id);
+  console.log("ID:", fullId);
   console.log("Ad:", ad);
   console.log("Expected slug:", expectedSlug);
 
