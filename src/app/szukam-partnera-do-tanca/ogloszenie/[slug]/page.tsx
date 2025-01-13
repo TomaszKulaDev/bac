@@ -111,32 +111,22 @@ export default async function AdvertisementPage({
   const slugParts = params.slug.split("-");
   const shortId = slugParts[slugParts.length - 1];
 
-  const fullId = await getFullAdvertisementId(shortId);
-  if (!fullId) {
-    notFound();
-  }
-
-  const ad = await getAdvertisement(fullId);
+  const ad = await getAdvertisement(shortId);
 
   if (!ad) {
     notFound();
   }
 
-  console.log("Current advertisement title:", ad.title);
-
+  // Sprawdzamy czy URL jest poprawny
   const expectedSlug = `${generateSlug(ad.title)}-${shortenId(ad._id)}`;
-
   if (params.slug !== expectedSlug) {
-    console.log("Redirecting:");
-    console.log("Current slug:", params.slug);
-    console.log("Expected slug:", expectedSlug);
-    console.log("Advertisement title:", ad.title);
-
     redirect(`/szukam-partnera-do-tanca/ogloszenie/${expectedSlug}`);
   }
 
+  console.log("Current advertisement title:", ad.title);
+
   console.log("Params:", params);
-  console.log("ID:", fullId);
+  console.log("ID:", shortId);
   console.log("Ad:", ad);
   console.log("Expected slug:", expectedSlug);
 

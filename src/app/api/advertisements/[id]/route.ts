@@ -30,48 +30,40 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    console.log("Received request for ID:", params.id);
+    console.log("1. Rozpoczynam pobieranie ogłoszenia");
+    console.log("2. Otrzymane ID:", params.id);
 
     await connectToDatabase();
+    console.log("3. Połączono z bazą danych");
 
-    // Sprawdzamy czy ID jest poprawne
-    if (!params.id.match(/^[0-9a-fA-F]{24}$/)) {
-      console.log("Invalid ID format");
-      return NextResponse.json(
-        { error: "Nieprawidłowy format ID" },
-        { status: 400 }
-      );
+    // Jeśli ID jest krótkie, szukamy pełnego ID
+    if (params.id.length < 24) {
+      console.log("4. Szukam po krótkim ID");
+      const allAds = await Advertisement.find();
+      console.log("5. Znaleziono ogłoszeń:", allAds.length);
+
+      const ad = allAds.find((ad) => ad._id.toString().includes(params.id));
+
+      console.log("6. Znaleziono ogłoszenie:", ad ? "TAK" : "NIE");
+      if (ad) {
+        return NextResponse.json(ad);
+      }
+    } else {
+      console.log("4. Szukam po pełnym ID");
+      const ad = await Advertisement.findById(params.id);
+      console.log("5. Znaleziono ogłoszenie:", ad ? "TAK" : "NIE");
+      if (ad) {
+        return NextResponse.json(ad);
+      }
     }
 
-    const ad = (await Advertisement.findById(params.id)) as MongoAdvertisement;
-    console.log("Found advertisement:", ad);
-
-    if (!ad) {
-      console.log("Advertisement not found");
-      return NextResponse.json(
-        { error: "Nie znaleziono ogłoszenia" },
-        { status: 404 }
-      );
-    }
-
-    // Konwertujemy dokument MongoDB do zwykłego obiektu
-    const adObject = ad.toObject();
-
-    // Formatujemy daty jeśli istnieją
-    const formattedAd = {
-      ...adObject,
-      _id: adObject._id.toString(),
-      createdAt: adObject.createdAt
-        ? new Date(adObject.createdAt).toISOString()
-        : undefined,
-      updatedAt: adObject.updatedAt
-        ? new Date(adObject.updatedAt).toISOString()
-        : undefined,
-    };
-
-    return NextResponse.json(formattedAd);
+    console.log("7. Nie znaleziono ogłoszenia");
+    return NextResponse.json(
+      { error: "Nie znaleziono ogłoszenia" },
+      { status: 404 }
+    );
   } catch (error) {
-    console.error("Detailed error:", error);
+    console.error("ERROR:", error);
     return NextResponse.json(
       { error: "Wystąpił błąd podczas pobierania ogłoszenia" },
       { status: 500 }
