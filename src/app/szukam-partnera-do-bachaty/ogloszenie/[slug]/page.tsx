@@ -28,70 +28,28 @@ async function getAdvertisement(id: string): Promise<Advertisement | null> {
       throw new Error("NEXT_PUBLIC_APP_URL is not defined");
     }
 
-    // Najpierw pobierz pełne ID
-    const fullId = await getFullAdvertisementId(id);
-    if (!fullId) {
-      console.log(`No advertisement found with ID: ${id}`);
-      return null;
-    }
-
-    const url = new URL(`/api/advertisements/${fullId}`, baseUrl).toString();
-    const res = await fetch(url, {
-      next: { revalidate: 60 }, // Używamy tylko revalidate
-    });
-
-    if (!res.ok) {
-      console.error(`Error status: ${res.status}`);
-      throw new Error(`Failed to fetch advertisement: ${res.status}`);
-    }
-
-    return res.json();
-  } catch (error) {
-    console.error("Error fetching advertisement:", error);
-    return null;
-  }
-}
-
-async function getFullAdvertisementId(shortId: string): Promise<string | null> {
-  try {
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL;
-    console.log("Using baseUrl:", baseUrl);
-
+    // Najpierw pobieramy wszystkie ogłoszenia
     const res = await fetch(`${baseUrl}/api/advertisements`);
     const ads = await res.json();
-
-    console.log(
-      "All advertisements:",
-      ads.map((ad: Advertisement) => ({
-        id: ad._id,
-        shortId: ad._id.substring(0, 5),
-      }))
-    );
 
     // Szukamy ogłoszenia z pasującym ID
     const foundAd = ads.find((ad: Advertisement) => {
       const adShortId = ad._id.substring(0, 5);
-      console.log(`Comparing: ${adShortId} with ${shortId}`);
-      return adShortId === shortId;
+      console.log(`Comparing IDs: ${adShortId} with ${id}`);
+      return adShortId === id;
     });
 
     if (!foundAd) {
-      console.log(`No advertisement found with short ID: ${shortId}`);
+      console.log(`No advertisement found with ID: ${id}`);
       return null;
     }
 
     console.log("Found advertisement:", foundAd);
-    return foundAd._id;
+    return foundAd;
   } catch (error) {
-    console.error("Error fetching full ID:", error);
+    console.error("Error fetching advertisement:", error);
     return null;
   }
-}
-
-// Dodajmy funkcję do wyodrębnienia krótkiego ID ze sluga
-function extractShortIdFromSlug(slug: string): string {
-  const parts = slug.split("-");
-  return parts[parts.length - 1].substring(0, 5); // Bierzemy tylko pierwsze 5 znaków
 }
 
 export async function generateMetadata({
@@ -137,9 +95,13 @@ export default async function AdvertisementPage({
 }: {
   params: { slug: string };
 }) {
-  // Wyodrębnij krótkie ID ze sluga
-  const shortId = extractShortIdFromSlug(params.slug);
-  console.log("Extracted short ID:", shortId);
+  // Wyciągamy ID ze sluga (ostatnie 5 znaków po ostatnim myślniku)
+  const shortId = params.slug.split("-").pop()?.substring(0, 5);
+  console.log("Extracted short ID from slug:", shortId);
+
+  if (!shortId) {
+    notFound();
+  }
 
   const ad = await getAdvertisement(shortId);
 
