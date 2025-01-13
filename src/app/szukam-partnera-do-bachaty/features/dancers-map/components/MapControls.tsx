@@ -11,6 +11,33 @@ interface MapControlsProps {
   onReset?: () => void;
 }
 
+function getFilterLabel(key: keyof MapFilters, value: string): string {
+  switch (key) {
+    case "danceStyle":
+      return (
+        DANCE_STYLES.find((style) => style.value === value)?.label || value
+      );
+    case "level":
+      return (
+        DANCE_LEVELS.find((level) => level.value === value)?.label || value
+      );
+    case "gender":
+      return value === "male"
+        ? "Partner"
+        : value === "female"
+        ? "Partnerka"
+        : value;
+    case "availability":
+      return value === "active"
+        ? "Tylko aktywni"
+        : value === "inactive"
+        ? "Tylko nieaktywni"
+        : "Wszyscy";
+    default:
+      return value;
+  }
+}
+
 export function MapControls({ filters, onChange, onReset }: MapControlsProps) {
   return (
     <motion.div
@@ -103,8 +130,8 @@ export function MapControls({ filters, onChange, onReset }: MapControlsProps) {
                      focus:outline-none focus:ring-0 focus:border-gray-300"
           >
             <option value="">Wszyscy</option>
-            <option value="male">Prowadzący</option>
-            <option value="female">Prowadzone</option>
+            <option value="male">Partner</option>
+            <option value="female">Partnerka</option>
           </select>
         </div>
 
@@ -152,5 +179,38 @@ export function MapControls({ filters, onChange, onReset }: MapControlsProps) {
         </button>
       </div>
     </motion.div>
+  );
+}
+
+function ActiveFilters({
+  filters,
+  onRemove,
+}: {
+  filters: MapFilters;
+  onRemove: (key: keyof MapFilters) => void;
+}) {
+  return (
+    <div className="flex flex-wrap gap-2 mt-4">
+      {(Object.entries(filters) as [keyof MapFilters, string][]).map(
+        ([key, value]) => {
+          if (!value) return null;
+          return (
+            <span
+              key={key}
+              className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs
+                     bg-amber-100 text-amber-800"
+            >
+              {getFilterLabel(key, value)}
+              <button
+                onClick={() => onRemove(key)}
+                className="hover:text-amber-900"
+              >
+                ×
+              </button>
+            </span>
+          );
+        }
+      )}
+    </div>
   );
 }

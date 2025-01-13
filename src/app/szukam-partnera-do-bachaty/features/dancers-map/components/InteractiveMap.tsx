@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { MapContainer, TileLayer, ZoomControl } from "react-leaflet";
 import { DancerMarkers } from "./DancerMarkers";
 import { MapControls } from "./MapControls";
@@ -10,6 +10,7 @@ import { LatLngTuple } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "../styles/map.css";
 import { LoadingSpinner } from "./LoadingSpinner";
+import { DancerMarker } from "../types";
 
 const POLAND_CENTER: LatLngTuple = [52.0685, 19.0409];
 const POLAND_BOUNDS = {
@@ -25,6 +26,38 @@ const MAP_CONFIG = {
     LatLngTuple
   ],
 };
+
+function MapStats({ markers }: { markers: DancerMarker[] }) {
+  const stats = useMemo(
+    () => ({
+      totalDancers: markers.reduce((sum, m) => sum + m.stats.activeDancers, 0),
+      totalCities: markers.length,
+      mostPopularCity: markers.reduce((prev, curr) =>
+        prev.stats.activeDancers > curr.stats.activeDancers ? prev : curr
+      ).city,
+    }),
+    [markers]
+  );
+
+  return (
+    <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm p-3 rounded-lg shadow-lg z-[1000]">
+      <div className="flex gap-4 text-sm">
+        <div>
+          <span className="text-gray-600">Tancerzy:</span>
+          <span className="font-semibold ml-1">{stats.totalDancers}</span>
+        </div>
+        <div>
+          <span className="text-gray-600">Miast:</span>
+          <span className="font-semibold ml-1">{stats.totalCities}</span>
+        </div>
+        <div>
+          <span className="text-gray-600">Najpopularniejsze:</span>
+          <span className="font-semibold ml-1">{stats.mostPopularCity}</span>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export function InteractiveMap() {
   const { filters, updateFilters, resetFilters } = useMapFilters();

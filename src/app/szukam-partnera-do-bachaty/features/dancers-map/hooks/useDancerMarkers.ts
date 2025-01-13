@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { DancerMarker, MapFilters } from "../types";
 
 // Przykładowe dane - docelowo będą pobierane z API
@@ -89,24 +89,35 @@ export function useDancerMarkers(filters: MapFilters) {
   const [markers, setMarkers] = useState<DancerMarker[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  const maxDancers = useMemo(
+    () => Math.max(...markers.map((m) => m.stats.activeDancers)),
+    [markers]
+  );
+
+  const getMarkerRank = useCallback(
+    (marker: DancerMarker) => {
+      const sortedMarkers = [...markers].sort(
+        (a, b) => b.stats.activeDancers - a.stats.activeDancers
+      );
+      return sortedMarkers.findIndex((m) => m.id === marker.id) + 1;
+    },
+    [markers]
+  );
+
   useEffect(() => {
     const filteredMarkers = MOCK_MARKERS.filter((marker) => {
-      // Filtrowanie po stylu tańca
       if (
         filters.danceStyle &&
         !marker.styles.some((s) => s.name === filters.danceStyle)
       ) {
         return false;
       }
-
-      // Filtrowanie po statusie
       if (
         filters.availability === "active" &&
         marker.stats.activeDancers === 0
       ) {
         return false;
       }
-
       return true;
     });
 
@@ -114,5 +125,5 @@ export function useDancerMarkers(filters: MapFilters) {
     setIsLoading(false);
   }, [filters]);
 
-  return { markers, isLoading };
+  return { markers, isLoading, maxDancers, getMarkerRank };
 }

@@ -23,10 +23,11 @@ export async function GET() {
   // Lista tras do uwzględnienia w mapie strony
   const routes = [
     "/",
+    "/szukam-partnera-do-bachaty",
     "/login",
     "/register",
     "/muzyka",
-    
+
     // Dodaj tutaj więcej tras
   ];
 
