@@ -143,8 +143,8 @@ export default function InstructorsPage() {
                               }))
                             }
                             className="inline-flex items-center px-3 py-1.5 
-                                   bg-amber-50 text-amber-800 rounded-full text-sm
-                                   hover:bg-amber-100 transition-colors"
+                                   bg-purple-50 text-purple-800 rounded-full text-sm
+                                   hover:bg-purple-100 transition-colors"
                           >
                             {value}
                             <span className="ml-1.5">×</span>
@@ -211,7 +211,10 @@ export default function InstructorsPage() {
               Często Zadawane Pytania
             </h2>
             <div className="space-y-6">
-              <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100 hover:shadow-lg transition-shadow">
+              <div
+                className="bg-white rounded-xl shadow-md p-6 border border-gray-100 
+                hover:border-purple-200 hover:shadow-lg transition-all"
+              >
                 <h3 className="text-lg font-semibold text-gray-900 mb-3">
                   Jak umówić się na lekcję?
                 </h3>
@@ -222,7 +225,10 @@ export default function InstructorsPage() {
                 </p>
               </div>
 
-              <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100 hover:shadow-lg transition-shadow">
+              <div
+                className="bg-white rounded-xl shadow-md p-6 border border-gray-100 
+                hover:border-purple-200 hover:shadow-lg transition-all"
+              >
                 <h3 className="text-lg font-semibold text-gray-900 mb-3">
                   Jaki poziom zaawansowania jest wymagany?
                 </h3>
@@ -233,7 +239,10 @@ export default function InstructorsPage() {
                 </p>
               </div>
 
-              <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100 hover:shadow-lg transition-shadow">
+              <div
+                className="bg-white rounded-xl shadow-md p-6 border border-gray-100 
+                hover:border-purple-200 hover:shadow-lg transition-all"
+              >
                 <h3 className="text-lg font-semibold text-gray-900 mb-3">
                   Czy mogę zmienić termin lekcji?
                 </h3>
