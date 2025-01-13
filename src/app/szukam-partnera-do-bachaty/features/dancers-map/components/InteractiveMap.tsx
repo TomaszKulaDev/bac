@@ -42,10 +42,10 @@ export function InteractiveMap() {
         <MapLegend />
       </div>
 
-      <div className="relative flex-1 h-[700px] bg-white rounded-xl shadow-lg overflow-hidden">
+      <div className="relative flex-1 h-[820px] bg-white rounded-xl shadow-lg overflow-hidden">
         <MapContainer
           center={POLAND_CENTER}
-          zoom={7}
+          zoom={6.5}
           className="w-full h-full"
           minZoom={MAP_CONFIG.minZoom}
           maxZoom={MAP_CONFIG.maxZoom}
