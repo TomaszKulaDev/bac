@@ -6,9 +6,9 @@ export const metadata: Metadata = {
   description:
     "Największa społeczność tancerzy Bachaty w Polsce. Znajdź idealnego partnera do Bachaty w swojej okolicy.",
   keywords:
-    "partner do tańca, szukam partnera do bachaty, bachata, nauka bachaty, szkoła tańca, kurs bachaty, partner do bachaty warszawa, partnerka do bachaty kraków",
+    "szukam partnera do bachaty, bachata, nauka bachaty, szkoła tańca, kurs bachaty, partner do bachaty warszawa, partnerka do bachaty kraków",
   openGraph: {
-    title: "Szukam Partnera do Bachaty | Największa Społeczność Tancerzy",
+    title: "Szukam Partnera do Bachaty | Znajdź Partnerkę w Swojej Okolicy",
     description:
       "Znajdź idealnego partnera do bachaty w swojej okolicy. Dołącz do społeczności 2500+ aktywnych tancerzy w Polsce!",
     images: [
