@@ -35,7 +35,7 @@ export const NavContent: React.FC = React.memo(function NavContent() {
 
   const menuItems = [
     {
-      href: "/szukam-partnera-do-tanca",
+      href: "/szukam-partnera-do-bachaty",
       label: "Szukam Partnera",
       icon: FaUsers,
     },
@@ -74,7 +74,7 @@ export const NavContent: React.FC = React.memo(function NavContent() {
               </div>
               <div className="flex items-center gap-4">
                 <Link
-                  href="/szukam-partnera-do-tanca/faq"
+                  href="/szukam-partnera-do-bachaty/faq"
                   className="hover:underline"
                 >
                   Pomoc
@@ -239,7 +239,7 @@ export const NavContent: React.FC = React.memo(function NavContent() {
             <div className="space-y-2">
               {[
                 {
-                  href: "/szukam-partnera-do-tanca",
+                  href: "/szukam-partnera-do-bachaty",
                   label: "Szukam Partnera",
                   icon: FaUsers,
                 },

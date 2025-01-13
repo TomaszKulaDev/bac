@@ -88,7 +88,7 @@ export async function generateMetadata({
       title: ad.title,
       description: ad.description,
       type: "article",
-      url: `https://baciata.pl/szukam-partnera-do-tanca/ogloszenie/${generateSlug(
+      url: `https://baciata.pl/szukam-partnera-do-bachaty/ogloszenie/${generateSlug(
         ad.title
       )}-${id}`,
       images: [
@@ -132,7 +132,7 @@ export default async function AdvertisementPage({
     console.log("Expected slug:", expectedSlug);
     console.log("Advertisement title:", ad.title);
 
-    redirect(`/szukam-partnera-do-tanca/ogloszenie/${expectedSlug}`);
+    redirect(`/szukam-partnera-do-bachaty/ogloszenie/${expectedSlug}`);
   }
 
   console.log("Params:", params);
@@ -157,7 +157,7 @@ export default async function AdvertisementPage({
         <div className="lg:col-span-2 space-y-6">
           <div className="bg-white rounded-xl shadow-lg p-8">
             <Link
-              href="/szukam-partnera-do-tanca"
+              href="/szukam-partnera-do-bachaty"
               className="inline-flex items-center gap-2 text-amber-600 hover:text-amber-700 mb-6"
             >
               <FaArrowLeft />

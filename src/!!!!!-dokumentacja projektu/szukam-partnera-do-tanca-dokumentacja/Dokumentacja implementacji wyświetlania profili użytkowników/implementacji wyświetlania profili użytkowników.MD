@@ -6,7 +6,7 @@ src/
 │ │ └── profiles/
 │ │ └── route.ts # Endpoint API dla profili
 │ │
-│ └── szukam-partnera-do-tanca/
+│ └── szukam-partnera-do-bachaty/
 │ ├── components/
 │ │ └── LatestProfiles.tsx # Komponent wyświetlający profile
 │ └── page.tsx # Strona główna listy profili
@@ -56,7 +56,7 @@ C -->|Definiuje typy| E
    - Limit 6 najnowszych profili
    - Filtrowanie zweryfikowanych użytkowników
 
-2. src/app/szukam-partnera-do-tanca/components/LatestProfiles.tsx
+2. src/app/szukam-partnera-do-bachaty/components/LatestProfiles.tsx
 
    - Komponent wyświetlający profile
    - Wykorzystuje next/image

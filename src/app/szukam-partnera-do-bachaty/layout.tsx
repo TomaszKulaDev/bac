@@ -34,7 +34,7 @@ export default function PartnerSearchLayout({
               <ul className="space-y-2">
                 <li>
                   <Link
-                    href="/szukam-partnera-do-tanca/jak-to-dziala"
+                    href="/szukam-partnera-do-bachaty/jak-to-dziala"
                     className="text-gray-600 hover:text-amber-600 transition-colors"
                   >
                     Jak to działa
@@ -42,7 +42,7 @@ export default function PartnerSearchLayout({
                 </li>
                 <li>
                   <Link
-                    href="/szukam-partnera-do-tanca/zasady-bezpieczenstwa"
+                    href="/szukam-partnera-do-bachaty/zasady-bezpieczenstwa"
                     className="text-gray-600 hover:text-amber-600 transition-colors"
                   >
                     Zasady bezpieczeństwa
@@ -50,7 +50,7 @@ export default function PartnerSearchLayout({
                 </li>
                 <li>
                   <Link
-                    href="/szukam-partnera-do-tanca/faq"
+                    href="/szukam-partnera-do-bachaty/faq"
                     className="text-gray-600 hover:text-amber-600 transition-colors"
                   >
                     FAQ
@@ -73,7 +73,7 @@ export default function PartnerSearchLayout({
                 </li>
                 <li>
                   <Link
-                    href="/szukam-partnera-do-tanca"
+                    href="/szukam-partnera-do-bachaty"
                     className="text-gray-600 hover:text-amber-600 transition-colors"
                   >
                     Szukaj partnera

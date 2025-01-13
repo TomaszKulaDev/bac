@@ -6,7 +6,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaMapMarkerAlt, FaRuler, FaHeart } from "react-icons/fa";
 import { Gender, UserProfile } from "@/types/user";
-import { useFilters } from "@/app/szukam-partnera-do-tanca/context/FilterContext";
+import { useFilters } from "@/app/szukam-partnera-do-bachaty/context/FilterContext";
 import { sortBy } from "lodash";
 import { SortingButtons } from "./SortingButtons";
 import Modal from "@/components/ui/Modal";

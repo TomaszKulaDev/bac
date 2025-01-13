@@ -102,7 +102,7 @@ export default function HowItWorksPage() {
         </div>
 
         <div className="text-center">
-          <Link href="/szukam-partnera-do-tanca">
+          <Link href="/szukam-partnera-do-bachaty">
             <button
               className="bg-gradient-to-r from-amber-500 to-red-500 
                        text-white px-8 py-3 rounded-lg hover:from-amber-600 

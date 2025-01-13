@@ -438,12 +438,12 @@ export function QuickAds() {
                       console.log("Generated slug:", generateSlug(ad.title));
                       console.log(
                         "Full URL:",
-                        `/szukam-partnera-do-tanca/ogloszenie/${generateSlug(
+                        `/szukam-partnera-do-bachaty/ogloszenie/${generateSlug(
                           ad.title
                         )}-${ad._id}`
                       );
 
-                      const adLink = `/szukam-partnera-do-tanca/ogloszenie/${generateSlug(
+                      const adLink = `/szukam-partnera-do-bachaty/ogloszenie/${generateSlug(
                         ad.title
                       )}-${ad._id}`;
                       console.log("Generowany link:", {
@@ -459,7 +459,7 @@ export function QuickAds() {
                           className="group relative bg-white rounded-lg p-3 hover:shadow-md transition-all"
                         >
                           <Link
-                            href={`/szukam-partnera-do-tanca/ogloszenie/${generateSlug(
+                            href={`/szukam-partnera-do-bachaty/ogloszenie/${generateSlug(
                               ad.title
                             )}-${shortenId(ad._id)}`}
                             className="block group"

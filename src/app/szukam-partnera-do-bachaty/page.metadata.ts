@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     locale: "pl_PL",
     type: "website",
     siteName: "Baciata.pl",
-    url: "https://baciata.pl/szukam-partnera-do-tanca",
+    url: "https://baciata.pl/szukam-partnera-do-bachaty",
   },
   twitter: {
     card: "summary_large_image",
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     images: ["/images/og-image.jpg"],
   },
   alternates: {
-    canonical: "https://baciata.pl/szukam-partnera-do-tanca",
+    canonical: "https://baciata.pl/szukam-partnera-do-bachaty",
     languages: {
       "pl-PL": "/pl/szukam-partnera-do-bachaty",
       "en-US": "/en/find-bachata-partner",
@@ -76,7 +76,7 @@ export const jsonLd = {
     target: {
       "@type": "EntryPoint",
       urlTemplate:
-        "https://baciata.pl/szukam-partnera-do-tanca?q={search_term_string}",
+        "https://baciata.pl/szukam-partnera-do-bachaty?q={search_term_string}",
     },
     "query-input": "required name=search_term_string",
   },

@@ -31,7 +31,7 @@ src/
 │   │       ├── [id]/
 │   │       │   └── route.ts          # Endpointy dla pojedynczego ogłoszenia
 │   │       └── info.MD              # Dokumentacja API
-│   └── szukam-partnera-do-tanca/
+│   └── szukam-partnera-do-bachaty/
 │       └── components/
 │           └── QuickAds.tsx         # Główny komponent ogłoszeń
 ├── models/

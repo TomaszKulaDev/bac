@@ -7,7 +7,7 @@
 #### AddAdvertisementButton.tsx
 
 ```typescript
-// src/app/szukam-partnera-do-tanca/components/AddAdvertisementButton.tsx
+// src/app/szukam-partnera-do-bachaty/components/AddAdvertisementButton.tsx
 - Przycisk otwierający modal z formularzem
 - Wykorzystuje next-auth do weryfikacji sesji użytkownika
 - Przekierowuje niezalogowanych na stronę logowania
@@ -17,7 +17,7 @@
 #### AdvertisementForm.tsx
 
 ```typescript
-// src/app/szukam-partnera-do-tanca/components/AdvertisementForm.tsx
+// src/app/szukam-partnera-do-bachaty/components/AdvertisementForm.tsx
 - Główny formularz dodawania/edycji ogłoszeń
 - Walidacja wszystkich pól
 - Obsługa przesyłania danych do API
@@ -93,7 +93,7 @@
 #### QuickAds.tsx
 
 ```typescript
-// src/app/szukam-partnera-do-tanca/components/QuickAds.tsx
+// src/app/szukam-partnera-do-bachaty/components/QuickAds.tsx
 - Lista ogłoszeń
 - Filtrowanie po typach
 - Paginacja ("Pokaż więcej")
@@ -103,7 +103,7 @@
 #### Strona Szczegółów
 
 ```typescript
-// src/app/szukam-partnera-do-tanca/ogloszenie/[id]/page.tsx
+// src/app/szukam-partnera-do-bachaty/ogloszenie/[id]/page.tsx
 - Pełne informacje o ogłoszeniu
 - Dane autora
 - Mapa lokalizacji
@@ -115,7 +115,7 @@
 ### 3.1 Główny Arkusz Stylów
 
 ```css
-// src/app/szukam-partnera-do-tanca/styles.css
+// src/app/szukam-partnera-do-bachaty/styles.css
 - Style komponentów
 - Animacje
 - Efekty hover
