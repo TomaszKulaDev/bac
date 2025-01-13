@@ -1,6 +1,6 @@
 "use client";
 
-import { PageHeader } from "../szukam-partnera-do-tanca/components/PageHeader";
+import { PageHeader } from "../szukam-partnera-do-bachaty/components/PageHeader";
 import { useState } from "react";
 import { z } from "zod";
 import DOMPurify from "dompurify";

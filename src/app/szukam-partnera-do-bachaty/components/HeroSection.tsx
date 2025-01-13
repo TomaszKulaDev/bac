@@ -35,6 +35,12 @@ const DANCE_STYLES = [
   { value: "West Coast Swing", label: "West Coast Swing" },
 ];
 
+const STATS = [
+  { value: "2500+", label: "Aktywnych tancerzy" },
+  { value: "20", label: "Miast w Polsce" },
+  { value: "11", label: "Styli tańca" },
+] as const;
+
 export const HeroSection = () => {
   const router = useRouter();
   const { data: session } = useSession();
@@ -104,17 +110,17 @@ export const HeroSection = () => {
           animate={{ opacity: 1, y: 0 }}
           className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl text-center mb-8"
         >
-          Znajdź partnera do tańca
+          Szukam Partnera do Bachaty
         </motion.h1>
 
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="mt-6 max-w-lg mx-auto text-xl text-gray-300 text-center mb-12"
+          className="mt-6 max-w-2xl mx-auto text-xl text-gray-300 text-center mb-12"
         >
-          Dołącz do społeczności tancerzy i znajdź idealnego partnera do tańca w
-          Twojej okolicy
+          Największa społeczność tancerzy Bachaty w Polsce. Znajdź idealnego
+          partnera do Bachaty w swojej okolicy.
         </motion.p>
 
         {/* Wyszukiwarka */}
@@ -224,11 +230,7 @@ export const HeroSection = () => {
 
         {/* Statystyki */}
         <div className="mt-12 grid grid-cols-3 gap-8 max-w-3xl mx-auto">
-          {[
-            { value: "XXX+", label: "Aktywnych tancerzy" },
-            { value: "20", label: "Miast w Polsce" },
-            { value: "11", label: "Styli tańca" },
-          ].map((stat, index) => (
+          {STATS.map((stat, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 20 }}

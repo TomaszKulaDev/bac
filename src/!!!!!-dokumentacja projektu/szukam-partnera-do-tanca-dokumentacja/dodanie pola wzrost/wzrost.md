@@ -15,7 +15,7 @@ src/
 │   │           └── route.ts
 │   ├── profile/
 │   │   └── page.tsx
-│   └── szukam-partnera-do-tanca/
+│   └── szukam-partnera-do-bachaty/
 │       └── components/
 │           └── LatestProfiles.tsx
 ├── hooks/

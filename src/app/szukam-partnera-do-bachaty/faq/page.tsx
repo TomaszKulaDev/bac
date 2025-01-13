@@ -77,7 +77,7 @@ export default function FAQPage() {
           <p className="mb-6 text-gray-600">
             Skontaktuj się z nami, a chętnie pomożemy!
           </p>
-          <Link href="/szukam-partnera-do-tanca">
+          <Link href="/szukam-partnera-do-bachaty">
             <button
               className="bg-gradient-to-r from-amber-500 to-red-500 
                        text-white px-8 py-3 rounded-lg hover:from-amber-600 

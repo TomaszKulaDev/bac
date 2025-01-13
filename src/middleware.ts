@@ -27,7 +27,7 @@ export function middleware(request: NextRequest) {
 
   if (request.nextUrl.pathname === "/" && now < endDate) {
     return NextResponse.redirect(
-      new URL("/szukam-partnera-do-tanca", request.url),
+      new URL("/szukam-partnera-do-bachaty", request.url),
       {
         // Status 302 oznacza tymczasowe przekierowanie
         status: 302,

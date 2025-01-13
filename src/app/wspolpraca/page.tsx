@@ -1,6 +1,6 @@
 "use client";
 
-import { PageHeader } from "../szukam-partnera-do-tanca/components/PageHeader";
+import { PageHeader } from "../szukam-partnera-do-bachaty/components/PageHeader";
 import Link from "next/link";
 import { FaHandshake, FaUsers, FaBullhorn, FaChartLine } from "react-icons/fa";
 
