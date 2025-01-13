@@ -28,15 +28,17 @@ async function getAdvertisement(id: string): Promise<Advertisement | null> {
       throw new Error("NEXT_PUBLIC_APP_URL is not defined");
     }
 
+    console.log("Searching for advertisement with ID:", id);
+
     // Najpierw pobieramy wszystkie ogłoszenia
     const res = await fetch(`${baseUrl}/api/advertisements`);
     const ads = await res.json();
 
-    // Szukamy ogłoszenia z pasującym ID
+    console.log("Found advertisements:", ads.length);
+
+    // Szukamy ogłoszenia z pasującym ID (pełnym lub krótkim)
     const foundAd = ads.find((ad: Advertisement) => {
-      const adShortId = ad._id.substring(0, 5);
-      console.log(`Comparing IDs: ${adShortId} with ${id}`);
-      return adShortId === id;
+      return ad._id === id || ad._id.includes(id);
     });
 
     if (!foundAd) {
@@ -44,7 +46,12 @@ async function getAdvertisement(id: string): Promise<Advertisement | null> {
       return null;
     }
 
-    console.log("Found advertisement:", foundAd);
+    console.log("Found advertisement:", {
+      id: foundAd._id,
+      title: foundAd.title,
+      shortId: foundAd._id.substring(0, 5),
+    });
+
     return foundAd;
   } catch (error) {
     console.error("Error fetching advertisement:", error);
@@ -95,15 +102,16 @@ export default async function AdvertisementPage({
 }: {
   params: { slug: string };
 }) {
-  // Wyciągamy ID ze sluga (ostatnie 5 znaków po ostatnim myślniku)
-  const shortId = params.slug.split("-").pop()?.substring(0, 5);
-  console.log("Extracted short ID from slug:", shortId);
+  // Wyciągamy ID ze sluga (wszystko po ostatnim myślniku)
+  const parts = params.slug.split("-");
+  const id = parts[parts.length - 1];
+  console.log("Extracted ID from slug:", id);
 
-  if (!shortId) {
+  if (!id) {
     notFound();
   }
 
-  const ad = await getAdvertisement(shortId);
+  const ad = await getAdvertisement(id);
 
   if (!ad) {
     notFound();
@@ -123,7 +131,7 @@ export default async function AdvertisementPage({
   }
 
   console.log("Params:", params);
-  console.log("ID:", shortId);
+  console.log("ID:", id);
   console.log("Ad:", ad);
   console.log("Expected slug:", expectedSlug);
 
