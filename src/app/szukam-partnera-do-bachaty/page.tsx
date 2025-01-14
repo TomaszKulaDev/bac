@@ -26,13 +26,18 @@ export default function PartnerSearchPage() {
     <FilterProvider>
       <div className="min-h-screen">
         <HeroSection />
-
         {/* Sekcja z mapą */}
-        <section className="py-16 bg-gray-50">
-          <div className="max-w-6xl mx-auto px-4 sm:px-8">
-            <h2 className="text-3xl font-bold text-gray-900 mb-8">
-              Znajdź tancerzy w swojej okolicy
+        <section className="flex flex-row gap-8 py-16 bg-gray-50">
+          <div className="w-1/2 px-8">
+            <h2 className="text-3xl font-bold mb-6">
+              Znajdź partnera do tańca
             </h2>
+            <p className="text-gray-600 mb-4">
+              Nasza społeczność tancerzy bachaty stale się rozwija. Dołącz do
+              nas i znajdź idealnego partnera do tańca w swojej okolicy.
+            </p>
+          </div>
+          <div className="w-1/2">
             <InteractiveMap />
           </div>
         </section>
