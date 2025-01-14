@@ -2,17 +2,8 @@ import { useState, useEffect, useMemo, useCallback } from "react";
 import { DancerMarker, MapFilters } from "../types";
 import { UserProfile } from "@/types/user";
 import { DANCE_STYLES, DanceStyleValue } from "@/constants/danceStyles";
-
-// Stałe i funkcje pomocnicze przeniesione na zewnątrz komponentu
-const CITY_COORDINATES: Record<string, [number, number]> = {
-  Warszawa: [52.2297, 21.0122],
-  Kraków: [50.0647, 19.945],
-  Wrocław: [51.1079, 17.0385],
-  Poznań: [52.4064, 16.9252],
-  Gdańsk: [54.352, 18.6466],
-  Toruń: [53.0138, 18.5984],
-  Mielec: [50.2875, 21.4219],
-};
+import { CITY_COORDINATES } from "@/constants/cityCoordinates";
+import { CityValue } from "@/constants/cities";
 
 // Funkcja przeniesiona poza komponent
 const isDanceStyleValue = (style: string): style is DanceStyleValue => {
@@ -40,15 +31,16 @@ export function useDancerMarkers(filters: MapFilters) {
 
   const getCityCoordinates = useCallback(
     (city: string): { lat: number; lng: number } => {
-      if (CITY_COORDINATES[city]) {
+      if (CITY_COORDINATES[city as CityValue]) {
         return {
-          lat: CITY_COORDINATES[city][0],
-          lng: CITY_COORDINATES[city][1],
+          lat: CITY_COORDINATES[city as CityValue][0],
+          lng: CITY_COORDINATES[city as CityValue][1],
         };
       }
+      // Fallback do centrum Polski
       return {
-        lat: 52.0685,
-        lng: 19.0409,
+        lat: CITY_COORDINATES[""][0],
+        lng: CITY_COORDINATES[""][1],
       };
     },
     []
