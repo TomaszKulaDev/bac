@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { DancerMarker } from "@/types/user";
+import Image from "next/image";
 
 interface MarkerPopupProps {
   marker: DancerMarker;
@@ -9,15 +10,28 @@ interface MarkerPopupProps {
 export function MarkerPopup({ marker, maxDancers }: MarkerPopupProps) {
   const percentage = (marker.stats.activeDancers / maxDancers) * 100;
 
+  // Funkcja do formatowania imienia
+  const formatName = (name: string) => {
+    if (!name || name.length < 3) return name;
+    const firstName = name.split(" ")[0];
+    return `${firstName} ${name.split(" ")[1]?.[0] || ""}`.trim();
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className="p-4 min-w-[280px]"
     >
-      <h3 className="font-bold text-lg mb-2">{marker.city}</h3>
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="font-bold text-lg">{marker.city}</h3>
+        <span className="text-sm font-medium text-amber-600">
+          {marker.stats.activeDancers} tancerzy
+        </span>
+      </div>
 
-      <div className="space-y-3">
+      <div className="space-y-4">
+        {/* Pasek postępu */}
         <div className="flex items-center gap-2">
           <div className="w-full bg-gray-200 rounded-full h-2">
             <div
@@ -25,23 +39,32 @@ export function MarkerPopup({ marker, maxDancers }: MarkerPopupProps) {
               style={{ width: `${percentage}%` }}
             />
           </div>
-          <span className="text-sm font-medium text-amber-600">
-            {marker.stats.activeDancers}
-          </span>
         </div>
 
-        <div className="grid grid-cols-2 gap-2">
-          {marker.styles.map((style) => (
+        {/* Lista tancerzy */}
+        <div className="grid grid-cols-2 gap-2 max-h-[200px] overflow-y-auto pr-2">
+          {marker.dancers.map((dancer) => (
             <div
-              key={style.name}
-              className="flex items-center justify-between p-2 bg-gray-50 rounded-lg"
+              key={dancer.id}
+              className="flex items-center gap-2 p-2 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
             >
-              <span className="text-sm text-gray-600">{style.name}</span>
-              <span className="text-sm font-medium">{style.count}</span>
+              <div className="w-8 h-8 rounded-full overflow-hidden border border-gray-200">
+                <Image
+                  src={dancer.image || "/images/default-avatar.png"}
+                  alt={dancer.name}
+                  width={32}
+                  height={32}
+                  className="object-cover w-full h-full"
+                />
+              </div>
+              <span className="text-sm font-medium text-gray-700 truncate">
+                {formatName(dancer.name)}
+              </span>
             </div>
           ))}
         </div>
 
+        {/* Przycisk "Zobacz wszystkich" */}
         <button
           onClick={() =>
             window.open(
@@ -53,7 +76,7 @@ export function MarkerPopup({ marker, maxDancers }: MarkerPopupProps) {
                    bg-amber-500 hover:bg-amber-600 rounded-lg 
                    transition-colors duration-200"
         >
-          Zobacz tancerzy
+          Zobacz wszystkich
         </button>
       </div>
     </motion.div>

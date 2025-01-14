@@ -1,5 +1,6 @@
 import { DanceStyleValue } from "@/constants/danceStyles";
 import { DanceLevel } from "@/constants/levels";
+import { UserProfile } from "@/types/user";
 
 export interface DancerMarker {
   id: string;
@@ -16,12 +17,6 @@ export interface DancerMarker {
     name: DanceStyleValue;
     count: number;
   }>;
-}
-
-export interface MapFilters {
-  danceStyle: DanceStyleValue | "";
-  level: DanceLevel | "";
-  gender: "male" | "female" | "";
 }
 
 export interface MapConfig {
