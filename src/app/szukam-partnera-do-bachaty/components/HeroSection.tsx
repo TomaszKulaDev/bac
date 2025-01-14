@@ -100,7 +100,7 @@ export const HeroSection = () => {
   return (
     <div className="relative bg-white">
       {/* Tło */}
-      <div className="absolute inset-0 h-[50vh]">
+      <div className="absolute inset-0 h-[70vh]">
         <Image
           src="/images/Hero-szukam-partnera-do-tanca.webp"
           alt="Tancerze bachaty"
@@ -112,7 +112,7 @@ export const HeroSection = () => {
       </div>
 
       {/* Zawartość */}
-      <div className="relative max-w-screen-xl mx-auto py-12 px-4 sm:py-16 sm:px-6 lg:px-8">
+      <div className="relative max-w-screen-xl mx-auto py-8 px-4 sm:py-12 sm:px-6 lg:px-8">
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
