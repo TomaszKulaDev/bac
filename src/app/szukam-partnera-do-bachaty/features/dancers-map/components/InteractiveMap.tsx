@@ -31,7 +31,11 @@ export function InteractiveMap() {
   const { markers, isLoading } = useDancerMarkers(filters);
 
   return (
-    <div className="relative h-[820px] bg-white rounded-xl shadow-lg overflow-hidden">
+    <div
+      className="relative h-[820px] bg-white rounded-xl shadow-lg overflow-hidden"
+      role="region"
+      aria-label="Mapa tancerzy bachaty w Polsce"
+    >
       <MapContainer
         center={POLAND_CENTER}
         zoom={6.5}
