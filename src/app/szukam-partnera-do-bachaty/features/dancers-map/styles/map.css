@@ -1,5 +1,6 @@
 .leaflet-control-zoom {
   border-color: #f59e0b !important; /* amber-500 */
+  z-index: 1000 !important;
 }
 
 .leaflet-control-zoom-in,
@@ -12,4 +13,16 @@
 .leaflet-control-zoom-out:hover {
   background-color: #fef3c7 !important; /* amber-100 */
   color: #d97706 !important; /* amber-600 */
+}
+
+.leaflet-popup {
+  z-index: 1000 !important;
+}
+
+.leaflet-popup-content-wrapper {
+  border-radius: 0.5rem !important;
+}
+
+.leaflet-container {
+  z-index: 1 !important;
 }

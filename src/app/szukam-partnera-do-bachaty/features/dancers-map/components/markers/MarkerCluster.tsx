@@ -5,14 +5,14 @@ import { MarkerPopup } from "./MarkerPopup";
 
 interface MarkerClusterProps {
   marker: DancerMarker;
-  rank: number;
+
   maxDancers: number;
   onSelect: (city: string) => void;
 }
 
 export function MarkerCluster({
   marker,
-  rank,
+
   maxDancers,
   onSelect,
 }: MarkerClusterProps) {
@@ -26,7 +26,7 @@ export function MarkerCluster({
       }}
     >
       <Popup>
-        <MarkerPopup marker={marker} rank={rank} maxDancers={maxDancers} />
+        <MarkerPopup marker={marker} maxDancers={maxDancers} />
       </Popup>
     </Marker>
   );

@@ -14,8 +14,7 @@ export function DancerMarkers({
   onCitySelect,
 }: DancerMarkersProps) {
   const { filters } = useMapFilters();
-  const { markers, isLoading, maxDancers, getMarkerRank } =
-    useDancerMarkers(filters);
+  const { markers, isLoading, maxDancers } = useDancerMarkers(filters);
 
   if (isLoading) return null;
 
@@ -23,7 +22,6 @@ export function DancerMarkers({
     <MarkerList
       markers={markers}
       maxDancers={maxDancers}
-      getMarkerRank={getMarkerRank}
       onCitySelect={onCitySelect}
     />
   );

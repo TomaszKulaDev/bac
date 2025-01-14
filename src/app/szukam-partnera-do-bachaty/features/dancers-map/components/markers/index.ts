@@ -7,8 +7,5 @@ export * from "./MarkerPopup";
 // MarkerCluster - Odpowiada za grupowanie znaczników gdy są blisko siebie, poprawia wydajność mapy
 export * from "./MarkerCluster";
 
-// MarkerStats - Wyświetla statystyki dotyczące liczby tancerzy w danym miejscu
-export * from "./MarkerStats";
-
 // MarkerList - Główny komponent zarządzający listą wszystkich znaczników na mapie
 export * from "./MarkerList";

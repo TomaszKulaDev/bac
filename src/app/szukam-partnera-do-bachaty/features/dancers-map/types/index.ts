@@ -12,17 +12,16 @@ export interface DancerMarker {
     totalDancers: number;
     activeDancers: number;
   };
-  styles: {
+  styles: Array<{
     name: DanceStyleValue;
     count: number;
-  }[];
+  }>;
 }
 
 export interface MapFilters {
   danceStyle: DanceStyleValue | "";
   level: DanceLevel | "";
   gender: "male" | "female" | "";
-  availability: "all" | "active" | "inactive";
 }
 
 export interface MapConfig {

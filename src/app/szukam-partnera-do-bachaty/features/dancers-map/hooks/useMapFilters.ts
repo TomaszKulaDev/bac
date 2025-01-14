@@ -5,7 +5,6 @@ const DEFAULT_FILTERS: MapFilters = {
   danceStyle: "",
   level: "",
   gender: "",
-  availability: "all",
 };
 
 export function useMapFilters() {

@@ -19,16 +19,6 @@ export function useDancerMarkers(filters: MapFilters) {
     [markers]
   );
 
-  const getMarkerRank = useCallback(
-    (marker: DancerMarker) => {
-      const sortedMarkers = [...markers].sort(
-        (a, b) => b.stats.activeDancers - a.stats.activeDancers
-      );
-      return sortedMarkers.findIndex((m) => m.id === marker.id) + 1;
-    },
-    [markers]
-  );
-
   const getCityCoordinates = useCallback(
     (city: string): { lat: number; lng: number } => {
       if (CITY_COORDINATES[city as CityValue]) {
@@ -126,5 +116,5 @@ export function useDancerMarkers(filters: MapFilters) {
     fetchProfiles();
   }, [filters, groupProfilesByCity]);
 
-  return { markers, isLoading, maxDancers, getMarkerRank };
+  return { markers, isLoading, maxDancers };
 }

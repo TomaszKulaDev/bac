@@ -1,4 +1,5 @@
 import { divIcon } from "leaflet";
+import { useMemo } from "react";
 
 interface MarkerIconProps {
   count: number;
@@ -18,7 +19,7 @@ export function createMarkerIcon({ count }: MarkerIconProps) {
       </div>
     `,
     className: "custom-marker",
-    iconSize: [40, 40],
-    iconAnchor: [20, 20],
+    iconSize: count > 50 ? [40, 40] : count > 20 ? [32, 32] : [24, 24],
+    iconAnchor: count > 50 ? [20, 20] : count > 20 ? [16, 16] : [12, 12],
   });
 }

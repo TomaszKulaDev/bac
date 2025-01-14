@@ -73,13 +73,15 @@ export function InteractiveMap() {
   const { markers, isLoading } = useDancerMarkers(filters);
 
   return (
-    <div className="relative h-[820px] bg-white rounded-xl shadow-lg overflow-hidden z-30">
-      <MapStats markers={markers} />
+    <div className="relative h-[820px] bg-white rounded-xl shadow-lg overflow-hidden">
+      <div className="relative z-[1001]">
+        <MapStats markers={markers} />
+      </div>
 
       <MapContainer
         center={POLAND_CENTER}
         zoom={6.5}
-        className="w-full h-full"
+        className="w-full h-full z-0"
         minZoom={MAP_CONFIG.minZoom}
         maxZoom={MAP_CONFIG.maxZoom}
         zoomControl={false}
