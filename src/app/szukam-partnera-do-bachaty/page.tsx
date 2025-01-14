@@ -27,15 +27,12 @@ export default function PartnerSearchPage() {
       <div className="min-h-screen">
         <HeroSection />
 
-        {/* Sekcja z mapą */}
+        {/* Sekcja z mapą
         <section className="py-16 bg-gray-50">
           <div className="max-w-6xl mx-auto px-4 sm:px-8">
-            <h2 className="text-3xl font-bold text-gray-900 mb-8">
-              Znajdź tancerzy w swojej okolicy
-            </h2>
-            <InteractiveMap />
+          <InteractiveMap />
           </div>
-        </section>
+        </section> */}
 
         {/* Sekcja z profilami */}
         <section className="max-w-[2200px] mx-auto px-4 sm:px-8 py-16">

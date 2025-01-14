@@ -20,12 +20,30 @@ import { useRouter } from "next/navigation";
 import { useFilters } from "../context/FilterContext";
 import { LoginPromptModal } from "./LoginPromptModal";
 import { Gender } from "@/types/user";
+import { MapContainer, TileLayer, ZoomControl } from "react-leaflet";
+import { DancerMarkers } from "../features/dancers-map/components/DancerMarkers";
+import { MapLegend } from "../features/dancers-map/components/MapLegend";
+import { useMapFilters } from "../features/dancers-map/hooks/useMapFilters";
+import { LoadingSpinner } from "../features/dancers-map/components/LoadingSpinner";
+import { useDancerMarkers } from "../features/dancers-map/hooks/useDancerMarkers";
+import "leaflet/dist/leaflet.css";
+import "../features/dancers-map/styles/map.css";
 
 const STATS = [
   { value: "2500+", label: "Aktywnych tancerzy" },
   { value: "20", label: "Miast w Polsce" },
   { value: "11", label: "Styli tańca" },
 ] as const;
+
+const POLAND_CENTER = [52.0685, 19.0409] as [number, number];
+const MAP_CONFIG = {
+  minZoom: 6,
+  maxZoom: 13,
+  bounds: [
+    [49.002, 14.1224],
+    [54.8357, 24.1457],
+  ] as [[number, number], [number, number]],
+};
 
 export const HeroSection = () => {
   const router = useRouter();
@@ -42,6 +60,10 @@ export const HeroSection = () => {
     selectedLocation,
     setSelectedLocation,
   } = useFilters();
+
+  const { filters } = useMapFilters();
+  const { markers, isLoading } = useDancerMarkers(filters);
+  const [selectedCity, setSelectedCity] = useState<string | null>(null);
 
   const handleFilterClick = (action: () => void) => {
     if (!session) {
@@ -76,9 +98,9 @@ export const HeroSection = () => {
   `;
 
   return (
-    <div className="relative bg-gray-900">
+    <div className="relative bg-white">
       {/* Tło */}
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 h-[50vh]">
         <Image
           src="/images/Hero-szukam-partnera-do-tanca.webp"
           alt="Tancerze bachaty"
@@ -90,7 +112,7 @@ export const HeroSection = () => {
       </div>
 
       {/* Zawartość */}
-      <div className="relative max-w-screen-xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8">
+      <div className="relative max-w-screen-xl mx-auto py-12 px-4 sm:py-16 sm:px-6 lg:px-8">
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -114,7 +136,7 @@ export const HeroSection = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="max-w-5xl mx-auto"
+          className="max-w-5xl mx-auto mb-8"
         >
           <div className="bg-white shadow-xl rounded-lg p-6">
             <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
@@ -214,23 +236,36 @@ export const HeroSection = () => {
           </div>
         </motion.div>
 
-        {/* Statystyki */}
-        <div className="mt-12 grid grid-cols-3 gap-8 max-w-3xl mx-auto">
-          {STATS.map((stat, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 + index * 0.1 }}
-              className="text-center"
+        {/* Mapa */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="max-w-5xl mx-auto"
+        >
+          <div className="relative h-[600px] bg-white rounded-lg shadow-lg overflow-hidden">
+            <MapContainer
+              center={POLAND_CENTER}
+              zoom={7}
+              {...MAP_CONFIG}
+              className="h-full w-full"
+              zoomControl={false}
             >
-              <p className="text-2xl font-bold text-amber-400">{stat.value}</p>
-              <p className="text-sm text-gray-300">{stat.label}</p>
-            </motion.div>
-          ))}
-        </div>
+              <TileLayer
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+              />
+              <ZoomControl position="bottomright" />
+              <DancerMarkers
+                selectedCity={selectedCity}
+                onCitySelect={setSelectedCity}
+              />
+            </MapContainer>
+            {isLoading && <LoadingSpinner />}
+            <MapLegend />
+          </div>
+        </motion.div>
       </div>
-
       <LoginPromptModal
         isOpen={showLoginModal}
         onClose={() => setShowLoginModal(false)}
