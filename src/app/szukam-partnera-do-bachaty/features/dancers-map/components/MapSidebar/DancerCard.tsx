@@ -1,14 +1,23 @@
 import Image from "next/image";
 import { HeartIcon } from "@heroicons/react/24/outline";
-import { DancerMarker } from "@/types/user";
+import { DancerMarker, UserProfile } from "@/types/user";
 
 interface DancerCardProps {
-  dancer: Pick<DancerMarker, "city" | "styles">;
+  dancer: Pick<UserProfile, "id" | "name" | "image">;
+  city: string;
+  styles: DancerMarker["styles"];
 }
 
-export function DancerCard({ dancer }: DancerCardProps) {
+export function DancerCard({ dancer, city, styles }: DancerCardProps) {
+  // Funkcja do formatowania imienia
+  const formatName = (name: string) => {
+    if (!name || name.length < 3) return name;
+    const firstName = name.split(" ")[0];
+    return `${firstName} ${name.split(" ")[1]?.[0] || ""}`.trim();
+  };
+
   return (
-    <div className="group">
+    <div className="group relative">
       <div className="relative">
         <div
           className="w-24 h-24 rounded-full p-[2px] bg-gradient-to-tr from-amber-500 to-amber-300 
@@ -17,8 +26,8 @@ export function DancerCard({ dancer }: DancerCardProps) {
         >
           <div className="w-full h-full rounded-full overflow-hidden border-2 border-white">
             <Image
-              src="/images/bachata-romance.jpg"
-              alt="Para tańcząca bachatę"
+              src={dancer.image || "/images/default-avatar.png"}
+              alt={dancer.name}
               width={96}
               height={96}
               className="object-cover w-full h-full"
@@ -41,15 +50,15 @@ export function DancerCard({ dancer }: DancerCardProps) {
           className="absolute -top-1 -right-1 px-2 py-0.5 bg-amber-500 text-white 
                        text-xs rounded-full shadow-sm"
         >
-          {dancer.city}
+          {city}
         </div>
       </div>
 
       <div className="mt-2 text-center">
-        <p className="text-sm font-medium text-gray-800">Jan K.</p>
-        <p className="text-xs text-gray-500">
-          {dancer.styles[0]?.name || "Bachata"}
+        <p className="text-sm font-medium text-gray-800">
+          {formatName(dancer.name)}
         </p>
+        <p className="text-xs text-gray-500">{styles[0]?.name || "Bachata"}</p>
       </div>
     </div>
   );

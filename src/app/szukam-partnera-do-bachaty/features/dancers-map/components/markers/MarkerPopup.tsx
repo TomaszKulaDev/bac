@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { DancerMarker } from "@/types/user";
 import Image from "next/image";
+import { HeartIcon } from "@heroicons/react/24/outline";
 
 interface MarkerPopupProps {
   marker: DancerMarker;
@@ -8,7 +9,6 @@ interface MarkerPopupProps {
 }
 
 export function MarkerPopup({ marker }: MarkerPopupProps) {
-  // Funkcja do formatowania imienia
   const formatName = (name: string) => {
     if (!name || name.length < 3) return name;
     const firstName = name.split(" ")[0];
@@ -19,55 +19,65 @@ export function MarkerPopup({ marker }: MarkerPopupProps) {
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-lg shadow-sm p-3 min-w-[200px]"
+      className="bg-white rounded-lg shadow-sm p-4 min-w-[280px]"
     >
-      <div className="text-center mb-2">
-        <h3 className="text-sm font-medium">{marker.city}</h3>
+      <div className="text-center mb-4">
+        <h3 className="text-sm font-medium text-gray-800">{marker.city}</h3>
       </div>
 
-      <div className="flex flex-wrap justify-center gap-1 mb-2">
-        {marker.dancers.slice(0, 9).map((dancer, index) => (
-          <div key={dancer.id} className="relative group">
-            <Image
-              src={dancer.image || "/images/default-avatar.png"}
-              alt={dancer.name}
-              width={40}
-              height={40}
-              className="rounded-full object-cover border border-white"
-            />
-            <div
-              className="absolute -top-1 -right-1 w-4 h-4 bg-white rounded-full 
-                          flex items-center justify-center text-[10px] font-medium"
-            >
-              {index + 1}
+      <div className="grid grid-cols-3 gap-3 mb-4">
+        {marker.dancers.slice(0, 6).map((dancer) => (
+          <div key={dancer.id} className="group relative">
+            <div className="relative">
+              <div
+                className="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-amber-500 to-amber-300 
+                            hover:from-amber-600 hover:to-amber-400 transition-all duration-300 
+                            cursor-pointer transform hover:scale-105"
+              >
+                <div className="w-full h-full rounded-full overflow-hidden border-2 border-white">
+                  <Image
+                    src={dancer.image || "/images/default-avatar.png"}
+                    alt={dancer.name}
+                    width={64}
+                    height={64}
+                    className="object-cover w-full h-full"
+                  />
+                </div>
+              </div>
+
+              <button
+                className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-white shadow-md 
+                         flex items-center justify-center group-hover:scale-110 
+                         transition-transform duration-200 hover:bg-rose-50"
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+              >
+                <HeartIcon className="w-4 h-4 text-rose-500 hover:fill-rose-500 transition-colors" />
+              </button>
             </div>
-            {/* Tooltip z imieniem */}
-            <div
-              className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 
-                          opacity-0 group-hover:opacity-100 transition-opacity
-                          bg-gray-800 text-white text-xs py-1 px-2 rounded-md
-                          whitespace-nowrap pointer-events-none z-10"
-            >
-              {formatName(dancer.name)}
+
+            <div className="mt-2 text-center">
+              <p className="text-xs font-medium text-gray-800">
+                {formatName(dancer.name)}
+              </p>
             </div>
           </div>
         ))}
-        {marker.dancers.length > 9 && (
-          <div
-            className="w-10 h-10 rounded-full bg-gray-100 flex items-center 
-                         justify-center text-xs text-gray-500"
-          >
-            +{marker.dancers.length - 9}
-          </div>
-        )}
       </div>
+
+      {marker.dancers.length > 6 && (
+        <div className="text-center text-sm text-gray-500 mb-4">
+          +{marker.dancers.length - 6} więcej tancerzy
+        </div>
+      )}
 
       <button
         onClick={() =>
           window.open(`/szukam-partnera/${marker.city.toLowerCase()}`, "_blank")
         }
-        className="w-full py-1.5 text-xs text-amber-600 hover:text-amber-700 
-                 transition-colors"
+        className="w-full py-2 bg-amber-500 text-white rounded-full hover:bg-amber-600 
+                 transition-colors duration-200 text-sm font-medium"
       >
         Zobacz wszystkich →
       </button>
