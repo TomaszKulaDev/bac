@@ -26,7 +26,7 @@ export function DancerCard({ dancer, city, styles }: DancerCardProps) {
   };
 
   const formattedName = formatName(dancer.name);
-  const mainStyle = styles[0]?.name || "Bachata";
+  const mainStyle = dancer.dancePreferences?.styles[0] || "Bachata";
   const dancerLevel = dancer.level || "początkujący";
   const profileUrl = `/tancerze/${dancer.id}`;
 
@@ -132,11 +132,11 @@ export function DancerCard({ dancer, city, styles }: DancerCardProps) {
 
       {/* Dane strukturalne dla każdego stylu tańca */}
       <div itemScope itemType="https://schema.org/Thing">
-        {styles.map((style) => (
+        {dancer.dancePreferences?.styles.map((style) => (
           <meta
-            key={style.name}
+            key={style}
             itemProp="knowsAbout"
-            content={`${style.name} ${dancer.level || ""}`}
+            content={`${style} ${dancer.level || ""}`}
           />
         ))}
       </div>
