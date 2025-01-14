@@ -243,7 +243,7 @@ export const HeroSection = () => {
           transition={{ delay: 0.3 }}
           className="max-w-5xl mx-auto"
         >
-          <div className="relative h-[600px] bg-white rounded-lg shadow-lg overflow-hidden">
+          <div className="relative h-[800px] bg-white rounded-lg shadow-lg overflow-hidden">
             <MapContainer
               center={POLAND_CENTER}
               zoom={7}
@@ -252,8 +252,8 @@ export const HeroSection = () => {
               zoomControl={false}
             >
               <TileLayer
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                url="https://tile.thunderforest.com/atlas/{z}/{x}/{y}.png?apikey=dfd40bc62b8a401db2f049bca5e46083"
+                attribution='&copy; <a href="http://www.thunderforest.com/">Thunderforest</a>, &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
               />
               <ZoomControl position="bottomright" />
               <DancerMarkers
