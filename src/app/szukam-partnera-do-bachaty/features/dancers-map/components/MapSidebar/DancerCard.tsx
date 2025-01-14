@@ -39,7 +39,7 @@ export function DancerCard({ dancer, city, styles }: DancerCardProps) {
     >
       <Link
         href={profileUrl}
-        className="block focus:outline-none focus:ring-2 focus:ring-amber-500 rounded-lg"
+        className="block outline-none"
         title={`Zobacz profil tancerza: ${formattedName}`}
       >
         <div className="relative">
