@@ -3,6 +3,7 @@
 import { HeroSection } from "./components/HeroSection";
 import { LatestProfiles } from "./components/LatestProfiles";
 import { FilterProvider } from "./context/FilterContext";
+import { MapSidebar } from "./features/dancers-map/components/MapSidebar";
 import dynamic from "next/dynamic";
 
 // Dynamiczny import mapy bez SSR
@@ -15,7 +16,7 @@ const InteractiveMap = dynamic(
     ssr: false,
     loading: () => (
       <div className="w-full h-[700px] bg-gray-100 rounded-xl flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-amber-500"></div>
       </div>
     ),
   }
@@ -26,19 +27,21 @@ export default function PartnerSearchPage() {
     <FilterProvider>
       <div className="min-h-screen">
         <HeroSection />
+
         {/* Sekcja z mapą */}
-        <section className="flex flex-row gap-8 py-16 bg-gray-50">
-          <div className="w-1/2 px-8">
-            <h2 className="text-3xl font-bold mb-6">
-              Znajdź partnera do tańca
-            </h2>
-            <p className="text-gray-600 mb-4">
-              Nasza społeczność tancerzy bachaty stale się rozwija. Dołącz do
-              nas i znajdź idealnego partnera do tańca w swojej okolicy.
-            </p>
-          </div>
-          <div className="w-1/2">
-            <InteractiveMap />
+        <section className="py-16 bg-gray-50">
+          <div className="max-w-8xl mx-auto px-4">
+            <div className="flex flex-col lg:flex-row">
+              {/* Lewa strona - sidebar */}
+              <div className="lg:w-[51%]">
+                <MapSidebar />
+              </div>
+
+              {/* Prawa strona - mapa */}
+              <div className="lg:w-[49%]">
+                <InteractiveMap />
+              </div>
+            </div>
           </div>
         </section>
 
