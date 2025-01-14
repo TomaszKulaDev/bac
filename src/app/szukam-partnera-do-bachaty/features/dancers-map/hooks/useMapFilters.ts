@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { MapFilters } from "../types";
+import { MapFilters } from "@/types/user";
 
 const DEFAULT_FILTERS: MapFilters = {
   danceStyle: "",

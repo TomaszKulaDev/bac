@@ -1,3 +1,6 @@
+import { DanceStyleValue } from "@/constants/danceStyles";
+import { DanceLevel } from "@/constants/levels";
+
 export type Gender = "male" | "female";
 
 export interface DancePreferences {
@@ -112,4 +115,36 @@ export interface InstructorProfile {
     privateClass: number;
     groupClass: number;
   };
+}
+
+// Dodajemy typy związane z mapą
+export interface MapFilters {
+  danceStyle: DanceStyleValue | "";
+  level: DanceLevel | "";
+  gender: Gender | "";
+}
+
+export interface MapConfig {
+  defaultZoom: number;
+  maxZoom: number;
+  minZoom: number;
+  defaultCenter: { lat: number; lng: number };
+}
+
+export interface DancerMarker {
+  id: string;
+  city: string;
+  coordinates: {
+    lat: number;
+    lng: number;
+  };
+  stats: {
+    totalDancers: number;
+    activeDancers: number;
+  };
+  styles: Array<{
+    name: DanceStyleValue;
+    count: number;
+  }>;
+  dancers: Array<Pick<UserProfile, "id" | "name" | "image">>;
 }

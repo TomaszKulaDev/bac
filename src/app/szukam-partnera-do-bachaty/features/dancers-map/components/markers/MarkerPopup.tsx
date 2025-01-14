@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { DancerMarker } from "../../types";
+import { DancerMarker } from "@/types/user";
 
 interface MarkerPopupProps {
   marker: DancerMarker;

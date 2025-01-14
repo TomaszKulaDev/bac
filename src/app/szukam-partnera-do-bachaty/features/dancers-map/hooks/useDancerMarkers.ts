@@ -1,11 +1,9 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
-import { DancerMarker, MapFilters } from "../types";
-import { UserProfile } from "@/types/user";
+import { DancerMarker, MapFilters, UserProfile } from "@/types/user";
 import { DANCE_STYLES, DanceStyleValue } from "@/constants/danceStyles";
 import { CITY_COORDINATES } from "@/constants/cityCoordinates";
 import { CityValue } from "@/constants/cities";
 
-// Funkcja przeniesiona poza komponent
 const isDanceStyleValue = (style: string): style is DanceStyleValue => {
   return DANCE_STYLES.some((danceStyle) => danceStyle.value === style);
 };
@@ -27,7 +25,6 @@ export function useDancerMarkers(filters: MapFilters) {
           lng: CITY_COORDINATES[city as CityValue][1],
         };
       }
-      // Fallback do centrum Polski
       return {
         lat: CITY_COORDINATES[""][0],
         lng: CITY_COORDINATES[""][1],
@@ -46,16 +43,29 @@ export function useDancerMarkers(filters: MapFilters) {
         const city = profile.dancePreferences.location;
         const coordinates = getCityCoordinates(city);
 
-        const currentCity = cities.get(city) || {
-          id: city,
-          city: city,
-          coordinates,
-          stats: {
-            totalDancers: 0,
-            activeDancers: 0,
-          },
-          styles: [],
-        };
+        let currentCity = cities.get(city);
+
+        if (!currentCity) {
+          currentCity = {
+            id: city,
+            city: city,
+            coordinates,
+            stats: {
+              totalDancers: 0,
+              activeDancers: 0,
+            },
+            styles: [],
+            dancers: [],
+          };
+          cities.set(city, currentCity);
+        }
+
+        // Dodajemy tancerza do listy
+        currentCity.dancers.push({
+          id: profile.id,
+          name: profile.name,
+          image: profile.image,
+        });
 
         currentCity.stats.totalDancers++;
         currentCity.stats.activeDancers++;
@@ -79,7 +89,7 @@ export function useDancerMarkers(filters: MapFilters) {
       return Array.from(cities.values());
     },
     [getCityCoordinates]
-  ); // Usunięto isDanceStyleValue z zależności
+  );
 
   useEffect(() => {
     const fetchProfiles = async () => {
