@@ -1,96 +1,30 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { DancerMarker, MapFilters } from "../types";
+import { UserProfile } from "@/types/user";
+import { DANCE_STYLES, DanceStyleValue } from "@/constants/danceStyles";
 
-// Przykładowe dane - docelowo będą pobierane z API
-const MOCK_MARKERS: DancerMarker[] = [
-  {
-    id: "1",
-    city: "Warszawa",
-    coordinates: {
-      lat: 52.2297,
-      lng: 21.0122,
-    },
-    stats: {
-      totalDancers: 150,
-      activeDancers: 85,
-    },
-    styles: [
-      { name: "Bachata Sensual", count: 45 },
-      { name: "Bachata Dominicana", count: 40 },
-    ],
-  },
-  {
-    id: "2",
-    city: "Kraków",
-    coordinates: {
-      lat: 50.0647,
-      lng: 19.945,
-    },
-    stats: {
-      totalDancers: 120,
-      activeDancers: 70,
-    },
-    styles: [
-      { name: "Bachata Sensual", count: 40 },
-      { name: "Bachata Impro", count: 30 },
-    ],
-  },
-  {
-    id: "3",
-    city: "Wrocław",
-    coordinates: {
-      lat: 51.1079,
-      lng: 17.0385,
-    },
-    stats: {
-      totalDancers: 90,
-      activeDancers: 55,
-    },
-    styles: [
-      { name: "Bachata Dominicana", count: 35 },
-      { name: "Bachata Impro", count: 20 },
-    ],
-  },
-  {
-    id: "4",
-    city: "Poznań",
-    coordinates: {
-      lat: 52.4064,
-      lng: 16.9252,
-    },
-    stats: {
-      totalDancers: 80,
-      activeDancers: 45,
-    },
-    styles: [
-      { name: "Bachata Sensual", count: 25 },
-      { name: "Bachata Dominicana", count: 20 },
-    ],
-  },
-  {
-    id: "5",
-    city: "Gdańsk",
-    coordinates: {
-      lat: 54.352,
-      lng: 18.6466,
-    },
-    stats: {
-      totalDancers: 70,
-      activeDancers: 40,
-    },
-    styles: [
-      { name: "Bachata Impro", count: 25 },
-      { name: "Bachata Sensual", count: 15 },
-    ],
-  },
-];
+// Stałe i funkcje pomocnicze przeniesione na zewnątrz komponentu
+const CITY_COORDINATES: Record<string, [number, number]> = {
+  Warszawa: [52.2297, 21.0122],
+  Kraków: [50.0647, 19.945],
+  Wrocław: [51.1079, 17.0385],
+  Poznań: [52.4064, 16.9252],
+  Gdańsk: [54.352, 18.6466],
+  Toruń: [53.0138, 18.5984],
+  Mielec: [50.2875, 21.4219],
+};
+
+// Funkcja przeniesiona poza komponent
+const isDanceStyleValue = (style: string): style is DanceStyleValue => {
+  return DANCE_STYLES.some((danceStyle) => danceStyle.value === style);
+};
 
 export function useDancerMarkers(filters: MapFilters) {
   const [markers, setMarkers] = useState<DancerMarker[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const maxDancers = useMemo(
-    () => Math.max(...markers.map((m) => m.stats.activeDancers)),
+    () => Math.max(...markers.map((m) => m.stats.activeDancers), 0),
     [markers]
   );
 
@@ -104,26 +38,101 @@ export function useDancerMarkers(filters: MapFilters) {
     [markers]
   );
 
-  useEffect(() => {
-    const filteredMarkers = MOCK_MARKERS.filter((marker) => {
-      if (
-        filters.danceStyle &&
-        !marker.styles.some((s) => s.name === filters.danceStyle)
-      ) {
-        return false;
+  const getCityCoordinates = useCallback(
+    (city: string): { lat: number; lng: number } => {
+      if (CITY_COORDINATES[city]) {
+        return {
+          lat: CITY_COORDINATES[city][0],
+          lng: CITY_COORDINATES[city][1],
+        };
       }
-      if (
-        filters.availability === "active" &&
-        marker.stats.activeDancers === 0
-      ) {
-        return false;
-      }
-      return true;
-    });
+      return {
+        lat: 52.0685,
+        lng: 19.0409,
+      };
+    },
+    []
+  );
 
-    setMarkers(filteredMarkers);
-    setIsLoading(false);
-  }, [filters]);
+  const groupProfilesByCity = useCallback(
+    (profiles: UserProfile[]): DancerMarker[] => {
+      const cities = new Map<string, DancerMarker>();
+
+      profiles.forEach((profile) => {
+        if (!profile.dancePreferences?.location) return;
+
+        const city = profile.dancePreferences.location;
+        const coordinates = getCityCoordinates(city);
+
+        const currentCity = cities.get(city) || {
+          id: city,
+          city: city,
+          coordinates,
+          stats: {
+            totalDancers: 0,
+            activeDancers: 0,
+          },
+          styles: [],
+        };
+
+        currentCity.stats.totalDancers++;
+        currentCity.stats.activeDancers++;
+
+        profile.dancePreferences?.styles.forEach((style) => {
+          if (isDanceStyleValue(style)) {
+            const existingStyle = currentCity.styles.find(
+              (s) => s.name === style
+            );
+            if (existingStyle) {
+              existingStyle.count++;
+            } else {
+              currentCity.styles.push({ name: style, count: 1 });
+            }
+          }
+        });
+
+        cities.set(city, currentCity);
+      });
+
+      return Array.from(cities.values());
+    },
+    [getCityCoordinates]
+  ); // Usunięto isDanceStyleValue z zależności
+
+  useEffect(() => {
+    const fetchProfiles = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch("/api/profiles");
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const profiles: UserProfile[] = await response.json();
+
+        const filteredProfiles = profiles.filter((profile) => {
+          if (
+            filters.danceStyle &&
+            !profile.dancePreferences?.styles.includes(filters.danceStyle)
+          ) {
+            return false;
+          }
+          return true;
+        });
+
+        const markers = groupProfilesByCity(filteredProfiles);
+        setMarkers(markers);
+      } catch (error) {
+        console.error("Error fetching profiles:", error);
+        setMarkers([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProfiles();
+  }, [filters, groupProfilesByCity]);
 
   return { markers, isLoading, maxDancers, getMarkerRank };
 }
