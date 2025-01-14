@@ -18,8 +18,6 @@ export function MapSidebar() {
 
   return (
     <div className="bg-white rounded-xl shadow-lg p-6 h-[820px]">
-      <h2 className="text-2xl font-semibold mb-8">Znajdź partnera do tańca</h2>
-
       {/* Grid z okrągłymi zdjęciami */}
       <div className="overflow-y-auto h-[680px] pr-2">
         <div className="grid grid-cols-3 gap-6 auto-rows-max place-items-center pt-2">
