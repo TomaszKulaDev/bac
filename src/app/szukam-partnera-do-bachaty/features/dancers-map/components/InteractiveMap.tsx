@@ -9,7 +9,7 @@ import { LatLngTuple } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "../styles/map.css";
 import { LoadingSpinner } from "./LoadingSpinner";
-import { DancerMarker } from "../types";
+import { DancerMarker } from "@/types/user";
 
 const POLAND_CENTER: LatLngTuple = [52.0685, 19.0409];
 const POLAND_BOUNDS = {

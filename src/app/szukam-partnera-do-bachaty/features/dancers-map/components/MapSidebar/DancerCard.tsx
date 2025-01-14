@@ -1,9 +1,9 @@
 import Image from "next/image";
 import { HeartIcon } from "@heroicons/react/24/outline";
-import { Dancer } from "./types";
+import { DancerMarker } from "@/types/user";
 
 interface DancerCardProps {
-  dancer: Dancer;
+  dancer: Pick<DancerMarker, "city" | "styles">;
 }
 
 export function DancerCard({ dancer }: DancerCardProps) {

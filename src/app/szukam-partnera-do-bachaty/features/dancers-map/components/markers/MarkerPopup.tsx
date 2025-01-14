@@ -7,9 +7,7 @@ interface MarkerPopupProps {
   maxDancers: number;
 }
 
-export function MarkerPopup({ marker, maxDancers }: MarkerPopupProps) {
-  const percentage = (marker.stats.activeDancers / maxDancers) * 100;
-
+export function MarkerPopup({ marker }: MarkerPopupProps) {
   // Funkcja do formatowania imienia
   const formatName = (name: string) => {
     if (!name || name.length < 3) return name;
@@ -19,66 +17,60 @@ export function MarkerPopup({ marker, maxDancers }: MarkerPopupProps) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="p-4 min-w-[280px]"
+      className="bg-white rounded-lg shadow-sm p-3 min-w-[200px]"
     >
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="font-bold text-lg">{marker.city}</h3>
-        <span className="text-sm font-medium text-amber-600">
-          {marker.stats.activeDancers} tancerzy
-        </span>
+      <div className="text-center mb-2">
+        <h3 className="text-sm font-medium">{marker.city}</h3>
       </div>
 
-      <div className="space-y-4">
-        {/* Pasek postępu */}
-        <div className="flex items-center gap-2">
-          <div className="w-full bg-gray-200 rounded-full h-2">
-            <div
-              className="bg-amber-500 h-2 rounded-full transition-all duration-500"
-              style={{ width: `${percentage}%` }}
+      <div className="flex flex-wrap justify-center gap-1 mb-2">
+        {marker.dancers.slice(0, 9).map((dancer, index) => (
+          <div key={dancer.id} className="relative group">
+            <Image
+              src={dancer.image || "/images/default-avatar.png"}
+              alt={dancer.name}
+              width={40}
+              height={40}
+              className="rounded-full object-cover border border-white"
             />
-          </div>
-        </div>
-
-        {/* Lista tancerzy */}
-        <div className="grid grid-cols-2 gap-2 max-h-[200px] overflow-y-auto pr-2">
-          {marker.dancers.map((dancer) => (
             <div
-              key={dancer.id}
-              className="flex items-center gap-2 p-2 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+              className="absolute -top-1 -right-1 w-4 h-4 bg-white rounded-full 
+                          flex items-center justify-center text-[10px] font-medium"
             >
-              <div className="w-8 h-8 rounded-full overflow-hidden border border-gray-200">
-                <Image
-                  src={dancer.image || "/images/default-avatar.png"}
-                  alt={dancer.name}
-                  width={32}
-                  height={32}
-                  className="object-cover w-full h-full"
-                />
-              </div>
-              <span className="text-sm font-medium text-gray-700 truncate">
-                {formatName(dancer.name)}
-              </span>
+              {index + 1}
             </div>
-          ))}
-        </div>
-
-        {/* Przycisk "Zobacz wszystkich" */}
-        <button
-          onClick={() =>
-            window.open(
-              `/szukam-partnera/${marker.city.toLowerCase()}`,
-              "_blank"
-            )
-          }
-          className="w-full mt-2 px-4 py-2 text-sm font-medium text-white 
-                   bg-amber-500 hover:bg-amber-600 rounded-lg 
-                   transition-colors duration-200"
-        >
-          Zobacz wszystkich
-        </button>
+            {/* Tooltip z imieniem */}
+            <div
+              className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 
+                          opacity-0 group-hover:opacity-100 transition-opacity
+                          bg-gray-800 text-white text-xs py-1 px-2 rounded-md
+                          whitespace-nowrap pointer-events-none z-10"
+            >
+              {formatName(dancer.name)}
+            </div>
+          </div>
+        ))}
+        {marker.dancers.length > 9 && (
+          <div
+            className="w-10 h-10 rounded-full bg-gray-100 flex items-center 
+                         justify-center text-xs text-gray-500"
+          >
+            +{marker.dancers.length - 9}
+          </div>
+        )}
       </div>
+
+      <button
+        onClick={() =>
+          window.open(`/szukam-partnera/${marker.city.toLowerCase()}`, "_blank")
+        }
+        className="w-full py-1.5 text-xs text-amber-600 hover:text-amber-700 
+                 transition-colors"
+      >
+        Zobacz wszystkich →
+      </button>
     </motion.div>
   );
 }

@@ -1,4 +1,4 @@
-import { DancerMarker } from "../../types";
+import { DancerMarker } from "@/types/user";
 import { MarkerCluster } from "./MarkerCluster";
 
 interface MarkerListProps {

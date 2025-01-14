@@ -1,8 +1,8 @@
 import { DancerCard } from "./DancerCard";
-import { Dancer } from "./types";
+import { DancerMarker } from "@/types/user";
 
 interface DancersGridProps {
-  dancers: Dancer[];
+  dancers: DancerMarker[];
 }
 
 export function DancersGrid({ dancers }: DancersGridProps) {

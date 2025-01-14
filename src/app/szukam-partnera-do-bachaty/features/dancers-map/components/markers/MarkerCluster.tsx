@@ -1,5 +1,5 @@
 import { Marker, Popup } from "react-leaflet";
-import { DancerMarker } from "../../types";
+import { DancerMarker } from "@/types/user";
 import { createMarkerIcon } from "./MarkerIcon";
 import { MarkerPopup } from "./MarkerPopup";
 
