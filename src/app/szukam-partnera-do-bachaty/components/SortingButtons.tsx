@@ -5,16 +5,13 @@ import { Gender } from "@/types/user";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import {
-  FaSortAmountDown,
-  FaSortAmountUp,
   FaVenusMars,
   FaGraduationCap,
   FaPeopleArrows,
   FaMapMarkerAlt,
 } from "react-icons/fa";
-import { motion } from "framer-motion";
-import { CITIES } from "@/constants/cities";
 import { LoginPromptModal } from "./LoginPromptModal";
+import { CITIES } from "@/constants/cities";
 import { DANCE_LEVELS } from "@/constants/levels";
 import { DANCE_STYLES } from "@/constants/danceStyles";
 
@@ -26,8 +23,6 @@ export const SortingButtons = ({ profilesCount }: SortingButtonsProps) => {
   const { data: session } = useSession();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const {
-    sortOrder,
-    setSortOrder,
     selectedGender,
     setSelectedGender,
     selectedLevel,
@@ -44,14 +39,6 @@ export const SortingButtons = ({ profilesCount }: SortingButtonsProps) => {
       return;
     }
     action();
-  };
-
-  const handleSortClick = () => {
-    if (!session) {
-      setShowLoginModal(true);
-      return;
-    }
-    setSortOrder(sortOrder === "newest" ? "oldest" : "newest");
   };
 
   const selectClassName = `
@@ -72,43 +59,6 @@ export const SortingButtons = ({ profilesCount }: SortingButtonsProps) => {
   return (
     <>
       <div className="flex flex-col gap-4 bg-white p-6 rounded-lg shadow-xl">
-        <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
-          <div className="flex items-center gap-3">
-            <h2 className="text-xl sm:text-2xl font-semibold text-gray-800">
-              Bachateros & Bachateras
-            </h2>
-            <motion.span
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              className="px-3 py-1 bg-amber-100 text-amber-800 rounded-full text-sm font-medium"
-            >
-              {profilesCount ?? 0}
-            </motion.span>
-          </div>
-
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={handleSortClick}
-            className="w-full sm:w-auto flex items-center justify-center gap-2 
-                     px-4 py-3.5 rounded-md bg-amber-500 text-white font-medium
-                     hover:bg-amber-600 transition-all duration-200
-                     shadow-sm hover:shadow-md"
-          >
-            {sortOrder === "newest" ? (
-              <>
-                <FaSortAmountDown className="h-5 w-5" />
-                <span>Od najnowszych</span>
-              </>
-            ) : (
-              <>
-                <FaSortAmountUp className="h-5 w-5" />
-                <span>Od najstarszych</span>
-              </>
-            )}
-          </motion.button>
-        </div>
-
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {/* Płeć */}
           <div className="relative group">
