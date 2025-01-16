@@ -6,11 +6,14 @@ import { toast } from "react-toastify";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { DEFAULT_SETTINGS } from "@/types/user";
 import ChangePasswordModal from "../../components/ChangePasswordModal";
+import DeleteAccountModal from "../../components/DeleteAccountModal";
 
 export default function SettingsPage() {
   const { data: session } = useSession();
   const { userProfile, updateUserProfile } = useUserProfile();
   const [isChangePasswordModalOpen, setIsChangePasswordModalOpen] =
+    useState(false);
+  const [isDeleteAccountModalOpen, setIsDeleteAccountModalOpen] =
     useState(false);
 
   if (!userProfile) return null;
@@ -106,7 +109,10 @@ export default function SettingsPage() {
             </p>
           </button>
 
-          <button className="w-full p-4 border rounded-lg text-left hover:bg-gray-50 transition-colors text-red-600">
+          <button
+            onClick={() => setIsDeleteAccountModalOpen(true)}
+            className="w-full p-4 border rounded-lg text-left hover:bg-gray-50 transition-colors text-red-600"
+          >
             <h4 className="font-medium">Usuń konto</h4>
             <p className="text-sm text-gray-500">
               Trwale usuń swoje konto i wszystkie dane
@@ -118,6 +124,12 @@ export default function SettingsPage() {
       {isChangePasswordModalOpen && (
         <ChangePasswordModal
           onClose={() => setIsChangePasswordModalOpen(false)}
+        />
+      )}
+
+      {isDeleteAccountModalOpen && (
+        <DeleteAccountModal
+          onClose={() => setIsDeleteAccountModalOpen(false)}
         />
       )}
     </div>
