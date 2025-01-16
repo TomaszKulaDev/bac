@@ -1,14 +1,29 @@
 "use client";
 
-import { useState, useEffect, memo, useCallback } from "react";
+import {
+  useState,
+  useEffect,
+  memo,
+  useCallback,
+  useMemo,
+  Suspense,
+} from "react";
 import { useInView } from "react-intersection-observer";
-import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { UserProfile } from "@/types/user";
 import { useFilters } from "../context/FilterContext";
 import { SortingButtons } from "./SortingButtons";
 import Modal from "@/components/ui/Modal";
 import ProfileCard from "./ProfileCard";
 import LoadingSkeleton from "./LoadingSkeleton";
+import { ProfilesGrid } from "./ProfilesGrid";
+import { usePrefetchNextPage } from "../hooks/usePrefetchNextPage";
+import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
+import { useVirtualization } from "../hooks/useVirtualization";
+import { inView } from "framer-motion";
 
 const PROFILES_PER_PAGE = 12;
 
@@ -17,11 +32,6 @@ interface FetchProfilesResponse {
   nextPage: number;
   hasMore: boolean;
 }
-
-// Memoizowany ProfileCard
-const MemoizedProfileCard = memo(ProfileCard, (prev, next) => {
-  return prev.profile.id === next.profile.id && prev.index === next.index;
-});
 
 export const LatestProfiles = () => {
   const queryClient = useQueryClient();
@@ -41,11 +51,6 @@ export const LatestProfiles = () => {
     setIsStylesModalOpen(true);
   }, []);
 
-  const { ref: loadMoreRef, inView } = useInView({
-    threshold: 0,
-    rootMargin: "200px",
-  });
-
   const fetchProfiles = async ({
     pageParam = 1,
   }): Promise<FetchProfilesResponse> => {
@@ -63,30 +68,10 @@ export const LatestProfiles = () => {
       throw new Error("Nieprawidłowy format danych z API");
     }
 
-    const filteredProfiles = profiles.filter((profile: UserProfile) => {
-      if (!profile.isPublicProfile) return false;
-
-      const locationMatch =
-        !selectedLocation ||
-        profile.dancePreferences?.location === selectedLocation;
-      const genderMatch = !selectedGender || profile.gender === selectedGender;
-      const levelMatch =
-        !selectedLevel || profile.dancePreferences?.level === selectedLevel;
-      const styleMatch =
-        !selectedDanceStyle ||
-        profile.dancePreferences?.styles.includes(selectedDanceStyle);
-
-      return locationMatch && genderMatch && levelMatch && styleMatch;
-    });
-
-    const sortedProfiles = [...filteredProfiles].sort((a, b) => {
-      const dateA = new Date(a.createdAt).getTime();
-      const dateB = new Date(b.createdAt).getTime();
-      return sortOrder === "newest" ? dateB - dateA : dateA - dateB;
-    });
+    const processedProfiles = filterAndSortProfiles(profiles);
 
     return {
-      profiles: sortedProfiles,
+      profiles: processedProfiles,
       nextPage: pageParam + 1,
       hasMore: profiles.length >= PROFILES_PER_PAGE,
     };
@@ -116,37 +101,113 @@ export const LatestProfiles = () => {
     staleTime: 5 * 60 * 1000,
   });
 
-  useEffect(() => {
-    if (inView && hasNextPage && !isFetchingNextPage) {
-      fetchNextPage();
-    }
-  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
+  const { ref: infiniteScrollRef } = useInfiniteScroll(
+    !!hasNextPage,
+    isFetchingNextPage,
+    () => fetchNextPage()
+  );
 
-  useEffect(() => {
-    if (data?.pages[data.pages.length - 1]?.hasMore) {
-      const nextPage = data.pages[data.pages.length - 1].nextPage;
-      queryClient.prefetchInfiniteQuery({
-        queryKey: [
-          "profiles",
-          selectedGender,
-          selectedLevel,
-          selectedDanceStyle,
-          selectedLocation,
-          sortOrder,
-        ],
-        queryFn: () => fetchProfiles({ pageParam: nextPage }),
-        initialPageParam: nextPage,
+  const filterAndSortProfiles = useCallback(
+    (profiles: UserProfile[]) => {
+      // Najpierw filtrujemy
+      const filtered = profiles.filter((profile: UserProfile) => {
+        if (!profile.isPublicProfile) return false;
+
+        // Używamy obiektów map dla lepszej wydajności przy wielu profilach
+        const checks = {
+          location:
+            !selectedLocation ||
+            profile.dancePreferences?.location === selectedLocation,
+          gender: !selectedGender || profile.gender === selectedGender,
+          level:
+            !selectedLevel || profile.dancePreferences?.level === selectedLevel,
+          style:
+            !selectedDanceStyle ||
+            profile.dancePreferences?.styles.includes(selectedDanceStyle),
+        };
+
+        return Object.values(checks).every(Boolean);
       });
+
+      // Potem sortujemy
+      return filtered.sort((a, b) => {
+        const dateA = new Date(a.createdAt).getTime();
+        const dateB = new Date(b.createdAt).getTime();
+        return sortOrder === "newest" ? dateB - dateA : dateA - dateB;
+      });
+    },
+    [
+      selectedLocation,
+      selectedGender,
+      selectedLevel,
+      selectedDanceStyle,
+      sortOrder,
+    ]
+  );
+
+  usePrefetchNextPage(
+    data,
+    [
+      "profiles",
+      selectedGender,
+      selectedLevel,
+      selectedDanceStyle,
+      selectedLocation,
+      sortOrder,
+    ],
+    (pageParam) => fetchProfiles({ pageParam })
+  );
+
+  // Optymalizacja filtrowania
+  const filteredProfiles = useMemo(() => {
+    return data?.pages.flatMap((page) => page.profiles) ?? [];
+  }, [data?.pages]);
+
+  // Obsługa wirtualizacji dla dużych list
+  const { visibleItems, onScroll } = useVirtualization(
+    filteredProfiles.length,
+    400,
+    typeof window !== "undefined" ? window.innerHeight : 800
+  );
+
+  // Optymalizacja renderowania
+  const renderProfiles = useCallback(() => {
+    if (isLoading) return <LoadingSkeleton />;
+    if (filteredProfiles.length === 0) {
+      return (
+        <div className="text-center py-12 text-gray-500">
+          Nie znaleziono profili spełniających kryteria
+        </div>
+      );
     }
+
+    return (
+      <Suspense fallback={<LoadingSkeleton />}>
+        <div onScroll={onScroll} className="overflow-auto h-screen">
+          <ProfilesGrid
+            profiles={filteredProfiles.slice(
+              visibleItems.startIndex,
+              visibleItems.endIndex
+            )}
+            onStylesClick={handleStylesClick}
+          />
+          {hasNextPage && (
+            <div ref={infiniteScrollRef} className="py-8">
+              {isFetchingNextPage && <LoadingSkeleton />}
+            </div>
+          )}
+        </div>
+      </Suspense>
+    );
   }, [
-    data?.pages,
-    queryClient,
-    fetchProfiles,
-    selectedGender,
-    selectedLevel,
-    selectedDanceStyle,
-    selectedLocation,
-    sortOrder,
+    isLoading,
+    filteredProfiles,
+    visibleItems,
+    hasNextPage,
+    isFetchingNextPage,
+    handleStylesClick,
+    onScroll,
+    infiniteScrollRef,
   ]);
 
   if (isError) {
@@ -166,44 +227,12 @@ export const LatestProfiles = () => {
     );
   }
 
-  const allProfiles = data?.pages.flatMap((page) => page.profiles) ?? [];
-
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="mb-8">
-        <SortingButtons profilesCount={allProfiles.length} />
+        <SortingButtons profilesCount={filteredProfiles.length} />
       </div>
-
-      {isLoading ? (
-        <LoadingSkeleton />
-      ) : allProfiles.length === 0 ? (
-        <div className="text-center py-12 text-gray-500">
-          Nie znaleziono profili spełniających kryteria
-        </div>
-      ) : (
-        <>
-          <div
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 
-                        xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8"
-          >
-            {allProfiles.map((profile: UserProfile, index: number) => (
-              <MemoizedProfileCard
-                key={profile.id}
-                profile={profile}
-                index={index}
-                onStylesClick={handleStylesClick}
-              />
-            ))}
-          </div>
-
-          {hasNextPage && (
-            <div ref={loadMoreRef} className="py-8">
-              {isFetchingNextPage && <LoadingSkeleton />}
-            </div>
-          )}
-        </>
-      )}
-
+      {renderProfiles()}
       <Modal
         isOpen={isStylesModalOpen}
         onClose={() => {
