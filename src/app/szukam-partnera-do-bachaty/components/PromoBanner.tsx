@@ -35,7 +35,7 @@ export function PromoBanner() {
             </div>
 
             <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl drop-shadow-sm">
-              Taniec łączy ludzi
+              Bachata łączy ludzi
             </h2>
             <p className="mt-4 text-lg text-white/90">
               Poznaj innych pasjonatów Bachaty, umów się na wspólne lekcje i
