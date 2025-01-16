@@ -57,6 +57,17 @@ export const metadata: Metadata = {
     yahoo: "twój-kod-weryfikacyjny-yahoo",
   },
   category: "dance",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 // Structured data dla strony głównej

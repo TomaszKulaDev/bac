@@ -21,7 +21,7 @@ import {
 } from "@/app/news/components/DailyHighlights/data";
 import { PolishPromoArtist } from "@/app/news/components/PolishPromoArtist/PolishPromoArtist";
 import { polishArtistsData } from "@/app/news/components/PolishPromoArtist/data";
-import { metadata, jsonLd } from "./page.metadata";
+import { jsonLd } from "./page.metadata";
 
 // Uproszczony interfejs bez elementów społecznościowych
 interface NewsItem {
@@ -57,8 +57,6 @@ const ArticleListItem = ({ news }: { news: NewsItem }) => {
     </Link>
   );
 };
-
-export { metadata }; // Eksportujemy metadane dla Next.js
 
 export default function Home() {
   // Stan dla interakcji użytkownika z useMemo dla stabilnych wartości początkowych

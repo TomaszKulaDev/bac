@@ -77,11 +77,11 @@ import QueryClientProvider from "@/providers/QueryClientProvider";
 // Inicjalizujemy czcionkę Inter z podzbiorem "latin", aby używać jej w aplikacji
 const inter = Inter({ subsets: ["latin"] });
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode; // Typ dla dzieci przekazanych do komponentu
-}) {
+interface RootLayoutProps {
+  children: React.ReactNode;
+}
+
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
     // Ustawiamy język dokumentu na polski
     <html lang="pl">
