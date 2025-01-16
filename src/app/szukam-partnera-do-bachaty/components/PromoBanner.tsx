@@ -28,7 +28,7 @@ export function PromoBanner() {
           </div>
         </div>
 
-        <div className="absolute inset-0 bg-gradient-to-r from-amber-600/95 via-amber-500/80 to-transparent" />
+        <div className="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-amber-600/95 via-amber-500/80 to-transparent" />
       </div>
 
       <div className="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
