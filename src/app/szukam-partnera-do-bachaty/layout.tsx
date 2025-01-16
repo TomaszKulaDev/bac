@@ -1,4 +1,6 @@
+import { Suspense } from "react";
 import { jsonLd } from "./page.metadata";
+import Loading from "./loading";
 
 export default function PartnerSearchLayout({
   children,
@@ -12,8 +14,15 @@ export default function PartnerSearchLayout({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <div className="min-h-screen flex flex-col">
-        <main className="flex-grow">{children}</main>
-        {/* ... reszta layoutu ... */}
+        <Suspense fallback={<Loading />}>
+          <main
+            className="flex-grow"
+            role="main"
+            aria-label="Wyszukiwarka partnerów do tańca"
+          >
+            {children}
+          </main>
+        </Suspense>
       </div>
     </>
   );
