@@ -40,3 +40,7 @@ export const ProfilesGrid = memo(
     );
   }
 );
+
+// Dodajemy displayName dla obu komponentów
+MemoizedProfileCard.displayName = "MemoizedProfileCard";
+ProfilesGrid.displayName = "ProfilesGrid";
