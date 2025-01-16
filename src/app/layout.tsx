@@ -71,7 +71,8 @@ import { AuthSync } from "../components/AuthSync";
 import { NavbarSkeleton } from "../components/NavbarSkeleton";
 import { Metadata } from "next";
 import { CookieConsent } from "../components/CookieConsent/CookieConsent";
-import 'leaflet/dist/leaflet.css';
+import "leaflet/dist/leaflet.css";
+import QueryClientProvider from "@/providers/QueryClientProvider";
 
 // Inicjalizujemy czcionkę Inter z podzbiorem "latin", aby używać jej w aplikacji
 const inter = Inter({ subsets: ["latin"] });
@@ -150,19 +151,21 @@ export default function RootLayout({
     <html lang="pl">
       {/* Ustawiamy klasę czcionki Inter i kolor tekstu na szary */}
       <body className={`${inter.className} bg-global-white`}>
-        {/* Owijamy aplikację w ClientProviders, aby dostarczyć kontekst dla klienta */}
-        <ClientProviders>
-          {/* Synchronizujemy stan autoryzacji za pomocą komponentu AuthSync */}
-          <AuthSync />
-          {/* Owijamy aplikację w ClientLayout, aby ustawić układ strony */}
-          <ClientLayout>
-            {/* Renderujemy nawigację za pomocą komponentu NavContent */}
-            <DynamicNavContent />
-            {/* Renderujemy dzieci przekazane do RootLayout */}
-            {children}
-          </ClientLayout>
-          <CookieConsent />
-        </ClientProviders>
+        <QueryClientProvider>
+          {/* Owijamy aplikację w ClientProviders, aby dostarczyć kontekst dla klienta */}
+          <ClientProviders>
+            {/* Synchronizujemy stan autoryzacji za pomocą komponentu AuthSync */}
+            <AuthSync />
+            {/* Owijamy aplikację w ClientLayout, aby ustawić układ strony */}
+            <ClientLayout>
+              {/* Renderujemy nawigację za pomocą komponentu NavContent */}
+              <DynamicNavContent />
+              {/* Renderujemy dzieci przekazane do RootLayout */}
+              {children}
+            </ClientLayout>
+            <CookieConsent />
+          </ClientProviders>
+        </QueryClientProvider>
       </body>
     </html>
   );
