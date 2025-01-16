@@ -6,7 +6,13 @@ import { FaEdit, FaCheck, FaTimes } from "react-icons/fa";
 import Image from "next/image";
 import { toast } from "react-toastify";
 import { useUserProfile } from "@/hooks/useUserProfile";
-import { Gender, UserProfile, UserProfilePaths } from "@/types/user";
+import {
+  DancePreferences,
+  Gender,
+  SocialMedia,
+  UserProfile,
+  UserProfilePaths,
+} from "@/types/user";
 import { CITIES } from "@/constants/cities";
 import { DANCE_STYLES } from "@/constants/danceStyles";
 import { DANCE_LEVELS } from "@/constants/levels";
@@ -193,22 +199,37 @@ export default function ProfilePage() {
   ) => {
     if (!profile) return;
 
-    console.log("🔄 Aktualizacja pola:", field, "na wartość:", value);
-
     try {
-      const updatedData = { ...profile };
-      console.log("📝 Dane przed aktualizacją:", updatedData);
+      const updatedData = { ...profile } as UserProfile;
 
-      // Aktualizujemy pole isPublicProfile bezpośrednio
-      if (field === "isPublicProfile") {
-        updatedData.isPublicProfile = value as boolean;
+      if (field.includes(".")) {
+        const [parent, child] = field.split(".") as [keyof UserProfile, string];
+
+        if (parent === "dancePreferences") {
+          const currentPreferences = updatedData.dancePreferences || {
+            styles: [],
+            level: "",
+            availability: "",
+            location: "",
+          };
+
+          updatedData.dancePreferences = {
+            ...currentPreferences,
+            [child]: value,
+          } as DancePreferences;
+        } else if (parent === "socialMedia") {
+          const currentSocial = updatedData.socialMedia || {};
+          updatedData.socialMedia = {
+            ...currentSocial,
+            [child]: value as string,
+          };
+        }
+      } else {
+        (updatedData[field as keyof UserProfile] as any) = value;
       }
 
-      console.log("📤 Wysyłam dane do API:", updatedData);
       await updateUserProfile(updatedData);
-      console.log("✅ Aktualizacja zakończona sukcesem");
     } catch (error) {
-      console.error("❌ Błąd podczas aktualizacji:", error);
       throw error;
     }
   };
@@ -258,8 +279,6 @@ export default function ProfilePage() {
               className="sr-only peer"
               checked={profile?.isPublicProfile ?? false}
               onChange={(e) => {
-                console.log("🔄 Zmiana stanu switcha na:", e.target.checked);
-                console.log("📊 Aktualny stan profilu:", profile);
                 handleFieldUpdate("isPublicProfile", e.target.checked);
               }}
             />

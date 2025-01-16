@@ -26,7 +26,6 @@ export interface UserSettings {
   };
 }
 
-// Dodajemy domyślne wartości
 export const DEFAULT_SETTINGS: UserSettings = {
   notifications: {
     email: false,
@@ -44,19 +43,17 @@ export interface UserProfile {
   image?: string;
   bio?: string;
   height?: number;
+  age?: number;
+  gender?: Gender;
   createdAt: string | Date;
   updatedAt?: string;
   dancePreferences?: DancePreferences;
   socialMedia?: SocialMedia;
-  age?: number;
-  gender?: Gender;
   slug?: string;
   settings?: UserSettings;
   instructorProfile?: InstructorProfile;
   isPublicProfile: boolean;
 }
-
-// Poprawiona definicja typu NestedKeyOf
 
 export type NestedKeyOf<T> = T extends object
   ? {
@@ -68,7 +65,6 @@ export type NestedKeyOf<T> = T extends object
     }[keyof T & (string | number)]
   : never;
 
-// Zachowujemy również poprzednie typy
 export type DotPrefix<T extends string> = T extends "" ? "" : `.${T}`;
 
 export type DotNestedKeys<T> = (
@@ -83,14 +79,19 @@ export type DotNestedKeys<T> = (
   ? Extract<D, string>
   : never;
 
-// Dodajemy specjalny typ dla pól tablicowych
 type ArrayFields = {
   "dancePreferences.styles": string[];
 };
 
-// Rozszerzamy UserProfilePaths o pola tablicowe
-export type UserProfilePaths = DotNestedKeys<UserProfile> | keyof ArrayFields;
-export type UserProfileNestedPaths = NestedKeyOf<UserProfile>;
+export type UserProfilePaths =
+  | keyof UserProfile
+  | "dancePreferences.styles"
+  | "dancePreferences.level"
+  | "dancePreferences.availability"
+  | "dancePreferences.location"
+  | "socialMedia.instagram"
+  | "socialMedia.facebook"
+  | "socialMedia.youtube";
 
 export interface EditProfileFormData
   extends Omit<UserProfile, "id" | "createdAt" | "updatedAt"> {
