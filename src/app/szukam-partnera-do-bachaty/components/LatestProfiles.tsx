@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo, useCallback } from "react";
 import { useInView } from "react-intersection-observer";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { UserProfile } from "@/types/user";
 import { useFilters } from "../context/FilterContext";
 import { SortingButtons } from "./SortingButtons";
@@ -18,7 +18,13 @@ interface FetchProfilesResponse {
   hasMore: boolean;
 }
 
+// Memoizowany ProfileCard
+const MemoizedProfileCard = memo(ProfileCard, (prev, next) => {
+  return prev.profile.id === next.profile.id && prev.index === next.index;
+});
+
 export const LatestProfiles = () => {
+  const queryClient = useQueryClient();
   const {
     sortOrder,
     selectedGender,
@@ -29,6 +35,11 @@ export const LatestProfiles = () => {
 
   const [selectedStyles, setSelectedStyles] = useState<string[]>([]);
   const [isStylesModalOpen, setIsStylesModalOpen] = useState(false);
+
+  const handleStylesClick = useCallback((styles: string[]) => {
+    setSelectedStyles(styles);
+    setIsStylesModalOpen(true);
+  }, []);
 
   const { ref: loadMoreRef, inView } = useInView({
     threshold: 0,
@@ -102,7 +113,7 @@ export const LatestProfiles = () => {
     initialPageParam: 1,
     getNextPageParam: (lastPage: FetchProfilesResponse) =>
       lastPage.hasMore ? lastPage.nextPage : undefined,
-    staleTime: 5 * 60 * 1000, // Cache przez 5 minut
+    staleTime: 5 * 60 * 1000,
   });
 
   useEffect(() => {
@@ -110,6 +121,33 @@ export const LatestProfiles = () => {
       fetchNextPage();
     }
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  useEffect(() => {
+    if (data?.pages[data.pages.length - 1]?.hasMore) {
+      const nextPage = data.pages[data.pages.length - 1].nextPage;
+      queryClient.prefetchInfiniteQuery({
+        queryKey: [
+          "profiles",
+          selectedGender,
+          selectedLevel,
+          selectedDanceStyle,
+          selectedLocation,
+          sortOrder,
+        ],
+        queryFn: () => fetchProfiles({ pageParam: nextPage }),
+        initialPageParam: nextPage,
+      });
+    }
+  }, [
+    data?.pages,
+    queryClient,
+    fetchProfiles,
+    selectedGender,
+    selectedLevel,
+    selectedDanceStyle,
+    selectedLocation,
+    sortOrder,
+  ]);
 
   if (isError) {
     return (
@@ -149,14 +187,11 @@ export const LatestProfiles = () => {
                         xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8"
           >
             {allProfiles.map((profile: UserProfile, index: number) => (
-              <ProfileCard
+              <MemoizedProfileCard
                 key={profile.id}
                 profile={profile}
                 index={index}
-                onStylesClick={(styles) => {
-                  setSelectedStyles(styles);
-                  setIsStylesModalOpen(true);
-                }}
+                onStylesClick={handleStylesClick}
               />
             ))}
           </div>
