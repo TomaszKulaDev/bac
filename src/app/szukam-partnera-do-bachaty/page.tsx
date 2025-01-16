@@ -14,7 +14,9 @@ export default function PartnerSearchPage() {
           className="max-w-[2200px] mx-auto px-4 sm:px-8 py-16"
           aria-label="Lista profili tancerzy"
         >
-          <h1 className="sr-only">Szukaj Partnera do Bachaty</h1>
+          <h1 className="sr-only">
+            Szukam Partnera do Bachaty - Znajdź Partnera do Tańca w Swojej Okolicy
+          </h1>
           <div>
             <LatestProfiles />
           </div>
