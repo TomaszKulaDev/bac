@@ -152,6 +152,7 @@ Może zawierać funkcje pomocnicze związane z YouTube, które mogą być używa
         <div className="w-full border-b border-gray-200 my-12"></div>
 
 {/_ -------- SEKCJA ANKIET - OGÓLNE -------- _/}
+
 <div className="grid grid-cols-3 gap-6 mt-8">
 <Poll data={pollsState.partnerPoll} onVote={handleVote} />
 <Poll data={pollsState.frequencyPoll} onVote={handleVote} />

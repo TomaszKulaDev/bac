@@ -53,6 +53,7 @@ export interface UserProfile {
   slug?: string;
   settings?: UserSettings;
   instructorProfile?: InstructorProfile;
+  isPublicProfile: boolean;
 }
 
 // Poprawiona definicja typu NestedKeyOf

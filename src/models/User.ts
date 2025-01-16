@@ -18,6 +18,7 @@ export interface IUser extends Document {
   gender?: string;
   bio?: string;
   height?: number;
+  isPublicProfile: boolean;
 }
 
 const userSchema = new mongoose.Schema(
@@ -60,6 +61,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       unique: true,
       sparse: true,
+    },
+    isPublicProfile: {
+      type: Boolean,
+      default: true,
     },
   },
   {

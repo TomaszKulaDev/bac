@@ -32,6 +32,7 @@ const updateProfileSchema = z.object({
     .min(140, "Wzrost nie może być mniejszy niż 140 cm")
     .max(220, "Wzrost nie może być większy niż 220 cm")
     .optional(),
+  isPublicProfile: z.boolean().optional(),
 });
 
 export async function GET(request: Request) {
@@ -92,61 +93,30 @@ export async function POST(request: Request) {
 
     await connectToDatabase();
     const data = await request.json();
-    console.log("Otrzymane dane:", data);
-
-    // Sprawdź czy użytkownik istnieje
-    let user = await User.findOne({ email: session.user.email });
-
-    // Jeśli nie istnieje, stwórz nowy dokument
-    if (!user) {
-      user = await User.create({
-        email: session.user.email,
-        name: session.user.name,
-        image: session.user.image,
-        dancePreferences: {
-          styles: [],
-          level: "",
-          availability: "",
-          location: "",
-        },
-        socialMedia: {
-          instagram: "",
-          facebook: "",
-          youtube: "",
-        },
-      });
-    }
-
-    // Aktualizuj tylko przesłane pola
-    const updateData: Record<string, any> = {};
-    Object.entries(data).forEach(([key, value]) => {
-      if (value !== undefined) {
-        if (key.includes(".")) {
-          const [parent, child] = key.split(".");
-          if (!updateData[parent]) {
-            updateData[parent] = {};
-          }
-          (updateData[parent] as Record<string, any>)[child] = value;
-        } else {
-          updateData[key] = value;
-        }
-      }
-    });
 
     const updatedUser = await User.findOneAndUpdate(
       { email: session.user.email },
-      { $set: updateData },
-      { new: true, upsert: true }
+      { $set: data },
+      { new: true }
     );
 
-    return NextResponse.json(updatedUser);
+    return NextResponse.json({
+      id: updatedUser._id.toString(),
+      name: updatedUser.name,
+      email: updatedUser.email,
+      image: updatedUser.image,
+      dancePreferences: updatedUser.dancePreferences,
+      age: updatedUser.age,
+      height: updatedUser.height,
+      gender: updatedUser.gender,
+      bio: updatedUser.bio,
+      isPublicProfile: updatedUser.isPublicProfile,
+      settings: updatedUser.settings,
+      socialMedia: updatedUser.socialMedia,
+    });
   } catch (error) {
-    console.error("Update profile error:", error);
     return NextResponse.json(
-      {
-        message: "Failed to update profile",
-        error: error instanceof Error ? error.message : "Unknown error",
-      },
+      { message: "Failed to update profile" },
       { status: 500 }
     );
   }

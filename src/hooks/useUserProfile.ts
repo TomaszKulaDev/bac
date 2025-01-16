@@ -42,10 +42,7 @@ export function useUserProfile() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          ...updatedData,
-          height: updatedData.height,
-        }),
+        body: JSON.stringify(updatedData),
       });
 
       if (!response.ok) {
@@ -55,34 +52,6 @@ export function useUserProfile() {
 
       const data = await response.json();
       setUserProfile(data);
-
-      // Aktualizuj sesję
-      if (session) {
-        await update({
-          ...session,
-          user: {
-            ...session.user,
-            name: data.name,
-          },
-        });
-      }
-
-      // Aktualizuj Redux store
-      dispatch(
-        login({
-          user: {
-            id: data.id,
-            name: data.name,
-            email: data.email,
-            role: data.role,
-            image: data.image,
-            dancePreferences: data.dancePreferences,
-            age: data.age,
-            height: data.height,
-          },
-        })
-      );
-
       return data;
     } catch (err) {
       throw err;

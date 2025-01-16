@@ -189,32 +189,27 @@ export default function ProfilePage() {
 
   const handleFieldUpdate = async (
     field: UserProfilePaths,
-    value: string | number | string[]
+    value: string | number | string[] | boolean
   ) => {
     if (!profile) return;
 
+    console.log("🔄 Aktualizacja pola:", field, "na wartość:", value);
+
     try {
       const updatedData = { ...profile };
-      const fieldPath = field.split(".");
+      console.log("📝 Dane przed aktualizacją:", updatedData);
 
-      if (fieldPath.length === 1) {
-        (updatedData as any)[field] = value;
-      } else {
-        let current: any = updatedData;
-        for (let i = 0; i < fieldPath.length - 1; i++) {
-          if (!current[fieldPath[i]]) {
-            current[fieldPath[i]] = {};
-          }
-          current = current[fieldPath[i]];
-        }
-        current[fieldPath[fieldPath.length - 1]] = value;
+      // Aktualizujemy pole isPublicProfile bezpośrednio
+      if (field === "isPublicProfile") {
+        updatedData.isPublicProfile = value as boolean;
       }
 
+      console.log("📤 Wysyłam dane do API:", updatedData);
       await updateUserProfile(updatedData);
-      toast.success(`Zaktualizowano pomyślnie`);
+      console.log("✅ Aktualizacja zakończona sukcesem");
     } catch (error) {
-      console.error("Błąd aktualizacji:", error);
-      toast.error(`Błąd podczas aktualizacji`);
+      console.error("❌ Błąd podczas aktualizacji:", error);
+      throw error;
     }
   };
 
@@ -249,6 +244,30 @@ export default function ProfilePage() {
 
   return (
     <div className="container mx-auto p-4 max-w-4xl">
+      <div className="flex justify-end mb-4">
+        <div className="inline-flex items-center gap-3 p-3 bg-white rounded-lg shadow-sm">
+          <div className="text-right">
+            <h4 className="font-medium text-sm">Profil publiczny</h4>
+            <p className="text-xs text-gray-500">
+              Pozwól innym zobaczyć Twój profil
+            </p>
+          </div>
+          <label className="relative inline-flex items-center cursor-pointer">
+            <input
+              type="checkbox"
+              className="sr-only peer"
+              checked={profile?.isPublicProfile ?? false}
+              onChange={(e) => {
+                console.log("🔄 Zmiana stanu switcha na:", e.target.checked);
+                console.log("📊 Aktualny stan profilu:", profile);
+                handleFieldUpdate("isPublicProfile", e.target.checked);
+              }}
+            />
+            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-amber-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500"></div>
+          </label>
+        </div>
+      </div>
+
       <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
         <div className="flex items-start gap-6">
           <Image

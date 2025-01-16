@@ -8,42 +8,40 @@ import { NextResponse } from "next/server";
 export async function GET() {
   try {
     await connectToDatabase();
+
     const profiles = await User.find(
-      {},
+      { isPublicProfile: true },
       {
         name: 1,
         email: 1,
         image: 1,
         dancePreferences: 1,
-        age: 1,
-        height: 1,
         gender: 1,
-        bio: 1,
+        age: 1,
+        slug: 1,
         createdAt: 1,
+        isPublicProfile: 1,
       }
     ).sort({ createdAt: -1 });
 
     const formattedProfiles = profiles.map((profile) => ({
       id: profile._id.toString(),
       name: profile.name,
-      email: profile.email,
       image: profile.image,
       dancePreferences: profile.dancePreferences,
-      age: profile.age,
-      height: profile.height,
       gender: profile.gender,
-      bio: profile.bio,
+      age: profile.age,
+      slug: profile.slug,
       createdAt: profile.createdAt,
+      isPublicProfile: profile.isPublicProfile,
     }));
 
     return NextResponse.json(formattedProfiles, {
       headers: {
         "Cache-Control": "no-store, max-age=0",
-        "Surrogate-Control": "no-store",
       },
     });
   } catch (error) {
-    console.error("Error fetching profiles:", error);
     return NextResponse.json(
       { error: "Failed to fetch profiles" },
       { status: 500 }

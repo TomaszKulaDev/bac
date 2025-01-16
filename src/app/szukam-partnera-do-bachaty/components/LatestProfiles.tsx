@@ -38,6 +38,8 @@ export const LatestProfiles = () => {
   const filterProfiles = useCallback(
     (data: UserProfile[]) => {
       return data.filter((profile) => {
+        if (!profile.isPublicProfile) return false;
+
         const locationMatch =
           !selectedLocation ||
           profile.dancePreferences?.location === selectedLocation;
@@ -71,20 +73,12 @@ export const LatestProfiles = () => {
       try {
         setIsLoading(true);
         setError(null);
-
         const response = await fetch("/api/profiles");
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
         const data = await response.json();
         const filteredData = filterProfiles(data);
         const sortedData = sortProfiles(filteredData);
-
         setProfiles(sortedData);
       } catch (error) {
-        console.error("Error fetching profiles:", error);
         setError(
           error instanceof Error ? error.message : "Unknown error occurred"
         );

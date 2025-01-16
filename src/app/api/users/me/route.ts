@@ -16,6 +16,7 @@ export async function GET() {
     }
 
     const userProfile = await User.findOne({ email: session.user.email });
+    console.log("📱 Pobrane dane użytkownika:", userProfile);
 
     if (!userProfile) {
       return NextResponse.json(
@@ -34,8 +35,12 @@ export async function GET() {
       height: userProfile.height,
       gender: userProfile.gender,
       bio: userProfile.bio,
+      isPublicProfile: userProfile.isPublicProfile,
+      settings: userProfile.settings,
+      socialMedia: userProfile.socialMedia,
     });
   } catch (error) {
+    console.error("❌ Błąd podczas pobierania profilu:", error);
     return NextResponse.json(
       { message: "Failed to fetch profile" },
       { status: 500 }
