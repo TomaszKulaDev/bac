@@ -1,6 +1,8 @@
 import { Suspense } from "react";
-import { jsonLd } from "./page.metadata";
+import { metadata, jsonLd } from "./page.metadata";
 import Loading from "./loading";
+
+export { metadata };
 
 export default function PartnerSearchLayout({
   children,
