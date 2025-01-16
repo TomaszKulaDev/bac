@@ -65,7 +65,7 @@ export const NavContent: React.FC = React.memo(function NavContent() {
               <div className="flex items-center gap-4">
                 <span className="flex items-center gap-1">
                   <FaCalendarAlt className="w-2.5 h-2.5" />
-                  Najbliższe wydarzenie: Warsaw Salsa Festival (15.04)
+                  Najbliższe wydarzenie: Warsaw Bachata Festival (15.04)
                 </span>
                 <span className="hidden sm:flex items-center gap-1">
                   <FaUsers className="w-2.5 h-2.5" />
