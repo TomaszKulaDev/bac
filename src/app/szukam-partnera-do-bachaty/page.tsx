@@ -1,6 +1,6 @@
 "use client";
 
-import { HeroSection } from "./components/HeroSection";
+// import { HeroSection } from "./components/HeroSection";
 import { LatestProfiles } from "./components/LatestProfiles";
 import { FilterProvider } from "./context/FilterContext";
 import { PromoBanner } from "./components/PromoBanner";
