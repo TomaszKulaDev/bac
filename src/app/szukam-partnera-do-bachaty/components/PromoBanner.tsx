@@ -45,14 +45,14 @@ export function PromoBanner() {
             <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl drop-shadow-sm">
               Bachata łączy ludzi
             </h2>
-            <h3 className="mt-4 text-lg text-white/90">
+            <p className="mt-4 text-lg text-white/90">
               Szukasz Partnera do Bachaty? | Znajdź Partnerkę w Swojej Okolicy!
               <br />
               Poznaj innych pasjonatów Bachaty i umów się na wspólne lekcje,
               <br />
               praktisy inne wydarzenia taneczne. <br />
               <br /> Rozwijaj swoją pasję w tanecznym towarzystwie!
-            </h3>
+            </p>
             <div className="mt-8 flex flex-wrap items-center gap-4 sm:gap-6">
               <Link
                 href="/rejestracja"
