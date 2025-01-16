@@ -32,8 +32,8 @@ export function PromoBanner() {
       </div>
 
       <div className="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl lg:mx-0">
-          <div className="lg:max-w-lg">
+        <div className="mx-auto max-w-4xl lg:mx-0">
+          <div className="lg:max-w-2xl">
             <div
               className="mb-6 inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-sm text-white backdrop-blur-sm"
               aria-label="Liczba aktywnych użytkowników"
@@ -49,8 +49,9 @@ export function PromoBanner() {
               Szukasz Partnera do Bachaty? | Znajdź Partnerkę w Swojej Okolicy!
               <br />
               Poznaj innych pasjonatów Bachaty i umów się na wspólne lekcje,
-              praktisy inne wydarzenia taneczne. <br /> Rozwijaj swoją pasję w
-              tanecznym towarzystwie!
+              <br />
+              praktisy inne wydarzenia taneczne. <br />
+              <br /> Rozwijaj swoją pasję w tanecznym towarzystwie!
             </h3>
             <div className="mt-8 flex flex-wrap items-center gap-4 sm:gap-6">
               <Link

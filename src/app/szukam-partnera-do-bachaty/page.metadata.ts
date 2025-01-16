@@ -17,7 +17,7 @@ export const metadata: Metadata = {
       "Znajdź idealnego partnera do bachaty w swojej okolicy. Dołącz do społeczności 2500+ aktywnych tancerzy w Polsce!",
     images: [
       {
-        url: "/images/og-image.jpg",
+        url: "/images/szukam-partnera-do-bachaty.webp",
         width: 1200,
         height: 630,
         alt: "Szukam Partnera do Bachaty - społeczność tancerzy",
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Szukam Partnera do Bachaty",
     description: "Znajdź idealnego partnera do Bachaty w swojej okolicy",
-    images: ["/images/og-image.jpg"],
+    images: ["/images/szukam-partnera-do-bachaty.webp"],
     creator: "@baciata_pl",
   },
   alternates: {
