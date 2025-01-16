@@ -50,7 +50,7 @@ export function PromoBanner() {
               <br />
               Poznaj innych pasjonatów Bachaty i umów się na wspólne lekcje,
               praktisy inne wydarzenia taneczne. <br /> Rozwijaj swoją pasję w
-              dobrym towarzystwie!
+              tanecznym towarzystwie!
             </h3>
             <div className="mt-8 flex flex-wrap items-center gap-4 sm:gap-6">
               <Link
