@@ -10,6 +10,8 @@ import {
   FaGraduationCap,
   FaBell,
   FaEnvelope,
+  FaSearch,
+  FaCompass,
 } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { logout, login } from "../store/slices/authSlice";
@@ -20,6 +22,7 @@ import { NavbarSkeleton } from "./NavbarSkeleton";
 import { useNavigation } from "@/hooks/useNavigation";
 import { useSession } from "next-auth/react";
 import { useRouter, usePathname } from "next/navigation";
+import { motion } from "framer-motion";
 
 export const NavContent: React.FC = React.memo(function NavContent() {
   const {
@@ -32,16 +35,18 @@ export const NavContent: React.FC = React.memo(function NavContent() {
   const { data: session } = useSession();
   const router = useRouter();
   const pathname = usePathname();
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
 
   const menuItems = [
     {
       href: "/szukam-partnera-do-bachaty",
-      label: "Szukam Partnera",
+      label: "Społeczność",
       icon: FaUsers,
+      badge: "2137",
     },
     {
       href: "/instruktorzy-bachaty",
-      label: "Instruktorzy Bachaty",
+      label: "Instruktorzy",
       icon: FaGraduationCap,
     },
     {
@@ -50,47 +55,20 @@ export const NavContent: React.FC = React.memo(function NavContent() {
       icon: FaMusic,
       badge: "Nowe",
     },
+    {
+      href: "/odkrywaj",
+      label: "Odkrywaj",
+      icon: FaCompass,
+    },
   ];
 
   return (
     <>
-      {/* Zmniejszony spacer dla nawigacji */}
-      <div className="h-[88px]" /> {/* 24px (top bar) + 64px (main nav) */}
-      {/* Nawigacja z cieńszym górnym paskiem */}
+      <div className="h-16" /> {/* Zmniejszony spacer */}
       <div className="fixed top-0 left-0 right-0 z-[100]">
-        {/* Cieńszy górny pasek */}
-        <div className="bg-gradient-to-r from-amber-500 to-amber-600 text-white h-6">
-          <div className="max-w-[1200px] mx-auto px-4 h-full">
-            <div className="flex items-center justify-between text-[11px] h-full">
-              <div className="flex items-center gap-4">
-                <span className="flex items-center gap-1">
-                  <FaCalendarAlt className="w-2.5 h-2.5" />
-                  Najbliższe wydarzenie: Warsaw Bachata Festival (15.04)
-                </span>
-                <span className="hidden sm:flex items-center gap-1">
-                  <FaUsers className="w-2.5 h-2.5" />
-                  2137 tancerzy online
-                </span>
-              </div>
-              <div className="flex items-center gap-4">
-                <Link
-                  href="/szukam-partnera-do-bachaty/faq"
-                  className="hover:underline"
-                >
-                  Pomoc
-                </Link>
-                <Link href="/kontakt" className="hover:underline">
-                  Kontakt
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Główna nawigacja */}
-        <div className="bg-white border-b border-gray-100 shadow-sm h-16">
-          <div className="max-w-[1200px] mx-auto">
-            <div className="flex items-center justify-between h-16 px-4">
+        <div className="bg-white border-b border-gray-200 shadow-sm">
+          <div className="max-w-[1920px] mx-auto">
+            <div className="flex items-center justify-between h-16 px-4 lg:px-8">
               {/* Logo */}
               <Link href="/" className="flex items-center gap-3 group">
                 <div className="relative">
@@ -109,6 +87,20 @@ export const NavContent: React.FC = React.memo(function NavContent() {
                 </div>
               </Link>
 
+              {/* Search Bar - New */}
+              <div className="hidden lg:block max-w-xs w-full mx-4">
+                <div className="relative">
+                  <input
+                    type="text"
+                    placeholder="Szukaj tancerzy, szkół, wydarzeń..."
+                    className="w-full bg-gray-100 rounded-full pl-10 pr-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 focus:bg-white transition-all"
+                    onFocus={() => setIsSearchFocused(true)}
+                    onBlur={() => setIsSearchFocused(false)}
+                  />
+                  <FaSearch className="absolute left-3 top-2.5 text-gray-400 w-4 h-4" />
+                </div>
+              </div>
+
               {/* Menu główne - desktop */}
               <div className="hidden md:flex items-center gap-1 flex-1 justify-center max-w-2xl">
                 {menuItems.map((item) => (
@@ -119,11 +111,11 @@ export const NavContent: React.FC = React.memo(function NavContent() {
                       ${
                         pathname === item.href
                           ? "text-amber-600 bg-amber-50"
-                          : "text-gray-700 hover:bg-gray-100 hover:text-amber-600"
+                          : "text-gray-700 hover:bg-gray-50 hover:text-amber-600"
                       }`}
                   >
                     <span className="flex items-center gap-2">
-                      {item.icon && <item.icon className="w-4 h-4" />}
+                      <item.icon className="w-4 h-4" />
                       {item.label}
                       {item.badge && (
                         <span className="px-1.5 py-0.5 text-[10px] font-medium bg-amber-500 text-white rounded-full">
@@ -131,14 +123,12 @@ export const NavContent: React.FC = React.memo(function NavContent() {
                         </span>
                       )}
                     </span>
-                    <span
-                      className={`absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-amber-500 rounded-full transition-opacity
-                        ${
-                          pathname === item.href
-                            ? "opacity-100"
-                            : "opacity-0 group-hover:opacity-100"
-                        }`}
-                    />
+                    {pathname === item.href && (
+                      <motion.div
+                        layoutId="activeTab"
+                        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 bg-amber-500 rounded-full"
+                      />
+                    )}
                   </Link>
                 ))}
               </div>
@@ -147,13 +137,11 @@ export const NavContent: React.FC = React.memo(function NavContent() {
               <div className="hidden md:flex items-center gap-3">
                 {isAuthenticated && user ? (
                   <div className="flex items-center gap-4">
-                    {/* Powiadomienia */}
                     <button className="relative p-2 text-gray-500 hover:text-amber-600 transition-colors">
                       <FaBell className="w-5 h-5" />
                       <span className="absolute top-0.5 right-0.5 w-2 h-2 bg-red-500 rounded-full" />
                     </button>
 
-                    {/* Wiadomości */}
                     <button className="relative p-2 text-gray-500 hover:text-amber-600 transition-colors">
                       <FaEnvelope className="w-5 h-5" />
                       <span className="absolute top-0.5 right-0.5 w-2 h-2 bg-red-500 rounded-full" />
@@ -185,7 +173,7 @@ export const NavContent: React.FC = React.memo(function NavContent() {
                 )}
               </div>
 
-              {/* Przycisk mobilny z animacją */}
+              {/* Mobile menu button */}
               <button
                 className="md:hidden relative w-10 h-10 text-gray-500 hover:text-gray-700 rounded-lg transition-colors focus:outline-none"
                 onClick={handleMobileMenu}
@@ -221,7 +209,7 @@ export const NavContent: React.FC = React.memo(function NavContent() {
           </div>
         </div>
       </div>
-      {/* Menu mobilne z poprawionym z-index */}
+      {/* Mobile menu */}
       <div
         className={`fixed inset-0 bg-black/50 z-[101] transition-opacity duration-300 md:hidden
           ${
