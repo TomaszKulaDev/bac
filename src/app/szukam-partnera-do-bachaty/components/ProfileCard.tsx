@@ -1,18 +1,32 @@
-import { memo } from "react";
+import { memo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { FaMapMarkerAlt, FaRuler, FaHeart } from "react-icons/fa";
 import { UserProfile } from "@/types/user";
+import { ProfileActionButton } from "./buttons/ProfileActionButtons";
+import { toast } from "react-toastify";
 
 interface ProfileCardProps {
   profile: UserProfile;
   index: number;
   onStylesClick: (styles: string[]) => void;
+  onLike?: (profileId: string) => void;
+  onShare?: (profileId: string) => void;
+  onMessage?: (profileId: string) => void;
+  isLiked?: boolean;
 }
 
 const ProfileCard = memo(
-  ({ profile, index, onStylesClick }: ProfileCardProps) => {
+  ({
+    profile,
+    index,
+    onStylesClick,
+    onLike,
+    onShare,
+    onMessage,
+    isLiked,
+  }: ProfileCardProps) => {
     const renderStyles = (styles: string[]) => {
       if (!styles || styles.length === 0) return null;
 
@@ -45,6 +59,11 @@ const ProfileCard = memo(
         </div>
       );
     };
+
+    const [isBookmarked, setIsBookmarked] = useState(false);
+    const [isFavorite, setIsFavorite] = useState(false);
+    const [isFollowing, setIsFollowing] = useState(false);
+    const [isWantToDance, setIsWantToDance] = useState(false);
 
     return (
       <motion.div
@@ -101,19 +120,19 @@ const ProfileCard = memo(
           </div>
         </Link>
 
-        <button
-          className="absolute top-2 right-2 p-1.5 rounded-full 
-                  bg-white/90 backdrop-blur-sm hover:bg-white 
-                  transition-colors z-20"
-          onClick={(e) => {
-            e.stopPropagation();
+        <ProfileActionButton
+          profileId={profile.id}
+          isWantToDance={isWantToDance}
+          onWantToDance={() => {
+            setIsWantToDance(!isWantToDance);
+            toast.success(
+              isWantToDance
+                ? "Anulowano zaproszenie do tańca"
+                : "Wysłano zaproszenie do tańca! 💃🕺"
+            );
           }}
-        >
-          <FaHeart
-            className="w-3.5 h-3.5 text-gray-400 hover:text-red-500 
-                           transition-colors"
-          />
-        </button>
+          className="absolute top-2 right-2"
+        />
       </motion.div>
     );
   }
