@@ -13,7 +13,7 @@ export function PromoBanner() {
         <div className="absolute -right-1/4 inset-y-0 w-[125%]">
           <div className="relative w-full h-full">
             <Image
-              src="/images/Hero-szukam-partnera-do-tanca.webp"
+              src="/images/Hero-szukam-partnera-do-bachaty.webp"
               alt="Para tańcząca bachatę podczas zajęć tanecznych"
               fill
               priority
