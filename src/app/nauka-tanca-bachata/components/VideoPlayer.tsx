@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
+import { LoopSectionControl } from "./controls";
 
 interface VideoPlayerProps {
   url: string;
@@ -9,6 +10,7 @@ interface VideoPlayerProps {
   loopSection: [number, number] | null;
   onProgress: (progress: number) => void;
   onDurationChange: (duration: number) => void;
+  onLoopSectionChange: (section: [number, number] | null) => void;
 }
 
 export const VideoPlayer: React.FC<VideoPlayerProps> = ({
@@ -18,6 +20,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
   loopSection,
   onProgress,
   onDurationChange,
+  onLoopSectionChange,
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -26,6 +29,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
   const [duration, setDuration] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isControlsVisible, setIsControlsVisible] = useState(false);
+  const [isAdjustingLoop, setIsAdjustingLoop] = useState(false);
 
   // Inicjalizacja wideo
   useEffect(() => {
@@ -49,16 +53,26 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
   // Aktualizacja czasu i postępu
   const handleTimeUpdate = useCallback(() => {
     if (videoRef.current) {
-      setCurrentTime(videoRef.current.currentTime);
-      onProgress(videoRef.current.currentTime);
+      const time = videoRef.current.currentTime;
+      setCurrentTime(time);
+      onProgress(time);
     }
   }, [onProgress]);
+
+  // Obsługa przewijania
+  const handleSeek = useCallback((newTime: number) => {
+    if (videoRef.current) {
+      videoRef.current.currentTime = newTime;
+      setCurrentTime(newTime);
+    }
+  }, []);
 
   // Obsługa załadowania metadanych
   const handleLoadedMetadata = useCallback(() => {
     if (videoRef.current) {
-      setDuration(videoRef.current.duration);
-      onDurationChange(videoRef.current.duration);
+      const duration = videoRef.current.duration;
+      setDuration(duration);
+      onDurationChange(duration);
     }
   }, [onDurationChange]);
 
@@ -141,8 +155,18 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
     }
   }, [loopSection]);
 
+  // Dodajmy handler dla zmiany stanu adjusting
+  const handleLoopAdjustingChange = (adjusting: boolean) => {
+    setIsAdjustingLoop(adjusting);
+  };
+
   return (
-    <div ref={containerRef} className="relative w-full h-full group">
+    <div
+      ref={containerRef}
+      className="relative w-full h-full group"
+      onMouseEnter={() => setIsControlsVisible(true)}
+      onMouseLeave={() => !isAdjustingLoop && setIsControlsVisible(false)}
+    >
       <video
         ref={videoRef}
         className={`w-full h-full ${mirror ? "scale-x-[-1]" : ""}`}
@@ -183,7 +207,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
       {/* Dolny pasek kontrolek */}
       <div
         className={`video-controls-container ${
-          isControlsVisible ? "show-controls" : ""
+          isControlsVisible || isAdjustingLoop ? "show-controls" : ""
         }`}
       >
         <div className="flex items-center gap-4 text-white">
@@ -239,11 +263,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
                 min={0}
                 max={duration}
                 value={currentTime}
-                onChange={(e) => {
-                  if (videoRef.current) {
-                    videoRef.current.currentTime = Number(e.target.value);
-                  }
-                }}
+                onChange={(e) => handleSeek(Number(e.target.value))}
                 className="absolute w-full h-1 bg-white/30 rounded-full appearance-none cursor-pointer z-10
                   [&::-webkit-slider-thumb]:appearance-none 
                   [&::-webkit-slider-thumb]:w-3 
@@ -276,6 +296,13 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
               </svg>
             )}
           </button>
+
+          <LoopSectionControl
+            value={loopSection}
+            onChange={onLoopSectionChange}
+            duration={duration}
+            onAdjustingChange={setIsAdjustingLoop}
+          />
         </div>
       </div>
     </div>

@@ -8,7 +8,6 @@ import { ResourceList } from "./ResourceList";
 import { VideoPlayer } from "./VideoPlayer";
 import { SpeedControl } from "./controls/SpeedControl";
 import { MirrorToggle } from "./controls/MirrorToggle";
-import { LoopSectionControl } from "./controls/LoopSectionControl";
 
 interface LessonViewProps {
   lesson: Lesson;
@@ -92,6 +91,7 @@ export const LessonView: React.FC<LessonViewProps> = ({ lesson }) => {
               loopSection={loopSection}
               onProgress={handleProgress}
               onDurationChange={handleDurationChange}
+              onLoopSectionChange={setLoopSection}
             />
           </div>
 
@@ -99,11 +99,6 @@ export const LessonView: React.FC<LessonViewProps> = ({ lesson }) => {
           <div className="flex flex-wrap gap-4">
             <SpeedControl value={speed} onChange={handleSpeedChange} />
             <MirrorToggle value={mirror} onChange={handleMirrorChange} />
-            <LoopSectionControl
-              value={loopSection}
-              onChange={setLoopSection}
-              duration={videoDuration}
-            />
           </div>
         </div>
 

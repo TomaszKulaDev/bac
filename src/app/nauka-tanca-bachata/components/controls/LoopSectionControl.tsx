@@ -1,19 +1,41 @@
+import React, { useState } from "react";
+
 interface LoopSectionControlProps {
   value: [number, number] | null;
   onChange: (section: [number, number] | null) => void;
   duration: number;
+  onAdjustingChange?: (isAdjusting: boolean) => void;
 }
 
 export const LoopSectionControl: React.FC<LoopSectionControlProps> = ({
   value,
   onChange,
   duration,
+  onAdjustingChange,
 }) => {
+  const [isAdjusting, setIsAdjusting] = useState(false);
+
+  const handleRangeChange = (type: "start" | "end", newValue: number) => {
+    if (value) {
+      onChange(type === "start" ? [newValue, value[1]] : [value[0], newValue]);
+    }
+  };
+
+  const handleAdjustingStart = () => {
+    onAdjustingChange?.(true);
+  };
+
+  const handleAdjustingEnd = () => {
+    onAdjustingChange?.(false);
+  };
+
   return (
     <div className="flex items-center gap-4">
       <button
         onClick={() => onChange(value ? null : [0, duration])}
         className={`video-control-button ${value ? "active" : ""}`}
+        onMouseEnter={handleAdjustingStart}
+        onMouseLeave={handleAdjustingEnd}
       >
         <svg viewBox="0 0 24 24" stroke="currentColor">
           <path
@@ -27,13 +49,19 @@ export const LoopSectionControl: React.FC<LoopSectionControlProps> = ({
       </button>
 
       {value && (
-        <div className="loop-controls">
+        <div
+          className="loop-controls"
+          onMouseEnter={handleAdjustingStart}
+          onMouseLeave={handleAdjustingEnd}
+        >
           <input
             type="range"
             min={0}
             max={duration}
             value={value[0]}
-            onChange={(e) => onChange([Number(e.target.value), value[1]])}
+            onChange={(e) => handleRangeChange("start", Number(e.target.value))}
+            onMouseDown={handleAdjustingStart}
+            onMouseUp={handleAdjustingEnd}
             className="video-range-input"
           />
           <span>do</span>
@@ -42,7 +70,9 @@ export const LoopSectionControl: React.FC<LoopSectionControlProps> = ({
             min={0}
             max={duration}
             value={value[1]}
-            onChange={(e) => onChange([value[0], Number(e.target.value)])}
+            onChange={(e) => handleRangeChange("end", Number(e.target.value))}
+            onMouseDown={handleAdjustingStart}
+            onMouseUp={handleAdjustingEnd}
             className="video-range-input"
           />
         </div>

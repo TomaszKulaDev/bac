@@ -3,7 +3,6 @@ import { VideoPlayer } from "./VideoPlayer";
 import { CountdownTimer } from "./controls/CountdownTimer";
 import { SpeedControl } from "./controls/SpeedControl";
 import { MirrorToggle } from "./controls/MirrorToggle";
-import { LoopSectionControl } from "./controls/LoopSectionControl";
 import { PracticeExercise } from "./controls/PracticeExercise";
 import { Lesson } from "../types";
 
@@ -57,6 +56,7 @@ export const PracticeMode: React.FC<PracticeModeProps> = ({
             loopSection={loopSection}
             onProgress={handleProgress}
             onDurationChange={handleDurationChange}
+            onLoopSectionChange={setLoopSection}
           />
         )}
       </div>
@@ -64,11 +64,6 @@ export const PracticeMode: React.FC<PracticeModeProps> = ({
       <div className="flex flex-wrap gap-4">
         <SpeedControl value={speed} onChange={setSpeed} />
         <MirrorToggle value={showMirror} onChange={setShowMirror} />
-        <LoopSectionControl
-          value={loopSection}
-          onChange={setLoopSection}
-          duration={videoDuration}
-        />
       </div>
 
       {lesson.practiceExercises && (

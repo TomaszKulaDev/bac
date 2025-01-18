@@ -458,7 +458,8 @@ select optgroup {
   @apply flex items-center gap-3 px-4 py-2
          bg-white/95 rounded-full 
          border border-gray-100
-         shadow-sm backdrop-blur-sm;
+         shadow-sm backdrop-blur-sm
+         transition-all duration-300;
 }
 
 .loop-controls .video-range-input {
@@ -522,24 +523,17 @@ select option {
   @apply absolute bottom-0 left-0 right-0 
          bg-gradient-to-t from-black/70 to-transparent 
          p-4 
-         opacity-0 transition-opacity duration-300;
+         opacity-0 
+         transition-opacity duration-300;
 }
 
-/* Pokazujemy kontrolki przy hover lub gdy są aktywne kontrolki zapętlenia */
-.video-controls-container.show-controls,
-.group:hover .video-controls-container {
+/* Pokazujemy kontrolki tylko podczas hovera lub adjustowania */
+.video-controls-container.show-controls {
   @apply opacity-100;
 }
 
-/* Modyfikacja istniejących styli dla loop-controls */
-.loop-controls {
-  @apply flex items-center gap-3 px-4 py-2
-         bg-white/95 rounded-full 
-         border border-gray-100
-         shadow-sm backdrop-blur-sm;
-}
-
-.loop-controls:focus-within ~ .video-controls-container,
-.loop-controls:hover ~ .video-controls-container {
-  @apply opacity-100;
+/* Ukrywamy kontrolki gdy nie ma interakcji */
+.video-player-container:not(:hover)
+  .video-controls-container:not(.show-controls) {
+  @apply opacity-0;
 }
