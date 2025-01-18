@@ -160,7 +160,11 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
             <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
           </svg>
         ) : (
-          <svg className="w-12 h-12 ml-1" fill="currentColor" viewBox="0 0 24 24">
+          <svg
+            className="w-12 h-12 ml-1"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
             <path d="M8 5v14l11-7z" />
           </svg>
         )}
