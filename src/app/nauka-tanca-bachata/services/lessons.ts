@@ -6,8 +6,36 @@ const mockLesson: Lesson = {
   title: "Podstawowe kroki bachaty",
   description:
     "W tej lekcji nauczysz się podstawowych kroków bachaty, które są fundamentem tego tańca.",
-  videoUrl:
-    "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+  videos: [
+    {
+      id: "1",
+      title: "Podstawowy krok - widok z przodu",
+      description:
+        "Zobacz dokładnie jak wykonać podstawowy krok z perspektywy frontalnej",
+      videoUrl:
+        "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+      perspective: "front",
+      instructor: "Anna Kowalska",
+    },
+    {
+      id: "2",
+      title: "Podstawowy krok - widok z tyłu",
+      description: "Zobacz ruch nóg i bioder z perspektywy tylnej",
+      videoUrl:
+        "https://storage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+      perspective: "back",
+      instructor: "Jan Nowak",
+    },
+    {
+      id: "3",
+      title: "Technika bioder - szczegóły",
+      description: "Szczegółowe wyjaśnienie techniki ruchu bioder",
+      videoUrl:
+        "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+      perspective: "detail",
+      instructor: "Maria Wiśniewska",
+    },
+  ],
   duration: "15 min",
   thumbnail: "/images/lesson-1-thumb.jpg",
   practiceExercises: [

@@ -21,38 +21,43 @@ export const PracticeMode: React.FC<PracticeModeProps> = ({
   const [showCountdown, setShowCountdown] = useState(true);
   const [loopSection, setLoopSection] = useState<[number, number] | null>(null);
   const [videoDuration, setVideoDuration] = useState(0);
+  const [selectedVideo, setSelectedVideo] = useState(lesson.videos[0]);
 
   const handleProgress = useCallback((progress: number) => {
-    // Implementacja śledzenia postępu
     console.log("Progress:", progress);
   }, []);
 
-  const startPractice = useCallback(() => {
-    setShowCountdown(false);
+  const handleDurationChange = useCallback((duration: number) => {
+    setVideoDuration(duration);
   }, []);
 
-  const handleExerciseComplete = useCallback((exerciseId: string) => {
-    // Implementacja zakończenia ćwiczenia
-    console.log("Exercise completed:", exerciseId);
-    // Tutaj możemy dodać logikę zapisywania postępu
-  }, []);
+  const handleExerciseComplete = useCallback(
+    (exerciseId: string) => {
+      console.log("Exercise completed:", exerciseId);
+      onComplete();
+    },
+    [onComplete]
+  );
 
   return (
     <div className="space-y-6">
-      <div className="relative aspect-video bg-black rounded-lg overflow-hidden">
-        <VideoPlayer
-          url={lesson.videoUrl}
-          speed={speed}
-          mirror={showMirror}
-          loopSection={loopSection}
-          onProgress={handleProgress}
-          onDurationChange={setVideoDuration}
-        />
-
-        {showCountdown && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black/50">
-            <CountdownTimer onComplete={startPractice} />
+      <div className="aspect-video bg-black rounded-lg overflow-hidden">
+        {showCountdown ? (
+          <div className="w-full h-full flex items-center justify-center">
+            <CountdownTimer
+              onComplete={() => setShowCountdown(false)}
+              initialTime={3}
+            />
           </div>
+        ) : (
+          <VideoPlayer
+            url={selectedVideo.videoUrl}
+            speed={speed}
+            mirror={showMirror}
+            loopSection={loopSection}
+            onProgress={handleProgress}
+            onDurationChange={handleDurationChange}
+          />
         )}
       </div>
 

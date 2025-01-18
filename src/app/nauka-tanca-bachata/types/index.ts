@@ -26,7 +26,14 @@ export interface Lesson {
   id: string;
   title: string;
   description: string;
-  videoUrl: string;
+  videos: {
+    id: string;
+    title: string;
+    description: string;
+    videoUrl: string;
+    perspective: "front" | "back" | "side" | "detail";
+    instructor: string;
+  }[];
   duration: string;
   thumbnail: string;
   isCompleted?: boolean;
