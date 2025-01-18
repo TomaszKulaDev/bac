@@ -7,7 +7,7 @@ export const SpeedControl: React.FC<SpeedControlProps> = ({
   value,
   onChange,
 }) => {
-  const speeds = [0.5, 0.75, 1, 1.25, 1.5];
+  const speeds = [0.25, 0.35, 0.5, 0.75, 1, 1.25, 1.5];
 
   return (
     <div className="flex items-center gap-2">

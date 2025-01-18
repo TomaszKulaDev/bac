@@ -94,10 +94,25 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
     };
   }, []);
 
-  // Dodaj efekt dla zmiany prędkości
+  // Dodaj efekt dla zmiany prędkości z dodatkową logiką dla wolnych prędkości
   useEffect(() => {
     if (videoRef.current) {
       videoRef.current.playbackRate = speed;
+
+      // Dla bardzo wolnych prędkości warto dodać dodatkowe ustawienia
+      if (speed < 0.5) {
+        // Popraw jakość klatek dla wolnego odtwarzania
+        videoRef.current.style.imageRendering = "auto";
+        // Możemy też dodać interpolację klatek jeśli przeglądarka to wspiera
+        if ("preservesPitch" in videoRef.current) {
+          videoRef.current.preservesPitch = true;
+        }
+      } else {
+        videoRef.current.style.imageRendering = "";
+        if ("preservesPitch" in videoRef.current) {
+          videoRef.current.preservesPitch = false;
+        }
+      }
     }
   }, [speed]);
 
