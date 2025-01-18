@@ -56,8 +56,8 @@ export const NavContent: React.FC = React.memo(function NavContent() {
       badge: "Nowe",
     },
     {
-      href: "/odkrywaj",
-      label: "Odkrywaj",
+      href: "/bachata-nauka-tanca",
+      label: "Nauka tańca",
       icon: FaCompass,
     },
   ];
@@ -228,12 +228,13 @@ export const NavContent: React.FC = React.memo(function NavContent() {
               {[
                 {
                   href: "/szukam-partnera-do-bachaty",
-                  label: "Szukam Partnera",
+                  label: "Społeczność",
                   icon: FaUsers,
+                  badge: "2137",
                 },
                 {
                   href: "/instruktorzy-bachaty",
-                  label: "Instruktorzy Bachaty",
+                  label: "Instruktorzy",
                   icon: FaGraduationCap,
                 },
                 {
@@ -243,20 +244,9 @@ export const NavContent: React.FC = React.memo(function NavContent() {
                   badge: "Nowe",
                 },
                 {
-                  href: "/taneczne-historie",
-                  label: "Historie",
-                  icon: FaBook,
-                },
-                {
-                  href: "/wydarzenia",
-                  label: "Wydarzenia",
-                  icon: FaCalendarAlt,
-                  badge: "3",
-                },
-                {
-                  href: "/szkoly",
-                  label: "Szkoły",
-                  icon: FaGraduationCap,
+                  href: "/bachata-nauka-tanca",
+                  label: "Nauka tańca",
+                  icon: FaCompass,
                 },
               ].map((item) => (
                 <Link
@@ -284,7 +274,7 @@ export const NavContent: React.FC = React.memo(function NavContent() {
               {isAuthenticated ? (
                 <div className="space-y-2">
                   <Link
-                    href="/profil"
+                    href="/profile/edit"
                     className="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg transition-colors"
                   >
                     <div className="w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center">
