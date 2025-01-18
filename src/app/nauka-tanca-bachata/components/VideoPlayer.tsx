@@ -30,6 +30,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isControlsVisible, setIsControlsVisible] = useState(false);
   const [isAdjustingLoop, setIsAdjustingLoop] = useState(false);
+  const progressBarRef = useRef<HTMLDivElement>(null);
 
   // Inicjalizacja wideo
   useEffect(() => {
@@ -234,26 +235,137 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
                 <>
                   {/* Zakres zapętlenia */}
                   <div
-                    className="loop-range"
-                    style={{
-                      left: `${(loopSection[0] / duration) * 100}%`,
-                      width: `${
-                        ((loopSection[1] - loopSection[0]) / duration) * 100
-                      }%`,
-                    }}
-                  />
-                  {/* Znacznik początku */}
-                  <div
-                    className="loop-marker"
-                    style={{ left: `${(loopSection[0] / duration) * 100}%` }}
-                    data-time={formatTime(loopSection[0])}
-                  />
-                  {/* Znacznik końca */}
-                  <div
-                    className="loop-marker"
-                    style={{ left: `${(loopSection[1] / duration) * 100}%` }}
-                    data-time={formatTime(loopSection[1])}
-                  />
+                    ref={progressBarRef}
+                    className="relative flex-1 h-1 group"
+                  >
+                    <div
+                      className="loop-range"
+                      style={{
+                        left: `${(loopSection[0] / duration) * 100}%`,
+                        width: `${
+                          ((loopSection[1] - loopSection[0]) / duration) * 100
+                        }%`,
+                      }}
+                    />
+                    {/* Znacznik początku - poprawione przeciąganie */}
+                    <div
+                      className="loop-marker"
+                      style={{ left: `${(loopSection[0] / duration) * 100}%` }}
+                      data-time={formatTime(loopSection[0])}
+                      onMouseDown={(e) => {
+                        const handleDrag = (moveEvent: MouseEvent) => {
+                          const rect =
+                            progressBarRef.current?.getBoundingClientRect();
+                          if (rect) {
+                            const x = moveEvent.clientX - rect.left;
+                            const newTime = Math.max(
+                              0,
+                              Math.min(
+                                (x / rect.width) * duration,
+                                loopSection[1]
+                              )
+                            );
+                            onLoopSectionChange([newTime, loopSection[1]]);
+                          }
+                        };
+
+                        const handleDragEnd = () => {
+                          document.removeEventListener("mousemove", handleDrag);
+                          document.removeEventListener(
+                            "mouseup",
+                            handleDragEnd
+                          );
+                        };
+
+                        document.addEventListener("mousemove", handleDrag);
+                        document.addEventListener("mouseup", handleDragEnd);
+                      }}
+                      onTouchStart={(e) => {
+                        const handleDrag = (moveEvent: TouchEvent) => {
+                          const rect =
+                            progressBarRef.current?.getBoundingClientRect();
+                          if (rect) {
+                            const x = moveEvent.touches[0].clientX - rect.left;
+                            const newTime = Math.max(
+                              0,
+                              Math.min(
+                                (x / rect.width) * duration,
+                                loopSection[1]
+                              )
+                            );
+                            onLoopSectionChange([newTime, loopSection[1]]);
+                          }
+                        };
+
+                        const handleDragEnd = () => {
+                          document.removeEventListener("touchmove", handleDrag);
+                          document.removeEventListener(
+                            "touchend",
+                            handleDragEnd
+                          );
+                        };
+
+                        document.addEventListener("touchmove", handleDrag);
+                        document.addEventListener("touchend", handleDragEnd);
+                      }}
+                    />
+                    {/* Znacznik końca - poprawione przeciąganie */}
+                    <div
+                      className="loop-marker"
+                      style={{ left: `${(loopSection[1] / duration) * 100}%` }}
+                      data-time={formatTime(loopSection[1])}
+                      onMouseDown={(e) => {
+                        const handleDrag = (moveEvent: MouseEvent) => {
+                          const rect =
+                            progressBarRef.current?.getBoundingClientRect();
+                          if (rect) {
+                            const x = moveEvent.clientX - rect.left;
+                            const newTime = Math.max(
+                              loopSection[0],
+                              Math.min((x / rect.width) * duration, duration)
+                            );
+                            onLoopSectionChange([loopSection[0], newTime]);
+                          }
+                        };
+
+                        const handleDragEnd = () => {
+                          document.removeEventListener("mousemove", handleDrag);
+                          document.removeEventListener(
+                            "mouseup",
+                            handleDragEnd
+                          );
+                        };
+
+                        document.addEventListener("mousemove", handleDrag);
+                        document.addEventListener("mouseup", handleDragEnd);
+                      }}
+                      onTouchStart={(e) => {
+                        const handleDrag = (moveEvent: TouchEvent) => {
+                          const rect =
+                            progressBarRef.current?.getBoundingClientRect();
+                          if (rect) {
+                            const x = moveEvent.touches[0].clientX - rect.left;
+                            const newTime = Math.max(
+                              loopSection[0],
+                              Math.min((x / rect.width) * duration, duration)
+                            );
+                            onLoopSectionChange([loopSection[0], newTime]);
+                          }
+                        };
+
+                        const handleDragEnd = () => {
+                          document.removeEventListener("touchmove", handleDrag);
+                          document.removeEventListener(
+                            "touchend",
+                            handleDragEnd
+                          );
+                        };
+
+                        document.addEventListener("touchmove", handleDrag);
+                        document.addEventListener("touchend", handleDragEnd);
+                      }}
+                    />
+                  </div>
                 </>
               )}
 
