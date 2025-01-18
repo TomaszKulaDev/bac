@@ -29,6 +29,12 @@ export const LoopSectionControl: React.FC<LoopSectionControlProps> = ({
     onAdjustingChange?.(false);
   };
 
+  const formatTime = (seconds: number): string => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = Math.floor(seconds % 60);
+    return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
+  };
+
   return (
     <div className="flex items-center gap-4">
       <button
@@ -50,10 +56,13 @@ export const LoopSectionControl: React.FC<LoopSectionControlProps> = ({
 
       {value && (
         <div
-          className="loop-controls"
+          className="loop-controls flex items-center gap-2"
           onMouseEnter={handleAdjustingStart}
           onMouseLeave={handleAdjustingEnd}
         >
+          <span className="text-sm text-gray-600 min-w-[45px]">
+            {formatTime(value[0])}
+          </span>
           <input
             type="range"
             min={0}
@@ -64,7 +73,7 @@ export const LoopSectionControl: React.FC<LoopSectionControlProps> = ({
             onMouseUp={handleAdjustingEnd}
             className="video-range-input"
           />
-          <span>do</span>
+          <span className="text-sm text-gray-500">do</span>
           <input
             type="range"
             min={0}
@@ -75,6 +84,9 @@ export const LoopSectionControl: React.FC<LoopSectionControlProps> = ({
             onMouseUp={handleAdjustingEnd}
             className="video-range-input"
           />
+          <span className="text-sm text-gray-600 min-w-[45px]">
+            {formatTime(value[1])}
+          </span>
         </div>
       )}
     </div>
