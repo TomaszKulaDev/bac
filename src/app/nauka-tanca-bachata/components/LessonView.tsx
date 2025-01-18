@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Lesson } from "../types";
 import { PracticeMode } from "./PracticeMode";
 import { LessonDetails } from "./LessonDetails";
@@ -13,6 +13,17 @@ interface LessonViewProps {
 
 export const LessonView: React.FC<LessonViewProps> = ({ lesson }) => {
   const [mode, setMode] = useState<"watch" | "practice">("watch");
+  const [speed, setSpeed] = useState(1);
+  const [mirror, setMirror] = useState(false);
+  const [loopSection, setLoopSection] = useState<[number, number] | null>(null);
+
+  const handleProgress = useCallback((progress: number) => {
+    console.log("Progress:", progress);
+  }, []);
+
+  const handleDurationChange = useCallback((duration: number) => {
+    console.log("Duration:", duration);
+  }, []);
 
   return (
     <div className="space-y-6">
@@ -52,13 +63,11 @@ export const LessonView: React.FC<LessonViewProps> = ({ lesson }) => {
           <div className="aspect-video bg-black rounded-lg overflow-hidden">
             <VideoPlayer
               url={lesson.videoUrl}
-              speed={1}
-              mirror={false}
-              loopSection={null}
-              onProgress={(progress) => console.log("Progress:", progress)}
-              onDurationChange={(duration) =>
-                console.log("Duration:", duration)
-              }
+              speed={speed}
+              mirror={mirror}
+              loopSection={loopSection}
+              onProgress={handleProgress}
+              onDurationChange={handleDurationChange}
             />
           </div>
           <LessonDetails lesson={lesson} />

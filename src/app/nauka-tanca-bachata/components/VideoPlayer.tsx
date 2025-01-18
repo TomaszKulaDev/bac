@@ -22,100 +22,67 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
-  // Przenieś togglePlay do useCallback
-  const togglePlay = useCallback(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    if (isPlaying) {
-      video.pause();
-    } else {
-      video.play();
+  // Inicjalizacja wideo
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.load();
     }
-    setIsPlaying(!isPlaying);
+  }, [url]);
+
+  // Obsługa odtwarzania/pauzy
+  const togglePlay = useCallback(() => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
   }, [isPlaying]);
 
-  // Przenieś toggleFullscreen do useCallback
+  // Aktualizacja czasu i postępu
+  const handleTimeUpdate = useCallback(() => {
+    if (videoRef.current) {
+      setCurrentTime(videoRef.current.currentTime);
+      onProgress(videoRef.current.currentTime);
+    }
+  }, [onProgress]);
+
+  // Obsługa załadowania metadanych
+  const handleLoadedMetadata = useCallback(() => {
+    if (videoRef.current) {
+      setDuration(videoRef.current.duration);
+      onDurationChange(videoRef.current.duration);
+    }
+  }, [onDurationChange]);
+
+  const formatTime = (time: number): string => {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+  };
+
   const toggleFullscreen = useCallback(async () => {
     if (!containerRef.current) return;
 
-    if (!document.fullscreenElement) {
-      try {
+    try {
+      if (!document.fullscreenElement) {
         await containerRef.current.requestFullscreen();
         setIsFullscreen(true);
-      } catch (err) {
-        console.error("Błąd podczas przechodzenia w tryb pełnoekranowy:", err);
+      } else {
+        await document.exitFullscreen();
+        setIsFullscreen(false);
       }
-    } else {
-      await document.exitFullscreen();
-      setIsFullscreen(false);
+    } catch (err) {
+      console.error("Błąd podczas przełączania trybu pełnoekranowego:", err);
     }
   }, []);
 
-  // Zaktualizuj useEffect z zależnościami
-  useEffect(() => {
-    const handleKeyPress = (e: KeyboardEvent) => {
-      switch (e.key.toLowerCase()) {
-        case "f":
-          toggleFullscreen();
-          break;
-        case " ":
-          e.preventDefault();
-          togglePlay();
-          break;
-        case "escape":
-          if (isFullscreen) {
-            document.exitFullscreen();
-          }
-          break;
-      }
-    };
-
-    document.addEventListener("keydown", handleKeyPress);
-    return () => {
-      document.removeEventListener("keydown", handleKeyPress);
-    };
-  }, [isFullscreen, toggleFullscreen, togglePlay]);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    video.playbackRate = speed;
-  }, [speed]);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    const handleLoadedMetadata = () => {
-      onDurationChange(video.duration);
-    };
-
-    const handleTimeUpdate = () => {
-      if (!video) return;
-      onProgress(video.currentTime);
-
-      if (loopSection) {
-        const [start, end] = loopSection;
-        if (video.currentTime >= end) {
-          video.currentTime = start;
-        }
-      }
-    };
-
-    video.addEventListener("loadedmetadata", handleLoadedMetadata);
-    video.addEventListener("timeupdate", handleTimeUpdate);
-
-    return () => {
-      video.removeEventListener("loadedmetadata", handleLoadedMetadata);
-      video.removeEventListener("timeupdate", handleTimeUpdate);
-    };
-  }, [loopSection, onProgress, onDurationChange]);
-
-  // Nasłuchiwanie zmian stanu pełnego ekranu
   useEffect(() => {
     const handleFullscreenChange = () => {
       setIsFullscreen(!!document.fullscreenElement);
@@ -128,98 +95,83 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
   }, []);
 
   return (
-    <div
-      ref={containerRef}
-      className={`relative w-full h-full group video-player-container ${
-        isFullscreen ? "bg-black" : ""
-      }`}
-    >
+    <div ref={containerRef} className="relative w-full h-full group">
       <video
         ref={videoRef}
-        src={url}
-        className={`w-full h-full object-cover ${mirror ? "scale-x-[-1]" : ""}`}
+        className={`w-full h-full ${mirror ? "scale-x-[-1]" : ""}`}
+        onTimeUpdate={handleTimeUpdate}
+        onLoadedMetadata={handleLoadedMetadata}
         onClick={togglePlay}
-      />
+      >
+        <source src={url} type="video/mp4" />
+        Twoja przeglądarka nie obsługuje odtwarzania wideo.
+      </video>
 
       {/* Kontrolki */}
-      <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-        <div className="flex items-center justify-between">
+      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <div className="flex items-center gap-4 text-white">
           <button
             onClick={togglePlay}
-            className="p-2 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
+            className="hover:text-amber-500 transition-colors"
           >
             {isPlaying ? (
-              <PauseIcon className="w-6 h-6 text-white" />
+              <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
+              </svg>
             ) : (
-              <PlayIcon className="w-6 h-6 text-white" />
+              <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z" />
+              </svg>
             )}
           </button>
 
+          <div className="flex-1 flex items-center gap-2">
+            <span className="text-sm">{formatTime(currentTime)}</span>
+            <div className="relative flex-1 h-1 group">
+              <input
+                type="range"
+                min={0}
+                max={duration}
+                value={currentTime}
+                onChange={(e) => {
+                  if (videoRef.current) {
+                    videoRef.current.currentTime = Number(e.target.value);
+                  }
+                }}
+                className="absolute w-full h-1 bg-white/30 rounded-full appearance-none cursor-pointer z-10
+                  [&::-webkit-slider-thumb]:appearance-none 
+                  [&::-webkit-slider-thumb]:w-3 
+                  [&::-webkit-slider-thumb]:h-3 
+                  [&::-webkit-slider-thumb]:rounded-full 
+                  [&::-webkit-slider-thumb]:bg-amber-500
+                  [&::-webkit-slider-thumb]:opacity-0
+                  group-hover:[&::-webkit-slider-thumb]:opacity-100"
+              />
+              <div
+                className="absolute top-0 left-0 h-1 bg-amber-500 rounded-full pointer-events-none"
+                style={{ width: `${(currentTime / duration) * 100}%` }}
+              />
+            </div>
+            <span className="text-sm">{formatTime(duration)}</span>
+          </div>
+
+          {/* Przycisk pełnego ekranu */}
           <button
             onClick={toggleFullscreen}
-            className="p-2 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
+            className="hover:text-amber-500 transition-colors"
           >
-            {isFullscreen ? <ExitFullscreenIcon /> : <EnterFullscreenIcon />}
+            {isFullscreen ? (
+              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z" />
+              </svg>
+            ) : (
+              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z" />
+              </svg>
+            )}
           </button>
         </div>
       </div>
     </div>
   );
 };
-
-// Dodaj ikony dla trybu pełnoekranowego
-const EnterFullscreenIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className="w-6 h-6 text-white"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth={2}
-      d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0 0l-5-5m-11 9v4m0 0h4m-4 0l5-5m11 5h-4m4 0v-4m0 0l-5 5"
-    />
-  </svg>
-);
-
-const ExitFullscreenIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className="w-6 h-6 text-white"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth={2}
-      d="M4 4h4m-4 0v4m16-4h-4m4 0v4M4 20h4m-4 0v-4m16 4h-4m4 0v-4"
-    />
-  </svg>
-);
-
-const PlayIcon = ({ className }: { className?: string }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="currentColor"
-    className={className}
-  >
-    <path d="M8 5v14l11-7z" />
-  </svg>
-);
-
-const PauseIcon = ({ className }: { className?: string }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="currentColor"
-    className={className}
-  >
-    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
-  </svg>
-);

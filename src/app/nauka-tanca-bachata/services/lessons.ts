@@ -7,7 +7,7 @@ const mockLesson: Lesson = {
   description:
     "W tej lekcji nauczysz się podstawowych kroków bachaty, które są fundamentem tego tańca.",
   videoUrl:
-    "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+    "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
   duration: "15 min",
   thumbnail: "/images/lesson-1-thumb.jpg",
   practiceExercises: [

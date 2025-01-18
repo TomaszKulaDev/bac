@@ -394,3 +394,12 @@ select optgroup {
   max-height: 100vh;
   max-width: 100vw;
 }
+
+/* Dodaj style dla paska postępu */
+.video-progress:hover::-webkit-slider-thumb {
+  transform: scale(1.2);
+}
+
+.video-progress::-webkit-slider-thumb {
+  transition: transform 0.15s ease;
+}
