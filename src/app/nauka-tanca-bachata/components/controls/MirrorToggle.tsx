@@ -10,13 +10,17 @@ export const MirrorToggle: React.FC<MirrorToggleProps> = ({
   return (
     <button
       onClick={() => onChange(!value)}
-      className={`px-3 py-1 text-sm font-medium rounded-md transition-colors ${
-        value
-          ? "bg-amber-100 text-amber-700"
-          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-      }`}
+      className={`video-control-button ${value ? "active" : ""}`}
     >
-      Odbicie lustrzane
+      <svg viewBox="0 0 24 24" stroke="currentColor">
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
+        />
+      </svg>
+      <span>{value ? "Odbicie włączone" : "Odbicie wyłączone"}</span>
     </button>
   );
 };

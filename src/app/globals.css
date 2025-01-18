@@ -403,3 +403,71 @@ select optgroup {
 .video-progress::-webkit-slider-thumb {
   transition: transform 0.15s ease;
 }
+
+/* Video Controls Styles */
+.video-control-button {
+  @apply flex items-center gap-2 
+         h-10
+         px-4
+         bg-white/95 rounded-full 
+         border border-gray-100
+         shadow-sm backdrop-blur-sm
+         transition-all duration-200
+         hover:bg-gray-50;
+}
+
+.video-control-button.active {
+  @apply bg-orange-50 border-orange-200
+         text-orange-600;
+}
+
+.video-control-button svg {
+  @apply w-4 h-4 text-gray-500;
+}
+
+.video-control-button.active svg {
+  @apply text-orange-500;
+}
+
+.video-control-button span {
+  @apply text-sm font-normal text-gray-700;
+}
+
+.video-control-button.active span {
+  @apply text-orange-600;
+}
+
+/* Range Input Styles */
+.video-range-input {
+  @apply appearance-none bg-gray-200 h-1 rounded-full;
+}
+
+.video-range-input::-webkit-slider-thumb {
+  @apply appearance-none w-4 h-4 
+         bg-orange-500 rounded-full 
+         border-2 border-white 
+         shadow-md 
+         cursor-pointer;
+}
+
+/* Select Styles */
+.video-speed-select {
+  @apply appearance-none bg-transparent 
+         text-xs font-normal text-gray-700
+         focus:outline-none cursor-pointer 
+         pl-1 pr-3;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236B7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right center;
+  background-size: 12px;
+}
+
+/* Select hover panel */
+.group:has(select):hover .video-control-button {
+  @apply opacity-0;
+}
+
+/* Customowy select */
+select option {
+  @apply py-1.5 px-3 text-sm;
+}
