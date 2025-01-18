@@ -56,7 +56,7 @@ export const NavContent: React.FC = React.memo(function NavContent() {
       badge: "Nowe",
     },
     {
-      href: "/bachata-nauka-tanca",
+      href: "/nauka-tanca-bachata",
       label: "Nauka tańca",
       icon: FaCompass,
     },
@@ -244,7 +244,7 @@ export const NavContent: React.FC = React.memo(function NavContent() {
                   badge: "Nowe",
                 },
                 {
-                  href: "/bachata-nauka-tanca",
+                  href: "/nauka-tanca-bachata",
                   label: "Nauka tańca",
                   icon: FaCompass,
                 },
