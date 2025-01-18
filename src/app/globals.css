@@ -439,15 +439,34 @@ select optgroup {
 
 /* Range Input Styles */
 .video-range-input {
-  @apply appearance-none bg-gray-200 h-1 rounded-full;
+  @apply appearance-none bg-gray-200 h-1.5 rounded-full
+         hover:bg-gray-300 transition-colors duration-200;
 }
 
 .video-range-input::-webkit-slider-thumb {
-  @apply appearance-none w-4 h-4 
+  @apply appearance-none w-3.5 h-3.5 
          bg-orange-500 rounded-full 
          border-2 border-white 
          shadow-md 
-         cursor-pointer;
+         cursor-pointer
+         hover:scale-110 hover:bg-orange-600
+         transition-all duration-200;
+}
+
+/* Dodajmy style dla kontrolek zapętlenia */
+.loop-controls {
+  @apply flex items-center gap-3 px-4 py-2
+         bg-white/95 rounded-full 
+         border border-gray-100
+         shadow-sm backdrop-blur-sm;
+}
+
+.loop-controls .video-range-input {
+  @apply w-24 mx-1;
+}
+
+.loop-controls span {
+  @apply text-xs font-medium text-gray-600;
 }
 
 /* Select Styles */
@@ -470,4 +489,57 @@ select optgroup {
 /* Customowy select */
 select option {
   @apply py-1.5 px-3 text-sm;
+}
+
+/* Dodajmy style dla znaczników zakresu zapętlenia */
+.loop-marker {
+  @apply absolute top-1/2 -translate-y-1/2 w-1 h-4 
+         bg-orange-500 rounded-sm 
+         transform -translate-x-1/2
+         cursor-ew-resize
+         hover:h-5 hover:bg-orange-600
+         transition-all duration-200;
+}
+
+.loop-range {
+  @apply absolute top-1/2 -translate-y-1/2 h-1
+         bg-orange-500/30
+         pointer-events-none;
+}
+
+/* Dodajmy tooltip dla znaczników */
+.loop-marker::after {
+  @apply content-[attr(data-time)]
+         absolute top-5 left-1/2 -translate-x-1/2
+         px-2 py-1 rounded text-xs text-white
+         bg-gray-900/90 whitespace-nowrap
+         opacity-0 group-hover:opacity-100
+         transition-opacity duration-200;
+}
+
+/* Dodajmy style dla kontenera kontrolek */
+.video-controls-container {
+  @apply absolute bottom-0 left-0 right-0 
+         bg-gradient-to-t from-black/70 to-transparent 
+         p-4 
+         opacity-0 transition-opacity duration-300;
+}
+
+/* Pokazujemy kontrolki przy hover lub gdy są aktywne kontrolki zapętlenia */
+.video-controls-container.show-controls,
+.group:hover .video-controls-container {
+  @apply opacity-100;
+}
+
+/* Modyfikacja istniejących styli dla loop-controls */
+.loop-controls {
+  @apply flex items-center gap-3 px-4 py-2
+         bg-white/95 rounded-full 
+         border border-gray-100
+         shadow-sm backdrop-blur-sm;
+}
+
+.loop-controls:focus-within ~ .video-controls-container,
+.loop-controls:hover ~ .video-controls-container {
+  @apply opacity-100;
 }

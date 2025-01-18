@@ -25,6 +25,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isControlsVisible, setIsControlsVisible] = useState(false);
 
   // Inicjalizacja wideo
   useEffect(() => {
@@ -131,6 +132,15 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
     return () => video.removeEventListener("timeupdate", handleTimeUpdate);
   }, [loopSection]);
 
+  // Dodajmy efekt pokazywania kontrolek gdy loop jest aktywny
+  useEffect(() => {
+    if (loopSection) {
+      setIsControlsVisible(true);
+    } else {
+      setIsControlsVisible(false);
+    }
+  }, [loopSection]);
+
   return (
     <div ref={containerRef} className="relative w-full h-full group">
       <video
@@ -171,7 +181,11 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
       </button>
 
       {/* Dolny pasek kontrolek */}
-      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+      <div
+        className={`video-controls-container ${
+          isControlsVisible ? "show-controls" : ""
+        }`}
+      >
         <div className="flex items-center gap-4 text-white">
           <button
             onClick={togglePlay}
@@ -191,6 +205,35 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
           <div className="flex-1 flex items-center gap-2">
             <span className="text-sm">{formatTime(currentTime)}</span>
             <div className="relative flex-1 h-1 group">
+              {/* Znaczniki zakresu zapętlenia */}
+              {loopSection && (
+                <>
+                  {/* Zakres zapętlenia */}
+                  <div
+                    className="loop-range"
+                    style={{
+                      left: `${(loopSection[0] / duration) * 100}%`,
+                      width: `${
+                        ((loopSection[1] - loopSection[0]) / duration) * 100
+                      }%`,
+                    }}
+                  />
+                  {/* Znacznik początku */}
+                  <div
+                    className="loop-marker"
+                    style={{ left: `${(loopSection[0] / duration) * 100}%` }}
+                    data-time={formatTime(loopSection[0])}
+                  />
+                  {/* Znacznik końca */}
+                  <div
+                    className="loop-marker"
+                    style={{ left: `${(loopSection[1] / duration) * 100}%` }}
+                    data-time={formatTime(loopSection[1])}
+                  />
+                </>
+              )}
+
+              {/* Istniejący input range i pasek postępu */}
               <input
                 type="range"
                 min={0}

@@ -27,23 +27,23 @@ export const LoopSectionControl: React.FC<LoopSectionControlProps> = ({
       </button>
 
       {value && (
-        <div className="video-control-button">
+        <div className="loop-controls">
           <input
             type="range"
             min={0}
             max={duration}
             value={value[0]}
             onChange={(e) => onChange([Number(e.target.value), value[1]])}
-            className="video-range-input w-24"
+            className="video-range-input"
           />
-          <span className="mx-2">do</span>
+          <span>do</span>
           <input
             type="range"
             min={0}
             max={duration}
             value={value[1]}
             onChange={(e) => onChange([value[0], Number(e.target.value)])}
-            className="video-range-input w-24"
+            className="video-range-input"
           />
         </div>
       )}
