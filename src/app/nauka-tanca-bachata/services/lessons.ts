@@ -36,8 +36,8 @@ const mockLesson: Lesson = {
       instructor: "Maria Wiśniewska",
     },
   ],
-  duration: "15 min",
-  thumbnail: "/images/lesson-1-thumb.jpg",
+  duration: "15:00",
+  thumbnail: "/images/lessons/basic-steps.jpg",
   practiceExercises: [
     {
       id: "1",

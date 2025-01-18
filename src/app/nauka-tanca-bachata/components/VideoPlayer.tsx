@@ -94,6 +94,28 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
     };
   }, []);
 
+  // Dodaj efekt dla zmiany prędkości
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.playbackRate = speed;
+    }
+  }, [speed]);
+
+  // Dodaj efekt dla sekcji zapętlenia
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !loopSection) return;
+
+    const handleTimeUpdate = () => {
+      if (video.currentTime >= loopSection[1]) {
+        video.currentTime = loopSection[0];
+      }
+    };
+
+    video.addEventListener("timeupdate", handleTimeUpdate);
+    return () => video.removeEventListener("timeupdate", handleTimeUpdate);
+  }, [loopSection]);
+
   return (
     <div ref={containerRef} className="relative w-full h-full group">
       <video

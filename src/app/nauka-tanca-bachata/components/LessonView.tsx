@@ -29,6 +29,14 @@ export const LessonView: React.FC<LessonViewProps> = ({ lesson }) => {
     setVideoDuration(duration);
   }, []);
 
+  const handleSpeedChange = useCallback((newSpeed: number) => {
+    setSpeed(newSpeed);
+  }, []);
+
+  const handleMirrorChange = useCallback((newMirror: boolean) => {
+    setMirror(newMirror);
+  }, []);
+
   const getPerspectiveLabel = (perspective: string) => {
     const labels = {
       front: "Widok z przodu",
@@ -89,8 +97,8 @@ export const LessonView: React.FC<LessonViewProps> = ({ lesson }) => {
 
           {/* Kontrolki */}
           <div className="flex flex-wrap gap-4">
-            <SpeedControl value={speed} onChange={setSpeed} />
-            <MirrorToggle value={mirror} onChange={setMirror} />
+            <SpeedControl value={speed} onChange={handleSpeedChange} />
+            <MirrorToggle value={mirror} onChange={handleMirrorChange} />
             <LoopSectionControl
               value={loopSection}
               onChange={setLoopSection}
