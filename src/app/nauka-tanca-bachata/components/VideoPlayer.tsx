@@ -144,7 +144,29 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
         Twoja przeglądarka nie obsługuje odtwarzania wideo.
       </video>
 
-      {/* Kontrolki */}
+      {/* Duży przycisk play/pause na środku */}
+      <button
+        onClick={togglePlay}
+        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
+                   w-20 h-20 flex items-center justify-center rounded-full
+                   bg-black/30 backdrop-blur-sm
+                   hover:bg-black/50 transition-all duration-300
+                   opacity-0 group-hover:opacity-100
+                   text-white"
+        aria-label={isPlaying ? "Pauza" : "Odtwórz"}
+      >
+        {isPlaying ? (
+          <svg className="w-12 h-12" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
+          </svg>
+        ) : (
+          <svg className="w-12 h-12 ml-1" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M8 5v14l11-7z" />
+          </svg>
+        )}
+      </button>
+
+      {/* Dolny pasek kontrolek */}
       <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
         <div className="flex items-center gap-4 text-white">
           <button
