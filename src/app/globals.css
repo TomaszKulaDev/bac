@@ -380,3 +380,17 @@ select optgroup {
     padding: 16px; /* Większy padding na mobile */
   }
 }
+
+.video-player-container:fullscreen {
+  background: black;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.video-player-container:fullscreen video {
+  max-height: 100vh;
+  max-width: 100vw;
+}
