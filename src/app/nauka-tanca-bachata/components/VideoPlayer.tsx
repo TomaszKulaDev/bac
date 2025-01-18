@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 
 interface VideoPlayerProps {
   url: string;
@@ -24,8 +24,21 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
   const [isPlaying, setIsPlaying] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
-  // Obsługa pełnego ekranu
-  const toggleFullscreen = async () => {
+  // Przenieś togglePlay do useCallback
+  const togglePlay = useCallback(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (isPlaying) {
+      video.pause();
+    } else {
+      video.play();
+    }
+    setIsPlaying(!isPlaying);
+  }, [isPlaying]);
+
+  // Przenieś toggleFullscreen do useCallback
+  const toggleFullscreen = useCallback(async () => {
     if (!containerRef.current) return;
 
     if (!document.fullscreenElement) {
@@ -39,19 +52,32 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
       await document.exitFullscreen();
       setIsFullscreen(false);
     }
-  };
-
-  // Nasłuchiwanie zmian stanu pełnego ekranu
-  useEffect(() => {
-    const handleFullscreenChange = () => {
-      setIsFullscreen(!!document.fullscreenElement);
-    };
-
-    document.addEventListener("fullscreenchange", handleFullscreenChange);
-    return () => {
-      document.removeEventListener("fullscreenchange", handleFullscreenChange);
-    };
   }, []);
+
+  // Zaktualizuj useEffect z zależnościami
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      switch (e.key.toLowerCase()) {
+        case "f":
+          toggleFullscreen();
+          break;
+        case " ":
+          e.preventDefault();
+          togglePlay();
+          break;
+        case "escape":
+          if (isFullscreen) {
+            document.exitFullscreen();
+          }
+          break;
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyPress);
+    return () => {
+      document.removeEventListener("keydown", handleKeyPress);
+    };
+  }, [isFullscreen, toggleFullscreen, togglePlay]);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -89,41 +115,17 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
     };
   }, [loopSection, onProgress, onDurationChange]);
 
-  const togglePlay = () => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    if (isPlaying) {
-      video.pause();
-    } else {
-      video.play();
-    }
-    setIsPlaying(!isPlaying);
-  };
-
+  // Nasłuchiwanie zmian stanu pełnego ekranu
   useEffect(() => {
-    const handleKeyPress = (e: KeyboardEvent) => {
-      switch (e.key.toLowerCase()) {
-        case "f":
-          toggleFullscreen();
-          break;
-        case " ":
-          e.preventDefault();
-          togglePlay();
-          break;
-        case "escape":
-          if (isFullscreen) {
-            document.exitFullscreen();
-          }
-          break;
-      }
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
     };
 
-    document.addEventListener("keydown", handleKeyPress);
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
     return () => {
-      document.removeEventListener("keydown", handleKeyPress);
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
     };
-  }, [isFullscreen]);
+  }, []);
 
   return (
     <div
