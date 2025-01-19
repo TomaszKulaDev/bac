@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from "react";
 import { Lesson } from "../types";
-import { PracticeMode } from "./PracticeMode";
+// import { PracticeMode } from "./PracticeMode";
 import { LessonDetails } from "./LessonDetails";
 import { ResourceList } from "./ResourceList";
 import { VideoPlayer } from "./VideoPlayer";

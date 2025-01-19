@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Course } from "../types";
 import { ClockIcon, BookOpenIcon } from "@heroicons/react/24/outline";
-import { StarRating } from "./StarRating";
+// import { StarRating } from "./StarRating";
 
 interface CourseOverviewProps {
   course: Course;
@@ -52,7 +52,7 @@ export const CourseOverview: React.FC<CourseOverviewProps> = ({ course }) => {
               {getLevelLabel(course.level)}
             </span>
             <div className="flex items-center gap-1">
-              <StarRating rating={course.rating} />
+              {/* <StarRating rating={course.rating} /> */}
               <span className="text-sm text-gray-600">
                 ({course.studentsCount} uczniów)
               </span>

@@ -2,6 +2,7 @@ import { Course } from "../types";
 import { beginnerCourse } from "./courses/beginnerCourse";
 import { sensualCourse } from "./courses/sensualCourse";
 import { modernaCourse } from "./courses/modernaCourse";
+import { isolationCourse } from "./courses/isolationCourse";
 
 // Sprawdzamy czy wszystkie kursy mają rozdziały
 const validateCourse = (course: Course): Course => {
@@ -15,6 +16,7 @@ export const mockCourses = [
   validateCourse(beginnerCourse),
   validateCourse(sensualCourse),
   validateCourse(modernaCourse),
+  validateCourse(isolationCourse),
 ];
 
 // Eksportujemy funkcję zamiast stałej
