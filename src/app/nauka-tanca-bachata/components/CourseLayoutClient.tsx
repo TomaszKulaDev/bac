@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { CourseNavigation } from "./CourseNavigation";
+import { mockCourse } from "../data/mockCourse";
 
 interface CourseLayoutClientProps {
   children: React.ReactNode;
@@ -11,15 +12,9 @@ export const CourseLayoutClient: React.FC<CourseLayoutClientProps> = ({
   children,
 }) => {
   const pathname = usePathname();
-  const currentCourse = {
-    // Placeholder dla currentCourse
-    id: "1",
-    title: "Kurs Bachaty dla początkujących",
-    totalDuration: "8h 30min",
-    chapters: [],
-    // ... reszta wymaganych pól
-  };
-  const currentLessonId = "placeholder-lesson-id";
+  const currentLessonId = pathname.includes("/lekcja/")
+    ? pathname.split("/").pop()
+    : undefined;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -35,7 +30,7 @@ export const CourseLayoutClient: React.FC<CourseLayoutClientProps> = ({
         <div className="flex gap-8">
           {pathname.includes("/lekcja/") && (
             <CourseNavigation
-              course={currentCourse}
+              course={mockCourse}
               currentLessonId={currentLessonId}
             />
           )}

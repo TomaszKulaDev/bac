@@ -3,36 +3,16 @@
 import React, { useState } from "react";
 import LevelSelector from "./components/LevelSelector";
 import LessonCard from "./components/LessonCard";
-
-interface Lesson {
-  id: string;
-  title: string;
-  level: "beginner" | "intermediate" | "advanced";
-  duration: string;
-  thumbnail: string;
-  description: string;
-}
+import { mockCourses } from "./data/mockCourse";
+import { Course } from "./types";
 
 export default function BachataLearningPage() {
   const [selectedLevel, setSelectedLevel] = useState<string>("all");
 
-  const lessons: Lesson[] = [
-    {
-      id: "1",
-      title: "Podstawowe kroki bachaty",
-      level: "beginner",
-      duration: "15:00",
-      thumbnail: "/images/lessons/basic-steps.jpg",
-      description:
-        "Naucz się podstawowych kroków bachaty w prostych i przejrzystych instrukcjach.",
-    },
-    // Dodaj więcej lekcji
-  ];
-
-  const filteredLessons =
+  const filteredCourses =
     selectedLevel === "all"
-      ? lessons
-      : lessons.filter((lesson) => lesson.level === selectedLevel);
+      ? mockCourses
+      : mockCourses.filter((course) => course.level === selectedLevel);
 
   return (
     <div className="space-y-8">
@@ -42,8 +22,18 @@ export default function BachataLearningPage() {
       />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredLessons.map((lesson) => (
-          <LessonCard key={lesson.id} lesson={lesson} />
+        {filteredCourses.map((course) => (
+          <LessonCard
+            key={course.id}
+            lesson={{
+              id: course.id,
+              title: course.title,
+              level: course.level,
+              duration: course.totalDuration,
+              thumbnail: course.thumbnail,
+              description: course.description,
+            }}
+          />
         ))}
       </div>
     </div>

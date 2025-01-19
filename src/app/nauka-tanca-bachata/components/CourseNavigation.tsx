@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Course, Chapter } from "../types";
+import { Course } from "../types";
 
 interface CourseNavigationProps {
   course: Course;
