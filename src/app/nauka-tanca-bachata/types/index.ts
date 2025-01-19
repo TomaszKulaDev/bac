@@ -12,14 +12,21 @@ export interface Course {
   price?: number;
   isPopular?: boolean;
   tags: string[];
+  progress?: {
+    completedLessons: number;
+    totalLessons: number;
+    lastLessonId?: string;
+  };
 }
 
 export interface Chapter {
   id: string;
   title: string;
+  description?: string;
   lessons: Lesson[];
   duration: string;
   isCompleted?: boolean;
+  order: number;
 }
 
 export interface Lesson {
