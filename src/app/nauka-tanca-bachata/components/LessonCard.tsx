@@ -5,7 +5,7 @@ interface LessonCardProps {
   lesson: {
     id: string;
     title: string;
-    level: string;
+    level: "beginner" | "intermediate" | "advanced" | "isolations";
     duration: string;
     thumbnail: string;
     description: string;
@@ -21,6 +21,8 @@ const LessonCard: React.FC<LessonCardProps> = ({ lesson }) => {
         return "bg-yellow-100 text-yellow-800";
       case "advanced":
         return "bg-red-100 text-red-800";
+      case "isolations":
+        return "bg-purple-100 text-purple-800";
       default:
         return "bg-gray-100 text-gray-800";
     }
@@ -34,6 +36,8 @@ const LessonCard: React.FC<LessonCardProps> = ({ lesson }) => {
         return "Średniozaawansowany";
       case "advanced":
         return "Zaawansowany";
+      case "isolations":
+        return "Izolacje";
       default:
         return level;
     }

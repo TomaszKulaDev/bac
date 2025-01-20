@@ -2,9 +2,7 @@
 
 import { useState, useCallback } from "react";
 import { Lesson } from "../types";
-// import { PracticeMode } from "./PracticeMode";
 import { LessonDetails } from "./LessonDetails";
-import { ResourceList } from "./ResourceList";
 import { VideoPlayer } from "./VideoPlayer";
 import { SpeedControl } from "./controls/SpeedControl";
 import { MirrorToggle } from "./controls/MirrorToggle";
@@ -103,7 +101,6 @@ export const LessonView: React.FC<LessonViewProps> = ({ lesson }) => {
         </div>
 
         <LessonDetails lesson={lesson} />
-        {lesson.resources && <ResourceList resources={lesson.resources} />}
       </div>
     </div>
   );

@@ -12,6 +12,7 @@ const LevelSelector: React.FC<LevelSelectorProps> = ({
     { id: "beginner", label: "Początkujący" },
     { id: "intermediate", label: "Średniozaawansowany" },
     { id: "advanced", label: "Zaawansowany" },
+    { id: "isolations", label: "Izolacje" },
   ];
 
   return (

@@ -7,7 +7,7 @@ export const isolationCourse: Course = {
   title: "Izolacje w Bachacie - Technika i Styl",
   description:
     "Zaawansowany kurs techniki izolacji ciała w bachacie. Naucz się kontrolować każdą część ciała niezależnie, tworząc płynne i efektowne ruchy.",
-  level: "intermediate",
+  level: "isolations",
   totalDuration: "8h 30min",
   instructor: instructors.annaWisniewska,
   chapters: [
@@ -148,7 +148,7 @@ export const isolationCourse: Course = {
     "izolacje",
     "technika",
     "body movement",
-    "średniozaawansowany",
+    "izolacje",
     "styl",
   ],
   isPopular: true,

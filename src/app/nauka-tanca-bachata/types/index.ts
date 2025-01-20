@@ -2,7 +2,7 @@ export interface Course {
   id: string;
   title: string;
   description: string;
-  level: "beginner" | "intermediate" | "advanced";
+  level: "beginner" | "intermediate" | "advanced" | "isolations";
   chapters: Chapter[];
   totalDuration: string;
   instructor: Instructor;
@@ -44,7 +44,6 @@ export interface Lesson {
   duration: string;
   thumbnail: string;
   isCompleted?: boolean;
-  resources?: Resource[];
   quiz?: Quiz;
   practiceExercises?: Exercise[];
   nextLessonId?: string;
@@ -62,12 +61,7 @@ export interface Instructor {
   totalStudents: number;
 }
 
-export interface Resource {
-  id: string;
-  title: string;
-  type: "pdf" | "video" | "audio";
-  url: string;
-}
+
 
 export interface Quiz {
   id: string;

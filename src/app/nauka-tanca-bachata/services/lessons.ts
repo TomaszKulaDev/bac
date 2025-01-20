@@ -47,14 +47,6 @@ const mockLesson: Lesson = {
       difficulty: "easy",
     },
   ],
-  resources: [
-    {
-      id: "1",
-      title: "Ściąga z kroków podstawowych",
-      type: "pdf",
-      url: "/resources/basic-steps.pdf",
-    },
-  ],
 };
 
 export async function getLessonById(id: string): Promise<Lesson | null> {

@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { Course } from "../types";
 import { ClockIcon, BookOpenIcon } from "@heroicons/react/24/outline";
-// import { StarRating } from "./StarRating";
 
 interface CourseOverviewProps {
   course: Course;
@@ -12,6 +11,7 @@ const getLevelColor = (level: Course["level"]) => {
     beginner: "bg-green-100 text-green-800",
     intermediate: "bg-yellow-100 text-yellow-800",
     advanced: "bg-red-100 text-red-800",
+    isolations: "bg-purple-100 text-purple-800",
   };
   return colors[level];
 };
@@ -21,6 +21,7 @@ const getLevelLabel = (level: Course["level"]) => {
     beginner: "Początkujący",
     intermediate: "Średniozaawansowany",
     advanced: "Zaawansowany",
+    isolations: "Izolacje",
   };
   return labels[level];
 };
@@ -51,12 +52,6 @@ export const CourseOverview: React.FC<CourseOverviewProps> = ({ course }) => {
             >
               {getLevelLabel(course.level)}
             </span>
-            <div className="flex items-center gap-1">
-              {/* <StarRating rating={course.rating} /> */}
-              <span className="text-sm text-gray-600">
-                ({course.studentsCount} uczniów)
-              </span>
-            </div>
           </div>
 
           <h2 className="text-2xl font-bold text-gray-900 mb-3">

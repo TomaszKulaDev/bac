@@ -1,12 +1,8 @@
 import React from "react";
-import { Metadata } from "next";
 import { CourseLayoutClient } from "./components/CourseLayoutClient";
+import { metadata } from "./page.metadata";
 
-export const metadata: Metadata = {
-  title: "Nauka Tańca Bachata | MusiSite",
-  description:
-    "Naucz się tańczyć bachatę z najlepszymi instruktorami. Kursy dla początkujących i zaawansowanych.",
-};
+export { metadata };
 
 interface BachataLayoutProps {
   children: React.ReactNode;
