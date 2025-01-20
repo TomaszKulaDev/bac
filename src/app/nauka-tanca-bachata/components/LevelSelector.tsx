@@ -9,10 +9,10 @@ const LevelSelector: React.FC<LevelSelectorProps> = ({
 }) => {
   const levels = [
     { id: "all", label: "Wszystkie poziomy" },
+    { id: "isolations", label: "Izolacje" },
     { id: "beginner", label: "Początkujący" },
     { id: "intermediate", label: "Średniozaawansowany" },
     { id: "advanced", label: "Zaawansowany" },
-    { id: "isolations", label: "Izolacje" },
   ];
 
   return (
@@ -23,8 +23,8 @@ const LevelSelector: React.FC<LevelSelectorProps> = ({
           onClick={() => onLevelChange(level.id)}
           className={`px-4 py-2 rounded-full transition-colors ${
             selectedLevel === level.id
-              ? "bg-purple-600 text-white"
-              : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+              ? "bg-amber-500 text-white"
+              : "bg-gray-100 text-gray-700 hover:bg-gray-200"
           }`}
         >
           {level.label}

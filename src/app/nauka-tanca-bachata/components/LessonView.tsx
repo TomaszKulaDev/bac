@@ -6,6 +6,7 @@ import { LessonDetails } from "./LessonDetails";
 import { VideoPlayer } from "./VideoPlayer";
 import { SpeedControl } from "./controls/SpeedControl";
 import { MirrorToggle } from "./controls/MirrorToggle";
+import Image from "next/image";
 
 interface LessonViewProps {
   lesson: Lesson;
@@ -44,6 +45,40 @@ export const LessonView: React.FC<LessonViewProps> = ({ lesson }) => {
     return labels[perspective as keyof typeof labels] || perspective;
   };
 
+  const InstructorAvatar: React.FC<{ instructor: string }> = ({
+    instructor,
+  }) => {
+    const [imageError, setImageError] = useState(false);
+
+    if (imageError) {
+      return (
+        <div className="w-14 h-14 rounded-full bg-amber-100 flex items-center justify-center">
+          <span className="text-amber-700 text-lg font-medium">
+            {instructor
+              .split(" ")
+              .map((name) => name[0])
+              .join("")}
+          </span>
+        </div>
+      );
+    }
+
+    return (
+      <div className="relative w-14 h-14 rounded-full overflow-hidden border-2 border-white shadow-sm">
+        <Image
+          src={`/images/instructors/${instructor
+            .toLowerCase()
+            .replace(" ", "-")}.jpg`}
+          alt={instructor}
+          fill
+          className="object-cover"
+          sizes="56px"
+          onError={() => setImageError(true)}
+        />
+      </div>
+    );
+  };
+
   return (
     <div className="space-y-6">
       <div className="space-y-6">
@@ -53,19 +88,21 @@ export const LessonView: React.FC<LessonViewProps> = ({ lesson }) => {
             <button
               key={video.id}
               onClick={() => setSelectedVideo(video)}
-              className={`px-4 py-2 rounded-lg transition-colors ${
+              className={`flex items-center gap-4 px-5 py-3 rounded-lg transition-colors ${
                 selectedVideo.id === video.id
                   ? "bg-amber-500 text-white"
                   : "bg-gray-100 text-gray-700 hover:bg-gray-200"
               }`}
             >
+              {/* Zdjęcie instruktora w okręgu */}
+              <InstructorAvatar instructor={video.instructor} />
+
+              {/* Tekst */}
               <div className="flex flex-col items-start">
-                <span className="font-medium">
+                <span className="font-medium text-base">
                   {getPerspectiveLabel(video.perspective)}
                 </span>
-                <span className="text-sm opacity-75">
-                  Instruktor: {video.instructor}
-                </span>
+                <span className="text-sm opacity-75">{video.instructor}</span>
               </div>
             </button>
           ))}

@@ -34,24 +34,24 @@ export const isolationCourse: Course = {
               perspective: "front",
               instructor: "Kajka",
             },
-            {
-              id: "v2-isolation-r1-l1-hips",
-              title: "Izolacja bioder - widok z tyłu",
-              description: "Analiza ruchu bioder z tyłu",
-              videoUrl:
-                "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-              perspective: "back",
-              instructor: "Ola",
-            },
-            {
-              id: "v3-isolation-r1-l1-hips",
-              title: "Szczegóły techniczne izolacji bioder",
-              description: "Detale i niuanse techniczne ruchów bioder",
-              videoUrl:
-                "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-              perspective: "detail",
-              instructor: "Tesi",
-            },
+            // {
+            //   id: "v2-isolation-r1-l1-hips",
+            //   title: "Izolacja bioder - widok z tyłu",
+            //   description: "Analiza ruchu bioder z tyłu",
+            //   videoUrl:
+            //     "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+            //   perspective: "back",
+            //   instructor: "Ola",
+            // },
+            // {
+            //   id: "v3-isolation-r1-l1-hips",
+            //   title: "Szczegóły techniczne izolacji bioder",
+            //   description: "Detale i niuanse techniczne ruchów bioder",
+            //   videoUrl:
+            //     "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+            //   perspective: "detail",
+            //   instructor: "Tesi",
+            // },
           ],
           practiceExercises: [
             {
