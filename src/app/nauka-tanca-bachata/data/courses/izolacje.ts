@@ -3,7 +3,7 @@ import { instructors } from "../instructors";
 
 export const isolationCourse: Course = {
   id: "bachata-body-isolation",
-  title: "Izolacje w Bachacie - Technika i Styl",
+  title: "Izolacje w Bachacie - Nie bądź drewnem",
   description:
     "Zaawansowany kurs techniki izolacji ciała w bachacie. Naucz się kontrolować każdą część ciała niezależnie, tworząc płynne i efektowne ruchy.",
   level: "isolations",

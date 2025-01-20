@@ -18,11 +18,15 @@ interface LessonCardProps {
   lesson: {
     id: string;
     title: string;
-    level: "beginner" | "intermediate" | "advanced" | "isolations";
+    level:
+      | "beginner"
+      | "intermediate"
+      | "advanced"
+      | "isolations"
+      | "lady-styling";
     duration: string;
     thumbnail: string;
     description: string;
-    isPopular: boolean;
   };
 }
 
@@ -34,9 +38,11 @@ const LessonCard: React.FC<LessonCardProps> = ({ lesson }) => {
       case "intermediate":
         return "bg-yellow-100 text-yellow-800";
       case "advanced":
-        return "bg-red-100 text-red-800";
+        return "bg-blue-100 text-blue-800";
       case "isolations":
         return "bg-purple-100 text-purple-800";
+      case "lady-styling":
+        return "bg-pink-100 text-pink-800";
       default:
         return "bg-gray-100 text-gray-800";
     }
@@ -52,6 +58,8 @@ const LessonCard: React.FC<LessonCardProps> = ({ lesson }) => {
         return "Zaawansowany";
       case "isolations":
         return "Izolacje";
+      case "lady-styling":
+        return "Lady Styling";
       default:
         return level;
     }
@@ -74,16 +82,17 @@ const LessonCard: React.FC<LessonCardProps> = ({ lesson }) => {
 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden">
-      <div className="relative h-96">
-        <Image
-          src={lesson.thumbnail}
-          alt={lesson.title}
-          fill
-          className="object-cover object-center"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          priority={lesson.isPopular}
-        />
-      </div>
+      <Link href={`/nauka-tanca-bachata/lekcja/${firstLessonId}`}>
+        <div className="relative h-96 cursor-pointer transition-opacity hover:opacity-90">
+          <Image
+            src={lesson.thumbnail}
+            alt={lesson.title}
+            fill
+            className="object-cover object-center"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
+        </div>
+      </Link>
       <div className="p-4">
         <div className="flex items-center gap-2 mb-2">
           <span

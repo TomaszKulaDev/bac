@@ -4,7 +4,7 @@
  * - Wyświetlanie listy dostępnych kursów
  * - Filtrowanie kursów według poziomu zaawansowania
  * - Responsywny układ kart kursów (1-3 kolumny)
- * 
+ *
  * Komponent korzysta z:
  * - LevelSelector do wyboru poziomu zaawansowania
  * - LessonCard do wyświetlania pojedynczego kursu
@@ -26,6 +26,11 @@ export default function BachataLearningPage() {
     selectedLevel === "all"
       ? mockCourses
       : mockCourses.filter((course) => course.level === selectedLevel);
+
+  console.log(
+    "Filtered courses:",
+    filteredCourses.map((c) => c.id)
+  );
 
   return (
     <div className="space-y-8">

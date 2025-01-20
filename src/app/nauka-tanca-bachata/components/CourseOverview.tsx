@@ -6,7 +6,7 @@
  * - Wyświetlanie tytułu i opisu kursu
  * - Informacje o czasie trwania i liczbie rozdziałów
  * - Przyciski do rozpoczęcia kursu i wyświetlenia programu
- * 
+ *
  * Komponent przyjmuje props:
  * - course: obiekt zawierający szczegóły kursu (tytuł, poziom, czas trwania, miniatura, opis, rozdziały)
  */
@@ -19,24 +19,31 @@ interface CourseOverviewProps {
   course: Course;
 }
 
+// "lady-styling" jest w cudzysłowach ponieważ zawiera myślnik (-).
+// W JavaScript, klucze obiektów zawierające znaki specjalne muszą być w cudzysłowach.
+// Pozostałe klucze są pojedynczymi słowami, więc nie wymagają cudzysłowów.
+const levelColors = {
+  beginner: "bg-green-100 text-green-800",
+  intermediate: "bg-yellow-100 text-yellow-800",
+  advanced: "bg-blue-100 text-blue-800",
+  isolations: "bg-purple-100 text-purple-800",
+  "lady-styling": "bg-pink-100 text-pink-800", // dodany kolor różowy dla lady styling
+};
+
+const levelLabels = {
+  beginner: "Początkujący",
+  intermediate: "Średniozaawansowany",
+  advanced: "Zaawansowany",
+  isolations: "Izolacje",
+  "lady-styling": "Lady Styling", // myślnik wymaga cudzysłowów
+};
+
 const getLevelColor = (level: Course["level"]) => {
-  const colors = {
-    beginner: "bg-green-100 text-green-800",
-    intermediate: "bg-yellow-100 text-yellow-800",
-    advanced: "bg-red-100 text-red-800",
-    isolations: "bg-purple-100 text-purple-800",
-  };
-  return colors[level];
+  return levelColors[level];
 };
 
 const getLevelLabel = (level: Course["level"]) => {
-  const labels = {
-    beginner: "Początkujący",
-    intermediate: "Średniozaawansowany",
-    advanced: "Zaawansowany",
-    isolations: "Izolacje",
-  };
-  return labels[level];
+  return levelLabels[level];
 };
 
 export const CourseOverview: React.FC<CourseOverviewProps> = ({ course }) => {

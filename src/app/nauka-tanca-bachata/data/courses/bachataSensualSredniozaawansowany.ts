@@ -2,7 +2,7 @@ import { Course } from "../../types";
 import { instructors } from "../instructors";
 
 export const sensualCourse: Course = {
-  id: "bachata-sensual-advanced",
+  id: "bachataSensualSredniozaawansowany",
   title: "Bachata Sensual - Średniozaawansowany",
   description:
     "Odkryj zmysłową stronę bachaty. Kurs dla osób znających podstawy, chcących rozwinąć styl sensual.",

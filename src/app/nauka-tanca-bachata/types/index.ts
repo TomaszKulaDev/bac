@@ -2,7 +2,12 @@ export interface Course {
   id: string;
   title: string;
   description: string;
-  level: "beginner" | "intermediate" | "advanced" | "isolations";
+  level:
+    | "beginner"
+    | "intermediate"
+    | "advanced"
+    | "isolations"
+    | "lady-styling";
   chapters: Chapter[];
   totalDuration: string;
   instructor: Instructor;
@@ -60,8 +65,6 @@ export interface Instructor {
   rating: number;
   totalStudents: number;
 }
-
-
 
 export interface Quiz {
   id: string;

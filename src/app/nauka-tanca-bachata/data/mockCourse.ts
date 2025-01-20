@@ -4,7 +4,7 @@
  * - Import i walidacja wszystkich dostępnych kursów
  * - Sprawdzanie poprawności struktury kursów (obecność rozdziałów)
  * - Eksport listy wszystkich kursów oraz domyślnego kursu
- * 
+ *
  * Eksportuje:
  * - mockCourses: tablica wszystkich dostępnych kursów
  * - getDefaultCourse: funkcja zwracająca domyślny (pierwszy) kurs
@@ -15,6 +15,7 @@ import { beginnerCourse } from "./courses/bachataOdPodstaw";
 import { sensualCourse } from "./courses/bachataSensualSredniozaawansowany";
 import { modernaCourse } from "./courses/bachataSensualZaawansowany";
 import { isolationCourse } from "./courses/izolacje";
+import { ladyStylingBeginnerCourse } from "./courses/bachataLadyStylingPodstawy";
 
 // Sprawdzamy czy wszystkie kursy mają rozdziały
 const validateCourse = (course: Course): Course => {
@@ -29,6 +30,7 @@ export const mockCourses = [
   validateCourse(sensualCourse),
   validateCourse(modernaCourse),
   validateCourse(isolationCourse),
+  validateCourse(ladyStylingBeginnerCourse),
 ];
 
 // Eksportujemy funkcję zamiast stałej

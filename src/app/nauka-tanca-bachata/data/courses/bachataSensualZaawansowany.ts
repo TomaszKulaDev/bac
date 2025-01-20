@@ -2,7 +2,7 @@ import { Course } from "../../types";
 import { instructors } from "../instructors";
 
 export const modernaCourse: Course = {
-  id: "bachata-sensual-advanced",
+  id: "bachataSensualZaawansowany",
   title: "Bachata Sensual - Zaawansowany",
   description:
     "Zaawansowany kurs dla tancerzy chcących rozwinąć swój styl o elementy sensual. Poznaj skomplikowane kombinacje, tricki i własną interpretację muzyki.",
