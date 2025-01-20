@@ -28,9 +28,10 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [isControlsVisible, setIsControlsVisible] = useState(false);
+  const [isControlsVisible, setIsControlsVisible] = useState(true);
   const [isAdjustingLoop, setIsAdjustingLoop] = useState(false);
   const progressBarRef = useRef<HTMLDivElement>(null);
+  const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Inicjalizacja wideo
   useEffect(() => {
@@ -161,12 +162,67 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
     setIsAdjustingLoop(adjusting);
   };
 
+  // Funkcja do ukrywania kontrolek po czasie bezczynności
+  const hideControlsWithDelay = useCallback(() => {
+    if (controlsTimeoutRef.current) {
+      clearTimeout(controlsTimeoutRef.current);
+    }
+
+    if (isFullscreen) {
+      controlsTimeoutRef.current = setTimeout(() => {
+        setIsControlsVisible(false);
+      }, 1000); // 1 sekunda bezczynności
+    }
+  }, [isFullscreen]);
+
+  // Obsługa ruchu myszki
+  const handleMouseMove = useCallback(() => {
+    setIsControlsVisible(true);
+    hideControlsWithDelay();
+  }, [hideControlsWithDelay]);
+
+  // Czyszczenie timeoutu przy odmontowaniu
+  useEffect(() => {
+    return () => {
+      if (controlsTimeoutRef.current) {
+        clearTimeout(controlsTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  // Centralny przycisk play/pause
+  const renderPlayButton = () => {
+    if (!isControlsVisible) return null;
+
+    return (
+      <button
+        onClick={togglePlay}
+        className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
+          w-16 h-16 flex items-center justify-center rounded-full bg-black/50 
+          text-white transition-opacity duration-300 hover:bg-black/70
+          ${isControlsVisible ? "opacity-100" : "opacity-0"}`}
+        style={{ pointerEvents: isControlsVisible ? "auto" : "none" }}
+      >
+        {isPlaying ? (
+          <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+          </svg>
+        ) : (
+          <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M8 5v14l11-7z" />
+          </svg>
+        )}
+      </button>
+    );
+  };
+
   return (
     <div
       ref={containerRef}
       className="relative w-full h-full group"
       onMouseEnter={() => setIsControlsVisible(true)}
       onMouseLeave={() => !isAdjustingLoop && setIsControlsVisible(false)}
+      onMouseMove={handleMouseMove}
     >
       <video
         ref={videoRef}
@@ -179,37 +235,15 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
         Twoja przeglądarka nie obsługuje odtwarzania wideo.
       </video>
 
-      {/* Duży przycisk play/pause na środku */}
-      <button
-        onClick={togglePlay}
-        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
-                   w-20 h-20 flex items-center justify-center rounded-full
-                   bg-black/30 backdrop-blur-sm
-                   hover:bg-black/50 transition-all duration-300
-                   opacity-0 group-hover:opacity-100
-                   text-white"
-        aria-label={isPlaying ? "Pauza" : "Odtwórz"}
-      >
-        {isPlaying ? (
-          <svg className="w-12 h-12" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
-          </svg>
-        ) : (
-          <svg
-            className="w-12 h-12 ml-1"
-            fill="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path d="M8 5v14l11-7z" />
-          </svg>
-        )}
-      </button>
+      {/* Centralny przycisk play/pause */}
+      {renderPlayButton()}
 
-      {/* Dolny pasek kontrolek */}
+      {/* Kontrolki z animowaną przezroczystością */}
       <div
-        className={`video-controls-container ${
-          isControlsVisible || isAdjustingLoop ? "show-controls" : ""
-        }`}
+        className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent p-4 transition-opacity duration-300 ${
+          isControlsVisible ? "opacity-100" : "opacity-0"
+        } ${isFullscreen ? "pointer-events-none" : ""}`}
+        style={{ pointerEvents: isControlsVisible ? "auto" : "none" }}
       >
         <div className="flex items-center gap-4 text-white">
           <button
