@@ -38,7 +38,7 @@ export interface Lesson {
     title: string;
     description: string;
     videoUrl: string;
-    perspective: "front" | "back" | "side" | "detail";
+    perspective: string;
     instructor: string;
   }[];
   duration: string;

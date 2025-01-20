@@ -1,6 +1,5 @@
 import { Course } from "../../types";
 import { instructors } from "../instructors";
-import { SAMPLE_VIDEOS } from "../sampleVideos";
 
 export const modernaCourse: Course = {
   id: "bachata-moderna-advanced",
@@ -31,7 +30,8 @@ export const modernaCourse: Course = {
               id: "v1-moderna-r1-l1-musicality",
               title: "Struktura muzyczna - widok z przodu",
               description: "Podstawowe elementy struktury muzycznej w moderna",
-              videoUrl: SAMPLE_VIDEOS.MODERNA_MUSICALITY_FRONT,
+              videoUrl:
+                "https://storage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
               perspective: "front",
               instructor: "Marcin Nowak",
             },
@@ -39,7 +39,8 @@ export const modernaCourse: Course = {
               id: "v2-moderna-r1-l1-musicality",
               title: "Struktura muzyczna - widok z tyłu",
               description: "Analiza kroków i ruchów od tyłu",
-              videoUrl: SAMPLE_VIDEOS.MODERNA_MUSICALITY_BACK,
+              videoUrl:
+                "https://storage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
               perspective: "back",
               instructor: "Marcin Nowak",
             },
@@ -47,7 +48,8 @@ export const modernaCourse: Course = {
               id: "v3-moderna-r1-l1-musicality",
               title: "Szczegóły techniczne struktury muzycznej",
               description: "Detale i niuanse techniczne",
-              videoUrl: SAMPLE_VIDEOS.MODERNA_MUSICALITY_DETAIL,
+              videoUrl:
+                "https://storage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
               perspective: "detail",
               instructor: "Marcin Nowak",
             },
@@ -74,7 +76,8 @@ export const modernaCourse: Course = {
               id: "v3-moderna",
               title: "Podstawy improwizacji",
               description: "Jak zacząć improwizować w bachacie moderna",
-              videoUrl: SAMPLE_VIDEOS.TEARS,
+              videoUrl:
+                "https://storage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
               perspective: "front",
               instructor: "Marcin Nowak",
             },
@@ -102,7 +105,8 @@ export const modernaCourse: Course = {
               id: "v4-moderna",
               title: "Podstawy contemporary",
               description: "Techniki contemporary w bachacie",
-              videoUrl: SAMPLE_VIDEOS.ELEPHANTS,
+              videoUrl:
+                "https://storage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
               perspective: "front",
               instructor: "Marcin Nowak",
             },
@@ -120,7 +124,8 @@ export const modernaCourse: Course = {
               id: "v5-moderna",
               title: "Fuzja ze street dance",
               description: "Jak łączyć style urban z bachatą",
-              videoUrl: SAMPLE_VIDEOS.BLAZE,
+              videoUrl:
+                "https://storage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
               perspective: "front",
               instructor: "Marcin Nowak",
             },
@@ -148,7 +153,8 @@ export const modernaCourse: Course = {
               id: "v6-moderna",
               title: "Bezpieczne podnoszenia",
               description: "Technika i bezpieczeństwo w trickach",
-              videoUrl: SAMPLE_VIDEOS.ESCAPE,
+              videoUrl:
+                "https://storage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
               perspective: "front",
               instructor: "Marcin Nowak",
             },
@@ -156,7 +162,8 @@ export const modernaCourse: Course = {
               id: "v7-moderna",
               title: "Przygotowanie fizyczne",
               description: "Ćwiczenia przygotowujące do tricków",
-              videoUrl: SAMPLE_VIDEOS.FUN,
+              videoUrl:
+                "https://storage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
               perspective: "detail",
               instructor: "Marcin Nowak",
             },
@@ -174,7 +181,8 @@ export const modernaCourse: Course = {
               id: "v8-moderna",
               title: "Zasady choreografii",
               description: "Jak tworzyć efektowne choreografie",
-              videoUrl: SAMPLE_VIDEOS.JOYRIDE,
+              videoUrl:
+                "https://storage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
               perspective: "front",
               instructor: "Marcin Nowak",
             },

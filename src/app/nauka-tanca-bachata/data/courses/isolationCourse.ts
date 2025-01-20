@@ -1,6 +1,5 @@
 import { Course } from "../../types";
 import { instructors } from "../instructors";
-import { SAMPLE_VIDEOS } from "../sampleVideos";
 
 export const isolationCourse: Course = {
   id: "bachata-body-isolation",
@@ -30,25 +29,28 @@ export const isolationCourse: Course = {
               id: "v1-isolation-r1-l1-hips",
               title: "Izolacja bioder - widok z przodu",
               description: "Podstawowe techniki izolacji bioder",
-              videoUrl: SAMPLE_VIDEOS.ISOLATION_HIPS_FRONT,
+              videoUrl:
+                "https://storage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
               perspective: "front",
-              instructor: "Anna Wiśniewska",
+              instructor: "Kajka",
             },
             {
               id: "v2-isolation-r1-l1-hips",
               title: "Izolacja bioder - widok z tyłu",
               description: "Analiza ruchu bioder z tyłu",
-              videoUrl: SAMPLE_VIDEOS.ISOLATION_HIPS_BACK,
+              videoUrl:
+                "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
               perspective: "back",
-              instructor: "Anna Wiśniewska",
+              instructor: "Ola",
             },
             {
               id: "v3-isolation-r1-l1-hips",
               title: "Szczegóły techniczne izolacji bioder",
               description: "Detale i niuanse techniczne ruchów bioder",
-              videoUrl: SAMPLE_VIDEOS.ISOLATION_HIPS_DETAIL,
+              videoUrl:
+                "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
               perspective: "detail",
-              instructor: "Anna Wiśniewska",
+              instructor: "Tesi",
             },
           ],
           practiceExercises: [
@@ -73,7 +75,8 @@ export const isolationCourse: Course = {
               id: "v2-isolation",
               title: "Izolacja klatki piersiowej",
               description: "Podstawowe ruchy i techniki",
-              videoUrl: SAMPLE_VIDEOS.SINTEL,
+              videoUrl:
+                "https://storage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
               perspective: "front",
               instructor: "Anna Wiśniewska",
             },
@@ -101,7 +104,8 @@ export const isolationCourse: Course = {
               id: "v3-isolation",
               title: "Kombinacje izolacji",
               description: "Zaawansowane kombinacje ruchów",
-              videoUrl: SAMPLE_VIDEOS.TEARS,
+              videoUrl:
+                "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
               perspective: "front",
               instructor: "Anna Wiśniewska",
             },
@@ -129,7 +133,8 @@ export const isolationCourse: Course = {
               id: "v4-isolation",
               title: "Izolacje w praktyce",
               description: "Wykorzystanie izolacji w tańcu",
-              videoUrl: SAMPLE_VIDEOS.ESCAPE,
+              videoUrl:
+                "https://storage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
               perspective: "front",
               instructor: "Anna Wiśniewska",
             },

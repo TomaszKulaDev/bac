@@ -1,6 +1,5 @@
 import { Course } from "../../types";
 import { instructors } from "../instructors";
-import { SAMPLE_VIDEOS } from "../sampleVideos";
 
 export const sensualCourse: Course = {
   id: "bachata-sensual-advanced",
@@ -30,7 +29,8 @@ export const sensualCourse: Course = {
               id: "v1-sensual",
               title: "Charakterystyka stylu sensual",
               description: "Poznaj główne cechy bachaty sensual",
-              videoUrl: SAMPLE_VIDEOS.SINTEL,
+              videoUrl:
+                "https://storage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
               perspective: "front",
               instructor: "Anna Wiśniewska",
             },
@@ -48,7 +48,8 @@ export const sensualCourse: Course = {
               id: "v2-sensual",
               title: "Izolacje i fale ciała",
               description: "Nauka podstawowych izolacji i fal",
-              videoUrl: SAMPLE_VIDEOS.TEARS,
+              videoUrl:
+                "https://storage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
               perspective: "front",
               instructor: "Anna Wiśniewska",
             },
@@ -76,7 +77,8 @@ export const sensualCourse: Course = {
               id: "v3-sensual",
               title: "Technika cambre",
               description: "Szczegółowa nauka figury cambre",
-              videoUrl: SAMPLE_VIDEOS.ELEPHANTS,
+              videoUrl:
+                "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
               perspective: "side",
               instructor: "Anna Wiśniewska",
             },
@@ -95,7 +97,8 @@ export const sensualCourse: Course = {
               id: "v4-sensual",
               title: "Prowadzenie w sensual",
               description: "Podstawy prowadzenia w stylu sensual",
-              videoUrl: SAMPLE_VIDEOS.BLAZE,
+              videoUrl:
+                "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
               perspective: "front",
               instructor: "Anna Wiśniewska",
             },
@@ -123,7 +126,8 @@ export const sensualCourse: Course = {
               id: "v5-sensual",
               title: "Wyrażanie emocji",
               description: "Techniki wyrażania emocji w tańcu",
-              videoUrl: SAMPLE_VIDEOS.ESCAPE,
+              videoUrl:
+                "https://storage.googleapis.com/gtv-videos-bucket/sample/Escape.mp4",
               perspective: "front",
               instructor: "Anna Wiśniewska",
             },

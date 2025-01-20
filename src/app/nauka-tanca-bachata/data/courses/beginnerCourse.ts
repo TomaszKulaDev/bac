@@ -1,35 +1,102 @@
 import { Course } from "../../types";
 import { instructors } from "../instructors";
-import { SAMPLE_VIDEOS } from "../sampleVideos";
 
 export const beginnerCourse: Course = {
   id: "bachata-podstawy",
-  title: "Bachata od podstaw - pierwszy taniec",
+  title: "Bachata od Podstaw",
   description:
-    "Idealny kurs dla par przygotowujących się do pierwszego tańca lub osób rozpoczynających przygodę z bachatą. Nauczysz się podstaw w 4 tygodnie!",
+    "Kompletny kurs dla początkujących. Poznaj podstawy bachaty, naucz się kroków, rytmu i pierwszych figur w prosty i przyjemny sposób.",
   level: "beginner",
-  totalDuration: "6h 45min",
+  totalDuration: "8h",
   instructor: instructors.janKowalski,
   chapters: [
     {
-      id: "rozdzial-1-podstawy",
-      title: "Pierwsze kroki",
-      description: "Podstawowe kroki i rytmika w bachacie",
+      id: "rozdzial-1-rytm-i-kroki",
+      title: "Rytm i podstawowe kroki",
+      description: "Poznaj rytm bachaty i naucz się podstawowych kroków",
       order: 1,
       duration: "2h",
       lessons: [
         {
-          id: "lekcja-1-1-podstawy",
-          title: "Rytm i podstawowy krok",
-          description: "Poznaj rytm bachaty i naucz się podstawowego kroku",
+          id: "lekcja-1-1-rytm",
+          title: "Rytm w bachacie",
+          description:
+            "Poznaj charakterystyczny rytm bachaty i naucz się go słyszeć w muzyce",
+          duration: "30min",
+          thumbnail: "/images/lessons/rhythm.jpg",
+          videos: [
+            {
+              id: "v1-rytm",
+              title: "Wprowadzenie do rytmu",
+              description: "Podstawy rytmu bachaty i liczenie",
+              videoUrl:
+                "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+              perspective: "front",
+              instructor: "Jan Kowalski",
+            },
+          ],
+          practiceExercises: [
+            {
+              id: "ex1-rytm",
+              title: "Ćwiczenie rytmu",
+              description: "Wyklaskiwanie i liczenie rytmu",
+              duration: "10 min",
+              difficulty: "easy",
+            },
+          ],
+          isCompleted: false,
+        },
+        {
+          id: "lekcja-1-2-krok-podstawowy",
+          title: "Krok podstawowy",
+          description: "Nauka kroku podstawowego w miejscu i z prowadzeniem",
           duration: "45min",
           thumbnail: "/images/lessons/basic-step.jpg",
           videos: [
             {
-              id: "v1-podstawy",
-              title: "Podstawowy krok",
-              description: "Szczegółowe objaśnienie podstawowego kroku",
-              videoUrl: SAMPLE_VIDEOS.BUNNY,
+              id: "v2-krok",
+              title: "Krok podstawowy - widok z przodu",
+              description: "Szczegółowe objaśnienie kroku podstawowego",
+              videoUrl:
+                "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+              perspective: "front",
+              instructor: "Jan Kowalski",
+            },
+            {
+              id: "v3-krok",
+              title: "Krok podstawowy - widok z tyłu",
+              description: "Analiza kroku z perspektywy tylnej",
+              videoUrl:
+                "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+              perspective: "back",
+              instructor: "Jan Kowalski",
+            },
+          ],
+          isCompleted: false,
+        },
+      ],
+      isCompleted: false,
+    },
+    {
+      id: "rozdzial-2-prowadzenie",
+      title: "Podstawy prowadzenia",
+      description: "Nauka podstaw prowadzenia w parze",
+      order: 2,
+      duration: "3h",
+      lessons: [
+        {
+          id: "lekcja-2-1-ramka",
+          title: "Prawidłowa ramka",
+          description: "Jak trzymać ręce i utrzymać prawidłową postawę w parze",
+          duration: "45min",
+          thumbnail: "/images/lessons/frame.jpg",
+          videos: [
+            {
+              id: "v4-ramka",
+              title: "Ustawienie ramki",
+              description: "Prawidłowe trzymanie i postawa w parze",
+              videoUrl:
+                "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
               perspective: "front",
               instructor: "Jan Kowalski",
             },
@@ -37,17 +104,18 @@ export const beginnerCourse: Course = {
           isCompleted: false,
         },
         {
-          id: "lekcja-1-2-podstawy",
-          title: "Prowadzenie w parze",
-          description: "Nauka podstawowego prowadzenia w parze",
+          id: "lekcja-2-2-prowadzenie",
+          title: "Podstawy prowadzenia",
+          description: "Nauka podstawowych zasad prowadzenia w parze",
           duration: "45min",
           thumbnail: "/images/lessons/leading.jpg",
           videos: [
             {
-              id: "v2-podstawy",
-              title: "Prowadzenie podstawowe",
-              description: "Jak prowadzić partnerkę w podstawowym kroku",
-              videoUrl: SAMPLE_VIDEOS.SINTEL,
+              id: "v5-prowadzenie",
+              title: "Zasady prowadzenia",
+              description: "Podstawowe techniki prowadzenia w parze",
+              videoUrl:
+                "https://storage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
               perspective: "front",
               instructor: "Jan Kowalski",
             },
@@ -58,24 +126,25 @@ export const beginnerCourse: Course = {
       isCompleted: false,
     },
     {
-      id: "rozdzial-2-podstawy",
+      id: "rozdzial-3-figury",
       title: "Pierwsze figury",
-      description: "Podstawowe figury taneczne",
-      order: 2,
-      duration: "2h 45min",
+      description: "Nauka podstawowych figur tanecznych",
+      order: 3,
+      duration: "3h",
       lessons: [
         {
-          id: "lekcja-2-1-podstawy",
-          title: "Obroty podstawowe",
-          description: "Nauka podstawowych obrotów w bachacie",
-          duration: "60min",
-          thumbnail: "/images/lessons/basic-turns.jpg",
+          id: "lekcja-3-1-obroty",
+          title: "Podstawowe obroty",
+          description: "Nauka obrotów w prawo i w lewo",
+          duration: "45min",
+          thumbnail: "/images/lessons/turns.jpg",
           videos: [
             {
-              id: "v3-podstawy",
-              title: "Obroty damskie",
-              description: "Technika obrotów dla partnerki",
-              videoUrl: SAMPLE_VIDEOS.TEARS,
+              id: "v6-obroty",
+              title: "Obroty podstawowe",
+              description: "Technika wykonywania obrotów",
+              videoUrl:
+                "https://storage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
               perspective: "front",
               instructor: "Jan Kowalski",
             },
@@ -83,63 +152,18 @@ export const beginnerCourse: Course = {
           isCompleted: false,
         },
         {
-          id: "lekcja-2-2-podstawy",
-          title: "Podstawowe kombinacje",
+          id: "lekcja-3-2-kombinacje",
+          title: "Pierwsze kombinacje",
           description: "Łączenie kroków w proste kombinacje",
           duration: "45min",
-          thumbnail: "/images/lessons/basic-combinations.jpg",
+          thumbnail: "/images/lessons/combinations.jpg",
           videos: [
             {
-              id: "v4-podstawy",
-              title: "Kombinacje podstawowe",
-              description: "Pierwsze kombinacje figur",
-              videoUrl: SAMPLE_VIDEOS.BLAZE,
-              perspective: "front",
-              instructor: "Jan Kowalski",
-            },
-          ],
-          isCompleted: false,
-        },
-      ],
-      isCompleted: false,
-    },
-    {
-      id: "rozdzial-3-podstawy",
-      title: "Pierwszy taniec",
-      description: "Przygotowanie pierwszego tańca",
-      order: 3,
-      duration: "2h",
-      lessons: [
-        {
-          id: "lekcja-3-1-podstawy",
-          title: "Choreografia weselna",
-          description: "Nauka prostej choreografii na pierwszy taniec",
-          duration: "60min",
-          thumbnail: "/images/lessons/wedding-dance.jpg",
-          videos: [
-            {
-              id: "v5-podstawy",
-              title: "Choreografia część 1",
-              description: "Pierwsza część choreografii weselnej",
-              videoUrl: SAMPLE_VIDEOS.ESCAPE,
-              perspective: "front",
-              instructor: "Jan Kowalski",
-            },
-          ],
-          isCompleted: false,
-        },
-        {
-          id: "lekcja-3-2-podstawy",
-          title: "Wejście i ukłony",
-          description: "Efektowne wejście i zakończenie pierwszego tańca",
-          duration: "30min",
-          thumbnail: "/images/lessons/wedding-entrance.jpg",
-          videos: [
-            {
-              id: "v6-podstawy",
-              title: "Wejście i ukłony",
-              description: "Jak efektownie rozpocząć i zakończyć taniec",
-              videoUrl: SAMPLE_VIDEOS.FUN,
+              id: "v7-kombinacje",
+              title: "Podstawowe kombinacje",
+              description: "Nauka łączenia figur w kombinacje",
+              videoUrl:
+                "https://storage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
               perspective: "front",
               instructor: "Jan Kowalski",
             },
@@ -152,7 +176,7 @@ export const beginnerCourse: Course = {
   ],
   rating: 4.8,
   studentsCount: 350,
-  thumbnail: "/images/courses/first-dance.jpg",
-  tags: ["pierwszy taniec", "bachata", "początkujący", "podstawy"],
+  thumbnail: "/images/courses/bachata-basics.jpg",
+  tags: ["bachata", "początkujący", "podstawy", "prowadzenie", "figury"],
   isPopular: true,
 };
