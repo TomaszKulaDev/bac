@@ -7,7 +7,7 @@ export const isolationCourse: Course = {
   description:
     "Zaawansowany kurs techniki izolacji ciała w bachacie. Naucz się kontrolować każdą część ciała niezależnie, tworząc płynne i efektowne ruchy.",
   level: "isolations",
-  totalDuration: "8h 30min",
+  totalDuration: "8 godz 30min",
   instructor: instructors.annaWisniewska,
   chapters: [
     {
@@ -16,7 +16,7 @@ export const isolationCourse: Course = {
       description:
         "Wprowadzenie do technik izolacji poszczególnych części ciała",
       order: 1,
-      duration: "2h 30min",
+      duration: "2 godz 30min",
       lessons: [
         {
           id: "lekcja-1-1-isolation-hips",
@@ -91,7 +91,7 @@ export const isolationCourse: Course = {
       title: "Zaawansowane techniki",
       description: "Łączenie izolacji różnych części ciała",
       order: 2,
-      duration: "3h",
+      duration: "3 godz",
       lessons: [
         {
           id: "lekcja-2-1-isolation",
@@ -120,7 +120,7 @@ export const isolationCourse: Course = {
       title: "Izolacje w tańcu",
       description: "Praktyczne zastosowanie izolacji w tańcu",
       order: 3,
-      duration: "3h",
+      duration: "3 godz",
       lessons: [
         {
           id: "lekcja-3-1-isolation",

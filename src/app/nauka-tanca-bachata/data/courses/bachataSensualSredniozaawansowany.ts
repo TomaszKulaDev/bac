@@ -7,7 +7,7 @@ export const sensualCourse: Course = {
   description:
     "Odkryj zmysłową stronę bachaty. Kurs dla osób znających podstawy, chcących rozwinąć styl sensual.",
   level: "intermediate",
-  totalDuration: "10h",
+  totalDuration: "10 godz",
   instructor: instructors.annaWisniewska,
   chapters: [
     {
@@ -15,7 +15,7 @@ export const sensualCourse: Course = {
       title: "Podstawy stylu sensual",
       description: "Wprowadzenie do bachaty sensual i podstawowe ruchy",
       order: 1,
-      duration: "3h",
+      duration: "3 godz",
       lessons: [
         {
           id: "lekcja-1-1-sensual",
@@ -64,7 +64,7 @@ export const sensualCourse: Course = {
       title: "Figury sensual",
       description: "Charakterystyczne figury dla stylu sensual",
       order: 2,
-      duration: "4h",
+      duration: "4 godz",
       lessons: [
         {
           id: "lekcja-2-1-sensual",
@@ -113,7 +113,7 @@ export const sensualCourse: Course = {
       title: "Interpretacja muzyki",
       description: "Wyrażanie emocji i interpretacja muzyczna",
       order: 3,
-      duration: "3h",
+      duration: "3 godz",
       lessons: [
         {
           id: "lekcja-3-1-sensual",

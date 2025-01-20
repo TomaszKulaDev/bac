@@ -7,7 +7,7 @@ export const beginnerCourse: Course = {
   description:
     "Kompletny kurs dla początkujących. Poznaj podstawy bachaty, naucz się kroków, rytmu i pierwszych figur w prosty i przyjemny sposób.",
   level: "beginner",
-  totalDuration: "8h",
+  totalDuration: "8 godz",
   instructor: instructors.janKowalski,
   chapters: [
     {
@@ -15,7 +15,7 @@ export const beginnerCourse: Course = {
       title: "Rytm i podstawowe kroki",
       description: "Poznaj rytm bachaty i naucz się podstawowych kroków",
       order: 1,
-      duration: "2h",
+      duration: "2 godz",
       lessons: [
         {
           id: "lekcja-1-1-rytm",
@@ -82,7 +82,7 @@ export const beginnerCourse: Course = {
       title: "Podstawy prowadzenia",
       description: "Nauka podstaw prowadzenia w parze",
       order: 2,
-      duration: "3h",
+      duration: "3 godz",
       lessons: [
         {
           id: "lekcja-2-1-ramka",
@@ -130,7 +130,7 @@ export const beginnerCourse: Course = {
       title: "Pierwsze figury",
       description: "Nauka podstawowych figur tanecznych",
       order: 3,
-      duration: "3h",
+      duration: "3 godz",
       lessons: [
         {
           id: "lekcja-3-1-obroty",

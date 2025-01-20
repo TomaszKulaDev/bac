@@ -7,7 +7,7 @@ export const ladyStylingBeginnerCourse: Course = {
   description:
     "Kurs dla początkujących tancerek chcących rozwinąć swój styl taneczny. Poznaj podstawowe ruchy, pracę bioder, ramion i całego ciała charakterystyczne dla bachaty.",
   level: "lady-styling",
-  totalDuration: "6h 30min",
+  totalDuration: "6 godz 30min",
   instructor: instructors.annaWisniewska,
   chapters: [
     {
@@ -15,7 +15,7 @@ export const ladyStylingBeginnerCourse: Course = {
       title: "Podstawy Lady Styling",
       description: "Wprowadzenie do technik stylingu kobiecego w bachacie",
       order: 1,
-      duration: "2h",
+      duration: "2 godz 30min",
       lessons: [
         {
           id: "ls-podstawy-1",
@@ -55,7 +55,7 @@ export const ladyStylingBeginnerCourse: Course = {
           id: "ls-podstawy-2",
           title: "Praca ramion i dłoni",
           description: "Eleganckie prowadzenie ramion i gestów dłoni",
-          duration: "25 min",
+          duration: "2 godz",
           thumbnail: "/images/lessons/lady-styling/podstawy-2.jpg",
           videos: [
             {
@@ -85,13 +85,13 @@ export const ladyStylingBeginnerCourse: Course = {
       title: "Obroty i spiny",
       description: "Technika obrotów i spinów w stylu kobiecym",
       order: 2,
-      duration: "1h 30min",
+      duration: "1 godz 30min",
       lessons: [
         {
           id: "ls-obroty-1",
           title: "Podstawowe obroty",
           description: "Technika wykonywania podstawowych obrotów",
-          duration: "30 min",
+          duration: "2 godz",
           thumbnail: "/images/lessons/lady-styling/obroty-1.jpg",
           videos: [
             {

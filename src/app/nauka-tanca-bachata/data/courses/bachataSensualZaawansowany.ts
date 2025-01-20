@@ -7,7 +7,7 @@ export const modernaCourse: Course = {
   description:
     "Zaawansowany kurs dla tancerzy chcących rozwinąć swój styl o elementy sensual. Poznaj skomplikowane kombinacje, tricki i własną interpretację muzyki.",
   level: "advanced",
-  totalDuration: "15h 45min",
+  totalDuration: "15 godz 45min",
   instructor: instructors.marcinNowak,
   chapters: [
     {
@@ -16,7 +16,7 @@ export const modernaCourse: Course = {
       description:
         "Zaawansowana praca z muzyką i interpretacja w stylu sensual",
       order: 1,
-      duration: "4h",
+      duration: "4 godz",
       lessons: [
         {
           id: "lekcja-1-1-moderna-musicality",
@@ -92,7 +92,7 @@ export const modernaCourse: Course = {
       title: "Fuzja stylów tanecznych",
       description: "Łączenie bachaty z innymi stylami tańca",
       order: 2,
-      duration: "6h",
+      duration: "6 godz",
       lessons: [
         {
           id: "lekcja-2-1-moderna",
@@ -140,7 +140,7 @@ export const modernaCourse: Course = {
       title: "Zaawansowane tricki i partnerowanie",
       description: "Skomplikowane figury i techniki partnerowania",
       order: 3,
-      duration: "5h 45min",
+      duration: "5 godz 45min",
       lessons: [
         {
           id: "lekcja-3-1-moderna",
