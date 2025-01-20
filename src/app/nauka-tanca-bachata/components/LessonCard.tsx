@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { mockCourses } from "../data/mockCourse";
 
 interface LessonCardProps {
   lesson: {
@@ -43,6 +44,21 @@ const LessonCard: React.FC<LessonCardProps> = ({ lesson }) => {
     }
   };
 
+  // Pobieramy pierwszą lekcję z pierwszego rozdziału dla danego kursu
+  const getFirstLessonId = (courseId: string) => {
+    const course = mockCourses.find((c) => c.id === courseId);
+    if (
+      course &&
+      course.chapters.length > 0 &&
+      course.chapters[0].lessons.length > 0
+    ) {
+      return course.chapters[0].lessons[0].id;
+    }
+    return courseId; // fallback do ID kursu
+  };
+
+  const firstLessonId = getFirstLessonId(lesson.id);
+
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden">
       <div className="relative h-48">
@@ -69,7 +85,7 @@ const LessonCard: React.FC<LessonCardProps> = ({ lesson }) => {
         </h3>
         <p className="text-sm text-gray-500 mb-4">{lesson.description}</p>
         <Link
-          href={`/nauka-tanca-bachata/lekcja/${lesson.id}`}
+          href={`/nauka-tanca-bachata/lekcja/${firstLessonId}`}
           className="inline-block px-4 py-2 bg-amber-500 text-white rounded-md hover:bg-amber-600 transition-colors"
         >
           Rozpocznij kurs
