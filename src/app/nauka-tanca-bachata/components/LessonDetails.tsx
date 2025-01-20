@@ -1,3 +1,14 @@
+/**
+ * Komponent LessonDetails odpowiada za wyświetlanie szczegółowych informacji o lekcji.
+ * Główne funkcjonalności:
+ * - Wyświetlanie tytułu i opisu lekcji
+ * - Pokazywanie czasu trwania lekcji
+ * - Wyświetlanie liczby ćwiczeń praktycznych (jeśli są dostępne)
+ * 
+ * Komponent przyjmuje props:
+ * - lesson: obiekt zawierający szczegóły lekcji (tytuł, opis, czas trwania, ćwiczenia)
+ */
+
 import { Lesson } from "../types";
 import { ClockIcon, BookOpenIcon } from "@heroicons/react/24/outline";
 

@@ -1,3 +1,16 @@
+/**
+ * Komponent CourseOverview odpowiada za wyświetlanie ogólnego przeglądu kursu tańca.
+ * Główne funkcjonalności:
+ * - Wyświetlanie miniatury kursu z opcjonalnym znacznikiem "Popularny"
+ * - Pokazywanie poziomu zaawansowania z odpowiednim kolorem oznaczenia
+ * - Wyświetlanie tytułu i opisu kursu
+ * - Informacje o czasie trwania i liczbie rozdziałów
+ * - Przyciski do rozpoczęcia kursu i wyświetlenia programu
+ * 
+ * Komponent przyjmuje props:
+ * - course: obiekt zawierający szczegóły kursu (tytuł, poziom, czas trwania, miniatura, opis, rozdziały)
+ */
+
 import Image from "next/image";
 import { Course } from "../types";
 import { ClockIcon, BookOpenIcon } from "@heroicons/react/24/outline";

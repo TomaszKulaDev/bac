@@ -3,7 +3,7 @@ import { instructors } from "../instructors";
 
 export const sensualCourse: Course = {
   id: "bachata-sensual-advanced",
-  title: "Bachata Sensual - Styl i Elegancja",
+  title: "Bachata Sensual - Średniozaawansowany",
   description:
     "Odkryj zmysłową stronę bachaty. Kurs dla osób znających podstawy, chcących rozwinąć styl sensual.",
   level: "intermediate",
@@ -140,7 +140,7 @@ export const sensualCourse: Course = {
   ],
   rating: 4.9,
   studentsCount: 180,
-  thumbnail: "/images/courses/sensual-advanced.jpg",
+  thumbnail: "/images/courses/bachataSensualSredniozaawansowany.webp",
   tags: ["bachata", "sensual", "średniozaawansowany", "body movement"],
   isPopular: true,
 };

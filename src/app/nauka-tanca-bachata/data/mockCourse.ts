@@ -1,8 +1,20 @@
+/**
+ * Moduł zawierający dane testowe kursów tańca bachata.
+ * Główne funkcjonalności:
+ * - Import i walidacja wszystkich dostępnych kursów
+ * - Sprawdzanie poprawności struktury kursów (obecność rozdziałów)
+ * - Eksport listy wszystkich kursów oraz domyślnego kursu
+ * 
+ * Eksportuje:
+ * - mockCourses: tablica wszystkich dostępnych kursów
+ * - getDefaultCourse: funkcja zwracająca domyślny (pierwszy) kurs
+ */
+
 import { Course } from "../types";
-import { beginnerCourse } from "./courses/beginnerCourse";
-import { sensualCourse } from "./courses/sensualCourse";
-import { modernaCourse } from "./courses/modernaCourse";
-import { isolationCourse } from "./courses/isolationCourse";
+import { beginnerCourse } from "./courses/bachataOdPodstaw";
+import { sensualCourse } from "./courses/bachataSensualSredniozaawansowany";
+import { modernaCourse } from "./courses/bachataSensualZaawansowany";
+import { isolationCourse } from "./courses/izolacje";
 
 // Sprawdzamy czy wszystkie kursy mają rozdziały
 const validateCourse = (course: Course): Course => {

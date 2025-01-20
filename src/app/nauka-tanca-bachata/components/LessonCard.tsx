@@ -1,3 +1,15 @@
+/**
+ * Komponent LessonCard odpowiada za wyświetlanie karty pojedynczej lekcji/kursu tańca.
+ * Główne funkcjonalności:
+ * - Wyświetlanie miniatury lekcji
+ * - Pokazywanie poziomu zaawansowania z odpowiednim kolorem oznaczenia
+ * - Wyświetlanie tytułu, opisu i czasu trwania lekcji
+ * - Link do rozpoczęcia kursu, który kieruje do pierwszej lekcji danego kursu
+ *
+ * Komponent przyjmuje props:
+ * - lesson: obiekt zawierający szczegóły lekcji (id, tytuł, poziom, czas trwania, miniatura, opis)
+ */
+
 import Image from "next/image";
 import Link from "next/link";
 import { mockCourses } from "../data/mockCourse";
@@ -10,6 +22,7 @@ interface LessonCardProps {
     duration: string;
     thumbnail: string;
     description: string;
+    isPopular: boolean;
   };
 }
 
@@ -61,12 +74,14 @@ const LessonCard: React.FC<LessonCardProps> = ({ lesson }) => {
 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden">
-      <div className="relative h-48">
+      <div className="relative h-96">
         <Image
           src={lesson.thumbnail}
           alt={lesson.title}
           fill
-          className="object-cover"
+          className="object-cover object-center"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          priority={lesson.isPopular}
         />
       </div>
       <div className="p-4">

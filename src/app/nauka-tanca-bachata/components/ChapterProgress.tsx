@@ -1,3 +1,16 @@
+/**
+ * Komponent ChapterProgress odpowiada za wyświetlanie postępu w rozdziale kursu.
+ * Główne funkcjonalności:
+ * - Wyświetlanie tytułu rozdziału
+ * - Pokazywanie liczby ukończonych lekcji w stosunku do wszystkich lekcji
+ * - Wizualizacja postępu za pomocą paska postępu
+ * - Oznaczanie aktualnego rozdziału innym kolorem tła
+ * 
+ * Komponent przyjmuje props:
+ * - chapter: obiekt zawierający szczegóły rozdziału (tytuł, lekcje)
+ * - isCurrentChapter: flaga określająca czy to aktualny rozdział
+ */
+
 import { Chapter } from "../types";
 
 interface ChapterProgressProps {

@@ -1,3 +1,18 @@
+/**
+ * Komponent CourseNavigation odpowiada za wyświetlanie nawigacji kursu tańca.
+ * Główne funkcjonalności:
+ * - Wyświetlanie tytułu kursu i całkowitego czasu trwania
+ * - Pokazywanie listy rozdziałów z ich tytułami i czasem trwania
+ * - Wyświetlanie lekcji w ramach każdego rozdziału
+ * - Oznaczanie aktualnie wybranej lekcji kolorem
+ * - Oznaczanie ukończonych lekcji ikonką
+ * - Linki do poszczególnych lekcji
+ * 
+ * Komponent przyjmuje props:
+ * - course: obiekt zawierający szczegóły kursu (tytuł, rozdziały, lekcje)
+ * - currentLessonId?: opcjonalne ID aktualnie wyświetlanej lekcji
+ */
+
 import Link from "next/link";
 import { Course } from "../types";
 

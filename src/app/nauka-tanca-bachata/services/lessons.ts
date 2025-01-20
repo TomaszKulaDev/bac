@@ -1,3 +1,11 @@
+/**
+ * Serwis odpowiedzialny za operacje na lekcjach kursu tańca bachata.
+ * Główne funkcjonalności:
+ * - Pobieranie szczegółów lekcji na podstawie ID
+ * - Obsługa przypadku gdy ID wskazuje na kurs (zwraca pierwszą lekcję)
+ * - Zwracanie null gdy nie znaleziono lekcji ani kursu
+ */
+
 import { Lesson } from "../types";
 import { mockCourses } from "../data/mockCourse";
 import {

@@ -1,3 +1,9 @@
+/**
+ * Komponent LevelSelector służy do wyświetlania i wybierania poziomów zaawansowania kursów tańca.
+ * Wyświetla listę przycisków reprezentujących różne poziomy (wszystkie, izolacje, początkujący itd.).
+ * Aktywny poziom jest wyróżniony kolorem, a kliknięcie przycisku powoduje zmianę wybranego poziomu.
+ */
+
 interface LevelSelectorProps {
   selectedLevel: string;
   onLevelChange: (level: string) => void;

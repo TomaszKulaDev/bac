@@ -1,3 +1,15 @@
+/**
+ * Context zarządzający stanem kursu tańca w aplikacji.
+ * Główne funkcjonalności:
+ * - Przechowywanie informacji o aktualnie wybranym kursie
+ * - Aktualizacja postępu ukończonych lekcji
+ * - Udostępnianie stanu kursu i metod do jego aktualizacji
+ * 
+ * Eksportuje:
+ * - CourseProvider: komponent opakowujący do zarządzania stanem
+ * - useCourse: hook do dostępu do kontekstu kursu
+ */
+
 import { createContext, useContext, useState } from "react";
 import { Course } from "../types";
 

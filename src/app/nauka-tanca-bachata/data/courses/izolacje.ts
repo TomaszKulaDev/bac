@@ -147,7 +147,7 @@ export const isolationCourse: Course = {
   ],
   rating: 4.85,
   studentsCount: 250,
-  thumbnail: "/images/courses/body-isolation.jpg",
+  thumbnail: "/images/courses/body-isolation.webp",
   tags: [
     "bachata",
     "izolacje",

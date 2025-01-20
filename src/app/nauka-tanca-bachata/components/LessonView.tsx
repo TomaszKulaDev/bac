@@ -1,3 +1,18 @@
+/**
+ * Komponent LessonView odpowiada za wyświetlanie pojedynczej lekcji kursu tańca.
+ * Główne funkcjonalności:
+ * - Wyświetlanie odtwarzacza wideo z kontrolkami (prędkość, odbicie lustrzane, sekcja zapętlenia)
+ * - Wybór różnych perspektyw nagrania (przód, tył, bok, szczegóły)
+ * - Wyświetlanie avatara i informacji o instruktorze
+ * - Wyświetlanie opisu lekcji i szczegółów
+ * 
+ * Komponent zarządza stanem:
+ * - Aktualnie wybrane wideo
+ * - Ustawienia odtwarzacza (prędkość, odbicie)
+ * - Sekcja zapętlenia
+ * - Czas trwania wideo
+ */
+
 "use client";
 
 import { useState, useCallback } from "react";

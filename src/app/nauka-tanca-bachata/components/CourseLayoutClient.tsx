@@ -1,3 +1,16 @@
+/**
+ * Komponent CourseLayoutClient odpowiada za zarządzanie layoutem kursu tańca po stronie klienta.
+ * Główne funkcjonalności:
+ * - Wykrywanie aktualnej ścieżki URL i określanie czy to strona główna
+ * - Pobieranie i wyświetlanie odpowiedniego kursu na podstawie URL
+ * - Obsługa nawigacji między kursami i lekcjami
+ * - Wyświetlanie nagłówka z tytułem i opisem kursu
+ * - Renderowanie nawigacji bocznej (CourseNavigation) dla podstron kursu
+ * 
+ * Komponent przyjmuje props:
+ * - children: komponenty potomne do wyrenderowania w głównej sekcji
+ */
+
 "use client";
 
 import { usePathname } from "next/navigation";

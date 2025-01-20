@@ -1,3 +1,16 @@
+/**
+ * Strona główna kursu tańca bachata.
+ * Główne funkcjonalności:
+ * - Wyświetlanie listy dostępnych kursów
+ * - Filtrowanie kursów według poziomu zaawansowania
+ * - Responsywny układ kart kursów (1-3 kolumny)
+ * 
+ * Komponent korzysta z:
+ * - LevelSelector do wyboru poziomu zaawansowania
+ * - LessonCard do wyświetlania pojedynczego kursu
+ * - mockCourses jako źródła danych o kursach
+ */
+
 "use client";
 
 import React, { useState } from "react";

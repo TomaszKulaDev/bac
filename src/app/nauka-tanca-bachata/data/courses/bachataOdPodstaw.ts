@@ -176,7 +176,7 @@ export const beginnerCourse: Course = {
   ],
   rating: 4.8,
   studentsCount: 350,
-  thumbnail: "/images/courses/bachata-basics.jpg",
+  thumbnail: "/images/courses/bachata-basics.webp",
   tags: ["bachata", "początkujący", "podstawy", "prowadzenie", "figury"],
   isPopular: true,
 };

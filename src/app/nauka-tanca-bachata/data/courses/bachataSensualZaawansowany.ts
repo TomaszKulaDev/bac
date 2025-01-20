@@ -2,19 +2,19 @@ import { Course } from "../../types";
 import { instructors } from "../instructors";
 
 export const modernaCourse: Course = {
-  id: "bachata-moderna-advanced",
-  title: "Bachata Moderna - Poziom Mistrzowski",
+  id: "bachata-sensual-advanced",
+  title: "Bachata Sensual - Zaawansowany",
   description:
-    "Zaawansowany kurs dla tancerzy chcących rozwinąć swój styl o elementy moderna i fusion. Poznaj skomplikowane kombinacje, tricki i własną interpretację muzyki.",
+    "Zaawansowany kurs dla tancerzy chcących rozwinąć swój styl o elementy sensual. Poznaj skomplikowane kombinacje, tricki i własną interpretację muzyki.",
   level: "advanced",
   totalDuration: "15h 45min",
   instructor: instructors.marcinNowak,
   chapters: [
     {
-      id: "rozdzial-1-moderna",
+      id: "rozdzial-1-sensual",
       title: "Muzyczność i interpretacja",
       description:
-        "Zaawansowana praca z muzyką i interpretacja w stylu moderna",
+        "Zaawansowana praca z muzyką i interpretacja w stylu sensual",
       order: 1,
       duration: "4h",
       lessons: [
@@ -195,14 +195,7 @@ export const modernaCourse: Course = {
   ],
   rating: 4.95,
   studentsCount: 120,
-  thumbnail: "/images/courses/moderna-advanced.jpg",
-  tags: [
-    "bachata",
-    "moderna",
-    "fusion",
-    "zaawansowany",
-    "tricki",
-    "choreografia",
-  ],
+  thumbnail: "/images/courses/bachataSensualZaawansowany.webp",
+  tags: ["bachata", "sensual", "zaawansowany", "tricki", "choreografia"],
   isPopular: false,
 };
