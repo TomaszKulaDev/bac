@@ -27,18 +27,37 @@ export const YouTubePlayer: React.FC<YouTubePlayerProps> = ({
       modestbranding: 1 as const,
       rel: 0 as const,
       showinfo: 0 as const,
-      iv_load_policy: 3 as const, // wyłącz adnotacje
-      hl: "pl" as const, // język interfejsu
-      cc_lang_pref: "pl" as const, // preferowany język napisów (jeśli są dostępne)
-      disablekb: 1 as const, // wyłącz sterowanie klawiaturą
+      iv_load_policy: 3 as const,
+      hl: "pl" as const,
+      disablekb: 1 as const,
+      cc_lang_pref: "none" as const,
     },
+  };
+
+  const disableClosedCaptions = (player: any) => {
+    if (!player) return;
+
+    player.unloadModule("captions");
+    player.unloadModule("cc");
+
+    player.setOption("captions", "track", {});
+    player.setOption("cc", "track", {});
+
+    try {
+      player.setOption("cc", "reload", false);
+      const iframe = player.getIframe();
+      if (iframe) {
+        iframe.setAttribute("cc_lang_pref", "none");
+      }
+    } catch (error) {
+      console.warn("Nie udało się zmodyfikować ustawień napisów:", error);
+    }
   };
 
   useEffect(() => {
     if (playerRef.current) {
       playerRef.current.setPlaybackRate(speed);
-      // Wyłączamy napisy programowo po załadowaniu
-      playerRef.current.unloadModule("captions");
+      disableClosedCaptions(playerRef.current);
     }
   }, [speed]);
 
@@ -46,12 +65,13 @@ export const YouTubePlayer: React.FC<YouTubePlayerProps> = ({
     playerRef.current = event.target;
     const duration = event.target.getDuration();
     onDurationChange(duration);
-    // Dodatkowe zabezpieczenie - wyłącz napisy po załadowaniu
-    event.target.unloadModule("captions");
+    disableClosedCaptions(event.target);
   };
 
   const onStateChange = (event: any) => {
     if (event.data === YouTube.PlayerState.PLAYING) {
+      disableClosedCaptions(event.target);
+
       const progressInterval = setInterval(() => {
         const currentTime = event.target.getCurrentTime();
         onProgress(currentTime);
