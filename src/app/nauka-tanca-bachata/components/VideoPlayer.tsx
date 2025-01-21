@@ -293,6 +293,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
           loopSection={loopSection}
           onProgress={onProgress}
           onDurationChange={onDurationChange}
+          onLoopSectionChange={onLoopSectionChange}
         />
       </div>
     );
