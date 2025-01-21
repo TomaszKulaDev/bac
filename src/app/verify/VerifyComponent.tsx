@@ -36,7 +36,7 @@ export default function VerifyComponent() {
 
   const handleGoToSignIn = () => {
     setIsLoading(true);
-    router.push("/auth/signin?verified=true");
+    router.push("/login");
   };
 
   // Komponent wyświetlający wiadomość o sukcesie weryfikacji
