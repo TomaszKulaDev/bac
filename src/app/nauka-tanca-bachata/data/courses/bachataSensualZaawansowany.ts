@@ -54,15 +54,6 @@ export const modernaCourse: Course = {
               instructor: "Marcin Nowak",
             },
           ],
-          practiceExercises: [
-            {
-              id: "ex-moderna-r1-l1-e1",
-              title: "Ćwiczenie rytmiki",
-              description: "Ćwiczenie podstawowych wzorców rytmicznych",
-              duration: "15 min",
-              difficulty: "medium",
-            },
-          ],
           isCompleted: false,
         },
         {
@@ -197,5 +188,4 @@ export const modernaCourse: Course = {
   studentsCount: 120,
   thumbnail: "/images/courses/bachataSensualZaawansowany.webp",
   tags: ["bachata", "sensual", "zaawansowany", "tricki", "choreografia"],
-  isPopular: false,
 };

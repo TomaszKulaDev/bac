@@ -27,14 +27,7 @@ export const LessonDetails: React.FC<LessonDetailsProps> = ({ lesson }) => {
           <ClockIcon className="w-5 h-5 text-gray-400" />
           <span className="text-sm text-gray-600">{lesson.duration}</span>
         </div>
-        {lesson.practiceExercises && (
-          <div className="flex items-center gap-2">
-            <BookOpenIcon className="w-5 h-5 text-gray-400" />
-            <span className="text-sm text-gray-600">
-              {lesson.practiceExercises.length} ćwiczeń
-            </span>
-          </div>
-        )}
+      
       </div>
     </div>
   );

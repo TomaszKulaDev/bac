@@ -14,8 +14,6 @@ export interface Course {
   rating: number;
   studentsCount: number;
   thumbnail: string;
-  price?: number;
-  isPopular?: boolean;
   tags: string[];
   progress?: {
     completedLessons: number;
@@ -49,8 +47,6 @@ export interface Lesson {
   duration: string;
   thumbnail: string;
   isCompleted?: boolean;
-  quiz?: Quiz;
-  practiceExercises?: Exercise[];
   nextLessonId?: string;
   previousLessonId?: string;
   prerequisites?: string[];
@@ -66,21 +62,3 @@ export interface Instructor {
   totalStudents: number;
 }
 
-export interface Quiz {
-  id: string;
-  questions: {
-    id: string;
-    question: string;
-    options: string[];
-    correctAnswer: number;
-  }[];
-}
-
-export interface Exercise {
-  id: string;
-  title: string;
-  description: string;
-  duration: string;
-  difficulty: "easy" | "medium" | "hard";
-  videoUrl?: string;
-}

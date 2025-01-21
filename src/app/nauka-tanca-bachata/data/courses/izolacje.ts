@@ -53,15 +53,6 @@ export const isolationCourse: Course = {
             //   instructor: "Tesi",
             // },
           ],
-          practiceExercises: [
-            {
-              id: "ex-isolation-r1-l1-e1",
-              title: "Ćwiczenie figure 8",
-              description: "Ćwiczenie ruchu bioder w kształcie ósemki",
-              duration: "10 min",
-              difficulty: "medium",
-            },
-          ],
           isCompleted: false,
         },
         {
@@ -156,5 +147,4 @@ export const isolationCourse: Course = {
     "izolacje",
     "styl",
   ],
-  isPopular: true,
 };

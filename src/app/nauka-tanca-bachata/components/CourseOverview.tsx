@@ -57,11 +57,6 @@ export const CourseOverview: React.FC<CourseOverviewProps> = ({ course }) => {
             fill
             className="object-cover"
           />
-          {course.isPopular && (
-            <div className="absolute top-2 right-2 bg-amber-500 text-white px-3 py-1 rounded-full text-sm font-medium">
-              Popularny
-            </div>
-          )}
         </div>
 
         <div className="flex-1">

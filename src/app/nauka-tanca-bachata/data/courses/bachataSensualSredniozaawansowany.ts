@@ -142,5 +142,4 @@ export const sensualCourse: Course = {
   studentsCount: 180,
   thumbnail: "/images/courses/bachataSensualSredniozaawansowany.webp",
   tags: ["bachata", "sensual", "średniozaawansowany", "body movement"],
-  isPopular: true,
 };

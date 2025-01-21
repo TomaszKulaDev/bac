@@ -35,15 +35,6 @@ export const beginnerCourse: Course = {
               instructor: "Jan Kowalski",
             },
           ],
-          practiceExercises: [
-            {
-              id: "ex1-rytm",
-              title: "Ćwiczenie rytmu",
-              description: "Wyklaskiwanie i liczenie rytmu",
-              duration: "10 min",
-              difficulty: "easy",
-            },
-          ],
           isCompleted: false,
         },
         {
@@ -178,5 +169,4 @@ export const beginnerCourse: Course = {
   studentsCount: 350,
   thumbnail: "/images/courses/bachata-basics.webp",
   tags: ["bachata", "początkujący", "podstawy", "prowadzenie", "figury"],
-  isPopular: true,
 };

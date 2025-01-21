@@ -121,5 +121,5 @@ export const ladyStylingBeginnerCourse: Course = {
   studentsCount: 150,
   thumbnail: "/images/courses/bachataLadyStylingPodstawy.webp",
   tags: ["bachata", "lady styling", "początkujący", "styl kobiecy", "technika"],
-  isPopular: true,
+  
 };
