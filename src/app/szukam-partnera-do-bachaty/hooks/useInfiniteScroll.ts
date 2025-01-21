@@ -2,28 +2,21 @@ import { useEffect, useRef, useCallback } from "react";
 import { useInView } from "react-intersection-observer";
 
 export const useInfiniteScroll = (
-  hasMore: boolean,
-  isLoading: boolean,
-  loadMore: () => void,
-  threshold = 0.5,
-  rootMargin = "200px"
+  hasNextPage: boolean,
+  isFetchingNextPage: boolean,
+  fetchNextPage: () => void
 ) => {
-  const loadingRef = useRef(false);
-  const { ref, inView } = useInView({ threshold, rootMargin });
-
-  const handleIntersection = useCallback(() => {
-    if (inView && hasMore && !isLoading && !loadingRef.current) {
-      loadingRef.current = true;
-      loadMore();
-    }
-  }, [inView, hasMore, isLoading, loadMore]);
+  const { ref, inView } = useInView({
+    threshold: 0.1,
+    rootMargin: "100px",
+  });
 
   useEffect(() => {
-    handleIntersection();
-    if (!isLoading) {
-      loadingRef.current = false;
+    if (inView && hasNextPage && !isFetchingNextPage) {
+      console.log("Ładowanie następnej strony...");
+      fetchNextPage();
     }
-  }, [handleIntersection, isLoading]);
+  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return { ref };
 };

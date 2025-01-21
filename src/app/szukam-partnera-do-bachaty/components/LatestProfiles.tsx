@@ -9,10 +9,7 @@ import {
   Suspense,
 } from "react";
 import { useInView } from "react-intersection-observer";
-import {
-  useInfiniteQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { UserProfile } from "@/types/user";
 import { useFilters } from "../context/FilterContext";
 import { SortingButtons } from "./SortingButtons";
@@ -63,17 +60,19 @@ export const LatestProfiles = () => {
     }
 
     const profiles = await response.json();
+    console.log("Otrzymane profile z API:", profiles.length);
 
     if (!Array.isArray(profiles)) {
       throw new Error("Nieprawidłowy format danych z API");
     }
 
     const processedProfiles = filterAndSortProfiles(profiles);
+    console.log("Po filtrowaniu:", processedProfiles.length);
 
     return {
       profiles: processedProfiles,
       nextPage: pageParam + 1,
-      hasMore: profiles.length >= PROFILES_PER_PAGE,
+      hasMore: processedProfiles.length >= PROFILES_PER_PAGE,
     };
   };
 
@@ -172,6 +171,8 @@ export const LatestProfiles = () => {
 
   // Optymalizacja renderowania
   const renderProfiles = useCallback(() => {
+    console.log("Liczba profili do wyrenderowania:", filteredProfiles.length);
+
     if (isLoading) return <LoadingSkeleton />;
     if (filteredProfiles.length === 0) {
       return (
@@ -182,31 +183,24 @@ export const LatestProfiles = () => {
     }
 
     return (
-      <Suspense fallback={<LoadingSkeleton />}>
-        <div onScroll={onScroll} className="overflow-auto h-screen">
-          <ProfilesGrid
-            profiles={filteredProfiles.slice(
-              visibleItems.startIndex,
-              visibleItems.endIndex
-            )}
-            onStylesClick={handleStylesClick}
-          />
-          {hasNextPage && (
-            <div ref={infiniteScrollRef} className="py-8">
-              {isFetchingNextPage && <LoadingSkeleton />}
-            </div>
-          )}
-        </div>
-      </Suspense>
+      <div className="overflow-auto">
+        <ProfilesGrid
+          profiles={filteredProfiles}
+          onStylesClick={handleStylesClick}
+        />
+        {hasNextPage && (
+          <div ref={infiniteScrollRef} className="py-8">
+            {isFetchingNextPage && <LoadingSkeleton />}
+          </div>
+        )}
+      </div>
     );
   }, [
     isLoading,
     filteredProfiles,
-    visibleItems,
     hasNextPage,
     isFetchingNextPage,
     handleStylesClick,
-    onScroll,
     infiniteScrollRef,
   ]);
 
