@@ -197,7 +197,7 @@ export const YouTubePlayer: React.FC<YouTubePlayerProps> = ({
       ref={containerRef}
       className="relative w-full aspect-video bg-black group"
       onMouseMove={handleMouseMove}
-      onMouseLeave={() => setIsControlsVisible(false)}
+      onMouseLeave={() => !isAdjustingLoop && setIsControlsVisible(false)}
     >
       <YouTube
         videoId={videoId}
@@ -239,6 +239,47 @@ export const YouTubePlayer: React.FC<YouTubePlayerProps> = ({
           <div className="flex-1 flex items-center gap-2">
             <span className="text-sm">{formatTime(currentTime)}</span>
             <div className="relative flex-1 h-1 group">
+              {/* Loop section markers */}
+              {loopSection && (
+                <>
+                  {/* Tło sekcji zapętlenia */}
+                  <div
+                    className="absolute top-0 h-2 bg-amber-500/40 rounded-full pointer-events-none"
+                    style={{
+                      left: `${(loopSection[0] / duration) * 100}%`,
+                      width: `${
+                        ((loopSection[1] - loopSection[0]) / duration) * 100
+                      }%`,
+                    }}
+                  />
+
+                  {/* Znaczniki początku i końca */}
+                  <div
+                    className="absolute top-1/2 -translate-y-1/2 w-1 h-4 bg-amber-500 rounded-full pointer-events-none"
+                    style={{ left: `${(loopSection[0] / duration) * 100}%` }}
+                  />
+                  <div
+                    className="absolute top-1/2 -translate-y-1/2 w-1 h-4 bg-amber-500 rounded-full pointer-events-none"
+                    style={{ left: `${(loopSection[1] / duration) * 100}%` }}
+                  />
+
+                  {/* Etykiety czasu dla znaczników */}
+                  <div
+                    className="absolute -top-6 transform -translate-x-1/2 text-xs text-white bg-black/70 px-1 rounded"
+                    style={{ left: `${(loopSection[0] / duration) * 100}%` }}
+                  >
+                    {formatTime(loopSection[0])}
+                  </div>
+                  <div
+                    className="absolute -top-6 transform -translate-x-1/2 text-xs text-white bg-black/70 px-1 rounded"
+                    style={{ left: `${(loopSection[1] / duration) * 100}%` }}
+                  >
+                    {formatTime(loopSection[1])}
+                  </div>
+                </>
+              )}
+
+              {/* Progress input */}
               <input
                 type="range"
                 min={0}
@@ -254,6 +295,8 @@ export const YouTubePlayer: React.FC<YouTubePlayerProps> = ({
                   [&::-webkit-slider-thumb]:opacity-0
                   group-hover:[&::-webkit-slider-thumb]:opacity-100"
               />
+
+              {/* Progress indicator */}
               <div
                 className="absolute top-0 left-0 h-1 bg-amber-500 rounded-full pointer-events-none"
                 style={{ width: `${(currentTime / duration) * 100}%` }}
@@ -261,6 +304,14 @@ export const YouTubePlayer: React.FC<YouTubePlayerProps> = ({
             </div>
             <span className="text-sm">{formatTime(duration)}</span>
           </div>
+
+          {/* Dodaj LoopSectionControl */}
+          <LoopSectionControl
+            value={loopSection}
+            onChange={onLoopSectionChange}
+            duration={duration}
+            onAdjustingChange={setIsAdjustingLoop}
+          />
 
           {/* Przycisk pełnego ekranu */}
           <button
@@ -277,14 +328,6 @@ export const YouTubePlayer: React.FC<YouTubePlayerProps> = ({
               </svg>
             )}
           </button>
-
-          {/* Dodaj LoopSectionControl */}
-          <LoopSectionControl
-            value={loopSection}
-            onChange={onLoopSectionChange}
-            duration={duration}
-            onAdjustingChange={setIsAdjustingLoop}
-          />
         </div>
       </div>
     </div>
