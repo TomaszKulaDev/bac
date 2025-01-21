@@ -50,7 +50,7 @@ export default function VerifyComponent() {
         Nie możemy się doczekać, aby zobaczyć Cię na parkiecie!
       </p>
       <Link
-        href="/profile"
+        href="/profile/edit"
         className="bg-orange-500 text-white px-4 py-2 rounded-full font-bold hover:bg-orange-600 transition-colors"
       >
         Przejdź do swojego konta
