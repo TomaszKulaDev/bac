@@ -27,6 +27,7 @@ export const YouTubePlayer: React.FC<YouTubePlayerProps> = ({
   const [duration, setDuration] = useState(0);
   const [isControlsVisible, setIsControlsVisible] = useState(true);
   const [isAdjustingLoop, setIsAdjustingLoop] = useState(false);
+  const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const opts = {
     height: "100%",
@@ -147,9 +148,30 @@ export const YouTubePlayer: React.FC<YouTubePlayerProps> = ({
     }
   };
 
-  const handleMouseMove = () => {
+  const handleMouseMove = useCallback(() => {
     setIsControlsVisible(true);
-  };
+
+    // Wyczyść poprzedni timeout jeśli istnieje
+    if (controlsTimeoutRef.current) {
+      clearTimeout(controlsTimeoutRef.current);
+    }
+
+    // Ustaw nowy timeout do ukrycia kontrolek
+    if (!isAdjustingLoop) {
+      controlsTimeoutRef.current = setTimeout(() => {
+        setIsControlsVisible(false);
+      }, 1000); // 1 sekunda
+    }
+  }, [isAdjustingLoop]);
+
+  // Wyczyść timeout przy odmontowaniu komponentu
+  useEffect(() => {
+    return () => {
+      if (controlsTimeoutRef.current) {
+        clearTimeout(controlsTimeoutRef.current);
+      }
+    };
+  }, []);
 
   // Centralny przycisk play/pause
   const renderPlayButton = () => {
