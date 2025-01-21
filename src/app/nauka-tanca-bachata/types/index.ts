@@ -62,3 +62,34 @@ export interface Instructor {
   totalStudents: number;
 }
 
+export interface LessonVideo {
+  id: string;
+  title: string;
+  description: string;
+  videoUrl: string;
+  perspective: string;
+  instructor: string;
+}
+
+export interface InstructorVideo {
+  id: string;
+  instructorName: string;
+  instructorAvatar: string;
+  videoUrl: string;
+  teachingStyle: string;
+  description: string;
+}
+
+// Adapter do konwersji LessonVideo na InstructorVideo
+export const adaptLessonVideoToInstructorVideo = (
+  video: LessonVideo
+): InstructorVideo => ({
+  id: video.id,
+  instructorName: video.instructor,
+  instructorAvatar: `/images/instructors/${video.instructor
+    .toLowerCase()
+    .replace(" ", "-")}.jpg`,
+  videoUrl: video.videoUrl,
+  teachingStyle: video.perspective,
+  description: video.description,
+});

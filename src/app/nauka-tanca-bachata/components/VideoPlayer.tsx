@@ -2,9 +2,23 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import { LoopSectionControl } from "./controls";
+import { YouTubePlayer } from "./YouTubePlayer";
+import { isYouTubeUrl, getYouTubeVideoId } from "../utils/youtubeUtils";
+import { InstagramPlayer } from "./InstagramPlayer";
+import { isInstagramUrl } from "../utils/instagramUtils";
+import Image from "next/image";
+
+interface InstructorVideo {
+  id: string;
+  instructorName: string;
+  instructorAvatar: string;
+  videoUrl: string;
+  teachingStyle: string; // np. "techniczny", "flow", "muzyczny"
+  description: string; // krótki opis podejścia instruktora
+}
 
 interface VideoPlayerProps {
-  url: string;
+  videos: InstructorVideo[];
   speed: number;
   mirror: boolean;
   loopSection: [number, number] | null;
@@ -14,7 +28,7 @@ interface VideoPlayerProps {
 }
 
 export const VideoPlayer: React.FC<VideoPlayerProps> = ({
-  url,
+  videos,
   speed,
   mirror,
   loopSection,
@@ -22,27 +36,39 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
   onDurationChange,
   onLoopSectionChange,
 }) => {
+  // 1. Refs
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const progressBarRef = useRef<HTMLDivElement>(null);
+  const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // 2. State
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isControlsVisible, setIsControlsVisible] = useState(true);
   const [isAdjustingLoop, setIsAdjustingLoop] = useState(false);
-  const progressBarRef = useRef<HTMLDivElement>(null);
-  const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [currentInstructorIndex, setCurrentInstructorIndex] = useState(0);
 
-  // Inicjalizacja wideo
+  // 3. Derived state
+  const currentVideo = videos?.[currentInstructorIndex];
+  const isYouTube = currentVideo ? isYouTubeUrl(currentVideo.videoUrl) : false;
+  const isInstagram = currentVideo
+    ? isInstagramUrl(currentVideo.videoUrl)
+    : false;
+  const youtubeVideoId =
+    currentVideo && isYouTube ? getYouTubeVideoId(currentVideo.videoUrl) : null;
+
+  // 4. Effects
   useEffect(() => {
-    if (videoRef.current) {
+    if (!isYouTube && videoRef.current) {
       videoRef.current.load();
     }
-  }, [url]);
+  }, [currentVideo?.videoUrl, isYouTube]);
 
-  // Obsługa odtwarzania/pauzy
   const togglePlay = useCallback(() => {
-    if (videoRef.current) {
+    if (!isYouTube && videoRef.current) {
       if (isPlaying) {
         videoRef.current.pause();
       } else {
@@ -50,7 +76,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
       }
       setIsPlaying(!isPlaying);
     }
-  }, [isPlaying]);
+  }, [isPlaying, isYouTube]);
 
   // Aktualizacja czasu i postępu
   const handleTimeUpdate = useCallback(() => {
@@ -216,27 +242,118 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
     );
   };
 
+  const switchInstructor = () => {
+    setCurrentInstructorIndex((prev) => (prev + 1) % videos.length);
+  };
+
+  // Przycisk zmiany instruktora
+  const renderInstructorSwitchButton = () => {
+    if (!isControlsVisible) return null;
+
+    const nextInstructor = videos[(currentInstructorIndex + 1) % videos.length];
+
+    return (
+      <button
+        onClick={switchInstructor}
+        className={`flex items-center gap-2 px-3 py-1.5 rounded-full 
+          bg-black/50 text-white hover:bg-black/70 transition-all
+          ${isControlsVisible ? "opacity-100" : "opacity-0"}`}
+        title={`Przełącz na: ${nextInstructor.instructorName} - ${nextInstructor.teachingStyle}`}
+      >
+        <Image
+          src={nextInstructor.instructorAvatar}
+          alt={nextInstructor.instructorName}
+          width={24}
+          height={24}
+          className="rounded-full"
+        />
+        <span className="text-sm">{nextInstructor.instructorName}</span>
+        <span className="text-xs text-gray-300">
+          {nextInstructor.teachingStyle}
+        </span>
+      </button>
+    );
+  };
+
+  // Renderowanie odpowiedniego playera
+  if (!videos?.length || !currentVideo) {
+    return (
+      <div className="w-full aspect-video bg-gray-900 flex items-center justify-center text-white">
+        Brak dostępnych filmów
+      </div>
+    );
+  }
+
+  if (isYouTube && youtubeVideoId) {
+    return (
+      <div className={`relative ${mirror ? "scale-x-[-1]" : ""}`}>
+        <YouTubePlayer
+          videoId={youtubeVideoId}
+          speed={speed}
+          loopSection={loopSection}
+          onProgress={onProgress}
+          onDurationChange={onDurationChange}
+        />
+      </div>
+    );
+  }
+
+  if (isInstagram) {
+    return (
+      <div className={`relative ${mirror ? "scale-x-[-1]" : ""}`}>
+        <InstagramPlayer
+          url={currentVideo.videoUrl}
+          onProgress={onProgress}
+          onDurationChange={onDurationChange}
+        />
+      </div>
+    );
+  }
+
   return (
     <div
       ref={containerRef}
       className="relative w-full h-full group"
-      onMouseEnter={() => setIsControlsVisible(true)}
-      onMouseLeave={() => !isAdjustingLoop && setIsControlsVisible(false)}
       onMouseMove={handleMouseMove}
+      onMouseLeave={() => !isAdjustingLoop && setIsControlsVisible(false)}
     >
       <video
         ref={videoRef}
+        src={currentVideo.videoUrl}
         className={`w-full h-full ${mirror ? "scale-x-[-1]" : ""}`}
         onTimeUpdate={handleTimeUpdate}
         onLoadedMetadata={handleLoadedMetadata}
         onClick={togglePlay}
       >
-        <source src={url} type="video/mp4" />
+        <source src={currentVideo.videoUrl} type="video/mp4" />
         Twoja przeglądarka nie obsługuje odtwarzania wideo.
       </video>
 
       {/* Centralny przycisk play/pause */}
       {renderPlayButton()}
+
+      {/* Informacja o aktualnym instruktorze */}
+      <div
+        className={`absolute top-4 left-4 flex items-center gap-2
+        transition-opacity duration-300 
+        ${isControlsVisible ? "opacity-100" : "opacity-0"}`}
+      >
+        <Image
+          src={currentVideo.instructorAvatar}
+          alt={currentVideo.instructorName}
+          width={32}
+          height={32}
+          className="rounded-full border-2 border-white"
+        />
+        <div>
+          <div className="text-white font-medium">
+            {currentVideo.instructorName}
+          </div>
+          <div className="text-xs text-gray-300">
+            {currentVideo.teachingStyle}
+          </div>
+        </div>
+      </div>
 
       {/* Kontrolki z animowaną przezroczystością */}
       <div
@@ -449,6 +566,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
             duration={duration}
             onAdjustingChange={setIsAdjustingLoop}
           />
+          {renderInstructorSwitchButton()}
         </div>
       </div>
     </div>

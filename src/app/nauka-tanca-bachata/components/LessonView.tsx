@@ -5,7 +5,7 @@
  * - Wybór różnych perspektyw nagrania (przód, tył, bok, szczegóły)
  * - Wyświetlanie avatara i informacji o instruktorze
  * - Wyświetlanie opisu lekcji i szczegółów
- * 
+ *
  * Komponent zarządza stanem:
  * - Aktualnie wybrane wideo
  * - Ustawienia odtwarzacza (prędkość, odbicie)
@@ -15,13 +15,14 @@
 
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { Lesson } from "../types";
 import { LessonDetails } from "./LessonDetails";
 import { VideoPlayer } from "./VideoPlayer";
 import { SpeedControl } from "./controls/SpeedControl";
 import { MirrorToggle } from "./controls/MirrorToggle";
 import Image from "next/image";
+import { adaptLessonVideoToInstructorVideo } from "../types/index";
 
 interface LessonViewProps {
   lesson: Lesson;
@@ -94,6 +95,11 @@ export const LessonView: React.FC<LessonViewProps> = ({ lesson }) => {
     );
   };
 
+  const adaptedVideos = useMemo(
+    () => lesson.videos.map(adaptLessonVideoToInstructorVideo),
+    [lesson.videos]
+  );
+
   return (
     <div className="space-y-6">
       <div className="space-y-6">
@@ -135,7 +141,7 @@ export const LessonView: React.FC<LessonViewProps> = ({ lesson }) => {
         <div className="flex flex-col gap-4">
           <div className="aspect-video bg-black rounded-lg overflow-hidden">
             <VideoPlayer
-              url={selectedVideo.videoUrl}
+              videos={adaptedVideos}
               speed={speed}
               mirror={mirror}
               loopSection={loopSection}

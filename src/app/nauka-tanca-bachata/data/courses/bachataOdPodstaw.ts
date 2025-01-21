@@ -29,8 +29,15 @@ export const beginnerCourse: Course = {
               id: "v1-rytm",
               title: "Wprowadzenie do rytmu",
               description: "Podstawy rytmu bachaty i liczenie",
-              videoUrl:
-                "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+              videoUrl: "https://www.youtube.com/watch?v=ZSSXSi1rO24",
+              perspective: "front",
+              instructor: "Jan Kowalski",
+            },
+            {
+              id: "v1-rytm-instagram",
+              title: "Rytm bachaty - demonstracja",
+              description: "Praktyczna demonstracja rytmu w bachacie",
+              videoUrl: "https://www.youtube.com/watch?v=ZSSXSi1rO24",
               perspective: "front",
               instructor: "Jan Kowalski",
             },
