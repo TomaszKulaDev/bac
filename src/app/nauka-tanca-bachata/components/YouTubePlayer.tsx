@@ -149,20 +149,33 @@ export const YouTubePlayer: React.FC<YouTubePlayerProps> = ({
   };
 
   const handleMouseMove = useCallback(() => {
-    setIsControlsVisible(true);
+    console.log("Mouse move", { isControlsVisible, isAdjustingLoop });
+
+    // Pokaż kontrolki przy ruchu myszy
+    if (!isControlsVisible) {
+      console.log("Setting controls visible");
+      setIsControlsVisible(true);
+    }
 
     // Wyczyść poprzedni timeout jeśli istnieje
     if (controlsTimeoutRef.current) {
+      console.log("Clearing previous timeout");
       clearTimeout(controlsTimeoutRef.current);
     }
 
     // Ustaw nowy timeout do ukrycia kontrolek
     if (!isAdjustingLoop) {
+      console.log("Setting new timeout");
       controlsTimeoutRef.current = setTimeout(() => {
+        console.log("Hiding controls after timeout");
         setIsControlsVisible(false);
-      }, 1000); // 1 sekunda
+      }, 1000);
     }
-  }, [isAdjustingLoop]);
+  }, [isControlsVisible, isAdjustingLoop]);
+
+  useEffect(() => {
+    console.log("Controls visibility changed:", isControlsVisible);
+  }, [isControlsVisible]);
 
   // Wyczyść timeout przy odmontowaniu komponentu
   useEffect(() => {
@@ -172,6 +185,68 @@ export const YouTubePlayer: React.FC<YouTubePlayerProps> = ({
       }
     };
   }, []);
+
+  // Dodajemy obsługę ruchu myszy w trybie pełnoekranowym
+  useEffect(() => {
+    const handleFullscreenMouseMove = (e: MouseEvent) => {
+      if (document.fullscreenElement) {
+        handleMouseMove();
+      }
+    };
+
+    const handleFullscreenMouseLeave = (e: MouseEvent) => {
+      if (document.fullscreenElement) {
+        const fullscreenElement = document.fullscreenElement as HTMLElement;
+        const rect = fullscreenElement.getBoundingClientRect();
+
+        // Sprawdź czy kursor wyszedł poza obszar pełnoekranowy
+        if (
+          e.clientX < rect.left ||
+          e.clientX > rect.right ||
+          e.clientY < rect.top ||
+          e.clientY > rect.bottom
+        ) {
+          if (!isAdjustingLoop) {
+            setIsControlsVisible(false);
+          }
+        }
+      }
+    };
+
+    // Dodaj nasłuchiwanie na dokumencie w trybie pełnoekranowym
+    document.addEventListener("mousemove", handleFullscreenMouseMove);
+    document.addEventListener("mouseleave", handleFullscreenMouseLeave);
+
+    return () => {
+      document.removeEventListener("mousemove", handleFullscreenMouseMove);
+      document.removeEventListener("mouseleave", handleFullscreenMouseLeave);
+    };
+  }, [handleMouseMove, isAdjustingLoop]);
+
+  // Aktualizacja obsługi zmiany trybu pełnoekranowego
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+      // Pokaż kontrolki przy zmianie trybu pełnoekranowego
+      setIsControlsVisible(true);
+
+      // Ustaw timeout do ukrycia kontrolek
+      if (controlsTimeoutRef.current) {
+        clearTimeout(controlsTimeoutRef.current);
+      }
+
+      if (!isAdjustingLoop) {
+        controlsTimeoutRef.current = setTimeout(() => {
+          setIsControlsVisible(false);
+        }, 1000);
+      }
+    };
+
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+    };
+  }, [isAdjustingLoop]);
 
   // Centralny przycisk play/pause
   const renderPlayButton = () => {
@@ -217,8 +292,9 @@ export const YouTubePlayer: React.FC<YouTubePlayerProps> = ({
   return (
     <div
       ref={containerRef}
-      className="relative w-full aspect-video bg-black group"
+      className="relative w-full aspect-video bg-black cursor-default group"
       onMouseMove={handleMouseMove}
+      onMouseEnter={() => setIsControlsVisible(true)}
       onMouseLeave={() => !isAdjustingLoop && setIsControlsVisible(false)}
     >
       <YouTube
@@ -235,13 +311,16 @@ export const YouTubePlayer: React.FC<YouTubePlayerProps> = ({
       {/* Kontrolki */}
       <div
         className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent p-4 
-          transition-opacity duration-300 ${
+          transition-all duration-300 ${
             isControlsVisible ? "opacity-100" : "opacity-0"
           }`}
-        style={{ pointerEvents: isControlsVisible ? "auto" : "none" }}
+        style={{
+          pointerEvents: isControlsVisible ? "auto" : "none",
+          zIndex: 10,
+        }}
       >
         <div className="flex items-center gap-4 text-white">
-          {/* Przycisk play/pause */}
+          {/* Play/Pause button */}
           <button
             onClick={togglePlay}
             className="hover:text-amber-500 transition-colors"
@@ -326,16 +405,7 @@ export const YouTubePlayer: React.FC<YouTubePlayerProps> = ({
             </div>
             <span className="text-sm">{formatTime(duration)}</span>
           </div>
-
-          {/* Dodaj LoopSectionControl */}
-          <LoopSectionControl
-            value={loopSection}
-            onChange={onLoopSectionChange}
-            duration={duration}
-            onAdjustingChange={setIsAdjustingLoop}
-          />
-
-          {/* Przycisk pełnego ekranu */}
+          {/* Fullscreen button - przeniesiony na koniec */}
           <button
             onClick={toggleFullscreen}
             className="hover:text-amber-500 transition-colors"
@@ -350,6 +420,13 @@ export const YouTubePlayer: React.FC<YouTubePlayerProps> = ({
               </svg>
             )}
           </button>
+          {/* LoopSectionControl - przeniesiony przed fullscreen */}
+          <LoopSectionControl
+            value={loopSection}
+            onChange={onLoopSectionChange}
+            duration={duration}
+            onAdjustingChange={setIsAdjustingLoop}
+          />
         </div>
       </div>
     </div>
