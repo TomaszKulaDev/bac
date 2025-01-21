@@ -1,14 +1,15 @@
 "use client";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import Link from "next/link";
 
 export default function VerifyComponent() {
   // Stan przechowujący status weryfikacji
   const [status, setStatus] = useState<string | null>(null);
   // Stan przechowujący informację o sukcesie weryfikacji
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(false);
   const searchParams = useSearchParams();
+  const router = useRouter();
   const token = searchParams?.get("token") ?? null; // Pobieranie tokena z query parametru
 
   useEffect(() => {
@@ -33,6 +34,11 @@ export default function VerifyComponent() {
     }
   }, [token]); // Efekt uruchamiany przy zmianie tokena
 
+  const handleGoToSignIn = () => {
+    setIsLoading(true);
+    router.push("/auth/signin?verified=true");
+  };
+
   // Komponent wyświetlający wiadomość o sukcesie weryfikacji
   const successMessage = (
     <>
@@ -49,12 +55,13 @@ export default function VerifyComponent() {
       <p className="mb-4">
         Nie możemy się doczekać, aby zobaczyć Cię na parkiecie!
       </p>
-      <Link
-        href="/profile/edit"
-        className="bg-orange-500 text-white px-4 py-2 rounded-full font-bold hover:bg-orange-600 transition-colors"
+      <button
+        onClick={handleGoToSignIn}
+        disabled={isLoading}
+        className="bg-orange-500 text-white px-4 py-2 rounded-full font-bold hover:bg-orange-600 transition-colors disabled:opacity-50"
       >
-        Przejdź do swojego konta
-      </Link>
+        {isLoading ? "Przekierowywanie..." : "Zaloguj się do swojego konta"}
+      </button>
     </>
   );
 
