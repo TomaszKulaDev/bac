@@ -45,17 +45,6 @@ export const NavContent: React.FC = React.memo(function NavContent() {
       badge: "2137",
     },
     {
-      href: "/instruktorzy-bachaty",
-      label: "Instruktorzy",
-      icon: FaGraduationCap,
-    },
-    {
-      href: "/muzyka",
-      label: "Muzyka",
-      icon: FaMusic,
-      badge: "Nowe",
-    },
-    {
       href: "/nauka-tanca-bachata",
       label: "Nauka tańca",
       icon: FaCompass,
@@ -231,17 +220,6 @@ export const NavContent: React.FC = React.memo(function NavContent() {
                   label: "Społeczność",
                   icon: FaUsers,
                   badge: "2137",
-                },
-                {
-                  href: "/instruktorzy-bachaty",
-                  label: "Instruktorzy",
-                  icon: FaGraduationCap,
-                },
-                {
-                  href: "/muzyka",
-                  label: "Muzyka",
-                  icon: FaMusic,
-                  badge: "Nowe",
                 },
                 {
                   href: "/nauka-tanca-bachata",
