@@ -1,26 +1,21 @@
 "use client";
 
 import React, { useState } from "react";
-import { BachataVideo } from "../types/video";
+import {
+  BachataVideo,
+  DANCE_LEVELS,
+  DANCE_CATEGORIES,
+  DanceLevel,
+  Category,
+} from "../types/video";
 import Image from "next/image";
-import { DANCE_LEVELS, DanceLevel } from "../types/video";
+import { VideoCard } from "./VideoCard/VideoCard";
 
 interface BachataVideoGridProps {
   videos: BachataVideo[];
   isLoading: boolean;
   error: string | null;
 }
-
-const DANCE_CATEGORIES = {
-  BASIC: "Krok podstawowy",
-  SPINS: "Obroty",
-  FIGURES: "Figury",
-  STYLING: "Styling",
-  MUSICALITY: "Muzykalność",
-  PARTNERWORK: "Praca w parze",
-} as const;
-
-type Category = keyof typeof DANCE_CATEGORIES;
 
 export const BachataVideoGrid: React.FC<BachataVideoGridProps> = ({
   videos,
@@ -120,123 +115,16 @@ export const BachataVideoGrid: React.FC<BachataVideoGridProps> = ({
         ))}
       </div>
 
-      {/* Siatka z filmami */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {/* Grid z filmami */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredVideos.map((video) => (
-          <div
-            key={video.id}
-            className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300"
-          >
-            {/* Instruktor z avatarem */}
-            {(video.instructorName || video.instructorAvatarUrl) && (
-              <div className="flex items-center space-x-2 mb-2">
-                {video.instructorProfileUrl ? (
-                  <a
-                    href={video.instructorProfileUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center space-x-2 text-gray-600 hover:text-purple-600 transition-colors"
-                  >
-                    {video.instructorAvatarUrl && (
-                      <Image
-                        src={video.instructorAvatarUrl}
-                        alt={video.instructorName || "Instructor"}
-                        width={32}
-                        height={32}
-                        className="rounded-full"
-                      />
-                    )}
-                    {video.instructorName && (
-                      <span className="text-sm hover:underline">
-                        {video.instructorName}
-                      </span>
-                    )}
-                    <svg
-                      className="w-4 h-4"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M12 2c2.717 0 3.056.01 4.122.06 1.065.05 1.79.217 2.428.465.66.254 1.216.598 1.772 1.153.509.5.902 1.105 1.153 1.772.247.637.415 1.363.465 2.428.047 1.066.06 1.405.06 4.122 0 2.717-.01 3.056-.06 4.122-.05 1.065-.218 1.79-.465 2.428a4.883 4.883 0 01-1.153 1.772c-.5.509-1.105.902-1.772 1.153-.637.247-1.363.415-2.428.465-1.066.047-1.405.06-4.122.06-2.717 0-3.056-.01-4.122-.06-1.065-.05-1.79-.218-2.428-.465a4.89 4.89 0 01-1.772-1.153 4.904 4.904 0 01-1.153-1.772c-.248-.637-.415-1.363-.465-2.428C2.013 15.056 2 14.717 2 12c0-2.717.01-3.056.06-4.122.05-1.066.217-1.79.465-2.428a4.88 4.88 0 011.153-1.772A4.897 4.897 0 015.45 2.525c.638-.248 1.362-.415 2.428-.465C8.944 2.013 9.283 2 12 2z" />
-                    </svg>
-                  </a>
-                ) : (
-                  <>
-                    {video.instructorAvatarUrl && (
-                      <Image
-                        src={video.instructorAvatarUrl}
-                        alt={video.instructorName || "Instructor"}
-                        width={32}
-                        height={32}
-                        className="rounded-full"
-                      />
-                    )}
-                    {video.instructorName && (
-                      <span className="text-sm text-gray-600">
-                        {video.instructorName}
-                      </span>
-                    )}
-                  </>
-                )}
-              </div>
-            )}
-
-            {/* Video */}
-            <div className="relative">
-              <video
-                className="w-full aspect-video object-cover rounded-lg"
-                src={`https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/video/upload/${video.publicId}`}
-                controls
-                preload="none"
-                poster={video.thumbnailUrl}
-              />
-            </div>
-
-            {/* Akcje pod filmem - styl Instagram */}
-            <div className="flex items-center justify-between mt-4 mb-3">
-              <div className="flex items-center space-x-4">
-                <span className="flex items-center text-gray-600">
-                  <svg
-                    className="w-5 h-5 mr-1"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                  {Math.floor(video.duration / 60)}min
-                </span>
-                <span className="bg-purple-100 text-purple-700 text-xs sm:text-sm px-3 py-1.5 rounded-full">
-                  {DANCE_CATEGORIES[video.category as Category]}
-                </span>
-                <span className="bg-blue-100 text-blue-700 text-xs sm:text-sm px-3 py-1.5 rounded-full">
-                  {DANCE_LEVELS[video.level]}
-                </span>
-              </div>
-            </div>
-
-            {/* Tytuł i opis */}
-            <div className="mt-2">
-              <h3 className="text-base sm:text-lg font-semibold text-gray-800">
-                {video.title}
-              </h3>
-              {video.description && (
-                <p className="text-sm text-gray-600 mt-1">
-                  {video.description}
-                </p>
-              )}
-            </div>
-          </div>
+          <VideoCard key={video.id} video={video} />
         ))}
       </div>
 
-      {/* Komunikat gdy brak filmów w kategorii */}
+      {/* Komunikat o braku filmów */}
       {filteredVideos.length === 0 && (
-        <div className="text-center text-gray-500 py-12">
+        <div className="text-center text-gray-500 py-8">
           Brak filmów w wybranej kategorii
         </div>
       )}

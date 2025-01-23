@@ -5,7 +5,17 @@ export const DANCE_LEVELS = {
   ADVANCED: "Zaawansowany",
 } as const;
 
+export const DANCE_CATEGORIES = {
+  BASIC: "Krok podstawowy",
+  SPINS: "Obroty5",
+  FIGURES: "Figury4",
+  STYLING: "Styling3",
+  MUSICALITY: "Muzykalność2",
+  PARTNERWORK: "Praca w parze1",
+} as const;
+
 export type DanceLevel = keyof typeof DANCE_LEVELS;
+export type Category = keyof typeof DANCE_CATEGORIES;
 
 export interface BachataVideo {
   id: string;
@@ -15,7 +25,7 @@ export interface BachataVideo {
   thumbnailUrl: string;
   duration: number;
   tags: string[];
-  category: string;
+  category: Category;
   level: DanceLevel;
   instructorProfileUrl?: string;
   instructorName?: string;
