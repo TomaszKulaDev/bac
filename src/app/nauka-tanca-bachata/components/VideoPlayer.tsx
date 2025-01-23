@@ -4,8 +4,6 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { LoopSectionControl } from "./controls";
 import { YouTubePlayer } from "./YouTubePlayer";
 import { isYouTubeUrl, getYouTubeVideoId } from "../utils/youtubeUtils";
-import { InstagramPlayer } from "./InstagramPlayer";
-import { isInstagramUrl } from "../utils/instagramUtils";
 import Image from "next/image";
 
 interface InstructorVideo {
@@ -54,9 +52,6 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
   // 3. Derived state
   const currentVideo = videos?.[currentInstructorIndex];
   const isYouTube = currentVideo ? isYouTubeUrl(currentVideo.videoUrl) : false;
-  const isInstagram = currentVideo
-    ? isInstagramUrl(currentVideo.videoUrl)
-    : false;
   const youtubeVideoId =
     currentVideo && isYouTube ? getYouTubeVideoId(currentVideo.videoUrl) : null;
 
@@ -294,18 +289,6 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
           onProgress={onProgress}
           onDurationChange={onDurationChange}
           onLoopSectionChange={onLoopSectionChange}
-        />
-      </div>
-    );
-  }
-
-  if (isInstagram) {
-    return (
-      <div className={`relative ${mirror ? "scale-x-[-1]" : ""}`}>
-        <InstagramPlayer
-          url={currentVideo.videoUrl}
-          onProgress={onProgress}
-          onDurationChange={onDurationChange}
         />
       </div>
     );
