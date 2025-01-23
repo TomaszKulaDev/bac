@@ -62,7 +62,7 @@ export async function GET(request: Request) {
         context: resource.context,
       });
 
-      // Określamy poziom z metadanych lub kontekstu
+      // Określamy poziom z metadanych lub kontekstu 123
       let level =
         resource.metadata?.level || resource.context?.level || "BEGINNER";
 
