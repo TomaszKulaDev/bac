@@ -1,5 +1,5 @@
 export const CLOUDINARY_FOLDERS = {
-  "/nauka-tanca-bachata": "TopSocialDance",
+  "/nauka-tanca-bachata": "NaukaZinstagrama",
   // ... inne ścieżki
 } as const;
 

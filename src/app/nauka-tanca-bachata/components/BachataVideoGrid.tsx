@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { BachataVideo } from "../types/video";
 import Image from "next/image";
+import { DANCE_LEVELS, DanceLevel } from "../types/video";
 
 interface BachataVideoGridProps {
   videos: BachataVideo[];
@@ -11,7 +12,7 @@ interface BachataVideoGridProps {
 }
 
 const DANCE_CATEGORIES = {
-  BASICS: "Krok podstawowy",
+  BASIC: "Krok podstawowy",
   SPINS: "Obroty",
   FIGURES: "Figury",
   STYLING: "Styling",
@@ -29,6 +30,7 @@ export const BachataVideoGrid: React.FC<BachataVideoGridProps> = ({
   const [selectedCategory, setSelectedCategory] = useState<Category | "ALL">(
     "ALL"
   );
+  const [selectedLevel, setSelectedLevel] = useState<DanceLevel>("ALL");
 
   if (isLoading)
     return (
@@ -41,10 +43,13 @@ export const BachataVideoGrid: React.FC<BachataVideoGridProps> = ({
   if (!videos || videos.length === 0)
     return <div className="text-gray-500 text-center py-8">Brak filmów</div>;
 
-  const filteredVideos =
-    selectedCategory === "ALL"
-      ? videos
-      : videos.filter((video) => video.category === selectedCategory);
+  const filteredVideos = videos.filter((video) => {
+    const matchesCategory =
+      selectedCategory === "ALL" || video.category === selectedCategory;
+    const matchesLevel =
+      selectedLevel === "ALL" || video.level === selectedLevel;
+    return matchesCategory && matchesLevel;
+  });
 
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -69,6 +74,23 @@ export const BachataVideoGrid: React.FC<BachataVideoGridProps> = ({
             <span>Instagrama.</span>
           </div>
         </p>
+      </div>
+
+      {/* Filtry poziomów */}
+      <div className="flex flex-wrap gap-3 justify-center mb-6">
+        {Object.entries(DANCE_LEVELS).map(([key, label]) => (
+          <button
+            key={key}
+            onClick={() => setSelectedLevel(key as DanceLevel)}
+            className={`px-5 py-2.5 sm:px-6 sm:py-3 rounded-full text-sm sm:text-base font-medium ${
+              selectedLevel === key
+                ? "bg-purple-600 text-white shadow-md"
+                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+            } transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50`}
+          >
+            {label}
+          </button>
+        ))}
       </div>
 
       {/* Filtry kategorii */}
@@ -190,6 +212,9 @@ export const BachataVideoGrid: React.FC<BachataVideoGridProps> = ({
                 </span>
                 <span className="bg-purple-100 text-purple-700 text-xs sm:text-sm px-3 py-1.5 rounded-full">
                   {DANCE_CATEGORIES[video.category as Category]}
+                </span>
+                <span className="bg-blue-100 text-blue-700 text-xs sm:text-sm px-3 py-1.5 rounded-full">
+                  {DANCE_LEVELS[video.level]}
                 </span>
               </div>
             </div>
