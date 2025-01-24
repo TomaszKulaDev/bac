@@ -52,7 +52,9 @@ export default function BachataLearningPage() {
             Crash Cours Bachaty
           </h2>
           <p className="text-gray-600 mt-2">
-            Wybierz kurs dopasowany do swojego poziomu
+            Odkryj unikalne kursy bachaty prowadzone przez międzynarodowych instruktorów! 
+            Każdy z nich prezentuje własne podejście do tańca i techniki ruchu. 
+            Znajdź idealny kurs dla siebie, niezależnie od poziomu zaawansowania.
           </p>
         </div>
 
