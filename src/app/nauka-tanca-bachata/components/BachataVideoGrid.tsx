@@ -30,7 +30,7 @@ export const BachataVideoGrid: React.FC<BachataVideoGridProps> = ({
   if (isLoading)
     return (
       <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-purple-500"></div>
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-orange-500"></div>
       </div>
     );
   if (error)
@@ -79,9 +79,9 @@ export const BachataVideoGrid: React.FC<BachataVideoGridProps> = ({
             onClick={() => setSelectedLevel(key as DanceLevel)}
             className={`px-5 py-2.5 sm:px-6 sm:py-3 rounded-full text-sm sm:text-base font-medium ${
               selectedLevel === key
-                ? "bg-purple-600 text-white shadow-md"
+                ? "bg-orange-600 text-white shadow-md"
                 : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-            } transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50`}
+            } transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-opacity-50`}
           >
             {label}
           </button>
@@ -94,9 +94,9 @@ export const BachataVideoGrid: React.FC<BachataVideoGridProps> = ({
           onClick={() => setSelectedCategory("ALL")}
           className={`px-5 py-2.5 sm:px-6 sm:py-3 rounded-full text-sm sm:text-base font-medium ${
             selectedCategory === "ALL"
-              ? "bg-purple-600 text-white shadow-md"
+              ? "bg-orange-600 text-white shadow-md"
               : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-          } transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50`}
+          } transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-opacity-50`}
         >
           Wszystkie
         </button>
@@ -106,9 +106,9 @@ export const BachataVideoGrid: React.FC<BachataVideoGridProps> = ({
             onClick={() => setSelectedCategory(key as Category)}
             className={`px-5 py-2.5 sm:px-6 sm:py-3 rounded-full text-sm sm:text-base font-medium ${
               selectedCategory === key
-                ? "bg-purple-600 text-white shadow-md"
+                ? "bg-orange-600 text-white shadow-md"
                 : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-            } transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50`}
+            } transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-opacity-50`}
           >
             {label}
           </button>
