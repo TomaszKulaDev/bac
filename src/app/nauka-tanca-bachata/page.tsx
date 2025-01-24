@@ -48,7 +48,9 @@ export default function BachataLearningPage() {
       {/* Sekcja Kursów */}
       <section className="space-y-6">
         <div className="border-b pb-4">
-          <h2 className="text-2xl font-bold text-gray-900">Kursy Bachaty</h2>
+          <h2 className="text-2xl font-bold text-gray-900">
+            Crash Cours Bachaty
+          </h2>
           <p className="text-gray-600 mt-2">
             Wybierz kurs dopasowany do swojego poziomu
           </p>

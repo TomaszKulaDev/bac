@@ -30,6 +30,7 @@ export interface BachataVideo {
   instructorProfileUrl?: string;
   instructorName?: string;
   instructorAvatarUrl?: string;
+  likes?: number;
 }
 
 export interface VideosResponse {
