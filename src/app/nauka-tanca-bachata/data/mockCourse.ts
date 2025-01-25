@@ -26,10 +26,10 @@ const validateCourse = (course: Course): Course => {
 };
 
 export const mockCourses = [
-  // validateCourse(beginnerCourse),
-  validateCourse(sensualCourse),
+  validateCourse(beginnerCourse),
+  // validateCourse(sensualCourse),
   // validateCourse(bachataSensualZaawansowany),
-  validateCourse(isolationCourse),
+  // validateCourse(isolationCourse),
   // validateCourse(ladyStylingBeginnerCourse),
 ];
 
