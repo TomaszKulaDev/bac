@@ -73,10 +73,10 @@ export interface LessonVideo {
 
 export interface InstructorVideo {
   id: string;
-  instructorName: string;
-  instructorAvatar: string;
+  instructor: string;
   videoUrl: string;
-  teachingStyle: string;
+  projectNameOfficial: string;
+  title: string;
   description: string;
 }
 
@@ -85,26 +85,9 @@ export const adaptLessonVideoToInstructorVideo = (
   video: LessonVideo
 ): InstructorVideo => ({
   id: video.id,
-  instructorName: video.instructor,
-  instructorAvatar: `/images/instructors/${video.instructor
-    .toLowerCase()
-    .replace(/[&]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/[ąćęłńóśźż]/g, (match) => {
-      const chars: { [key: string]: string } = {
-        ą: "a",
-        ć: "c",
-        ę: "e",
-        ł: "l",
-        ń: "n",
-        ó: "o",
-        ś: "s",
-        ź: "z",
-        ż: "z",
-      };
-      return chars[match] || match;
-    })}.jpg`,
+  instructor: video.instructor,
   videoUrl: video.videoUrl,
-  teachingStyle: video.projectNameOfficial,
+  projectNameOfficial: video.projectNameOfficial,
+  title: video.title,
   description: video.description,
 });

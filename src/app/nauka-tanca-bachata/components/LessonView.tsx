@@ -22,7 +22,10 @@ import { VideoPlayer } from "./VideoPlayer";
 import { SpeedControl } from "./controls/SpeedControl";
 import { MirrorToggle } from "./controls/MirrorToggle";
 import Image from "next/image";
-import { adaptLessonVideoToInstructorVideo } from "../types/index";
+import {
+  adaptLessonVideoToInstructorVideo,
+  InstructorVideo,
+} from "../types/index";
 
 interface LessonViewProps {
   lesson: Lesson;

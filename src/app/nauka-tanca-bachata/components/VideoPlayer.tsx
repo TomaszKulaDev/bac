@@ -5,15 +5,12 @@ import { LoopSectionControl } from "./controls";
 import { YouTubePlayer } from "./YouTubePlayer";
 import { isYouTubeUrl, getYouTubeVideoId } from "../utils/youtubeUtils";
 import Image from "next/image";
-
-interface InstructorVideo {
-  id: string;
-  instructorName: string;
-  instructorAvatar: string;
-  videoUrl: string;
-  teachingStyle: string; // np. "techniczny", "flow", "muzyczny"
-  description: string; // krótki opis podejścia instruktora
-}
+import {
+  instructors,
+  INSTRUCTOR_KEYS,
+  INSTRUCTOR_NAMES,
+} from "../data/instructors";
+import { InstructorVideo } from "../types";
 
 interface VideoPlayerProps {
   videos: InstructorVideo[];
@@ -47,10 +44,9 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isControlsVisible, setIsControlsVisible] = useState(true);
   const [isAdjustingLoop, setIsAdjustingLoop] = useState(false);
-  const [currentInstructorIndex, setCurrentInstructorIndex] = useState(0);
 
   // 3. Derived state
-  const currentVideo = videos?.[currentInstructorIndex];
+  const currentVideo = videos?.[0];
   const isYouTube = currentVideo ? isYouTubeUrl(currentVideo.videoUrl) : false;
   const youtubeVideoId =
     currentVideo && isYouTube ? getYouTubeVideoId(currentVideo.videoUrl) : null;
@@ -237,36 +233,62 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
     );
   };
 
-  const switchInstructor = () => {
-    setCurrentInstructorIndex((prev) => (prev + 1) % videos.length);
-  };
+  // Dodajmy komponent do obsługi avatara z fallbackiem
+  const InstructorAvatar: React.FC<{
+    instructor: string;
+    size?: number;
+  }> = ({ instructor, size = 32 }) => {
+    const [imageError, setImageError] = useState(false);
 
-  // Przycisk zmiany instruktora
-  const renderInstructorSwitchButton = () => {
-    if (!isControlsVisible) return null;
+    // Dodajemy sprawdzenie czy instructor istnieje
+    if (!instructor || imageError) {
+      return (
+        <div
+          className={`flex items-center justify-center rounded-full bg-amber-500 border-2 border-white`}
+          style={{ width: size, height: size }}
+        >
+          <span className="text-white font-medium text-sm">
+            {instructor
+              ? instructor
+                  .split(" ")
+                  .map((n) => n[0])
+                  .join("")
+              : "??"}
+          </span>
+        </div>
+      );
+    }
 
-    const nextInstructor = videos[(currentInstructorIndex + 1) % videos.length];
+    const getInstructorImagePath = (instructorName: string) => {
+      return `/images/instructors/${instructorName
+        .toLowerCase()
+        .replace(/[&]/g, "and")
+        .replace(/\s+/g, "-")
+        .replace(/[ąćęłńóśźż]/g, (match) => {
+          const chars: { [key: string]: string } = {
+            ą: "a",
+            ć: "c",
+            ę: "e",
+            ł: "l",
+            ń: "n",
+            ó: "o",
+            ś: "s",
+            ź: "z",
+            ż: "z",
+          };
+          return chars[match] || match;
+        })}.jpg`;
+    };
 
     return (
-      <button
-        onClick={switchInstructor}
-        className={`flex items-center gap-2 px-3 py-1.5 rounded-full 
-          bg-black/50 text-white hover:bg-black/70 transition-all
-          ${isControlsVisible ? "opacity-100" : "opacity-0"}`}
-        title={`Przełącz na: ${nextInstructor.instructorName} - ${nextInstructor.teachingStyle}`}
-      >
-        <Image
-          src={nextInstructor.instructorAvatar}
-          alt={nextInstructor.instructorName}
-          width={24}
-          height={24}
-          className="rounded-full"
-        />
-        <span className="text-sm">{nextInstructor.instructorName}</span>
-        <span className="text-xs text-gray-300">
-          {nextInstructor.teachingStyle}
-        </span>
-      </button>
+      <Image
+        src={getInstructorImagePath(instructor)}
+        alt=""
+        width={size}
+        height={size}
+        className="rounded-full border-2 border-white"
+        onError={() => setImageError(true)}
+      />
     );
   };
 
@@ -317,27 +339,20 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
       {renderPlayButton()}
 
       {/* Informacja o aktualnym instruktorze */}
-      <div
-        className={`absolute top-4 left-4 flex items-center gap-2
-        transition-opacity duration-300 
-        ${isControlsVisible ? "opacity-100" : "opacity-0"}`}
-      >
-        <Image
-          src={currentVideo.instructorAvatar}
-          alt={currentVideo.instructorName}
-          width={32}
-          height={32}
-          className="rounded-full border-2 border-white"
-        />
-        <div>
-          <div className="text-white font-medium">
-            {currentVideo.instructorName}
-          </div>
-          <div className="text-xs text-gray-300">
-            {currentVideo.teachingStyle}
+      {currentVideo && (
+        <div
+          className={`absolute top-4 left-4 flex items-center gap-2
+          transition-opacity duration-300 
+          ${isControlsVisible ? "opacity-100" : "opacity-0"}`}
+        >
+          <InstructorAvatar instructor={currentVideo.instructor} size={32} />
+          <div>
+            <div className="text-white font-medium">
+              {currentVideo.instructor}
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Kontrolki z animowaną przezroczystością */}
       <div
@@ -550,7 +565,6 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
             duration={duration}
             onAdjustingChange={setIsAdjustingLoop}
           />
-          {renderInstructorSwitchButton()}
         </div>
       </div>
     </div>
