@@ -95,9 +95,9 @@ export const LessonView: React.FC<LessonViewProps> = ({ lesson }) => {
     );
   };
 
-  const adaptedVideos = useMemo(
-    () => lesson.videos.map(adaptLessonVideoToInstructorVideo),
-    [lesson.videos]
+  const adaptedVideo = useMemo(
+    () => adaptLessonVideoToInstructorVideo(selectedVideo),
+    [selectedVideo]
   );
 
   return (
@@ -141,7 +141,7 @@ export const LessonView: React.FC<LessonViewProps> = ({ lesson }) => {
         <div className="flex flex-col gap-4">
           <div className="aspect-video bg-black rounded-lg overflow-hidden">
             <VideoPlayer
-              videos={adaptedVideos}
+              videos={[adaptedVideo]}
               speed={speed}
               mirror={mirror}
               loopSection={loopSection}

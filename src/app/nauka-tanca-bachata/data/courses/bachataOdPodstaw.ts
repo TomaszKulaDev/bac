@@ -37,7 +37,8 @@ export const beginnerCourse: Course = {
               id: "v1-rytm-instagram",
               title: "Rytm bachaty - demonstracja",
               description: "Praktyczna demonstracja rytmu w bachacie",
-              videoUrl: "https://www.youtube.com/watch?v=ZSSXSi1rO24",
+              videoUrl:
+                "https://res.cloudinary.com/dqeemjgmx/video/upload/v1737590591/Rithika_a5nv59.mp4",
               perspective: "front",
               instructor: "Jan Kowalski",
             },
@@ -65,7 +66,7 @@ export const beginnerCourse: Course = {
               title: "Krok podstawowy - widok z tyłu",
               description: "Analiza kroku z perspektywy tylnej",
               videoUrl:
-                "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+                "https://res.cloudinary.com/dqeemjgmx/video/upload/v1737590591/Rithika_a5nv59.mp4",
               perspective: "back",
               instructor: "Jan Kowalski",
             },
