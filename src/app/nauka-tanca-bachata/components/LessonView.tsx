@@ -140,7 +140,7 @@ export const LessonView: React.FC<LessonViewProps> = ({ lesson }) => {
               {/* Tekst */}
               <div className="flex flex-col items-start">
                 <span className="font-medium text-base">
-                  {getPerspectiveLabel(video.perspective)}
+                  {getPerspectiveLabel(video.projectNameOfficial)}
                 </span>
                 <span className="text-sm opacity-75">{video.instructor}</span>
               </div>

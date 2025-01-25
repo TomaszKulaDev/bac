@@ -30,7 +30,7 @@ export const beginnerCourse: Course = {
               title: "Wprowadzenie do rytmu",
               description: "Podstawy rytmu bachaty i liczenie",
               videoUrl: "https://www.youtube.com/watch?v=ZSSXSi1rO24",
-              perspective: "front",
+              projectNameOfficial: "Labros Studio",
               instructor:
                 INSTRUCTOR_NAMES[INSTRUCTOR_KEYS.JAN_KOWALSKI_ANNA_WISNIEWSKA],
             },
@@ -40,8 +40,9 @@ export const beginnerCourse: Course = {
               description: "Praktyczna demonstracja rytmu w bachacie",
               videoUrl:
                 "https://res.cloudinary.com/dqeemjgmx/video/upload/v1737590591/Rithika_a5nv59.mp4",
-              perspective: "front",
-              instructor: "Jan Kowalski",
+              projectNameOfficial: "LA Palace Studio",
+              instructor:
+                INSTRUCTOR_NAMES[INSTRUCTOR_KEYS.JAN_KOWALSKI_ANNA_WISNIEWSKA],
             },
           ],
           isCompleted: false,
@@ -59,7 +60,7 @@ export const beginnerCourse: Course = {
               description: "Szczegółowe objaśnienie kroku podstawowego",
               videoUrl:
                 "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
-              perspective: "front",
+                projectNameOfficial: "front",
               instructor: "Jan Kowalski",
             },
             {
@@ -68,7 +69,7 @@ export const beginnerCourse: Course = {
               description: "Analiza kroku z perspektywy tylnej",
               videoUrl:
                 "https://res.cloudinary.com/dqeemjgmx/video/upload/v1737590591/Rithika_a5nv59.mp4",
-              perspective: "back",
+                projectNameOfficial: "back",
               instructor: "Jan Kowalski",
             },
           ],
@@ -97,7 +98,7 @@ export const beginnerCourse: Course = {
               description: "Prawidłowe trzymanie i postawa w parze",
               videoUrl:
                 "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-              perspective: "front",
+                projectNameOfficial: "front",
               instructor: "Jan Kowalski",
             },
           ],
@@ -116,7 +117,7 @@ export const beginnerCourse: Course = {
               description: "Podstawowe techniki prowadzenia w parze",
               videoUrl:
                 "https://storage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
-              perspective: "front",
+                projectNameOfficial: "front",
               instructor: "Jan Kowalski",
             },
           ],
@@ -145,7 +146,7 @@ export const beginnerCourse: Course = {
               description: "Technika wykonywania obrotów",
               videoUrl:
                 "https://storage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
-              perspective: "front",
+                projectNameOfficial: "front",
               instructor: "Jan Kowalski",
             },
           ],
@@ -164,7 +165,7 @@ export const beginnerCourse: Course = {
               description: "Nauka łączenia figur w kombinacje",
               videoUrl:
                 "https://storage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
-              perspective: "front",
+                projectNameOfficial: "front",
               instructor: "Jan Kowalski",
             },
           ],

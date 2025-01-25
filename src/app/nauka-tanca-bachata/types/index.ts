@@ -41,7 +41,7 @@ export interface Lesson {
     title: string;
     description: string;
     videoUrl: string;
-    perspective: string;
+    projectNameOfficial: string;
     instructor: string;
   }[];
   duration: string;
@@ -67,7 +67,7 @@ export interface LessonVideo {
   title: string;
   description: string;
   videoUrl: string;
-  perspective: string;
+  projectNameOfficial: string;
   instructor: string;
 }
 
@@ -105,6 +105,6 @@ export const adaptLessonVideoToInstructorVideo = (
       return chars[match] || match;
     })}.jpg`,
   videoUrl: video.videoUrl,
-  teachingStyle: video.perspective,
+  teachingStyle: video.projectNameOfficial,
   description: video.description,
 });
