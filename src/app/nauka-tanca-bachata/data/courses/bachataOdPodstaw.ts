@@ -1,5 +1,5 @@
 import { Course } from "../../types";
-import { instructors, INSTRUCTOR_KEYS } from "../instructors";
+import { instructors, INSTRUCTOR_KEYS, INSTRUCTOR_NAMES } from "../instructors";
 
 export const beginnerCourse: Course = {
   id: "bachata-podstawy",
@@ -32,7 +32,7 @@ export const beginnerCourse: Course = {
               videoUrl: "https://www.youtube.com/watch?v=ZSSXSi1rO24",
               perspective: "front",
               instructor:
-                instructors[INSTRUCTOR_KEYS.JAN_KOWALSKI_ANNA_WISNIEWSKA].name,
+                INSTRUCTOR_NAMES[INSTRUCTOR_KEYS.JAN_KOWALSKI_ANNA_WISNIEWSKA],
             },
             {
               id: "v1-rytm-instagram",
