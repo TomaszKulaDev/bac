@@ -237,7 +237,9 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
   const InstructorAvatar: React.FC<{
     instructor: string;
     size?: number;
-  }> = ({ instructor, size = 32 }) => {
+    showName?: boolean;
+    isVisible?: boolean;
+  }> = ({ instructor, size = 32, showName = false, isVisible = true }) => {
     const [imageError, setImageError] = useState(false);
 
     // Dodajemy sprawdzenie czy instructor istnieje
@@ -281,14 +283,17 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
     };
 
     return (
-      <Image
-        src={getInstructorImagePath(instructor)}
-        alt=""
-        width={size}
-        height={size}
-        className="rounded-full border-2 border-white"
-        onError={() => setImageError(true)}
-      />
+      <div className="flex items-center gap-2">
+        <Image
+          src={getInstructorImagePath(instructor)}
+          alt=""
+          width={size}
+          height={size}
+          className="rounded-full border-2 border-white"
+          onError={() => setImageError(true)}
+        />
+        {showName && <div className="text-white font-medium">{instructor}</div>}
+      </div>
     );
   };
 
@@ -341,16 +346,20 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
       {/* Informacja o aktualnym instruktorze */}
       {currentVideo && (
         <div
-          className={`absolute top-4 left-4 flex items-center gap-2
-          transition-opacity duration-300 
-          ${isControlsVisible ? "opacity-100" : "opacity-0"}`}
+          className={`
+            absolute top-6 left-6
+            transition-opacity duration-300
+            ${isControlsVisible ? "opacity-100" : "opacity-0"}
+            ${isFullscreen ? "pointer-events-none" : ""}
+          `}
+          style={{ pointerEvents: isControlsVisible ? "auto" : "none" }}
         >
-          <InstructorAvatar instructor={currentVideo.instructor} size={32} />
-          <div>
-            <div className="text-white font-medium">
-              {currentVideo.instructor}
-            </div>
-          </div>
+          <InstructorAvatar
+            instructor={currentVideo.instructor}
+            size={64}
+            showName={true}
+            isVisible={true}
+          />
         </div>
       )}
 
