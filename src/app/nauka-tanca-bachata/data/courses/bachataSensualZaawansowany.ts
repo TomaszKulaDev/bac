@@ -1,7 +1,7 @@
 import { Course } from "../../types";
 import { instructors } from "../instructors";
 
-export const modernaCourse: Course = {
+export const bachataSensualZaawansowany: Course = {
   id: "bachataSensualZaawansowany",
   title: "Bachata Sensual - Zaawansowany",
   description:

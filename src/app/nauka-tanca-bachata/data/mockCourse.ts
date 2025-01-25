@@ -13,7 +13,7 @@
 import { Course } from "../types";
 import { beginnerCourse } from "./courses/bachataOdPodstaw";
 import { sensualCourse } from "./courses/bachataSensualSredniozaawansowany";
-import { modernaCourse } from "./courses/bachataSensualZaawansowany";
+import { bachataSensualZaawansowany } from "./courses/bachataSensualZaawansowany";
 import { isolationCourse } from "./courses/izolacje";
 import { ladyStylingBeginnerCourse } from "./courses/bachataLadyStylingPodstawy";
 
@@ -26,11 +26,11 @@ const validateCourse = (course: Course): Course => {
 };
 
 export const mockCourses = [
-  validateCourse(beginnerCourse),
+  // validateCourse(beginnerCourse),
   validateCourse(sensualCourse),
-  validateCourse(modernaCourse),
+  // validateCourse(bachataSensualZaawansowany),
   validateCourse(isolationCourse),
-  validateCourse(ladyStylingBeginnerCourse),
+  // validateCourse(ladyStylingBeginnerCourse),
 ];
 
 // Eksportujemy funkcję zamiast stałej

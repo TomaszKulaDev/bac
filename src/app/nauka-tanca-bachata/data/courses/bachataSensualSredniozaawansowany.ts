@@ -5,7 +5,7 @@ export const sensualCourse: Course = {
   id: "bachataSensualSredniozaawansowany",
   title: "Bachata Sensual - Średniozaawansowany",
   description:
-    "Odkryj zmysłową stronę bachaty. Kurs dla osób znających podstawy, chcących rozwinąć styl sensual.",
+    "Kurs dla osób znających podstawy+, chcących rozwinąć styl sensual.",
   level: "intermediate",
   totalDuration: "10 godz",
   instructor: instructors.annaWisniewska,
