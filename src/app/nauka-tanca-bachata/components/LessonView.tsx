@@ -66,6 +66,27 @@ export const LessonView: React.FC<LessonViewProps> = ({ lesson }) => {
   }) => {
     const [imageError, setImageError] = useState(false);
 
+    const getInstructorImagePath = (instructorName: string) => {
+      return `/images/instructors/${instructorName
+        .toLowerCase()
+        .replace(/[&]/g, "and") // Zamień & na and
+        .replace(/\s+/g, "-") // Zamień spacje na myślniki
+        .replace(/[ąćęłńóśźż]/g, (match) => {
+          const chars: { [key: string]: string } = {
+            ą: "a",
+            ć: "c",
+            ę: "e",
+            ł: "l",
+            ń: "n",
+            ó: "o",
+            ś: "s",
+            ź: "z",
+            ż: "z",
+          };
+          return chars[match] || match;
+        })}.jpg`;
+    };
+
     if (imageError) {
       return (
         <div className="w-14 h-14 rounded-full bg-amber-100 flex items-center justify-center">
@@ -82,9 +103,7 @@ export const LessonView: React.FC<LessonViewProps> = ({ lesson }) => {
     return (
       <div className="relative w-14 h-14 rounded-full overflow-hidden border-2 border-white shadow-sm">
         <Image
-          src={`/images/instructors/${instructor
-            .toLowerCase()
-            .replace(" ", "-")}.jpg`}
+          src={getInstructorImagePath(instructor)}
           alt={instructor}
           fill
           className="object-cover"

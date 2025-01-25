@@ -12,10 +12,10 @@
 
 import { Course } from "../types";
 import { beginnerCourse } from "./courses/bachataOdPodstaw";
-import { sensualCourse } from "./courses/bachataSensualSredniozaawansowany";
-import { bachataSensualZaawansowany } from "./courses/bachataSensualZaawansowany";
-import { isolationCourse } from "./courses/izolacje";
-import { ladyStylingBeginnerCourse } from "./courses/bachataLadyStylingPodstawy";
+// import { sensualCourse } from "./courses/bachataSensualSredniozaawansowany";
+// import { bachataSensualZaawansowany } from "./courses/bachataSensualZaawansowany";
+// import { isolationCourse } from "./courses/izolacje";
+// import { ladyStylingBeginnerCourse } from "./courses/bachataLadyStylingPodstawy";
 
 // Sprawdzamy czy wszystkie kursy mają rozdziały
 const validateCourse = (course: Course): Course => {

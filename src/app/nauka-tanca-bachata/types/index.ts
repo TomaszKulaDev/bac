@@ -88,7 +88,22 @@ export const adaptLessonVideoToInstructorVideo = (
   instructorName: video.instructor,
   instructorAvatar: `/images/instructors/${video.instructor
     .toLowerCase()
-    .replace(" ", "-")}.jpg`,
+    .replace(/[&]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/[ąćęłńóśźż]/g, (match) => {
+      const chars: { [key: string]: string } = {
+        ą: "a",
+        ć: "c",
+        ę: "e",
+        ł: "l",
+        ń: "n",
+        ó: "o",
+        ś: "s",
+        ź: "z",
+        ż: "z",
+      };
+      return chars[match] || match;
+    })}.jpg`,
   videoUrl: video.videoUrl,
   teachingStyle: video.perspective,
   description: video.description,

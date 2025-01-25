@@ -1,5 +1,5 @@
 import { Course } from "../../types";
-import { instructors } from "../instructors";
+import { instructors, INSTRUCTOR_KEYS } from "../instructors";
 
 export const beginnerCourse: Course = {
   id: "bachata-podstawy",
@@ -8,7 +8,7 @@ export const beginnerCourse: Course = {
     "Kompletny kurs dla początkujących. Poznaj podstawy bachaty, naucz się kroków, rytmu i pierwszych figur w prosty i przyjemny sposób.",
   level: "beginner",
   totalDuration: "8 godz",
-  instructor: instructors.janKowalski,
+  instructor: instructors[INSTRUCTOR_KEYS.JAN_KOWALSKI_ANNA_WISNIEWSKA],
   chapters: [
     {
       id: "rozdzial-1-rytm-i-kroki",
@@ -31,7 +31,8 @@ export const beginnerCourse: Course = {
               description: "Podstawy rytmu bachaty i liczenie",
               videoUrl: "https://www.youtube.com/watch?v=ZSSXSi1rO24",
               perspective: "front",
-              instructor: "Jan Kowalski",
+              instructor:
+                instructors[INSTRUCTOR_KEYS.JAN_KOWALSKI_ANNA_WISNIEWSKA].name,
             },
             {
               id: "v1-rytm-instagram",

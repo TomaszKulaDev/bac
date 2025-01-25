@@ -1,23 +1,29 @@
+export const INSTRUCTOR_KEYS = {
+  JAN_KOWALSKI_ANNA_WISNIEWSKA: "jan-kowalski-and-anna-wisniewska",
+  ANNA_WISNIEWSKA: "anna-wisniewska",
+  MARCIN_NOWAK: "marcin-nowak",
+} as const;
+
 export const instructors = {
-  janKowalski: {
+  [INSTRUCTOR_KEYS.JAN_KOWALSKI_ANNA_WISNIEWSKA]: {
     id: "1",
-    name: "Jan Kowalski",
-    avatar: "/images/instructors/jan-kowalski.jpg",
+    name: "Jan Kowalski & Anna Wiśniewska",
+    avatar: `/images/instructors/${INSTRUCTOR_KEYS.JAN_KOWALSKI_ANNA_WISNIEWSKA}.jpg`,
     bio: "Profesjonalny instruktor tańca z 10-letnim doświadczeniem",
     specialization: ["bachata", "salsa"],
     rating: 4.9,
     totalStudents: 1500,
   },
-  annaWisniewska: {
+  [INSTRUCTOR_KEYS.ANNA_WISNIEWSKA]: {
     id: "2",
-    name: "Anna Wiśniewska",
+    name: "Anna Wiśniewska1111111111111111111111111",
     avatar: "/images/instructors/anna-wisniewska.jpg",
     bio: "Mistrzyni Polski w bachacie, instruktorka od 8 lat",
     specialization: ["bachata", "sensual"],
     rating: 4.95,
     totalStudents: 2000,
   },
-  marcinNowak: {
+  [INSTRUCTOR_KEYS.MARCIN_NOWAK]: {
     id: "3",
     name: "Marcin Nowak",
     avatar: "/images/instructors/marcin-nowak.jpg",
