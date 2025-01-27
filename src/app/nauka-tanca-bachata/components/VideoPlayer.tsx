@@ -11,6 +11,7 @@ import {
   INSTRUCTOR_NAMES,
 } from "../data/instructors";
 import { InstructorVideo } from "../types";
+import { VolumeControl } from "./controls";
 
 interface VideoPlayerProps {
   videos: InstructorVideo[];
@@ -44,6 +45,8 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isControlsVisible, setIsControlsVisible] = useState(true);
   const [isAdjustingLoop, setIsAdjustingLoop] = useState(false);
+  const [volume, setVolume] = useState(1);
+  const [isMuted, setIsMuted] = useState(false);
 
   // 3. Derived state
   const currentVideo = videos?.[0];
@@ -206,6 +209,23 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
       }
     };
   }, []);
+
+  // Dodaj funkcje obsługi głośności
+  const handleVolumeChange = (newVolume: number) => {
+    if (videoRef.current) {
+      videoRef.current.volume = newVolume;
+      setVolume(newVolume);
+      setIsMuted(newVolume === 0);
+    }
+  };
+
+  const handleMute = () => {
+    if (videoRef.current) {
+      const newMuted = !isMuted;
+      videoRef.current.muted = newMuted;
+      setIsMuted(newMuted);
+    }
+  };
 
   // Centralny przycisk play/pause
   const renderPlayButton = () => {
@@ -385,6 +405,14 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
               </svg>
             )}
           </button>
+
+          {/* Dodaj kontrolkę głośności */}
+          <VolumeControl
+            value={volume}
+            onChange={handleVolumeChange}
+            onMute={handleMute}
+            isMuted={isMuted}
+          />
 
           <div className="flex-1 flex items-center gap-2">
             <span className="text-sm">{formatTime(currentTime)}</span>

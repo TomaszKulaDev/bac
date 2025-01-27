@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import YouTube from "react-youtube";
-import { LoopSectionControl } from "./controls";
+import { LoopSectionControl, VolumeControl } from "./controls";
 
 interface YouTubePlayerProps {
   videoId: string;
@@ -28,6 +28,8 @@ export const YouTubePlayer: React.FC<YouTubePlayerProps> = ({
   const [isControlsVisible, setIsControlsVisible] = useState(true);
   const [isAdjustingLoop, setIsAdjustingLoop] = useState(false);
   const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [volume, setVolume] = useState(1);
+  const [isMuted, setIsMuted] = useState(false);
 
   const opts = {
     height: "100%",
@@ -248,6 +250,23 @@ export const YouTubePlayer: React.FC<YouTubePlayerProps> = ({
     };
   }, [isAdjustingLoop]);
 
+  // Dodaj funkcje obsługi głośności
+  const handleVolumeChange = (newVolume: number) => {
+    if (playerRef.current) {
+      playerRef.current.setVolume(newVolume * 100);
+      setVolume(newVolume);
+      setIsMuted(newVolume === 0);
+    }
+  };
+
+  const handleMute = () => {
+    if (playerRef.current) {
+      const newMuted = !isMuted;
+      playerRef.current.setVolume(newMuted ? 0 : volume * 100);
+      setIsMuted(newMuted);
+    }
+  };
+
   // Centralny przycisk play/pause
   const renderPlayButton = () => {
     if (!isControlsVisible) return null;
@@ -335,6 +354,14 @@ export const YouTubePlayer: React.FC<YouTubePlayerProps> = ({
               </svg>
             )}
           </button>
+
+          {/* Dodaj kontrolkę głośności */}
+          <VolumeControl
+            value={volume}
+            onChange={handleVolumeChange}
+            onMute={handleMute}
+            isMuted={isMuted}
+          />
 
           {/* Pasek postępu i czas */}
           <div className="flex-1 flex items-center gap-2">
