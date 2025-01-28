@@ -6,11 +6,14 @@
  * - Budowania URL-i
  * Format: małe litery, myślniki zamiast spacji, bez polskich znaków
  */
+import { Instructor } from "../types";
+
 export const INSTRUCTOR_KEYS = {
   JAN_KOWALSKI_ANNA_WISNIEWSKA: "jan-kowalski-and-anna-wisniewska",
   ANNA_WISNIEWSKA: "anna-wisniewska",
   MARCIN_NOWAK: "marcin-nowak",
-  DEMETRIO_NICOLE: "demetrio-rosario-and-nicole-thompson",
+  DEMETRIO_NICOLE: "demetrio-and-nicole",
+  TOMASZ_KULA: "tomasz-kula",
 } as const;
 
 /**
@@ -27,6 +30,7 @@ export const INSTRUCTOR_NAMES = {
   [INSTRUCTOR_KEYS.ANNA_WISNIEWSKA]: "Anna Wiśniewska",
   [INSTRUCTOR_KEYS.MARCIN_NOWAK]: "Marcin Nowak",
   [INSTRUCTOR_KEYS.DEMETRIO_NICOLE]: "Demetrio Rosario & Nicole Thompson",
+  [INSTRUCTOR_KEYS.TOMASZ_KULA]: "Tomasz Kula",
 } as const;
 
 /**
@@ -40,19 +44,39 @@ export const INSTRUCTOR_NAMES = {
  * - rating: ocena (1-5)
  * - totalStudents: liczba uczniów
  */
-export const instructors = {
+export const instructors: Record<string, Instructor> = {
   [INSTRUCTOR_KEYS.JAN_KOWALSKI_ANNA_WISNIEWSKA]: {
     id: INSTRUCTOR_KEYS.JAN_KOWALSKI_ANNA_WISNIEWSKA,
     name: INSTRUCTOR_NAMES[INSTRUCTOR_KEYS.JAN_KOWALSKI_ANNA_WISNIEWSKA],
-    avatar: `/images/instructors/${INSTRUCTOR_KEYS.JAN_KOWALSKI_ANNA_WISNIEWSKA}.jpg`,
-    bio: "Profesjonalny instruktor tańca z 10-letnim doświadczeniem",
-    specialization: ["bachata", "salsa"],
+    title: "Certyfikowani instruktorzy bachaty",
+    avatar: "/images/instructors/jan-anna.jpg",
+    bio: "Doświadczeni instruktorzy z ponad 10-letnim stażem w nauczaniu bachaty.",
+    specialization: [
+      "Bachata Dominicana",
+      "Bachata Moderna",
+      "Bachata Sensual",
+    ],
     rating: 4.9,
-    totalStudents: 1500,
+    totalStudents: 1200,
+    socialMedia: [
+      {
+        platform: "Instagram",
+        url: "https://instagram.com/jan.anna.bachata",
+      },
+      {
+        platform: "Facebook",
+        url: "https://facebook.com/jan.anna.bachata",
+      },
+      {
+        platform: "YouTube",
+        url: "https://youtube.com/@jan.anna.bachata",
+      },
+    ],
   },
   [INSTRUCTOR_KEYS.ANNA_WISNIEWSKA]: {
     id: INSTRUCTOR_KEYS.ANNA_WISNIEWSKA,
     name: INSTRUCTOR_NAMES[INSTRUCTOR_KEYS.ANNA_WISNIEWSKA],
+    title: "Instruktor bachaty",
     avatar: "/images/instructors/anna-wisniewska.jpg",
     bio: "Mistrzyni Polski w bachacie, instruktorka od 8 lat",
     specialization: ["bachata", "sensual"],
@@ -60,8 +84,9 @@ export const instructors = {
     totalStudents: 2000,
   },
   [INSTRUCTOR_KEYS.MARCIN_NOWAK]: {
-    id: "3",
+    id: INSTRUCTOR_KEYS.MARCIN_NOWAK,
     name: INSTRUCTOR_NAMES[INSTRUCTOR_KEYS.MARCIN_NOWAK],
+    title: "Instruktor bachaty i salsy",
     avatar: "/images/instructors/marcin-nowak.jpg",
     bio: "Międzynarodowy instruktor bachaty, zwycięzca World Bachata Masters 2022",
     specialization: ["bachata", "moderna", "fusion"],
@@ -71,10 +96,32 @@ export const instructors = {
   [INSTRUCTOR_KEYS.DEMETRIO_NICOLE]: {
     id: INSTRUCTOR_KEYS.DEMETRIO_NICOLE,
     name: INSTRUCTOR_NAMES[INSTRUCTOR_KEYS.DEMETRIO_NICOLE],
+    title: "Międzynarodowi instruktorzy bachaty",
     avatar: `/images/instructors/${INSTRUCTOR_KEYS.DEMETRIO_NICOLE}.jpg`,
     bio: "Międzynarodowi instruktorzy bachaty, zwycięzcy World Bachata Masters 2023",
     specialization: ["bachata", "moderna", "sensual"],
     rating: 5.0,
     totalStudents: 5000,
+  },
+  [INSTRUCTOR_KEYS.TOMASZ_KULA]: {
+    id: INSTRUCTOR_KEYS.TOMASZ_KULA,
+    name: INSTRUCTOR_NAMES[INSTRUCTOR_KEYS.TOMASZ_KULA],
+    title:
+      "Słyszeliście o facecie, który nauczył się bachaty z YouTube'a? 😂 Cóż pokaże Ci na co zwrocic uwage. Tzn nie ja bo nie jestem instruktorem, ale wiem kto umie i robi to dobrze. 😎 ",
+    avatar: "/images/instructors/tomasz-kula.jpg",
+    bio: "Doświadczony instruktor z 15-letnim stażem w nauczaniu tańca",
+    specialization: ["bachata", "taniec towarzyski", "moderna"],
+    rating: 4.8,
+    totalStudents: 1800,
+    socialMedia: [
+      {
+        platform: "Instagram",
+        url: "https://instagram.com/tomasz.kula.dance",
+      },
+      {
+        platform: "Facebook",
+        url: "https://facebook.com/tomasz.kula.dance",
+      },
+    ],
   },
 };

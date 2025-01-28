@@ -71,14 +71,22 @@ export interface Lesson {
   prerequisites?: string[];
 }
 
+export interface SocialMedia {
+  platform: string;
+  url: string;
+  icon?: string;
+}
+
 export interface Instructor {
   id: string;
   name: string;
+  title: string;
   avatar: string;
   bio: string;
   specialization: string[];
   rating: number;
   totalStudents: number;
+  socialMedia?: SocialMedia[];
 }
 
 export interface LessonVideo {

@@ -23,16 +23,16 @@ export const beginnerCourse: Course = {
       duration: "30 min",
       lessons: [
         {
-          id: "lekcja-0-2-historia",
-          title: "Historia bachaty",
+          id: "lekcja-0-1-autor",
+          title: "Zanim zaczniesz",
           description:
-            "Poznaj historię i pochodzenie bachaty jako tańca i muzyki",
-          duration: "15min",
-          thumbnail: "/images/lessons/history.jpg",
+            "Poznaj instruktorów, którzy poprowadzą Cię przez kurs bachaty",
+          duration: "2 min",
+          thumbnail: "/images/lessons/author.jpg",
           type: "text",
           content: {
             textContent: {
-              component: "HistoryLesson",
+              component: "AuthorLesson",
             },
           },
           isCompleted: false,

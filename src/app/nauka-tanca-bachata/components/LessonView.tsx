@@ -27,7 +27,8 @@ import {
   InstructorVideo,
 } from "../types/index";
 import { TextContent } from "./TextContent";
-import { HistoryLesson } from "./lessons/HistoryLesson";
+// import { HistoryLesson } from "./lessons/HistoryLesson";
+import { AuthorLesson } from "./lessons/AuthorLesson";
 
 interface LessonViewProps {
   lesson: Lesson;
@@ -135,8 +136,8 @@ export const LessonView: React.FC<LessonViewProps> = ({ lesson }) => {
 
     if (lesson.content.textContent?.component) {
       switch (lesson.content.textContent.component) {
-        case "HistoryLesson":
-          return <HistoryLesson />;
+        case "AuthorLesson":
+          return <AuthorLesson />;
         default:
           return null;
       }
