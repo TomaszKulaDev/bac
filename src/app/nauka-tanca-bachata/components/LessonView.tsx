@@ -147,6 +147,18 @@ export const LessonView: React.FC<LessonViewProps> = ({ lesson }) => {
     ) : null;
   };
 
+  const shouldShowLessonDetails = useMemo(() => {
+    // Pokaż szczegóły jeśli to lekcja wideo
+    if (lesson.type === "video") return true;
+
+    // Pokaż szczegóły jeśli lekcja tekstowa ma też wideo
+    if (lesson.content.videos?.some((v) => v.videoUrl.trim() !== ""))
+      return true;
+
+    // W przeciwnym razie ukryj
+    return false;
+  }, [lesson]);
+
   return (
     <div className="space-y-6">
       <div className="space-y-6">
@@ -204,8 +216,8 @@ export const LessonView: React.FC<LessonViewProps> = ({ lesson }) => {
           </div>
         )}
 
-        {/* Zawsze pokazuj szczegóły lekcji */}
-        <LessonDetails lesson={lesson} />
+        {/* Szczegóły lekcji tylko w określonych przypadkach */}
+        {shouldShowLessonDetails && <LessonDetails lesson={lesson} />}
       </div>
     </div>
   );
