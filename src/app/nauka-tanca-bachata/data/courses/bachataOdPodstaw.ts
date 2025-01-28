@@ -15,6 +15,32 @@ export const beginnerCourse: Course = {
 
   chapters: [
     {
+      id: "rozdzial-0-wprowadzenie",
+      title: "Wprowadzenie do kursu",
+      description:
+        "Poznaj podstawowe informacje o kursie i bachacie jako tańcu",
+      order: 0,
+      duration: "30 min",
+      lessons: [
+        {
+          id: "lekcja-0-2-historia",
+          title: "Historia bachaty",
+          description:
+            "Poznaj historię i pochodzenie bachaty jako tańca i muzyki",
+          duration: "15min",
+          thumbnail: "/images/lessons/history.jpg",
+          type: "text",
+          content: {
+            textContent: {
+              component: "HistoryLesson",
+            },
+          },
+          isCompleted: false,
+        },
+      ],
+      isCompleted: false,
+    },
+    {
       id: "rozdzial-1-rytm-i-kroki",
       title: "Rytm i podstawowe kroki",
       description: "Poznaj rytm bachaty i naucz się podstawowych kroków",
@@ -28,26 +54,31 @@ export const beginnerCourse: Course = {
             "Poznaj charakterystyczny rytm bachaty i naucz się go słyszeć w muzyce",
           duration: "30min",
           thumbnail: "/images/lessons/rhythm.jpg",
-          videos: [
-            {
-              id: "v1-rytm",
-              title: "Wprowadzenie do rytmu",
-              description: "Podstawy rytmu bachaty i liczenie",
-              videoUrl: "https://www.youtube.com/watch?v=xhrdh-uFkog",
-              instructor: INSTRUCTOR_NAMES[INSTRUCTOR_KEYS.DEMETRIO_NICOLE],
-              projectNameOfficial: "Bachata Dance Academy",
-            },
-            {
-              id: "v1-rytm-instagram",
-              title: "Rytm bachaty - demonstracja",
-              description: "Praktyczna demonstracja rytmu w bachacie",
-              videoUrl:
-                "https://res.cloudinary.com/dqeemjgmx/video/upload/v1737590591/Rithika_a5nv59.mp4",
-              projectNameOfficial: "LA Palace Studio",
-              instructor:
-                INSTRUCTOR_NAMES[INSTRUCTOR_KEYS.JAN_KOWALSKI_ANNA_WISNIEWSKA],
-            },
-          ],
+          type: "video",
+          content: {
+            videos: [
+              {
+                id: "v1-rytm",
+                title: "Wprowadzenie do rytmu",
+                description: "Podstawy rytmu bachaty i liczenie",
+                videoUrl: "https://www.youtube.com/watch?v=xhrdh-uFkog",
+                instructor: INSTRUCTOR_NAMES[INSTRUCTOR_KEYS.DEMETRIO_NICOLE],
+                projectNameOfficial: "Bachata Dance Academy",
+              },
+              {
+                id: "v1-rytm-instagram",
+                title: "Rytm bachaty - demonstracja",
+                description: "Praktyczna demonstracja rytmu w bachacie",
+                videoUrl:
+                  "https://res.cloudinary.com/dqeemjgmx/video/upload/v1737590591/Rithika_a5nv59.mp4",
+                projectNameOfficial: "LA Palace Studio",
+                instructor:
+                  INSTRUCTOR_NAMES[
+                    INSTRUCTOR_KEYS.JAN_KOWALSKI_ANNA_WISNIEWSKA
+                  ],
+              },
+            ],
+          },
           isCompleted: false,
         },
         {
@@ -56,26 +87,29 @@ export const beginnerCourse: Course = {
           description: "Nauka kroku podstawowego w miejscu i z prowadzeniem",
           duration: "45min",
           thumbnail: "/images/lessons/basic-step.jpg",
-          videos: [
-            {
-              id: "v2-krok",
-              title: "Krok podstawowy - widok z przodu",
-              description: "Szczegółowe objaśnienie kroku podstawowego",
-              videoUrl:
-                "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
-              projectNameOfficial: "LA Palace Studio",
-              instructor: "Jan Kowalski",
-            },
-            {
-              id: "v3-krok",
-              title: "Krok podstawowy - widok z tyłu",
-              description: "Analiza kroku z perspektywy tylnej",
-              videoUrl:
-                "https://res.cloudinary.com/dqeemjgmx/video/upload/v1737590591/Rithika_a5nv59.mp4",
-              projectNameOfficial: "LA Palace Studio",
-              instructor: "Jan Kowalski",
-            },
-          ],
+          type: "video",
+          content: {
+            videos: [
+              {
+                id: "v2-krok",
+                title: "Krok podstawowy - widok z przodu",
+                description: "Szczegółowe objaśnienie kroku podstawowego",
+                videoUrl:
+                  "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+                projectNameOfficial: "LA Palace Studio",
+                instructor: "Jan Kowalski",
+              },
+              {
+                id: "v3-krok",
+                title: "Krok podstawowy - widok z tyłu",
+                description: "Analiza kroku z perspektywy tylnej",
+                videoUrl:
+                  "https://res.cloudinary.com/dqeemjgmx/video/upload/v1737590591/Rithika_a5nv59.mp4",
+                projectNameOfficial: "LA Palace Studio",
+                instructor: "Jan Kowalski",
+              },
+            ],
+          },
           isCompleted: false,
         },
       ],
@@ -94,17 +128,20 @@ export const beginnerCourse: Course = {
           description: "Jak trzymać ręce i utrzymać prawidłową postawę w parze",
           duration: "45min",
           thumbnail: "/images/lessons/frame.jpg",
-          videos: [
-            {
-              id: "v4-ramka",
-              title: "Ustawienie ramki",
-              description: "Prawidłowe trzymanie i postawa w parze",
-              videoUrl:
-                "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-              projectNameOfficial: "LA Palace Studio",
-              instructor: "Jan Kowalski",
-            },
-          ],
+          type: "video",
+          content: {
+            videos: [
+              {
+                id: "v4-ramka",
+                title: "Ustawienie ramki",
+                description: "Prawidłowe trzymanie i postawa w parze",
+                videoUrl:
+                  "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+                projectNameOfficial: "LA Palace Studio",
+                instructor: "Jan Kowalski",
+              },
+            ],
+          },
           isCompleted: false,
         },
         {
@@ -113,17 +150,20 @@ export const beginnerCourse: Course = {
           description: "Nauka podstawowych zasad prowadzenia w parze",
           duration: "45min",
           thumbnail: "/images/lessons/leading.jpg",
-          videos: [
-            {
-              id: "v5-prowadzenie",
-              title: "Zasady prowadzenia",
-              description: "Podstawowe techniki prowadzenia w parze",
-              videoUrl:
-                "https://storage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
-              projectNameOfficial: "LA Palace Studio",
-              instructor: "Jan Kowalski",
-            },
-          ],
+          type: "video",
+          content: {
+            videos: [
+              {
+                id: "v5-prowadzenie",
+                title: "Zasady prowadzenia",
+                description: "Podstawowe techniki prowadzenia w parze",
+                videoUrl:
+                  "https://storage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
+                projectNameOfficial: "LA Palace Studio",
+                instructor: "Jan Kowalski",
+              },
+            ],
+          },
           isCompleted: false,
         },
       ],
@@ -142,36 +182,73 @@ export const beginnerCourse: Course = {
           description: "Nauka obrotów w prawo i w lewo",
           duration: "45min",
           thumbnail: "/images/lessons/turns.jpg",
-          videos: [
-            {
-              id: "v6-obroty",
-              title: "Obroty podstawowe",
-              description: "Technika wykonywania obrotów",
-              videoUrl: "",
-              projectNameOfficial: "LA Palace Studio",
-              instructor: "Jan Kowalski",
+          type: "text",
+          content: {
+            textContent: {
+              sections: [
+                {
+                  title: "Wprowadzenie do obrotów",
+                  content: `
+# Podstawy obrotów w bachacie
+
+Obroty są jednym z podstawowych elementów bachaty. W tej lekcji nauczysz się:
+- Prawidłowej postawy podczas obrotu
+- Techniki obrotu w prawo
+- Techniki obrotu w lewo
+- Najczęstszych błędów i jak ich unikać
+
+## Prawidłowa postawa
+
+Podczas wykonywania obrotu należy pamiętać o:
+1. Wyprostowanej sylwetce
+2. Napiętym brzuchu
+3. Utrzymaniu równowagi na śródstopiu
+                  `,
+                  images: [
+                    {
+                      url: "/images/lessons/turn-posture.jpg",
+                      caption: "Prawidłowa postawa podczas obrotu",
+                      alt: "Demonstracja prawidłowej postawy podczas wykonywania obrotu w bachacie",
+                    },
+                  ],
+                },
+                {
+                  title: "Technika obrotu w prawo",
+                  content: `
+## Krok po kroku
+
+1. Rozpocznij od pozycji podstawowej
+2. Przenieś ciężar ciała na prawą nogę
+3. Zainicjuj obrót przez skręt górnej części ciała
+4. Wykonaj obrót na śródstopiu prawej nogi
+5. Zakończ obrót wracając do pozycji wyjściowej
+                  `,
+                },
+              ],
             },
-          ],
+          },
           isCompleted: false,
         },
         {
           id: "lekcja-3-2-kombinacje",
           title: "Pierwsze kombinacje",
           description:
-            "W tej lekcji nauczysz się jak łączyć poznane wcześniej kroki podstawowe w płynne kombinacje taneczne.\n" +
-            "Skupimy się na prawidłowym wykonywaniu przejść między figurami, zachowaniu rytmu oraz właściwej technice prowadzenia podczas zmian kroków. Poznasz również zasady budowania własnych kombinacji tanecznych.",
+            "W tej lekcji nauczysz się jak łączyć poznane wcześniej kroki podstawowe w płynne kombinacje taneczne.",
           duration: "45min",
           thumbnail: "/images/lessons/combinations.jpg",
-          videos: [
-            {
-              id: "v7-kombinacje",
-              title: "Podstawowe kombinacje",
-              description: "Nauka łączenia figur w kombinacje",
-              videoUrl: "",
-              projectNameOfficial: "LA Palace Studio",
-              instructor: "Jan Kowalski",
-            },
-          ],
+          type: "video",
+          content: {
+            videos: [
+              {
+                id: "v7-kombinacje",
+                title: "Podstawowe kombinacje",
+                description: "Nauka łączenia figur w kombinacje",
+                videoUrl: "",
+                projectNameOfficial: "LA Palace Studio",
+                instructor: "Jan Kowalski",
+              },
+            ],
+          },
           isCompleted: false,
         },
       ],

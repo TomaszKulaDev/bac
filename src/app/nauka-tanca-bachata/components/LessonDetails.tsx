@@ -17,7 +17,9 @@ interface LessonDetailsProps {
 }
 
 export const LessonDetails: React.FC<LessonDetailsProps> = ({ lesson }) => {
-  const hasVideo = lesson.videos.some((video) => video.videoUrl.trim() !== "");
+  const hasVideo =
+    lesson.type === "video" &&
+    lesson.content.videos?.some((video) => video.videoUrl.trim() !== "");
 
   return (
     <div className="bg-white rounded-lg shadow p-6">

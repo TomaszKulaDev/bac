@@ -26,13 +26,17 @@ import {
   adaptLessonVideoToInstructorVideo,
   InstructorVideo,
 } from "../types/index";
+import { TextContent } from "./TextContent";
+import { HistoryLesson } from "./lessons/HistoryLesson";
 
 interface LessonViewProps {
   lesson: Lesson;
 }
 
 export const LessonView: React.FC<LessonViewProps> = ({ lesson }) => {
-  const [selectedVideo, setSelectedVideo] = useState(lesson.videos[0]);
+  const [selectedVideo, setSelectedVideo] = useState(
+    lesson.type === "video" ? lesson.content.videos?.[0] : null
+  );
   const [speed, setSpeed] = useState(1);
   const [mirror, setMirror] = useState(false);
   const [loopSection, setLoopSection] = useState<[number, number] | null>(null);
@@ -117,28 +121,45 @@ export const LessonView: React.FC<LessonViewProps> = ({ lesson }) => {
     );
   };
 
-  const adaptedVideo = useMemo(
-    () => adaptLessonVideoToInstructorVideo(selectedVideo),
-    [selectedVideo]
-  );
+  const adaptedVideo = useMemo(() => {
+    if (!selectedVideo) return null;
+    return adaptLessonVideoToInstructorVideo(selectedVideo);
+  }, [selectedVideo]);
 
   const hasValidVideo = useMemo(() => {
     return selectedVideo && selectedVideo.videoUrl.trim() !== "";
   }, [selectedVideo]);
 
+  const renderTextContent = () => {
+    if (lesson.type !== "text") return null;
+
+    if (lesson.content.textContent?.component) {
+      switch (lesson.content.textContent.component) {
+        case "HistoryLesson":
+          return <HistoryLesson />;
+        default:
+          return null;
+      }
+    }
+
+    return lesson.content.textContent?.sections ? (
+      <TextContent sections={lesson.content.textContent.sections} />
+    ) : null;
+  };
+
   return (
     <div className="space-y-6">
       <div className="space-y-6">
         {/* Wybór perspektywy tylko jeśli są wideo */}
-        {lesson.videos.length > 0 &&
-          lesson.videos.some((v) => v.videoUrl.trim() !== "") && (
+        {lesson.type === "video" &&
+          lesson.content.videos?.some((v) => v.videoUrl.trim() !== "") && (
             <div className="flex flex-wrap gap-3">
-              {lesson.videos.map((video) => (
+              {lesson.content.videos?.map((video) => (
                 <button
                   key={video.id}
                   onClick={() => setSelectedVideo(video)}
                   className={`flex items-center gap-4 px-5 py-3 rounded-lg transition-colors ${
-                    selectedVideo.id === video.id
+                    selectedVideo?.id === video.id
                       ? "bg-amber-500 text-white"
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                   }`}
@@ -157,18 +178,11 @@ export const LessonView: React.FC<LessonViewProps> = ({ lesson }) => {
             </div>
           )}
 
-        {/* Opis wybranego wideo tylko jeśli jest wideo */}
-        {hasValidVideo && (
-          <div className="bg-white rounded-lg p-4">
-            <h3 className="font-medium text-gray-900">{selectedVideo.title}</h3>
-            <p className="mt-1 text-sm text-gray-600">
-              {selectedVideo.description}
-            </p>
-          </div>
-        )}
+        {/* Treść tekstowa */}
+        {lesson.type === "text" && renderTextContent()}
 
         {/* Odtwarzacz tylko jeśli jest wideo */}
-        {hasValidVideo && (
+        {hasValidVideo && selectedVideo && adaptedVideo && (
           <div className="flex flex-col gap-4">
             <div className="aspect-video bg-black rounded-lg overflow-hidden">
               <VideoPlayer

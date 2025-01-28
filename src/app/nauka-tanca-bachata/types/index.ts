@@ -32,21 +32,40 @@ export interface Chapter {
   order: number;
 }
 
+export interface TextSection {
+  title: string;
+  content: string;
+  images?: {
+    url: string;
+    caption: string;
+    alt: string;
+  }[];
+}
+
+export interface TextContent {
+  sections?: TextSection[];
+  component?: string;
+}
+
 export interface Lesson {
   id: string;
   title: string;
   description: string;
-  videos: {
-    id: string;
-    title: string;
-    description: string;
-    videoUrl: string;
-    projectNameOfficial: string;
-    instructor: string;
-  }[];
   duration: string;
   thumbnail: string;
-  isCompleted?: boolean;
+  type: "video" | "text";
+  content: {
+    videos?: {
+      id: string;
+      title: string;
+      description: string;
+      videoUrl: string;
+      projectNameOfficial: string;
+      instructor: string;
+    }[];
+    textContent?: TextContent;
+  };
+  isCompleted: boolean;
   nextLessonId?: string;
   previousLessonId?: string;
   prerequisites?: string[];
