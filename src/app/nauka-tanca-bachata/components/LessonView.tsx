@@ -122,64 +122,75 @@ export const LessonView: React.FC<LessonViewProps> = ({ lesson }) => {
     [selectedVideo]
   );
 
+  const hasValidVideo = useMemo(() => {
+    return selectedVideo && selectedVideo.videoUrl.trim() !== "";
+  }, [selectedVideo]);
+
   return (
     <div className="space-y-6">
       <div className="space-y-6">
-        {/* Wybór perspektywy */}
-        <div className="flex flex-wrap gap-3">
-          {lesson.videos.map((video) => (
-            <button
-              key={video.id}
-              onClick={() => setSelectedVideo(video)}
-              className={`flex items-center gap-4 px-5 py-3 rounded-lg transition-colors ${
-                selectedVideo.id === video.id
-                  ? "bg-amber-500 text-white"
-                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-              }`}
-            >
-              {/* Zdjęcie instruktora w okręgu */}
-              <InstructorAvatar instructor={video.instructor} />
+        {/* Wybór perspektywy tylko jeśli są wideo */}
+        {lesson.videos.length > 0 &&
+          lesson.videos.some((v) => v.videoUrl.trim() !== "") && (
+            <div className="flex flex-wrap gap-3">
+              {lesson.videos.map((video) => (
+                <button
+                  key={video.id}
+                  onClick={() => setSelectedVideo(video)}
+                  className={`flex items-center gap-4 px-5 py-3 rounded-lg transition-colors ${
+                    selectedVideo.id === video.id
+                      ? "bg-amber-500 text-white"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  }`}
+                >
+                  <InstructorAvatar instructor={video.instructor} />
+                  <div className="flex flex-col items-start">
+                    <span className="font-medium text-base">
+                      {getPerspectiveLabel(video.projectNameOfficial)}
+                    </span>
+                    <span className="text-sm opacity-75">
+                      {video.instructor}
+                    </span>
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
 
-              {/* Tekst */}
-              <div className="flex flex-col items-start">
-                <span className="font-medium text-base">
-                  {getPerspectiveLabel(video.projectNameOfficial)}
-                </span>
-                <span className="text-sm opacity-75">{video.instructor}</span>
-              </div>
-            </button>
-          ))}
-        </div>
-
-        {/* Opis wybranego wideo */}
-        <div className="bg-white rounded-lg p-4">
-          <h3 className="font-medium text-gray-900">{selectedVideo.title}</h3>
-          <p className="mt-1 text-sm text-gray-600">
-            {selectedVideo.description}
-          </p>
-        </div>
-
-        {/* Odtwarzacz */}
-        <div className="flex flex-col gap-4">
-          <div className="aspect-video bg-black rounded-lg overflow-hidden">
-            <VideoPlayer
-              videos={[adaptedVideo]}
-              speed={speed}
-              mirror={mirror}
-              loopSection={loopSection}
-              onProgress={handleProgress}
-              onDurationChange={handleDurationChange}
-              onLoopSectionChange={setLoopSection}
-            />
+        {/* Opis wybranego wideo tylko jeśli jest wideo */}
+        {hasValidVideo && (
+          <div className="bg-white rounded-lg p-4">
+            <h3 className="font-medium text-gray-900">{selectedVideo.title}</h3>
+            <p className="mt-1 text-sm text-gray-600">
+              {selectedVideo.description}
+            </p>
           </div>
+        )}
 
-          {/* Kontrolki */}
-          <div className="flex flex-wrap gap-4">
-            <SpeedControl value={speed} onChange={handleSpeedChange} />
-            <MirrorToggle value={mirror} onChange={handleMirrorChange} />
+        {/* Odtwarzacz tylko jeśli jest wideo */}
+        {hasValidVideo && (
+          <div className="flex flex-col gap-4">
+            <div className="aspect-video bg-black rounded-lg overflow-hidden">
+              <VideoPlayer
+                videos={[adaptedVideo]}
+                speed={speed}
+                mirror={mirror}
+                loopSection={loopSection}
+                onProgress={handleProgress}
+                onDurationChange={handleDurationChange}
+                onLoopSectionChange={setLoopSection}
+              />
+            </div>
+
+            {/* Kontrolki */}
+            <div className="flex flex-wrap gap-4">
+              <SpeedControl value={speed} onChange={handleSpeedChange} />
+              <MirrorToggle value={mirror} onChange={handleMirrorChange} />
+            </div>
           </div>
-        </div>
+        )}
 
+        {/* Zawsze pokazuj szczegóły lekcji */}
         <LessonDetails lesson={lesson} />
       </div>
     </div>

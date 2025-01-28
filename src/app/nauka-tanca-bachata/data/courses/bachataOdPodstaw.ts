@@ -147,8 +147,7 @@ export const beginnerCourse: Course = {
               id: "v6-obroty",
               title: "Obroty podstawowe",
               description: "Technika wykonywania obrotów",
-              videoUrl:
-                "https://storage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+              videoUrl: "",
               projectNameOfficial: "LA Palace Studio",
               instructor: "Jan Kowalski",
             },
@@ -158,7 +157,9 @@ export const beginnerCourse: Course = {
         {
           id: "lekcja-3-2-kombinacje",
           title: "Pierwsze kombinacje",
-          description: "Łączenie kroków w proste kombinacje",
+          description:
+            "W tej lekcji nauczysz się jak łączyć poznane wcześniej kroki podstawowe w płynne kombinacje taneczne.\n" +
+            "Skupimy się na prawidłowym wykonywaniu przejść między figurami, zachowaniu rytmu oraz właściwej technice prowadzenia podczas zmian kroków. Poznasz również zasady budowania własnych kombinacji tanecznych.",
           duration: "45min",
           thumbnail: "/images/lessons/combinations.jpg",
           videos: [
@@ -166,8 +167,7 @@ export const beginnerCourse: Course = {
               id: "v7-kombinacje",
               title: "Podstawowe kombinacje",
               description: "Nauka łączenia figur w kombinacje",
-              videoUrl:
-                "https://storage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
+              videoUrl: "",
               projectNameOfficial: "LA Palace Studio",
               instructor: "Jan Kowalski",
             },
