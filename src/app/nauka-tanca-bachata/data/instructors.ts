@@ -30,7 +30,7 @@ export const INSTRUCTOR_NAMES = {
   [INSTRUCTOR_KEYS.ANNA_WISNIEWSKA]: "Anna Wiśniewska",
   [INSTRUCTOR_KEYS.MARCIN_NOWAK]: "Marcin Nowak",
   [INSTRUCTOR_KEYS.DEMETRIO_NICOLE]: "Demetrio Rosario & Nicole Thompson",
-  [INSTRUCTOR_KEYS.TOMASZ_KULA]: "Tomasz Kula",
+  [INSTRUCTOR_KEYS.TOMASZ_KULA]: "Jan Kowalski",
 } as const;
 
 /**

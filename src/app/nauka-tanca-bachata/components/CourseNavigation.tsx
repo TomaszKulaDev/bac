@@ -111,14 +111,10 @@ export const CourseNavigation: React.FC<CourseNavigationProps> = ({
                       {chapter.title}
                     </h3>
                     <p className="text-sm text-gray-500 mt-1">
-                      <span itemProp="completedLessons">
-                        {completedLessons}
-                      </span>{" "}
-                      z{" "}
                       <span itemProp="totalLessons">
                         {chapter.lessons.length}
                       </span>{" "}
-                      lekcji ukończonych
+                      lekcji
                     </p>
                   </div>
                   <ChevronDownIcon
@@ -126,20 +122,6 @@ export const CourseNavigation: React.FC<CourseNavigationProps> = ({
                       isExpanded ? "rotate-180" : ""
                     }`}
                     aria-hidden="true"
-                  />
-                </div>
-
-                {/* Pasek postępu */}
-                <div
-                  className="mt-4 h-1.5 bg-gray-100 rounded-full overflow-hidden"
-                  role="progressbar"
-                  aria-valuenow={progress}
-                  aria-valuemin={0}
-                  aria-valuemax={100}
-                >
-                  <div
-                    className="h-full bg-amber-500 rounded-full transition-all duration-300"
-                    style={{ width: `${progress}%` }}
                   />
                 </div>
               </button>

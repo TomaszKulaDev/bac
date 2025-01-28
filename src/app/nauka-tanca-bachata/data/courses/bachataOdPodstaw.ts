@@ -41,17 +41,17 @@ export const beginnerCourse: Course = {
       isCompleted: false,
     },
     {
-      id: "rozdzial-1-rytm-i-kroki",
-      title: "Rytm i podstawowe kroki",
-      description: "Poznaj rytm bachaty i naucz się podstawowych kroków",
+      id: "rozdzial-1-krok-podstawowy",
+      title: "Kroki podstawowe Solo",
+      description: "Naucz się podstawowych kroków",
       order: 1,
-      duration: "2 godz",
+      duration: "3 min",
       lessons: [
         {
-          id: "lekcja-1-1-rytm",
-          title: "Rytm w bachacie",
+          id: "lekcja-1-1-krok-podstawowy",
+          title: "Krok podstawowy bez pary",
           description:
-            "Poznaj charakterystyczny rytm bachaty i naucz się go słyszeć w muzyce",
+            "Ważne informacje o kroku podstawowym. Jak widzisz krok na tym poziomie polega na pojsciu do boku w lewo i w prawo uzgledniając tap. Masz go umieć wykonywać w obu kierunkach nie myślac o nim. Następnie masz go umieć wykonać do muzyki z rożnym tempem.",
           duration: "30min",
           thumbnail: "/images/lessons/rhythm.jpg",
           type: "video",
@@ -61,7 +61,8 @@ export const beginnerCourse: Course = {
                 id: "v1-rytm",
                 title: "Wprowadzenie do rytmu",
                 description: "Podstawy rytmu bachaty i liczenie",
-                videoUrl: "https://www.youtube.com/watch?v=xhrdh-uFkog",
+                videoUrl:
+                  "https://res.cloudinary.com/dqeemjgmx/video/upload/v1738091142/bachataOdPodstaw/Bachata%20Beginner%20Basic%20Steps%20Tutorial.mp4",
                 instructor: INSTRUCTOR_NAMES[INSTRUCTOR_KEYS.DEMETRIO_NICOLE],
                 projectNameOfficial: "Bachata Dance Academy",
               },
@@ -69,8 +70,7 @@ export const beginnerCourse: Course = {
                 id: "v1-rytm-instagram",
                 title: "Rytm bachaty - demonstracja",
                 description: "Praktyczna demonstracja rytmu w bachacie",
-                videoUrl:
-                  "https://res.cloudinary.com/dqeemjgmx/video/upload/v1737590591/Rithika_a5nv59.mp4",
+                videoUrl: "",
                 projectNameOfficial: "LA Palace Studio",
                 instructor:
                   INSTRUCTOR_NAMES[
