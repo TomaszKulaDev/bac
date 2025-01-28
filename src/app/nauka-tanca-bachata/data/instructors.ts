@@ -10,6 +10,7 @@ export const INSTRUCTOR_KEYS = {
   JAN_KOWALSKI_ANNA_WISNIEWSKA: "jan-kowalski-and-anna-wisniewska",
   ANNA_WISNIEWSKA: "anna-wisniewska",
   MARCIN_NOWAK: "marcin-nowak",
+  DEMETRIO_NICOLE: "demetrio-rosario-and-nicole-thompson",
 } as const;
 
 /**
@@ -25,6 +26,7 @@ export const INSTRUCTOR_NAMES = {
     "Jan Kowalski & Anna Wiśniewska",
   [INSTRUCTOR_KEYS.ANNA_WISNIEWSKA]: "Anna Wiśniewska",
   [INSTRUCTOR_KEYS.MARCIN_NOWAK]: "Marcin Nowak",
+  [INSTRUCTOR_KEYS.DEMETRIO_NICOLE]: "Demetrio Rosario & Nicole Thompson",
 } as const;
 
 /**
@@ -65,5 +67,14 @@ export const instructors = {
     specialization: ["bachata", "moderna", "fusion"],
     rating: 5.0,
     totalStudents: 3000,
+  },
+  [INSTRUCTOR_KEYS.DEMETRIO_NICOLE]: {
+    id: INSTRUCTOR_KEYS.DEMETRIO_NICOLE,
+    name: INSTRUCTOR_NAMES[INSTRUCTOR_KEYS.DEMETRIO_NICOLE],
+    avatar: `/images/instructors/${INSTRUCTOR_KEYS.DEMETRIO_NICOLE}.jpg`,
+    bio: "Międzynarodowi instruktorzy bachaty, zwycięzcy World Bachata Masters 2023",
+    specialization: ["bachata", "moderna", "sensual"],
+    rating: 5.0,
+    totalStudents: 5000,
   },
 };

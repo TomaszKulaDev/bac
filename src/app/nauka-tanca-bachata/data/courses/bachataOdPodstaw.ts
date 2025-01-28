@@ -8,7 +8,11 @@ export const beginnerCourse: Course = {
     "Kompletny kurs dla początkujących. Poznaj podstawy bachaty, naucz się kroków, rytmu i pierwszych figur w prosty i przyjemny sposób.",
   level: "beginner",
   totalDuration: "8 godz",
-  instructor: instructors[INSTRUCTOR_KEYS.JAN_KOWALSKI_ANNA_WISNIEWSKA],
+  instructor: [
+    instructors[INSTRUCTOR_KEYS.JAN_KOWALSKI_ANNA_WISNIEWSKA],
+    instructors[INSTRUCTOR_KEYS.DEMETRIO_NICOLE],
+  ],
+
   chapters: [
     {
       id: "rozdzial-1-rytm-i-kroki",
@@ -29,10 +33,9 @@ export const beginnerCourse: Course = {
               id: "v1-rytm",
               title: "Wprowadzenie do rytmu",
               description: "Podstawy rytmu bachaty i liczenie",
-              videoUrl: "https://www.youtube.com/watch?v=ZSSXSi1rO24",
-              instructor:
-                INSTRUCTOR_NAMES[INSTRUCTOR_KEYS.JAN_KOWALSKI_ANNA_WISNIEWSKA],
-              projectNameOfficial: "Labros Studio",
+              videoUrl: "https://www.youtube.com/watch?v=xhrdh-uFkog",
+              instructor: INSTRUCTOR_NAMES[INSTRUCTOR_KEYS.DEMETRIO_NICOLE],
+              projectNameOfficial: "Bachata Dance Academy",
             },
             {
               id: "v1-rytm-instagram",

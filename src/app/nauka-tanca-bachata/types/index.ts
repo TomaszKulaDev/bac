@@ -10,7 +10,7 @@ export interface Course {
     | "lady-styling";
   chapters: Chapter[];
   totalDuration: string;
-  instructor: Instructor;
+  instructor: Instructor | Instructor[];
   rating: number;
   studentsCount: number;
   thumbnail: string;
