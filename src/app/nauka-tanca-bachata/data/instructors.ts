@@ -10,7 +10,7 @@ import { Instructor } from "../types";
 
 export const INSTRUCTOR_KEYS = {
   JAN_KOWALSKI_ANNA_WISNIEWSKA: "jan-kowalski-and-anna-wisniewska",
-  ANNA_WISNIEWSKA: "anna-wisniewska", 
+  ANNA_WISNIEWSKA: "anna-wisniewska",
   MARCIN_NOWAK: "marcin-nowak",
   DEMETRIO_NICOLE: "demetrio-nicole",
   TOMASZ_KULA: "tomasz-kula",
@@ -27,7 +27,8 @@ export const INSTRUCTOR_KEYS = {
  * Format: Pełne imiona i nazwiska, ze znakami specjalnymi
  */
 export const INSTRUCTOR_NAMES = {
-  [INSTRUCTOR_KEYS.JAN_KOWALSKI_ANNA_WISNIEWSKA]: "Jan Kowalski & Anna Wiśniewska",
+  [INSTRUCTOR_KEYS.JAN_KOWALSKI_ANNA_WISNIEWSKA]:
+    "Jan Kowalski & Anna Wiśniewska",
   [INSTRUCTOR_KEYS.ANNA_WISNIEWSKA]: "Anna Wiśniewska",
   [INSTRUCTOR_KEYS.MARCIN_NOWAK]: "Marcin Nowak",
   [INSTRUCTOR_KEYS.DEMETRIO_NICOLE]: "Demetrio Rosario & Nicole Thompson",
@@ -55,7 +56,11 @@ export const instructors: Record<string, Instructor> = {
     name: INSTRUCTOR_NAMES[INSTRUCTOR_KEYS.JAN_KOWALSKI_ANNA_WISNIEWSKA],
     title: "Certyfikowani instruktorzy bachaty",
     bio: "Doświadczeni instruktorzy z ponad 10-letnim stażem w nauczaniu bachaty.",
-    specialization: ["Bachata Dominicana", "Bachata Moderna", "Bachata Sensual"],
+    specialization: [
+      "Bachata Dominicana",
+      "Bachata Moderna",
+      "Bachata Sensual",
+    ],
     partners: [
       {
         name: "Jan Kowalski",
@@ -64,32 +69,32 @@ export const instructors: Record<string, Instructor> = {
         socialMedia: [
           {
             platform: "Instagram",
-            url: "https://instagram.com/jan.bachata"
+            url: "https://instagram.com/jan.bachata",
           },
           {
             platform: "Facebook",
-            url: "https://facebook.com/jan.bachata"
-          }
-        ]
+            url: "https://facebook.com/jan.bachata",
+          },
+        ],
       },
       {
         name: "Anna Wiśniewska",
-        role: "follower", 
+        role: "follower",
         avatar: "/images/instructors/anna-wisniewska.jpg",
         socialMedia: [
           {
             platform: "Instagram",
-            url: "https://instagram.com/anna.bachata"
+            url: "https://instagram.com/anna.bachata",
           },
           {
             platform: "YouTube",
-            url: "https://youtube.com/@anna.bachata"
-          }
-        ]
-      }
+            url: "https://youtube.com/@anna.bachata",
+          },
+        ],
+      },
     ],
     rating: 4.9,
-    totalStudents: 1200
+    totalStudents: 1200,
   },
 
   [INSTRUCTOR_KEYS.ANNA_WISNIEWSKA]: {
@@ -102,11 +107,11 @@ export const instructors: Record<string, Instructor> = {
     socialMedia: [
       {
         platform: "Instagram",
-        url: "https://instagram.com/anna.bachata"
-      }
+        url: "https://instagram.com/anna.bachata",
+      },
     ],
     rating: 4.95,
-    totalStudents: 2000
+    totalStudents: 2000,
   },
 
   [INSTRUCTOR_KEYS.MARCIN_NOWAK]: {
@@ -119,11 +124,11 @@ export const instructors: Record<string, Instructor> = {
     socialMedia: [
       {
         platform: "Instagram",
-        url: "https://instagram.com/marcin.bachata"
-      }
+        url: "https://instagram.com/marcin.bachata",
+      },
     ],
     rating: 5.0,
-    totalStudents: 3000
+    totalStudents: 3000,
   },
 
   [INSTRUCTOR_KEYS.DEMETRIO_NICOLE]: {
@@ -140,9 +145,9 @@ export const instructors: Record<string, Instructor> = {
         socialMedia: [
           {
             platform: "Instagram",
-            url: "https://instagram.com/demetrio.bachata"
-          }
-        ]
+            url: "https://instagram.com/demetrio.bachata",
+          },
+        ],
       },
       {
         name: "Nicole Thompson",
@@ -151,13 +156,13 @@ export const instructors: Record<string, Instructor> = {
         socialMedia: [
           {
             platform: "Instagram",
-            url: "https://instagram.com/nicole.bachata"
-          }
-        ]
-      }
+            url: "https://instagram.com/nicole.bachata",
+          },
+        ],
+      },
     ],
     rating: 5.0,
-    totalStudents: 5000
+    totalStudents: 5000,
   },
 
   [INSTRUCTOR_KEYS.TOMASZ_KULA]: {
@@ -170,15 +175,15 @@ export const instructors: Record<string, Instructor> = {
     socialMedia: [
       {
         platform: "Instagram",
-        url: "https://instagram.com/tomasz.kula.dance"
+        url: "https://instagram.com/tomasz.kula.dance",
       },
       {
         platform: "Facebook",
-        url: "https://facebook.com/tomasz.kula.dance"
-      }
+        url: "https://facebook.com/tomasz.kula.dance",
+      },
     ],
     rating: 4.8,
-    totalStudents: 1800
+    totalStudents: 1800,
   },
 
   [INSTRUCTOR_KEYS.LUIS_ANDREA]: {
@@ -195,13 +200,13 @@ export const instructors: Record<string, Instructor> = {
         socialMedia: [
           {
             platform: "Instagram",
-            url: "https://instagram.com/luis.bachata"
+            url: "https://www.instagram.com/luis_garciaofficial/",
           },
           {
             platform: "Facebook",
-            url: "https://facebook.com/luis.bachata"
-          }
-        ]
+            url: "https://www.facebook.com/luisyandreaspainpage",
+          },
+        ],
       },
       {
         name: "Andrea Cobos",
@@ -210,15 +215,15 @@ export const instructors: Record<string, Instructor> = {
         socialMedia: [
           {
             platform: "Instagram",
-            url: "https://instagram.com/andrea.bachata"
+            url: "https://www.instagram.com/andreacobos.oficial/",
           },
           {
             platform: "YouTube",
-            url: "https://youtube.com/@andrea.bachata"
-          }
-        ]
-      }
-    ]
+            url: "https://www.youtube.com/@LuisyAndreaOfficial",
+          },
+        ],
+      },
+    ],
   },
 
   [INSTRUCTOR_KEYS.GERO_VIVIAN]: {
@@ -226,7 +231,11 @@ export const instructors: Record<string, Instructor> = {
     name: INSTRUCTOR_NAMES[INSTRUCTOR_KEYS.GERO_VIVIAN],
     title: "Międzynarodowi instruktorzy bachaty sensual",
     bio: "Uznany duet instruktorski specjalizujący się w bachacie sensual, twórcy unikalnego stylu łączącego elementy tańca współczesnego z bachatą",
-    specialization: ["Bachata Sensual", "Bachata Moderna", "Contemporary Fusion"],
+    specialization: [
+      "Bachata Sensual",
+      "Bachata Moderna",
+      "Contemporary Fusion",
+    ],
     partners: [
       {
         name: "Gero Rangel",
@@ -235,13 +244,13 @@ export const instructors: Record<string, Instructor> = {
         socialMedia: [
           {
             platform: "Instagram",
-            url: "https://instagram.com/gero.bachata"
+            url: "https://www.instagram.com/gero_dance/",
           },
           {
             platform: "YouTube",
-            url: "https://youtube.com/@gero.bachata"
-          }
-        ]
+            url: "https://www.youtube.com/c/GeroyMigl%C4%97",
+          },
+        ],
       },
       {
         name: "Ling Vivian",
@@ -250,16 +259,16 @@ export const instructors: Record<string, Instructor> = {
         socialMedia: [
           {
             platform: "Instagram",
-            url: "https://instagram.com/vivian.bachata"
+            url: "https://www.instagram.com/lingvivian7929/",
           },
           {
             platform: "Facebook",
-            url: "https://facebook.com/vivian.bachata"
-          }
-        ]
-      }
+            url: "https://www.facebook.com/profile.php?id=100006735127711",
+          },
+        ],
+      },
     ],
     rating: 5.0,
-    totalStudents: 10000
-  }
+    totalStudents: 10000,
+  },
 };

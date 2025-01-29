@@ -73,7 +73,7 @@ const InstructorCredits: React.FC<{ instructorName: string }> = ({
                 <div>
                   <h4 className="font-medium">{partner.name}</h4>
                   <p className="text-sm text-gray-600">
-                    {partner.role === "leader" ? "Prowadzący" : "Partnerka"}
+                    {partner.role === "leader" ? "Partner" : "Partnerka"}
                   </p>
                 </div>
               </div>
