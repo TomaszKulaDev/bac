@@ -34,7 +34,7 @@ import {
   INSTRUCTOR_KEYS,
   INSTRUCTOR_NAMES,
 } from "../data/instructors";
-import { FaInstagram, FaFacebook, FaYoutube } from "react-icons/fa";
+import { FaInstagram, FaFacebook, FaYoutube, FaTiktok } from "react-icons/fa";
 
 interface LessonViewProps {
   lesson: Lesson;
@@ -85,6 +85,7 @@ const InstructorCredits: React.FC<{ instructorName: string }> = ({
                       Instagram: FaInstagram,
                       Facebook: FaFacebook,
                       YouTube: FaYoutube,
+                      TikTok: FaTiktok,
                     }[social.platform];
 
                     return (
@@ -125,6 +126,7 @@ const InstructorCredits: React.FC<{ instructorName: string }> = ({
                     Instagram: FaInstagram,
                     Facebook: FaFacebook,
                     YouTube: FaYoutube,
+                    TikTok: FaTiktok,
                   }[social.platform];
 
                   return (

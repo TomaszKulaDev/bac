@@ -72,7 +72,7 @@ export interface Lesson {
 }
 
 export interface SocialMedia {
-  platform: "Instagram" | "Facebook" | "YouTube";
+  platform: "Instagram" | "Facebook" | "YouTube" | "TikTok";
   url: string;
 }
 

@@ -75,6 +75,10 @@ export const instructors: Record<string, Instructor> = {
             platform: "Facebook",
             url: "https://facebook.com/jan.bachata",
           },
+          {
+            platform: "TikTok",
+            url: "https://tiktok.com/@jan.bachata",
+          },
         ],
       },
       {
@@ -89,6 +93,10 @@ export const instructors: Record<string, Instructor> = {
           {
             platform: "YouTube",
             url: "https://youtube.com/@anna.bachata",
+          },
+          {
+            platform: "TikTok",
+            url: "https://tiktok.com/@anna.bachata",
           },
         ],
       },
@@ -109,6 +117,10 @@ export const instructors: Record<string, Instructor> = {
         platform: "Instagram",
         url: "https://instagram.com/anna.bachata",
       },
+      {
+        platform: "TikTok",
+        url: "https://tiktok.com/@anna.bachata",
+      },
     ],
     rating: 4.95,
     totalStudents: 2000,
@@ -125,6 +137,10 @@ export const instructors: Record<string, Instructor> = {
       {
         platform: "Instagram",
         url: "https://instagram.com/marcin.bachata",
+      },
+      {
+        platform: "TikTok",
+        url: "https://tiktok.com/@marcin.bachata",
       },
     ],
     rating: 5.0,
@@ -147,6 +163,10 @@ export const instructors: Record<string, Instructor> = {
             platform: "Instagram",
             url: "https://instagram.com/demetrio.bachata",
           },
+          {
+            platform: "TikTok",
+            url: "https://tiktok.com/@demetrio.bachata",
+          },
         ],
       },
       {
@@ -157,6 +177,10 @@ export const instructors: Record<string, Instructor> = {
           {
             platform: "Instagram",
             url: "https://instagram.com/nicole.bachata",
+          },
+          {
+            platform: "TikTok",
+            url: "https://tiktok.com/@nicole.bachata",
           },
         ],
       },
@@ -180,6 +204,10 @@ export const instructors: Record<string, Instructor> = {
       {
         platform: "Facebook",
         url: "https://facebook.com/tomasz.kula.dance",
+      },
+      {
+        platform: "TikTok",
+        url: "https://tiktok.com/@tomasz.kula.dance",
       },
     ],
     rating: 4.8,
@@ -206,6 +234,10 @@ export const instructors: Record<string, Instructor> = {
             platform: "Facebook",
             url: "https://www.facebook.com/luisyandreaspainpage",
           },
+          {
+            platform: "TikTok",
+            url: "https://www.tiktok.com/@luisyandreaoficial",
+          },
         ],
       },
       {
@@ -220,6 +252,10 @@ export const instructors: Record<string, Instructor> = {
           {
             platform: "YouTube",
             url: "https://www.youtube.com/@LuisyAndreaOfficial",
+          },
+          {
+            platform: "TikTok",
+            url: "https://www.tiktok.com/@luisyandreaoficial",
           },
         ],
       },
@@ -250,6 +286,10 @@ export const instructors: Record<string, Instructor> = {
             platform: "YouTube",
             url: "https://www.youtube.com/c/GeroyMigl%C4%97",
           },
+          {
+            platform: "TikTok",
+            url: "",
+          },
         ],
       },
       {
@@ -264,6 +304,10 @@ export const instructors: Record<string, Instructor> = {
           {
             platform: "Facebook",
             url: "https://www.facebook.com/profile.php?id=100006735127711",
+          },
+          {
+            platform: "TikTok",
+            url: "https://tiktok.com/@lingvivian7929",
           },
         ],
       },
