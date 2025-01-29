@@ -34,10 +34,119 @@ import {
   INSTRUCTOR_KEYS,
   INSTRUCTOR_NAMES,
 } from "../data/instructors";
+import { FaInstagram, FaFacebook, FaYoutube } from "react-icons/fa";
 
 interface LessonViewProps {
   lesson: Lesson;
 }
+
+const InstructorCredits: React.FC<{ instructorName: string }> = ({
+  instructorName,
+}) => {
+  const instructor = Object.values(instructors).find(
+    (inst) => inst.name === instructorName
+  );
+
+  if (!instructor) return null;
+
+  return (
+    <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+      <h3 className="font-medium text-lg mb-4">{instructor.title}</h3>
+
+      {instructor.bio && (
+        <p className="mb-4 text-sm text-gray-600">{instructor.bio}</p>
+      )}
+
+      {instructor.partners ? (
+        // Wyświetlanie dla par
+        <div className="flex flex-col sm:flex-row gap-6">
+          {instructor.partners.map((partner) => (
+            <div key={partner.name} className="flex-1">
+              <div className="flex items-center gap-4">
+                <Image
+                  src={partner.avatar}
+                  alt={partner.name}
+                  width={64}
+                  height={64}
+                  className="rounded-full"
+                />
+                <div>
+                  <h4 className="font-medium">{partner.name}</h4>
+                  <p className="text-sm text-gray-600">
+                    {partner.role === "leader" ? "Prowadzący" : "Partnerka"}
+                  </p>
+                </div>
+              </div>
+
+              {partner.socialMedia && (
+                <div className="mt-3 flex gap-4">
+                  {partner.socialMedia.map((social) => {
+                    const Icon = {
+                      Instagram: FaInstagram,
+                      Facebook: FaFacebook,
+                      YouTube: FaYoutube,
+                    }[social.platform];
+
+                    return (
+                      <a
+                        key={social.platform}
+                        href={social.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-gray-600 hover:text-amber-500 transition-colors"
+                      >
+                        {Icon && <Icon className="w-5 h-5" />}
+                      </a>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      ) : (
+        // Wyświetlanie dla pojedynczego instruktora
+        <div className="flex items-center gap-4">
+          {instructor.avatar && (
+            <Image
+              src={instructor.avatar}
+              alt={instructor.name}
+              width={64}
+              height={64}
+              className="rounded-full"
+            />
+          )}
+          <div>
+            <h4 className="font-medium">{instructor.name}</h4>
+            {instructor.socialMedia && (
+              <div className="mt-3 flex gap-4">
+                {instructor.socialMedia.map((social) => {
+                  const Icon = {
+                    Instagram: FaInstagram,
+                    Facebook: FaFacebook,
+                    YouTube: FaYoutube,
+                  }[social.platform];
+
+                  return (
+                    <a
+                      key={social.platform}
+                      href={social.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-600 hover:text-amber-500 transition-colors"
+                    >
+                      {Icon && <Icon className="w-5 h-5" />}
+                    </a>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
 
 export const LessonView: React.FC<LessonViewProps> = ({ lesson }) => {
   const [selectedVideo, setSelectedVideo] = useState(
@@ -193,25 +302,31 @@ export const LessonView: React.FC<LessonViewProps> = ({ lesson }) => {
 
         {/* Odtwarzacz tylko jeśli jest wideo */}
         {hasValidVideo && selectedVideo && adaptedVideo && (
-          <div className="flex flex-col gap-4">
-            <div className="aspect-video bg-black rounded-lg overflow-hidden">
-              <VideoPlayer
-                videos={[adaptedVideo]}
-                speed={speed}
-                mirror={mirror}
-                loopSection={loopSection}
-                onProgress={handleProgress}
-                onDurationChange={handleDurationChange}
-                onLoopSectionChange={setLoopSection}
-              />
+          <>
+            <div className="flex flex-col gap-4">
+              <div className="aspect-video bg-black rounded-lg overflow-hidden">
+                <VideoPlayer
+                  videos={[adaptedVideo]}
+                  speed={speed}
+                  mirror={mirror}
+                  loopSection={loopSection}
+                  onProgress={handleProgress}
+                  onDurationChange={handleDurationChange}
+                  onLoopSectionChange={setLoopSection}
+                />
+              </div>
+
+              {/* Kontrolki */}
+              <div className="flex flex-wrap gap-4">
+                <SpeedControl value={speed} onChange={handleSpeedChange} />
+                <MirrorToggle value={mirror} onChange={handleMirrorChange} />
+              </div>
             </div>
 
-            {/* Kontrolki */}
-            <div className="flex flex-wrap gap-4">
-              <SpeedControl value={speed} onChange={handleSpeedChange} />
-              <MirrorToggle value={mirror} onChange={handleMirrorChange} />
-            </div>
-          </div>
+            {selectedVideo && (
+              <InstructorCredits instructorName={selectedVideo.instructor} />
+            )}
+          </>
         )}
 
         {/* Szczegóły lekcji tylko w określonych przypadkach */}

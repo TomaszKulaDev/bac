@@ -10,7 +10,7 @@ import { Instructor } from "../types";
 
 export const INSTRUCTOR_KEYS = {
   JAN_KOWALSKI_ANNA_WISNIEWSKA: "jan-kowalski-and-anna-wisniewska",
-  ANNA_WISNIEWSKA: "anna-wisniewska",
+  ANNA_WISNIEWSKA: "anna-wisniewska", 
   MARCIN_NOWAK: "marcin-nowak",
   DEMETRIO_NICOLE: "demetrio-nicole",
   TOMASZ_KULA: "tomasz-kula",
@@ -27,8 +27,7 @@ export const INSTRUCTOR_KEYS = {
  * Format: Pełne imiona i nazwiska, ze znakami specjalnymi
  */
 export const INSTRUCTOR_NAMES = {
-  [INSTRUCTOR_KEYS.JAN_KOWALSKI_ANNA_WISNIEWSKA]:
-    "Jan Kowalski & Anna Wiśniewska",
+  [INSTRUCTOR_KEYS.JAN_KOWALSKI_ANNA_WISNIEWSKA]: "Jan Kowalski & Anna Wiśniewska",
   [INSTRUCTOR_KEYS.ANNA_WISNIEWSKA]: "Anna Wiśniewska",
   [INSTRUCTOR_KEYS.MARCIN_NOWAK]: "Marcin Nowak",
   [INSTRUCTOR_KEYS.DEMETRIO_NICOLE]: "Demetrio Rosario & Nicole Thompson",
@@ -39,145 +38,228 @@ export const INSTRUCTOR_NAMES = {
 
 /**
  * Główny obiekt zawierający pełne dane instruktorów.
- * Każdy instruktor ma:
+ * Każdy instruktor ma ujednoliconą strukturę z następującymi polami:
  * - id: klucz techniczny z INSTRUCTOR_KEYS
  * - name: nazwa wyświetlana z INSTRUCTOR_NAMES
- * - avatar: ścieżka do zdjęcia profilowego
+ * - title: tytuł/rola instruktora
  * - bio: krótki opis
  * - specialization: specjalizacje taneczne
- * - rating: ocena (1-5)
- * - totalStudents: liczba uczniów
+ * - partners lub avatar: zdjęcie pojedyncze lub dane partnerów
+ * - socialMedia: linki do mediów społecznościowych (opcjonalne)
+ * - rating: ocena (1-5) (opcjonalne)
+ * - totalStudents: liczba uczniów (opcjonalne)
  */
 export const instructors: Record<string, Instructor> = {
   [INSTRUCTOR_KEYS.JAN_KOWALSKI_ANNA_WISNIEWSKA]: {
     id: INSTRUCTOR_KEYS.JAN_KOWALSKI_ANNA_WISNIEWSKA,
     name: INSTRUCTOR_NAMES[INSTRUCTOR_KEYS.JAN_KOWALSKI_ANNA_WISNIEWSKA],
     title: "Certyfikowani instruktorzy bachaty",
-    avatar: "/images/instructors/jan-anna.jpg",
     bio: "Doświadczeni instruktorzy z ponad 10-letnim stażem w nauczaniu bachaty.",
-    specialization: [
-      "Bachata Dominicana",
-      "Bachata Moderna",
-      "Bachata Sensual",
+    specialization: ["Bachata Dominicana", "Bachata Moderna", "Bachata Sensual"],
+    partners: [
+      {
+        name: "Jan Kowalski",
+        role: "leader",
+        avatar: "/images/instructors/jan-kowalski.jpg",
+        socialMedia: [
+          {
+            platform: "Instagram",
+            url: "https://instagram.com/jan.bachata"
+          },
+          {
+            platform: "Facebook",
+            url: "https://facebook.com/jan.bachata"
+          }
+        ]
+      },
+      {
+        name: "Anna Wiśniewska",
+        role: "follower", 
+        avatar: "/images/instructors/anna-wisniewska.jpg",
+        socialMedia: [
+          {
+            platform: "Instagram",
+            url: "https://instagram.com/anna.bachata"
+          },
+          {
+            platform: "YouTube",
+            url: "https://youtube.com/@anna.bachata"
+          }
+        ]
+      }
     ],
     rating: 4.9,
-    totalStudents: 1200,
-    socialMedia: [
-      {
-        platform: "Instagram",
-        url: "https://instagram.com/jan.anna.bachata",
-      },
-      {
-        platform: "Facebook",
-        url: "https://facebook.com/jan.anna.bachata",
-      },
-      {
-        platform: "YouTube",
-        url: "https://youtube.com/@jan.anna.bachata",
-      },
-    ],
+    totalStudents: 1200
   },
+
   [INSTRUCTOR_KEYS.ANNA_WISNIEWSKA]: {
     id: INSTRUCTOR_KEYS.ANNA_WISNIEWSKA,
     name: INSTRUCTOR_NAMES[INSTRUCTOR_KEYS.ANNA_WISNIEWSKA],
     title: "Instruktor bachaty",
-    avatar: "/images/instructors/anna-wisniewska.jpg",
     bio: "Mistrzyni Polski w bachacie, instruktorka od 8 lat",
-    specialization: ["bachata", "sensual"],
+    specialization: ["Bachata Sensual", "Bachata Moderna"],
+    avatar: "/images/instructors/anna-wisniewska.jpg",
+    socialMedia: [
+      {
+        platform: "Instagram",
+        url: "https://instagram.com/anna.bachata"
+      }
+    ],
     rating: 4.95,
-    totalStudents: 2000,
+    totalStudents: 2000
   },
+
   [INSTRUCTOR_KEYS.MARCIN_NOWAK]: {
     id: INSTRUCTOR_KEYS.MARCIN_NOWAK,
     name: INSTRUCTOR_NAMES[INSTRUCTOR_KEYS.MARCIN_NOWAK],
     title: "Instruktor bachaty i salsy",
-    avatar: "/images/instructors/marcin-nowak.jpg",
     bio: "Międzynarodowy instruktor bachaty, zwycięzca World Bachata Masters 2022",
-    specialization: ["bachata", "moderna", "fusion"],
+    specialization: ["Bachata Moderna", "Bachata Fusion", "Salsa"],
+    avatar: "/images/instructors/marcin-nowak.jpg",
+    socialMedia: [
+      {
+        platform: "Instagram",
+        url: "https://instagram.com/marcin.bachata"
+      }
+    ],
     rating: 5.0,
-    totalStudents: 3000,
+    totalStudents: 3000
   },
+
   [INSTRUCTOR_KEYS.DEMETRIO_NICOLE]: {
     id: INSTRUCTOR_KEYS.DEMETRIO_NICOLE,
     name: INSTRUCTOR_NAMES[INSTRUCTOR_KEYS.DEMETRIO_NICOLE],
     title: "Międzynarodowi instruktorzy bachaty",
-    avatar: `/images/instructors/${INSTRUCTOR_KEYS.DEMETRIO_NICOLE}.jpg`,
     bio: "Międzynarodowi instruktorzy bachaty, zwycięzcy World Bachata Masters 2023",
-    specialization: ["bachata", "moderna", "sensual"],
+    specialization: ["Bachata Moderna", "Bachata Sensual"],
+    partners: [
+      {
+        name: "Demetrio Rosario",
+        role: "leader",
+        avatar: "/images/instructors/demetrio.jpg",
+        socialMedia: [
+          {
+            platform: "Instagram",
+            url: "https://instagram.com/demetrio.bachata"
+          }
+        ]
+      },
+      {
+        name: "Nicole Thompson",
+        role: "follower",
+        avatar: "/images/instructors/nicole.jpg",
+        socialMedia: [
+          {
+            platform: "Instagram",
+            url: "https://instagram.com/nicole.bachata"
+          }
+        ]
+      }
+    ],
     rating: 5.0,
-    totalStudents: 5000,
+    totalStudents: 5000
   },
+
   [INSTRUCTOR_KEYS.TOMASZ_KULA]: {
     id: INSTRUCTOR_KEYS.TOMASZ_KULA,
     name: INSTRUCTOR_NAMES[INSTRUCTOR_KEYS.TOMASZ_KULA],
-    title:
-      "Słyszeliście o facecie, który nauczył się bachaty z YouTube'a? 😂 Cóż pokaże Ci na co zwrocic uwage. Tzn nie ja bo nie jestem instruktorem, ale wiem kto umie i robi to dobrze. 😎 ",
-    avatar: "/images/instructors/tomasz-kula.jpg",
+    title: "Instruktor tańca towarzyskiego i bachaty",
     bio: "Doświadczony instruktor z 15-letnim stażem w nauczaniu tańca",
-    specialization: ["bachata", "taniec towarzyski", "moderna"],
-    rating: 4.8,
-    totalStudents: 1800,
+    specialization: ["Bachata Moderna", "Taniec Towarzyski"],
+    avatar: "/images/instructors/tomasz-kula.jpg",
     socialMedia: [
       {
         platform: "Instagram",
-        url: "https://instagram.com/tomasz.kula.dance",
+        url: "https://instagram.com/tomasz.kula.dance"
       },
       {
         platform: "Facebook",
-        url: "https://facebook.com/tomasz.kula.dance",
-      },
+        url: "https://facebook.com/tomasz.kula.dance"
+      }
     ],
+    rating: 4.8,
+    totalStudents: 1800
   },
+
   [INSTRUCTOR_KEYS.LUIS_ANDREA]: {
     id: INSTRUCTOR_KEYS.LUIS_ANDREA,
     name: INSTRUCTOR_NAMES[INSTRUCTOR_KEYS.LUIS_ANDREA],
     title: "Międzynarodowi instruktorzy bachaty z Dominikany",
-    avatar: `/images/instructors/${INSTRUCTOR_KEYS.LUIS_ANDREA}.jpg`,
-    bio: "Pochodzący z Dominikany duet instruktorski z ponad 15-letnim doświadczeniem w nauczaniu bachaty na całym świecie",
-    specialization: ["Bachata Dominicana", "Bachata Moderna", "Bachata Fusion"],
-    rating: 5.0,
-    totalStudents: 8000,
-    socialMedia: [
+    bio: "Pochodzący z Dominikany duet instruktorski z ponad 15-letnim doświadczeniem",
+    specialization: ["Bachata Dominicana", "Bachata Moderna"],
+    partners: [
       {
-        platform: "Instagram",
-        url: "https://instagram.com/luis.andrea.bachata",
+        name: "Luis Garcia",
+        role: "leader",
+        avatar: "/images/instructors/luis-garcia.jpg",
+        socialMedia: [
+          {
+            platform: "Instagram",
+            url: "https://instagram.com/luis.bachata"
+          },
+          {
+            platform: "Facebook",
+            url: "https://facebook.com/luis.bachata"
+          }
+        ]
       },
       {
-        platform: "Facebook",
-        url: "https://facebook.com/luis.andrea.bachata",
-      },
-      {
-        platform: "YouTube",
-        url: "https://youtube.com/@luis.andrea.bachata",
-      },
-    ],
+        name: "Andrea Cobos",
+        role: "follower",
+        avatar: "/images/instructors/andrea-cobos.jpg",
+        socialMedia: [
+          {
+            platform: "Instagram",
+            url: "https://instagram.com/andrea.bachata"
+          },
+          {
+            platform: "YouTube",
+            url: "https://youtube.com/@andrea.bachata"
+          }
+        ]
+      }
+    ]
   },
+
   [INSTRUCTOR_KEYS.GERO_VIVIAN]: {
     id: INSTRUCTOR_KEYS.GERO_VIVIAN,
     name: INSTRUCTOR_NAMES[INSTRUCTOR_KEYS.GERO_VIVIAN],
     title: "Międzynarodowi instruktorzy bachaty sensual",
-    avatar: `/images/instructors/${INSTRUCTOR_KEYS.GERO_VIVIAN}.jpg`,
     bio: "Uznany duet instruktorski specjalizujący się w bachacie sensual, twórcy unikalnego stylu łączącego elementy tańca współczesnego z bachatą",
-    specialization: [
-      "Bachata Sensual",
-      "Bachata Moderna",
-      "Contemporary Fusion",
+    specialization: ["Bachata Sensual", "Bachata Moderna", "Contemporary Fusion"],
+    partners: [
+      {
+        name: "Gero Rangel",
+        role: "leader",
+        avatar: "/images/instructors/gero.jpg",
+        socialMedia: [
+          {
+            platform: "Instagram",
+            url: "https://instagram.com/gero.bachata"
+          },
+          {
+            platform: "YouTube",
+            url: "https://youtube.com/@gero.bachata"
+          }
+        ]
+      },
+      {
+        name: "Ling Vivian",
+        role: "follower",
+        avatar: "/images/instructors/vivian.jpg",
+        socialMedia: [
+          {
+            platform: "Instagram",
+            url: "https://instagram.com/vivian.bachata"
+          },
+          {
+            platform: "Facebook",
+            url: "https://facebook.com/vivian.bachata"
+          }
+        ]
+      }
     ],
     rating: 5.0,
-    totalStudents: 10000,
-    socialMedia: [
-      {
-        platform: "Instagram",
-        url: "https://instagram.com/gero.vivian",
-      },
-      {
-        platform: "Facebook",
-        url: "https://facebook.com/gero.vivian.bachata",
-      },
-      {
-        platform: "YouTube",
-        url: "https://youtube.com/@gero.vivian",
-      },
-    ],
-  },
+    totalStudents: 10000
+  }
 };

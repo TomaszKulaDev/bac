@@ -51,7 +51,7 @@ export const beginnerCourse: Course = {
           id: "lekcja-1-1-krok-podstawowy",
           title: "Krok podstawowy bez pary",
           description:
-            "Ważne informacje o kroku podstawowym. Jak widzisz krok na tym poziomie polega na pojsciu do boku w lewo i w prawo uzgledniając tap. Masz go umieć wykonywać w obu kierunkach nie myślac o nim. Następnie masz go umieć wykonać do muzyki z rożnym tempem.",
+            "",
           duration: "30min",
           thumbnail: "/images/lessons/rhythm.jpg",
           type: "video",

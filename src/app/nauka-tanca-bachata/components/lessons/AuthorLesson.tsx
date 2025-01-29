@@ -3,47 +3,46 @@ import Image from "next/image";
 import { INSTRUCTOR_KEYS, instructors } from "../../data/instructors";
 
 export const AuthorLesson = () => {
-  const mainInstructor = instructors[INSTRUCTOR_KEYS.TOMASZ_KULA];
+  // const mainInstructor = instructors[INSTRUCTOR_KEYS.TOMASZ_KULA];
 
   const content = {
     sections: [
       {
-        title: "Przeczytaj zanim zaczniesz",
+        title: "Zanim zaczniesz",
         content: `
 ### O czym jest ten kurs?
+Kurs ten stanowi kompleksowe wprowadzenie do podstaw bachaty sensual. Przeanalizujemy kluczowe elementy ruchu, które musisz znać i opanować.
 
-Ten kurs to kompleksowe wprowadzenie do "podstaw". Przejdziemy przez rzeczy konieczne pod kątem ruchu ktore musisz znać i umieć.
- 
-Nie bedziemy sie skupiac na rzeczach które nie są konieczne od tego bedziesz miał miała instruktora na zajeciach stacjonarnych.
+
+Nie będziemy koncentrować się na aspektach, które nie są niezbędne – tym zajmie się Twój instruktor, instruktorka podczas zajęć stacjonarnych.
 
 ### Dla kogo jest ten kurs?
 
 Ten kurs jest idealny dla:
 
-- Osób, które chcą nauczyć się bachaty od podstaw
-- Osób, które znają podstawowy angielski
-- Osób, które wcześniej nie miały styczności z bachatą
-- Dla osób, które są otwarte mentalnie na naukę oraz interakcje z druga osobą "Kobieta" albo "Mężczyzna".
-- Dla osób, które mają w domu duże lub średniej wielkości lustro "nie jest to konieczne ale pomaga".
+- Osób, które pragną nauczyć się bachaty od podstaw.
+- Osób, które znają podstawowy angielski.
+- Osób, które wcześniej nie miały styczności z bachatą.
+- Osób otwartych na naukę oraz interakcje z partnerem – zarówno kobietą, jak i mężczyzną.
+- Osób, które mają w domu duże lub średniej wielkości lustro (to nie jest konieczne, ale zdecydowanie ułatwia naukę).
 
 
 ### Dla kogo ten kurs nie jest?
 
-Ten kurs może nie być odpowiedni dla:
-- Dla żon które chcą zmusić swojego męża do zrobienia show na swoim weselu
-- Dla Kobiet które tanczą Salse i dbają o swoje granice
-- Osób oczekujących zaawansowanych figur i technik
-- Osob mentalnie oraz emocjonalnie zamkniętych, kursy tancą towarzyskiego są w każdym mieście i też są super przygodą.
+Kurs może nie być odpowiedni dla:
+
+- Żon, które chcą zmusić swoich mężów do występu na weselu.
+- Osób oczekujących zaawansowanych figur i technik.
+
 
 ### Jak bedziemy cwiczyć?
 
-Kurs będzie wielojęzyczny, prowadzony przez różnych instruktorów. Celem jest pokazać Ci co musisz umieć żeby jak najszybciej zacząć tanczyć i ewentualnie zacząć jeździć na zajecia stacjonarne albo imprezy i czuć sie na nich swobodnie.
-
+Kurs będzie wielojęzyczny, prowadzony przez różnych instruktorów. Naszym celem jest pokazanie Ci, co musisz umieć, aby jak najszybciej zacząć tańczyć i ewentualnie uczestniczyć w zajęciach stacjonarnych lub imprezach, czując się na nich swobodnie.
 
 ### Doświadczenie instruktorów
 
-W sieci są tysiące filmów nagranych przez różnych instruktorów, które mogą Ci pomóc i znacząco przyśpieszyć naukę. 
-I na nich sie właśnie skupimy tak żeby zajęcia stacjonarne były uzupełnieniem a nie zaskoczeniem.
+W sieci dostępne są tysiące filmów nagranych przez różnych instruktorów, które mogą znacząco przyspieszyć Twoją naukę.
+Skupimy się na nich, aby zajęcia stacjonarne były uzupełnieniem, a nie zaskoczeniem.
 
 Powodzenia!
 `,
@@ -54,7 +53,7 @@ Powodzenia!
   return (
     <div className="space-y-6">
       {/* Sekcja ze zdjęciem i podstawowymi informacjami */}
-      <div className="bg-white rounded-lg shadow p-6">
+      {/* <div className="bg-white rounded-lg shadow p-6">
         <div className="flex flex-col md:flex-row gap-6 items-center md:items-start">
           <div className="w-48 h-48 relative rounded-lg overflow-hidden">
             <Image
@@ -84,7 +83,7 @@ Powodzenia!
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Sekcje z treścią */}
       {content.sections.map((section, index) => (

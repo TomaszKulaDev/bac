@@ -72,20 +72,27 @@ export interface Lesson {
 }
 
 export interface SocialMedia {
-  platform: string;
+  platform: "Instagram" | "Facebook" | "YouTube";
   url: string;
-  icon?: string;
+}
+
+export interface DancePartner {
+  name: string;
+  role: "leader" | "follower";
+  avatar: string;
+  socialMedia?: SocialMedia[];
 }
 
 export interface Instructor {
   id: string;
   name: string;
   title: string;
-  avatar: string;
-  bio: string;
+  bio?: string;
+  avatar?: string;
+  partners?: DancePartner[];
   specialization: string[];
-  rating: number;
-  totalStudents: number;
+  rating?: number;
+  totalStudents?: number;
   socialMedia?: SocialMedia[];
 }
 
