@@ -150,8 +150,13 @@ export const instructors: Record<string, Instructor> = {
   [INSTRUCTOR_KEYS.DEMETRIO_NICOLE]: {
     id: INSTRUCTOR_KEYS.DEMETRIO_NICOLE,
     name: INSTRUCTOR_NAMES[INSTRUCTOR_KEYS.DEMETRIO_NICOLE],
-    title: "Międzynarodowi instruktorzy bachaty",
-    bio: "Międzynarodowi instruktorzy bachaty, zwycięzcy World Bachata Masters 2023",
+    title: "Bachata Dance Academy",
+    bio:
+      "Bachata Dance Academy specializes in teaching Bachata Dancing to everyone and anyone interested in this amazing form of dance.\n\n" +
+      "Want to learn to dance Bachata? We have free Bachata Tutorials here on Youtube, Online Courses available at www.BachataDanceAcademyOnline.com and we also teach in person group classes at Stevens Steakhouse, located in Commerce, CA.\n\n" +
+      "Our Bachata Video Tutorials feature topics such as Beginner Bachata Partnerwork, Intermediate Bachata Partnerwork, Dominican Bachata & Footwork, Bachata Musicality & Timing, Bachata Body Movement & Isolations, as well as Ladies Bachata Styling.\n\n" +
+      "If you are interested in learning, improving, and more cool Bachata Video Tutorials, make sure to subscribe and follow us! :)\n\n" +
+      "Our experienced and friendly instructors love to teach and provide students with the best dancing experience as possible. Follow us online or come join us if you live in the Los Angeles Area! :)",
     specialization: ["Bachata Moderna", "Bachata Sensual"],
     partners: [
       {
@@ -161,11 +166,23 @@ export const instructors: Record<string, Instructor> = {
         socialMedia: [
           {
             platform: "Instagram",
-            url: "https://instagram.com/demetrio.bachata",
+            url: "https://www.instagram.com/djsoonaasty",
+          },
+          {
+            platform: "Facebook",
+            url: "https://www.facebook.com/demetrio.rosario/",
           },
           {
             platform: "TikTok",
-            url: "https://tiktok.com/@demetrio.bachata",
+            url: "https://www.tiktok.com/@demetriorosario",
+          },
+          {
+            platform: "Website",
+            url: "https://bachatadanceacademyonline.com",
+          },
+          {
+            platform: "Website",
+            url: "https://www.bachatadanceacademy.com",
           },
         ],
       },
@@ -217,8 +234,8 @@ export const instructors: Record<string, Instructor> = {
   [INSTRUCTOR_KEYS.LUIS_ANDREA]: {
     id: INSTRUCTOR_KEYS.LUIS_ANDREA,
     name: INSTRUCTOR_NAMES[INSTRUCTOR_KEYS.LUIS_ANDREA],
-    title: "Międzynarodowi instruktorzy bachaty z Dominikany",
-    bio: "Pochodzący z Dominikany duet instruktorski z ponad 15-letnim doświadczeniem",
+    title: "",
+    bio: "We are Bachata teachers because we cherish the freedom and travel it allows. And we teach hundreds of people who share this passion. Luis y Andrea are international bachata artists recognized worldwide. Performance and teaching in 42 countries. ",
     specialization: ["Bachata Dominicana", "Bachata Moderna"],
     partners: [
       {
@@ -238,6 +255,10 @@ export const instructors: Record<string, Instructor> = {
             platform: "TikTok",
             url: "https://www.tiktok.com/@luisyandreaoficial",
           },
+          {
+            platform: "Website",
+            url: "https://www.dancesurfing.com/",
+          },
         ],
       },
       {
@@ -256,6 +277,10 @@ export const instructors: Record<string, Instructor> = {
           {
             platform: "TikTok",
             url: "https://www.tiktok.com/@luisyandreaoficial",
+          },
+          {
+            platform: "Website",
+            url: "https://www.dancesurfing.com/",
           },
         ],
       },
@@ -289,6 +314,10 @@ export const instructors: Record<string, Instructor> = {
           {
             platform: "TikTok",
             url: "https://www.tiktok.com/@gero_dance",
+          },
+          {
+            platform: "Website",
+            url: "https://www.geroymigle.com/",
           },
         ],
       },
