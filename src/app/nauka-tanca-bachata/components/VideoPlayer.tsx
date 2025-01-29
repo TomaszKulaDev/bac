@@ -253,60 +253,6 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
     );
   };
 
-  // Dodajmy komponent do obsługi avatara z fallbackiem
-  const InstructorAvatar: React.FC<{
-    instructor: string;
-    size?: number;
-    showName?: boolean;
-    isVisible?: boolean;
-  }> = ({ instructor, size = 32, showName = false, isVisible = true }) => {
-    const [imageError, setImageError] = useState(false);
-
-    // Dodajemy sprawdzenie czy instructor istnieje
-    if (!instructor || imageError) {
-      return (
-        <div
-          className={`flex items-center justify-center rounded-full bg-amber-500 border-2 border-white`}
-          style={{ width: size, height: size }}
-        >
-          <span className="text-white font-medium text-sm">
-            {instructor
-              ? instructor
-                  .split(" ")
-                  .map((n) => n[0])
-                  .join("")
-              : "??"}
-          </span>
-        </div>
-      );
-    }
-
-    const getInstructorImagePath = (instructorName: string) => {
-      // Znajdź klucz instruktora
-      const instructorKey = Object.entries(INSTRUCTOR_NAMES).find(
-        ([_, name]) => name === instructorName
-      )?.[0];
-
-      return `/images/instructors/${
-        instructorKey || instructorName.toLowerCase()
-      }.jpg`;
-    };
-
-    return (
-      <div className="flex items-center gap-2">
-        <Image
-          src={getInstructorImagePath(instructor)}
-          alt=""
-          width={size}
-          height={size}
-          className="rounded-full border-2 border-white"
-          onError={() => setImageError(true)}
-        />
-        {showName && <div className="text-white font-medium">{instructor}</div>}
-      </div>
-    );
-  };
-
   // Renderowanie odpowiedniego playera
   if (!videos?.length || !currentVideo) {
     return (
@@ -352,26 +298,6 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
 
       {/* Centralny przycisk play/pause */}
       {renderPlayButton()}
-
-      {/* Informacja o aktualnym instruktorze */}
-      {currentVideo && (
-        <div
-          className={`
-            absolute top-6 left-6
-            transition-opacity duration-300
-            ${isControlsVisible ? "opacity-100" : "opacity-0"}
-            ${isFullscreen ? "pointer-events-none" : ""}
-          `}
-          style={{ pointerEvents: isControlsVisible ? "auto" : "none" }}
-        >
-          <InstructorAvatar
-            instructor={currentVideo.instructor}
-            size={64}
-            showName={true}
-            isVisible={true}
-          />
-        </div>
-      )}
 
       {/* Kontrolki z animowaną przezroczystością */}
       <div
