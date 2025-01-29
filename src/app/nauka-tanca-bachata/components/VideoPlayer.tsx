@@ -282,24 +282,14 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
     }
 
     const getInstructorImagePath = (instructorName: string) => {
-      return `/images/instructors/${instructorName
-        .toLowerCase()
-        .replace(/[&]/g, "and")
-        .replace(/\s+/g, "-")
-        .replace(/[ąćęłńóśźż]/g, (match) => {
-          const chars: { [key: string]: string } = {
-            ą: "a",
-            ć: "c",
-            ę: "e",
-            ł: "l",
-            ń: "n",
-            ó: "o",
-            ś: "s",
-            ź: "z",
-            ż: "z",
-          };
-          return chars[match] || match;
-        })}.jpg`;
+      // Znajdź klucz instruktora
+      const instructorKey = Object.entries(INSTRUCTOR_NAMES).find(
+        ([_, name]) => name === instructorName
+      )?.[0];
+
+      return `/images/instructors/${
+        instructorKey || instructorName.toLowerCase()
+      }.jpg`;
     };
 
     return (

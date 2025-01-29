@@ -29,6 +29,11 @@ import {
 import { TextContent } from "./TextContent";
 // import { HistoryLesson } from "./lessons/HistoryLesson";
 import { AuthorLesson } from "./lessons/AuthorLesson";
+import {
+  instructors,
+  INSTRUCTOR_KEYS,
+  INSTRUCTOR_NAMES,
+} from "../data/instructors";
 
 interface LessonViewProps {
   lesson: Lesson;
@@ -75,24 +80,16 @@ export const LessonView: React.FC<LessonViewProps> = ({ lesson }) => {
     const [imageError, setImageError] = useState(false);
 
     const getInstructorImagePath = (instructorName: string) => {
-      return `/images/instructors/${instructorName
-        .toLowerCase()
-        .replace(/[&]/g, "and") // Zamień & na and
-        .replace(/\s+/g, "-") // Zamień spacje na myślniki
-        .replace(/[ąćęłńóśźż]/g, (match) => {
-          const chars: { [key: string]: string } = {
-            ą: "a",
-            ć: "c",
-            ę: "e",
-            ł: "l",
-            ń: "n",
-            ó: "o",
-            ś: "s",
-            ź: "z",
-            ż: "z",
-          };
-          return chars[match] || match;
-        })}.jpg`;
+      const instructorKey = Object.entries(INSTRUCTOR_NAMES).find(
+        ([_, name]) => name === instructorName
+      )?.[0];
+
+      if (!instructorKey) {
+        setImageError(true);
+        return "";
+      }
+
+      return `/images/instructors/${instructorKey}.jpg`;
     };
 
     if (imageError) {

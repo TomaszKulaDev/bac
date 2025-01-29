@@ -70,15 +70,23 @@ export const beginnerCourse: Course = {
                 id: "v1-rytm-instagram",
                 title: "Rytm bachaty - demonstracja",
                 description: "Praktyczna demonstracja rytmu w bachacie",
-                videoUrl: "",
+                videoUrl:
+                  "https://res.cloudinary.com/dgifdcgul/video/upload/v1738144243/1.Bachata_Beginner_Basic_Steps_Tutorial_-_Luis_Andrea_xj9do4.mp4",
+                projectNameOfficial: "Dance Surfing Academy",
+                instructor: INSTRUCTOR_NAMES[INSTRUCTOR_KEYS.LUIS_ANDREA],
+              },
+              {
+                id: "v2-rytm-instagram",
+                title: "Rytm bachaty - demonstracja",
+                description: "Praktyczna demonstracja rytmu w bachacie",
+                videoUrl:
+                  "https://res.cloudinary.com/dgifdcgul/video/upload/v1738144745/1.Bachata_Beginner_Basic_Steps_Tutorial_-_Gero_Vivian_nviv5b.mp4",
                 projectNameOfficial: "LA Palace Studio",
-                instructor:
-                  INSTRUCTOR_NAMES[
-                    INSTRUCTOR_KEYS.JAN_KOWALSKI_ANNA_WISNIEWSKA
-                  ],
+                instructor: INSTRUCTOR_NAMES[INSTRUCTOR_KEYS.GERO_VIVIAN],
               },
             ],
           },
+
           isCompleted: false,
         },
         {

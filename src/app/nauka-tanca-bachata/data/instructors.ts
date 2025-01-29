@@ -12,8 +12,10 @@ export const INSTRUCTOR_KEYS = {
   JAN_KOWALSKI_ANNA_WISNIEWSKA: "jan-kowalski-and-anna-wisniewska",
   ANNA_WISNIEWSKA: "anna-wisniewska",
   MARCIN_NOWAK: "marcin-nowak",
-  DEMETRIO_NICOLE: "demetrio-and-nicole",
+  DEMETRIO_NICOLE: "demetrio-nicole",
   TOMASZ_KULA: "tomasz-kula",
+  LUIS_ANDREA: "luis-andrea",
+  GERO_VIVIAN: "gero-vivian",
 } as const;
 
 /**
@@ -31,6 +33,8 @@ export const INSTRUCTOR_NAMES = {
   [INSTRUCTOR_KEYS.MARCIN_NOWAK]: "Marcin Nowak",
   [INSTRUCTOR_KEYS.DEMETRIO_NICOLE]: "Demetrio Rosario & Nicole Thompson",
   [INSTRUCTOR_KEYS.TOMASZ_KULA]: "Jan Kowalski",
+  [INSTRUCTOR_KEYS.LUIS_ANDREA]: "Luis Garcia & Andrea Cobos",
+  [INSTRUCTOR_KEYS.GERO_VIVIAN]: "Gero Rangel & Ling Vivian",
 } as const;
 
 /**
@@ -121,6 +125,58 @@ export const instructors: Record<string, Instructor> = {
       {
         platform: "Facebook",
         url: "https://facebook.com/tomasz.kula.dance",
+      },
+    ],
+  },
+  [INSTRUCTOR_KEYS.LUIS_ANDREA]: {
+    id: INSTRUCTOR_KEYS.LUIS_ANDREA,
+    name: INSTRUCTOR_NAMES[INSTRUCTOR_KEYS.LUIS_ANDREA],
+    title: "Międzynarodowi instruktorzy bachaty z Dominikany",
+    avatar: `/images/instructors/${INSTRUCTOR_KEYS.LUIS_ANDREA}.jpg`,
+    bio: "Pochodzący z Dominikany duet instruktorski z ponad 15-letnim doświadczeniem w nauczaniu bachaty na całym świecie",
+    specialization: ["Bachata Dominicana", "Bachata Moderna", "Bachata Fusion"],
+    rating: 5.0,
+    totalStudents: 8000,
+    socialMedia: [
+      {
+        platform: "Instagram",
+        url: "https://instagram.com/luis.andrea.bachata",
+      },
+      {
+        platform: "Facebook",
+        url: "https://facebook.com/luis.andrea.bachata",
+      },
+      {
+        platform: "YouTube",
+        url: "https://youtube.com/@luis.andrea.bachata",
+      },
+    ],
+  },
+  [INSTRUCTOR_KEYS.GERO_VIVIAN]: {
+    id: INSTRUCTOR_KEYS.GERO_VIVIAN,
+    name: INSTRUCTOR_NAMES[INSTRUCTOR_KEYS.GERO_VIVIAN],
+    title: "Międzynarodowi instruktorzy bachaty sensual",
+    avatar: `/images/instructors/${INSTRUCTOR_KEYS.GERO_VIVIAN}.jpg`,
+    bio: "Uznany duet instruktorski specjalizujący się w bachacie sensual, twórcy unikalnego stylu łączącego elementy tańca współczesnego z bachatą",
+    specialization: [
+      "Bachata Sensual",
+      "Bachata Moderna",
+      "Contemporary Fusion",
+    ],
+    rating: 5.0,
+    totalStudents: 10000,
+    socialMedia: [
+      {
+        platform: "Instagram",
+        url: "https://instagram.com/gero.vivian",
+      },
+      {
+        platform: "Facebook",
+        url: "https://facebook.com/gero.vivian.bachata",
+      },
+      {
+        platform: "YouTube",
+        url: "https://youtube.com/@gero.vivian",
       },
     ],
   },
