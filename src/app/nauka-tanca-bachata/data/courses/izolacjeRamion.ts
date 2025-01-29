@@ -6,7 +6,7 @@ export const armsIsolationCourse: Course = {
   title: "Izolacje Ramion w Bachacie",
   description:
     "Zaawansowany kurs techniki izolacji ramion. Naucz się płynnie poruszać ramionami, tworząc eleganckie i zmysłowe ruchy w bachacie.",
-  level: "intermediate",
+  level: "isolations",
   totalDuration: "6 godz",
   instructor: [
     instructors[INSTRUCTOR_KEYS.GERO_VIVIAN],
