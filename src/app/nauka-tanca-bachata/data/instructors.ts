@@ -288,7 +288,7 @@ export const instructors: Record<string, Instructor> = {
           },
           {
             platform: "TikTok",
-            url: "",
+            url: "https://www.tiktok.com/@gero_dance",
           },
         ],
       },
@@ -305,10 +305,10 @@ export const instructors: Record<string, Instructor> = {
             platform: "Facebook",
             url: "https://www.facebook.com/profile.php?id=100006735127711",
           },
-          {
-            platform: "TikTok",
-            url: "https://tiktok.com/@lingvivian7929",
-          },
+          // {
+          //   platform: "TikTok",
+          //   url: "",
+          // },
         ],
       },
     ],
