@@ -12,6 +12,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { mockCourses } from "../data/mockCourse";
 
 interface LessonCardProps {
@@ -31,6 +33,9 @@ interface LessonCardProps {
 }
 
 const LessonCard: React.FC<LessonCardProps> = ({ lesson }) => {
+  const { data: session } = useSession();
+  const router = useRouter();
+
   const getLevelBadgeColor = (level: string) => {
     switch (level) {
       case "beginner":
@@ -65,6 +70,19 @@ const LessonCard: React.FC<LessonCardProps> = ({ lesson }) => {
     }
   };
 
+  const handleLessonClick = (e: React.MouseEvent, lessonId: string) => {
+    e.preventDefault();
+
+    if (!session) {
+      // Jeśli użytkownik nie jest zalogowany, przekieruj do logowania
+      router.push(`/login?callbackUrl=/nauka-tanca-bachata/lekcja/${lessonId}`);
+      return;
+    }
+
+    // Jeśli jest zalogowany, przekieruj do lekcji
+    router.push(`/nauka-tanca-bachata/lekcja/${lessonId}`);
+  };
+
   // Pobieramy pierwszą lekcję z pierwszego rozdziału dla danego kursu
   const getFirstLessonId = (courseId: string) => {
     const course = mockCourses.find((c) => c.id === courseId);
@@ -82,17 +100,18 @@ const LessonCard: React.FC<LessonCardProps> = ({ lesson }) => {
 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden">
-      <Link href={`/nauka-tanca-bachata/lekcja/${firstLessonId}`}>
-        <div className="relative h-96 cursor-pointer transition-opacity hover:opacity-90">
-          <Image
-            src={lesson.thumbnail}
-            alt={lesson.title}
-            fill
-            className="object-cover object-center"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          />
-        </div>
-      </Link>
+      <div
+        onClick={(e) => handleLessonClick(e, firstLessonId)}
+        className="relative h-96 cursor-pointer transition-opacity hover:opacity-90"
+      >
+        <Image
+          src={lesson.thumbnail}
+          alt={lesson.title}
+          fill
+          className="object-cover object-center"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        />
+      </div>
       <div className="p-4">
         <div className="flex items-center gap-2 mb-2">
           <span
@@ -108,12 +127,12 @@ const LessonCard: React.FC<LessonCardProps> = ({ lesson }) => {
           {lesson.title}
         </h3>
         <p className="text-sm text-gray-500 mb-4">{lesson.description}</p>
-        <Link
-          href={`/nauka-tanca-bachata/lekcja/${firstLessonId}`}
+        <button
+          onClick={(e) => handleLessonClick(e, firstLessonId)}
           className="inline-block px-4 py-2 bg-amber-500 text-white rounded-md hover:bg-amber-600 transition-colors"
         >
-          Rozpocznij kurs
-        </Link>
+          {session ? "Rozpocznij kurs" : "Zaloguj się aby rozpocząć"}
+        </button>
       </div>
     </div>
   );
