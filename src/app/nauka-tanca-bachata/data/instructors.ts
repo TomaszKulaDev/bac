@@ -16,6 +16,7 @@ export const INSTRUCTOR_KEYS = {
   TOMASZ_KULA: "tomasz-kula",
   LUIS_ANDREA: "luis-andrea",
   GERO_VIVIAN: "gero-vivian",
+  SO_KAYKA: "so-kayka",
 } as const;
 
 /**
@@ -35,6 +36,7 @@ export const INSTRUCTOR_NAMES = {
   [INSTRUCTOR_KEYS.TOMASZ_KULA]: "Jan Kowalski",
   [INSTRUCTOR_KEYS.LUIS_ANDREA]: "Luis Garcia & Andrea Cobos",
   [INSTRUCTOR_KEYS.GERO_VIVIAN]: "Gero Rangel & Ling Vivian",
+  [INSTRUCTOR_KEYS.SO_KAYKA]: "So Kayka",
 } as const;
 
 /**
@@ -334,14 +336,39 @@ export const instructors: Record<string, Instructor> = {
             platform: "Facebook",
             url: "https://www.facebook.com/profile.php?id=100006735127711",
           },
-          // {
-          //   platform: "TikTok",
-          //   url: "",
-          // },
         ],
       },
     ],
     rating: 5.0,
     totalStudents: 10000,
+  },
+
+  [INSTRUCTOR_KEYS.SO_KAYKA]: {
+    id: INSTRUCTOR_KEYS.SO_KAYKA,
+    name: INSTRUCTOR_NAMES[INSTRUCTOR_KEYS.SO_KAYKA],
+    title: "Międzynarodowa instruktorka bachaty",
+    bio: "Profesjonalna tancerka i instruktorka specjalizująca się w bachacie sensual i izolacjach",
+    specialization: ["Bachata Sensual", "Body Movement", "Isolations"],
+    avatar: "/images/instructors/so-kayka.jpg",
+    socialMedia: [
+      {
+        platform: "Instagram",
+        url: "https://www.instagram.com/kayka.sadowska",
+      },
+      {
+        platform: "YouTube",
+        url: "https://www.youtube.com/@sokayka",
+      },
+      {
+        platform: "Facebook",
+        url: "https://www.facebook.com/imsokayka",
+      },
+      {
+        platform: "Website",
+        url: "https://sokayka.my.canva.site/",
+      },
+    ],
+    rating: 4.9,
+    totalStudents: 2500,
   },
 };

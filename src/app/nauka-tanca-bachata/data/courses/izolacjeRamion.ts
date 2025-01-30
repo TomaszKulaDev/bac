@@ -3,15 +3,12 @@ import { instructors, INSTRUCTOR_KEYS, INSTRUCTOR_NAMES } from "../instructors";
 
 export const armsIsolationCourse: Course = {
   id: "bachataa-izolacjeee-ramion",
-  title: "Izolacje Ramion w Bachacie",
+  title: "Zaawansowane izolacje ramion",
   description:
-    "Zaawansowany kurs techniki izolacji ramion. Naucz się płynnie poruszać ramionami, tworząc eleganckie i zmysłowe ruchy w bachacie.",
+    "Zaawansowany kurs techniki izolacji ramion. Naucz się płynnie poruszać ramionami.",
   level: "isolations",
-  totalDuration: "6 godz",
-  instructor: [
-    instructors[INSTRUCTOR_KEYS.GERO_VIVIAN],
-    instructors[INSTRUCTOR_KEYS.LUIS_ANDREA],
-  ],
+  totalDuration: "18 min",
+  instructor: [instructors[INSTRUCTOR_KEYS.SO_KAYKA]],
 
   chapters: [
     {
@@ -35,62 +32,8 @@ export const armsIsolationCourse: Course = {
                 title: "Podstawy izolacji ramion",
                 description: "Wprowadzenie do technik izolacji ramion",
                 videoUrl: "https://www.youtube.com/watch?v=JMHD8nGwFlc",
-                instructor: INSTRUCTOR_NAMES[INSTRUCTOR_KEYS.GERO_VIVIAN],
-                projectNameOfficial: "Bachata Arms Academy",
-              },
-            ],
-          },
-          isCompleted: false,
-        },
-        {
-          id: "lekcja-1-2-koordynacja",
-          title: "Koordynacja ruchów",
-          description: "Łączenie ruchów obu ramion",
-          duration: "45min",
-          thumbnail: "/images/lessons/arms-isolation/coordination.jpg",
-          type: "video",
-          content: {
-            videos: [
-              {
-                id: "v2-koordynacja",
-                title: "Koordynacja ramion",
-                description: "Ćwiczenia koordynacyjne dla obu ramion",
-                videoUrl:
-                  "https://res.cloudinary.com/dqeemjgmx/video/upload/v1738091142/izolacjeRamion/arms-coordination.mp4",
-                instructor: INSTRUCTOR_NAMES[INSTRUCTOR_KEYS.LUIS_ANDREA],
-                projectNameOfficial: "LA Dance Studio",
-              },
-            ],
-          },
-          isCompleted: false,
-        },
-      ],
-      isCompleted: false,
-    },
-    {
-      id: "rozdzial-2-zaawansowane",
-      title: "Zaawansowane techniki",
-      description: "Złożone ruchy i kombinacje",
-      order: 2,
-      duration: "2 godz",
-      lessons: [
-        {
-          id: "lekcja-2-1-fale",
-          title: "Ruchy falowe ramion",
-          description: "Technika płynnych ruchów falowych",
-          duration: "60min",
-          thumbnail: "/images/lessons/arms-isolation/waves.jpg",
-          type: "video",
-          content: {
-            videos: [
-              {
-                id: "v3-fale",
-                title: "Technika fal ramionami",
-                description: "Zaawansowane ruchy falowe",
-                videoUrl:
-                  "https://res.cloudinary.com/dqeemjgmx/video/upload/v1738091142/izolacjeRamion/arms-waves.mp4",
-                instructor: INSTRUCTOR_NAMES[INSTRUCTOR_KEYS.GERO_VIVIAN],
-                projectNameOfficial: "Bachata Arms Academy",
+                instructor: INSTRUCTOR_NAMES[INSTRUCTOR_KEYS.SO_KAYKA],
+                projectNameOfficial: "Katarzyna Sadowska",
               },
             ],
           },
@@ -102,6 +45,6 @@ export const armsIsolationCourse: Course = {
   ],
   rating: 4.9,
   studentsCount: 280,
-  thumbnail: "/images/courses/arms-isolation.webp",
+  thumbnail: "/images/courses/izolacje-ramion.jpg",
   tags: ["bachata", "izolacje", "ramiona", "technika", "styling"],
 };
