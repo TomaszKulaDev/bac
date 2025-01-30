@@ -7,11 +7,13 @@ export const DANCE_LEVELS = {
 
 export const DANCE_CATEGORIES = {
   BASIC: "Krok podstawowy",
-  SPINS: "Obroty5",
-  FIGURES: "Figury4",
-  STYLING: "Styling3",
-  MUSICALITY: "Muzykalność2",
-  PARTNERWORK: "Praca w parze1",
+  HER_SPINS: "Obroty partnerki",
+  HIS_SPINS: "Obroty partnera",
+  HER_HEAD_ROLL: "Ruch głowy partnerki",
+  HIS_HEAD_ROLL: "Ruch głowy partnera",
+  STYLING: "Styling",
+  MUSICALITY: "Muzykalność",
+  PARTNERWORK: "Praca w parze",
 } as const;
 
 export type DanceLevel = keyof typeof DANCE_LEVELS;
