@@ -12,6 +12,7 @@ import {
 } from "../data/instructors";
 import { InstructorVideo } from "../types";
 import { VolumeControl } from "./controls";
+import { TimelineMenu } from "./TimelineMenu";
 
 interface VideoPlayerProps {
   videos: InstructorVideo[];
@@ -21,6 +22,7 @@ interface VideoPlayerProps {
   onProgress: (progress: number) => void;
   onDurationChange: (duration: number) => void;
   onLoopSectionChange: (section: [number, number] | null) => void;
+  onTimeSelect: (time: number) => void;
 }
 
 export const VideoPlayer: React.FC<VideoPlayerProps> = ({
@@ -31,6 +33,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
   onProgress,
   onDurationChange,
   onLoopSectionChange,
+  onTimeSelect,
 }) => {
   // 1. Refs
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -278,246 +281,307 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
   }
 
   return (
-    <div
-      ref={containerRef}
-      className="relative w-full h-full group"
-      onMouseMove={handleMouseMove}
-      onMouseLeave={() => !isAdjustingLoop && setIsControlsVisible(false)}
-    >
-      <video
-        ref={videoRef}
-        src={currentVideo.videoUrl}
-        className={`w-full h-full ${mirror ? "scale-x-[-1]" : ""}`}
-        onTimeUpdate={handleTimeUpdate}
-        onLoadedMetadata={handleLoadedMetadata}
-        onClick={togglePlay}
-      >
-        <source src={currentVideo.videoUrl} type="video/mp4" />
-        Twoja przeglądarka nie obsługuje odtwarzania wideo.
-      </video>
+    <div className="flex">
+      {/* Timeline Menu */}
+      {videos[0]?.timeMarkers && (
+        <TimelineMenu
+          markers={videos[0].timeMarkers}
+          currentTime={currentTime}
+          onTimeSelect={onTimeSelect}
+        />
+      )}
 
-      {/* Centralny przycisk play/pause */}
-      {renderPlayButton()}
-
-      {/* Kontrolki z animowaną przezroczystością */}
-      <div
-        className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent p-4 transition-opacity duration-300 ${
-          isControlsVisible ? "opacity-100" : "opacity-0"
-        } ${isFullscreen ? "pointer-events-none" : ""}`}
-        style={{ pointerEvents: isControlsVisible ? "auto" : "none" }}
-      >
-        <div className="flex items-center gap-4 text-white">
-          <button
+      {/* Player Container */}
+      <div className="flex-1">
+        <div
+          ref={containerRef}
+          className="relative w-full h-full group"
+          onMouseMove={handleMouseMove}
+          onMouseLeave={() => !isAdjustingLoop && setIsControlsVisible(false)}
+        >
+          <video
+            ref={videoRef}
+            src={currentVideo.videoUrl}
+            className={`w-full h-full ${mirror ? "scale-x-[-1]" : ""}`}
+            onTimeUpdate={handleTimeUpdate}
+            onLoadedMetadata={handleLoadedMetadata}
             onClick={togglePlay}
-            className="hover:text-amber-500 transition-colors"
           >
-            {isPlaying ? (
-              <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
-              </svg>
-            ) : (
-              <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M8 5v14l11-7z" />
-              </svg>
-            )}
-          </button>
+            <source src={currentVideo.videoUrl} type="video/mp4" />
+            Twoja przeglądarka nie obsługuje odtwarzania wideo.
+          </video>
 
-          {/* Dodaj kontrolkę głośności */}
-          <VolumeControl
-            value={volume}
-            onChange={handleVolumeChange}
-            onMute={handleMute}
-            isMuted={isMuted}
-          />
+          {/* Centralny przycisk play/pause */}
+          {renderPlayButton()}
 
-          <div className="flex-1 flex items-center gap-2">
-            <span className="text-sm">{formatTime(currentTime)}</span>
-            <div className="relative flex-1 h-1 group">
-              {/* Znaczniki zakresu zapętlenia */}
-              {loopSection && (
-                <>
-                  {/* Zakres zapętlenia */}
-                  <div
-                    ref={progressBarRef}
-                    className="relative flex-1 h-1 group"
+          {/* Kontrolki z animowaną przezroczystością */}
+          <div
+            className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent p-4 transition-opacity duration-300 ${
+              isControlsVisible ? "opacity-100" : "opacity-0"
+            } ${isFullscreen ? "pointer-events-none" : ""}`}
+            style={{ pointerEvents: isControlsVisible ? "auto" : "none" }}
+          >
+            <div className="flex items-center gap-4 text-white">
+              <button
+                onClick={togglePlay}
+                className="hover:text-amber-500 transition-colors"
+              >
+                {isPlaying ? (
+                  <svg
+                    className="w-8 h-8"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
                   >
-                    <div
-                      className="loop-range"
-                      style={{
-                        left: `${(loopSection[0] / duration) * 100}%`,
-                        width: `${
-                          ((loopSection[1] - loopSection[0]) / duration) * 100
-                        }%`,
-                      }}
-                    />
-                    {/* Znacznik początku - poprawione przeciąganie */}
-                    <div
-                      className="loop-marker"
-                      style={{ left: `${(loopSection[0] / duration) * 100}%` }}
-                      data-time={formatTime(loopSection[0])}
-                      onMouseDown={(e) => {
-                        const handleDrag = (moveEvent: MouseEvent) => {
-                          const rect =
-                            progressBarRef.current?.getBoundingClientRect();
-                          if (rect) {
-                            const x = moveEvent.clientX - rect.left;
-                            const newTime = Math.max(
-                              0,
-                              Math.min(
-                                (x / rect.width) * duration,
-                                loopSection[1]
-                              )
-                            );
-                            onLoopSectionChange([newTime, loopSection[1]]);
-                          }
-                        };
+                    <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
+                  </svg>
+                ) : (
+                  <svg
+                    className="w-8 h-8"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                )}
+              </button>
 
-                        const handleDragEnd = () => {
-                          document.removeEventListener("mousemove", handleDrag);
-                          document.removeEventListener(
-                            "mouseup",
-                            handleDragEnd
-                          );
-                        };
-
-                        document.addEventListener("mousemove", handleDrag);
-                        document.addEventListener("mouseup", handleDragEnd);
-                      }}
-                      onTouchStart={(e) => {
-                        const handleDrag = (moveEvent: TouchEvent) => {
-                          const rect =
-                            progressBarRef.current?.getBoundingClientRect();
-                          if (rect) {
-                            const x = moveEvent.touches[0].clientX - rect.left;
-                            const newTime = Math.max(
-                              0,
-                              Math.min(
-                                (x / rect.width) * duration,
-                                loopSection[1]
-                              )
-                            );
-                            onLoopSectionChange([newTime, loopSection[1]]);
-                          }
-                        };
-
-                        const handleDragEnd = () => {
-                          document.removeEventListener("touchmove", handleDrag);
-                          document.removeEventListener(
-                            "touchend",
-                            handleDragEnd
-                          );
-                        };
-
-                        document.addEventListener("touchmove", handleDrag);
-                        document.addEventListener("touchend", handleDragEnd);
-                      }}
-                    />
-                    {/* Znacznik końca - poprawione przeciąganie */}
-                    <div
-                      className="loop-marker"
-                      style={{ left: `${(loopSection[1] / duration) * 100}%` }}
-                      data-time={formatTime(loopSection[1])}
-                      onMouseDown={(e) => {
-                        const handleDrag = (moveEvent: MouseEvent) => {
-                          const rect =
-                            progressBarRef.current?.getBoundingClientRect();
-                          if (rect) {
-                            const x = moveEvent.clientX - rect.left;
-                            const newTime = Math.max(
-                              loopSection[0],
-                              Math.min((x / rect.width) * duration, duration)
-                            );
-                            onLoopSectionChange([loopSection[0], newTime]);
-                          }
-                        };
-
-                        const handleDragEnd = () => {
-                          document.removeEventListener("mousemove", handleDrag);
-                          document.removeEventListener(
-                            "mouseup",
-                            handleDragEnd
-                          );
-                        };
-
-                        document.addEventListener("mousemove", handleDrag);
-                        document.addEventListener("mouseup", handleDragEnd);
-                      }}
-                      onTouchStart={(e) => {
-                        const handleDrag = (moveEvent: TouchEvent) => {
-                          const rect =
-                            progressBarRef.current?.getBoundingClientRect();
-                          if (rect) {
-                            const x = moveEvent.touches[0].clientX - rect.left;
-                            const newTime = Math.max(
-                              loopSection[0],
-                              Math.min((x / rect.width) * duration, duration)
-                            );
-                            onLoopSectionChange([loopSection[0], newTime]);
-                          }
-                        };
-
-                        const handleDragEnd = () => {
-                          document.removeEventListener("touchmove", handleDrag);
-                          document.removeEventListener(
-                            "touchend",
-                            handleDragEnd
-                          );
-                        };
-
-                        document.addEventListener("touchmove", handleDrag);
-                        document.addEventListener("touchend", handleDragEnd);
-                      }}
-                    />
-                  </div>
-                </>
-              )}
-
-              {/* Istniejący input range i pasek postępu */}
-              <input
-                type="range"
-                min={0}
-                max={duration}
-                value={currentTime}
-                onChange={(e) => handleSeek(Number(e.target.value))}
-                className="absolute w-full h-1 bg-white/30 rounded-full appearance-none cursor-pointer z-10
-                  [&::-webkit-slider-thumb]:appearance-none 
-                  [&::-webkit-slider-thumb]:w-3 
-                  [&::-webkit-slider-thumb]:h-3 
-                  [&::-webkit-slider-thumb]:rounded-full 
-                  [&::-webkit-slider-thumb]:bg-amber-500
-                  [&::-webkit-slider-thumb]:opacity-0
-                  group-hover:[&::-webkit-slider-thumb]:opacity-100"
+              {/* Dodaj kontrolkę głośności */}
+              <VolumeControl
+                value={volume}
+                onChange={handleVolumeChange}
+                onMute={handleMute}
+                isMuted={isMuted}
               />
-              <div
-                className="absolute top-0 left-0 h-1 bg-amber-500 rounded-full pointer-events-none"
-                style={{ width: `${(currentTime / duration) * 100}%` }}
+
+              <div className="flex-1 flex items-center gap-2">
+                <span className="text-sm">{formatTime(currentTime)}</span>
+                <div className="relative flex-1 h-1 group">
+                  {/* Znaczniki zakresu zapętlenia */}
+                  {loopSection && (
+                    <>
+                      {/* Zakres zapętlenia */}
+                      <div
+                        ref={progressBarRef}
+                        className="relative flex-1 h-1 group"
+                      >
+                        <div
+                          className="loop-range"
+                          style={{
+                            left: `${(loopSection[0] / duration) * 100}%`,
+                            width: `${
+                              ((loopSection[1] - loopSection[0]) / duration) *
+                              100
+                            }%`,
+                          }}
+                        />
+                        {/* Znacznik początku - poprawione przeciąganie */}
+                        <div
+                          className="loop-marker"
+                          style={{
+                            left: `${(loopSection[0] / duration) * 100}%`,
+                          }}
+                          data-time={formatTime(loopSection[0])}
+                          onMouseDown={(e) => {
+                            const handleDrag = (moveEvent: MouseEvent) => {
+                              const rect =
+                                progressBarRef.current?.getBoundingClientRect();
+                              if (rect) {
+                                const x = moveEvent.clientX - rect.left;
+                                const newTime = Math.max(
+                                  0,
+                                  Math.min(
+                                    (x / rect.width) * duration,
+                                    loopSection[1]
+                                  )
+                                );
+                                onLoopSectionChange([newTime, loopSection[1]]);
+                              }
+                            };
+
+                            const handleDragEnd = () => {
+                              document.removeEventListener(
+                                "mousemove",
+                                handleDrag
+                              );
+                              document.removeEventListener(
+                                "mouseup",
+                                handleDragEnd
+                              );
+                            };
+
+                            document.addEventListener("mousemove", handleDrag);
+                            document.addEventListener("mouseup", handleDragEnd);
+                          }}
+                          onTouchStart={(e) => {
+                            const handleDrag = (moveEvent: TouchEvent) => {
+                              const rect =
+                                progressBarRef.current?.getBoundingClientRect();
+                              if (rect) {
+                                const x =
+                                  moveEvent.touches[0].clientX - rect.left;
+                                const newTime = Math.max(
+                                  0,
+                                  Math.min(
+                                    (x / rect.width) * duration,
+                                    loopSection[1]
+                                  )
+                                );
+                                onLoopSectionChange([newTime, loopSection[1]]);
+                              }
+                            };
+
+                            const handleDragEnd = () => {
+                              document.removeEventListener(
+                                "touchmove",
+                                handleDrag
+                              );
+                              document.removeEventListener(
+                                "touchend",
+                                handleDragEnd
+                              );
+                            };
+
+                            document.addEventListener("touchmove", handleDrag);
+                            document.addEventListener(
+                              "touchend",
+                              handleDragEnd
+                            );
+                          }}
+                        />
+                        {/* Znacznik końca - poprawione przeciąganie */}
+                        <div
+                          className="loop-marker"
+                          style={{
+                            left: `${(loopSection[1] / duration) * 100}%`,
+                          }}
+                          data-time={formatTime(loopSection[1])}
+                          onMouseDown={(e) => {
+                            const handleDrag = (moveEvent: MouseEvent) => {
+                              const rect =
+                                progressBarRef.current?.getBoundingClientRect();
+                              if (rect) {
+                                const x = moveEvent.clientX - rect.left;
+                                const newTime = Math.max(
+                                  loopSection[0],
+                                  Math.min(
+                                    (x / rect.width) * duration,
+                                    duration
+                                  )
+                                );
+                                onLoopSectionChange([loopSection[0], newTime]);
+                              }
+                            };
+
+                            const handleDragEnd = () => {
+                              document.removeEventListener(
+                                "mousemove",
+                                handleDrag
+                              );
+                              document.removeEventListener(
+                                "mouseup",
+                                handleDragEnd
+                              );
+                            };
+
+                            document.addEventListener("mousemove", handleDrag);
+                            document.addEventListener("mouseup", handleDragEnd);
+                          }}
+                          onTouchStart={(e) => {
+                            const handleDrag = (moveEvent: TouchEvent) => {
+                              const rect =
+                                progressBarRef.current?.getBoundingClientRect();
+                              if (rect) {
+                                const x =
+                                  moveEvent.touches[0].clientX - rect.left;
+                                const newTime = Math.max(
+                                  loopSection[0],
+                                  Math.min(
+                                    (x / rect.width) * duration,
+                                    duration
+                                  )
+                                );
+                                onLoopSectionChange([loopSection[0], newTime]);
+                              }
+                            };
+
+                            const handleDragEnd = () => {
+                              document.removeEventListener(
+                                "touchmove",
+                                handleDrag
+                              );
+                              document.removeEventListener(
+                                "touchend",
+                                handleDragEnd
+                              );
+                            };
+
+                            document.addEventListener("touchmove", handleDrag);
+                            document.addEventListener(
+                              "touchend",
+                              handleDragEnd
+                            );
+                          }}
+                        />
+                      </div>
+                    </>
+                  )}
+
+                  {/* Istniejący input range i pasek postępu */}
+                  <input
+                    type="range"
+                    min={0}
+                    max={duration}
+                    value={currentTime}
+                    onChange={(e) => handleSeek(Number(e.target.value))}
+                    className="absolute w-full h-1 bg-white/30 rounded-full appearance-none cursor-pointer z-10
+                      [&::-webkit-slider-thumb]:appearance-none 
+                      [&::-webkit-slider-thumb]:w-3 
+                      [&::-webkit-slider-thumb]:h-3 
+                      [&::-webkit-slider-thumb]:rounded-full 
+                      [&::-webkit-slider-thumb]:bg-amber-500
+                      [&::-webkit-slider-thumb]:opacity-0
+                      group-hover:[&::-webkit-slider-thumb]:opacity-100"
+                  />
+                  <div
+                    className="absolute top-0 left-0 h-1 bg-amber-500 rounded-full pointer-events-none"
+                    style={{ width: `${(currentTime / duration) * 100}%` }}
+                  />
+                </div>
+                <span className="text-sm">{formatTime(duration)}</span>
+              </div>
+
+              {/* Przycisk pełnego ekranu */}
+              <button
+                onClick={toggleFullscreen}
+                className="hover:text-amber-500 transition-colors"
+              >
+                {isFullscreen ? (
+                  <svg
+                    className="w-6 h-6"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z" />
+                  </svg>
+                ) : (
+                  <svg
+                    className="w-6 h-6"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z" />
+                  </svg>
+                )}
+              </button>
+
+              <LoopSectionControl
+                value={loopSection}
+                onChange={onLoopSectionChange}
+                duration={duration}
+                onAdjustingChange={setIsAdjustingLoop}
               />
             </div>
-            <span className="text-sm">{formatTime(duration)}</span>
           </div>
-
-          {/* Przycisk pełnego ekranu */}
-          <button
-            onClick={toggleFullscreen}
-            className="hover:text-amber-500 transition-colors"
-          >
-            {isFullscreen ? (
-              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z" />
-              </svg>
-            ) : (
-              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z" />
-              </svg>
-            )}
-          </button>
-
-          <LoopSectionControl
-            value={loopSection}
-            onChange={onLoopSectionChange}
-            duration={duration}
-            onAdjustingChange={setIsAdjustingLoop}
-          />
         </div>
       </div>
     </div>

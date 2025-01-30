@@ -16,7 +16,7 @@
 "use client";
 
 import { useState, useCallback, useMemo } from "react";
-import { Lesson } from "../types";
+import { Lesson, LessonVideo } from "../types";
 import { LessonDetails } from "./LessonDetails";
 import { VideoPlayer } from "./VideoPlayer";
 import { SpeedControl } from "./controls/SpeedControl";
@@ -34,7 +34,14 @@ import {
   INSTRUCTOR_KEYS,
   INSTRUCTOR_NAMES,
 } from "../data/instructors";
-import { FaInstagram, FaFacebook, FaYoutube, FaTiktok, FaGlobe } from "react-icons/fa";
+import {
+  FaInstagram,
+  FaFacebook,
+  FaYoutube,
+  FaTiktok,
+  FaGlobe,
+} from "react-icons/fa";
+import { TimelineMenu } from "./TimelineMenu";
 
 interface LessonViewProps {
   lesson: Lesson;
@@ -153,17 +160,22 @@ const InstructorCredits: React.FC<{ instructorName: string }> = ({
 };
 
 export const LessonView: React.FC<LessonViewProps> = ({ lesson }) => {
-  const [selectedVideo, setSelectedVideo] = useState(
-    lesson.type === "video" ? lesson.content.videos?.[0] : null
+  const [selectedVideo, setSelectedVideo] = useState<LessonVideo | null>(
+    lesson.content.videos?.[0] || null
   );
   const [speed, setSpeed] = useState(1);
   const [mirror, setMirror] = useState(false);
   const [loopSection, setLoopSection] = useState<[number, number] | null>(null);
+  const [imageError, setImageError] = useState(false);
   const [videoDuration, setVideoDuration] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
 
-  const handleProgress = useCallback((progress: number) => {
-    console.log("Progress:", progress);
-  }, []);
+  const handleProgress = (time: number) => {
+    setCurrentTime(time);
+    if (selectedVideo) {
+      selectedVideo.currentTime = time;
+    }
+  };
 
   const handleDurationChange = useCallback((duration: number) => {
     setVideoDuration(duration);
@@ -177,6 +189,21 @@ export const LessonView: React.FC<LessonViewProps> = ({ lesson }) => {
     setMirror(newMirror);
   }, []);
 
+  const handleTimeSelect = (time: number) => {
+    if (selectedVideo) {
+      // Implementacja przewijania do wybranego momentu
+      const player = document.querySelector("video, iframe");
+      if (player) {
+        if (player instanceof HTMLVideoElement) {
+          player.currentTime = time;
+        } else if (player instanceof HTMLIFrameElement) {
+          // YouTube player będzie obsługiwany przez YouTubePlayer komponent
+          // poprzez onTimeSelect prop
+        }
+      }
+    }
+  };
+
   const getPerspectiveLabel = (perspective: string) => {
     const labels = {
       front: "Widok z przodu",
@@ -187,11 +214,7 @@ export const LessonView: React.FC<LessonViewProps> = ({ lesson }) => {
     return labels[perspective as keyof typeof labels] || perspective;
   };
 
-  const InstructorAvatar: React.FC<{ instructor: string }> = ({
-    instructor,
-  }) => {
-    const [imageError, setImageError] = useState(false);
-
+  const InstructorAvatar = ({ instructor }: { instructor: string }) => {
     const getInstructorImagePath = (instructorName: string) => {
       const instructorKey = Object.entries(INSTRUCTOR_NAMES).find(
         ([_, name]) => name === instructorName
@@ -308,16 +331,29 @@ export const LessonView: React.FC<LessonViewProps> = ({ lesson }) => {
         {hasValidVideo && selectedVideo && adaptedVideo && (
           <>
             <div className="flex flex-col gap-4">
-              <div className="aspect-video bg-black rounded-lg overflow-hidden">
-                <VideoPlayer
-                  videos={[adaptedVideo]}
-                  speed={speed}
-                  mirror={mirror}
-                  loopSection={loopSection}
-                  onProgress={handleProgress}
-                  onDurationChange={handleDurationChange}
-                  onLoopSectionChange={setLoopSection}
-                />
+              <div className="flex">
+                {/* Nowe menu z timelineMarkers */}
+                {selectedVideo.timeMarkers && (
+                  <TimelineMenu
+                    markers={selectedVideo.timeMarkers}
+                    currentTime={currentTime}
+                    onTimeSelect={handleTimeSelect}
+                  />
+                )}
+
+                {/* Player */}
+                <div className="flex-1 aspect-video bg-black rounded-lg overflow-hidden">
+                  <VideoPlayer
+                    videos={[adaptedVideo]}
+                    speed={speed}
+                    mirror={mirror}
+                    loopSection={loopSection}
+                    onProgress={handleProgress}
+                    onDurationChange={handleDurationChange}
+                    onLoopSectionChange={setLoopSection}
+                    onTimeSelect={handleTimeSelect}
+                  />
+                </div>
               </div>
 
               {/* Kontrolki */}
@@ -333,7 +369,7 @@ export const LessonView: React.FC<LessonViewProps> = ({ lesson }) => {
           </>
         )}
 
-        {/* Szczegóły lekcji tylko w określonych przypadkach */}
+        {/* Szczegóły lekcji */}
         {shouldShowLessonDetails && <LessonDetails lesson={lesson} />}
       </div>
     </div>

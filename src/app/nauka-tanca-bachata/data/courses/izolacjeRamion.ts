@@ -1,5 +1,37 @@
-import { Course } from "../../types";
+import { Course, TimeMarker, LessonVideoContent } from "../../types";
 import { instructors, INSTRUCTOR_KEYS, INSTRUCTOR_NAMES } from "../instructors";
+
+const timeMarkers: TimeMarker[] = [
+  {
+    id: "intro",
+    time: 0,
+    title: "Wprowadzenie",
+    description: "Omówienie podstaw izolacji ramion",
+  },
+  {
+    id: "basic-movement",
+    time: 45,
+    title: "Podstawowy ruch",
+    description: "Technika podstawowego ruchu ramion",
+  },
+  {
+    id: "advanced-technique",
+    time: 120,
+    title: "Zaawansowana technika",
+    description: "Złożone ruchy izolowane",
+  },
+  // Dodaj więcej znaczników według potrzeb
+];
+
+const lessonVideo: LessonVideoContent = {
+  id: "v1-podstawy-ramion",
+  title: "Podstawy izolacji ramion",
+  description: "Wprowadzenie do technik izolacji ramion",
+  videoUrl: "https://www.youtube.com/watch?v=JMHD8nGwFlc",
+  instructor: INSTRUCTOR_NAMES[INSTRUCTOR_KEYS.SO_KAYKA],
+  projectNameOfficial: "Katarzyna Sadowska",
+  timeMarkers: timeMarkers,
+};
 
 export const armsIsolationCourse: Course = {
   id: "bachataa-izolacjeee-ramion",
@@ -26,16 +58,7 @@ export const armsIsolationCourse: Course = {
           thumbnail: "/images/lessons/arms-isolation/basic-moves.jpg",
           type: "video",
           content: {
-            videos: [
-              {
-                id: "v1-podstawy-ramion",
-                title: "Podstawy izolacji ramion",
-                description: "Wprowadzenie do technik izolacji ramion",
-                videoUrl: "https://www.youtube.com/watch?v=JMHD8nGwFlc",
-                instructor: INSTRUCTOR_NAMES[INSTRUCTOR_KEYS.SO_KAYKA],
-                projectNameOfficial: "Katarzyna Sadowska",
-              },
-            ],
+            videos: [lessonVideo],
           },
           isCompleted: false,
         },
