@@ -23,6 +23,7 @@ interface CourseOverviewProps {
 // W JavaScript, klucze obiektów zawierające znaki specjalne muszą być w cudzysłowach.
 // Pozostałe klucze są pojedynczymi słowami, więc nie wymagają cudzysłowów.
 const levelColors = {
+  "Gero Migle": "bg-pink-100 text-pink-800",
   beginner: "bg-green-100 text-green-800",
   intermediate: "bg-yellow-100 text-yellow-800",
   advanced: "bg-blue-100 text-blue-800",
@@ -31,6 +32,7 @@ const levelColors = {
 };
 
 const levelLabels = {
+  "Gero Migle": "Gero & Migle",
   beginner: "Początkujący",
   intermediate: "Średniozaawansowany",
   advanced: "Zaawansowany",

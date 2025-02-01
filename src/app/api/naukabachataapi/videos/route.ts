@@ -54,54 +54,32 @@ export async function GET(request: Request) {
       );
     }
 
-    const videos = result.resources.map((resource: CloudinaryResource) => {
-      // Debug logowanie dla każdego zasobu
-      console.log("Resource metadata:", {
-        publicId: resource.public_id,
-        metadata: resource.metadata,
-        context: resource.context,
-      });
-
-      // Określamy poziom z metadanych lub kontekstu 123
-      let level =
-        resource.metadata?.level || resource.context?.level || "BEGINNER";
-
-      // Normalizujemy poziom do dozwolonych wartości
-      if (!["BEGINNER", "INTERMEDIATE", "ADVANCED", "ALL"].includes(level)) {
-        console.warn(
-          `Invalid level "${level}" for video ${resource.public_id}, defaulting to BEGINNER`
-        );
-        level = "BEGINNER";
-      }
-
-      return {
-        id: resource.asset_id,
-        publicId: resource.public_id,
-        title: resource.filename || resource.public_id.split("/").pop(),
-        description: resource.context?.description || "",
-        thumbnailUrl: cloudinary.url(resource.public_id, {
-          resource_type: "video",
-          transformation: [
-            { width: 480, height: 270, crop: "fill" },
-            { format: "jpg" },
-          ],
-        }),
-        duration: resource.duration || 0,
-        category: resource.context?.category || "BASIC",
-        level: level as DanceLevel,
-        tags: resource.tags || [],
-        instructorProfileUrl: resource.context?.instructorProfileUrl || "",
-        instructorName: resource.context?.instructorName || "",
-        instructorAvatarUrl: resource.context?.instructorAvatarUrl || "",
-      };
-    });
+    const videos = result.resources.map((resource: CloudinaryResource) => ({
+      id: resource.asset_id,
+      publicId: resource.public_id,
+      title: resource.filename || resource.public_id.split("/").pop(),
+      description: resource.context?.description || "",
+      thumbnailUrl: cloudinary.url(resource.public_id, {
+        resource_type: "video",
+        transformation: [
+          { width: 480, height: 270, crop: "fill" },
+          { format: "jpg" },
+        ],
+      }),
+      duration: resource.duration || 0,
+      category: resource.context?.category || "BASIC",
+      tags: resource.tags || [],
+      instructorProfileUrl: resource.context?.instructorProfileUrl || "",
+      instructorName: resource.context?.instructorName || "",
+      instructorAvatarUrl: resource.context?.instructorAvatarUrl || "",
+    }));
 
     // Debug logowanie wszystkich filmów
     console.log(
       "Processed videos:",
       videos.map((v: BachataVideo) => ({
         title: v.title,
-        level: v.level,
+        category: v.category,
       }))
     );
 
