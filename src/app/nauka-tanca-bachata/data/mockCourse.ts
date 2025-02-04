@@ -15,7 +15,7 @@ import { Course } from "../types";
 // import { sensualCourse } from "./courses/bachataSensualSredniozaawansowany";
 // import { bachataSensualZaawansowany } from "./courses/bachataSensualZaawansowany";
 // import { isolationCourse } from "./courses/izolacje";
-import { armsIsolationCourse } from "./courses/izolacjeRamion";
+// import { armsIsolationCourse } from "./courses/izolacjeRamion";
 // import { ladyStylingBeginnerCourse } from "./courses/bachataLadyStylingPodstawy";
 
 // Sprawdzamy czy wszystkie kursy mają rozdziały
@@ -31,7 +31,7 @@ export const mockCourses = [
   // validateCourse(sensualCourse),
   // validateCourse(bachataSensualZaawansowany),
   // validateCourse(isolationCourse),
-  validateCourse(armsIsolationCourse),
+  // validateCourse(armsIsolationCourse),
   // validateCourse(ladyStylingBeginnerCourse),
 ];
 
