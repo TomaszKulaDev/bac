@@ -19,7 +19,7 @@ export const PoplistaHeader = () => {
           </button>
           <div>
             <h1 className="text-2xl font-bold text-gray-900">
-              Bachata Poplista
+              Bachata Top lista 2025
             </h1>
             <p className="text-sm text-gray-500">
               Top 20 • Najpopularniejsze utwory
