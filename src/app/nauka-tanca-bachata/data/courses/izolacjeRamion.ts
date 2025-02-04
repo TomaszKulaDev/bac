@@ -1,25 +1,14 @@
 // import { Course } from "../../types";
 // import { instructors, INSTRUCTOR_KEYS, INSTRUCTOR_NAMES } from "../instructors";
 
-<<<<<<< HEAD
 // export const armsIsolationCourse: Course = {
 //   id: "bachataa-izolacjeee-ramion",
-//   title: "Zaawansowane izolacje ramion",
+//   title: "Izolacje ramion",
 //   description:
-//     "Zaawansowany kurs techniki izolacji ramion. Naucz się płynnie poruszać ramionami.",
+//     "Kurs techniki izolacji ramion. Naucz się płynnie poruszać ramionami.",
 //   level: "isolations",
 //   totalDuration: "18 min",
-//   // instructor: [instructors[INSTRUCTOR_KEYS.SO_KAYKA]],
-=======
-export const armsIsolationCourse: Course = {
-  id: "bachataa-izolacjeee-ramion",
-  title: "Izolacje ramion",
-  description:
-    "Kurs techniki izolacji ramion. Naucz się płynnie poruszać ramionami.",
-  level: "isolations",
-  totalDuration: "18 min",
-  instructor: [instructors[INSTRUCTOR_KEYS.SO_KAYKA]],
->>>>>>> 433--NOWE-KATEGORIE
+//   instructor: [instructors[INSTRUCTOR_KEYS.SO_KAYKA]],
 
 //   chapters: [
 //     {
