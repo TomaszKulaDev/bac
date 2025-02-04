@@ -65,11 +65,23 @@ export default function Layout({
           name: "Muzyka",
           item: "https://www.baciata.pl/muzyka",
         },
+        {
+          "@type": "ListItem",
+          position: 3,
+          name: "Poplista",
+          item: "https://www.baciata.pl/muzyka/poplista",
+        },
       ],
     },
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": "https://www.baciata.pl/muzyka",
+    },
+    subjectOf: {
+      "@type": "MusicPlaylist",
+      name: "Poplista Bachata",
+      description: "Cotygodniowe notowanie najpopularniejszych utworów bachata",
+      url: "https://www.baciata.pl/muzyka/poplista",
     },
   };
 

@@ -30,6 +30,8 @@ import SongGrid from "./components/songs/SongGrid";
 import { useSecuredPlaylistOperations } from "./hooks/useSecuredPlaylistOperations";
 import { useLike } from "@/app/muzyka/hooks/useLike";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
+import { PoplistaContainer } from "./components/poplista/PoplistaContainer";
 
 const generateUniqueId = () => {
   return Date.now().toString(36) + Math.random().toString(36).substr(2);
@@ -301,51 +303,53 @@ const MusicPage: React.FC = () => {
   }
 
   return (
-    <main
-      className="min-h-screen bg-white"
-      role="main"
-      aria-label="Kolekcja muzyki Bachata"
-    >
-      <article className="flex-grow flex flex-col lg:flex-row bg-white relative z-10">
-        <div className="w-full p-4">
-          <MusicPlayer
-            songs={songs}
-            onCreatePlaylist={handleCreateEmptyPlaylist}
-            onAddToPlaylist={playlistManagement.addSongToPlaylist}
-            expandedPlaylist={expandedPlaylist}
-            setExpandedPlaylist={setExpandedPlaylist}
-            filterText={filterText}
-            setFilterText={setFilterText}
-            isMobile={isMobile}
-            currentPlaylistId={currentPlaylistId}
-            onPlayPlaylist={(playlistId) => {
-              setCurrentPlaylistId(playlistId);
-              const playlist = playlists.find((p) => p.id === playlistId);
-              if (playlist && playlist.songs.length > 0) {
-                dispatch(
-                  setCurrentSongIndex(
-                    songs.findIndex((s) => s.id === playlist.songs[0])
-                  )
-                );
-              }
-            }}
-            playlists={playlists}
-            onUpdatePlaylists={setPlaylists}
-            isModalOpen={isModalOpen}
-            setIsModalOpen={setIsModalOpen}
-            showSuccessToast={showSuccessToast}
-            showErrorToast={showErrorToast}
-            showInfoToast={showInfoToast}
-            isAuthenticated={!!session}
-            isPlaying={isPlaying}
-            setIsPlaying={setIsPlaying}
-            setPlaylists={setPlaylists}
-            setCurrentPlaylistId={setCurrentPlaylistId}
-          />
+    <main className="min-h-screen bg-white">
+      <article className="flex-grow flex flex-col bg-white relative z-10">
+        <div className="w-full">
+          <div className="mb-8 bg-gray-50 border-y border-gray-100">
+            <div className="max-w-[1920px] mx-auto px-4 py-8">
+              <PoplistaContainer />
+            </div>
+          </div>
+
+          <div className="max-w-[1920px] mx-auto px-4">
+            <MusicPlayer
+              songs={songs}
+              onCreatePlaylist={handleCreateEmptyPlaylist}
+              onAddToPlaylist={playlistManagement.addSongToPlaylist}
+              expandedPlaylist={expandedPlaylist}
+              setExpandedPlaylist={setExpandedPlaylist}
+              filterText={filterText}
+              setFilterText={setFilterText}
+              isMobile={isMobile}
+              currentPlaylistId={currentPlaylistId}
+              onPlayPlaylist={(playlistId) => {
+                setCurrentPlaylistId(playlistId);
+                const playlist = playlists.find((p) => p.id === playlistId);
+                if (playlist && playlist.songs.length > 0) {
+                  dispatch(
+                    setCurrentSongIndex(
+                      songs.findIndex((s) => s.id === playlist.songs[0])
+                    )
+                  );
+                }
+              }}
+              playlists={playlists}
+              onUpdatePlaylists={setPlaylists}
+              isModalOpen={isModalOpen}
+              setIsModalOpen={setIsModalOpen}
+              showSuccessToast={showSuccessToast}
+              showErrorToast={showErrorToast}
+              showInfoToast={showInfoToast}
+              isAuthenticated={!!session}
+              isPlaying={isPlaying}
+              setIsPlaying={setIsPlaying}
+              setPlaylists={setPlaylists}
+              setCurrentPlaylistId={setCurrentPlaylistId}
+            />
+          </div>
         </div>
       </article>
-
-   
 
       <ToastContainer
         position="bottom-right"

@@ -1,0 +1,127 @@
+import Image from "next/image";
+import {
+  FaPlay,
+  FaThumbsUp,
+  FaThumbsDown,
+  FaArrowUp,
+  FaArrowDown,
+} from "react-icons/fa";
+
+interface PoplistaItemProps {
+  song: {
+    position: number;
+    previousPosition: number;
+    title: string;
+    artist: string;
+    thumbnail: string;
+    votes: {
+      up: number;
+      down: number;
+    };
+  };
+}
+
+export const PoplistaItem = ({ song }: PoplistaItemProps) => {
+  const positionChange = song.previousPosition - song.position;
+  const isFirstPlace = song.position === 1;
+
+  if (isFirstPlace) {
+    return (
+      <div className="relative mb-8">
+        {/* Tło z gradientem */}
+        <div className="bg-gradient-to-r from-amber-400 to-amber-300 rounded-xl p-6">
+          <div className="flex flex-col md:flex-row gap-6 items-center">
+            {/* Miniaturka */}
+            <div className="relative w-48 h-48 rounded-lg overflow-hidden shadow-lg">
+              <Image
+                src={song.thumbnail}
+                alt={song.title}
+                fill
+                className="object-cover"
+              />
+              <button className="absolute inset-0 bg-black/50 opacity-0 hover:opacity-100 transition flex items-center justify-center">
+                <FaPlay className="text-white text-4xl" />
+              </button>
+            </div>
+
+            {/* Informacje o utworze */}
+            <div className="flex-grow text-center md:text-left">
+              <div className="text-8xl font-bold text-white mb-4">1</div>
+              <h3 className="text-3xl font-bold text-white mb-2">
+                {song.title}
+              </h3>
+              <p className="text-xl text-white/90 mb-6">{song.artist}</p>
+
+              {/* Głosowanie */}
+              <div className="flex justify-center md:justify-start gap-4">
+                <button className="flex items-center gap-2 px-6 py-3 bg-white text-amber-600 rounded-full hover:bg-gray-100 transition text-lg">
+                  <FaThumbsUp />
+                  <span>{song.votes.up}</span>
+                </button>
+                <button className="flex items-center gap-2 px-6 py-3 bg-white/10 text-white rounded-full hover:bg-white/20 transition text-lg">
+                  <FaThumbsDown />
+                  <span>{song.votes.down}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Standardowy wygląd dla pozostałych pozycji
+  return (
+    <div className="bg-gray-50 rounded-xl p-4 border border-gray-100 hover:border-gray-200 transition group">
+      <div className="flex items-center gap-4">
+        {/* Pozycja i zmiana */}
+        <div className="w-16 text-center">
+          <div className="text-2xl font-bold text-gray-900">
+            {song.position}
+          </div>
+          {positionChange !== 0 && (
+            <div
+              className={`text-sm ${
+                positionChange > 0 ? "text-emerald-600" : "text-rose-600"
+              }`}
+            >
+              {positionChange > 0 ? <FaArrowUp /> : <FaArrowDown />}
+              {Math.abs(positionChange)}
+            </div>
+          )}
+        </div>
+
+        {/* Miniaturka */}
+        <div className="relative w-16 h-16 rounded-lg overflow-hidden">
+          <Image
+            src={song.thumbnail}
+            alt={song.title}
+            fill
+            className="object-cover"
+          />
+          <button className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+            <FaPlay className="text-white text-2xl" />
+          </button>
+        </div>
+
+        {/* Informacje o utworze */}
+        <div className="flex-grow">
+          <h3 className="font-semibold text-gray-900">{song.title}</h3>
+          <p className="text-gray-500">{song.artist}</p>
+        </div>
+
+        {/* Głosowanie */}
+        <div className="flex items-center gap-4">
+          <button className="flex items-center gap-2 px-4 py-2 bg-emerald-50 text-emerald-600 rounded-full hover:bg-emerald-100 transition">
+            <FaThumbsUp />
+            <span>{song.votes.up}</span>
+          </button>
+          <button className="flex items-center gap-2 px-4 py-2 bg-rose-50 text-rose-600 rounded-full hover:bg-rose-100 transition">
+            <FaThumbsDown />
+            <span>{song.votes.down}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
