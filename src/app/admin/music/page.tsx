@@ -12,8 +12,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "@/store/store";
 import AddSongForm from "./components/AddSongForm";
 import DeleteAllConfirmation from "./components/DeleteAllConfirmation";
-import Notification from './components/Notification';
-import { useValidation } from '@/app/muzyka/hooks/useValidation';
+import Notification from "./components/Notification";
+import { useValidation } from "@/app/muzyka/hooks/useValidation";
 
 // Główny komponent strony administracyjnej dla muzyki
 const AdminMusicPage = () => {
@@ -28,7 +28,7 @@ const AdminMusicPage = () => {
   // Stan do kontrolowania widoczności modalu potwierdzenia usunięcia wszystkich utworów
   const [isDeleteAllModalOpen, setIsDeleteAllModalOpen] = useState(false);
   const [notification, setNotification] = useState<{
-    type: 'success' | 'error' | 'info';
+    type: "success" | "error" | "info";
     message: string;
   } | null>(null);
 
@@ -42,13 +42,13 @@ const AdminMusicPage = () => {
         console.log("Piosenki pobrane pomyślnie:", result);
       } catch (error: any) {
         setNotification({
-          type: 'error',
-          message: error.message || 'Wystąpił błąd podczas pobierania piosenek'
+          type: "error",
+          message: error.message || "Wystąpił błąd podczas pobierania piosenek",
         });
         console.error("Błąd podczas pobierania piosenek:", {
           status: error.status,
           message: error.message,
-          details: error.details
+          details: error.details,
         });
       }
     };
@@ -79,7 +79,7 @@ const AdminMusicPage = () => {
   }) => {
     try {
       console.log("Dodawanie piosenki:", newSong);
-      const response = await fetch("/api/songs", {
+      const response = await fetch("/api/musisite/songs", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -90,10 +90,12 @@ const AdminMusicPage = () => {
       if (!response.ok) {
         const errorData = await response.json();
         setNotification({
-          type: 'error',
-          message: errorData.message || `Błąd HTTP: ${response.status}`
+          type: "error",
+          message: errorData.message || `Błąd HTTP: ${response.status}`,
         });
-        throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+        throw new Error(
+          errorData.message || `HTTP error! status: ${response.status}`
+        );
       }
 
       const result = await response.json();
@@ -103,20 +105,22 @@ const AdminMusicPage = () => {
         console.log("Piosenka dodana pomyślnie");
         dispatch(fetchSongs());
         setNotification({
-          type: 'success',
-          message: 'Piosenka została pomyślnie dodana'
+          type: "success",
+          message: "Piosenka została pomyślnie dodana",
         });
       } else {
         setNotification({
-          type: 'error',
-          message: result.error || 'Wystąpił błąd podczas dodawania piosenki'
+          type: "error",
+          message: result.error || "Wystąpił błąd podczas dodawania piosenki",
         });
         console.error("Błąd podczas dodawania piosenki:", result.error);
       }
     } catch (error: any) {
       setNotification({
-        type: 'error',
-        message: error.message || 'Wystąpił nieoczekiwany błąd podczas dodawania piosenki'
+        type: "error",
+        message:
+          error.message ||
+          "Wystąpił nieoczekiwany błąd podczas dodawania piosenki",
       });
       console.error("Błąd podczas dodawania piosenki:", error);
     }
@@ -127,24 +131,24 @@ const AdminMusicPage = () => {
     try {
       const result = await dispatch(deleteSongAndRefetch(id)).unwrap();
       setNotification({
-        type: 'success',
-        message: 'Piosenka została pomyślnie usunięta'
+        type: "success",
+        message: "Piosenka została pomyślnie usunięta",
       });
     } catch (error: any) {
-      const errorDetails = error.details ? `: ${error.details}` : '';
+      const errorDetails = error.details ? `: ${error.details}` : "";
       setNotification({
-        type: 'error',
-        message: `${error.message}${errorDetails}`
+        type: "error",
+        message: `${error.message}${errorDetails}`,
       });
-      
-      console.error('Błąd podczas usuwania piosenki:', {
+
+      console.error("Błąd podczas usuwania piosenki:", {
         status: error.status,
         message: error.message,
-        details: error.details
+        details: error.details,
       });
 
       if (error.status === 401 || error.status === 403) {
-        console.log('Użytkownik nie ma uprawnień do usuwania piosenek');
+        console.log("Użytkownik nie ma uprawnień do usuwania piosenek");
       }
     }
   };
@@ -174,13 +178,15 @@ const AdminMusicPage = () => {
           }
 
           setNotification({
-            type: successCount > 0 ? 'success' : 'error',
-            message: `Zaimportowano ${successCount} piosenek${errorCount > 0 ? `, ${errorCount} błędów` : ''}`
+            type: successCount > 0 ? "success" : "error",
+            message: `Zaimportowano ${successCount} piosenek${
+              errorCount > 0 ? `, ${errorCount} błędów` : ""
+            }`,
           });
         } catch (error) {
           setNotification({
-            type: 'error',
-            message: 'Błąd podczas parsowania pliku JSON'
+            type: "error",
+            message: "Błąd podczas parsowania pliku JSON",
           });
           console.error("Błąd podczas parsowania pliku JSON:", error);
         }
@@ -188,8 +194,8 @@ const AdminMusicPage = () => {
       reader.readAsText(file);
     } else {
       setNotification({
-        type: 'error',
-        message: 'Niepoprawny format pliku. Wybierz plik JSON.'
+        type: "error",
+        message: "Niepoprawny format pliku. Wybierz plik JSON.",
       });
     }
   };
@@ -197,11 +203,11 @@ const AdminMusicPage = () => {
   // Funkcja walidująca dane piosenki
   const validateSongData = (song: any) => {
     return (
-      typeof song.title === 'string' &&
-      typeof song.artist === 'string' &&
-      typeof song.youtubeLink === 'string' &&
-      typeof song.impro === 'boolean' &&
-      typeof song.beginnerFriendly === 'boolean'
+      typeof song.title === "string" &&
+      typeof song.artist === "string" &&
+      typeof song.youtubeLink === "string" &&
+      typeof song.impro === "boolean" &&
+      typeof song.beginnerFriendly === "boolean"
     );
   };
 
@@ -211,27 +217,27 @@ const AdminMusicPage = () => {
       const result = await dispatch(deleteAllSongsAndRefetch()).unwrap();
       setIsDeleteAllModalOpen(false);
       setNotification({
-        type: 'success',
-        message: 'Wszystkie utwory zostały pomyślnie usunięte'
+        type: "success",
+        message: "Wszystkie utwory zostały pomyślnie usunięte",
       });
     } catch (error: any) {
-      const errorDetails = error.details ? `: ${error.details}` : '';
+      const errorDetails = error.details ? `: ${error.details}` : "";
       setNotification({
-        type: 'error',
-        message: `${error.message}${errorDetails}`
+        type: "error",
+        message: `${error.message}${errorDetails}`,
       });
-      
+
       // Logowanie błędu z dodatkowymi informacjami
-      console.error('Błąd podczas usuwania wszystkich utworów:', {
+      console.error("Błąd podczas usuwania wszystkich utworów:", {
         status: error.status,
         message: error.message,
-        details: error.details
+        details: error.details,
       });
-      
+
       // Dodatkowa logika dla konkretnych kodów błędów
       if (error.status === 401 || error.status === 403) {
         // Możemy np. przekierować do strony logowania
-        console.log('Użytkownik nie ma uprawnień - należy się zalogować');
+        console.log("Użytkownik nie ma uprawnień - należy się zalogować");
       }
     }
   };
@@ -281,7 +287,7 @@ const AdminMusicPage = () => {
         </div>
         <AddSongForm onAddSong={handleAddSong} />
         <SongList songs={songs} onDelete={handleDeleteSong} />
-        
+
         <DeleteAllConfirmation
           isOpen={isDeleteAllModalOpen}
           onConfirm={handleDeleteAllSongs}
