@@ -11,7 +11,7 @@
  */
 
 import { Course } from "../types";
-// import { beginnerCourse } from "./courses/bachataOdPodstaw";
+import { beginnerCourse } from "./courses/bachataOdPodstaw";
 // import { sensualCourse } from "./courses/bachataSensualSredniozaawansowany";
 // import { bachataSensualZaawansowany } from "./courses/bachataSensualZaawansowany";
 // import { isolationCourse } from "./courses/izolacje";
@@ -27,7 +27,7 @@ const validateCourse = (course: Course): Course => {
 };
 
 export const mockCourses = [
-  // validateCourse(beginnerCourse),
+  validateCourse(beginnerCourse),
   // validateCourse(sensualCourse),
   // validateCourse(bachataSensualZaawansowany),
   // validateCourse(isolationCourse),
