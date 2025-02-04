@@ -7,11 +7,17 @@ export const DANCE_LEVELS = {
 
 export const DANCE_CATEGORIES = {
   BASIC: "Krok podstawowy",
-  SPINS: "Obroty5",
-  FIGURES: "Figury4",
-  STYLING: "Styling3",
-  MUSICALITY: "Muzykalność2",
-  PARTNERWORK: "Praca w parze1",
+  SPINS: "Obroty",
+  HER_SPINS: "Obroty partnerki",
+  HIS_SPINS: "Obroty partnera",
+  FIGURES: "Figury",
+  STYLING: "Styling",
+  HER_STYLING: "Styling partnerki",
+  HIS_STYLING: "Styling partnera",
+  MUSICALITY: "Muzykalność",
+  PARTNERWORK: "Praca w parze",
+  HEAD_MOVEMENT: "Ruchy głowy",
+  BODY_MOVEMENT: "Izolacje ciała",
 } as const;
 
 export type DanceLevel = keyof typeof DANCE_LEVELS;
@@ -26,7 +32,6 @@ export interface BachataVideo {
   duration: number;
   tags: string[];
   category: Category;
-  level: DanceLevel;
   instructorProfileUrl?: string;
   instructorName?: string;
   instructorAvatarUrl?: string;

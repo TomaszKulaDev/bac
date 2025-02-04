@@ -3,6 +3,7 @@ export interface Course {
   title: string;
   description: string;
   level:
+    | "Gero Migle"
     | "beginner"
     | "intermediate"
     | "advanced"

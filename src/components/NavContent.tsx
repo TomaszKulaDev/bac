@@ -38,12 +38,12 @@ export const NavContent: React.FC = React.memo(function NavContent() {
   const [isSearchFocused, setIsSearchFocused] = useState(false);
 
   const menuItems = [
-    {
-      href: "/szukam-partnera-do-bachaty",
-      label: "Społeczność",
-      icon: FaUsers,
-      badge: "2137",
-    },
+    // {
+    //   href: "/szukam-partnera-do-bachaty",
+    //   label: "Społeczność",
+    //   icon: FaUsers,
+    //   badge: "2137",
+    // },
     {
       href: "/nauka-tanca-bachata",
       label: "Nauka tańca",
@@ -106,11 +106,6 @@ export const NavContent: React.FC = React.memo(function NavContent() {
                     <span className="flex items-center gap-2">
                       <item.icon className="w-4 h-4" />
                       {item.label}
-                      {item.badge && (
-                        <span className="px-1.5 py-0.5 text-[10px] font-medium bg-amber-500 text-white rounded-full">
-                          {item.badge}
-                        </span>
-                      )}
                     </span>
                     {pathname === item.href && (
                       <motion.div
@@ -215,12 +210,12 @@ export const NavContent: React.FC = React.memo(function NavContent() {
             {/* Menu mobilne */}
             <div className="space-y-2">
               {[
-                {
-                  href: "/szukam-partnera-do-bachaty",
-                  label: "Społeczność",
-                  icon: FaUsers,
-                  badge: "2137",
-                },
+                // {
+                //   href: "/szukam-partnera-do-bachaty",
+                //   label: "Społeczność",
+                //   icon: FaUsers,
+                //   badge: "2137",
+                // },
                 {
                   href: "/nauka-tanca-bachata",
                   label: "Nauka tańca",
@@ -238,11 +233,6 @@ export const NavContent: React.FC = React.memo(function NavContent() {
                 >
                   <item.icon className="w-5 h-5" />
                   <span className="font-medium">{item.label}</span>
-                  {item.badge && (
-                    <span className="ml-auto px-2 py-0.5 text-xs font-medium bg-amber-500 text-white rounded-full">
-                      {item.badge}
-                    </span>
-                  )}
                 </Link>
               ))}
             </div>

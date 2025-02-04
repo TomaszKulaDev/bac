@@ -16,8 +16,13 @@ const LevelSelector: React.FC<LevelSelectorProps> = ({
   const levels = [
     {
       id: "all",
-      label: "Wszystkie poziomy",
+      label: "Wszystkie",
       ariaLabel: "Pokaż wszystkie poziomy kursów bachaty",
+    },
+    {
+      id: "Gero Migle",
+      label: "Gero & Migle",
+      ariaLabel: "Pokaż kursy Gero & Migle",
     },
     {
       id: "isolations",

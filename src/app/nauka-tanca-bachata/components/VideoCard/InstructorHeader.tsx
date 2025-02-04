@@ -69,10 +69,6 @@ export const InstructorHeader: React.FC<InstructorHeaderProps> = ({
             <span className="text-xs text-gray-600">
               {DANCE_CATEGORIES[video.category]}
             </span>
-            <span className="text-xs text-gray-400">•</span>
-            <span className="text-xs text-gray-600">
-              {DANCE_LEVELS[video.level]}
-            </span>
           </div>
         </div>
       </div>

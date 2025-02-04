@@ -3,10 +3,10 @@ import { instructors, INSTRUCTOR_KEYS, INSTRUCTOR_NAMES } from "../instructors";
 
 export const beginnerCourse: Course = {
   id: "bachata-podstawy",
-  title: "Bachata od Podstaw",
+  title: "Top moves Gero & Migle",
   description:
     "Kompletny kurs dla początkujących. Poznaj podstawy bachaty, naucz się kroków, rytmu i pierwszych figur w prosty i przyjemny sposób.",
-  level: "beginner",
+  level: "Gero Migle",
   totalDuration: "8 godz",
   instructor: [
     instructors[INSTRUCTOR_KEYS.JAN_KOWALSKI_ANNA_WISNIEWSKA],
@@ -14,32 +14,6 @@ export const beginnerCourse: Course = {
   ],
 
   chapters: [
-    {
-      id: "rozdzial-0-wprowadzenie",
-      title: "Wprowadzenie do kursu",
-      description:
-        "Poznaj podstawowe informacje o kursie i bachacie jako tańcu",
-      order: 0,
-      duration: "30 min",
-      lessons: [
-        {
-          id: "lekcja-0-1-autor",
-          title: "Zanim zaczniesz",
-          description:
-            "Poznaj instruktorów, którzy poprowadzą Cię przez kurs bachaty",
-          duration: "2 min",
-          thumbnail: "/images/lessons/author.jpg",
-          type: "text",
-          content: {
-            textContent: {
-              component: "AuthorLesson",
-            },
-          },
-          isCompleted: false,
-        },
-      ],
-      isCompleted: false,
-    },
     {
       id: "rozdzial-1-krok-podstawowy",
       title: "Kroki podstawowe Solo",
@@ -50,8 +24,7 @@ export const beginnerCourse: Course = {
         {
           id: "lekcja-1-1-krok-podstawowy",
           title: "Krok podstawowy bez pary",
-          description:
-            "",
+          description: "",
           duration: "30min",
           thumbnail: "/images/lessons/rhythm.jpg",
           type: "video",
@@ -61,28 +34,9 @@ export const beginnerCourse: Course = {
                 id: "v1-rytm",
                 title: "Wprowadzenie do rytmu",
                 description: "Podstawy rytmu bachaty i liczenie",
-                videoUrl:
-                  "https://res.cloudinary.com/dqeemjgmx/video/upload/v1738091142/bachataOdPodstaw/Bachata%20Beginner%20Basic%20Steps%20Tutorial.mp4",
-                instructor: INSTRUCTOR_NAMES[INSTRUCTOR_KEYS.DEMETRIO_NICOLE],
-                projectNameOfficial: "Bachata Dance Academy",
-              },
-              {
-                id: "v1-rytm-instagram",
-                title: "Rytm bachaty - demonstracja",
-                description: "Praktyczna demonstracja rytmu w bachacie",
-                videoUrl:
-                  "https://res.cloudinary.com/dgifdcgul/video/upload/v1738144243/1.Bachata_Beginner_Basic_Steps_Tutorial_-_Luis_Andrea_xj9do4.mp4",
-                projectNameOfficial: "Dance Surfing Academy",
-                instructor: INSTRUCTOR_NAMES[INSTRUCTOR_KEYS.LUIS_ANDREA],
-              },
-              {
-                id: "v2-rytm-instagram",
-                title: "Rytm bachaty - demonstracja",
-                description: "Praktyczna demonstracja rytmu w bachacie",
-                videoUrl:
-                  "https://res.cloudinary.com/dgifdcgul/video/upload/v1738144745/1.Bachata_Beginner_Basic_Steps_Tutorial_-_Gero_Vivian_nviv5b.mp4",
-                projectNameOfficial: "LA Palace Studio",
+                videoUrl: "https://www.youtube.com/watch?v=Bt3xJInPXPg",
                 instructor: INSTRUCTOR_NAMES[INSTRUCTOR_KEYS.GERO_VIVIAN],
+                projectNameOfficial: "Bachata Dance Academy",
               },
             ],
           },
@@ -102,8 +56,7 @@ export const beginnerCourse: Course = {
                 id: "v2-krok",
                 title: "Krok podstawowy - widok z przodu",
                 description: "Szczegółowe objaśnienie kroku podstawowego",
-                videoUrl:
-                  "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+                videoUrl: "https://www.youtube.com/watch?v=Bt3xJInPXPg",
                 projectNameOfficial: "LA Palace Studio",
                 instructor: "Jan Kowalski",
               },
