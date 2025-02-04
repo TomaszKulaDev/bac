@@ -62,8 +62,8 @@ export const PoplistaHeader = () => {
       {/* Info box */}
       <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
         <p className="text-gray-600">
-          Wybieraj hity, które rozkręcą każdą imprezę! Twój głos ma moc! Nie
-          pozwól, żeby ktoś inny decydował o muzyce na Bachatowej imprezie!
+          Wybieraj hity, które rozkręcą każdą imprezę! Twój głos ma moc! <br />
+          Nie pozwól, żeby ktoś inny decydował o muzyce na Bachatowej imprezie! 
         </p>
       </div>
     </div>
