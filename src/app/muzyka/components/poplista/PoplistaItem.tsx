@@ -6,24 +6,27 @@ import {
   FaArrowUp,
   FaArrowDown,
 } from "react-icons/fa";
+import { Song } from "@/app/muzyka/types";
+
+interface PoplistaSong extends Song {
+  position: number;
+  previousPosition: number;
+  votes: {
+    up: number;
+    down: number;
+  };
+}
 
 interface PoplistaItemProps {
-  song: {
-    position: number;
-    previousPosition: number;
-    title: string;
-    artist: string;
-    thumbnail: string;
-    votes: {
-      up: number;
-      down: number;
-    };
-  };
+  song: PoplistaSong;
 }
 
 export const PoplistaItem = ({ song }: PoplistaItemProps) => {
   const positionChange = song.previousPosition - song.position;
   const isFirstPlace = song.position === 1;
+  const thumbnailUrl = song.youtubeId
+    ? `https://img.youtube.com/vi/${song.youtubeId}/mqdefault.jpg`
+    : "/images/default-song-image.jpg"; // Dodaj domyślny obrazek
 
   if (isFirstPlace) {
     return (
@@ -34,7 +37,7 @@ export const PoplistaItem = ({ song }: PoplistaItemProps) => {
             {/* Miniaturka */}
             <div className="relative w-48 h-48 rounded-lg overflow-hidden shadow-lg">
               <Image
-                src={song.thumbnail}
+                src={thumbnailUrl}
                 alt={song.title}
                 fill
                 className="object-cover"
@@ -94,7 +97,7 @@ export const PoplistaItem = ({ song }: PoplistaItemProps) => {
         {/* Miniaturka */}
         <div className="relative w-16 h-16 rounded-lg overflow-hidden">
           <Image
-            src={song.thumbnail}
+            src={thumbnailUrl}
             alt={song.title}
             fill
             className="object-cover"
