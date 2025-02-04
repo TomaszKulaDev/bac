@@ -18,21 +18,17 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Z_INDEX } from "@/app/constants/zIndex";
 import { useResponsive } from "./hooks/useResponsive";
-// import PlaylistHeader from "./components/PlaylistHeader";
 import { useDebugEffect } from "./hooks/useDebugEffect";
 import LoadingState from "./components/LoadingState";
 import { usePlaylistManagement } from "./hooks/usePlaylistManagement";
 import { useSongNavigation } from "./hooks/useSongNavigation";
 import { useSortedAndFilteredSongs } from "./hooks/useSortedAndFilteredSongs";
-// import { DebugLogger } from "./components/DebugLogger";
-// import RecommendedSongs from "./components/RecommendedSongs";
 import Image from "next/image";
 import { getYouTubeThumbnail } from "./utils/youtube";
 import { usePlaylistData } from "./hooks/usePlaylistData";
 import SongGrid from "./components/songs/SongGrid";
 import { useSecuredPlaylistOperations } from "./hooks/useSecuredPlaylistOperations";
 import { useLike } from "@/app/muzyka/hooks/useLike";
-// import { TopSongs } from "./components/TopSongs";
 import { useSession } from "next-auth/react";
 
 const generateUniqueId = () => {
@@ -312,89 +308,14 @@ const MusicPage: React.FC = () => {
       itemScope
       itemType="https://schema.org/MusicPlaylist"
     >
-      {/* <TopSongs
-        currentSongId={songs[currentSongIndex]?.id}
-        isPlaying={isPlaying}
-        onSongSelect={(songId: string) => {
-          const index = songs.findIndex((s) => s.id === songId);
-          if (index !== -1) {
-            dispatch(setCurrentSongIndex(index));
-            setIsPlaying(true);
-          }
-        }}
-      /> */}
-
       <nav
         aria-label="Filtry muzyki"
         role="navigation"
         className="filters-navigation"
-      >
-        {/* komponenty filtrowania */}
-      </nav>
-      {/* <RecommendedSongs
-        songs={songs}
-        currentSongId={songs[currentSongIndex]?.id}
-        isPlaying={isPlaying}
-        onSongSelect={(songId: string) => {
-          const index = songs.findIndex((s) => s.id === songId);
-          if (index !== -1) {
-            dispatch(setCurrentSongIndex(index));
-            setIsPlaying(true);
-          }
-        }}
-        onAddToPlaylist={(songId: string) => {
-          if (expandedPlaylist) {
-            playlistManagement.addSongToPlaylist(expandedPlaylist, songId);
-          } else {
-            showErrorToast("Wybierz najpierw playlistę");
-          }
-        }}
-        onToggleFavorite={async (songId: string) => {
-          if (isAuthenticated) {
-            try {
-              await handleLike(songId);
-            } catch (error) {
-              showErrorToast("Wystąpił błąd podczas aktualizacji polubienia");
-            }
-          } else {
-            showErrorToast("Musisz być zalogowany, aby dodać do ulubionych");
-          }
-        }}
-        expandedPlaylist={expandedPlaylist}
-      /> */}
-      {/* <SongGrid
-        songs={songs}
-        currentSongId={songs[currentSongIndex]?.id}
-        isPlaying={isPlaying}
-        onSongSelect={(songId) => {
-          const index = songs.findIndex((s) => s.id === songId);
-          if (index !== -1) {
-            dispatch(setCurrentSongIndex(index));
-            setIsPlaying(true);
-          }
-        }}
-        onAddToPlaylist={(songId) => {
-          if (expandedPlaylist) {
-            playlistManagement.addSongToPlaylist(expandedPlaylist, songId);
-          } else {
-            showErrorToast("Wybierz najpierw playlistę");
-          }
-        }}
-        onToggleFavorite={async (songId) => {
-          if (isAuthenticated) {
-            try {
-              await handleLike(songId);
-            } catch (error) {
-              showErrorToast("Wystąpił błąd podczas aktualizacji polubienia");
-            }
-          } else {
-            showErrorToast("Musisz być zalogowany, aby dodać do ulubionych");
-          }
-        }}
-        favorites={new Set()}
-      /> */}
+      ></nav>
+
       <article
-        className="flex-grow flex flex-col lg:flex-row bg-white relative z-10 shadow-xl rounded-t-[2rem] -mt-20"
+        className="flex-grow flex flex-col lg:flex-row bg-white relative z-10 shadow-xl"
         role="article"
         aria-label="Lista utworów"
       >
@@ -498,18 +419,7 @@ const MusicPage: React.FC = () => {
         autoClose={3000}
         style={{ zIndex: Z_INDEX.TOAST }}
       />
-      {/* <DebugLogger
-        playlists={playlists}
-        songs={songs}
-        componentName="MusicPage"
-        additionalInfo={{
-          currentPlaylistId,
-          sortBy,
-          sortOrder,
-          filterText,
-          isAuthenticated,
-        }}
-      /> */}
+
       <article
         className="prose prose-lg"
         itemScope

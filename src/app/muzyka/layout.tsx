@@ -2,7 +2,6 @@
 // Layout jest współdzielony przez wszystkie podstrony w tej sekcji
 
 // Importujemy metadane SEO zdefiniowane w osobnym pliku
-import HeroBanner from "./components/HeroBanner";
 import { metadata } from "./metadata";
 import Breadcrumb from "@/app/muzyka/components/Breadcrumb";
 
