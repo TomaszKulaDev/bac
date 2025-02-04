@@ -3,7 +3,6 @@
 
 // Importujemy metadane SEO zdefiniowane w osobnym pliku
 import { metadata } from "./metadata";
-import Breadcrumb from "@/app/muzyka/components/Breadcrumb";
 
 // Eksportujemy metadane, aby Next.js mógł je wykorzystać
 // export { metadata };
@@ -83,9 +82,6 @@ export default function Layout({
           __html: JSON.stringify(jsonLd),
         }}
       />
-      <Breadcrumb />
-      {/* <HeroBanner /> */}
-      {/* Renderujemy właściwą zawartość podstrony */}
       {children}
     </>
   );

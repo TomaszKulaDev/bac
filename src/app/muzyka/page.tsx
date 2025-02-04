@@ -302,23 +302,11 @@ const MusicPage: React.FC = () => {
 
   return (
     <main
-      className="music-page min-h-screen flex flex-col"
+      className="min-h-screen bg-white"
       role="main"
       aria-label="Kolekcja muzyki Bachata"
-      itemScope
-      itemType="https://schema.org/MusicPlaylist"
     >
-      <nav
-        aria-label="Filtry muzyki"
-        role="navigation"
-        className="filters-navigation"
-      ></nav>
-
-      <article
-        className="flex-grow flex flex-col lg:flex-row bg-white relative z-10 shadow-xl"
-        role="article"
-        aria-label="Lista utworów"
-      >
+      <article className="flex-grow flex flex-col lg:flex-row bg-white relative z-10">
         <div className="w-full p-4">
           <MusicPlayer
             songs={songs}
@@ -356,64 +344,9 @@ const MusicPage: React.FC = () => {
           />
         </div>
       </article>
-      {isMobile && (
-        <aside
-          className="w-full p-8 mt-8 mb-24 bg-gradient-to-br from-blue-50 to-blue-50 rounded-lg shadow-lg"
-          role="complementary"
-          aria-label="Informacje dodatkowe"
-        >
-          <h1 className="text-3xl font-bold mb-6 text-gray-800">
-            Popularne tagi
-          </h1>
-          <div className="flex flex-wrap gap-3 mb-8">
-            {[
-              "bachata",
-              "bachatasensual",
-              "TopBachataMix",
-              "bachatadance",
-              "bachatasongs",
-              "BachataMix",
-            ].map((tag, index) => (
-              <span
-                key={index}
-                className="bg-white text-blue-700 px-4 py-2 rounded-full text-sm font-medium shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer"
-              >
-                #{tag}
-              </span>
-            ))}
-          </div>
-          <article className="prose prose-lg text-gray-700 mb-8 leading-relaxed">
-            <p>
-              Witaj w naszym muzycznym raju <strong>bachaty</strong>! Mamy tu
-              wszystko - od starych, zakurzonych hitów prosto z dominikańskich
-              piwnic, po nowoczesne kawałki <strong>bachaty</strong>, które
-              sprawią, że nawet twoja babcia zacznie kręcić biodrami.
-            </p>
 
-            <p>
-              Nasze playlisty <strong>bachaty</strong> to istne rollercoastery
-              emocji - od romantycznych ballad, przy których będziesz płakać jak
-              bóbr, po energiczne rytmy, które sprawią, że twoje stopy same
-              zaczną tańczyć (nawet jeśli masz dwie lewe!).
-            </p>
+   
 
-            <p>
-              Zapraszamy do muzycznej podróży przez historię{" "}
-              <strong>bachaty</strong> - od czasów, gdy instrumenty robiono z
-              kokosów, po dzisiejsze elektroniczne cuda.
-            </p>
-
-            <p>
-              Gwarantujemy, że po przesłuchaniu naszej kolekcji{" "}
-              <strong>bachaty</strong> albo zostaniesz mistrzem tańca, albo
-              przynajmniej mistrzem udawania, że umiesz tańczyć!
-            </p>
-          </article>
-          <button className="bg-purple-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-purple-700 transition duration-300 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50">
-            Przeglądaj wszystkie tagi
-          </button>
-        </aside>
-      )}
       <ToastContainer
         position="bottom-right"
         autoClose={3000}
