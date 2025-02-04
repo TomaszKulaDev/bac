@@ -70,7 +70,7 @@ export default function BachataLearningPage() {
               lesson={{
                 id: course.id,
                 title: course.title,
-                level: course.level,
+                // level: course.level,
                 duration: course.totalDuration,
                 thumbnail: course.thumbnail,
                 description: course.description,

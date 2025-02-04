@@ -20,12 +20,13 @@ interface LessonCardProps {
   lesson: {
     id: string;
     title: string;
-    level:
-      | "beginner"
-      | "intermediate"
-      | "advanced"
-      | "isolations"
-      | "lady-styling";
+    // level:
+    //   | "beginner"
+    //   | "intermediate"
+    //   | "advanced"
+    //   | "isolations"
+    //   | "lady-styling";
+
     duration: string;
     thumbnail: string;
     description: string;
@@ -114,13 +115,13 @@ const LessonCard: React.FC<LessonCardProps> = ({ lesson }) => {
       </div>
       <div className="p-4">
         <div className="flex items-center gap-2 mb-2">
-          <span
+          {/* <span
             className={`px-2 py-1 rounded-full text-xs font-medium ${getLevelBadgeColor(
               lesson.level
             )}`}
           >
             {getLevelLabel(lesson.level)}
-          </span>
+          </span> */}
           <span className="text-sm text-gray-600">{lesson.duration}</span>
         </div>
         <h3 className="text-lg font-semibold text-gray-900 mb-2">
