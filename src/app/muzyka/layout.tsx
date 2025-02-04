@@ -85,7 +85,7 @@ export default function Layout({
         }}
       />
       <Breadcrumb />
-      <HeroBanner />
+      {/* <HeroBanner /> */}
       {/* Renderujemy właściwą zawartość podstrony */}
       {children}
     </>

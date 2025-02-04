@@ -25,14 +25,14 @@ import { usePlaylistManagement } from "./hooks/usePlaylistManagement";
 import { useSongNavigation } from "./hooks/useSongNavigation";
 import { useSortedAndFilteredSongs } from "./hooks/useSortedAndFilteredSongs";
 // import { DebugLogger } from "./components/DebugLogger";
-import RecommendedSongs from "./components/RecommendedSongs";
+// import RecommendedSongs from "./components/RecommendedSongs";
 import Image from "next/image";
 import { getYouTubeThumbnail } from "./utils/youtube";
 import { usePlaylistData } from "./hooks/usePlaylistData";
 import SongGrid from "./components/songs/SongGrid";
 import { useSecuredPlaylistOperations } from "./hooks/useSecuredPlaylistOperations";
 import { useLike } from "@/app/muzyka/hooks/useLike";
-import { TopSongs } from "./components/TopSongs";
+// import { TopSongs } from "./components/TopSongs";
 import { useSession } from "next-auth/react";
 
 const generateUniqueId = () => {
@@ -312,7 +312,7 @@ const MusicPage: React.FC = () => {
       itemScope
       itemType="https://schema.org/MusicPlaylist"
     >
-      <TopSongs
+      {/* <TopSongs
         currentSongId={songs[currentSongIndex]?.id}
         isPlaying={isPlaying}
         onSongSelect={(songId: string) => {
@@ -322,7 +322,7 @@ const MusicPage: React.FC = () => {
             setIsPlaying(true);
           }
         }}
-      />
+      /> */}
 
       <nav
         aria-label="Filtry muzyki"
@@ -331,7 +331,7 @@ const MusicPage: React.FC = () => {
       >
         {/* komponenty filtrowania */}
       </nav>
-      <RecommendedSongs
+      {/* <RecommendedSongs
         songs={songs}
         currentSongId={songs[currentSongIndex]?.id}
         isPlaying={isPlaying}
@@ -361,8 +361,8 @@ const MusicPage: React.FC = () => {
           }
         }}
         expandedPlaylist={expandedPlaylist}
-      />
-      <SongGrid
+      /> */}
+      {/* <SongGrid
         songs={songs}
         currentSongId={songs[currentSongIndex]?.id}
         isPlaying={isPlaying}
@@ -392,7 +392,7 @@ const MusicPage: React.FC = () => {
           }
         }}
         favorites={new Set()}
-      />
+      /> */}
       <article
         className="flex-grow flex flex-col lg:flex-row bg-white relative z-10 shadow-xl rounded-t-[2rem] -mt-20"
         role="article"
