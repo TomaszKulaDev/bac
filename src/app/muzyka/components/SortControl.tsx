@@ -23,7 +23,7 @@ const SortControl: React.FC<SortControlProps> = ({
       <div className="relative w-full max-w-2xl">
         <input
           type="text"
-          placeholder="Wyszukaj utwór lub artystę..."
+          placeholder="Wyszukaj utwór"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           className="w-full pl-12 pr-4 py-3 
