@@ -8,17 +8,11 @@ export const filterAndSortSongs = (
   return songs.filter((song: PoplistaSong) => {
     switch (filter) {
       case "new":
-        return song.previousPosition === null;
+        return song.position === song.previousPosition;
       case "rising":
-        return (
-          song.previousPosition !== null &&
-          song.position < song.previousPosition
-        );
+        return song.position < song.previousPosition;
       case "falling":
-        return (
-          song.previousPosition !== null &&
-          song.position > song.previousPosition
-        );
+        return song.position > song.previousPosition;
       case "all":
       default:
         return true;

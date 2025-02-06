@@ -3,7 +3,7 @@ import { Song } from "@/app/muzyka/types";
 
 interface PoplistaSong extends Song {
   position: number; // Aktualna pozycja w rankingu
-  previousPosition: number | null;
+  previousPosition: number;
   votes: {
     up: number;
     down: number;
@@ -46,7 +46,8 @@ export const fetchPoplistaSongs = createAsyncThunk(
         .map((song, index) => ({
           ...song,
           position: index + 1,
-          previousPosition: null,
+          previousPosition: index + 1,
+          thumbnail: song.thumbnail || "",
         }));
 
       return sortedSongs;
@@ -67,17 +68,11 @@ const poplistaSlice = createSlice({
       const song = state.songs.find((s) => s.id === songId);
 
       if (song) {
-        // Aktualizuj głosy
+        song.previousPosition = song.position;
+
         if (voteType === "up") song.votes.up++;
         else if (voteType === "down") song.votes.down++;
 
-        // Zapisz poprzednie pozycje
-        state.songs = state.songs.map((s) => ({
-          ...s,
-          previousPosition: s.position,
-        }));
-
-        // Przelicz pozycje na podstawie głosów
         const sortedSongs = [...state.songs]
           .sort(
             (a, b) => b.votes.up - b.votes.down - (a.votes.up - a.votes.down)

@@ -56,12 +56,13 @@ export interface Song {
 
 export interface PoplistaSong extends Song {
   position: number;
-  previousPosition: number | null;
+  previousPosition: number;
   votes: {
     up: number;
     down: number;
   };
   trend?: "up" | "down" | "new";
+  thumbnail?: string;
 }
 
 export type FilterType = "all" | "new" | "rising" | "falling";
