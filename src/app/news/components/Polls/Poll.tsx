@@ -108,13 +108,13 @@ export function Poll({ data, onVote }: PollProps) {
                         className={`w-4 h-4 border-2 rounded flex-shrink-0 transition-colors
                           ${
                             isSelected
-                              ? "border-blue-500 bg-blue-500"
+                              ? "border-amber-500 bg-amber-500"
                               : "border-gray-300"
                           }`}
                       />
                       <span
                         className={`font-medium ${
-                          isSelected ? "text-blue-700" : "text-gray-700"
+                          isSelected ? "text-amber-700" : "text-gray-700"
                         }`}
                       >
                         {option.text}
@@ -122,7 +122,7 @@ export function Poll({ data, onVote }: PollProps) {
                     </span>
 
                     {hasVoted && (
-                      <span className="text-sm font-medium text-blue-600 bg-blue-50 px-2 py-1 rounded">
+                      <span className="text-sm font-medium text-amber-600 bg-amber-50 px-2 py-1 rounded">
                         {percentage}% ({option.votes})
                       </span>
                     )}

@@ -297,7 +297,7 @@ export default function AdminUsersPage() {
           </div>
           <div className="mt-6">
             <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300"
+              className="bg-amber-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300"
               type="submit"
             >
               Utwórz użytkownika
@@ -342,14 +342,14 @@ export default function AdminUsersPage() {
             <button
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
-              className="bg-blue-500 text-white px-4 py-2 rounded mr-2 disabled:bg-gray-300 hover:bg-blue-600 transition duration-300"
+              className="bg-amber-500 text-white px-4 py-2 rounded mr-2 disabled:bg-gray-300 hover:bg-blue-600 transition duration-300"
             >
               Poprzednia
             </button>
             <button
               onClick={() => handlePageChange(currentPage + 1)}
               disabled={currentPage * pageSize >= totalUsers}
-              className="bg-blue-500 text-white px-4 py-2 rounded disabled:bg-gray-300 hover:bg-blue-600 transition duration-300"
+              className="bg-amber-500 text-white px-4 py-2 rounded disabled:bg-gray-300 hover:bg-blue-600 transition duration-300"
             >
               Następna
             </button>

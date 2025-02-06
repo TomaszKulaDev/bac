@@ -67,6 +67,7 @@ import { deletePlaylistAndRefetch } from "@/store/slices/features/playlistSlice"
 import { AppDispatch } from "@/store/store";
 import { useSecuredPlaylistOperations } from "../hooks/useSecuredPlaylistOperations";
 import { usePlaylistManager } from "../hooks/usePlaylistManager";
+import { playerStyles as styles } from "@/styles/common/playerControls";
 
 interface MusicPlayerProps {
   songs: Song[];
@@ -642,20 +643,16 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                   <div className="flex justify-center items-center space-x-4 w-full">
                     <button
                       onClick={() => toggleRepeatMode("playlist")}
-                      className={`text-gray-600 p-3 rounded-full transition-all duration-300 ease-in-out ${
+                      className={`${styles.controls.iconButton} ${
                         repeatMode.playlist === "on"
-                          ? "bg-gray-100 shadow-inner transform translate-y-px"
-                          : "bg-white hover:bg-gray-50 active:bg-gray-100 active:shadow-inner active:transform active:translate-y-px"
+                          ? styles.controls.activeIconButton
+                          : ""
                       }`}
-                      aria-label={`Powtarzaj playlistę: ${
-                        repeatMode.playlist === "on" ? "włączone" : "wyłączone"
-                      }`}
-                      title="Powtarzaj playlistę"
                     >
                       <FaRedo
                         size={28}
                         className={
-                          repeatMode.playlist === "on" ? "text-blue-500" : ""
+                          repeatMode.playlist === "on" ? "text-amber-500" : ""
                         }
                       />
                     </button>
@@ -685,10 +682,10 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                     </button>
                     <button
                       onClick={() => toggleRepeatMode("song")}
-                      className={`text-gray-600 p-3 rounded-full transition-all duration-300 ease-in-out ${
+                      className={`${styles.controls.iconButton} ${
                         repeatMode.song === "on"
-                          ? "bg-gray-100 shadow-inner transform translate-y-px"
-                          : "bg-white hover:bg-gray-50 active:bg-gray-100 active:shadow-inner active:transform active:translate-y-px"
+                          ? "text-amber-500 bg-gray-100"
+                          : ""
                       }`}
                       aria-label={`Powtarzaj utwór: ${
                         repeatMode.song === "on" ? "włączone" : "wyłączone"
@@ -698,7 +695,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
                       <FaRetweet
                         size={28}
                         className={
-                          repeatMode.song === "on" ? "text-blue-500" : ""
+                          repeatMode.song === "on" ? "text-amber-500" : ""
                         }
                       />
                     </button>
@@ -780,6 +777,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
               onCreatePlaylist={() => setIsModalOpen(true)}
               isAuthenticated={isAuthenticated}
               isLoading={isLoading}
+              className={`${isPlaying ? "bg-amber-500" : "bg-gray-200"}`}
             />
           </div>
         </div>

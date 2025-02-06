@@ -7,7 +7,8 @@ import {
   FaRedo,
 } from "react-icons/fa";
 import { RepeatMode } from "../../types";
-import { useKeyboardControls } from '../../hooks/useKeyboardControls';
+import { useKeyboardControls } from "../../hooks/useKeyboardControls";
+import { playerStyles as styles } from "@/styles/common/playerControls";
 
 interface PlaybackControlsProps {
   isPlaying: boolean;
@@ -31,7 +32,7 @@ export const PlaybackControls: React.FC<PlaybackControlsProps> = ({
   useKeyboardControls({
     onTogglePlay,
     onPrevious,
-    onNext
+    onNext,
   });
 
   return (
@@ -42,10 +43,8 @@ export const PlaybackControls: React.FC<PlaybackControlsProps> = ({
     >
       <button
         onClick={() => onToggleRepeatMode("playlist")}
-        className={`text-gray-600 p-2 rounded-full transition-all duration-300 ease-in-out ${
-          repeatMode.playlist === "on"
-            ? "bg-gray-100 shadow-inner transform translate-y-px"
-            : "hover:bg-gray-50 active:bg-gray-100 active:shadow-inner active:transform active:translate-y-px"
+        className={`${styles.controls.iconButton} ${
+          repeatMode.playlist === "on" ? styles.controls.activeIconButton : ""
         }`}
         aria-label={`Powtarzaj playlistę: ${
           repeatMode.playlist === "on" ? "włączone" : "wyłączone"
@@ -53,12 +52,7 @@ export const PlaybackControls: React.FC<PlaybackControlsProps> = ({
         title="Powtarzaj playlistę"
         aria-pressed={repeatMode.playlist === "on"}
       >
-        <FaRedo
-          size={24}
-          className={`${
-            repeatMode.playlist === "on" ? "text-blue-500" : ""
-          } transform rotate-90`}
-        />
+        <FaRedo size={24} className="transform rotate-90" />
       </button>
 
       <button
@@ -73,7 +67,7 @@ export const PlaybackControls: React.FC<PlaybackControlsProps> = ({
 
       <button
         onClick={onTogglePlay}
-        className="bg-white rounded-full p-2 shadow-lg transition-all duration-150 ease-in-out active:scale-95 hover:bg-gray-50"
+        className={styles.controls.primaryButton}
         aria-label={isPlaying ? "Pauza" : "Odtwórz"}
         title={isPlaying ? "Pauza" : "Odtwórz"}
         disabled={isLoading}
@@ -106,7 +100,7 @@ export const PlaybackControls: React.FC<PlaybackControlsProps> = ({
       >
         <FaRetweet
           size={24}
-          className={repeatMode.song === "on" ? "text-blue-500" : ""}
+          className={repeatMode.song === "on" ? "text-amber-500" : ""}
         />
       </button>
     </div>

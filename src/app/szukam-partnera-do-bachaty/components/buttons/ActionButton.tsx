@@ -45,10 +45,10 @@ export const ActionButton = memo(
       success: "bg-green-500/90 hover:bg-green-500",
       warning: "bg-yellow-500/90 hover:bg-yellow-500",
       danger: "bg-red-500/90 hover:bg-red-500",
-      info: "bg-blue-500/90 hover:bg-blue-500",
+      info: "bg-amber-400/90 hover:bg-amber-400",
     };
 
-    const activeClasses = isActive ? "ring-2 ring-offset-2" : "";
+    const activeClasses = isActive ? "ring-2 ring-amber-500 ring-offset-2" : "";
     const disabledClasses = disabled ? "opacity-50 cursor-not-allowed" : "";
 
     return (
