@@ -34,7 +34,6 @@ export const fetchPoplistaSongs = createAsyncThunk(
           ...song,
           votes: {
             up: song.likesCount || 0,
-            down: 0,
           },
           thumbnail: song.thumbnail || "/images/default-song-image.jpg",
         }))
@@ -76,39 +75,21 @@ const poplistaSlice = createSlice({
       const { songId, voteType } = action.payload;
       const song = state.songs.find((s) => s.id === songId);
 
-      if (song) {
-        const oldPosition = song.position;
+      if (song && voteType === "up") {
+        song.votes.up++;
 
-        if (voteType === "up") song.votes.up++;
-        else if (voteType === "down") song.votes.down++;
-
+        // Sortuj tylko po votes.up
         const sortedSongs = [...state.songs]
-          .sort(
-            (a, b) => b.votes.up - b.votes.down - (a.votes.up - a.votes.down)
-          )
-          .map((s, index) => {
-            const newPosition = index + 1;
-            const positionChange = Math.abs(s.position - newPosition);
+          .sort((a, b) => b.votes.up - a.votes.up)
+          .map((s, index) => ({
+            ...s,
+            position: index + 1,
+            previousPosition: s.position,
+            positionChange: Math.abs(s.position - (index + 1)),
+            trend: s.trend, // zachowujemy istniejący trend
+          })) as PoplistaSong[]; // dodajemy jawne rzutowanie typu
 
-            let newTrend: PoplistaSong["trend"];
-            if (s.position > newPosition) {
-              newTrend = "up";
-            } else if (s.position < newPosition) {
-              newTrend = "down";
-            } else {
-              newTrend = "new";
-            }
-
-            return {
-              ...s,
-              previousPosition: s.position,
-              position: newPosition,
-              positionChange,
-              trend: newTrend,
-            };
-          });
-
-        state.songs = sortedSongs as PoplistaSong[];
+        state.songs = sortedSongs;
       }
     },
     setFilter: (state, action) => {

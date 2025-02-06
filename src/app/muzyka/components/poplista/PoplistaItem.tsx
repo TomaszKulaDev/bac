@@ -1,11 +1,5 @@
 import Image from "next/image";
-import {
-  FaPlay,
-  FaThumbsUp,
-  FaThumbsDown,
-  FaArrowUp,
-  FaArrowDown,
-} from "react-icons/fa";
+import { FaPlay, FaThumbsUp } from "react-icons/fa";
 import { Song } from "@/app/muzyka/types";
 import { useDispatch } from "react-redux";
 import { setCurrentSongIndex } from "@/store/slices/features/songsSlice";
@@ -17,9 +11,8 @@ interface PoplistaSong extends Song {
   previousPosition: number;
   votes: {
     up: number;
-    down: number;
   };
-  trend: "up" | "down" | "new";
+  trend: "new" | null;
   positionChange: number;
 }
 
@@ -80,14 +73,10 @@ export const PoplistaItem = ({ song }: PoplistaItemProps) => {
               <p className="text-xl text-white/90 mb-6">{song.artist}</p>
 
               {/* Głosowanie */}
-              <div className="flex justify-center md:justify-start gap-4">
+              <div className="flex justify-center md:justify-start">
                 <button className="flex items-center gap-2 px-6 py-3 bg-white text-amber-600 rounded-full hover:bg-gray-100 transition text-lg">
                   <FaThumbsUp />
                   <span>{song.votes.up}</span>
-                </button>
-                <button className="flex items-center gap-2 px-6 py-3 bg-white/10 text-white rounded-full hover:bg-white/20 transition text-lg">
-                  <FaThumbsDown />
-                  <span>{song.votes.down}</span>
                 </button>
               </div>
             </div>
@@ -131,14 +120,10 @@ export const PoplistaItem = ({ song }: PoplistaItemProps) => {
         </div>
 
         {/* Głosowanie */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center">
           <button className="flex items-center gap-2 px-4 py-2 bg-emerald-50 text-emerald-600 rounded-full hover:bg-emerald-100 transition">
             <FaThumbsUp />
             <span>{song.votes.up}</span>
-          </button>
-          <button className="flex items-center gap-2 px-4 py-2 bg-rose-50 text-rose-600 rounded-full hover:bg-rose-100 transition">
-            <FaThumbsDown />
-            <span>{song.votes.down}</span>
           </button>
         </div>
       </div>

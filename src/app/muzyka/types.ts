@@ -59,9 +59,8 @@ export interface PoplistaSong extends Song {
   previousPosition: number;
   votes: {
     up: number;
-    down: number;
   };
-  trend: "up" | "down" | "new";
+  trend: "new" | null;
   positionChange: number;
   thumbnail?: string;
   isVisible: boolean;
