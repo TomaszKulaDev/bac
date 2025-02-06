@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { setCurrentSongIndex } from "@/store/slices/features/songsSlice";
 import { setCurrentPlaylistId } from "@/store/slices/features/playlistSlice";
 import { togglePlayback } from "@/store/slices/playerSlice";
+import { useLike } from "@/app/muzyka/hooks/useLike";
 
 interface PoplistaSong extends Song {
   position: number;
@@ -28,6 +29,7 @@ const TrendIndicator = ({ song }: { song: PoplistaSong }) => {
 };
 
 export const PoplistaItem = ({ song }: PoplistaItemProps) => {
+  const { handleLike } = useLike();
   const dispatch = useDispatch();
 
   const positionChange = song.previousPosition - song.position;
@@ -40,6 +42,15 @@ export const PoplistaItem = ({ song }: PoplistaItemProps) => {
     dispatch(setCurrentPlaylistId("poplista"));
     dispatch(setCurrentSongIndex(song.position - 1));
     dispatch(togglePlayback(true));
+  };
+
+  const handleLikeClick = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    try {
+      await handleLike(song._id);
+    } catch (error) {
+      console.error("Error handling like:", error);
+    }
   };
 
   if (isFirstPlace) {
@@ -74,9 +85,12 @@ export const PoplistaItem = ({ song }: PoplistaItemProps) => {
 
               {/* Głosowanie */}
               <div className="flex justify-center md:justify-start">
-                <button className="flex items-center gap-2 px-6 py-3 bg-white text-amber-600 rounded-full hover:bg-gray-100 transition text-lg">
+                <button
+                  onClick={handleLikeClick}
+                  className="flex items-center gap-2 px-6 py-3 bg-white text-amber-600 rounded-full hover:bg-gray-100 transition text-lg"
+                >
                   <FaThumbsUp />
-                  <span>{song.votes.up}</span>
+                  <span>{song.likesCount}</span>
                 </button>
               </div>
             </div>
@@ -121,9 +135,12 @@ export const PoplistaItem = ({ song }: PoplistaItemProps) => {
 
         {/* Głosowanie */}
         <div className="flex items-center">
-          <button className="flex items-center gap-2 px-4 py-2 bg-emerald-50 text-emerald-600 rounded-full hover:bg-emerald-100 transition">
+          <button
+            onClick={handleLikeClick}
+            className="flex items-center gap-2 px-4 py-2 bg-emerald-50 text-emerald-600 rounded-full hover:bg-emerald-100 transition"
+          >
             <FaThumbsUp />
-            <span>{song.votes.up}</span>
+            <span>{song.likesCount}</span>
           </button>
         </div>
       </div>
