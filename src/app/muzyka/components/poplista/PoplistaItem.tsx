@@ -7,6 +7,10 @@ import {
   FaArrowDown,
 } from "react-icons/fa";
 import { Song } from "@/app/muzyka/types";
+import { useDispatch } from "react-redux";
+import { setCurrentSongIndex } from "@/store/slices/features/songsSlice";
+import { setCurrentPlaylistId } from "@/store/slices/features/playlistSlice";
+import { togglePlayback } from "@/store/slices/playerSlice";
 
 interface PoplistaSong extends Song {
   position: number;
@@ -22,11 +26,19 @@ interface PoplistaItemProps {
 }
 
 export const PoplistaItem = ({ song }: PoplistaItemProps) => {
+  const dispatch = useDispatch();
+
   const positionChange = song.previousPosition - song.position;
   const isFirstPlace = song.position === 1;
   const thumbnailUrl = song.youtubeId
     ? `https://img.youtube.com/vi/${song.youtubeId}/mqdefault.jpg`
     : "/images/default-song-image.jpg"; // Dodaj domyślny obrazek
+
+  const handlePlay = () => {
+    dispatch(setCurrentPlaylistId("poplista"));
+    dispatch(setCurrentSongIndex(song.position - 1));
+    dispatch(togglePlayback(true));
+  };
 
   if (isFirstPlace) {
     return (
@@ -42,7 +54,10 @@ export const PoplistaItem = ({ song }: PoplistaItemProps) => {
                 fill
                 className="object-cover"
               />
-              <button className="absolute inset-0 bg-black/50 opacity-0 hover:opacity-100 transition flex items-center justify-center">
+              <button
+                onClick={handlePlay}
+                className="absolute inset-0 bg-black/50 opacity-0 hover:opacity-100 transition flex items-center justify-center"
+              >
                 <FaPlay className="text-white text-4xl" />
               </button>
             </div>
@@ -102,7 +117,10 @@ export const PoplistaItem = ({ song }: PoplistaItemProps) => {
             fill
             className="object-cover"
           />
-          <button className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+          <button
+            onClick={handlePlay}
+            className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center"
+          >
             <FaPlay className="text-white text-2xl" />
           </button>
         </div>

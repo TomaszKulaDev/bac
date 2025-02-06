@@ -7,14 +7,33 @@ import {
   FaTiktok,
   FaShare,
 } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { setCurrentSongIndex } from "@/store/slices/features/songsSlice";
+import { setCurrentPlaylistId } from "@/store/slices/features/playlistSlice";
+import { togglePlayback } from "@/store/slices/playerSlice";
+import { RootState } from "@/store/store";
 
 export const PoplistaHeader = () => {
+  const dispatch = useDispatch();
+  const songs = useSelector((state: RootState) => state.poplista.songs);
+
+  const handlePlayAll = () => {
+    if (songs.length > 0) {
+      dispatch(setCurrentPlaylistId("poplista"));
+      dispatch(setCurrentSongIndex(0)); // Zacznij od pierwszego utworu
+      dispatch(togglePlayback(true));
+    }
+  };
+
   return (
     <div className="mb-8">
       <div className="flex items-center justify-between mb-4">
         {/* Lewa strona - Tytuł z przyciskiem play */}
         <div className="flex items-center gap-4">
-          <button className="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center hover:bg-amber-600 transition-all shadow-lg group">
+          <button
+            onClick={handlePlayAll}
+            className="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center hover:bg-amber-600 transition-all shadow-lg group"
+          >
             <FaPlay className="text-white text-xl ml-1 group-hover:scale-110 transition-transform" />
           </button>
           <div>
@@ -63,7 +82,7 @@ export const PoplistaHeader = () => {
       <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
         <p className="text-gray-600">
           Wybieraj hity, które rozkręcą każdą imprezę! Twój głos ma moc! <br />
-          Nie pozwól, żeby ktoś inny decydował o muzyce na Bachatowej imprezie! 
+          Nie pozwól, żeby ktoś inny decydował o muzyce na Bachatowej imprezie!
         </p>
       </div>
     </div>

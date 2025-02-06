@@ -43,25 +43,18 @@ export const PoplistaList = () => {
     .filter((song: PoplistaSong) => {
       switch (filter) {
         case "new":
-          return song.position < song.previousPosition;
+          return (
+            !song.previousPosition || song.position < song.previousPosition
+          );
         case "rising":
-          return song.position < song.previousPosition;
+          return song.previousPosition && song.position < song.previousPosition;
         case "falling":
-          return song.position > song.previousPosition;
+          return song.previousPosition && song.position > song.previousPosition;
         default:
           return true;
       }
     })
-    .sort(
-      (a: PoplistaSong, b: PoplistaSong) =>
-        b.votes.up - b.votes.down - (a.votes.up - a.votes.down)
-    )
-    .map((song: PoplistaSong, index: number) => ({
-      ...song,
-      position: index + 1,
-      previousPosition: song.previousPosition || index + 1,
-    }))
-    .slice(0, displayLimit);
+    .sort((a: PoplistaSong, b: PoplistaSong) => a.position - b.position);
 
   const hasMore = songs.length > displayLimit;
 
