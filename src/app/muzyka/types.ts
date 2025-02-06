@@ -1,7 +1,11 @@
 import { UniqueIdentifier } from "@dnd-kit/core";
 import { SensorDescriptor, SensorOptions } from "@dnd-kit/core";
 import { DragEndEvent } from "@dnd-kit/core";
-import { DifficultyLevel, StyleType, TempoType } from './components/songs/SongGrid/types';
+import {
+  DifficultyLevel,
+  StyleType,
+  TempoType,
+} from "./components/songs/SongGrid/types";
 
 // Interfejs reprezentujący playlistę
 export interface Playlist {
@@ -19,24 +23,26 @@ export interface Song {
   id: string;
   title: string;
   artist: string;
+  duration: number;
   youtubeId: string;
+  dateAdded: string;
   thumbnail?: string;
-  
+
   // Pola dla difficulty
   beginnerFriendly: boolean;
   intermediate: boolean;
   advanced: boolean;
-  
+
   // Pola dla style
   sensual: boolean;
   dominicana: boolean;
   impro: boolean;
-  
+
   // Pola dla tempo
   slow: boolean;
   medium: boolean;
   fast: boolean;
-  
+
   // Pozostałe pola
   difficulty: DifficultyLevel;
   style: StyleType;
@@ -47,6 +53,17 @@ export interface Song {
   playlists: string[];
   __v?: number;
 }
+
+export interface PoplistaSong extends Song {
+  position: number;
+  previousPosition: number;
+  votes: {
+    up: number;
+    down: number;
+  };
+}
+
+export type FilterType = "all" | "new" | "rising" | "falling";
 
 // Interfejs właściwości komponentu odtwarzacza muzyki
 export interface MusicPlayerProps {
@@ -163,4 +180,4 @@ interface LoadMoreButtonProps {
   remainingSongs?: number;
 }
 
-export type SongLevel = 'beginner' | 'intermediate' | 'advanced' | 'impro';
+export type SongLevel = "beginner" | "intermediate" | "advanced" | "impro";

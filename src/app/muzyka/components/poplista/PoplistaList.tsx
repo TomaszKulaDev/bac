@@ -4,17 +4,9 @@ import { AppDispatch, RootState } from "@/store/store";
 import { fetchPoplistaSongs } from "@/store/slices/features/poplistaSlice";
 import { PoplistaItem } from "./PoplistaItem";
 import { PoplistaItemSkeleton } from "./PoplistaItemSkeleton";
-import { Song } from "@/app/muzyka/types";
 import { FaChevronDown } from "react-icons/fa";
-
-interface PoplistaSong extends Song {
-  position: number;
-  previousPosition: number;
-  votes: {
-    up: number;
-    down: number;
-  };
-}
+import { filterAndSortSongs } from "@/app/muzyka/utils/poplistaSort";
+import { PoplistaSong } from "@/app/muzyka/types";
 
 const ITEMS_PER_PAGE = 50;
 
@@ -39,32 +31,10 @@ export const PoplistaList = () => {
     );
   }
 
-  // Najpierw filtrujemy i sortujemy WSZYSTKIE utwory
-  const sortedAndFilteredSongs = songs
-    .filter((song: PoplistaSong) => {
-      switch (filter) {
-        case "new":
-          return (
-            !song.previousPosition || song.position < song.previousPosition
-          );
-        case "rising":
-          return song.previousPosition && song.position < song.previousPosition;
-        case "falling":
-          return song.previousPosition && song.position > song.previousPosition;
-        case "all":
-        default:
-          // Dla "all" i domyślnie sortujemy po głosach
-          return true;
-      }
-    })
-    .sort((a: PoplistaSong, b: PoplistaSong) => {
-      // Zawsze sortujemy po głosach (up - down)
-      const scoreA = a.votes.up - a.votes.down;
-      const scoreB = b.votes.up - b.votes.down;
-      return scoreB - scoreA;
-    });
+  // Używamy wyeksportowanej funkcji do sortowania
+  const sortedAndFilteredSongs = filterAndSortSongs(songs, filter);
 
-  // Dopiero potem przycinamy do limitu wyświetlania
+  // Przycinamy do limitu wyświetlania
   const displayedSongs = sortedAndFilteredSongs.slice(0, displayLimit);
 
   // Sprawdzamy, czy są jeszcze utwory do załadowania
