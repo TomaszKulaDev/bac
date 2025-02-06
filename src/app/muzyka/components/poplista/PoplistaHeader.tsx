@@ -17,6 +17,15 @@ export const PoplistaHeader = () => {
   const dispatch = useDispatch();
   const songs = useSelector((state: RootState) => state.poplista.songs);
 
+  // Obliczamy sumę wszystkich głosów
+  const totalVotes = songs.reduce(
+    (sum, song) => sum + (song.likesCount || 0),
+    0
+  );
+
+  // Formatujemy liczbę głosów
+  const formattedVotes = new Intl.NumberFormat("pl-PL").format(totalVotes);
+
   const handlePlayAll = () => {
     if (songs.length > 0) {
       dispatch(setCurrentPlaylistId("poplista"));
@@ -49,10 +58,12 @@ export const PoplistaHeader = () => {
 
         {/* Prawa strona - Statystyki i social media */}
         <div className="flex flex-wrap items-center gap-4 w-full sm:w-auto">
-          {/* Licznik głosów */}
+          {/* Licznik głosów - aktualizowany dynamicznie */}
           <div className="flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 bg-gray-100 rounded-lg text-sm">
             <FaChartLine className="text-gray-600" />
-            <span className="text-gray-700 font-medium">1,234 głosów</span>
+            <span className="text-gray-700 font-medium">
+              {formattedVotes} {totalVotes === 1 ? "głos" : "głosów"}
+            </span>
           </div>
 
           {/* Social Media */}
