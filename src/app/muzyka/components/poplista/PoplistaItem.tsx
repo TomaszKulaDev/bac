@@ -127,17 +127,17 @@ export const PoplistaItem = ({ song }: PoplistaItemProps) => {
 
   // Standardowy wygląd dla pozostałych pozycji
   return (
-    <div className="bg-gray-50 rounded-xl p-3 sm:p-4 border border-gray-100 hover:border-gray-200 transition group h-[72px] sm:h-[84px]">
-      <div className="flex items-center gap-3 sm:gap-4 h-full">
-        {/* Pozycja - stała szerokość */}
-        <div className="w-8 sm:w-12 text-center flex-shrink-0">
+    <div className="bg-gray-50 rounded-xl p-2 sm:p-4 border border-gray-100 hover:border-gray-200 transition group h-[72px] sm:h-[84px]">
+      <div className="flex items-center gap-2 sm:gap-4 h-full">
+        {/* Pozycja - mniejsza szerokość na mobile */}
+        <div className="w-6 sm:w-12 text-center flex-shrink-0">
           <div className="text-lg sm:text-xl font-bold text-gray-900">
             {song.position}
           </div>
           <TrendIndicator song={song} />
         </div>
 
-        {/* Miniaturka - stałe wymiary */}
+        {/* Miniaturka - bez zmian w rozmiarze */}
         <div className="relative w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 rounded-lg overflow-hidden">
           <Image
             src={thumbnailUrl}
@@ -153,8 +153,8 @@ export const PoplistaItem = ({ song }: PoplistaItemProps) => {
           </button>
         </div>
 
-        {/* Informacje o utworze - elastyczna szerokość z ograniczeniem */}
-        <div className="flex-grow min-w-0 max-w-[calc(100%-180px)] sm:max-w-[calc(100%-220px)]">
+        {/* Informacje o utworze - więcej miejsca na mobile */}
+        <div className="flex-grow min-w-0 max-w-[calc(100%-160px)] sm:max-w-[calc(100%-220px)]">
           <h3 className="font-semibold text-gray-900 truncate text-sm sm:text-base">
             {song.title}
           </h3>
@@ -163,17 +163,17 @@ export const PoplistaItem = ({ song }: PoplistaItemProps) => {
           </p>
         </div>
 
-        {/* Głosowanie - stała szerokość */}
+        {/* Głosowanie - mniejszy na mobile */}
         <div className="flex items-center flex-shrink-0 ml-auto">
           <button
             onClick={handleLikeClick}
-            className={`flex items-center gap-1 sm:gap-2 px-3 py-1.5 sm:px-4 sm:py-2 
+            className={`flex items-center gap-1 sm:gap-2 px-2 py-1.5 sm:px-4 sm:py-2 
               ${
                 isLiked
                   ? "bg-emerald-100 text-emerald-600"
                   : "bg-emerald-50 text-emerald-600 hover:bg-emerald-100"
               } 
-              rounded-full transition text-sm sm:text-base min-w-[70px] sm:min-w-[80px] justify-center`}
+              rounded-full transition text-sm sm:text-base min-w-[60px] sm:min-w-[80px] justify-center`}
           >
             <FaThumbsUp className="text-xs sm:text-sm" />
             <span>{song.likesCount}</span>

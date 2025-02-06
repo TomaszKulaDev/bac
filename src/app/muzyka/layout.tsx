@@ -94,7 +94,8 @@ export default function Layout({
           __html: JSON.stringify(jsonLd),
         }}
       />
-      {children}
+      {/* Usuwamy padding na mobile */}
+      <div className="px-0 sm:px-4">{children}</div>
     </>
   );
 }

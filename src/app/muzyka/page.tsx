@@ -307,12 +307,12 @@ const MusicPage: React.FC = () => {
       <article className="flex-grow flex flex-col bg-white relative z-10">
         <div className="w-full">
           <div className="mb-8 bg-gray-50 border-y border-gray-100">
-            <div className="max-w-[1920px] mx-auto px-4 py-8">
+            <div className="max-w-[1920px] mx-auto px-0 sm:px-4 py-4 sm:py-8">
               <PoplistaContainer />
             </div>
           </div>
 
-          <div className="max-w-[1920px] mx-auto px-4">
+          <div className="max-w-[1920px] mx-auto px-0 sm:px-4">
             <MusicPlayer
               songs={songs}
               onCreatePlaylist={handleCreateEmptyPlaylist}
