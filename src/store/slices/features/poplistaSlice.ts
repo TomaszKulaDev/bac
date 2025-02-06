@@ -15,6 +15,9 @@ const initialState: PoplistaState = {
   filter: "all",
 };
 
+// Dodajmy stałą określającą, jak długo utwór jest "nowy"
+const NEW_SONG_THRESHOLD = 7 * 24 * 60 * 60 * 1000; // 7 dni w milisekundach
+
 export const fetchPoplistaSongs = createAsyncThunk(
   "poplista/fetchSongs",
   async (_, { rejectWithValue }) => {
@@ -23,6 +26,7 @@ export const fetchPoplistaSongs = createAsyncThunk(
       if (!response.ok) throw new Error("Failed to fetch songs");
 
       const songs = await response.json();
+      const now = new Date().getTime();
 
       const sortedSongs = [...songs]
         .map((song) => ({
@@ -34,13 +38,18 @@ export const fetchPoplistaSongs = createAsyncThunk(
           thumbnail: song.thumbnail || "/images/default-song-image.jpg",
         }))
         .sort((a, b) => b.votes.up - a.votes.up)
-        .map((song, index) => ({
-          ...song,
-          position: index + 1,
-          previousPosition: index + 1,
-          positionChange: 0,
-          trend: "new" as const,
-        }));
+        .map((song, index) => {
+          const isNew =
+            new Date(song.createdAt).getTime() > now - NEW_SONG_THRESHOLD;
+
+          return {
+            ...song,
+            position: index + 1,
+            previousPosition: index + 1,
+            positionChange: 0,
+            trend: isNew ? "new" : ("up" as const),
+          };
+        });
 
       return sortedSongs;
     } catch (error) {
