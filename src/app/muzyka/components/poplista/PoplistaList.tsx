@@ -31,18 +31,16 @@ export const PoplistaList = () => {
     );
   }
 
-  // Używamy wyeksportowanej funkcji do sortowania
-  const sortedAndFilteredSongs = filterAndSortSongs(songs, filter);
-
-  // Przycinamy do limitu wyświetlania
-  const displayedSongs = sortedAndFilteredSongs.slice(0, displayLimit);
+  // Filtrujemy, ale nie sortujemy - pozycje są już prawidłowe
+  const filteredSongs = filterAndSortSongs(songs, filter);
+  const displayedSongs = filteredSongs.slice(0, displayLimit);
 
   // Sprawdzamy, czy są jeszcze utwory do załadowania
-  const hasMore = sortedAndFilteredSongs.length > displayLimit;
+  const hasMore = filteredSongs.length > displayLimit;
 
   const loadMore = () => {
     setDisplayLimit((prev) =>
-      Math.min(prev + ITEMS_PER_PAGE, sortedAndFilteredSongs.length)
+      Math.min(prev + ITEMS_PER_PAGE, filteredSongs.length)
     );
   };
 
@@ -52,7 +50,7 @@ export const PoplistaList = () => {
       {process.env.NODE_ENV === "development" && (
         <div className="mb-4 p-4 bg-gray-100 rounded-lg">
           <p>Aktualny filtr: {filter}</p>
-          <p>Całkowita liczba utworów: {sortedAndFilteredSongs.length}</p>
+          <p>Całkowita liczba utworów: {filteredSongs.length}</p>
           <p>Wyświetlane utwory: {displayedSongs.length}</p>
           <p>Limit wyświetlania: {displayLimit}</p>
           <p>
@@ -69,7 +67,7 @@ export const PoplistaList = () => {
       )}
 
       <div className="space-y-4">
-        {displayedSongs.map((song: PoplistaSong) => (
+        {displayedSongs.map((song) => (
           <PoplistaItem key={song.id} song={song} />
         ))}
 
@@ -89,8 +87,7 @@ export const PoplistaList = () => {
           >
             <FaChevronDown className="text-gray-400 group-hover:text-gray-600 transition-colors" />
             <span>
-              Pokaż więcej ({sortedAndFilteredSongs.length - displayLimit}{" "}
-              pozostało)
+              Pokaż więcej ({filteredSongs.length - displayLimit} pozostało)
             </span>
           </button>
         )}
