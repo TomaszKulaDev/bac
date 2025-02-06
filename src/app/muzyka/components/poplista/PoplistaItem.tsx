@@ -28,25 +28,10 @@ interface PoplistaItemProps {
 }
 
 const TrendIndicator = ({ song }: { song: PoplistaSong }) => {
-  if (!song.trend || song.trend === "new") return null;
-
-  const isUp = song.trend === "up";
-  const color = isUp ? "text-emerald-600" : "text-rose-600";
-  const Icon = isUp ? FaArrowUp : FaArrowDown;
-
-  return (
-    <div
-      className={`absolute -top-2 -right-2 flex items-center gap-1 ${color}`}
-    >
-      <Icon
-        className={`text-sm ${isUp ? "animate-bounce" : "animate-pulse"}`}
-      />
-      <span className="text-xs font-semibold">
-        {isUp ? "+" : "-"}
-        {song.positionChange}
-      </span>
-    </div>
-  );
+  if (song.trend === "new") {
+    return <div className="text-xs font-bold text-amber-500">NEW</div>;
+  }
+  return null;
 };
 
 export const PoplistaItem = ({ song }: PoplistaItemProps) => {
