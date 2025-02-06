@@ -8,6 +8,8 @@ import { togglePlayback } from "@/store/slices/playerSlice";
 import { useLike } from "@/app/muzyka/hooks/useLike";
 import { RootState } from "@/store/store";
 import { updateVotes } from "@/store/slices/features/poplistaSlice";
+import { useSession } from "next-auth/react";
+import { MusicTooltip } from "../ui/MusicTooltip";
 
 interface PoplistaSong extends Song {
   position: number;
@@ -31,6 +33,7 @@ const TrendIndicator = ({ song }: { song: PoplistaSong }) => {
 };
 
 export const PoplistaItem = ({ song }: PoplistaItemProps) => {
+  const { data: session } = useSession();
   const { handleLike } = useLike();
   const dispatch = useDispatch();
 
@@ -54,14 +57,13 @@ export const PoplistaItem = ({ song }: PoplistaItemProps) => {
 
   const handleLikeClick = async (e: React.MouseEvent) => {
     e.stopPropagation();
+    if (!session) return; // Blokujemy akcję jeśli użytkownik nie jest zalogowany
     try {
       const result = await handleLike(song._id);
-
-      // Aktualizujemy stan w popliście
       dispatch(
         updateVotes({
           songId: song._id,
-          likesCount: song.likesCount + (isLiked ? -1 : 1),
+          likesCount: result.likesCount,
         })
       );
     } catch (error) {
@@ -104,19 +106,25 @@ export const PoplistaItem = ({ song }: PoplistaItemProps) => {
 
               {/* Głosowanie */}
               <div className="flex justify-center sm:justify-start">
-                <button
-                  onClick={handleLikeClick}
-                  className={`flex items-center gap-2 px-4 py-2 sm:px-6 sm:py-3 
-                    ${
-                      isLiked
-                        ? "bg-white text-amber-600"
-                        : "bg-white/90 text-amber-500 hover:bg-white"
-                    } 
-                    rounded-full transition text-base sm:text-lg`}
+                <MusicTooltip
+                  content={!session ? "Zaloguj się, aby polubić" : ""}
+                  position="left"
                 >
-                  <FaThumbsUp />
-                  <span>{song.likesCount}</span>
-                </button>
+                  <button
+                    onClick={handleLikeClick}
+                    className={`flex items-center gap-2 px-4 py-2 sm:px-6 sm:py-3 
+                      ${!session ? "opacity-50 cursor-not-allowed" : ""}
+                      ${
+                        isLiked
+                          ? "bg-white text-amber-600"
+                          : "bg-white/90 text-amber-500 hover:bg-white"
+                      } 
+                      rounded-full transition text-base sm:text-lg`}
+                  >
+                    <FaThumbsUp />
+                    <span>{song.likesCount}</span>
+                  </button>
+                </MusicTooltip>
               </div>
             </div>
           </div>
@@ -163,21 +171,27 @@ export const PoplistaItem = ({ song }: PoplistaItemProps) => {
           </p>
         </div>
 
-        {/* Głosowanie - mniejszy na mobile */}
+        {/* Głosowanie - z tooltipem dla niezalogowanych */}
         <div className="flex items-center flex-shrink-0 ml-auto">
-          <button
-            onClick={handleLikeClick}
-            className={`flex items-center gap-1 sm:gap-2 px-2 py-1.5 sm:px-4 sm:py-2 
-              ${
-                isLiked
-                  ? "bg-emerald-100 text-emerald-600"
-                  : "bg-emerald-50 text-emerald-600 hover:bg-emerald-100"
-              } 
-              rounded-full transition text-sm sm:text-base min-w-[60px] sm:min-w-[80px] justify-center`}
+          <MusicTooltip
+            content={!session ? "Zaloguj się, aby polubić" : ""}
+            position="left"
           >
-            <FaThumbsUp className="text-xs sm:text-sm" />
-            <span>{song.likesCount}</span>
-          </button>
+            <button
+              onClick={handleLikeClick}
+              className={`flex items-center gap-1 sm:gap-2 px-2 py-1.5 sm:px-4 sm:py-2 
+                ${!session ? "opacity-50 cursor-not-allowed" : ""}
+                ${
+                  isLiked
+                    ? "bg-emerald-100 text-emerald-600"
+                    : "bg-emerald-50 text-emerald-600 hover:bg-emerald-100"
+                } 
+                rounded-full transition text-sm sm:text-base min-w-[60px] sm:min-w-[80px] justify-center`}
+            >
+              <FaThumbsUp className="text-xs sm:text-sm" />
+              <span>{song.likesCount}</span>
+            </button>
+          </MusicTooltip>
         </div>
       </div>
     </div>
