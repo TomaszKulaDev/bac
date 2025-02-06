@@ -1,11 +1,13 @@
 import Image from "next/image";
 import { FaPlay, FaThumbsUp } from "react-icons/fa";
 import { Song } from "@/app/muzyka/types";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setCurrentSongIndex } from "@/store/slices/features/songsSlice";
 import { setCurrentPlaylistId } from "@/store/slices/features/playlistSlice";
 import { togglePlayback } from "@/store/slices/playerSlice";
 import { useLike } from "@/app/muzyka/hooks/useLike";
+import { RootState } from "@/store/store";
+import { updateVotes } from "@/store/slices/features/poplistaSlice";
 
 interface PoplistaSong extends Song {
   position: number;
@@ -32,6 +34,12 @@ export const PoplistaItem = ({ song }: PoplistaItemProps) => {
   const { handleLike } = useLike();
   const dispatch = useDispatch();
 
+  // Dodajemy selektor do sprawdzania stanu lajków
+  const isLiked = useSelector(
+    (state: RootState) =>
+      state.songs.songs.find((s) => s._id === song._id)?.isLiked
+  );
+
   const positionChange = song.previousPosition - song.position;
   const isFirstPlace = song.position === 1;
   const thumbnailUrl = song.youtubeId
@@ -47,7 +55,15 @@ export const PoplistaItem = ({ song }: PoplistaItemProps) => {
   const handleLikeClick = async (e: React.MouseEvent) => {
     e.stopPropagation();
     try {
-      await handleLike(song._id);
+      const result = await handleLike(song._id);
+
+      // Aktualizujemy stan w popliście
+      dispatch(
+        updateVotes({
+          songId: song._id,
+          likesCount: song.likesCount + (isLiked ? -1 : 1),
+        })
+      );
     } catch (error) {
       console.error("Error handling like:", error);
     }
@@ -87,9 +103,17 @@ export const PoplistaItem = ({ song }: PoplistaItemProps) => {
               <div className="flex justify-center md:justify-start">
                 <button
                   onClick={handleLikeClick}
-                  className="flex items-center gap-2 px-6 py-3 bg-white text-amber-600 rounded-full hover:bg-gray-100 transition text-lg"
+                  className={`flex items-center gap-2 px-6 py-3 
+                    ${
+                      isLiked
+                        ? "bg-white text-amber-600"
+                        : "bg-white text-amber-600 hover:bg-gray-100"
+                    } 
+                    rounded-full transition text-lg`}
                 >
-                  <FaThumbsUp />
+                  <FaThumbsUp
+                    className={isLiked ? "text-amber-600" : "text-amber-400"}
+                  />
                   <span>{song.likesCount}</span>
                 </button>
               </div>
@@ -137,9 +161,17 @@ export const PoplistaItem = ({ song }: PoplistaItemProps) => {
         <div className="flex items-center">
           <button
             onClick={handleLikeClick}
-            className="flex items-center gap-2 px-4 py-2 bg-emerald-50 text-emerald-600 rounded-full hover:bg-emerald-100 transition"
+            className={`flex items-center gap-2 px-4 py-2 
+              ${
+                isLiked
+                  ? "bg-emerald-100 text-emerald-600"
+                  : "bg-emerald-50 text-emerald-600 hover:bg-emerald-100"
+              } 
+              rounded-full transition`}
           >
-            <FaThumbsUp />
+            <FaThumbsUp
+              className={isLiked ? "text-emerald-600" : "text-emerald-400"}
+            />
             <span>{song.likesCount}</span>
           </button>
         </div>

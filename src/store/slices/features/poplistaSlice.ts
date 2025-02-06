@@ -72,24 +72,10 @@ const poplistaSlice = createSlice({
   initialState,
   reducers: {
     updateVotes: (state, action) => {
-      const { songId, voteType } = action.payload;
-      const song = state.songs.find((s) => s.id === songId);
-
-      if (song && voteType === "up") {
-        song.votes.up++;
-
-        // Sortuj tylko po votes.up
-        const sortedSongs = [...state.songs]
-          .sort((a, b) => b.votes.up - a.votes.up)
-          .map((s, index) => ({
-            ...s,
-            position: index + 1,
-            previousPosition: s.position,
-            positionChange: Math.abs(s.position - (index + 1)),
-            trend: s.trend, // zachowujemy istniejący trend
-          })) as PoplistaSong[]; // dodajemy jawne rzutowanie typu
-
-        state.songs = sortedSongs;
+      const { songId, likesCount } = action.payload;
+      const song = state.songs.find((s) => s._id === songId);
+      if (song) {
+        song.likesCount = likesCount;
       }
     },
     setFilter: (state, action) => {
