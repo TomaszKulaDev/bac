@@ -64,6 +64,7 @@ export interface PoplistaSong extends Song {
   trend: "up" | "down" | "new";
   positionChange: number;
   thumbnail?: string;
+  isVisible: boolean;
 }
 
 export type FilterType = "all" | "new" | "rising" | "falling";

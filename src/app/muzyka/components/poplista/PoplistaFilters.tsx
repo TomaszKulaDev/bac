@@ -11,47 +11,61 @@ export const PoplistaFilters = () => {
   );
   const songs = useSelector((state: RootState) => state.poplista.songs);
 
-  // Oblicz liczby dla każdej kategorii
-  const risingCount = songs.filter((s) => s.trend === "up").length;
-  const fallingCount = songs.filter((s) => s.trend === "down").length;
-  const newCount = songs.filter((s) => s.trend === "new").length;
+  // Obliczamy liczby dla każdej kategorii
+  const newSongs = songs.filter((s) => s.trend === "new" && s.isVisible);
+  const risingSongs = songs.filter(
+    (s) => s.trend === "up" && s.positionChange > 0
+  );
+  const fallingSongs = songs.filter(
+    (s) => s.trend === "down" && s.positionChange > 0
+  );
 
   return (
     <div className="flex flex-wrap gap-2 mb-6">
       <button
         onClick={() => dispatch(setFilter("all"))}
         className={`flex items-center gap-2 px-4 py-2 rounded-full 
-          ${currentFilter === "all" ? "bg-gray-200" : "bg-gray-100"}`}
+          ${currentFilter === "all" ? "bg-gray-200" : "bg-gray-100"} 
+          hover:bg-gray-200 transition-colors`}
       >
         <FaChartBar />
         <span>Wszystkie</span>
       </button>
 
       <button
+        onClick={() => dispatch(setFilter("new"))}
+        className={`flex items-center gap-2 px-4 py-2 rounded-full 
+          ${currentFilter === "new" ? "bg-amber-200" : "bg-amber-100"} 
+          hover:bg-amber-200 transition-colors
+          ${newSongs.length === 0 ? "opacity-50 cursor-not-allowed" : ""}`}
+        disabled={newSongs.length === 0}
+      >
+        <FaStar className="text-amber-600" />
+        <span>Nowe ({newSongs.length})</span>
+      </button>
+
+      <button
         onClick={() => dispatch(setFilter("rising"))}
         className={`flex items-center gap-2 px-4 py-2 rounded-full 
-          ${currentFilter === "rising" ? "bg-emerald-200" : "bg-emerald-100"}`}
+          ${currentFilter === "rising" ? "bg-emerald-200" : "bg-emerald-100"} 
+          hover:bg-emerald-200 transition-colors
+          ${risingSongs.length === 0 ? "opacity-50 cursor-not-allowed" : ""}`}
+        disabled={risingSongs.length === 0}
       >
         <HiTrendingUp className="text-emerald-600" />
-        <span>Wzrosty ({risingCount})</span>
+        <span>Wzrosty ({risingSongs.length})</span>
       </button>
 
       <button
         onClick={() => dispatch(setFilter("falling"))}
         className={`flex items-center gap-2 px-4 py-2 rounded-full 
-          ${currentFilter === "falling" ? "bg-rose-200" : "bg-rose-100"}`}
+          ${currentFilter === "falling" ? "bg-rose-200" : "bg-rose-100"} 
+          hover:bg-rose-200 transition-colors
+          ${fallingSongs.length === 0 ? "opacity-50 cursor-not-allowed" : ""}`}
+        disabled={fallingSongs.length === 0}
       >
         <HiTrendingDown className="text-rose-600" />
-        <span>Spadki ({fallingCount})</span>
-      </button>
-
-      <button
-        onClick={() => dispatch(setFilter("new"))}
-        className={`flex items-center gap-2 px-4 py-2 rounded-full 
-          ${currentFilter === "new" ? "bg-amber-200" : "bg-amber-100"}`}
-      >
-        <FaStar className="text-amber-600" />
-        <span>Nowe ({newCount})</span>
+        <span>Spadki ({fallingSongs.length})</span>
       </button>
     </div>
   );

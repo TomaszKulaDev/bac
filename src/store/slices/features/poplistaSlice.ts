@@ -15,8 +15,9 @@ const initialState: PoplistaState = {
   filter: "all",
 };
 
-// Dodajmy stałą określającą, jak długo utwór jest "nowy"
-const NEW_SONG_THRESHOLD = 7 * 24 * 60 * 60 * 1000; // 7 dni w milisekundach
+// Stałe czasowe
+const NEW_SONG_THRESHOLD = 48 * 60 * 60 * 1000; // 48 godzin (2 dni) w milisekundach
+const REMOVE_FROM_NEW_AFTER = 7 * 24 * 60 * 60 * 1000; // 7 dni w milisekundach
 
 export const fetchPoplistaSongs = createAsyncThunk(
   "poplista/fetchSongs",
@@ -39,19 +40,26 @@ export const fetchPoplistaSongs = createAsyncThunk(
         }))
         .sort((a, b) => b.votes.up - a.votes.up)
         .map((song, index) => {
-          const isNew =
-            new Date(song.createdAt).getTime() > now - NEW_SONG_THRESHOLD;
+          const songAge = now - new Date(song.createdAt).getTime();
+          const isNew = songAge < NEW_SONG_THRESHOLD;
+          const shouldBeVisible = songAge < REMOVE_FROM_NEW_AFTER;
 
           return {
             ...song,
             position: index + 1,
             previousPosition: index + 1,
             positionChange: 0,
-            trend: isNew ? "new" : ("up" as const),
+            trend: isNew && shouldBeVisible ? "new" : ("up" as const),
+            isVisible: shouldBeVisible, // możemy użyć tego do filtrowania
           };
         });
 
-      return sortedSongs;
+      // Filtrujemy utwory starsze niż 7 dni z sekcji "Nowe"
+      const visibleSongs = sortedSongs.filter(
+        (song) => song.trend !== "new" || song.isVisible
+      );
+
+      return visibleSongs;
     } catch (error) {
       return rejectWithValue(
         error instanceof Error ? error.message : "Unknown error"
