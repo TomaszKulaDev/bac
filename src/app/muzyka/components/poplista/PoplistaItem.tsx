@@ -71,12 +71,11 @@ export const PoplistaItem = ({ song }: PoplistaItemProps) => {
 
   if (isFirstPlace) {
     return (
-      <div className="relative mb-8">
-        {/* Tło z gradientem */}
-        <div className="bg-gradient-to-r from-amber-400 to-amber-300 rounded-xl p-6">
-          <div className="flex flex-col md:flex-row gap-6 items-center">
+      <div className="relative mb-4 sm:mb-8">
+        <div className="bg-gradient-to-r from-amber-400 to-amber-300 rounded-xl p-4 sm:p-6">
+          <div className="flex flex-col items-center sm:flex-row sm:items-start gap-4 sm:gap-6">
             {/* Miniaturka */}
-            <div className="relative w-48 h-48 rounded-lg overflow-hidden shadow-lg">
+            <div className="relative w-36 h-36 sm:w-48 sm:h-48 rounded-lg overflow-hidden shadow-lg">
               <Image
                 src={thumbnailUrl}
                 alt={song.title}
@@ -87,33 +86,35 @@ export const PoplistaItem = ({ song }: PoplistaItemProps) => {
                 onClick={handlePlay}
                 className="absolute inset-0 bg-black/50 opacity-0 hover:opacity-100 transition flex items-center justify-center"
               >
-                <FaPlay className="text-white text-4xl" />
+                <FaPlay className="text-white text-3xl sm:text-4xl" />
               </button>
             </div>
 
             {/* Informacje o utworze */}
-            <div className="flex-grow text-center md:text-left">
-              <div className="text-8xl font-bold text-white mb-4">1</div>
-              <h3 className="text-3xl font-bold text-white mb-2">
+            <div className="flex-grow text-center sm:text-left">
+              <div className="text-6xl sm:text-8xl font-bold text-white mb-2 sm:mb-4">
+                1
+              </div>
+              <h3 className="text-2xl sm:text-3xl font-bold text-white mb-1 sm:mb-2">
                 {song.title}
               </h3>
-              <p className="text-xl text-white/90 mb-6">{song.artist}</p>
+              <p className="text-lg sm:text-xl text-white/90 mb-4 sm:mb-6">
+                {song.artist}
+              </p>
 
               {/* Głosowanie */}
-              <div className="flex justify-center md:justify-start">
+              <div className="flex justify-center sm:justify-start">
                 <button
                   onClick={handleLikeClick}
-                  className={`flex items-center gap-2 px-6 py-3 
+                  className={`flex items-center gap-2 px-4 py-2 sm:px-6 sm:py-3 
                     ${
                       isLiked
                         ? "bg-white text-amber-600"
-                        : "bg-white text-amber-600 hover:bg-gray-100"
+                        : "bg-white/90 text-amber-500 hover:bg-white"
                     } 
-                    rounded-full transition text-lg`}
+                    rounded-full transition text-base sm:text-lg`}
                 >
-                  <FaThumbsUp
-                    className={isLiked ? "text-amber-600" : "text-amber-400"}
-                  />
+                  <FaThumbsUp />
                   <span>{song.likesCount}</span>
                 </button>
               </div>
@@ -126,17 +127,18 @@ export const PoplistaItem = ({ song }: PoplistaItemProps) => {
 
   // Standardowy wygląd dla pozostałych pozycji
   return (
-    <div className="bg-gray-50 rounded-xl p-4 border border-gray-100 hover:border-gray-200 transition group">
-      <div className="flex items-center gap-4">
-        <div className="w-16 text-center relative">
-          <div className="text-2xl font-bold text-gray-900">
+    <div className="bg-gray-50 rounded-xl p-3 sm:p-4 border border-gray-100 hover:border-gray-200 transition group h-[72px] sm:h-[84px]">
+      <div className="flex items-center gap-3 sm:gap-4 h-full">
+        {/* Pozycja - stała szerokość */}
+        <div className="w-8 sm:w-12 text-center flex-shrink-0">
+          <div className="text-lg sm:text-xl font-bold text-gray-900">
             {song.position}
           </div>
           <TrendIndicator song={song} />
         </div>
 
-        {/* Miniaturka */}
-        <div className="relative w-16 h-16 rounded-lg overflow-hidden">
+        {/* Miniaturka - stałe wymiary */}
+        <div className="relative w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 rounded-lg overflow-hidden">
           <Image
             src={thumbnailUrl}
             alt={song.title}
@@ -147,31 +149,33 @@ export const PoplistaItem = ({ song }: PoplistaItemProps) => {
             onClick={handlePlay}
             className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center"
           >
-            <FaPlay className="text-white text-2xl" />
+            <FaPlay className="text-white text-base sm:text-lg" />
           </button>
         </div>
 
-        {/* Informacje o utworze */}
-        <div className="flex-grow">
-          <h3 className="font-semibold text-gray-900">{song.title}</h3>
-          <p className="text-gray-500">{song.artist}</p>
+        {/* Informacje o utworze - elastyczna szerokość z ograniczeniem */}
+        <div className="flex-grow min-w-0 max-w-[calc(100%-180px)] sm:max-w-[calc(100%-220px)]">
+          <h3 className="font-semibold text-gray-900 truncate text-sm sm:text-base">
+            {song.title}
+          </h3>
+          <p className="text-gray-500 text-xs sm:text-sm truncate">
+            {song.artist}
+          </p>
         </div>
 
-        {/* Głosowanie */}
-        <div className="flex items-center">
+        {/* Głosowanie - stała szerokość */}
+        <div className="flex items-center flex-shrink-0 ml-auto">
           <button
             onClick={handleLikeClick}
-            className={`flex items-center gap-2 px-4 py-2 
+            className={`flex items-center gap-1 sm:gap-2 px-3 py-1.5 sm:px-4 sm:py-2 
               ${
                 isLiked
                   ? "bg-emerald-100 text-emerald-600"
                   : "bg-emerald-50 text-emerald-600 hover:bg-emerald-100"
               } 
-              rounded-full transition`}
+              rounded-full transition text-sm sm:text-base min-w-[70px] sm:min-w-[80px] justify-center`}
           >
-            <FaThumbsUp
-              className={isLiked ? "text-emerald-600" : "text-emerald-400"}
-            />
+            <FaThumbsUp className="text-xs sm:text-sm" />
             <span>{song.likesCount}</span>
           </button>
         </div>
