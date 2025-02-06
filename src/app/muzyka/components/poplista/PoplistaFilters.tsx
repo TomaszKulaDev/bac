@@ -4,69 +4,55 @@ import { useDispatch, useSelector } from "react-redux";
 import { setFilter } from "@/store/slices/features/poplistaSlice";
 import { RootState } from "@/store/store";
 
-type FilterType = "all" | "new" | "rising" | "falling";
-
-interface FilterButtonProps {
-  active?: boolean;
-  children: React.ReactNode;
-  onClick?: () => void;
-}
-
-const FilterButton = ({ active, children, onClick }: FilterButtonProps) => (
-  <button
-    onClick={onClick}
-    className={`
-      flex items-center gap-2 px-5 py-2.5 rounded-full transition-all
-      ${
-        active
-          ? "bg-amber-500 text-white shadow-md hover:bg-amber-600"
-          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-      }
-    `}
-  >
-    {children}
-  </button>
-);
-
 export const PoplistaFilters = () => {
   const dispatch = useDispatch();
-  const currentFilter = useSelector<RootState, FilterType>(
-    (state) => state.poplista.filter
+  const currentFilter = useSelector(
+    (state: RootState) => state.poplista.filter
   );
+  const songs = useSelector((state: RootState) => state.poplista.songs);
+
+  // Oblicz liczby dla każdej kategorii
+  const risingCount = songs.filter((s) => s.trend === "up").length;
+  const fallingCount = songs.filter((s) => s.trend === "down").length;
+  const newCount = songs.filter((s) => s.trend === "new").length;
 
   return (
-    <div className="flex flex-wrap gap-4 mb-6">
-      <FilterButton
-        active={currentFilter === "all"}
+    <div className="flex flex-wrap gap-2 mb-6">
+      <button
         onClick={() => dispatch(setFilter("all"))}
+        className={`flex items-center gap-2 px-4 py-2 rounded-full 
+          ${currentFilter === "all" ? "bg-gray-200" : "bg-gray-100"}`}
       >
-        <FaChartBar className="text-lg" />
+        <FaChartBar />
         <span>Wszystkie</span>
-      </FilterButton>
+      </button>
 
-      <FilterButton
-        active={currentFilter === "new"}
-        onClick={() => dispatch(setFilter("new"))}
-      >
-        <FaStar className="text-lg" />
-        <span>Nowości</span>
-      </FilterButton>
-
-      <FilterButton
-        active={currentFilter === "rising"}
+      <button
         onClick={() => dispatch(setFilter("rising"))}
+        className={`flex items-center gap-2 px-4 py-2 rounded-full 
+          ${currentFilter === "rising" ? "bg-emerald-200" : "bg-emerald-100"}`}
       >
-        <HiTrendingUp className="text-xl text-emerald-600" />
-        <span>Wzrosty</span>
-      </FilterButton>
+        <HiTrendingUp className="text-emerald-600" />
+        <span>Wzrosty ({risingCount})</span>
+      </button>
 
-      <FilterButton
-        active={currentFilter === "falling"}
+      <button
         onClick={() => dispatch(setFilter("falling"))}
+        className={`flex items-center gap-2 px-4 py-2 rounded-full 
+          ${currentFilter === "falling" ? "bg-rose-200" : "bg-rose-100"}`}
       >
-        <HiTrendingDown className="text-xl text-rose-600" />
-        <span>Spadki</span>
-      </FilterButton>
+        <HiTrendingDown className="text-rose-600" />
+        <span>Spadki ({fallingCount})</span>
+      </button>
+
+      <button
+        onClick={() => dispatch(setFilter("new"))}
+        className={`flex items-center gap-2 px-4 py-2 rounded-full 
+          ${currentFilter === "new" ? "bg-amber-200" : "bg-amber-100"}`}
+      >
+        <FaStar className="text-amber-600" />
+        <span>Nowe ({newCount})</span>
+      </button>
     </div>
   );
 };

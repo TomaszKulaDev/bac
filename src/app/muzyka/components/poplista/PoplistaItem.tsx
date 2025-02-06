@@ -19,11 +19,35 @@ interface PoplistaSong extends Song {
     up: number;
     down: number;
   };
+  trend: "up" | "down" | "new";
+  positionChange: number;
 }
 
 interface PoplistaItemProps {
   song: PoplistaSong;
 }
+
+const TrendIndicator = ({ song }: { song: PoplistaSong }) => {
+  if (!song.trend || song.trend === "new") return null;
+
+  const isUp = song.trend === "up";
+  const color = isUp ? "text-emerald-600" : "text-rose-600";
+  const Icon = isUp ? FaArrowUp : FaArrowDown;
+
+  return (
+    <div
+      className={`absolute -top-2 -right-2 flex items-center gap-1 ${color}`}
+    >
+      <Icon
+        className={`text-sm ${isUp ? "animate-bounce" : "animate-pulse"}`}
+      />
+      <span className="text-xs font-semibold">
+        {isUp ? "+" : "-"}
+        {song.positionChange}
+      </span>
+    </div>
+  );
+};
 
 export const PoplistaItem = ({ song }: PoplistaItemProps) => {
   const dispatch = useDispatch();
@@ -92,21 +116,11 @@ export const PoplistaItem = ({ song }: PoplistaItemProps) => {
   return (
     <div className="bg-gray-50 rounded-xl p-4 border border-gray-100 hover:border-gray-200 transition group">
       <div className="flex items-center gap-4">
-        {/* Pozycja i zmiana */}
-        <div className="w-16 text-center">
+        <div className="w-16 text-center relative">
           <div className="text-2xl font-bold text-gray-900">
             {song.position}
           </div>
-          {positionChange !== 0 && (
-            <div
-              className={`text-sm ${
-                positionChange > 0 ? "text-emerald-600" : "text-rose-600"
-              }`}
-            >
-              {positionChange > 0 ? <FaArrowUp /> : <FaArrowDown />}
-              {Math.abs(positionChange)}
-            </div>
-          )}
+          <TrendIndicator song={song} />
         </div>
 
         {/* Miniaturka */}

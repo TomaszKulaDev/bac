@@ -1,14 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { Song } from "@/app/muzyka/types";
-
-interface PoplistaSong extends Song {
-  position: number; // Aktualna pozycja w rankingu
-  previousPosition: number;
-  votes: {
-    up: number;
-    down: number;
-  };
-}
+import { PoplistaSong } from "@/app/muzyka/types";
 
 interface PoplistaState {
   songs: PoplistaSong[];
@@ -33,7 +24,6 @@ export const fetchPoplistaSongs = createAsyncThunk(
 
       const songs = await response.json();
 
-      // Sortujemy po głosach i przypisujemy pozycje
       const sortedSongs = [...songs]
         .map((song) => ({
           ...song,
@@ -41,13 +31,15 @@ export const fetchPoplistaSongs = createAsyncThunk(
             up: song.likesCount || 0,
             down: 0,
           },
+          thumbnail: song.thumbnail || "/images/default-song-image.jpg",
         }))
         .sort((a, b) => b.votes.up - a.votes.up)
         .map((song, index) => ({
           ...song,
           position: index + 1,
           previousPosition: index + 1,
-          thumbnail: song.thumbnail || "",
+          positionChange: 0,
+          trend: "new" as const,
         }));
 
       return sortedSongs;
@@ -68,7 +60,7 @@ const poplistaSlice = createSlice({
       const song = state.songs.find((s) => s.id === songId);
 
       if (song) {
-        song.previousPosition = song.position;
+        const oldPosition = song.position;
 
         if (voteType === "up") song.votes.up++;
         else if (voteType === "down") song.votes.down++;
@@ -77,12 +69,29 @@ const poplistaSlice = createSlice({
           .sort(
             (a, b) => b.votes.up - b.votes.down - (a.votes.up - a.votes.down)
           )
-          .map((s, index) => ({
-            ...s,
-            position: index + 1,
-          }));
+          .map((s, index) => {
+            const newPosition = index + 1;
+            const positionChange = Math.abs(s.position - newPosition);
 
-        state.songs = sortedSongs;
+            let newTrend: PoplistaSong["trend"];
+            if (s.position > newPosition) {
+              newTrend = "up";
+            } else if (s.position < newPosition) {
+              newTrend = "down";
+            } else {
+              newTrend = "new";
+            }
+
+            return {
+              ...s,
+              previousPosition: s.position,
+              position: newPosition,
+              positionChange,
+              trend: newTrend,
+            };
+          });
+
+        state.songs = sortedSongs as PoplistaSong[];
       }
     },
     setFilter: (state, action) => {

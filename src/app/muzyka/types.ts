@@ -61,7 +61,8 @@ export interface PoplistaSong extends Song {
     up: number;
     down: number;
   };
-  trend?: "up" | "down" | "new";
+  trend: "up" | "down" | "new";
+  positionChange: number;
   thumbnail?: string;
 }
 
@@ -183,3 +184,12 @@ interface LoadMoreButtonProps {
 }
 
 export type SongLevel = "beginner" | "intermediate" | "advanced" | "impro";
+
+// Dodajmy też typ dla historii pozycji
+export interface PositionHistory {
+  songId: string;
+  positions: {
+    position: number;
+    timestamp: Date;
+  }[];
+}
