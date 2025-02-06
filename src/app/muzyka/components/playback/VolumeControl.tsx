@@ -53,8 +53,9 @@ export const VolumeControl: React.FC<VolumeControlProps> = ({
       <input
         type="range"
         {...rangeProps}
-        className={`${playerStyles.controls.range} w-20 h-2`}
+        className={`${playerStyles.controls.range} w-16 h-1`}
       />
     </div>
+
   );
 };
