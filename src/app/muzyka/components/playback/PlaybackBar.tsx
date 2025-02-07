@@ -92,7 +92,7 @@ const PlaybackBar: React.FC<PlaybackBarProps> = ({
 
         <div className="w-full sm:w-1/4 flex justify-between sm:justify-end items-center">
           {isAuthenticated && (
-            <div className="flex justify-end">
+            <div className="hidden sm:flex justify-end">
               <ActionButtons
                 currentSongId={currentSong?.id}
                 onCreatePlaylist={onCreatePlaylist}
