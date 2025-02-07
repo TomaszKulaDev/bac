@@ -49,6 +49,11 @@ export const NavContent: React.FC = React.memo(function NavContent() {
       label: "Nauka tańca",
       icon: FaCompass,
     },
+    {
+      href: "/muzyka",
+      label: "Muzyka",
+      icon: FaMusic,
+    },
   ];
 
   return (
@@ -220,6 +225,11 @@ export const NavContent: React.FC = React.memo(function NavContent() {
                   href: "/nauka-tanca-bachata",
                   label: "Nauka tańca",
                   icon: FaCompass,
+                },
+                {
+                  href: "/muzyka",
+                  label: "Muzyka",
+                  icon: FaMusic,
                 },
               ].map((item) => (
                 <Link
