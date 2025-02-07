@@ -69,55 +69,14 @@ export const PoplistaItem = ({ song, index }: PoplistaItemProps) => {
     : "/images/default-song-image.jpg"; // Dodaj domyślny obrazek
 
   const handlePlay = () => {
-    console.group("🎵 PoplistaItem - handlePlay");
-
     const playerSongs = store.getState().songs.songs;
-    const poplistaSongs = store.getState().poplista.songs;
-
-    const poplistaIndex = poplistaSongs.findIndex(
-      (s: any) => s._id === song._id
-    );
     const playerIndex = playerSongs.findIndex((s: any) => s._id === song._id);
 
-    console.log("Indeksy utworu:", {
-      title: song.title,
-      id: song._id,
-      poplistaIndex,
-      playerIndex,
-      localIndex: index,
-    });
-
-    if (playerIndex === -1) {
-      console.error("Utwór nie istnieje w liście odtwarzacza!");
-      console.log("Szczegóły utworu:", song);
-      console.log("Pierwsze 5 utworów w playerze:", playerSongs.slice(0, 5));
-      return;
-    }
+    if (playerIndex === -1) return;
 
     dispatch(setCurrentPlaylistId("poplista"));
     dispatch(setCurrentSongIndex(playerIndex));
     dispatch(togglePlayback(true));
-
-    setTimeout(() => {
-      const newState = store.getState();
-      const actualSong = newState.songs.songs[newState.songs.currentSongIndex];
-
-      console.log("Stan po odtworzeniu:", {
-        playlistId: newState.playlists.currentPlaylistId,
-        songIndex: newState.songs.currentSongIndex,
-        expectedSong: {
-          id: song._id,
-          title: song.title,
-        },
-        actualSong: {
-          id: actualSong?._id,
-          title: actualSong?.title,
-        },
-        matched: actualSong?._id === song._id,
-      });
-    }, 100);
-
-    console.groupEnd();
   };
 
   const handleLikeClick = async (e: React.MouseEvent) => {

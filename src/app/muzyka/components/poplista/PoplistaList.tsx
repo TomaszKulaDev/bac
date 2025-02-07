@@ -19,40 +19,8 @@ export const PoplistaList = () => {
   const [displayLimit, setDisplayLimit] = useState(20);
 
   useEffect(() => {
-    console.group("📋 PoplistaList - useEffect");
-    console.log("Stan listy:", {
-      totalSongs: songs.length,
-      filter,
-      displayLimit,
-      status,
-    });
-    console.groupEnd();
-  }, [songs, filter, displayLimit, status]);
-
-  useEffect(() => {
     dispatch(fetchPoplistaSongs());
   }, [dispatch]);
-
-  useEffect(() => {
-    const playerSongs = store.getState().songs.songs;
-    const poplistaSongs = songs;
-
-    console.log("🔄 Porównanie list:", {
-      poplistaCount: poplistaSongs.length,
-      playerCount: playerSongs.length,
-      sampleSong: poplistaSongs[0]
-        ? {
-            inPoplista: poplistaSongs[0]._id,
-            inPlayer: playerSongs.find(
-              (s: any) => s._id === poplistaSongs[0]._id
-            )?._id,
-          }
-        : null,
-      areListsSynced: poplistaSongs.every(
-        (song, index) => playerSongs[index]?._id === song._id
-      ),
-    });
-  }, [songs]);
 
   if (status === "loading") {
     return (
@@ -65,16 +33,6 @@ export const PoplistaList = () => {
   }
 
   const filteredSongs = filterAndSortSongs(songs, filter);
-  console.log("🔍 Szczegóły filtrowania:", {
-    wszystkieUtwory: songs.length,
-    poFiltrowaniu: filteredSongs.length,
-    pierwszeTrzy: filteredSongs.slice(0, 3).map((s) => ({
-      id: s._id,
-      title: s.title,
-      position: s.position,
-      isVisible: s.isVisible,
-    })),
-  });
   const displayedSongs = filteredSongs.slice(0, displayLimit);
   const hasMore = filteredSongs.length > displayLimit;
 

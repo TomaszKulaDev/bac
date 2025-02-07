@@ -2,7 +2,6 @@ import { FaChartBar, FaStar } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { setFilter } from "@/store/slices/features/poplistaSlice";
 import { RootState } from "@/store/store";
-import { useEffect } from "react";
 import { motion } from "framer-motion";
 
 export const PoplistaFilters = () => {
@@ -11,20 +10,7 @@ export const PoplistaFilters = () => {
     (state: RootState) => state.poplista.filter
   );
   const songs = useSelector((state: RootState) => state.poplista.songs);
-
-  // Obliczamy tylko nowe utwory
   const newSongs = songs.filter((s) => s.trend === "new" && s.isVisible);
-
-  useEffect(() => {
-    console.group("🔍 PoplistaFilters - Filter Change");
-    console.log("Stan filtrów:", {
-      currentFilter,
-      totalSongs: songs.length,
-      newSongsCount: newSongs.length,
-      visibleSongs: songs.filter((s) => s.isVisible).length,
-    });
-    console.groupEnd();
-  }, [currentFilter, songs, newSongs]);
 
   return (
     <motion.div

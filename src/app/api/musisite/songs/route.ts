@@ -27,7 +27,6 @@ export async function GET() {
       )
       .sort({ createdAt: -1 });
 
-    // Pobierz polubienia dla zalogowanego użytkownika
     const userLikes = userEmail
       ? await Like.find({ userEmail }).select("songId").lean()
       : [];
@@ -36,7 +35,6 @@ export async function GET() {
       userLikes.map((like) => like.songId.toString())
     );
 
-    // Pobierz liczbę polubień dla każdej piosenki
     const likeCounts = await Like.aggregate([
       {
         $group: {
@@ -46,13 +44,9 @@ export async function GET() {
       }
     ]);
 
-    console.log('Aggregated like counts:', likeCounts);
-
     const likeCountMap = new Map(
       likeCounts.map(item => [item._id.toString(), item.count])
     );
-
-    console.log('Like count map:', Object.fromEntries(likeCountMap));
 
     const songsWithLikes = songs.map(song => {
       const songId = song._id.toString();
@@ -61,7 +55,7 @@ export async function GET() {
         isLiked: userLikedSongIds.has(songId),
         likesCount: likeCountMap.get(songId) || 0
       };
-      console.log('Prepared song with likes:', songWithLikes);
+      
       return songWithLikes;
     });
 
@@ -118,16 +112,6 @@ export async function POST(request: Request) {
       );
     }
 
-    console.log("Received impro value:", impro);
-    console.log("Received beginnerFriendly value:", beginnerFriendly);
-    console.log("Received sensual value:", sensual);
-    console.log("Received dominicana value:", dominicana);
-    console.log("Received intermediate value:", intermediate);
-    console.log("Received advanced value:", advanced);
-    console.log("Received slow value:", slow);
-    console.log("Received medium value:", medium);
-    console.log("Received fast value:", fast);
-
     const newSong = new Song({
       title,
       artist,
@@ -145,14 +129,11 @@ export async function POST(request: Request) {
 
     await newSong.save();
 
-    console.log("New song object:", newSong);
-
     return NextResponse.json({
       success: true,
       message: "Piosenka dodana pomyślnie",
     });
   } catch (error) {
-    console.error("Błąd podczas dodawania piosenki:", error);
     return NextResponse.json(
       { error: "Wystąpił błąd podczas dodawania piosenki" },
       { status: 500 }

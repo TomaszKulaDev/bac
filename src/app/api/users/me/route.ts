@@ -16,7 +16,6 @@ export async function GET() {
     }
 
     const userProfile = await User.findOne({ email: session.user.email });
-    console.log("📱 Pobrane dane użytkownika:", userProfile);
 
     if (!userProfile) {
       return NextResponse.json(
