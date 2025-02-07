@@ -35,6 +35,20 @@ const TrendIndicator = ({ song }: { song: PoplistaSong }) => {
   return null;
 };
 
+// Modyfikujemy definicję funkcji likeButtonStyles aby obsługiwała undefined
+const likeButtonStyles = (isLiked: boolean | undefined, disabled: boolean) => `
+  flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full
+  transition-all duration-200
+  ${disabled ? "opacity-50 cursor-not-allowed" : ""}
+  ${
+    isLiked
+      ? "bg-amber-100 text-amber-600 hover:bg-amber-200"
+      : "bg-gray-50 hover:bg-gray-100 text-gray-600"
+  }
+  border
+  ${isLiked ? "border-amber-200" : "border-gray-200 hover:border-gray-300"}
+`;
+
 export const PoplistaItem = ({ song, index }: PoplistaItemProps) => {
   const { data: session } = useSession();
   const { handleLike } = useLike();
@@ -124,60 +138,90 @@ export const PoplistaItem = ({ song, index }: PoplistaItemProps) => {
 
   if (isFirstPlace) {
     return (
-      <div className="relative mb-4 sm:mb-8">
-        <div className="bg-gradient-to-r from-amber-400 to-amber-300 rounded-xl p-4 sm:p-6">
-          <div className="flex flex-col items-center sm:flex-row sm:items-start gap-4 sm:gap-6">
-            {/* Miniaturka */}
-            <div className="relative w-36 h-36 sm:w-48 sm:h-48 rounded-lg overflow-hidden shadow-lg">
+      <div
+        className="relative bg-gradient-to-r from-amber-100 to-amber-200 
+        rounded-2xl overflow-hidden mb-8 group"
+      >
+        {/* Tło z delikatnym gradientem */}
+        <div className="absolute inset-0 bg-gradient-to-r from-amber-500/10 to-amber-600/10" />
+
+        <div className="relative flex items-center gap-6 p-4 sm:p-6">
+          {/* Numer #1 */}
+          <div className="hidden sm:flex items-center justify-center w-16 h-16">
+            <span className="text-4xl font-bold text-amber-600">#1</span>
+          </div>
+
+          {/* Miniaturka */}
+          <div className="relative flex-shrink-0">
+            <div className="w-20 h-20 sm:w-24 sm:h-24 relative rounded-xl overflow-hidden shadow-lg">
               <Image
                 src={thumbnailUrl}
                 alt={song.title}
                 fill
                 className="object-cover"
               />
-              <button
-                onClick={handlePlay}
-                className="absolute inset-0 bg-black/50 opacity-0 hover:opacity-100 transition flex items-center justify-center"
+              <div
+                className="absolute inset-0 bg-black/20 opacity-0 
+                group-hover:opacity-100 transition-all duration-200"
               >
-                <FaPlay className="text-white text-3xl sm:text-4xl" />
-              </button>
-            </div>
-
-            {/* Informacje o utworze */}
-            <div className="flex-grow text-center sm:text-left">
-              <div className="text-6xl sm:text-8xl font-bold text-white mb-2 sm:mb-4">
-                1
-              </div>
-              <h3 className="text-2xl sm:text-3xl font-bold text-white mb-1 sm:mb-2">
-                {song.title}
-              </h3>
-              <p className="text-lg sm:text-xl text-white/90 mb-4 sm:mb-6">
-                {song.artist}
-              </p>
-
-              {/* Głosowanie */}
-              <div className="flex justify-center sm:justify-start">
-                <MusicTooltip
-                  content={!session ? "Zaloguj się, aby polubić" : ""}
-                  position="left"
+                <button
+                  onClick={handlePlay}
+                  className="absolute inset-0 flex items-center justify-center"
                 >
-                  <button
-                    onClick={handleLikeClick}
-                    className={`flex items-center gap-2 px-4 py-2 sm:px-6 sm:py-3 
-                      ${!session ? "opacity-50 cursor-not-allowed" : ""}
-                      ${
-                        isLiked
-                          ? "bg-white text-amber-600"
-                          : "bg-white/90 text-amber-500 hover:bg-white"
-                      } 
-                      rounded-full transition text-base sm:text-lg`}
-                  >
-                    <FaThumbsUp />
-                    <span>{song.likesCount}</span>
-                  </button>
-                </MusicTooltip>
+                  <FaPlay className="text-white text-2xl" />
+                </button>
               </div>
             </div>
+            {song.trend === "new" && (
+              <div
+                className="absolute -top-2 -right-2 bg-amber-500 text-white 
+                px-2 py-0.5 rounded-full text-xs font-bold shadow-md"
+              >
+                NEW
+              </div>
+            )}
+          </div>
+
+          {/* Informacje o utworze */}
+          <div className="flex-grow min-w-0">
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 truncate">
+              {song.title}
+            </h2>
+            <p className="text-base sm:text-lg text-gray-600 truncate">
+              {song.artist}
+            </p>
+          </div>
+
+          {/* Przyciski akcji */}
+          <div className="flex items-center gap-4">
+            <MusicTooltip
+              content={!session ? "Zaloguj się, aby polubić" : ""}
+              position="top"
+            >
+              <button
+                onClick={handleLikeClick}
+                disabled={!session}
+                className={likeButtonStyles(isLiked, !session)}
+              >
+                <FaThumbsUp
+                  className={`
+                  transition-transform group-hover:scale-110 duration-200
+                  ${isLiked ? "text-amber-500" : "text-gray-400"}
+                `}
+                />
+                <span className="font-medium">{song.likesCount}</span>
+              </button>
+            </MusicTooltip>
+
+            <button
+              onClick={handlePlay}
+              className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-full
+                bg-amber-500 text-white hover:bg-amber-600 
+                transition-colors duration-200"
+            >
+              <FaPlay />
+              <span>Odtwórz</span>
+            </button>
           </div>
         </div>
       </div>
@@ -236,16 +280,15 @@ export const PoplistaItem = ({ song, index }: PoplistaItemProps) => {
           >
             <button
               onClick={handleLikeClick}
-              className={`flex items-center gap-1 sm:gap-2 px-2 py-1.5 sm:px-4 sm:py-2 
-                ${!session ? "opacity-50 cursor-not-allowed" : ""}
-                ${
-                  isLiked
-                    ? "bg-emerald-100 text-emerald-600"
-                    : "bg-emerald-50 text-emerald-600 hover:bg-emerald-100"
-                } 
-                rounded-full transition text-sm sm:text-base min-w-[60px] sm:min-w-[80px] justify-center`}
+              className={likeButtonStyles(isLiked, !session)}
+              disabled={!session}
             >
-              <FaThumbsUp className="text-xs sm:text-sm" />
+              <FaThumbsUp
+                className={`
+                text-sm transition-transform group-hover:scale-110 duration-200
+                ${isLiked ? "text-amber-500" : "text-gray-400"}
+              `}
+              />
               <span>{song.likesCount}</span>
             </button>
           </MusicTooltip>
