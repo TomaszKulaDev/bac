@@ -737,7 +737,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
             </div>
           </div>
         </div>
-        <div className="w-full fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200">
+        <div className="w-full fixed bottom-0 left-0 right-0 bg-white">
           <div className="max-w-7xl mx-auto">
             <PlaybackBar
               isPlaying={isPlaying}

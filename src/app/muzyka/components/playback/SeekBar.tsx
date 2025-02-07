@@ -160,19 +160,18 @@ export const SeekBar: React.FC<SeekBarProps> = ({
         >
           <div className="absolute w-full h-full bg-gray-200 rounded-full" />
           <div
-            className="absolute h-full bg-amber-500 rounded-full transition-all duration-150"
+            className="absolute h-full bg-gradient-to-r from-amber-400 to-amber-600 rounded-full transition-all duration-150"
             style={{ width: `${progress}%` }}
           />
           <div
-            className={`
-              absolute h-3 w-3 bg-amber-500 rounded-full -top-1 
-              shadow-md transition-all duration-150 
+            className={`absolute h-4 w-4 bg-amber-600 rounded-full -top-1.5 
+              shadow-lg transition-all duration-200 ease-in-out
               ${isDragging ? "scale-150" : "group-hover:opacity-100 opacity-0"}
-            `}
+              hover:scale-125 hover:shadow-xl`}
             style={{
               left: `${progress}%`,
               transform: "translateX(-50%)",
-              boxShadow: isDragging ? "0 0 10px rgba(245, 158, 11, 0.5)" : "",
+              boxShadow: isDragging ? "0 0 15px rgba(245, 158, 11, 0.7)" : "",
             }}
           />
           {isHovering && (

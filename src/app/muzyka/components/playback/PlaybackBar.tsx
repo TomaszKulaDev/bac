@@ -58,6 +58,12 @@ const PlaybackBar: React.FC<PlaybackBarProps> = ({
       className={`fixed bottom-0 left-0 right-0 bg-white border-t border-gray-300 shadow-lg z-50 px-4 py-2 ${className}`}
       role="region"
       aria-label="Kontrolki odtwarzacza"
+      style={{
+        borderTopLeftRadius: "1rem",
+        borderTopRightRadius: "1rem",
+        boxShadow:
+          "0 -4px 6px -1px rgba(0, 0, 0, 0.1), 0 -2px 4px -1px rgba(0, 0, 0, 0.06)",
+      }}
     >
       <div className="flex flex-col sm:flex-row items-center justify-between max-w-7xl mx-auto gap-1 sm:gap-2">
         <TrackInfo
