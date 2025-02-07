@@ -6,7 +6,7 @@
  * - Obsługa nawigacji między kursami i lekcjami
  * - Wyświetlanie nagłówka z tytułem i opisem kursu
  * - Renderowanie nawigacji bocznej (CourseNavigation) dla podstron kursu
- * 
+ *
  * Komponent przyjmuje props:
  * - children: komponenty potomne do wyrenderowania w głównej sekcji
  */
@@ -25,7 +25,7 @@ interface CourseLayoutClientProps {
 export const CourseLayoutClient: React.FC<CourseLayoutClientProps> = ({
   children,
 }) => {
-  const pathname = usePathname();
+  const pathname = usePathname() || "";
   const isMainPage = pathname === "/nauka-tanca-bachata";
 
   // Pobierz ID kursu z URL
@@ -78,7 +78,7 @@ export const CourseLayoutClient: React.FC<CourseLayoutClientProps> = ({
   };
 
   const currentCourse = getCurrentCourse();
-  const currentLessonId = pathname.includes("/lekcja/")
+  const currentLessonId = pathname?.includes("/lekcja/")
     ? pathname.split("/").pop()
     : undefined;
 
