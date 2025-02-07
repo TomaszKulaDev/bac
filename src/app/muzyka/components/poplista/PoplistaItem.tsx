@@ -11,6 +11,7 @@ import { updateVotes } from "@/store/slices/features/poplistaSlice";
 import { useSession } from "next-auth/react";
 import { MusicTooltip } from "../ui/MusicTooltip";
 import { store } from "@/store/store";
+import { motion } from "framer-motion";
 
 interface PoplistaSong extends Song {
   position: number;
@@ -185,7 +186,13 @@ export const PoplistaItem = ({ song, index }: PoplistaItemProps) => {
 
   // Standardowy wygląd dla pozostałych pozycji
   return (
-    <div className="bg-gray-50 rounded-xl p-2 sm:p-4 border border-gray-100 hover:border-gray-200 transition group h-[72px] sm:h-[84px]">
+    <motion.div
+      layout
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3, delay: index * 0.05 }}
+      className="bg-gray-50 rounded-xl p-2 sm:p-4 border border-gray-100 hover:border-gray-200 transition group h-[72px] sm:h-[84px]"
+    >
       <div className="flex items-center gap-2 sm:gap-4 h-full">
         {/* Pozycja - mniejsza szerokość na mobile */}
         <div className="w-6 sm:w-12 text-center flex-shrink-0">
@@ -244,6 +251,6 @@ export const PoplistaItem = ({ song, index }: PoplistaItemProps) => {
           </MusicTooltip>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };

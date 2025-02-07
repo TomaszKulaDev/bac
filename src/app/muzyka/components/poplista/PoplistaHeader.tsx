@@ -13,6 +13,7 @@ import { setCurrentPlaylistId } from "@/store/slices/features/playlistSlice";
 import { togglePlayback } from "@/store/slices/playerSlice";
 import { RootState } from "@/store/store";
 import { store } from "@/store/store";
+import { motion } from "framer-motion";
 
 export const PoplistaHeader = () => {
   const dispatch = useDispatch();
@@ -58,17 +59,24 @@ export const PoplistaHeader = () => {
   };
 
   return (
-    <div className="mb-4 sm:mb-8">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="mb-4 sm:mb-8"
+    >
       {/* Główny kontener */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4">
-        {/* Lewa strona - Tytuł z przyciskiem play */}
+        {/* Lewa strona */}
         <div className="flex items-center gap-4 w-full sm:w-auto">
-          <button
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={handlePlayAll}
             className="w-10 h-10 sm:w-12 sm:h-12 bg-amber-500 rounded-full flex items-center justify-center hover:bg-amber-600 transition-all shadow-lg group"
           >
             <FaPlay className="text-white text-lg sm:text-xl ml-1 group-hover:scale-110 transition-transform" />
-          </button>
+          </motion.button>
           <div>
             <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
               Bachata Top lista 2025
@@ -79,9 +87,9 @@ export const PoplistaHeader = () => {
           </div>
         </div>
 
-        {/* Prawa strona - Statystyki i social media */}
+        {/* Prawa strona */}
         <div className="flex flex-wrap items-center gap-4 w-full sm:w-auto">
-          {/* Licznik głosów - aktualizowany dynamicznie */}
+          {/* Licznik głosów */}
           <div className="flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 bg-gray-100 rounded-lg text-sm">
             <FaChartLine className="text-gray-600" />
             <span className="text-gray-700 font-medium">
@@ -91,27 +99,35 @@ export const PoplistaHeader = () => {
 
           {/* Social Media */}
           <div className="flex items-center gap-2 sm:gap-4">
-            <button className="w-10 h-10 flex items-center justify-center rounded-full bg-[#1877F2] text-white hover:opacity-90 transition-opacity">
-              <FaFacebook className="text-xl" />
-            </button>
-            <button className="w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-br from-[#833AB4] via-[#FD1D1D] to-[#FCAF45] text-white hover:opacity-90 transition-opacity">
-              <FaInstagram className="text-xl" />
-            </button>
-            <button className="w-10 h-10 flex items-center justify-center rounded-full bg-black text-white hover:opacity-90 transition-opacity">
-              <FaTiktok className="text-xl" />
-            </button>
-            <button className="w-10 h-10 flex items-center justify-center rounded-full bg-[#1DA1F2] text-white hover:opacity-90 transition-opacity">
-              <FaTwitter className="text-xl" />
-            </button>
+            {[
+              { icon: FaFacebook, color: "#1877F2" },
+              { icon: FaInstagram, color: "#E1306C" },
+              { icon: FaTiktok, color: "#000000" },
+              { icon: FaTwitter, color: "#1DA1F2" },
+            ].map(({ icon: Icon, color }, i) => (
+              <motion.button
+                key={i}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className="w-10 h-10 flex items-center justify-center rounded-full"
+                style={{ backgroundColor: color }}
+              >
+                <Icon className="text-white text-xl" />
+              </motion.button>
+            ))}
           </div>
 
           {/* Przycisk udostępniania */}
-          <button className="flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors text-sm">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors text-sm"
+          >
             <FaShare className="text-gray-600" />
             <span className="text-gray-700 font-medium hidden sm:inline">
               Udostępnij
             </span>
-          </button>
+          </motion.button>
         </div>
       </div>
 
@@ -121,6 +137,6 @@ export const PoplistaHeader = () => {
           Wybieraj hity, które rozkręcą każdą imprezę! Twój głos ma moc!
         </p>
       </div>
-    </div>
+    </motion.div>
   );
 };
