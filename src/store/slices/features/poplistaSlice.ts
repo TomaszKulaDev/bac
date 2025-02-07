@@ -16,8 +16,8 @@ const initialState: PoplistaState = {
 };
 
 // Stałe czasowe
-const NEW_SONG_THRESHOLD = 48 * 60 * 60 * 1000; // 48 godzin (2 dni) w milisekundach
-const REMOVE_FROM_NEW_AFTER = 7 * 24 * 60 * 60 * 1000; // 7 dni w milisekundach
+const NEW_SONG_THRESHOLD = 31 * 24 * 60 * 60 * 1000; // 31 dni w milisekundach
+const REMOVE_FROM_NEW_AFTER = 31 * 24 * 60 * 60 * 1000; // 31 dni w milisekundach
 
 export const fetchPoplistaSongs = createAsyncThunk(
   "poplista/fetchSongs",
