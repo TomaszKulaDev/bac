@@ -31,31 +31,43 @@ export const PoplistaFilters = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="flex flex-wrap gap-2 mb-6"
+      className="flex flex-wrap gap-3 mb-6"
     >
       <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
         onClick={() => dispatch(setFilter("all"))}
-        className={`flex items-center gap-2 px-4 py-2 rounded-full 
-          ${currentFilter === "all" ? "bg-gray-200" : "bg-gray-100"} 
-          hover:bg-gray-200 transition-colors`}
+        className={`
+          flex items-center gap-2 px-5 py-2.5 rounded-full 
+          font-medium transition-all duration-200
+          ${
+            currentFilter === "all"
+              ? "bg-gray-900 text-white shadow-lg"
+              : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+          }
+        `}
       >
-        <FaChartBar />
+        <FaChartBar className="text-lg" />
         <span>Wszystkie</span>
       </motion.button>
 
       <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
         onClick={() => dispatch(setFilter("new"))}
-        className={`flex items-center gap-2 px-4 py-2 rounded-full 
-          ${currentFilter === "new" ? "bg-amber-200" : "bg-amber-100"} 
-          hover:bg-amber-200 transition-colors
-          ${newSongs.length === 0 ? "opacity-50 cursor-not-allowed" : ""}`}
+        className={`
+          flex items-center gap-2 px-5 py-2.5 rounded-full
+          font-medium transition-all duration-200
+          ${
+            currentFilter === "new"
+              ? "bg-amber-500 text-white shadow-lg"
+              : "bg-amber-100 text-amber-700 hover:bg-amber-200"
+          }
+          ${newSongs.length === 0 ? "opacity-50 cursor-not-allowed" : ""}
+        `}
         disabled={newSongs.length === 0}
       >
-        <FaStar className="text-amber-600" />
+        <FaStar className="text-lg" />
         <span>Nowe ({newSongs.length})</span>
       </motion.button>
     </motion.div>

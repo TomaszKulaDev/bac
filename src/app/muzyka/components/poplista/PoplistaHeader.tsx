@@ -90,29 +90,45 @@ export const PoplistaHeader = () => {
         {/* Prawa strona */}
         <div className="flex flex-wrap items-center gap-4 w-full sm:w-auto">
           {/* Licznik głosów */}
-          <div className="flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 bg-gray-100 rounded-lg text-sm">
-            <FaChartLine className="text-gray-600" />
-            <span className="text-gray-700 font-medium">
+          <div
+            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r 
+            from-amber-50 to-amber-100 rounded-full border border-amber-200 
+            shadow-sm"
+          >
+            <FaChartLine className="text-amber-600" />
+            <span className="text-amber-700 font-medium">
               {formattedVotes} {totalVotes === 1 ? "głos" : "głosów"}
             </span>
           </div>
 
           {/* Social Media */}
-          <div className="flex items-center gap-2 sm:gap-4">
+          <div className="flex items-center gap-3">
             {[
-              { icon: FaFacebook, color: "#1877F2" },
-              { icon: FaInstagram, color: "#E1306C" },
-              { icon: FaTiktok, color: "#000000" },
-              { icon: FaTwitter, color: "#1DA1F2" },
-            ].map(({ icon: Icon, color }, i) => (
+              { icon: FaFacebook, color: "#1877F2", label: "Facebook" },
+              { icon: FaInstagram, color: "#E1306C", label: "Instagram" },
+              { icon: FaTiktok, color: "#000000", label: "TikTok" },
+              { icon: FaTwitter, color: "#1DA1F2", label: "Twitter" },
+            ].map(({ icon: Icon, color, label }, i) => (
               <motion.button
                 key={i}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                className="w-10 h-10 flex items-center justify-center rounded-full"
-                style={{ backgroundColor: color }}
+                whileHover={{ scale: 1.1, y: -2 }}
+                whileTap={{ scale: 0.95 }}
+                className="relative group"
               >
-                <Icon className="text-white text-xl" />
+                <div
+                  className="w-10 h-10 flex items-center justify-center rounded-full 
+                  transition-transform duration-200 shadow-md"
+                  style={{ backgroundColor: color }}
+                >
+                  <Icon className="text-white text-lg" />
+                </div>
+                <span
+                  className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 
+                  text-xs text-gray-600 opacity-0 group-hover:opacity-100 
+                  transition-opacity duration-200"
+                >
+                  {label}
+                </span>
               </motion.button>
             ))}
           </div>
@@ -121,7 +137,9 @@ export const PoplistaHeader = () => {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors text-sm"
+            className="flex items-center gap-2 px-4 py-2 bg-gray-50 
+              hover:bg-gray-100 rounded-full border border-gray-200 
+              shadow-sm transition-all duration-200"
           >
             <FaShare className="text-gray-600" />
             <span className="text-gray-700 font-medium hidden sm:inline">
