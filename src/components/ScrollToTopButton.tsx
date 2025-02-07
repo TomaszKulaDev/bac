@@ -33,7 +33,7 @@ export const ScrollToTopButton = () => {
       animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 20 }}
       transition={{ duration: 0.3 }}
       onClick={scrollToTop}
-      className="fixed bottom-6 right-6 z-[99] p-3 bg-amber-500 rounded-full shadow-lg hover:bg-amber-600 transition-colors"
+      className="fixed bottom-6 right-6 z-[99] p-3 bg-amber-500 rounded-full shadow-lg hover:bg-amber-600 transition-colors hidden md:block"
       aria-label="Przewiń do góry"
     >
       <FaArrowUp className="w-5 h-5 text-white" />
