@@ -7,6 +7,7 @@ import { PoplistaItemSkeleton } from "./PoplistaItemSkeleton";
 import { FaChevronDown } from "react-icons/fa";
 import { filterAndSortSongs } from "@/app/muzyka/utils/poplistaSort";
 import { PoplistaSong } from "@/app/muzyka/types";
+import { store } from "@/store/store";
 
 const ITEMS_PER_PAGE = 50;
 
@@ -31,6 +32,27 @@ export const PoplistaList = () => {
   useEffect(() => {
     dispatch(fetchPoplistaSongs());
   }, [dispatch]);
+
+  useEffect(() => {
+    const playerSongs = store.getState().songs.songs;
+    const poplistaSongs = songs;
+
+    console.log("🔄 Porównanie list:", {
+      poplistaCount: poplistaSongs.length,
+      playerCount: playerSongs.length,
+      sampleSong: poplistaSongs[0]
+        ? {
+            inPoplista: poplistaSongs[0]._id,
+            inPlayer: playerSongs.find(
+              (s: any) => s._id === poplistaSongs[0]._id
+            )?._id,
+          }
+        : null,
+      areListsSynced: poplistaSongs.every(
+        (song, index) => playerSongs[index]?._id === song._id
+      ),
+    });
+  }, [songs]);
 
   if (status === "loading") {
     return (

@@ -56,9 +56,13 @@ export const PoplistaItem = ({ song, index }: PoplistaItemProps) => {
   const handlePlay = () => {
     console.group("🎵 PoplistaItem - handlePlay");
 
-    // Znajdź indeks w obu tablicach
-    const poplistaIndex = poplistaSongs.findIndex((s) => s._id === song._id);
-    const playerIndex = playerSongs.findIndex((s) => s._id === song._id);
+    const playerSongs = store.getState().songs.songs;
+    const poplistaSongs = store.getState().poplista.songs;
+
+    const poplistaIndex = poplistaSongs.findIndex(
+      (s: any) => s._id === song._id
+    );
+    const playerIndex = playerSongs.findIndex((s: any) => s._id === song._id);
 
     console.log("Indeksy utworu:", {
       title: song.title,
@@ -68,16 +72,13 @@ export const PoplistaItem = ({ song, index }: PoplistaItemProps) => {
       localIndex: index,
     });
 
-    // Sprawdź czy utwór istnieje w obu tablicach
-    if (poplistaIndex === -1 || playerIndex === -1) {
-      console.error("Utwór nie znaleziony w jednej z list!", {
-        inPoplista: poplistaIndex !== -1,
-        inPlayer: playerIndex !== -1,
-      });
+    if (playerIndex === -1) {
+      console.error("Utwór nie istnieje w liście odtwarzacza!");
+      console.log("Szczegóły utworu:", song);
+      console.log("Pierwsze 5 utworów w playerze:", playerSongs.slice(0, 5));
       return;
     }
 
-    // Najpierw zaktualizuj playlistę, potem indeks
     dispatch(setCurrentPlaylistId("poplista"));
     dispatch(setCurrentSongIndex(playerIndex));
     dispatch(togglePlayback(true));
