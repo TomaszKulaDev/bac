@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setFilter } from "@/store/slices/features/poplistaSlice";
 import { RootState } from "@/store/store";
 import { useEffect } from "react";
+import { motion } from "framer-motion";
 
 export const PoplistaFilters = () => {
   const dispatch = useDispatch();
@@ -26,8 +27,15 @@ export const PoplistaFilters = () => {
   }, [currentFilter, songs, newSongs]);
 
   return (
-    <div className="flex flex-wrap gap-2 mb-6">
-      <button
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="flex flex-wrap gap-2 mb-6"
+    >
+      <motion.button
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
         onClick={() => dispatch(setFilter("all"))}
         className={`flex items-center gap-2 px-4 py-2 rounded-full 
           ${currentFilter === "all" ? "bg-gray-200" : "bg-gray-100"} 
@@ -35,9 +43,11 @@ export const PoplistaFilters = () => {
       >
         <FaChartBar />
         <span>Wszystkie</span>
-      </button>
+      </motion.button>
 
-      <button
+      <motion.button
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
         onClick={() => dispatch(setFilter("new"))}
         className={`flex items-center gap-2 px-4 py-2 rounded-full 
           ${currentFilter === "new" ? "bg-amber-200" : "bg-amber-100"} 
@@ -47,7 +57,7 @@ export const PoplistaFilters = () => {
       >
         <FaStar className="text-amber-600" />
         <span>Nowe ({newSongs.length})</span>
-      </button>
-    </div>
+      </motion.button>
+    </motion.div>
   );
 };
