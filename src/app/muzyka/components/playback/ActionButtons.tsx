@@ -17,6 +17,10 @@ export default function ActionButtons({
   hasPlaylistsAndExpanded,
   isAuthenticated,
 }: ActionButtonsProps) {
+  if (!isAuthenticated) {
+    return null;
+  }
+
   return (
     <div className="flex items-center justify-between sm:justify-end sm:gap-4">
       <button
@@ -29,7 +33,9 @@ export default function ActionButtons({
       <button
         onClick={(e) => currentSongId && onAddToPlaylist(currentSongId)}
         className="text-gray-500 px-5 sm:px-2"
-        disabled={!isAuthenticated || !hasPlaylistsAndExpanded || !currentSongId}
+        disabled={
+          !isAuthenticated || !hasPlaylistsAndExpanded || !currentSongId
+        }
       >
         <FaBookmark size={20} />
       </button>

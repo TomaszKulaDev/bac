@@ -91,20 +91,18 @@ const PlaybackBar: React.FC<PlaybackBarProps> = ({
         </div>
 
         <div className="w-full sm:w-1/4 flex justify-between sm:justify-end items-center">
-          <div className="sm:hidden ml-0">
-            <VolumeControl volume={volume} onVolumeChange={onVolumeChange} />
-          </div>
-
-          <div className="flex justify-end">
-            <ActionButtons
-              currentSongId={currentSong?.id}
-              onCreatePlaylist={onCreatePlaylist}
-              onAddToPlaylist={onAddToPlaylist}
-              playlistCount={playlistCount}
-              hasPlaylistsAndExpanded={hasPlaylistsAndExpanded}
-              isAuthenticated={isAuthenticated}
-            />
-          </div>
+          {isAuthenticated && (
+            <div className="flex justify-end">
+              <ActionButtons
+                currentSongId={currentSong?.id}
+                onCreatePlaylist={onCreatePlaylist}
+                onAddToPlaylist={onAddToPlaylist}
+                playlistCount={playlistCount}
+                hasPlaylistsAndExpanded={hasPlaylistsAndExpanded}
+                isAuthenticated={isAuthenticated}
+              />
+            </div>
+          )}
 
           <div className="hidden sm:block">
             <VolumeControl volume={volume} onVolumeChange={onVolumeChange} />
