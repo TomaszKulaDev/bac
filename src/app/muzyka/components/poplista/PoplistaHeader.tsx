@@ -13,6 +13,7 @@ import { setCurrentPlaylistId } from "@/store/slices/features/playlistSlice";
 import { togglePlayback } from "@/store/slices/playerSlice";
 import { RootState } from "@/store/store";
 import { store } from "@/store/store";
+import { Listener } from "@/app/muzyka/types/listener";
 
 export const PoplistaHeader = () => {
   const dispatch = useDispatch();
@@ -26,6 +27,17 @@ export const PoplistaHeader = () => {
 
   // Formatujemy liczbę głosów
   const formattedVotes = new Intl.NumberFormat("pl-PL").format(totalVotes);
+
+  const activeListeners = useSelector((state: RootState) =>
+    state.listeners.activeListeners.filter(
+      (l: Listener) => Date.now() - l.lastActive < 300000 // 5 minut
+    )
+  );
+
+  const activeListenersCount = activeListeners.length;
+  const playingListenersCount = activeListeners.filter(
+    (l: Listener) => l.isPlaying
+  ).length;
 
   const handlePlayAll = () => {
     console.group("▶️ PoplistaHeader - handlePlayAll");
@@ -120,6 +132,38 @@ export const PoplistaHeader = () => {
         <p className="text-gray-600">
           Wybieraj hity, które rozkręcą każdą imprezę! Twój głos ma moc!
         </p>
+      </div>
+
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-4">
+        <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+          <div className="text-sm text-gray-500">Wszystkie utwory</div>
+          <div className="text-2xl font-bold">{songs.length}</div>
+        </div>
+        <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+          <div className="text-sm text-gray-500">Nowe utwory</div>
+          <div className="text-2xl font-bold text-amber-500">
+            {songs.filter((s) => s.trend === "new").length}
+          </div>
+        </div>
+        <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+          <div className="text-sm text-gray-500">Suma głosów</div>
+          <div className="text-2xl font-bold text-emerald-500">
+            {formattedVotes}
+          </div>
+        </div>
+        <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+          <div className="text-sm text-gray-500">Aktywni słuchacze</div>
+          <div className="flex items-end gap-2">
+            <div className="text-2xl font-bold text-blue-500">
+              {activeListenersCount}
+            </div>
+            {playingListenersCount > 0 && (
+              <div className="text-sm text-blue-400 mb-1">
+                ({playingListenersCount} słucha)
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

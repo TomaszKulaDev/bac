@@ -5,6 +5,7 @@ import songsReducer from "./slices/features/songsSlice";
 import playlistReducer from "./slices/features/playlistSlice";
 import poplistaReducer from "./slices/features/poplistaSlice";
 import playerReducer from "./slices/playerSlice";
+import listenerReducer from "./slices/features/listenerSlice";
 
 // Konfiguracja głównego store Redux
 export const store = configureStore({
@@ -15,6 +16,7 @@ export const store = configureStore({
     playlists: playlistReducer,
     poplista: poplistaReducer,
     player: playerReducer,
+    listeners: listenerReducer,
   },
 });
 

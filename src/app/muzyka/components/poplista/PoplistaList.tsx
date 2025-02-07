@@ -57,6 +57,9 @@ export const PoplistaList = () => {
   if (status === "loading") {
     return (
       <div className="space-y-4">
+        <div className="h-1 bg-gray-100 rounded-full overflow-hidden">
+          <div className="h-full bg-amber-500 animate-progress-indeterminate" />
+        </div>
         {[1, 2, 3, 4, 5].map((n) => (
           <PoplistaItemSkeleton key={n} />
         ))}
