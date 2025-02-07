@@ -10,6 +10,7 @@ import { RootState } from "@/store/store";
 import { updateVotes } from "@/store/slices/features/poplistaSlice";
 import { useSession } from "next-auth/react";
 import { MusicTooltip } from "../ui/MusicTooltip";
+import { store } from "@/store/store";
 
 interface PoplistaSong extends Song {
   position: number;
@@ -23,6 +24,7 @@ interface PoplistaSong extends Song {
 
 interface PoplistaItemProps {
   song: PoplistaSong;
+  index: number;
 }
 
 const TrendIndicator = ({ song }: { song: PoplistaSong }) => {
@@ -32,10 +34,12 @@ const TrendIndicator = ({ song }: { song: PoplistaSong }) => {
   return null;
 };
 
-export const PoplistaItem = ({ song }: PoplistaItemProps) => {
+export const PoplistaItem = ({ song, index }: PoplistaItemProps) => {
   const { data: session } = useSession();
   const { handleLike } = useLike();
   const dispatch = useDispatch();
+  const poplistaSongs = useSelector((state: RootState) => state.poplista.songs);
+  const playerSongs = useSelector((state: RootState) => state.songs.songs);
 
   // Dodajemy selektor do sprawdzania stanu lajków
   const isLiked = useSelector(
@@ -50,9 +54,54 @@ export const PoplistaItem = ({ song }: PoplistaItemProps) => {
     : "/images/default-song-image.jpg"; // Dodaj domyślny obrazek
 
   const handlePlay = () => {
+    console.group("🎵 PoplistaItem - handlePlay");
+
+    // Znajdź indeks w obu tablicach
+    const poplistaIndex = poplistaSongs.findIndex((s) => s._id === song._id);
+    const playerIndex = playerSongs.findIndex((s) => s._id === song._id);
+
+    console.log("Indeksy utworu:", {
+      title: song.title,
+      id: song._id,
+      poplistaIndex,
+      playerIndex,
+      localIndex: index,
+    });
+
+    // Sprawdź czy utwór istnieje w obu tablicach
+    if (poplistaIndex === -1 || playerIndex === -1) {
+      console.error("Utwór nie znaleziony w jednej z list!", {
+        inPoplista: poplistaIndex !== -1,
+        inPlayer: playerIndex !== -1,
+      });
+      return;
+    }
+
+    // Najpierw zaktualizuj playlistę, potem indeks
     dispatch(setCurrentPlaylistId("poplista"));
-    dispatch(setCurrentSongIndex(song.position - 1));
+    dispatch(setCurrentSongIndex(playerIndex));
     dispatch(togglePlayback(true));
+
+    setTimeout(() => {
+      const newState = store.getState();
+      const actualSong = newState.songs.songs[newState.songs.currentSongIndex];
+
+      console.log("Stan po odtworzeniu:", {
+        playlistId: newState.playlists.currentPlaylistId,
+        songIndex: newState.songs.currentSongIndex,
+        expectedSong: {
+          id: song._id,
+          title: song.title,
+        },
+        actualSong: {
+          id: actualSong?._id,
+          title: actualSong?.title,
+        },
+        matched: actualSong?._id === song._id,
+      });
+    }, 100);
+
+    console.groupEnd();
   };
 
   const handleLikeClick = async (e: React.MouseEvent) => {

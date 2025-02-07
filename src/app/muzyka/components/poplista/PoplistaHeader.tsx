@@ -12,6 +12,7 @@ import { setCurrentSongIndex } from "@/store/slices/features/songsSlice";
 import { setCurrentPlaylistId } from "@/store/slices/features/playlistSlice";
 import { togglePlayback } from "@/store/slices/playerSlice";
 import { RootState } from "@/store/store";
+import { store } from "@/store/store";
 
 export const PoplistaHeader = () => {
   const dispatch = useDispatch();
@@ -27,11 +28,33 @@ export const PoplistaHeader = () => {
   const formattedVotes = new Intl.NumberFormat("pl-PL").format(totalVotes);
 
   const handlePlayAll = () => {
+    console.group("▶️ PoplistaHeader - handlePlayAll");
+    console.log("Stan przed odtworzeniem:", {
+      songsCount: songs.length,
+      firstSong: songs[0]
+        ? {
+            id: songs[0]._id,
+            title: songs[0].title,
+            position: songs[0].position,
+          }
+        : null,
+    });
+
     if (songs.length > 0) {
       dispatch(setCurrentPlaylistId("poplista"));
-      dispatch(setCurrentSongIndex(0)); // Zacznij od pierwszego utworu
+      dispatch(setCurrentSongIndex(0));
       dispatch(togglePlayback(true));
+
+      setTimeout(() => {
+        const state = store.getState();
+        console.log("Stan po odtworzeniu:", {
+          playlistId: state.playlists.currentPlaylistId,
+          songIndex: state.songs.currentSongIndex,
+          currentSong: state.songs.songs[state.songs.currentSongIndex],
+        });
+      }, 100);
     }
+    console.groupEnd();
   };
 
   return (

@@ -18,6 +18,17 @@ export const PoplistaList = () => {
   const [displayLimit, setDisplayLimit] = useState(20);
 
   useEffect(() => {
+    console.group("📋 PoplistaList - useEffect");
+    console.log("Stan listy:", {
+      totalSongs: songs.length,
+      filter,
+      displayLimit,
+      status,
+    });
+    console.groupEnd();
+  }, [songs, filter, displayLimit, status]);
+
+  useEffect(() => {
     dispatch(fetchPoplistaSongs());
   }, [dispatch]);
 
@@ -32,6 +43,16 @@ export const PoplistaList = () => {
   }
 
   const filteredSongs = filterAndSortSongs(songs, filter);
+  console.log("🔍 Szczegóły filtrowania:", {
+    wszystkieUtwory: songs.length,
+    poFiltrowaniu: filteredSongs.length,
+    pierwszeTrzy: filteredSongs.slice(0, 3).map((s) => ({
+      id: s._id,
+      title: s.title,
+      position: s.position,
+      isVisible: s.isVisible,
+    })),
+  });
   const displayedSongs = filteredSongs.slice(0, displayLimit);
   const hasMore = filteredSongs.length > displayLimit;
 
@@ -44,8 +65,8 @@ export const PoplistaList = () => {
   return (
     <div>
       <div className="space-y-4">
-        {displayedSongs.map((song) => (
-          <PoplistaItem key={song.id} song={song} />
+        {displayedSongs.map((song, index) => (
+          <PoplistaItem key={song._id} song={song} index={index} />
         ))}
 
         {displayedSongs.length === 0 && (
