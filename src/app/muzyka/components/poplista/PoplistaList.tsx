@@ -8,6 +8,7 @@ import { FaChevronDown } from "react-icons/fa";
 import { filterAndSortSongs } from "@/app/muzyka/utils/poplistaSort";
 import { PoplistaSong } from "@/app/muzyka/types";
 import { store } from "@/store/store";
+import { motion } from "framer-motion";
 
 const ITEMS_PER_PAGE = 50;
 
@@ -57,12 +58,62 @@ export const PoplistaList = () => {
   if (status === "loading") {
     return (
       <div className="space-y-4">
-        <div className="h-1 bg-gray-100 rounded-full overflow-hidden">
-          <div className="h-full bg-amber-500 animate-progress-indeterminate" />
+        <div className="relative h-1.5 bg-gray-100 rounded-full overflow-hidden">
+          {/* Główny pasek postępu */}
+          <motion.div
+            className="absolute top-0 left-0 h-full w-full bg-gradient-to-r from-amber-400 via-amber-500 to-amber-400"
+            initial={{ x: "-100%" }}
+            animate={{
+              x: "100%",
+              transition: {
+                repeat: Infinity,
+                duration: 1.5,
+                ease: "linear",
+              },
+            }}
+          />
+
+          {/* Efekt błysku */}
+          <motion.div
+            className="absolute top-0 left-0 h-full w-1/4 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+            initial={{ x: "-100%" }}
+            animate={{
+              x: "200%",
+              transition: {
+                repeat: Infinity,
+                duration: 1.5,
+                delay: 0.5,
+                ease: "linear",
+              },
+            }}
+          />
         </div>
-        {[1, 2, 3, 4, 5].map((n) => (
-          <PoplistaItemSkeleton key={n} />
-        ))}
+
+        {/* Skeleton loaders z animacją fade-in */}
+        <motion.div
+          className="space-y-4"
+          initial="hidden"
+          animate="visible"
+          variants={{
+            visible: {
+              transition: {
+                staggerChildren: 0.1,
+              },
+            },
+          }}
+        >
+          {[1, 2, 3, 4, 5].map((n) => (
+            <motion.div
+              key={n}
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { opacity: 1, y: 0 },
+              }}
+            >
+              <PoplistaItemSkeleton />
+            </motion.div>
+          ))}
+        </motion.div>
       </div>
     );
   }

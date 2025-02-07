@@ -28,16 +28,57 @@ export const PoplistaHeader = () => {
   // Formatujemy liczbę głosów
   const formattedVotes = new Intl.NumberFormat("pl-PL").format(totalVotes);
 
-  const activeListeners = useSelector((state: RootState) =>
-    state.listeners.activeListeners.filter(
-      (l: Listener) => Date.now() - l.lastActive < 300000 // 5 minut
-    )
-  );
+  const activeListeners = useSelector((state: RootState) => {
+    const now = Date.now();
+    const activeUsers = new Map(); // Mapa użytkownik -> urządzenia
+    const playingUsers = new Set();
 
-  const activeListenersCount = activeListeners.length;
-  const playingListenersCount = activeListeners.filter(
-    (l: Listener) => l.isPlaying
-  ).length;
+    console.group("👥 Aktywni słuchacze");
+
+    state.listeners.activeListeners
+      .filter((l) => {
+        const isActive = now - l.lastActive < 300000;
+        console.log("Sprawdzanie słuchacza:", {
+          userId: l.userId,
+          deviceId: l.deviceId,
+          isActive,
+          lastActive: new Date(l.lastActive).toISOString(),
+          timeSinceLastActive: Math.floor((now - l.lastActive) / 1000) + "s",
+        });
+        return isActive;
+      })
+      .forEach((listener) => {
+        // Dodaj urządzenie do mapy użytkownika
+        if (!activeUsers.has(listener.userId)) {
+          activeUsers.set(listener.userId, new Set());
+        }
+        activeUsers.get(listener.userId).add(listener.deviceId);
+
+        if (listener.isPlaying) {
+          playingUsers.add(listener.userId);
+        }
+      });
+
+    const stats = {
+      total: activeUsers.size,
+      playing: playingUsers.size,
+      devices: Array.from(activeUsers.values()).reduce(
+        (acc, devices) => acc + devices.size,
+        0
+      ),
+    };
+
+    console.log("Statystyki:", {
+      uniqueUsers: stats.total,
+      playingUsers: stats.playing,
+      totalDevices: stats.devices,
+      activeUsersMap: Object.fromEntries(activeUsers),
+      playingUsersSet: Array.from(playingUsers),
+    });
+    console.groupEnd();
+
+    return stats;
+  });
 
   const handlePlayAll = () => {
     console.group("▶️ PoplistaHeader - handlePlayAll");
@@ -153,15 +194,21 @@ export const PoplistaHeader = () => {
         </div>
         <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
           <div className="text-sm text-gray-500">Aktywni słuchacze</div>
-          <div className="flex items-end gap-2">
-            <div className="text-2xl font-bold text-blue-500">
-              {activeListenersCount}
-            </div>
-            {playingListenersCount > 0 && (
-              <div className="text-sm text-blue-400 mb-1">
-                ({playingListenersCount} słucha)
+          <div className="flex flex-col">
+            <div className="flex items-end gap-2">
+              <div className="text-2xl font-bold text-blue-500">
+                {activeListeners.total}
               </div>
-            )}
+              {activeListeners.playing > 0 && (
+                <div className="text-sm text-blue-400 mb-1">
+                  ({activeListeners.playing} słucha)
+                </div>
+              )}
+            </div>
+            <div className="text-xs text-gray-400">
+              na {activeListeners.devices}{" "}
+              {activeListeners.devices === 1 ? "urządzeniu" : "urządzeniach"}
+            </div>
           </div>
         </div>
       </div>
