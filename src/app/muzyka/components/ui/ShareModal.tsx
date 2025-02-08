@@ -6,6 +6,8 @@ import {
   FaLinkedin,
   FaLink,
   FaEnvelope,
+  FaFacebookMessenger,
+  FaInstagram,
 } from "react-icons/fa";
 import { toast } from "react-toastify";
 
@@ -21,7 +23,7 @@ export const ShareModal = ({
   isOpen,
   onClose,
   title = "Bachata Top lista 2025",
-  text = "Sprawdź najlepsze utwory Bachaty!",
+  text = "🎵 Odkryj najlepsze utwory do tańca Bachaty! 💃🕺\n\nSprawdź playlistę, która pomaga tysiącom tancerzy w nauce. Znajdziesz tu:\n• Najnowsze hity\n• Utwory idealne do nauki\n• Ranking najpopularniejszych piosenek\n\nDołącz do społeczności Baciata.pl i rozwijaj swoją pasję! 🌟",
   url = typeof window !== "undefined" ? window.location.href : "",
 }: ShareModalProps) => {
   const shareOptions = [
@@ -31,7 +33,9 @@ export const ShareModal = ({
       color: "#25D366",
       onClick: () =>
         window.open(
-          `https://wa.me/?text=${encodeURIComponent(text + " " + url)}`
+          `https://wa.me/?text=${encodeURIComponent(
+            `${text}\n\nSprawdź tutaj ➡️ ${url}`
+          )}`
         ),
     },
     {
@@ -42,31 +46,39 @@ export const ShareModal = ({
         window.open(
           `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
             url
-          )}`
+          )}&quote=${encodeURIComponent(text)}`
         ),
     },
-    // {
-    //   name: "Twitter",
-    //   icon: FaTwitter,
-    //   color: "#1DA1F2",
-    //   onClick: () =>
-    //     window.open(
-    //       `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-    //         text
-    //       )}&url=${encodeURIComponent(url)}`
-    //     ),
-    // },
-    // {
-    //   name: "LinkedIn",
-    //   icon: FaLinkedin,
-    //   color: "#0A66C2",
-    //   onClick: () =>
-    //     window.open(
-    //       `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
-    //         url
-    //       )}`
-    //     ),
-    // },
+    {
+      name: "Messenger",
+      icon: FaFacebookMessenger,
+      color: "#00B2FF",
+      onClick: () =>
+        window.open(
+          `https://www.facebook.com/dialog/send?link=${encodeURIComponent(
+            url
+          )}&app_id=YOUR_FB_APP_ID&redirect_uri=${encodeURIComponent(
+            url
+          )}&quote=${encodeURIComponent(text)}`
+        ),
+    },
+    {
+      name: "Instagram",
+      icon: FaInstagram,
+      color: "#E4405F",
+      onClick: () => {
+        navigator.clipboard.writeText(
+          `🎵 Odkryj najlepsze utwory do Bachaty na Baciata.pl!\n\n` +
+            `Playlista, która pomaga w nauce tańca 💃🕺\n\n` +
+            `Link w bio ⬇️\n${url}\n\n` +
+            `#bachata #taniec #muzyka #baciata #dance #learning`
+        );
+        toast.success(
+          "Skopiowano tekst! Wklej go w Instagram Stories i dodaj link w bio! 📸"
+        );
+        onClose();
+      },
+    },
     {
       name: "Email",
       icon: FaEnvelope,
@@ -74,8 +86,10 @@ export const ShareModal = ({
       onClick: () =>
         window.open(
           `mailto:?subject=${encodeURIComponent(
-            title
-          )}&body=${encodeURIComponent(text + "\n\n" + url)}`
+            "Odkryj najlepsze utwory do Bachaty! 💃🕺"
+          )}&body=${encodeURIComponent(
+            `Cześć!\n\n${text}\n\nSprawdź tutaj: ${url}\n\nPozdrawiam!`
+          )}`
         ),
     },
     {
@@ -83,8 +97,8 @@ export const ShareModal = ({
       icon: FaLink,
       color: "#6B7280",
       onClick: async () => {
-        await navigator.clipboard.writeText(url);
-        toast.success("Link skopiowany do schowka!");
+        await navigator.clipboard.writeText(`${text}\n\nSprawdź tutaj: ${url}`);
+        toast.success("Link i opis skopiowane do schowka! 📋");
         onClose();
       },
     },
@@ -93,22 +107,41 @@ export const ShareModal = ({
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="relative z-[9999999]">
+        <div className="fixed inset-0 z-[999999] flex items-center justify-center p-4">
+          {/* Overlay */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/50"
+            className="absolute inset-0 bg-black/50"
           />
+
+          {/* Modal */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9 }}
-            className="fixed top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 
-              bg-white rounded-2xl p-6 shadow-xl w-[90%] max-w-md"
+            className="relative bg-white rounded-2xl p-6 shadow-xl w-full max-w-md 
+              mx-auto overflow-y-auto max-h-[90vh] sm:max-h-[600px]"
           >
-            <h3 className="text-xl font-bold text-gray-900 mb-4">Udostępnij</h3>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">
+              Super, że dzielisz się muzyką!
+            </h3>
+
+            <div className="mb-6 p-4 bg-amber-50 rounded-xl border border-amber-100">
+              <p className="text-amber-800 text-sm leading-relaxed">
+                Dziękujemy, że pomagasz innym tancerzom w poszukiwaniu idealnej
+                muzyki! 🎵
+                <br />
+                <br />
+                Dzięki Tobie inni tancerze znajdą inspirację do treningów.
+                Jesteś częścią tanecznej społeczności!
+                <br /> Twoje udostępnienie to cenny wkład. Wzajemnie się
+                inspirujemy 🌟 💃🕺
+              </p>
+            </div>
+
             <div className="grid grid-cols-3 gap-4">
               {shareOptions.map((option) => (
                 <motion.button
@@ -131,6 +164,13 @@ export const ShareModal = ({
                   <span className="text-sm text-gray-600">{option.name}</span>
                 </motion.button>
               ))}
+            </div>
+
+            <div className="mt-6 text-center">
+              <p className="text-xs text-gray-500">
+                Muzyka łączy ludzi - dzięki Tobie ktoś może odkryć swoją nową
+                ulubioną piosenkę! 🎶
+              </p>
             </div>
           </motion.div>
         </div>
