@@ -21,18 +21,22 @@ src/app/muzyka/components/likes/
 
 Reużywalny komponent React wyświetlający miniatury (avatary) użytkowników, którzy polubili dany element.
 
+#### Nowe funkcje
+
+- Wyświetlanie nazwy użytkownika pod avatar
+- Responsywne zachowanie
+- Ograniczenie długości nazwy do 4 znaków
+- Płynne przejścia i animacje
+
+#### Przykład użycia
+
 ```tsx
-import { LikedByAvatars, TEMP_LIKED_BY } from "@/app/muzyka/components/likes";
-
-// Podstawowe użycie
-<LikedByAvatars users={TEMP_LIKED_BY} />
-
-// Zaawansowane użycie
 <LikedByAvatars
-  users={TEMP_LIKED_BY}
+  users={[
+    { userId: "1", userName: "Anna", userImage: null },
+    { userId: "2", userName: "Bartek", userImage: null },
+  ]}
   size="large"
-  showCount={true}
-  maxAvatars={5}
 />
 ```
 
