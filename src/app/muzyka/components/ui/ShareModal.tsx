@@ -2,15 +2,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   FaWhatsapp,
   FaFacebook,
-  FaTwitter,
-  FaLinkedin,
+  FaInstagram,
   FaLink,
   FaEnvelope,
   FaFacebookMessenger,
-  FaInstagram,
 } from "react-icons/fa";
 import { toast } from "react-toastify";
-import { useEffect } from "react";
 
 interface ShareModalProps {
   isOpen: boolean;
@@ -18,13 +15,6 @@ interface ShareModalProps {
   title?: string;
   text?: string;
   url?: string;
-}
-
-declare global {
-  interface Window {
-    FB: any;
-    fbAsyncInit: () => void;
-  }
 }
 
 export const ShareModal = ({
@@ -39,59 +29,50 @@ export const ShareModal = ({
       name: "WhatsApp",
       icon: FaWhatsapp,
       color: "#25D366",
-      onClick: () =>
-        window.open(
-          `https://wa.me/?text=${encodeURIComponent(
-            `${text}\n\nSprawdź tutaj ➡️ ${url}`
-          )}`
-        ),
+      onClick: async () => {
+        await navigator.clipboard.writeText(
+          `${text}\n\nSprawdź tutaj ➡️ ${url}`
+        );
+        toast.success("Skopiowano! Teraz możesz wkleić tekst w WhatsApp 📱");
+        onClose();
+      },
     },
     {
       name: "Facebook",
       icon: FaFacebook,
       color: "#1877F2",
-      onClick: () => {
-        if (window.FB) {
-          window.FB.ui({
-            method: "share",
-            href: url,
-            quote: text,
-            hashtag: "#Bachata",
-          });
-        } else {
-          window.open(
-            `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-              url
-            )}&quote=${encodeURIComponent(text)}`
-          );
-        }
+      onClick: async () => {
+        await navigator.clipboard.writeText(
+          `${text}\n\nSprawdź tutaj ➡️ ${url}`
+        );
+        toast.success("Skopiowano! Teraz możesz wkleić tekst na Facebook 👍");
+        onClose();
       },
     },
     {
       name: "Messenger",
       icon: FaFacebookMessenger,
       color: "#00B2FF",
-      onClick: () =>
-        window.open(
-          `https://www.facebook.com/dialog/send?link=${encodeURIComponent(
-            url
-          )}&app_id=1342323157222473&redirect_uri=${encodeURIComponent(
-            url
-          )}&quote=${encodeURIComponent(text)}`
-        ),
+      onClick: async () => {
+        await navigator.clipboard.writeText(
+          `${text}\n\nSprawdź tutaj ➡️ ${url}`
+        );
+        toast.success("Skopiowano! Teraz możesz wkleić tekst w Messenger 💬");
+        onClose();
+      },
     },
     {
       name: "Instagram",
       icon: FaInstagram,
       color: "#E4405F",
-      onClick: () => {
-        navigator.clipboard.writeText(
+      onClick: async () => {
+        await navigator.clipboard.writeText(
           `🎵 Odkryj najlepsze utwory do Bachaty na Baciata.pl!\n\n` +
             `Playlista, która pomaga w nauce tańca 💃🕺\n\n` +
-            `Link ⬇️\n${url}\n\n` +
-            `#bachata #muzyka #nauka #dance #learning`
+            `Link w bio ⬇️\n${url}\n\n` +
+            `#bachata #muzyka #nauka #wydarzenia #informacje`
         );
-        toast.success("Skopiowano tekst! Wklej go w Instagram! 📸");
+        toast.success("Skopiowano! Teraz możesz wkleić tekst na Instagram 📸");
         onClose();
       },
     },
@@ -99,14 +80,15 @@ export const ShareModal = ({
       name: "Email",
       icon: FaEnvelope,
       color: "#EA4335",
-      onClick: () =>
-        window.open(
-          `mailto:?subject=${encodeURIComponent(
-            "Odkryj najlepsze utwory do Bachaty! 💃🕺"
-          )}&body=${encodeURIComponent(
-            `Cześć!\n\n${text}\n\nSprawdź tutaj: ${url}\n\nPozdrawiam!`
-          )}`
-        ),
+      onClick: async () => {
+        const mailtoLink = `mailto:?subject=${encodeURIComponent(
+          "Odkryj najlepsze utwory do Bachaty! 💃🕺"
+        )}&body=${encodeURIComponent(
+          `Cześć!\n\n${text}\n\nSprawdź tutaj: ${url}\n\nPozdrawiam!`
+        )}`;
+        window.open(mailtoLink);
+        onClose();
+      },
     },
     {
       name: "Kopiuj link",
@@ -119,30 +101,6 @@ export const ShareModal = ({
       },
     },
   ];
-
-  useEffect(() => {
-    const loadFacebookSDK = () => {
-      if (typeof window !== "undefined" && !window.FB) {
-        const script = document.createElement("script");
-        script.src = "https://connect.facebook.net/pl_PL/sdk.js";
-        script.async = true;
-        script.defer = true;
-        script.crossOrigin = "anonymous";
-        document.body.appendChild(script);
-
-        window.fbAsyncInit = function () {
-          window.FB.init({
-            appId: "1342323157222473",
-            autoLogAppEvents: true,
-            xfbml: true,
-            version: "v18.0",
-          });
-        };
-      }
-    };
-
-    loadFacebookSDK();
-  }, []);
 
   return (
     <AnimatePresence>
@@ -175,10 +133,9 @@ export const ShareModal = ({
                 muzyki! 🎵
                 <br />
                 <br />
-                Dzięki Tobie inni tancerze znajdą inspirację do treningów.
-                Jesteś częścią tanecznej społeczności!
-                <br /> Twoje udostępnienie to cenny wkład. <br />
-                Wzajemnie się inspirujemy 🌟 💃🕺
+                Może dzięki Tobie inni znajdą inspirację do treningów.
+                <br />
+                <br /> Twoje udostępnienie to cenny wkład 🌟 💃🕺
               </p>
             </div>
 

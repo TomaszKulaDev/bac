@@ -356,17 +356,6 @@ const MusicPage: React.FC = () => {
         autoClose={3000}
         style={{ zIndex: Z_INDEX.TOAST }}
       />
-
-      <article
-        className="prose prose-lg"
-        itemScope
-        itemType="https://schema.org/Article"
-      >
-        <meta itemProp="headline" content="Kolekcja Muzyki Bachata" />
-        <meta itemProp="author" content="Baciata.pl" />
-        <meta itemProp="datePublished" content="2024-03-21" />
-        {/* ... reszta contentu ... */}
-      </article>
     </main>
   );
 };

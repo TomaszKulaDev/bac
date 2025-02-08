@@ -44,7 +44,7 @@ export const PoplistaHeader = ({ onShare }: PoplistaHeaderProps) => {
       icon: FaFacebook,
       color: "#1877F2",
       label: "Facebook",
-      url: "https://www.facebook.com/Baciata",
+      url: "https://www.facebook.com",
     },
     {
       icon: FaInstagram,
