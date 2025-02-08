@@ -118,10 +118,16 @@ const TEMP_LIKED_BY = [
 
 ### Efekty Hover
 
-- Rozwijanie avatarów po najechaniu na grupę
-- Skalowanie pojedynczego avatara przy najechaniu
-- Płynne animacje przejść
-- Zwiększony z-index dla aktywnego avatara
+- **Hover**:
+
+  - Pojedynczy avatar powiększa się do 150% przy najechaniu
+  - Pozostałe avatary pozostają w tle
+  - Powiększony avatar jest na wierzchu (z-index: 20)
+
+- **Kliknięcie**:
+  - Możliwość kliknięcia w pojedynczy avatar
+  - Obsługa zdarzenia z możliwością przekierowania do profilu użytkownika
+  - Blokada propagacji zdarzenia do elementów nadrzędnych
 
 ### Animacje
 

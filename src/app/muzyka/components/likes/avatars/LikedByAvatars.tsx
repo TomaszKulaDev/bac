@@ -9,13 +9,14 @@ export const LikedByAvatars: React.FC<
   showCount = true,
   maxAvatars = 10,
   isFirstPlace = false,
+
 }) => {
-  const firstPlaceMaxAvatars = 4; // Maksymalna liczba avatarów dla pierwszej pozycji
+  const firstPlaceMaxAvatars = 5;
   const effectiveMaxAvatars = isFirstPlace ? firstPlaceMaxAvatars : maxAvatars;
 
-  const avatarSize = size === "large" ? "w-14 h-14" : "w-10 h-10";
-  const textSize = size === "large" ? "text-sm" : "text-xs";
-  const spacing = size === "large" ? "-space-x-4" : "-space-x-4";
+  const avatarSize = size === "large" ? "w-14 h-14" : "w-12 h-12";
+  const textSize = size === "large" ? "text-xs" : "text-[10px]";
+  const spacing = size === "large" ? "-space-x-3" : "-space-x-4";
   const hoverSpacing =
     size === "large" ? "hover:space-x-1" : "hover:space-x-0.5";
 
@@ -25,7 +26,7 @@ export const LikedByAvatars: React.FC<
         className={`flex ${spacing} group transition-all duration-300 ${hoverSpacing} hover:mx-1`}
       >
         {users.slice(0, effectiveMaxAvatars).map((user, index) => (
-          <div
+          <button
             key={user.userId}
             className={`
               relative ${avatarSize} 
@@ -33,15 +34,21 @@ export const LikedByAvatars: React.FC<
               flex items-center justify-center 
               border border-white
               transform transition-all duration-300
-              hover:scale-105 hover:z-10
+              hover:scale-150 hover:z-20
               group-hover:translate-x-0
               ${index > 0 ? `translate-x-0` : ""}
+              cursor-pointer
             `}
+            onClick={(e) => {
+              e.stopPropagation();
+              // Tutaj można dodać obsługę kliknięcia
+              console.log("Kliknięto avatar:", user);
+            }}
           >
             <span className={`text-amber-600 ${textSize} font-medium`}>
               {user.userName[0].toUpperCase()}
             </span>
-          </div>
+          </button>
         ))}
         {users.length > effectiveMaxAvatars && (
           <div
