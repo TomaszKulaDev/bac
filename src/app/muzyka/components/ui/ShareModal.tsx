@@ -88,12 +88,10 @@ export const ShareModal = ({
         navigator.clipboard.writeText(
           `🎵 Odkryj najlepsze utwory do Bachaty na Baciata.pl!\n\n` +
             `Playlista, która pomaga w nauce tańca 💃🕺\n\n` +
-            `Link w bio ⬇️\n${url}\n\n` +
-            `#bachata #taniec #muzyka #baciata #dance #learning`
+            `Link ⬇️\n${url}\n\n` +
+            `#bachata #muzyka #nauka #dance #learning`
         );
-        toast.success(
-          "Skopiowano tekst! Wklej go w Instagram Stories i dodaj link w bio! 📸"
-        );
+        toast.success("Skopiowano tekst! Wklej go w Instagram! 📸");
         onClose();
       },
     },
