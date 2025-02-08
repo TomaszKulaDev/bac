@@ -7,6 +7,5 @@ export interface LikedByUser {
 export interface LikedByAvatarsProps {
   users: LikedByUser[];
   size?: "small" | "large";
-  showCount?: boolean;
   maxAvatars?: number;
 }

@@ -3,14 +3,7 @@ import React from "react";
 
 export const LikedByAvatars: React.FC<
   LikedByAvatarsProps & { isFirstPlace?: boolean }
-> = ({
-  users,
-  size = "small",
-  showCount = true,
-  maxAvatars = 10,
-  isFirstPlace = false,
-
-}) => {
+> = ({ users, size = "small", maxAvatars = 10, isFirstPlace = false }) => {
   const firstPlaceMaxAvatars = 5;
   const effectiveMaxAvatars = isFirstPlace ? firstPlaceMaxAvatars : maxAvatars;
 
@@ -21,7 +14,7 @@ export const LikedByAvatars: React.FC<
     size === "large" ? "hover:space-x-1" : "hover:space-x-0.5";
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center">
       <div
         className={`flex ${spacing} group transition-all duration-300 ${hoverSpacing} hover:mx-1`}
       >
@@ -68,15 +61,6 @@ export const LikedByAvatars: React.FC<
           </div>
         )}
       </div>
-      {showCount && (
-        <span
-          className={`${textSize} text-gray-500 hidden sm:inline transition-opacity duration-300`}
-        >
-          {size === "large"
-            ? `Polubione przez ${users.length} osób`
-            : users.length}
-        </span>
-      )}
     </div>
   );
 };
