@@ -41,7 +41,6 @@ interface AnimationVariants {
   };
 }
 
-
 const SongItem: React.FC<SongItemProps> = ({
   song,
   currentSong,
@@ -54,10 +53,10 @@ const SongItem: React.FC<SongItemProps> = ({
   onAddToPlaylist,
   playlists,
   setCurrentPlaylistId,
-  currentPlaylistId
+  currentPlaylistId,
 }) => {
   const isCurrentSong = song.id === currentSong?.id;
-  
+
   const playlistManagement = usePlaylistManagement({
     playlists,
     onUpdatePlaylists: () => {},
@@ -69,10 +68,13 @@ const SongItem: React.FC<SongItemProps> = ({
     isAuthenticated,
     songs: [],
     onCreatePlaylist: () => {},
-    setCurrentPlaylistId
+    setCurrentPlaylistId,
   });
 
-  const isInCurrentPlaylist = playlistManagement.isInPlaylist(song.id, expandedPlaylist || '');
+  const isInCurrentPlaylist = playlistManagement.isInPlaylist(
+    song.id,
+    expandedPlaylist || ""
+  );
 
   const handleClick = useCallback(() => {
     onSelect(song.id);
@@ -122,11 +124,7 @@ const SongItem: React.FC<SongItemProps> = ({
         <div className="min-w-0 flex-grow">
           <SongTitle title={song.title} />
           <SongArtist artist={song.artist} />
-          <SongTags
-            song={song}
-            isInPlaylist={isInCurrentPlaylist}
-            playlists={playlists}
-          />
+          <SongTags song={song} playlists={playlists} />
         </div>
       </div>
 
@@ -140,8 +138,8 @@ const SongItem: React.FC<SongItemProps> = ({
               handleLike(song._id);
             }}
             className={`p-2 rounded-full ${
-              song.isLiked 
-                ? "text-red-500" 
+              song.isLiked
+                ? "text-red-500"
                 : "text-gray-500 hover:text-red-500 hover:bg-red-50"
             }`}
             title={song.isLiked ? "Usuń z ulubionych" : "Dodaj do ulubionych"}
@@ -151,9 +149,7 @@ const SongItem: React.FC<SongItemProps> = ({
             ) : (
               <FaRegHeart className="text-xl" />
             )}
-            <span className="ml-1 text-sm">
-              {song.likesCount || 0}
-            </span>
+            <span className="ml-1 text-sm">{song.likesCount || 0}</span>
           </motion.button>
         )}
         {isPlaylistExpanded && expandedPlaylist && hasPlaylists && (
