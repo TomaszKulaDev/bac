@@ -158,6 +158,7 @@ export const PoplistaItem = ({ song, index }: PoplistaItemProps) => {
               users={TEMP_LIKED_BY}
               size="large"
               showCount={true}
+              isFirstPlace={true}
             />
           </div>
 

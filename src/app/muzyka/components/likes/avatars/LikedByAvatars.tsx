@@ -1,12 +1,18 @@
 import { LikedByUser, LikedByAvatarsProps } from "../types/likedBy";
 import React from "react";
 
-export const LikedByAvatars: React.FC<LikedByAvatarsProps> = ({
+export const LikedByAvatars: React.FC<
+  LikedByAvatarsProps & { isFirstPlace?: boolean }
+> = ({
   users,
   size = "small",
   showCount = true,
   maxAvatars = 10,
+  isFirstPlace = false,
 }) => {
+  const firstPlaceMaxAvatars = 4; // Maksymalna liczba avatarów dla pierwszej pozycji
+  const effectiveMaxAvatars = isFirstPlace ? firstPlaceMaxAvatars : maxAvatars;
+
   const avatarSize = size === "large" ? "w-14 h-14" : "w-10 h-10";
   const textSize = size === "large" ? "text-sm" : "text-xs";
   const spacing = size === "large" ? "-space-x-4" : "-space-x-4";
@@ -14,20 +20,20 @@ export const LikedByAvatars: React.FC<LikedByAvatarsProps> = ({
     size === "large" ? "hover:space-x-1" : "hover:space-x-0.5";
 
   return (
-    <div className="flex items-center gap-1">
+    <div className="flex items-center gap-2">
       <div
-        className={`flex ${spacing} group transition-all duration-300 ${hoverSpacing} hover:mx-2`}
+        className={`flex ${spacing} group transition-all duration-300 ${hoverSpacing} hover:mx-1`}
       >
-        {users.slice(0, maxAvatars).map((user, index) => (
+        {users.slice(0, effectiveMaxAvatars).map((user, index) => (
           <div
             key={user.userId}
             className={`
               relative ${avatarSize} 
               bg-amber-100 rounded-full 
               flex items-center justify-center 
-              border-2 border-white
+              border border-white
               transform transition-all duration-300
-              hover:scale-110 hover:z-10
+              hover:scale-105 hover:z-10
               group-hover:translate-x-0
               ${index > 0 ? `translate-x-0` : ""}
             `}
@@ -37,21 +43,21 @@ export const LikedByAvatars: React.FC<LikedByAvatarsProps> = ({
             </span>
           </div>
         ))}
-        {users.length > maxAvatars && (
+        {users.length > effectiveMaxAvatars && (
           <div
             className={`
               relative ${avatarSize} 
               rounded-full bg-gray-100 
               flex items-center justify-center 
               ${textSize} text-gray-600 
-              border-2 border-white
+              border border-white
               transform transition-all duration-300
-              hover:scale-110 hover:z-10
+              hover:scale-105 hover:z-10
               group-hover:translate-x-0
               translate-x-0
             `}
           >
-            +{users.length - maxAvatars}
+            +{users.length - effectiveMaxAvatars}
           </div>
         )}
       </div>

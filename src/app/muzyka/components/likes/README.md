@@ -38,12 +38,13 @@ import { LikedByAvatars, TEMP_LIKED_BY } from "@/app/muzyka/components/likes";
 
 #### Props
 
-| Prop       | Typ                | Domyślnie | Opis                                     |
-| ---------- | ------------------ | --------- | ---------------------------------------- |
-| users      | LikedByUser[]      | wymagane  | Lista użytkowników                       |
-| size       | 'small' \| 'large' | 'small'   | Rozmiar avatarów                         |
-| showCount  | boolean            | true      | Czy pokazywać licznik                    |
-| maxAvatars | number             | 4         | Maksymalna liczba wyświetlanych avatarów |
+| Prop         | Typ                | Domyślnie | Opis                                             |
+| ------------ | ------------------ | --------- | ------------------------------------------------ |
+| users        | LikedByUser[]      | wymagane  | Lista użytkowników                               |
+| size         | 'small' \| 'large' | 'small'   | Rozmiar avatarów                                 |
+| showCount    | boolean            | true      | Czy pokazywać licznik                            |
+| maxAvatars   | number             | 4         | Maksymalna liczba wyświetlanych avatarów         |
+| isFirstPlace | boolean            | false     | Czy to pierwsza pozycja (pokazuje do 5 avatarów) |
 
 ## Typy
 
