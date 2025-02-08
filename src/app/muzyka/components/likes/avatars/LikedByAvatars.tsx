@@ -14,7 +14,7 @@ export const LikedByAvatars: React.FC<LikedByAvatarsProps> = ({
     size === "large" ? "hover:space-x-1" : "hover:space-x-0.5";
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-1">
       <div
         className={`flex ${spacing} group transition-all duration-300 ${hoverSpacing} hover:mx-2`}
       >
