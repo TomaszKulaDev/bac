@@ -26,18 +26,6 @@ export const ShareModal = ({
 }: ShareModalProps) => {
   const shareOptions = [
     {
-      name: "WhatsApp",
-      icon: FaWhatsapp,
-      color: "#25D366",
-      onClick: async () => {
-        await navigator.clipboard.writeText(
-          `${text}\n\nSprawdź tutaj ➡️ ${url}`
-        );
-        toast.success("Skopiowano! Teraz możesz wkleić tekst w WhatsApp 📱");
-        onClose();
-      },
-    },
-    {
       name: "Facebook",
       icon: FaFacebook,
       color: "#1877F2",
@@ -46,18 +34,6 @@ export const ShareModal = ({
           `${text}\n\nSprawdź tutaj ➡️ ${url}`
         );
         toast.success("Skopiowano! Teraz możesz wkleić tekst na Facebook 👍");
-        onClose();
-      },
-    },
-    {
-      name: "Messenger",
-      icon: FaFacebookMessenger,
-      color: "#00B2FF",
-      onClick: async () => {
-        await navigator.clipboard.writeText(
-          `${text}\n\nSprawdź tutaj ➡️ ${url}`
-        );
-        toast.success("Skopiowano! Teraz możesz wkleić tekst w Messenger 💬");
         onClose();
       },
     },
@@ -76,6 +52,31 @@ export const ShareModal = ({
         onClose();
       },
     },
+    {
+      name: "Messenger",
+      icon: FaFacebookMessenger,
+      color: "#00B2FF",
+      onClick: async () => {
+        await navigator.clipboard.writeText(
+          `${text}\n\nSprawdź tutaj ➡️ ${url}`
+        );
+        toast.success("Skopiowano! Teraz możesz wkleić tekst w Messenger 💬");
+        onClose();
+      },
+    },
+    {
+      name: "WhatsApp",
+      icon: FaWhatsapp,
+      color: "#25D366",
+      onClick: async () => {
+        await navigator.clipboard.writeText(
+          `${text}\n\nSprawdź tutaj ➡️ ${url}`
+        );
+        toast.success("Skopiowano! Teraz możesz wkleić tekst w WhatsApp 📱");
+        onClose();
+      },
+    },
+
     {
       name: "Email",
       icon: FaEnvelope,
