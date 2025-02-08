@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { FaBookmark, FaGuitar } from "react-icons/fa";
+import { FaBookmark } from "react-icons/fa";
 import { Song, Playlist } from "../../../types";
 
 interface SongTagsProps {
@@ -24,24 +24,12 @@ Tag.displayName = "Tag";
 export const SongTags = memo(
   ({ song, isInPlaylist, playlists }: SongTagsProps) => (
     <div className="flex flex-wrap gap-1 mt-1">
-      {song.beginnerFriendly && (
-        <Tag className="bg-green-50 text-green-600 border border-green-100 flex items-center gap-1">
-          <FaGuitar className="text-xs" />
-          Dla początkujących
-        </Tag>
-      )}
-      {song.impro && (
-        <Tag className="bg-gradient-to-r from-purple-400 to-purple-500 text-white flex items-center gap-1">
-          <span className="text-xs">👥</span>
-          Impro
-        </Tag>
-      )}
       {playlists?.map(
         (playlist) =>
           playlist.songs.includes(song.id) && (
             <Tag
               key={playlist.id}
-              className="bg-blue-50 text-blue-600 flex items-center gap-1 border border-blue-100"
+              className="bg-blue-50 text-amber-600 flex items-center gap-1 border border-amber-100"
             >
               <FaBookmark className="text-xs" />
               {playlist.name}

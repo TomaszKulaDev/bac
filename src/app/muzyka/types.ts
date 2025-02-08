@@ -1,11 +1,6 @@
 import { UniqueIdentifier } from "@dnd-kit/core";
 import { SensorDescriptor, SensorOptions } from "@dnd-kit/core";
 import { DragEndEvent } from "@dnd-kit/core";
-import {
-  DifficultyLevel,
-  StyleType,
-  TempoType,
-} from "./components/songs/SongGrid/types";
 
 // Interfejs reprezentujący playlistę
 export interface Playlist {
@@ -193,3 +188,8 @@ export interface PositionHistory {
     timestamp: Date;
   }[];
 }
+
+// Dodaj typy bezpośrednio w pliku
+export type DifficultyLevel = "beginner" | "intermediate" | "advanced";
+export type StyleType = "sensual" | "dominicana" | "impro";
+export type TempoType = "slow" | "medium" | "fast";

@@ -26,7 +26,6 @@ import { useSortedAndFilteredSongs } from "./hooks/useSortedAndFilteredSongs";
 import Image from "next/image";
 import { getYouTubeThumbnail } from "./utils/youtube";
 import { usePlaylistData } from "./hooks/usePlaylistData";
-import SongGrid from "./components/songs/SongGrid";
 import { useSecuredPlaylistOperations } from "./hooks/useSecuredPlaylistOperations";
 import { useLike } from "@/app/muzyka/hooks/useLike";
 import { useSession } from "next-auth/react";
