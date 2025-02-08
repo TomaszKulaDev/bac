@@ -113,18 +113,29 @@ const TEMP_LIKED_BY = [
 - Obramowanie: `border-white`
 - Licznik: `bg-gray-100`, `text-gray-600`
 
-## Responsywność
+## Interakcje
 
-- Mobile:
+### Efekty Hover
 
-  - Ukryty tekst licznika dla małych avatarów
-  - Zachowane avatary dla pierwszego miejsca
-  - Ukryte avatary dla pozostałych pozycji
+- Rozwijanie avatarów po najechaniu na grupę
+- Skalowanie pojedynczego avatara przy najechaniu
+- Płynne animacje przejść
+- Zwiększony z-index dla aktywnego avatara
 
-- Desktop:
-  - Pełna funkcjonalność
-  - Wyświetlany tekst licznika
-  - Widoczne wszystkie elementy
+### Animacje
+
+- Czas trwania: 300ms
+- Płynne przejścia dla:
+  - Rozstawu między avatarami
+  - Skalowania
+  - Przesunięcia
+  - Przezroczystości licznika
+
+### Responsywność
+
+- Różne rozmiary odstępów dla small/large
+- Zachowanie proporcji przy skalowaniu
+- Płynne przejścia na mobile/desktop
 
 ## Best Practices
 
