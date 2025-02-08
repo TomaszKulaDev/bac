@@ -2,13 +2,19 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { FaShieldAlt, FaUserLock, FaDatabase, FaEnvelope } from "react-icons/fa";
+import {
+  FaShieldAlt,
+  FaUserLock,
+  FaDatabase,
+  FaEnvelope,
+} from "react-icons/fa";
 
 const sections = [
   {
     icon: FaShieldAlt,
     title: "Wprowadzenie",
-    content: "Niniejsza Polityka Prywatności szczegółowo opisuje zasady, na jakich przetwarzamy dane osobowe użytkowników naszej aplikacji. Zależy nam na ochronie prywatności naszych użytkowników i zapewnieniu, że ich dane są przetwarzane zgodnie z obowiązującymi przepisami prawa, w tym z Rozporządzeniem Parlamentu Europejskiego i Rady (UE) 2016/679 z dnia 27 kwietnia 2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych i w sprawie swobodnego przepływu takich danych (RODO).",
+    content:
+      "Niniejsza Polityka Prywatności szczegółowo opisuje zasady, na jakich przetwarzamy dane osobowe użytkowników naszej aplikacji. Zależy nam na ochronie prywatności naszych użytkowników i zapewnieniu, że ich dane są przetwarzane zgodnie z obowiązującymi przepisami prawa, w tym z Rozporządzeniem Parlamentu Europejskiego i Rady (UE) 2016/679 z dnia 27 kwietnia 2016 r. w sprawie ochrony osób fizycznych w związku z przetwarzaniem danych osobowych i w sprawie swobodnego przepływu takich danych (RODO).",
   },
   {
     icon: FaDatabase,
@@ -22,7 +28,20 @@ const sections = [
   {
     icon: FaUserLock,
     title: "Ochrona danych",
-    content: "Stosujemy zaawansowane środki techniczne i organizacyjne, aby zapewnić bezpieczeństwo danych osobowych naszych użytkowników. Dane są przechowywane na zabezpieczonych serwerach, a dostęp do nich mają wyłącznie upoważnione osoby, które są zobowiązane do zachowania poufności. Regularnie przeprowadzamy audyty bezpieczeństwa, aby zapewnić, że nasze systemy są odporne na nieautoryzowany dostęp, utratę lub zmianę danych.",
+    content:
+      "Stosujemy zaawansowane środki techniczne i organizacyjne, aby zapewnić bezpieczeństwo danych osobowych naszych użytkowników. Dane są przechowywane na zabezpieczonych serwerach, a dostęp do nich mają wyłącznie upoważnione osoby, które są zobowiązane do zachowania poufności. Regularnie przeprowadzamy audyty bezpieczeństwa, aby zapewnić, że nasze systemy są odporne na nieautoryzowany dostęp, utratę lub zmianę danych.",
+  },
+  {
+    icon: FaEnvelope,
+    title: "Usuwanie Danych",
+    content: [
+      "Użytkownicy mogą zażądać usunięcia swoich danych poprzez:",
+      "Usunięcie aplikacji w ustawieniach Facebook",
+      "Wysłanie prośby na adres privacy@baciata.pl",
+      "Wypełnienie formularza na stronie /data-deletion",
+      "Po otrzymaniu żądania usunięcia danych, rozpoczniemy proces w ciągu 24 godzin",
+      "Status żądania można sprawdzić używając otrzymanego kodu potwierdzenia",
+    ],
   },
   // ... więcej sekcji
 ];
@@ -32,13 +51,13 @@ export default function PrivacyPolicy() {
     <div className="min-h-screen bg-gradient-to-br from-[#0a1e3b] to-[#2a4a7f] text-white py-16 px-4">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <motion.div 
+        <motion.div
           className="text-center mb-16"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <motion.div 
+          <motion.div
             className="bg-gradient-to-r from-yellow-400 to-yellow-600 p-0.5 rounded-full mb-6 inline-block"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -47,9 +66,11 @@ export default function PrivacyPolicy() {
               <span className="text-white font-medium text-lg">Baciata.pl</span>
             </div>
           </motion.div>
-          
+
           <h1 className="text-4xl font-bold mb-4">Polityka Prywatności</h1>
-          <p className="text-white/70">Ostatnia aktualizacja: {new Date().toLocaleDateString()}</p>
+          <p className="text-white/70">
+            Ostatnia aktualizacja: {new Date().toLocaleDateString()}
+          </p>
         </motion.div>
 
         {/* Sections */}
@@ -64,7 +85,7 @@ export default function PrivacyPolicy() {
                 hover:shadow-xl hover:shadow-yellow-400/10 transition-all duration-300"
             >
               <div className="flex items-start space-x-4">
-                <motion.div 
+                <motion.div
                   className="bg-gradient-to-r from-yellow-400 to-yellow-600 p-0.5 rounded-xl"
                   whileHover={{ scale: 1.05, rotate: 5 }}
                   whileTap={{ scale: 0.95 }}
@@ -106,8 +127,10 @@ export default function PrivacyPolicy() {
           transition={{ delay: 0.6 }}
           className="mt-12 text-center"
         >
-          <div className="inline-flex items-center space-x-2 text-white/60 bg-white/5 
-            backdrop-blur-sm px-4 py-2 rounded-full border border-white/10">
+          <div
+            className="inline-flex items-center space-x-2 text-white/60 bg-white/5 
+            backdrop-blur-sm px-4 py-2 rounded-full border border-white/10"
+          >
             <FaEnvelope className="h-4 w-4" />
             <span>privacy@baciata.pl</span>
           </div>

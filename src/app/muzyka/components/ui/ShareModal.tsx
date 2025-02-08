@@ -10,6 +10,7 @@ import {
   FaInstagram,
 } from "react-icons/fa";
 import { toast } from "react-toastify";
+import { useEffect } from "react";
 
 interface ShareModalProps {
   isOpen: boolean;
@@ -17,6 +18,12 @@ interface ShareModalProps {
   title?: string;
   text?: string;
   url?: string;
+}
+
+declare global {
+  interface Window {
+    FB: any;
+  }
 }
 
 export const ShareModal = ({
@@ -42,12 +49,22 @@ export const ShareModal = ({
       name: "Facebook",
       icon: FaFacebook,
       color: "#1877F2",
-      onClick: () =>
-        window.open(
-          `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-            url
-          )}&quote=${encodeURIComponent(text)}`
-        ),
+      onClick: () => {
+        if (window.FB) {
+          window.FB.ui({
+            method: "share",
+            href: url,
+            quote: text,
+            hashtag: "#Bachata",
+          });
+        } else {
+          window.open(
+            `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+              url
+            )}&quote=${encodeURIComponent(text)}`
+          );
+        }
+      },
     },
     {
       name: "Messenger",
@@ -57,7 +74,7 @@ export const ShareModal = ({
         window.open(
           `https://www.facebook.com/dialog/send?link=${encodeURIComponent(
             url
-          )}&app_id=YOUR_FB_APP_ID&redirect_uri=${encodeURIComponent(
+          )}&app_id=1342323157222473&redirect_uri=${encodeURIComponent(
             url
           )}&quote=${encodeURIComponent(text)}`
         ),
@@ -104,6 +121,30 @@ export const ShareModal = ({
     },
   ];
 
+  useEffect(() => {
+    const loadFacebookSDK = () => {
+      if (typeof window !== "undefined" && !window.FB) {
+        const script = document.createElement("script");
+        script.src = "https://connect.facebook.net/pl_PL/sdk.js";
+        script.async = true;
+        script.defer = true;
+        script.crossOrigin = "anonymous";
+        document.body.appendChild(script);
+
+        window.fbAsyncInit = function () {
+          window.FB.init({
+            appId: "1342323157222473",
+            autoLogAppEvents: true,
+            xfbml: true,
+            version: "v18.0",
+          });
+        };
+      }
+    };
+
+    loadFacebookSDK();
+  }, []);
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -137,8 +178,8 @@ export const ShareModal = ({
                 <br />
                 Dzięki Tobie inni tancerze znajdą inspirację do treningów.
                 Jesteś częścią tanecznej społeczności!
-                <br /> Twoje udostępnienie to cenny wkład. Wzajemnie się
-                inspirujemy 🌟 💃🕺
+                <br /> Twoje udostępnienie to cenny wkład. <br />
+                Wzajemnie się inspirujemy 🌟 💃🕺
               </p>
             </div>
 
