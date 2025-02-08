@@ -99,7 +99,7 @@ export const PoplistaItem = ({ song, index }: PoplistaItemProps) => {
     return (
       <div
         className="relative bg-gradient-to-r from-amber-100 to-amber-200 
-        rounded-2xl overflow-hidden mb-8 group"
+        rounded-2xl overflow-hidden mb-8 group z-10"
       >
         {/* Tło z delikatnym gradientem */}
         <div className="absolute inset-0 bg-gradient-to-r from-amber-500/10 to-amber-600/10" />

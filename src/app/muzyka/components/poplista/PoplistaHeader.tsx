@@ -5,7 +5,6 @@ import {
   FaTwitter,
   FaInstagram,
   FaTiktok,
-  FaShare,
 } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrentSongIndex } from "@/store/slices/features/songsSlice";
@@ -13,8 +12,13 @@ import { setCurrentPlaylistId } from "@/store/slices/features/playlistSlice";
 import { togglePlayback } from "@/store/slices/playerSlice";
 import { RootState } from "@/store/store";
 import { motion } from "framer-motion";
+import { ShareButton } from "@/app/muzyka/components/ui/ShareButton";
 
-export const PoplistaHeader = () => {
+interface PoplistaHeaderProps {
+  onShare: () => void;
+}
+
+export const PoplistaHeader = ({ onShare }: PoplistaHeaderProps) => {
   const dispatch = useDispatch();
   const songs = useSelector((state: RootState) => state.poplista.songs);
 
@@ -34,6 +38,27 @@ export const PoplistaHeader = () => {
       dispatch(togglePlayback(true));
     }
   };
+
+  const socialLinks = [
+    {
+      icon: FaFacebook,
+      color: "#1877F2",
+      label: "Facebook",
+      url: "https://www.facebook.com/Baciata",
+    },
+    {
+      icon: FaInstagram,
+      color: "#E1306C",
+      label: "Instagram",
+      url: "https://www.instagram.com/baciata_pl",
+    },
+    {
+      icon: FaTiktok,
+      color: "#000000",
+      label: "TikTok",
+      url: "https://www.threads.net/@baciata_pl",
+    },
+  ];
 
   return (
     <motion.div
@@ -80,14 +105,12 @@ export const PoplistaHeader = () => {
 
           {/* Social Media */}
           <div className="flex items-center gap-3">
-            {[
-              { icon: FaFacebook, color: "#1877F2", label: "Facebook" },
-              { icon: FaInstagram, color: "#E1306C", label: "Instagram" },
-              { icon: FaTiktok, color: "#000000", label: "TikTok" },
-              { icon: FaTwitter, color: "#1DA1F2", label: "Twitter" },
-            ].map(({ icon: Icon, color, label }, i) => (
-              <motion.button
+            {socialLinks.map(({ icon: Icon, color, label, url }, i) => (
+              <motion.a
                 key={i}
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
                 whileHover={{ scale: 1.1, y: -2 }}
                 whileTap={{ scale: 0.95 }}
                 className="relative group"
@@ -106,23 +129,12 @@ export const PoplistaHeader = () => {
                 >
                   {label}
                 </span>
-              </motion.button>
+              </motion.a>
             ))}
           </div>
 
-          {/* Przycisk udostępniania */}
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="flex items-center gap-2 px-4 py-2 bg-gray-50 
-              hover:bg-gray-100 rounded-full border border-gray-200 
-              shadow-sm transition-all duration-200"
-          >
-            <FaShare className="text-gray-600" />
-            <span className="text-gray-700 font-medium hidden sm:inline">
-              Udostępnij
-            </span>
-          </motion.button>
+          {/* Share Button */}
+          <ShareButton onClick={onShare} />
         </div>
       </div>
 
