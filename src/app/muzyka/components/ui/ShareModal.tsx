@@ -130,12 +130,9 @@ export const ShareModal = ({
 
             <div className="mb-6 p-4 bg-amber-50 rounded-xl border border-amber-100">
               <p className="text-amber-800 text-sm leading-relaxed">
-                Dziękujemy, że pomagasz innym tancerzom w poszukiwaniu idealnej
-                muzyki! 🎵
-                <br />
-                <br />
-                Może dzięki Tobie inni znajdą inspirację do treningów.
-                <br />
+                
+                Może to właśnie dzięki Tobie inni znajdą inspirację do
+                treningów.
                 <br /> Twoje udostępnienie to cenny wkład 🌟 💃🕺
               </p>
             </div>
