@@ -157,7 +157,6 @@ export const PoplistaItem = ({ song, index }: PoplistaItemProps) => {
             <LikedByAvatars
               users={TEMP_LIKED_BY}
               size="large"
-              showCount={true}
               isFirstPlace={true}
             />
           </div>
@@ -244,7 +243,7 @@ export const PoplistaItem = ({ song, index }: PoplistaItemProps) => {
 
         {/* Avatary dla pozostałych pozycji */}
         <div className="hidden sm:block">
-          <LikedByAvatars users={TEMP_LIKED_BY} size="small" showCount={true} />
+          <LikedByAvatars users={TEMP_LIKED_BY} size="small" />
         </div>
 
         {/* Przycisk like */}
