@@ -12,6 +12,7 @@ import { useSession } from "next-auth/react";
 import { MusicTooltip } from "../ui/MusicTooltip";
 import { store } from "@/store/store";
 import { motion } from "framer-motion";
+import { LikedByAvatars, TEMP_LIKED_BY } from "../likes";
 
 interface PoplistaSong extends Song {
   position: number;
@@ -27,14 +28,6 @@ interface PoplistaItemProps {
   song: PoplistaSong;
   index: number;
 }
-
-const TEMP_LIKED_BY = [
-  { userId: "1", userName: "Anna", userImage: null },
-  { userId: "2", userName: "Bartek", userImage: null },
-  { userId: "3", userName: "Celina", userImage: null },
-  { userId: "4", userName: "Daniel", userImage: null },
-  { userId: "5", userName: "Ewa", userImage: null },
-];
 
 const TrendIndicator = ({ song }: { song: PoplistaSong }) => {
   if (song.trend === "new") {
@@ -160,27 +153,12 @@ export const PoplistaItem = ({ song, index }: PoplistaItemProps) => {
           </div>
 
           {/* Avatary dla pierwszego miejsca */}
-          <div className="flex items-center gap-3">
-            <div className="flex -space-x-2">
-              {TEMP_LIKED_BY.slice(0, 3).map((user) => (
-                <div
-                  key={user.userId}
-                  className="relative w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center border-2 border-white"
-                >
-                  <span className="text-amber-600 text-sm font-medium">
-                    {user.userName[0].toUpperCase()}
-                  </span>
-                </div>
-              ))}
-              {TEMP_LIKED_BY.length > 3 && (
-                <div className="relative w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-sm text-gray-600 border-2 border-white">
-                  +{TEMP_LIKED_BY.length - 3}
-                </div>
-              )}
-            </div>
-            <span className="text-sm text-gray-500">
-              Polubione przez {TEMP_LIKED_BY.length} osób
-            </span>
+          <div className="hidden sm:block">
+            <LikedByAvatars
+              users={TEMP_LIKED_BY}
+              size="large"
+              showCount={true}
+            />
           </div>
 
           {/* Przyciski akcji */}
@@ -263,8 +241,13 @@ export const PoplistaItem = ({ song, index }: PoplistaItemProps) => {
           </p>
         </div>
 
-        {/* Głosowanie - z tooltipem dla niezalogowanych */}
-        <div className="flex items-center flex-shrink-0 ml-auto">
+        {/* Avatary dla pozostałych pozycji */}
+        <div className="hidden sm:block">
+          <LikedByAvatars users={TEMP_LIKED_BY} size="small" showCount={true} />
+        </div>
+
+        {/* Przycisk like */}
+        <div className="flex items-center flex-shrink-0">
           <MusicTooltip
             content={!session ? "Zaloguj się, aby polubić" : ""}
             position="left"
