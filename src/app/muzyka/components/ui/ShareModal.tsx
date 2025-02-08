@@ -23,6 +23,7 @@ interface ShareModalProps {
 declare global {
   interface Window {
     FB: any;
+    fbAsyncInit: () => void;
   }
 }
 
