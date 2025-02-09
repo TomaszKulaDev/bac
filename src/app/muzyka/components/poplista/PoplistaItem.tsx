@@ -13,6 +13,7 @@ import { MusicTooltip } from "../ui/MusicTooltip";
 import { store } from "@/store/store";
 import { motion } from "framer-motion";
 import { LikedByAvatars, TEMP_LIKED_BY } from "../likes";
+import { SongLikers } from "../likes/SongLikers";
 
 interface PoplistaSong extends Song {
   position: number;
@@ -191,6 +192,10 @@ export const PoplistaItem = ({ song, index }: PoplistaItemProps) => {
               <FaPlay />
               <span>Odtwórz</span>
             </button>
+
+            <div className="hidden sm:block">
+              <SongLikers songId={song._id} />
+            </div>
           </div>
         </div>
       </div>
@@ -266,6 +271,10 @@ export const PoplistaItem = ({ song, index }: PoplistaItemProps) => {
               <span>{song.likesCount}</span>
             </button>
           </MusicTooltip>
+        </div>
+
+        <div className="hidden sm:block">
+          <SongLikers songId={song._id} />
         </div>
       </div>
     </motion.div>
