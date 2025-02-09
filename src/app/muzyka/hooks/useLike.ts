@@ -11,7 +11,10 @@ export const useLike = () => {
 
   const handleLike = useCallback(
     async (songId: string) => {
-      if (!songId) return;
+      if (!songId) {
+        console.error("Invalid songId:", songId);
+        return;
+      }
 
       if (status === "unauthenticated") {
         await signIn();
@@ -24,10 +27,12 @@ export const useLike = () => {
       }
 
       try {
+        console.log("Toggling like for songId:", songId);
         const result = await dispatch(toggleLike(songId)).unwrap();
+        console.log("Like toggled successfully for songId:", songId, result);
         return result;
       } catch (error: any) {
-        console.error("Error toggling like:", error);
+        console.error("Error toggling like for songId:", songId, error);
         throw error;
       }
     },

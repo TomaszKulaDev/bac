@@ -1,11 +1,11 @@
 export interface LikedByUser {
   userId: string;
   userName: string;
-  userImage: string | null;
+  userImage: string;
 }
 
 export interface LikedByAvatarsProps {
-  users: LikedByUser[];
+  songId: string;
   size?: "small" | "large";
   maxAvatars?: number;
 }

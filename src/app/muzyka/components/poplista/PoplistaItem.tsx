@@ -12,7 +12,7 @@ import { useSession } from "next-auth/react";
 import { MusicTooltip } from "../ui/MusicTooltip";
 import { store } from "@/store/store";
 import { motion } from "framer-motion";
-import { LikedByAvatars, TEMP_LIKED_BY } from "../likes";
+import { LikedByAvatars } from "../likes";
 
 interface PoplistaSong extends Song {
   position: number;
@@ -155,9 +155,9 @@ export const PoplistaItem = ({ song, index }: PoplistaItemProps) => {
           {/* Avatary dla pierwszego miejsca */}
           <div className="hidden sm:block">
             <LikedByAvatars
-              users={TEMP_LIKED_BY}
-              size="large"
-              isFirstPlace={true}
+              songId={song._id}
+              size={isFirstPlace ? "large" : "small"}
+              maxAvatars={isFirstPlace ? 5 : 4}
             />
           </div>
 
@@ -243,7 +243,11 @@ export const PoplistaItem = ({ song, index }: PoplistaItemProps) => {
 
         {/* Avatary dla pozostałych pozycji */}
         <div className="hidden sm:block">
-          <LikedByAvatars users={TEMP_LIKED_BY} size="small" />
+          <LikedByAvatars
+            songId={song._id}
+            size={isFirstPlace ? "large" : "small"}
+            maxAvatars={isFirstPlace ? 5 : 4}
+          />
         </div>
 
         {/* Przycisk like */}
