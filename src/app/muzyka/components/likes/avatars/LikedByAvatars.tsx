@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { LikedByUser, LikedByAvatarsProps } from "../types/likedBy";
 import React from "react";
 
@@ -8,7 +9,6 @@ export const LikedByAvatars: React.FC<
   const effectiveMaxAvatars = isFirstPlace ? firstPlaceMaxAvatars : maxAvatars;
 
   const avatarSize = size === "large" ? "w-14 h-14" : "w-12 h-12";
-  const textSize = size === "large" ? "text-xs" : "text-[10px]";
   const spacing = size === "large" ? "-space-x-3" : "-space-x-4";
   const hoverSpacing =
     size === "large" ? "hover:space-x-1" : "hover:space-x-0.5";
@@ -23,7 +23,7 @@ export const LikedByAvatars: React.FC<
             key={user.userId}
             className={`
               relative ${avatarSize} 
-              bg-amber-100 rounded-full 
+              rounded-full 
               flex items-center justify-center 
               border border-white
               transform transition-all duration-300
@@ -31,16 +31,20 @@ export const LikedByAvatars: React.FC<
               group-hover:translate-x-0
               ${index > 0 ? `translate-x-0` : ""}
               cursor-pointer
+              overflow-hidden
+              bg-gray-50
             `}
             onClick={(e) => {
               e.stopPropagation();
-              // Tutaj można dodać obsługę kliknięcia
               console.log("Kliknięto avatar:", user);
             }}
           >
-            <span className={`text-amber-600 ${textSize} font-medium`}>
-              {user.userName[0].toUpperCase()}
-            </span>
+            <Image
+              src="/images/default-avatar.png"
+              alt={user.userName}
+              fill
+              className="object-cover"
+            />
           </button>
         ))}
         {users.length > effectiveMaxAvatars && (
@@ -49,7 +53,7 @@ export const LikedByAvatars: React.FC<
               relative ${avatarSize} 
               rounded-full bg-gray-100 
               flex items-center justify-center 
-              ${textSize} text-gray-600 
+              text-sm text-gray-600 
               border border-white
               transform transition-all duration-300
               hover:scale-105 hover:z-10
