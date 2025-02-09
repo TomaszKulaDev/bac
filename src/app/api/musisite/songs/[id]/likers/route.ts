@@ -14,10 +14,11 @@ export async function GET(
     const likes = await Like.find({ songId: id })
       .sort({ createdAt: -1 })
       .limit(6)
-      .select("userEmail")
+      .select("userEmail _id")
       .exec();
 
     const users = likes.map((like) => ({
+      userId: like._id.toString(),
       email: like.userEmail,
     }));
 

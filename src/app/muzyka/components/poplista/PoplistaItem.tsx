@@ -12,7 +12,6 @@ import { useSession } from "next-auth/react";
 import { MusicTooltip } from "../ui/MusicTooltip";
 import { store } from "@/store/store";
 import { motion } from "framer-motion";
-import { LikedByAvatars, TEMP_LIKED_BY } from "../likes";
 import { SongLikers } from "../likes/SongLikers";
 
 interface PoplistaSong extends Song {
@@ -153,17 +152,24 @@ export const PoplistaItem = ({ song, index }: PoplistaItemProps) => {
             </p>
           </div>
 
-          {/* Avatary dla pierwszego miejsca */}
-          <div className="hidden sm:block">
-            <LikedByAvatars
-              users={TEMP_LIKED_BY}
-              size="large"
-              isFirstPlace={true}
-            />
-          </div>
-
           {/* Przyciski akcji */}
           <div className="flex items-center gap-4">
+            {/* SongLikers najpierw */}
+            <div className="hidden sm:block">
+              <SongLikers songId={song._id} />
+            </div>
+
+            <button
+              onClick={handlePlay}
+              className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-full
+                bg-amber-500 text-white hover:bg-amber-600 
+                transition-colors duration-200"
+            >
+              <FaPlay />
+              <span>Odtwórz</span>
+            </button>
+
+            {/* Przycisk like na końcu */}
             <MusicTooltip
               content={!session ? "Zaloguj się, aby polubić" : ""}
               position="top"
@@ -182,20 +188,6 @@ export const PoplistaItem = ({ song, index }: PoplistaItemProps) => {
                 <span className="font-medium">{song.likesCount}</span>
               </button>
             </MusicTooltip>
-
-            <button
-              onClick={handlePlay}
-              className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-full
-                bg-amber-500 text-white hover:bg-amber-600 
-                transition-colors duration-200"
-            >
-              <FaPlay />
-              <span>Odtwórz</span>
-            </button>
-
-            <div className="hidden sm:block">
-              <SongLikers songId={song._id} />
-            </div>
           </div>
         </div>
       </div>
@@ -246,13 +238,14 @@ export const PoplistaItem = ({ song, index }: PoplistaItemProps) => {
           </p>
         </div>
 
-        {/* Avatary dla pozostałych pozycji */}
-        <div className="hidden sm:block">
-          <LikedByAvatars users={TEMP_LIKED_BY} size="small" />
-        </div>
+        {/* Przyciski akcji */}
+        <div className="flex items-center flex-shrink-0 gap-4">
+          {/* SongLikers najpierw */}
+          <div className="hidden sm:block">
+            <SongLikers songId={song._id} />
+          </div>
 
-        {/* Przycisk like */}
-        <div className="flex items-center flex-shrink-0">
+          {/* Przycisk like na końcu */}
           <MusicTooltip
             content={!session ? "Zaloguj się, aby polubić" : ""}
             position="left"
@@ -271,10 +264,6 @@ export const PoplistaItem = ({ song, index }: PoplistaItemProps) => {
               <span>{song.likesCount}</span>
             </button>
           </MusicTooltip>
-        </div>
-
-        <div className="hidden sm:block">
-          <SongLikers songId={song._id} />
         </div>
       </div>
     </motion.div>
