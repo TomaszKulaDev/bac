@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { LikedByAvatars } from "./avatars/LikedByAvatars";
 import { LikedByUser } from "./types/likedBy";
 import { useRouter } from "next/navigation";
+import { LikersModal } from "./LikersModal";
 
 interface SongLikersProps {
   songId: string;
@@ -12,60 +13,55 @@ interface SongLikersProps {
 export const SongLikers = ({ songId }: SongLikersProps) => {
   const [likers, setLikers] = useState<LikedByUser[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [totalLikes, setTotalLikes] = useState(0);
+  const [showModal, setShowModal] = useState(false);
   const router = useRouter();
 
-  useEffect(() => {
-    const fetchLikers = async () => {
-      try {
-        const response = await fetch(`/api/musisite/songs/${songId}/likers`);
-        if (!response.ok) throw new Error("Błąd podczas pobierania danych");
-        const data = await response.json();
+  const fetchLikers = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const response = await fetch(
+        `/api/musisite/songs/${songId}/likers?limit=5&random=true`
+      );
 
-        // Dodajmy console.log do debugowania
-        console.log("Received data:", data);
+      if (!response.ok) throw new Error("Błąd podczas pobierania danych");
+      const data = await response.json();
 
-        const formattedUsers: LikedByUser[] = data.users.map((user: any) => ({
-          userId: user._id || user.userId,
-          userName: user.name || user.userName || user.email, // Dodajemy fallback
-          email: user.email,
-          userImage: user.image || null,
-        }));
-
-        // Dodajmy console.log do debugowania
-        console.log("Formatted users:", formattedUsers);
-
-        setLikers(formattedUsers);
-      } catch (error) {
-        console.error("Błąd:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchLikers();
+      setLikers(data.users);
+      setTotalLikes(data.totalLikes);
+    } catch (error) {
+      console.error("Błąd:", error);
+    } finally {
+      setIsLoading(false);
+    }
   }, [songId]);
+
+  useEffect(() => {
+    fetchLikers();
+  }, [fetchLikers]);
 
   return (
     <div className="relative group">
       <LikedByAvatars
         users={likers}
         size="small"
-        maxAvatars={6}
+        maxAvatars={5}
         onAvatarClick={(userId) => {
           router.push(`/profile/${userId}`);
         }}
+        onMoreClick={() => setShowModal(true)}
         showTooltip={true}
         isLoading={isLoading}
+        totalLikes={totalLikes}
       />
-      {!isLoading && likers.length > 0 && (
-        <div
-          className="absolute -bottom-8 left-0 w-full opacity-0 
-                      group-hover:opacity-100 transition-opacity duration-200
-                      text-xs text-gray-500 text-center"
-        >
-          {likers.length} {likers.length === 1 ? "osoba lubi" : "osób lubi"}
-        </div>
-      )}
+
+      <LikersModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        songId={songId}
+        initialLikers={likers}
+        totalLikes={totalLikes}
+      />
     </div>
   );
 };

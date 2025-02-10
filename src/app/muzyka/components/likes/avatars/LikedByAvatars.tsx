@@ -10,8 +10,10 @@ interface LikedByAvatarsProps {
   size?: "small" | "large";
   maxAvatars?: number;
   onAvatarClick?: (userId: string) => void;
+  onMoreClick?: () => void;
   showTooltip?: boolean;
   isLoading?: boolean;
+  totalLikes?: number;
 }
 
 export const LikedByAvatars: React.FC<LikedByAvatarsProps> = ({
@@ -19,8 +21,10 @@ export const LikedByAvatars: React.FC<LikedByAvatarsProps> = ({
   size = "small",
   maxAvatars = 10,
   onAvatarClick,
+  onMoreClick,
   showTooltip = true,
   isLoading = false,
+  totalLikes = 0,
 }) => {
   const firstPlaceMaxAvatars = 5;
   const effectiveMaxAvatars = firstPlaceMaxAvatars;
@@ -111,8 +115,12 @@ export const LikedByAvatars: React.FC<LikedByAvatarsProps> = ({
             </button>
           </MusicTooltip>
         ))}
-        {users.length > effectiveMaxAvatars && (
-          <div
+        {totalLikes > effectiveMaxAvatars && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onMoreClick?.();
+            }}
             className={`
               relative ${avatarSize} 
               rounded-full bg-gray-100 
@@ -125,10 +133,11 @@ export const LikedByAvatars: React.FC<LikedByAvatarsProps> = ({
               hover:bg-gray-200
               hover:border-amber-500/50
               hover:shadow-lg hover:shadow-amber-500/10
+              cursor-pointer
             `}
           >
-            +{users.length - effectiveMaxAvatars}
-          </div>
+            +{totalLikes - effectiveMaxAvatars}
+          </button>
         )}
       </div>
     </div>

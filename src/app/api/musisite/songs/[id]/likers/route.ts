@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { connectToDatabase } from "@/lib/mongodb";
 import { Like } from "@/models/Like";
 import User from "@/models/User";
+import mongoose from "mongoose";
 
 export async function GET(
   request: Request,
@@ -10,51 +11,69 @@ export async function GET(
   try {
     await connectToDatabase();
     const { id } = params;
+    const url = new URL(request.url);
+    const limit = parseInt(url.searchParams.get("limit") || "5");
+    const page = parseInt(url.searchParams.get("page") || "1");
+    const random = url.searchParams.get("random") !== "false";
 
-    // Pobierz polubienia
-    const likes = await Like.find({ songId: id })
-      .sort({ createdAt: -1 })
-      .limit(6)
-      .select("userEmail _id")
-      .exec();
+    // Sprawdź poprawność ID
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return NextResponse.json({ error: "Invalid song ID" }, { status: 400 });
+    }
 
-    // Pobierz dane użytkowników na podstawie ich emaili
-    const userEmails = likes.map((like) => like.userEmail);
+    // Pobierz całkowitą liczbę polubień
+    const totalLikes = await Like.countDocuments({ songId: id });
 
-    // Dodajmy console.log do debugowania
-    console.log("Emails to fetch:", userEmails);
+    let likes;
+    if (random && page === 1) {
+      // Dla pierwszej strony z losowymi wynikami
+      likes = await Like.aggregate([
+        { $match: { songId: new mongoose.Types.ObjectId(id) } },
+        { $sample: { size: limit } },
+      ]);
+    } else {
+      // Dla kolejnych stron lub gdy random=false
+      likes = await Like.find({ songId: id })
+        .sort({ createdAt: -1 })
+        .skip((page - 1) * limit)
+        .limit(limit);
+    }
 
+    // Pobierz dane użytkowników
+    const userEmails = likes.map((like: any) => like.userEmail);
     const userDetails = await User.find(
       { email: { $in: userEmails } },
-      { email: 1, name: 1, image: 1 } // Dodajemy image do zwracanych pól
+      { email: 1, name: 1, image: 1 }
     );
-
-    // Dodajmy console.log do debugowania
-    console.log("Found users:", userDetails);
 
     // Utwórz mapę email -> dane użytkownika
     const emailToUserMap = new Map(
       userDetails.map((user) => [user.email, user])
     );
 
-    const users = likes.map((like) => {
+    // Przygotuj dane do odpowiedzi
+    const users = likes.map((like: any) => {
       const userDetail = emailToUserMap.get(like.userEmail);
       return {
-        userId: like._id.toString(),
-        userName: userDetail?.name || like.userEmail, // Używamy name z userDetail
+        userId: userDetail?._id.toString() || like._id.toString(),
+        userName: userDetail?.name || like.userEmail,
         email: like.userEmail,
         userImage: userDetail?.image || null,
       };
     });
 
-    // Dodajmy console.log do debugowania
-    console.log("Returning users:", users);
-
-    return NextResponse.json({ users });
+    // Zwróć odpowiedź
+    return NextResponse.json({
+      users,
+      totalLikes,
+      currentPage: page,
+      totalPages: Math.ceil(totalLikes / limit),
+      hasMore: page * limit < totalLikes,
+    });
   } catch (error) {
     console.error("Error in likers endpoint:", error);
     return NextResponse.json(
-      { error: "Wystąpił błąd podczas pobierania danych" },
+      { error: "Failed to fetch likers" },
       { status: 500 }
     );
   }
