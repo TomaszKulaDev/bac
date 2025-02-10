@@ -26,11 +26,12 @@ export function middleware(request: NextRequest) {
   const now = new Date();
 
   if (request.nextUrl.pathname === "/" && now < endDate) {
-    return NextResponse.redirect(new URL("/nauka-tanca-bachata", request.url), {
+    return NextResponse.redirect(new URL("/muzyka", request.url), {
       // Status 302 oznacza tymczasowe przekierowanie
       status: 302,
     });
   }
+
   //TODO --------------------------------- usunac po sylwestrze --------------------------------------
   return NextResponse.next();
 }
