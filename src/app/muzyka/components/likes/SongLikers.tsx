@@ -39,8 +39,6 @@ export const SongLikers = ({ songId }: SongLikersProps) => {
     fetchLikers();
   }, [songId]);
 
-  if (isLoading) return null;
-
   return (
     <div className="relative group">
       <LikedByAvatars
@@ -51,8 +49,9 @@ export const SongLikers = ({ songId }: SongLikersProps) => {
           router.push(`/profile/${userId}`);
         }}
         showTooltip={true}
+        isLoading={isLoading}
       />
-      {likers.length > 0 && (
+      {!isLoading && likers.length > 0 && (
         <div
           className="absolute -bottom-8 left-0 w-full opacity-0 
                       group-hover:opacity-100 transition-opacity duration-200
