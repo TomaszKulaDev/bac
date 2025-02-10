@@ -40,12 +40,12 @@ export const NavContent: React.FC = React.memo(function NavContent() {
   const [isSearchFocused, setIsSearchFocused] = useState(false);
 
   const menuItems = [
-    // {
-    //   href: "/szukam-partnera-do-bachaty",
-    //   label: "Społeczność",
-    //   icon: FaUsers,
-    //   badge: "2137",
-    // },
+    {
+      href: "/szukam-partnera-do-bachaty",
+      label: "Społeczność",
+      icon: FaUsers,
+      badge: "2137",
+    },
     {
       href: "/nauka-tanca-bachata",
       label: "Nauka tańca",
