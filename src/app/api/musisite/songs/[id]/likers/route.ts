@@ -26,13 +26,11 @@ export async function GET(
 
     let likes;
     if (random && page === 1) {
-      // Dla pierwszej strony z losowymi wynikami
       likes = await Like.aggregate([
         { $match: { songId: new mongoose.Types.ObjectId(id) } },
-        { $sample: { size: limit } },
+        { $sample: { size: Math.min(limit, totalLikes) } },
       ]);
     } else {
-      // Dla kolejnych stron lub gdy random=false
       likes = await Like.find({ songId: id })
         .sort({ createdAt: -1 })
         .skip((page - 1) * limit)
@@ -67,8 +65,8 @@ export async function GET(
       users,
       totalLikes,
       currentPage: page,
+      hasMore: users.length === limit,
       totalPages: Math.ceil(totalLikes / limit),
-      hasMore: page * limit < totalLikes,
     });
   } catch (error) {
     console.error("Error in likers endpoint:", error);

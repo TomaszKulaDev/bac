@@ -28,17 +28,38 @@ export const LikersModal = ({
   const [hasMore, setHasMore] = useState(true);
   const router = useRouter();
 
+  // Przenosimy fetchFullPage do useCallback
+  const fetchFullPage = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const response = await fetch(
+        `/api/musisite/songs/${songId}/likers?page=1&limit=20&random=false`
+      );
+
+      if (!response.ok) throw new Error("Failed to fetch likers");
+
+      const data = await response.json();
+      setLikers(data.users);
+      setHasMore(data.hasMore);
+    } catch (error) {
+      console.error("Error fetching full page:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [songId]); // Dodajemy songId jako zależność
+
   // Reset state when modal opens
   useEffect(() => {
     if (isOpen) {
       setLikers(initialLikers);
       setPage(1);
       setHasMore(true);
+      fetchFullPage();
     }
-  }, [isOpen, initialLikers]);
+  }, [isOpen, initialLikers, fetchFullPage]); // Dodajemy fetchFullPage do zależności
 
   const fetchMoreLikers = useCallback(async () => {
-    if (isLoading || !hasMore) return;
+    if (isLoading || !hasMore || page === 1) return;
 
     try {
       setIsLoading(true);
@@ -50,15 +71,18 @@ export const LikersModal = ({
 
       const data = await response.json();
 
-      if (page === 1) {
-        setLikers(data.users);
-      } else {
-        setLikers((prev) => [...prev, ...data.users]);
-      }
+      setLikers((prev) => {
+        // Filtruj duplikaty
+        const newUsers = data.users.filter(
+          (newUser: LikedByUser) =>
+            !prev.some((existingUser) => existingUser.userId === newUser.userId)
+        );
+        return [...prev, ...newUsers];
+      });
 
-      setHasMore(data.users.length === 20);
+      setHasMore(data.hasMore);
     } catch (error) {
-      console.error("Error fetching likers:", error);
+      console.error("Error fetching more likers:", error);
     } finally {
       setIsLoading(false);
     }
@@ -90,6 +114,7 @@ export const LikersModal = ({
           aria-labelledby="modal-title"
           role="dialog"
           aria-modal="true"
+          style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0 }}
         >
           <div className="min-h-screen text-center md:px-4">
             {/* Backdrop */}
@@ -146,48 +171,58 @@ export const LikersModal = ({
 
               {/* Content */}
               <div className="max-h-[60vh] overflow-y-auto">
-                <div className="space-y-4">
-                  {likers.map((user) => (
-                    <motion.div
-                      key={user.userId}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="flex items-center gap-4 p-3 hover:bg-gray-50 rounded-lg cursor-pointer transition-colors"
-                      onClick={() => {
-                        router.push(`/profile/${user.userId}`);
-                        onClose();
-                      }}
-                    >
-                      <div className="relative w-12 h-12 rounded-full overflow-hidden">
-                        <Image
-                          src={user.userImage || "/images/default-avatar.png"}
-                          alt={user.userName}
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
-                      <div>
-                        <h4 className="font-medium text-gray-900">
-                          {user.userName}
-                        </h4>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-
-                {/* Load More Button */}
-                {hasMore && (
-                  <div className="mt-4 text-center">
-                    <button
-                      onClick={() => setPage((p) => p + 1)}
-                      disabled={isLoading}
-                      className="px-4 py-2 text-sm font-medium text-amber-600 
-                               hover:bg-amber-50 rounded-lg transition-colors
-                               disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      {isLoading ? "Ładowanie..." : "Załaduj więcej"}
-                    </button>
+                {isLoading && likers.length === 0 ? (
+                  <div className="flex justify-center py-4">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500" />
                   </div>
+                ) : (
+                  <>
+                    <div className="space-y-3">
+                      {likers.map((user) => (
+                        <motion.div
+                          key={user.userId}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="flex items-center gap-3 p-2 hover:bg-gray-50 
+                                   rounded-lg cursor-pointer transition-colors"
+                          onClick={() => {
+                            router.push(`/profile/${user.userId}`);
+                            onClose();
+                          }}
+                        >
+                          <div className="relative w-12 h-12 rounded-full overflow-hidden">
+                            <Image
+                              src={
+                                user.userImage || "/images/default-avatar.png"
+                              }
+                              alt={user.userName}
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
+                          <div>
+                            <h4 className="font-medium text-gray-900">
+                              {user.userName}
+                            </h4>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+
+                    {hasMore && (
+                      <div className="mt-4 text-center">
+                        <button
+                          onClick={() => setPage((p) => p + 1)}
+                          disabled={isLoading}
+                          className="px-4 py-2 text-sm font-medium text-amber-600 
+                                   hover:bg-amber-50 rounded-lg transition-colors
+                                   disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          {isLoading ? "Ładowanie..." : "Załaduj więcej"}
+                        </button>
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
             </motion.div>

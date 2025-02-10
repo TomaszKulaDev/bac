@@ -1,44 +1,43 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { LikedByAvatars } from "./avatars/LikedByAvatars";
 import { LikedByUser } from "./types/likedBy";
 import { useRouter } from "next/navigation";
-import { LikersModal } from "./LikersModal";
 
 interface SongLikersProps {
   songId: string;
+  onModalOpen: () => void;
 }
 
-export const SongLikers = ({ songId }: SongLikersProps) => {
+export const SongLikers = ({ songId, onModalOpen }: SongLikersProps) => {
   const [likers, setLikers] = useState<LikedByUser[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [totalLikes, setTotalLikes] = useState(0);
-  const [showModal, setShowModal] = useState(false);
   const router = useRouter();
 
-  const fetchLikers = useCallback(async () => {
-    try {
-      setIsLoading(true);
-      const response = await fetch(
-        `/api/musisite/songs/${songId}/likers?limit=5&random=true`
-      );
-
-      if (!response.ok) throw new Error("Błąd podczas pobierania danych");
-      const data = await response.json();
-
-      setLikers(data.users);
-      setTotalLikes(data.totalLikes);
-    } catch (error) {
-      console.error("Błąd:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [songId]);
-
   useEffect(() => {
+    const fetchLikers = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch(
+          `/api/musisite/songs/${songId}/likers?limit=5&random=true`
+        );
+
+        if (!response.ok) throw new Error("Błąd podczas pobierania danych");
+        const data = await response.json();
+
+        setLikers(data.users);
+        setTotalLikes(data.totalLikes);
+      } catch (error) {
+        console.error("Błąd:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
     fetchLikers();
-  }, [fetchLikers]);
+  }, [songId]);
 
   return (
     <div className="relative group">
@@ -49,17 +48,9 @@ export const SongLikers = ({ songId }: SongLikersProps) => {
         onAvatarClick={(userId) => {
           router.push(`/profile/${userId}`);
         }}
-        onMoreClick={() => setShowModal(true)}
+        onMoreClick={onModalOpen}
         showTooltip={true}
         isLoading={isLoading}
-        totalLikes={totalLikes}
-      />
-
-      <LikersModal
-        isOpen={showModal}
-        onClose={() => setShowModal(false)}
-        songId={songId}
-        initialLikers={likers}
         totalLikes={totalLikes}
       />
     </div>

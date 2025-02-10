@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { FaPlay, FaThumbsUp } from "react-icons/fa";
 import { Song } from "@/app/muzyka/types";
@@ -13,6 +15,9 @@ import { MusicTooltip } from "../ui/MusicTooltip";
 import { store } from "@/store/store";
 import { motion } from "framer-motion";
 import { SongLikers } from "../likes/SongLikers";
+import { useState } from "react";
+import { LikersModal } from "../likes/LikersModal";
+import { LikedByUser } from "../likes";
 
 interface PoplistaSong extends Song {
   position: number;
@@ -51,6 +56,8 @@ const likeButtonStyles = (isLiked: boolean | undefined, disabled: boolean) => `
 `;
 
 export const PoplistaItem = ({ song, index }: PoplistaItemProps) => {
+  const [showLikersModal, setShowLikersModal] = useState(false);
+  const [initialLikers, setInitialLikers] = useState<LikedByUser[]>([]);
   const { data: session } = useSession();
   const { handleLike } = useLike();
   const dispatch = useDispatch();
@@ -78,6 +85,20 @@ export const PoplistaItem = ({ song, index }: PoplistaItemProps) => {
     dispatch(setCurrentPlaylistId("poplista"));
     dispatch(setCurrentSongIndex(playerIndex));
     dispatch(togglePlayback(true));
+  };
+
+  const handleModalOpen = async () => {
+    try {
+      const response = await fetch(
+        `/api/musisite/songs/${song._id}/likers?limit=5&random=true`
+      );
+      if (!response.ok) throw new Error("Failed to fetch likers");
+      const data = await response.json();
+      setInitialLikers(data.users);
+      setShowLikersModal(true);
+    } catch (error) {
+      console.error("Error fetching initial likers:", error);
+    }
   };
 
   const handleLikeClick = async (e: React.MouseEvent) => {
@@ -156,7 +177,7 @@ export const PoplistaItem = ({ song, index }: PoplistaItemProps) => {
           <div className="flex items-center gap-4">
             {/* SongLikers najpierw */}
             <div className="hidden sm:block">
-              <SongLikers songId={song._id} />
+              <SongLikers songId={song._id} onModalOpen={handleModalOpen} />
             </div>
 
             <button
@@ -196,76 +217,86 @@ export const PoplistaItem = ({ song, index }: PoplistaItemProps) => {
 
   // Standardowy wygląd dla pozostałych pozycji
   return (
-    <motion.div
-      layout
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3, delay: index * 0.05 }}
-      className="bg-gray-50 rounded-xl p-2 sm:p-4 border border-gray-100 hover:border-gray-200 transition group h-[72px] sm:h-[84px]"
-    >
-      <div className="flex items-center gap-2 sm:gap-4 h-full">
-        {/* Pozycja - mniejsza szerokość na mobile */}
-        <div className="w-6 sm:w-12 text-center flex-shrink-0">
-          <div className="text-lg sm:text-xl font-bold text-gray-900">
-            {song.position}
-          </div>
-          <TrendIndicator song={song} />
-        </div>
-
-        {/* Miniaturka - bez zmian w rozmiarze */}
-        <div className="relative w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 rounded-lg overflow-hidden">
-          <Image
-            src={thumbnailUrl}
-            alt={song.title}
-            fill
-            className="object-cover"
-          />
-          <button
-            onClick={handlePlay}
-            className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center"
-          >
-            <FaPlay className="text-white text-base sm:text-lg" />
-          </button>
-        </div>
-
-        {/* Informacje o utworze - więcej miejsca na mobile */}
-        <div className="flex-grow min-w-0 max-w-[calc(100%-160px)] sm:max-w-[calc(100%-220px)]">
-          <h3 className="font-semibold text-gray-900 truncate text-sm sm:text-base">
-            {song.title}
-          </h3>
-          <p className="text-gray-500 text-xs sm:text-sm truncate">
-            {song.artist}
-          </p>
-        </div>
-
-        {/* Przyciski akcji */}
-        <div className="flex items-center flex-shrink-0 gap-4">
-          {/* SongLikers najpierw */}
-          <div className="hidden sm:block">
-            <SongLikers songId={song._id} />
+    <>
+      <motion.div
+        layout
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3, delay: index * 0.05 }}
+        className="bg-gray-50 rounded-xl p-2 sm:p-4 border border-gray-100 hover:border-gray-200 transition group h-[72px] sm:h-[84px]"
+      >
+        <div className="flex items-center gap-2 sm:gap-4 h-full">
+          {/* Pozycja - mniejsza szerokość na mobile */}
+          <div className="w-6 sm:w-12 text-center flex-shrink-0">
+            <div className="text-lg sm:text-xl font-bold text-gray-900">
+              {song.position}
+            </div>
+            <TrendIndicator song={song} />
           </div>
 
-          {/* Przycisk like na końcu */}
-          <MusicTooltip
-            content={!session ? "Zaloguj się, aby polubić" : ""}
-            position="left"
-          >
+          {/* Miniaturka - bez zmian w rozmiarze */}
+          <div className="relative w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 rounded-lg overflow-hidden">
+            <Image
+              src={thumbnailUrl}
+              alt={song.title}
+              fill
+              className="object-cover"
+            />
             <button
-              onClick={handleLikeClick}
-              className={likeButtonStyles(isLiked, !session)}
-              disabled={!session}
+              onClick={handlePlay}
+              className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center"
             >
-              <FaThumbsUp
-                className={`
-                text-sm transition-transform group-hover:scale-110 duration-200
-                ${isLiked ? "text-amber-500" : "text-gray-400"}
-              `}
-              />
-              <span>{song.likesCount}</span>
+              <FaPlay className="text-white text-base sm:text-lg" />
             </button>
-          </MusicTooltip>
+          </div>
+
+          {/* Informacje o utworze - więcej miejsca na mobile */}
+          <div className="flex-grow min-w-0 max-w-[calc(100%-160px)] sm:max-w-[calc(100%-220px)]">
+            <h3 className="font-semibold text-gray-900 truncate text-sm sm:text-base">
+              {song.title}
+            </h3>
+            <p className="text-gray-500 text-xs sm:text-sm truncate">
+              {song.artist}
+            </p>
+          </div>
+
+          {/* Przyciski akcji */}
+          <div className="flex items-center flex-shrink-0 gap-4">
+            {/* SongLikers najpierw */}
+            <div className="hidden sm:block">
+              <SongLikers songId={song._id} onModalOpen={handleModalOpen} />
+            </div>
+
+            {/* Przycisk like na końcu */}
+            <MusicTooltip
+              content={!session ? "Zaloguj się, aby polubić" : ""}
+              position="left"
+            >
+              <button
+                onClick={handleLikeClick}
+                className={likeButtonStyles(isLiked, !session)}
+                disabled={!session}
+              >
+                <FaThumbsUp
+                  className={`
+                  text-sm transition-transform group-hover:scale-110 duration-200
+                  ${isLiked ? "text-amber-500" : "text-gray-400"}
+                `}
+                />
+                <span>{song.likesCount}</span>
+              </button>
+            </MusicTooltip>
+          </div>
         </div>
-      </div>
-    </motion.div>
+      </motion.div>
+
+      <LikersModal
+        isOpen={showLikersModal}
+        onClose={() => setShowLikersModal(false)}
+        songId={song._id}
+        initialLikers={initialLikers}
+        totalLikes={song.likesCount || 0}
+      />
+    </>
   );
 };
