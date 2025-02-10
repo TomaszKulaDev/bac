@@ -1,12 +1,27 @@
-import Image from "next/image";
-import { LikedByUser, LikedByAvatarsProps } from "../types/likedBy";
-import React from "react";
+"use client";
 
-export const LikedByAvatars: React.FC<
-  LikedByAvatarsProps & { isFirstPlace?: boolean }
-> = ({ users, size = "small", maxAvatars = 10, isFirstPlace = false }) => {
+import Image from "next/image";
+import { LikedByUser } from "../types/likedBy";
+import React from "react";
+import { MusicTooltip } from "../../ui/MusicTooltip";
+
+interface LikedByAvatarsProps {
+  users: LikedByUser[];
+  size?: "small" | "large";
+  maxAvatars?: number;
+  onAvatarClick?: (userId: string) => void;
+  showTooltip?: boolean;
+}
+
+export const LikedByAvatars: React.FC<LikedByAvatarsProps> = ({
+  users,
+  size = "small",
+  maxAvatars = 10,
+  onAvatarClick,
+  showTooltip = true,
+}) => {
   const firstPlaceMaxAvatars = 5;
-  const effectiveMaxAvatars = isFirstPlace ? firstPlaceMaxAvatars : maxAvatars;
+  const effectiveMaxAvatars = firstPlaceMaxAvatars;
 
   const avatarSize = size === "large" ? "w-14 h-14" : "w-12 h-12";
   const spacing = size === "large" ? "-space-x-3" : "-space-x-4";
@@ -16,36 +31,41 @@ export const LikedByAvatars: React.FC<
   return (
     <div className="flex items-center">
       <div
-        className={`flex ${spacing} group transition-all duration-300 ${hoverSpacing} hover:mx-1`}
+        className={`flex ${spacing} group transition-all duration-300 ${hoverSpacing}`}
       >
-        {users.slice(0, effectiveMaxAvatars).map((user, index) => (
-          <button
+        {users.slice(0, effectiveMaxAvatars).map((user) => (
+          <MusicTooltip
             key={user.userId}
-            className={`
-              relative ${avatarSize} 
-              rounded-full 
-              flex items-center justify-center 
-              border border-white
-              transform transition-all duration-300
-              hover:scale-150 hover:z-20
-              group-hover:translate-x-0
-              ${index > 0 ? `translate-x-0` : ""}
-              cursor-pointer
-              overflow-hidden
-              bg-gray-50
-            `}
-            onClick={(e) => {
-              e.stopPropagation();
-              console.log("Kliknięto avatar:", user);
-            }}
+            content={user.userName}
+            position="top"
           >
-            <Image
-              src="/images/default-avatar.png"
-              alt={user.userName}
-              fill
-              className="object-cover"
-            />
-          </button>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onAvatarClick?.(user.userId);
+              }}
+              className={`
+                relative ${avatarSize} 
+                rounded-full 
+                flex items-center justify-center 
+                border-2 border-white
+                transform transition-all duration-300
+                hover:scale-125 hover:z-20
+                group-hover:translate-x-0
+                hover:border-amber-500
+                cursor-pointer
+                overflow-hidden
+                bg-gray-50
+              `}
+            >
+              <Image
+                src={user.userImage || "/images/default-avatar.png"}
+                alt={user.userName}
+                fill
+                className="object-cover"
+              />
+            </button>
+          </MusicTooltip>
         ))}
         {users.length > effectiveMaxAvatars && (
           <div
