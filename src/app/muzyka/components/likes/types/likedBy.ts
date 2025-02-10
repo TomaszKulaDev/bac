@@ -1,6 +1,7 @@
 export interface LikedByUser {
   userId: string;
   userName: string;
+  email: string;
   userImage: string | null;
 }
 

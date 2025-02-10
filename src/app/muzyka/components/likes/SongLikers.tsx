@@ -21,12 +21,18 @@ export const SongLikers = ({ songId }: SongLikersProps) => {
         if (!response.ok) throw new Error("Błąd podczas pobierania danych");
         const data = await response.json();
 
-        // Mapowanie danych z API do formatu LikedByUser
+        // Dodajmy console.log do debugowania
+        console.log("Received data:", data);
+
         const formattedUsers: LikedByUser[] = data.users.map((user: any) => ({
           userId: user._id || user.userId,
-          userName: user.email, // używamy email jako userName
-          userImage: user.image || null, // dodajemy userImage zgodnie z interfejsem
+          userName: user.name || user.userName || user.email, // Dodajemy fallback
+          email: user.email,
+          userImage: user.image || null,
         }));
+
+        // Dodajmy console.log do debugowania
+        console.log("Formatted users:", formattedUsers);
 
         setLikers(formattedUsers);
       } catch (error) {
