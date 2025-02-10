@@ -91,7 +91,7 @@ export const LikersModal = ({
           role="dialog"
           aria-modal="true"
         >
-          <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+          <div className="min-h-screen text-center md:px-4">
             {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
@@ -102,13 +102,29 @@ export const LikersModal = ({
               onClick={onClose}
             />
 
+            {/* Trick to center modal */}
+            <span
+              className="inline-block h-screen align-middle"
+              aria-hidden="true"
+            >
+              &#8203;
+            </span>
+
             {/* Modal */}
             <motion.div
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               transition={{ type: "spring", duration: 0.3 }}
-              className="inline-block w-full max-w-lg p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl relative"
+              className="inline-block w-full max-w-lg p-6 my-8 
+                         overflow-hidden text-left align-middle 
+                         transition-all transform bg-white 
+                         shadow-xl rounded-2xl relative
+                         md:my-16 mx-auto
+                         vertical-center"
+              style={{
+                marginTop: "15vh", // Dodajemy stały margines od góry
+              }}
             >
               {/* Header */}
               <div className="flex items-center justify-between mb-4">
@@ -120,7 +136,9 @@ export const LikersModal = ({
                 </h3>
                 <button
                   onClick={onClose}
-                  className="text-gray-400 hover:text-gray-500 transition-colors"
+                  className="text-gray-400 hover:text-gray-500 
+                           transition-colors rounded-full p-2
+                           hover:bg-gray-100"
                 >
                   <FaTimes className="w-5 h-5" />
                 </button>
