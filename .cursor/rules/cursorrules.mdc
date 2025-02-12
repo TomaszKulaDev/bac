@@ -3,11 +3,10 @@ description:
 globs: 
 ---
 
-# Your rule content
 
-Print this emoji when you finish your answer "🖥️🤖💻" 
 
-# TECH STACK
+
+# TECH STACK this project.
 
 - We are using Next.js version: 14.2.6
 - We are using App Router
@@ -21,9 +20,4 @@ Print this emoji when you finish your answer "🖥️🤖💻"
 - We are using "react-redux": "^9.1.2",
 - never use .lean()
 
-# CURRENT FILE STRUCTURE
-
-tree -L 5 -a -I 'node_modules|.git|.next|.ds_Store|yarn-error|.vscode|.env.local|tsconfig.tsbuildinfo|piosenki200.json'
-
-Print this "🔍" if you successfully scanned above using this code I mean this code "tree -L 5 -a -I 'node_modules|.git|.next|.ds_Store|yarn-error|.vscode|.env.local|tsconfig.tsbuildinfo|piosenki200.json'".
-
+Print this emoji when you finish your answer "🖥️🤖💻" 

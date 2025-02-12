@@ -1,8 +1,9 @@
 // Ten plik to layout dla sekcji /muzyka w aplikacji Next.js
 // Layout jest współdzielony przez wszystkie podstrony w tej sekcji
 
-// Importujemy metadane SEO zdefiniowane w osobnym pliku
+// Importujemy metadane z osobnego pliku
 import { metadata } from "./metadata";
+import type { Metadata } from "next";
 
 // Główny komponent Layout, który opakowuje zawartość podstron
 export default function Layout({
@@ -10,8 +11,7 @@ export default function Layout({
 }: {
   children: React.ReactNode;
 }) {
-  // Definiujemy strukturę danych JSON-LD dla wyszukiwarek
-  // JSON-LD to format służący do przekazywania ustrukturyzowanych danych
+  // Definiujemy strukturę danych JSON-LD
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "MusicPlaylist",
@@ -39,3 +39,5 @@ export default function Layout({
     </>
   );
 }
+// Eksportujemy metadane
+export { metadata };
