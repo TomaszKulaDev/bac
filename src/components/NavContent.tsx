@@ -37,7 +37,6 @@ export const NavContent: React.FC = React.memo(function NavContent() {
   const { data: session } = useSession();
   const router = useRouter();
   const pathname = usePathname();
-  const [isSearchFocused, setIsSearchFocused] = useState(false);
 
   const menuItems = [
     {
@@ -82,20 +81,6 @@ export const NavContent: React.FC = React.memo(function NavContent() {
                   <span className="text-gray-500 text-xs">Dance Community</span>
                 </div>
               </Link>
-
-              {/* Search Bar - New */}
-              <div className="hidden lg:block max-w-xs w-full mx-4">
-                <div className="relative">
-                  <input
-                    type="text"
-                    placeholder="Szukaj tancerzy, szkół, wydarzeń..."
-                    className="w-full bg-gray-100 rounded-full pl-10 pr-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 focus:bg-white transition-all"
-                    onFocus={() => setIsSearchFocused(true)}
-                    onBlur={() => setIsSearchFocused(false)}
-                  />
-                  <FaSearch className="absolute left-3 top-2.5 text-gray-400 w-4 h-4" />
-                </div>
-              </div>
 
               {/* Menu główne - desktop */}
               <div className="hidden md:flex items-center gap-1 flex-1 justify-center max-w-2xl">
