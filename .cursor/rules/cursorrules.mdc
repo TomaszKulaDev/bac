@@ -3,6 +3,8 @@ description:
 globs: 
 ---
 
+# Your rule content
+
 Print this emoji when you finish your answer "🖥️🤖💻" 
 
 # TECH STACK
@@ -21,6 +23,7 @@ Print this emoji when you finish your answer "🖥️🤖💻"
 
 # CURRENT FILE STRUCTURE
 
-tree -L 5 -a -I 'node_modules|.git|__pycache__|.ds_Store|pytest_cache|.vscode|.env.local'
+tree -L 5 -a -I 'node_modules|.git|.next|.ds_Store|yarn-error|.vscode|.env.local|tsconfig.tsbuildinfo|piosenki200.json'
 
+Print this "🔍" if you successfully scanned above using this code I mean this code "tree -L 5 -a -I 'node_modules|.git|.next|.ds_Store|yarn-error|.vscode|.env.local|tsconfig.tsbuildinfo|piosenki200.json'".
 
