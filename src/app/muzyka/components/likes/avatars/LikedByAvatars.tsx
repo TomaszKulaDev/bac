@@ -108,7 +108,11 @@ export const LikedByAvatars: React.FC<LikedByAvatarsProps> = ({
               <Image
                 src={user.userImage || "/images/default-avatar.png"}
                 alt={user.userName}
-                fill
+                width={48}
+                height={48}
+                quality={75}
+                priority={false}
+                loading="lazy"
                 className="object-cover transform transition-transform duration-300 hover:scale-110"
               />
               <div className="absolute inset-0 bg-black/0 hover:bg-black/10 transition-colors duration-300" />
