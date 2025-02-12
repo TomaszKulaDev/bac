@@ -119,99 +119,110 @@ export const PoplistaItem = ({ song, index }: PoplistaItemProps) => {
 
   if (isFirstPlace) {
     return (
-      <div
-        className="relative bg-gradient-to-r from-amber-100 to-amber-200 
-        rounded-2xl overflow-hidden mb-8 group z-10"
-      >
-        {/* Tło z delikatnym gradientem */}
-        <div className="absolute inset-0 bg-gradient-to-r from-amber-500/10 to-amber-600/10" />
+      <>
+        <div
+          className="relative bg-gradient-to-r from-amber-100 to-amber-200 
+          rounded-2xl overflow-hidden mb-8 group z-10"
+        >
+          {/* Tło z delikatnym gradientem */}
+          <div className="absolute inset-0 bg-gradient-to-r from-amber-500/10 to-amber-600/10" />
 
-        <div className="relative flex items-center gap-6 p-4 sm:p-6">
-          {/* Numer #1 */}
-          <div className="hidden sm:flex items-center justify-center w-16 h-16">
-            <span className="text-4xl font-bold text-amber-600">#1</span>
-          </div>
+          <div className="relative flex items-center gap-6 p-4 sm:p-6">
+            {/* Numer #1 */}
+            <div className="hidden sm:flex items-center justify-center w-16 h-16">
+              <span className="text-4xl font-bold text-amber-600">#1</span>
+            </div>
 
-          {/* Miniaturka */}
-          <div className="relative flex-shrink-0">
-            <div className="w-20 h-20 sm:w-24 sm:h-24 relative rounded-xl overflow-hidden shadow-lg">
-              <Image
-                src={thumbnailUrl}
-                alt={song.title}
-                fill
-                className="object-cover"
-              />
-              <div
-                className="absolute inset-0 bg-black/20 opacity-0 
-                group-hover:opacity-100 transition-all duration-200"
+            {/* Miniaturka */}
+            <div className="relative flex-shrink-0">
+              <div className="w-20 h-20 sm:w-24 sm:h-24 relative rounded-xl overflow-hidden shadow-lg">
+                <Image
+                  src={thumbnailUrl}
+                  alt={song.title}
+                  fill
+                  className="object-cover"
+                />
+                <div
+                  className="absolute inset-0 bg-black/20 opacity-0 
+                  group-hover:opacity-100 transition-all duration-200"
+                >
+                  <button
+                    onClick={handlePlay}
+                    className="absolute inset-0 flex items-center justify-center"
+                  >
+                    <FaPlay className="text-white text-2xl" />
+                  </button>
+                </div>
+              </div>
+              {song.trend === "new" && (
+                <div
+                  className="absolute -top-2 -right-2 bg-amber-500 text-white 
+                  px-2 py-0.5 rounded-full text-xs font-bold shadow-md"
+                >
+                  NEW
+                </div>
+              )}
+            </div>
+
+            {/* Informacje o utworze */}
+            <div className="flex-grow min-w-0">
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-900 truncate">
+                {song.title}
+              </h2>
+              <p className="text-base sm:text-lg text-gray-600 truncate">
+                {song.artist}
+              </p>
+            </div>
+
+            {/* Przyciski akcji */}
+            <div className="flex items-center gap-4">
+              {/* SongLikers najpierw */}
+              <div className="hidden sm:block">
+                <SongLikers songId={song._id} onModalOpen={handleModalOpen} />
+              </div>
+
+              <button
+                onClick={handlePlay}
+                className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-full
+                  bg-amber-500 text-white hover:bg-amber-600 
+                  transition-colors duration-200"
+              >
+                <FaPlay />
+                <span>Odtwórz</span>
+              </button>
+
+              {/* Przycisk like na końcu */}
+              <MusicTooltip
+                content={!session ? "Zaloguj się, aby polubić" : ""}
+                position="top"
               >
                 <button
-                  onClick={handlePlay}
-                  className="absolute inset-0 flex items-center justify-center"
+                  onClick={handleLikeClick}
+                  disabled={!session}
+                  className={likeButtonStyles(isLiked, !session)}
                 >
-                  <FaPlay className="text-white text-2xl" />
+                  <FaThumbsUp
+                    className={`
+                    transition-transform group-hover:scale-110 duration-200
+                    ${isLiked ? "text-amber-500" : "text-gray-400"}
+                  `}
+                  />
+                  <span className="font-medium">{song.likesCount}</span>
                 </button>
-              </div>
+              </MusicTooltip>
             </div>
-            {song.trend === "new" && (
-              <div
-                className="absolute -top-2 -right-2 bg-amber-500 text-white 
-                px-2 py-0.5 rounded-full text-xs font-bold shadow-md"
-              >
-                NEW
-              </div>
-            )}
-          </div>
-
-          {/* Informacje o utworze */}
-          <div className="flex-grow min-w-0">
-            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 truncate">
-              {song.title}
-            </h2>
-            <p className="text-base sm:text-lg text-gray-600 truncate">
-              {song.artist}
-            </p>
-          </div>
-
-          {/* Przyciski akcji */}
-          <div className="flex items-center gap-4">
-            {/* SongLikers najpierw */}
-            <div className="hidden sm:block">
-              <SongLikers songId={song._id} onModalOpen={handleModalOpen} />
-            </div>
-
-            <button
-              onClick={handlePlay}
-              className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-full
-                bg-amber-500 text-white hover:bg-amber-600 
-                transition-colors duration-200"
-            >
-              <FaPlay />
-              <span>Odtwórz</span>
-            </button>
-
-            {/* Przycisk like na końcu */}
-            <MusicTooltip
-              content={!session ? "Zaloguj się, aby polubić" : ""}
-              position="top"
-            >
-              <button
-                onClick={handleLikeClick}
-                disabled={!session}
-                className={likeButtonStyles(isLiked, !session)}
-              >
-                <FaThumbsUp
-                  className={`
-                  transition-transform group-hover:scale-110 duration-200
-                  ${isLiked ? "text-amber-500" : "text-gray-400"}
-                `}
-                />
-                <span className="font-medium">{song.likesCount}</span>
-              </button>
-            </MusicTooltip>
           </div>
         </div>
-      </div>
+
+        {/* Dodajemy modal dla pierwszego miejsca */}
+        <LikersModal
+          isOpen={showLikersModal}
+          onClose={() => setShowLikersModal(false)}
+          songId={song._id}
+          initialLikers={initialLikers}
+          totalLikes={song.likesCount || 0}
+        />
+      </>
     );
   }
 
