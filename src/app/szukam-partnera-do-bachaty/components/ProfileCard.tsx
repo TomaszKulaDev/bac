@@ -6,6 +6,7 @@ import { FaMapMarkerAlt, FaRuler, FaHeart } from "react-icons/fa";
 import { UserProfile } from "@/types/user";
 import { ProfileActionButton } from "./buttons/ProfileActionButtons";
 import { toast } from "react-toastify";
+import { getProfileUrl } from "@/utils/profile";
 
 interface ProfileCardProps {
   profile: UserProfile;
@@ -72,10 +73,11 @@ const ProfileCard = memo(
         className="relative group"
       >
         <Link
-          href={`/profile/${
-            profile.slug ||
-            encodeURIComponent(profile.name.toLowerCase().replace(/\s+/g, "-"))
-          }`}
+          href={getProfileUrl({
+            id: profile.id,
+            name: profile.name,
+            slug: profile.slug,
+          })}
           className="block relative aspect-[4/5] rounded-lg overflow-hidden
                  ring-1 ring-gray-200 group-hover:ring-amber-500/50 
                  transition-all duration-300 bg-gray-100"

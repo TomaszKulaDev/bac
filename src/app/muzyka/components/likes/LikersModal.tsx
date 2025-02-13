@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { FaTimes } from "react-icons/fa";
+import { getProfileUrl } from "@/utils/profile";
 
 interface LikersModalProps {
   isOpen: boolean;
@@ -186,7 +187,13 @@ export const LikersModal = ({
                           className="flex items-center gap-3 p-2 hover:bg-gray-50 
                                    rounded-lg cursor-pointer transition-colors"
                           onClick={() => {
-                            router.push(`/profile/${user.userId}`);
+                            router.push(
+                              getProfileUrl({
+                                id: user.userId,
+                                name: user.userName,
+                                ...(user.slug && { slug: user.slug }),
+                              })
+                            );
                             onClose();
                           }}
                         >

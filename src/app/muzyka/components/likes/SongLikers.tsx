@@ -45,8 +45,8 @@ export const SongLikers = ({ songId, onModalOpen }: SongLikersProps) => {
         users={likers}
         size="small"
         maxAvatars={5}
-        onAvatarClick={(userId) => {
-          router.push(`/profile/${userId}`);
+        onAvatarClick={(profileUrl) => {
+          router.push(profileUrl);
         }}
         onMoreClick={onModalOpen}
         showTooltip={true}

@@ -4,6 +4,7 @@ import Image from "next/image";
 import { LikedByUser } from "../types/likedBy";
 import React from "react";
 import { MusicTooltip } from "../../ui/MusicTooltip";
+import { getProfileUrl } from "@/utils/profile";
 
 interface LikedByAvatarsProps {
   users: LikedByUser[];
@@ -84,7 +85,13 @@ export const LikedByAvatars: React.FC<LikedByAvatarsProps> = ({
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                onAvatarClick?.(user.userId);
+                onAvatarClick?.(
+                  getProfileUrl({
+                    id: user.userId,
+                    name: user.userName,
+                    ...(user.slug && { slug: user.slug }),
+                  })
+                );
               }}
               style={{
                 transitionDelay: `${index * 50}ms`,

@@ -3,13 +3,14 @@ export interface LikedByUser {
   userName: string;
   email: string;
   userImage: string | null;
+  slug?: string;
 }
 
 export interface LikedByAvatarsProps {
   users: LikedByUser[];
   size?: "small" | "large";
   maxAvatars?: number;
-  onAvatarClick?: (userId: string) => void;
+  onAvatarClick?: (profileUrl: string) => void;
   onMoreClick?: () => void;
   showTooltip?: boolean;
   isLoading?: boolean;
