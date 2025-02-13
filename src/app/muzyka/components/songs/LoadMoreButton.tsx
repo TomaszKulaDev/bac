@@ -1,6 +1,6 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import React from "react";
+import { motion } from "framer-motion";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
 interface LoadMoreButtonProps {
   isVisible: boolean;
@@ -9,13 +9,17 @@ interface LoadMoreButtonProps {
   isExpanded: boolean;
 }
 
-const LoadMoreButton: React.FC<LoadMoreButtonProps> = ({ 
-  isVisible, 
-  onClick, 
-  remainingSongs, 
-  isExpanded 
+const LoadMoreButton: React.FC<LoadMoreButtonProps> = ({
+  isVisible,
+  onClick,
+  remainingSongs,
+  isExpanded,
 }) => {
   if (!isVisible) return null;
+
+  const buttonText = isExpanded
+    ? "Zwiń listę"
+    : `Załaduj więcej ${remainingSongs ? `(pozostało ${remainingSongs})` : ""}`;
 
   return (
     <motion.button
@@ -29,17 +33,21 @@ const LoadMoreButton: React.FC<LoadMoreButtonProps> = ({
         transition-all duration-200"
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
+      aria-label={buttonText}
+      aria-expanded={isExpanded}
+      aria-controls="song-list"
+      role="button"
+      aria-live="polite"
+      aria-atomic="true"
     >
-      <span className="text-sm font-medium">
-        {isExpanded 
-          ? 'Zwiń listę' 
-          : `Załaduj więcej ${remainingSongs ? `(pozostało ${remainingSongs})` : ''}`
-        }
+      <span className="text-sm font-medium" aria-hidden="true">
+        {buttonText}
       </span>
-      {isExpanded 
-        ? <FaChevronUp className="text-sm" />
-        : <FaChevronDown className="text-sm" />
-      }
+      {isExpanded ? (
+        <FaChevronUp className="text-sm" aria-hidden="true" />
+      ) : (
+        <FaChevronDown className="text-sm" aria-hidden="true" />
+      )}
     </motion.button>
   );
 };

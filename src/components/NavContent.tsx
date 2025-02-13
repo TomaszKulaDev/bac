@@ -59,14 +59,22 @@ export const NavContent: React.FC = React.memo(function NavContent() {
 
   return (
     <>
-      <div className="h-16" /> {/* Zmniejszony spacer */}
+      <div className="h-16" aria-hidden="true" /> {/* Spacer */}
       <div className="fixed top-0 left-0 right-0 z-[100]">
-        <div className="bg-white border-b border-gray-200 shadow-sm">
+        <nav
+          className="bg-white border-b border-gray-200 shadow-sm"
+          role="navigation"
+          aria-label="Menu główne"
+        >
           <div className="max-w-[1920px] mx-auto">
             <div className="flex items-center justify-between h-16 px-4 lg:px-8">
               {/* Logo */}
-              <Link href="/" className="flex items-center gap-3 group">
-                <div className="relative">
+              <Link
+                href="/"
+                className="flex items-center gap-3 group"
+                aria-label="Strona główna Baciata"
+              >
+                <div className="relative" aria-hidden="true">
                   <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl flex items-center justify-center transform rotate-3 group-hover:rotate-6 transition-all duration-300">
                     <span className="text-white font-bold text-lg">B</span>
                   </div>
@@ -83,7 +91,11 @@ export const NavContent: React.FC = React.memo(function NavContent() {
               </Link>
 
               {/* Menu główne - desktop */}
-              <div className="hidden md:flex items-center gap-1 flex-1 justify-center max-w-2xl">
+              <div
+                className="hidden md:flex items-center gap-1 flex-1 justify-center max-w-2xl"
+                role="menubar"
+                aria-label="Menu nawigacyjne"
+              >
                 {menuItems.map((item) => (
                   <Link
                     key={item.href}
@@ -94,15 +106,26 @@ export const NavContent: React.FC = React.memo(function NavContent() {
                           ? "text-amber-600 bg-amber-50"
                           : "text-gray-700 hover:bg-gray-50 hover:text-amber-600"
                       }`}
+                    role="menuitem"
+                    aria-current={pathname === item.href ? "page" : undefined}
                   >
                     <span className="flex items-center gap-2">
-                      <item.icon className="w-4 h-4" />
+                      <item.icon className="w-4 h-4" aria-hidden="true" />
                       {item.label}
+                      {item.badge && (
+                        <span
+                          className="text-xs bg-red-500 text-white px-1.5 py-0.5 rounded-full"
+                          aria-label={`${item.badge} nowych`}
+                        >
+                          {item.badge}
+                        </span>
+                      )}
                     </span>
                     {pathname === item.href && (
                       <motion.div
                         layoutId="activeTab"
                         className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 bg-amber-500 rounded-full"
+                        aria-hidden="true"
                       />
                     )}
                   </Link>
@@ -110,17 +133,33 @@ export const NavContent: React.FC = React.memo(function NavContent() {
               </div>
 
               {/* Przyciski logowania i menu użytkownika - desktop */}
-              <div className="hidden md:flex items-center gap-3">
+              <div
+                className="hidden md:flex items-center gap-3"
+                role="navigation"
+                aria-label="Menu użytkownika"
+              >
                 {isAuthenticated && user ? (
                   <div className="flex items-center gap-4">
-                    <button className="relative p-2 text-gray-500 hover:text-amber-600 transition-colors">
-                      <FaBell className="w-5 h-5" />
-                      <span className="absolute top-0.5 right-0.5 w-2 h-2 bg-red-500 rounded-full" />
+                    <button
+                      className="relative p-2 text-gray-500 hover:text-amber-600 transition-colors"
+                      aria-label="Powiadomienia"
+                    >
+                      <FaBell className="w-5 h-5" aria-hidden="true" />
+                      <span
+                        className="absolute top-0.5 right-0.5 w-2 h-2 bg-red-500 rounded-full"
+                        aria-label="Nowe powiadomienia"
+                      />
                     </button>
 
-                    <button className="relative p-2 text-gray-500 hover:text-amber-600 transition-colors">
-                      <FaEnvelope className="w-5 h-5" />
-                      <span className="absolute top-0.5 right-0.5 w-2 h-2 bg-red-500 rounded-full" />
+                    <button
+                      className="relative p-2 text-gray-500 hover:text-amber-600 transition-colors"
+                      aria-label="Wiadomości"
+                    >
+                      <FaEnvelope className="w-5 h-5" aria-hidden="true" />
+                      <span
+                        className="absolute top-0.5 right-0.5 w-2 h-2 bg-red-500 rounded-full"
+                        aria-label="Nowe wiadomości"
+                      />
                     </button>
 
                     <UserMenu
@@ -136,12 +175,14 @@ export const NavContent: React.FC = React.memo(function NavContent() {
                     <Link
                       href="/login"
                       className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-amber-600 transition-colors"
+                      aria-label="Zaloguj się"
                     >
                       Zaloguj
                     </Link>
                     <Link
                       href="/register"
                       className="px-4 py-2 text-sm font-medium text-white bg-amber-500 rounded-lg hover:bg-amber-600 transition-colors"
+                      aria-label="Zarejestruj się"
                     >
                       Dołącz do nas
                     </Link>
@@ -155,10 +196,10 @@ export const NavContent: React.FC = React.memo(function NavContent() {
                 onClick={handleMobileMenu}
                 aria-expanded={isMobileMenuOpen}
                 aria-controls="mobile-menu"
-                aria-label="Menu"
+                aria-label={isMobileMenuOpen ? "Zamknij menu" : "Otwórz menu"}
               >
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-6 h-6">
+                  <div className="w-6 h-6" aria-hidden="true">
                     <span
                       className={`absolute h-0.5 w-6 bg-current transform transition duration-300 ease-in-out ${
                         isMobileMenuOpen
@@ -183,20 +224,26 @@ export const NavContent: React.FC = React.memo(function NavContent() {
               </button>
             </div>
           </div>
-        </div>
+        </nav>
       </div>
       {/* Mobile menu */}
       <div
+        id="mobile-menu"
         className={`fixed inset-0 bg-black/50 z-[101] transition-opacity duration-300 md:hidden
           ${
             isMobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
           }`}
         onClick={handleMobileMenu}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Menu mobilne"
       >
-        <div
+        <nav
           className={`fixed inset-y-0 right-0 w-64 bg-white shadow-xl transform transition-transform duration-300
             ${isMobileMenuOpen ? "translate-x-0" : "translate-x-full"}`}
           onClick={(e) => e.stopPropagation()}
+          role="navigation"
+          aria-label="Menu mobilne"
         >
           <div className="p-4 space-y-4">
             {/* Menu mobilne */}
@@ -277,7 +324,7 @@ export const NavContent: React.FC = React.memo(function NavContent() {
               )}
             </div>
           </div>
-        </div>
+        </nav>
       </div>
       <ScrollToTopButton />
     </>
