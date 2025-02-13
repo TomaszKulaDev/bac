@@ -30,6 +30,22 @@ const nextConfig = {
     if (!dev) {
       config.devtool = false;
     }
+    // Wyłączamy source mapy dla react-toastify w produkcji
+    if (process.env.NODE_ENV === "production") {
+      config.module.rules.push({
+        test: /react-toastify/,
+        use: [
+          {
+            loader: "source-map-loader",
+            options: {
+              filterSourceMappingUrl: (url, resourcePath) => {
+                return false;
+              },
+            },
+          },
+        ],
+      });
+    }
     return config;
   },
   productionBrowserSourceMaps: false,

@@ -73,6 +73,7 @@ import { Metadata } from "next";
 import { CookieConsent } from "../components/CookieConsent/CookieConsent";
 import "leaflet/dist/leaflet.css";
 import QueryClientProvider from "@/providers/QueryClientProvider";
+import "react-toastify/dist/ReactToastify.css";
 
 // Inicjalizujemy czcionkę Inter z podzbiorem "latin", aby używać jej w aplikacji
 const inter = Inter({ subsets: ["latin"] });

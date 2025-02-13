@@ -15,7 +15,7 @@ import { RootState } from "@/store/store";
 import SongList from "./components/songs/SongList";
 import PlaylistManager from "./components/PlaylistManager";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import "react-toastify/dist/ReactToastify.min.css";
 import { Z_INDEX } from "@/app/constants/zIndex";
 import { useResponsive } from "./hooks/useResponsive";
 import { useDebugEffect } from "./hooks/useDebugEffect";
