@@ -4,6 +4,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 import { connectToDatabase } from "@/lib/mongodb";
 import User from "@/models/User";
 import { z } from "zod";
+import { generateSlug } from "@/utils/slug";
 
 const updateProfileSchema = z.object({
   name: z.string().min(1, "Imię jest wymagane"),
@@ -94,9 +95,17 @@ export async function POST(request: Request) {
     await connectToDatabase();
     const data = await request.json();
 
+    // Generuj slug z nazwy użytkownika
+    const slug = generateSlug(data.name);
+
     const updatedUser = await User.findOneAndUpdate(
       { email: session.user.email },
-      { $set: data },
+      {
+        $set: {
+          ...data,
+          slug: slug, // Dodajemy slug do aktualizacji
+        },
+      },
       { new: true }
     );
 
@@ -113,6 +122,7 @@ export async function POST(request: Request) {
       isPublicProfile: updatedUser.isPublicProfile,
       settings: updatedUser.settings,
       socialMedia: updatedUser.socialMedia,
+      slug: updatedUser.slug, // Dodajemy slug do odpowiedzi
     });
   } catch (error) {
     return NextResponse.json(
