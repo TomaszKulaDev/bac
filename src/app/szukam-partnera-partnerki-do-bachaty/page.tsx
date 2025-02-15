@@ -1,20 +1,28 @@
 "use client";
 
-import { useState } from "react";
-import {
-  FaHome,
-  FaSearch,
-  FaBell,
-  FaComments,
-  FaUser,
-  FaPlus,
-} from "react-icons/fa";
+import { useState, useEffect } from "react";
+import { FaSearch, FaBell, FaComments, FaUser } from "react-icons/fa";
 import Link from "next/link";
 import Image from "next/image";
 import AdBanner from "./components/AdBanner/AdBanner";
+import SideNavigation from "./components/SideNavigation/SideNavigation";
 
 export default function PartnerSearchPage() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [isMobile, setIsMobile] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+
+    checkIfMobile();
+    window.addEventListener("resize", checkIfMobile);
+
+    return () => window.removeEventListener("resize", checkIfMobile);
+  }, []);
 
   return (
     <div className="min-h-screen bg-white">
@@ -63,30 +71,12 @@ export default function PartnerSearchPage() {
       </header>
 
       {/* Side Navigation */}
-      <nav className="fixed left-0 top-0 h-screen w-[72px] bg-white border-r border-gray-100 z-40">
-        <div className="flex flex-col items-center pt-20 gap-2">
-          <Link
-            href="/"
-            className="p-4 rounded-full hover:bg-gray-100 transition-colors"
-          >
-            <FaHome className="w-6 h-6 text-gray-600" />
-          </Link>
-          <button className="p-4 rounded-full hover:bg-gray-100 transition-colors">
-            <FaPlus className="w-6 h-6 text-gray-600" />
-          </button>
-          <button className="p-4 rounded-full hover:bg-gray-100 transition-colors">
-            <FaSearch className="w-6 h-6 text-gray-600" />
-          </button>
-        </div>
-      </nav>
+      <SideNavigation />
 
       {/* Main Content */}
-      <main className="pt-16 pl-[72px]">
+      <main className={`pt-16 ${isMobile ? "pl-0" : "pl-[72px]"}`}>
         <div className="max-w-screen-2xl mx-auto px-4">
-          {/* Ad Banner */}
           <AdBanner />
-
-          {/* Grid Content */}
           <div
             className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 xl:columns-5 2xl:columns-6 
                         gap-4 space-y-4 [column-fill:_balance]"
@@ -97,10 +87,11 @@ export default function PartnerSearchPage() {
                   className="relative rounded-lg overflow-hidden bg-white shadow-sm 
                            hover:shadow-md transition-shadow"
                   style={{
-                    height:
-                      window.innerWidth < 640
+                    height: mounted
+                      ? isMobile
                         ? "400px"
-                        : `${Math.floor(Math.random() * (500 - 300) + 300)}px`,
+                        : `${Math.floor(Math.random() * (500 - 300) + 300)}px`
+                      : "300px",
                   }}
                 >
                   <div className="absolute inset-0 bg-gray-200 animate-pulse" />
