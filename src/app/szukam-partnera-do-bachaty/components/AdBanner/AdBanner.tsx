@@ -14,11 +14,12 @@ export default function AdBanner() {
           {!isAdLoaded && (
             <div className={styles.adPlaceholder}>Miejsce na Twoją reklamę</div>
           )}
+          {/* Reklama baciata.pl/szukam-partnera-do-bachaty | Header Top */}
           <ins
             className="adsbygoogle"
             style={{ display: "block" }}
-            data-ad-client="ca-pub-TWÓJ-ID"
-            data-ad-slot="TWÓJ-SLOT"
+            data-ad-client="ca-pub-8585871789466302"
+            data-ad-slot="4423985845"
             data-ad-format="auto"
             data-full-width-responsive="true"
           ></ins>
@@ -30,11 +31,11 @@ export default function AdBanner() {
         id="adsbygoogle-init"
         strategy="afterInteractive"
         crossOrigin="anonymous"
-        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-TWÓJ-ID"
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8585871789466302"
         onLoad={() => setIsAdLoaded(true)}
       />
       <Script
-        id="adsbygoogle-init-script"
+        id="adsbygoogle-push"
         strategy="afterInteractive"
         dangerouslySetInnerHTML={{
           __html: `
