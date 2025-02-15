@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   FaHome,
   FaSearch,
@@ -11,9 +11,33 @@ import {
 } from "react-icons/fa";
 import Link from "next/link";
 import Image from "next/image";
+import Masonry from "masonry-layout";
+import imagesLoaded from "imagesloaded";
 
 export default function PartnerSearchPage() {
   const [searchQuery, setSearchQuery] = useState("");
+  const gridRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (gridRef.current) {
+      const masonry = new Masonry(gridRef.current, {
+        itemSelector: ".grid-item",
+        columnWidth: ".grid-sizer",
+        gutter: 16,
+        percentPosition: true,
+        transitionDuration: 0,
+        initLayout: false,
+      });
+
+      imagesLoaded(gridRef.current, function () {
+        masonry.layout();
+      });
+
+      return () => {
+        masonry.destroy();
+      };
+    }
+  }, []);
 
   return (
     <div className="min-h-screen bg-white">
@@ -82,23 +106,35 @@ export default function PartnerSearchPage() {
       {/* Main Content */}
       <main className="pt-16 pl-[72px]">
         <div className="max-w-screen-2xl mx-auto px-4">
-          <div
-            className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 xl:columns-5 2xl:columns-6 
-                        gap-4 space-y-4"
-          >
-            {/* Example profile cards - replace with real data */}
+          <div ref={gridRef} className="relative">
+            {/* Element określający szerokość kolumny */}
+            <div className="grid-sizer w-[236px]" />
+
+            {/* Profile */}
             {Array.from({ length: 20 }).map((_, index) => (
               <div
                 key={index}
-                className="break-inside-avoid mb-4 rounded-lg overflow-hidden 
-                         bg-white shadow-sm hover:shadow-md transition-shadow"
+                className="grid-item w-[236px] p-2 mb-4"
+                style={{
+                  height: `${Math.floor(Math.random() * (450 - 200) + 200)}px`,
+                }}
               >
-                <div className="relative aspect-[3/4]">
-                  <div className="absolute inset-0 bg-gray-200 animate-pulse" />
-                </div>
-                <div className="p-3">
-                  <div className="h-4 bg-gray-200 rounded w-2/3 mb-2" />
-                  <div className="h-3 bg-gray-200 rounded w-1/2" />
+                <div
+                  className="relative w-full h-full rounded-lg overflow-hidden 
+                              bg-white shadow-sm hover:shadow-md transition-shadow"
+                >
+                  <div
+                    className="absolute inset-0 bg-gray-200 animate-pulse"
+                    style={{
+                      paddingBottom: `${Math.floor(
+                        Math.random() * (150 - 100) + 100
+                      )}%`,
+                    }}
+                  />
+                  <div className="absolute bottom-0 left-0 right-0 p-3 bg-white">
+                    <div className="h-4 bg-gray-200 rounded w-2/3 mb-2" />
+                    <div className="h-3 bg-gray-200 rounded w-1/2" />
+                  </div>
                 </div>
               </div>
             ))}
