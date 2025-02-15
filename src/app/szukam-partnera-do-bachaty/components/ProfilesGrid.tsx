@@ -1,10 +1,12 @@
 import { memo } from "react";
 import { UserProfile } from "@/types/user";
 import ProfileCard from "./ProfileCard";
+import Link from "next/link";
+import { getProfileUrl } from "@/utils/profile";
 
 interface ProfilesGridProps {
   profiles: UserProfile[];
-  onStylesClick: (styles: string[]) => void;
+  onStylesClick: (e: React.MouseEvent) => void;
 }
 
 // Memoizowany ProfileCard
@@ -16,27 +18,29 @@ export const ProfilesGrid = memo(
   ({ profiles, onStylesClick }: ProfilesGridProps) => {
     return (
       <div
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 
-                    xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8"
+        className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 xl:columns-5 2xl:columns-6 
+                gap-4 space-y-4 [column-fill:_balance]"
       >
         {profiles.map((profile, index) => (
-          <MemoizedProfileCard
+          <Link
             key={profile.id}
-            profile={profile}
-            index={index}
-            onStylesClick={onStylesClick}
-          />
+            href={getProfileUrl(profile)}
+            className="block break-inside-avoid-column mb-4"
+          >
+            <div
+              data-profile-id={profile.id}
+              className="relative rounded-lg overflow-hidden bg-white shadow-sm 
+                     hover:shadow-md transition-shadow"
+            >
+              <ProfileCard
+                profile={profile}
+                index={index}
+                onStylesClick={onStylesClick}
+              />
+            </div>
+          </Link>
         ))}
       </div>
-    );
-  },
-  (prev, next) => {
-    // Głębokie porównanie tylko jeśli liczba profili się zmieniła
-    if (prev.profiles.length !== next.profiles.length) return false;
-
-    // Sprawdź czy profile się zmieniły
-    return prev.profiles.every(
-      (profile, index) => profile.id === next.profiles[index].id
     );
   }
 );

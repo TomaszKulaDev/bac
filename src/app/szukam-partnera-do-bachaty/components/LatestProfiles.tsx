@@ -256,7 +256,6 @@ export const LatestProfiles = () => {
   return (
     <div className="max-w-screen-2xl mx-auto px-4">
       <AdBanner />
-
       <div className="mb-8">
         <SortingButtons />
       </div>

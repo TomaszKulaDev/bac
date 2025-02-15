@@ -9,7 +9,7 @@ export default function PartnerSearchPage() {
       <div className="min-h-screen">
         {/* Sekcja z profilami */}
         <section
-          className="max-w-[2200px] mx-auto px-4 sm:px-8 py-16"
+          className="max-w-[2200px] mx-auto px-2 sm:px-8 pt-4 pb-16"
           aria-label="Lista profili tancerzy"
         >
           <h1 className="sr-only">
