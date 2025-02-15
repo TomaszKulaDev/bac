@@ -88,6 +88,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
     // Ustawiamy język dokumentu na polski
     <html lang="pl">
       <head>
+        {/* Meta tag weryfikacyjny Google AdSense */}
+        <meta name="google-adsense-account" content="ca-pub-8585871789466302" />
         <Script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8585871789466302"
