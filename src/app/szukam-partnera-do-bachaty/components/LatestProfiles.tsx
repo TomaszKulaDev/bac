@@ -21,6 +21,8 @@ import { usePrefetchNextPage } from "../hooks/usePrefetchNextPage";
 import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
 import { useVirtualization } from "../hooks/useVirtualization";
 import { inView } from "framer-motion";
+import Link from "next/link";
+import { getProfileUrl } from "@/utils/profile";
 
 const PROFILES_PER_PAGE = 12;
 
@@ -42,11 +44,8 @@ export const LatestProfiles = () => {
 
   const [selectedStyles, setSelectedStyles] = useState<string[]>([]);
   const [isStylesModalOpen, setIsStylesModalOpen] = useState(false);
-
-  const handleStylesClick = useCallback((styles: string[]) => {
-    setSelectedStyles(styles);
-    setIsStylesModalOpen(true);
-  }, []);
+  const [mounted, setMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   const fetchProfiles = async ({
     pageParam = 1,
@@ -157,24 +156,41 @@ export const LatestProfiles = () => {
     (pageParam) => fetchProfiles({ pageParam })
   );
 
-  // Optymalizacja filtrowania
-  const filteredProfiles = useMemo(() => {
+  // Memoizujemy profile
+  const profiles = useMemo(() => {
     return data?.pages.flatMap((page) => page.profiles) ?? [];
   }, [data?.pages]);
 
+  // Poprawiony useCallback bez zbędnych zależności
+  const handleStylesClick = useCallback(
+    (e: React.MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const profile = (e.currentTarget as HTMLElement)
+        .closest("[data-profile-id]")
+        ?.getAttribute("data-profile-id");
+      if (profile) {
+        const profileData = profiles.find((p) => p.id === profile);
+        if (profileData?.dancePreferences?.styles) {
+          setSelectedStyles(profileData.dancePreferences.styles);
+          setIsStylesModalOpen(true);
+        }
+      }
+    },
+    [profiles]
+  );
+
   // Obsługa wirtualizacji dla dużych list
   const { visibleItems, onScroll } = useVirtualization(
-    filteredProfiles.length,
+    profiles.length,
     400,
     typeof window !== "undefined" ? window.innerHeight : 800
   );
 
-  // Optymalizacja renderowania
-  const renderProfiles = useCallback(() => {
-    console.log("Liczba profili do wyrenderowania:", filteredProfiles.length);
-
+  // Usuwamy niepotrzebny useCallback dla renderProfiles
+  const renderProfiles = () => {
     if (isLoading) return <LoadingSkeleton />;
-    if (filteredProfiles.length === 0) {
+    if (profiles.length === 0) {
       return (
         <div className="text-center py-12 text-gray-500">
           Nie znaleziono profili spełniających kryteria
@@ -183,50 +199,73 @@ export const LatestProfiles = () => {
     }
 
     return (
-      <div className="overflow-auto">
-        <ProfilesGrid
-          profiles={filteredProfiles}
-          onStylesClick={handleStylesClick}
-        />
-        {hasNextPage && (
-          <div ref={infiniteScrollRef} className="py-8">
-            {isFetchingNextPage && <LoadingSkeleton />}
-          </div>
-        )}
+      <div
+        className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 xl:columns-5 2xl:columns-6 
+                    gap-4 space-y-4 [column-fill:_balance]"
+      >
+        {profiles.map((profile, index) => (
+          <Link
+            key={profile.id}
+            href={getProfileUrl(profile)}
+            className="block break-inside-avoid-column mb-4"
+          >
+            <div
+              data-profile-id={profile.id}
+              className="relative rounded-lg overflow-hidden bg-white shadow-sm 
+                       hover:shadow-md transition-shadow"
+              style={{
+                height: mounted
+                  ? isMobile
+                    ? "400px"
+                    : `${Math.floor(Math.random() * (500 - 300) + 300)}px`
+                  : "300px",
+              }}
+            >
+              <ProfileCard
+                profile={profile}
+                index={index}
+                onStylesClick={handleStylesClick}
+              />
+            </div>
+          </Link>
+        ))}
       </div>
     );
-  }, [
-    isLoading,
-    filteredProfiles,
-    hasNextPage,
-    isFetchingNextPage,
-    handleStylesClick,
-    infiniteScrollRef,
-  ]);
+  };
+
+  useEffect(() => {
+    setMounted(true);
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+
+    checkIfMobile();
+    window.addEventListener("resize", checkIfMobile);
+    return () => window.removeEventListener("resize", checkIfMobile);
+  }, []);
 
   if (isError) {
     return (
-      <div className="text-center py-8">
-        <p className="text-red-500">
-          Błąd: {error instanceof Error ? error.message : "Wystąpił błąd"}
-        </p>
-        <button
-          onClick={() => window.location.reload()}
-          className="mt-4 px-4 py-2 bg-amber-500 text-white rounded-lg 
-                   hover:bg-amber-600 transition-colors"
-        >
-          Spróbuj ponownie
-        </button>
+      <div className="text-red-500 text-center">
+        Błąd: {error instanceof Error ? error.message : "Wystąpił błąd"}
       </div>
     );
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="max-w-screen-2xl mx-auto px-4">
       <div className="mb-8">
-        <SortingButtons profilesCount={filteredProfiles.length} />
+        <SortingButtons />
       </div>
+
       {renderProfiles()}
+
+      {hasNextPage && (
+        <div ref={infiniteScrollRef} className="py-8">
+          {isFetchingNextPage && <LoadingSkeleton />}
+        </div>
+      )}
+
       <Modal
         isOpen={isStylesModalOpen}
         onClose={() => {
