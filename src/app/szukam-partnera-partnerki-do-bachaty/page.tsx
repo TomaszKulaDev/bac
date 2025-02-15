@@ -11,6 +11,7 @@ import {
 } from "react-icons/fa";
 import Link from "next/link";
 import Image from "next/image";
+import AdBanner from "./components/AdBanner/AdBanner";
 
 export default function PartnerSearchPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -82,6 +83,10 @@ export default function PartnerSearchPage() {
       {/* Main Content */}
       <main className="pt-16 pl-[72px]">
         <div className="max-w-screen-2xl mx-auto px-4">
+          {/* Ad Banner */}
+          <AdBanner />
+
+          {/* Grid Content */}
           <div
             className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 xl:columns-5 2xl:columns-6 
                         gap-4 space-y-4 [column-fill:_balance]"
@@ -92,9 +97,10 @@ export default function PartnerSearchPage() {
                   className="relative rounded-lg overflow-hidden bg-white shadow-sm 
                            hover:shadow-md transition-shadow"
                   style={{
-                    height: `${Math.floor(
-                      Math.random() * (450 - 200) + 200
-                    )}px`,
+                    height:
+                      window.innerWidth < 640
+                        ? "400px"
+                        : `${Math.floor(Math.random() * (500 - 300) + 300)}px`,
                   }}
                 >
                   <div className="absolute inset-0 bg-gray-200 animate-pulse" />

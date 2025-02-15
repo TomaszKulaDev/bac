@@ -1,8 +1,55 @@
 .grid-item {
-  width: 236px;
+  width: 100%;
+  min-width: 200px;
   margin-bottom: 16px;
 }
 
+/* Mobile - stała wysokość */
+@media (max-width: 639px) {
+  .grid-item {
+    height: 400px;
+  }
+}
+
+/* Tablet i desktop - zmienna wysokość */
+@media (min-width: 640px) {
+  .grid-item {
+    min-height: 300px;
+  }
+}
+
+/* Breakpointy responsywne dla szerokości */
+@media (min-width: 640px) {
+  .grid-item {
+    width: calc(50% - 8px);
+  }
+}
+
+@media (min-width: 768px) {
+  .grid-item {
+    width: calc(33.333% - 12px);
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid-item {
+    width: calc(25% - 12px);
+  }
+}
+
+@media (min-width: 1280px) {
+  .grid-item {
+    width: calc(20% - 16px);
+  }
+}
+
+@media (min-width: 1536px) {
+  .grid-item {
+    width: calc(16.666% - 16px);
+  }
+}
+
+/* Animacje i efekty */
 .grid-item:hover {
   transform: scale(1.02);
   transition: transform 0.2s ease-in-out;
