@@ -23,6 +23,7 @@ import { useVirtualization } from "../hooks/useVirtualization";
 import { inView } from "framer-motion";
 import Link from "next/link";
 import { getProfileUrl } from "@/utils/profile";
+import AdBanner from "./AdBanner/AdBanner";
 
 const PROFILES_PER_PAGE = 12;
 
@@ -254,6 +255,8 @@ export const LatestProfiles = () => {
 
   return (
     <div className="max-w-screen-2xl mx-auto px-4">
+      <AdBanner />
+
       <div className="mb-8">
         <SortingButtons />
       </div>
