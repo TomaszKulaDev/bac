@@ -25,7 +25,7 @@ import Link from "next/link";
 import { getProfileUrl } from "@/utils/profile";
 import AdBanner from "./AdBanner/AdBanner";
 
-const PROFILES_PER_PAGE = 12;
+const PROFILES_PER_PAGE = 50;
 
 interface FetchProfilesResponse {
   profiles: UserProfile[];
