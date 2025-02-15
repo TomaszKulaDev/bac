@@ -74,6 +74,7 @@ import { CookieConsent } from "../components/CookieConsent/CookieConsent";
 import "leaflet/dist/leaflet.css";
 import QueryClientProvider from "@/providers/QueryClientProvider";
 import "react-toastify/dist/ReactToastify.css";
+import Script from "next/script";
 
 // Inicjalizujemy czcionkę Inter z podzbiorem "latin", aby używać jej w aplikacji
 const inter = Inter({ subsets: ["latin"] });
@@ -86,6 +87,14 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     // Ustawiamy język dokumentu na polski
     <html lang="pl">
+      <head>
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8585871789466302"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
+      </head>
       {/* Ustawiamy klasę czcionki Inter i kolor tekstu na szary */}
       <body className={`${inter.className} bg-global-white`}>
         <QueryClientProvider>
