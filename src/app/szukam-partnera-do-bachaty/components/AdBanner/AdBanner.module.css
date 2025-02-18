@@ -11,17 +11,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 1rem;
 }
 
 .adPlaceholder {
-  color: #6c757d;
-  font-size: 1rem;
-  text-align: center;
-  padding: 1rem;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  width: calc(100% - 2rem);
+  text-align: center;
   z-index: 1;
   pointer-events: none;
   opacity: 0.7;
@@ -32,10 +31,6 @@
 @media (max-width: 639px) {
   .adContainer {
     min-height: 50px;
-  }
-
-  .adPlaceholder {
-    font-size: 0.875rem;
   }
 }
 

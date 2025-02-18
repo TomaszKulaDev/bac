@@ -255,12 +255,21 @@ export const LatestProfiles = () => {
 
   return (
     <div className="max-w-screen-2xl mx-auto px-4">
-      <AdBanner />
       <div className="mb-8">
         <SortingButtons />
       </div>
 
+      <div className="mb-8">
+        <AdBanner />
+      </div>
+
       {renderProfiles()}
+
+      {profiles.length > 0 && profiles.length % 12 === 0 && (
+        <div className="my-8">
+          <AdBanner />
+        </div>
+      )}
 
       {hasNextPage && (
         <div ref={infiniteScrollRef} className="py-8">
