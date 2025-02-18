@@ -77,12 +77,8 @@ export const useVideoVisibility = () => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         setIsVisible(entry.isIntersecting);
-        if (!isFullscreen) {
-          if (entry.isIntersecting) {
-            handlePlay();
-          } else {
-            handlePause();
-          }
+        if (!isFullscreen && !entry.isIntersecting && isPlaying) {
+          handlePause();
         }
       },
       { threshold: 0.5 }
@@ -116,7 +112,7 @@ export const useVideoVisibility = () => {
       video.removeEventListener("ended", () => setIsPlaying(false));
       document.removeEventListener("fullscreenchange", handleFullscreenChange);
     };
-  }, [handlePlay, handlePause, isFullscreen, hideControlsWithDelay]);
+  }, [handlePlay, handlePause, isFullscreen, isPlaying, hideControlsWithDelay]);
 
   return {
     videoRef,
