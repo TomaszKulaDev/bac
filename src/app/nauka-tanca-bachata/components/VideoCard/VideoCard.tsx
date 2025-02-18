@@ -3,6 +3,7 @@ import { BachataVideo } from "../../types/video";
 import { useVideoVisibility } from "../../hooks/useVideoVisibility";
 import { InstructorHeader } from "./InstructorHeader";
 import { VideoActions } from "./VideoActions";
+import Image from "next/image";
 
 interface VideoCardProps {
   video: BachataVideo;
@@ -54,24 +55,38 @@ export const VideoCard: React.FC<VideoCardProps> = ({ video }) => {
     }
   };
 
+  // Generujemy URL do pierwszej klatki wideo
+  const firstFrameUrl = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/video/upload/w_640,h_800,c_fill,so_0/${video.publicId}.jpg`;
+
   return (
     <article className="bg-white rounded-lg overflow-hidden shadow-sm">
       <InstructorHeader video={video} />
 
       <div
         ref={containerRef}
-        className={`relative aspect-[4/5] bg-black cursor-pointer group ${
+        className={`relative aspect-[4/5] cursor-pointer group ${
           isFullscreen ? "fixed inset-0 z-50 aspect-auto" : ""
         }`}
         onClick={handleVideoClick}
         onMouseMove={handleMouseMove}
       >
+        {/* Pierwsza klatka jako tło */}
+        <div className="absolute inset-0">
+          <Image
+            src={firstFrameUrl}
+            alt=""
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-cover"
+            priority
+          />
+        </div>
+
         <video
           ref={videoRef}
-          className={`w-full h-full ${
+          className={`absolute inset-0 w-full h-full ${
             isFullscreen ? "object-contain" : "object-cover"
-          }`}
-          poster={video.thumbnailUrl}
+          } ${isPlaying ? "opacity-100" : "opacity-0"}`}
           playsInline
           loop
           muted={isMuted}
