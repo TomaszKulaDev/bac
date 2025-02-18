@@ -13,6 +13,7 @@ import { togglePlayback } from "@/store/slices/playerSlice";
 import { RootState } from "@/store/store";
 import { motion } from "framer-motion";
 import { ShareButton } from "@/app/muzyka/components/ui/ShareButton";
+import { AdBanner } from "@/app/muzyka/components/ads/AdBanner";
 
 interface PoplistaHeaderProps {
   onShare: () => void;
@@ -145,26 +146,9 @@ export const PoplistaHeader = ({ onShare }: PoplistaHeaderProps) => {
           moc!
         </p>
       </div>
-      <div className="bg-gray-50 p-3 sm:p-4 rounded-lg border border-gray-100 text-sm sm:text-base">
-        <div className="mt-4">
-          <script
-            async
-            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8585871789466302"
-            crossOrigin="anonymous"
-          ></script>
-          <ins
-            className="adsbygoogle"
-            style={{ display: "block" }}
-            data-ad-client="ca-pub-8585871789466302"
-            data-ad-slot="6813774647"
-            data-ad-format="auto"
-            data-full-width-responsive="true"
-          />
-          <script>
-            {`(adsbygoogle = window.adsbygoogle || []).push({});`}
-          </script>
-        </div>
-      </div>
+
+      {/* Google AdSense Advertisement */}
+      <AdBanner />
     </motion.div>
   );
 };
