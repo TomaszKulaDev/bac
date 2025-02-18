@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { BachataVideo } from "../../types/video";
 import { useVideoVisibility } from "../../hooks/useVideoVisibility";
 import { InstructorHeader } from "./InstructorHeader";
@@ -25,6 +25,24 @@ export const VideoCard: React.FC<VideoCardProps> = ({ video }) => {
 
   const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const clickCountRef = useRef(0);
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const handleTimeUpdate = () => {
+      if (!video.duration) return;
+      const currentProgress = (video.currentTime / video.duration) * 100;
+      setProgress(currentProgress);
+    };
+
+    video.addEventListener("timeupdate", handleTimeUpdate);
+
+    return () => {
+      video.removeEventListener("timeupdate", handleTimeUpdate);
+    };
+  }, [videoRef]);
 
   const handleVideoClick = () => {
     clickCountRef.current += 1;
@@ -198,6 +216,14 @@ export const VideoCard: React.FC<VideoCardProps> = ({ video }) => {
               )}
             </button>
           </div>
+        </div>
+
+        {/* Uproszczony pasek postępu z płynną animacją */}
+        <div className="absolute bottom-0 left-0 w-full h-1 bg-gray-200/30">
+          <div
+            className="h-full bg-orange-500 transition-all duration-200 ease-linear"
+            style={{ width: `${progress}%` }}
+          />
         </div>
       </div>
 
