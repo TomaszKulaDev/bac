@@ -286,34 +286,58 @@ export const VideoCard: React.FC<VideoCardProps> = ({ video }) => {
           </div>
         </div>
 
-        {/* Interaktywny pasek postępu */}
+        {/* Pasek postępu w stylu Instagrama */}
         <div
           ref={progressBarRef}
-          className="absolute bottom-0 left-0 w-full h-2 bg-gray-200/30 cursor-pointer group/progress"
-          onClick={handleProgressBarClick}
-          onMouseDown={handleProgressBarMouseDown}
+          className="absolute bottom-0 left-0 right-0 px-4 py-4 bg-gradient-to-t from-black/25 to-transparent"
         >
-          {/* Tło postępu */}
+          {/* Kontener paska postępu */}
           <div
-            className="h-full bg-orange-500/30"
-            style={{ width: `${progress}%` }}
-          />
-          {/* Aktualny postęp */}
-          <div
-            className="absolute top-0 h-full bg-orange-500 transition-all duration-200 ease-linear"
-            style={{ width: `${progress}%` }}
-          />
-          {/* Uchwyt do przeciągania */}
-          <div
-            className={`absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full -ml-2 transform transition-opacity duration-200 ${
-              isControlsVisible || isDragging ? "opacity-100" : "opacity-0"
-            } group-hover/progress:opacity-100`}
-            style={{ left: `${progress}%` }}
-          />
+            className="relative h-[3px] group/progress cursor-pointer"
+            onClick={handleProgressBarClick}
+            onMouseDown={handleProgressBarMouseDown}
+          >
+            {/* Tło paska */}
+            <div className="absolute inset-0 bg-white/30 rounded-full" />
+
+            {/* Postęp */}
+            <div
+              className="absolute inset-y-0 left-0 bg-white rounded-full transition-all duration-200 ease-linear"
+              style={{ width: `${progress}%` }}
+            />
+
+            {/* Hover efekt - zmodyfikowany */}
+            <div className="absolute inset-y-0 -top-2 -bottom-2 w-full opacity-0 group-hover/progress:opacity-100 transition-opacity">
+              {/* Uchwyt */}
+              <div
+                className={`absolute top-1/2 -translate-y-1/2 w-[12px] h-[12px] bg-white rounded-full shadow-sm transform -ml-[6px] transition-all duration-200 ${
+                  isDragging ? "scale-110" : ""
+                }`}
+                style={{ left: `${progress}%` }}
+              />
+            </div>
+          </div>
+
+          {/* Czas trwania */}
+          <div className="absolute right-4 bottom-4 text-white text-xs font-medium opacity-0 group-hover/progress:opacity-100 transition-opacity">
+            {videoRef.current && !isNaN(videoRef.current.duration) && (
+              <>
+                {formatTime(videoRef.current.currentTime)} /{" "}
+                {formatTime(videoRef.current.duration)}
+              </>
+            )}
+          </div>
         </div>
       </div>
 
       {!isFullscreen && <VideoActions video={video} onShare={handleShare} />}
     </article>
   );
+};
+
+// Funkcja pomocnicza do formatowania czasu
+const formatTime = (seconds: number): string => {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = Math.floor(seconds % 60);
+  return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
 };
