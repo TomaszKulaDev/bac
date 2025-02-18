@@ -51,17 +51,8 @@ export const BachataVideoGrid: React.FC<BachataVideoGridProps> = ({
         <p className="text-gray-600 text-lg sm:text-xl">
           <div className="flex items-center justify-center gap-2">
             <span>
-              Wybierz kategorię i rozpocznij naukę z najlepszymi instruktorami
+              Wybierz kategorię i rozpocznij naukę z najlepszymi instruktorami Instagrama.
             </span>
-            <Image
-              src="/images/instagramIco/Inst.jpg"
-              alt="Instagram"
-              width={32}
-              height={32}
-              className="w-6 h-6 rounded-lg"
-              priority
-            />
-            <span>Instagrama.</span>
           </div>
         </p>
       </div>
