@@ -19,6 +19,7 @@ import LessonCard from "./components/LessonCard";
 import { mockCourses } from "./data/mockCourse";
 import { useNaukaBachataVideos } from "./hooks/useNaukaBachataVideos";
 import { BachataVideoGrid } from "./components/BachataVideoGrid";
+import { AdBanner } from "./components/Ads/AdBanner";
 
 export default function BachataLearningPage() {
   const [selectedLevel, setSelectedLevel] = useState<string>("all");
@@ -30,18 +31,16 @@ export default function BachataLearningPage() {
       : mockCourses.filter((course) => course.level === selectedLevel);
 
   return (
-    <div className="space-y-12">
-      {/* Sekcja Social Dance Videos */}
-      <section className="space-y-6">
-        <div className="border-b pb-4">
-          <h2 className="text-2xl font-bold text-gray-900">
-            Each One Teach One Bachata
-          </h2>
-          <p className="text-gray-600 mt-2">
-            Zobacz najnowsze filmy z naszej społeczności
-          </p>
-        </div>
+    <div className="space-y-2">
+      {/* Google AdSense - Reklama górna
+          - Format: Responsywny banner
+          - Slot ID: 2106187532
+          - Client ID: ca-pub-8585871789466302
+      */}
+      <AdBanner />
 
+      {/* Sekcja Social Dance Videos */}
+      <section className="space-y-4">
         <BachataVideoGrid videos={videos} isLoading={isLoading} error={error} />
       </section>
 
@@ -52,9 +51,10 @@ export default function BachataLearningPage() {
             Crash Cours Bachaty
           </h2>
           <p className="text-gray-600 mt-2">
-            Odkryj unikalne kursy bachaty prowadzone przez międzynarodowych instruktorów! 
-            Każdy z nich prezentuje własne podejście do tańca i techniki ruchu. 
-            Znajdź idealny kurs dla siebie, niezależnie od poziomu zaawansowania.
+            Odkryj unikalne kursy bachaty prowadzone przez międzynarodowych
+            instruktorów! Każdy z nich prezentuje własne podejście do tańca i
+            techniki ruchu. Znajdź idealny kurs dla siebie, niezależnie od
+            poziomu zaawansowania.
           </p>
         </div>
 
@@ -70,7 +70,6 @@ export default function BachataLearningPage() {
               lesson={{
                 id: course.id,
                 title: course.title,
-                // level: course.level,
                 duration: course.totalDuration,
                 thumbnail: course.thumbnail,
                 description: course.description,
