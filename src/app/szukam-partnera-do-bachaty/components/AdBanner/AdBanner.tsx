@@ -1,5 +1,8 @@
 "use client";
 
+//  komponent jest umieszczony w LatestProfiles.tsx
+//  reklama znajduje sie w LatestProfiles.tsx
+
 import Script from "next/script";
 import { useState } from "react";
 import styles from "./AdBanner.module.css";

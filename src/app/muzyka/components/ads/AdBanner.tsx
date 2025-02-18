@@ -1,4 +1,6 @@
 "use client";
+//  komponent jest umieszczony w PoplistaHeader.tsx
+//  reklama znajduje sie w PoplistaHeader.tsx
 
 import Script from "next/script";
 import { useState } from "react";
