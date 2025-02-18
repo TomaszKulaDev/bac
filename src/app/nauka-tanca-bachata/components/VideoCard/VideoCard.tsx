@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useCallback } from "react";
 import { BachataVideo } from "../../types/video";
 import { useVideoVisibility } from "../../hooks/useVideoVisibility";
 import { InstructorHeader } from "./InstructorHeader";
@@ -26,13 +26,15 @@ export const VideoCard: React.FC<VideoCardProps> = ({ video }) => {
   const clickTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const clickCountRef = useRef(0);
   const [progress, setProgress] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const progressBarRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
     const handleTimeUpdate = () => {
-      if (!video.duration) return;
+      if (!video.duration || isDragging) return;
       const currentProgress = (video.currentTime / video.duration) * 100;
       setProgress(currentProgress);
     };
@@ -42,7 +44,70 @@ export const VideoCard: React.FC<VideoCardProps> = ({ video }) => {
     return () => {
       video.removeEventListener("timeupdate", handleTimeUpdate);
     };
-  }, [videoRef]);
+  }, [videoRef, isDragging]);
+
+  const updateVideoProgress = useCallback(
+    (clientX: number) => {
+      const video = videoRef.current;
+      const progressBar = progressBarRef.current;
+
+      if (!video || !progressBar) return;
+
+      const rect = progressBar.getBoundingClientRect();
+      const position = clientX - rect.left;
+      const width = rect.width;
+      let percentage = (position / width) * 100;
+
+      percentage = Math.max(0, Math.min(100, percentage));
+
+      const newTime = (percentage / 100) * video.duration;
+      video.currentTime = newTime;
+      setProgress(percentage);
+    },
+    [videoRef, progressBarRef]
+  );
+
+  const handleProgressBarClick = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      e.stopPropagation();
+      updateVideoProgress(e.clientX);
+    },
+    [updateVideoProgress]
+  );
+
+  const handleProgressBarMouseDown = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      e.stopPropagation();
+      setIsDragging(true);
+      updateVideoProgress(e.clientX);
+    },
+    [updateVideoProgress]
+  );
+
+  const handleProgressMouseMove = useCallback(
+    (e: MouseEvent) => {
+      if (isDragging) {
+        updateVideoProgress(e.clientX);
+      }
+    },
+    [isDragging, updateVideoProgress]
+  );
+
+  const handleMouseUp = useCallback(() => {
+    setIsDragging(false);
+  }, []);
+
+  useEffect(() => {
+    if (isDragging) {
+      document.addEventListener("mousemove", handleProgressMouseMove);
+      document.addEventListener("mouseup", handleMouseUp);
+    }
+
+    return () => {
+      document.removeEventListener("mousemove", handleProgressMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [isDragging, handleProgressMouseMove, handleMouseUp]);
 
   const handleVideoClick = () => {
     clickCountRef.current += 1;
@@ -128,7 +193,10 @@ export const VideoCard: React.FC<VideoCardProps> = ({ video }) => {
           <div className="flex justify-end">
             <button
               className="p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-all"
-              onClick={() => setIsMuted(!isMuted)}
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsMuted(!isMuted);
+              }}
             >
               {isMuted ? (
                 <svg
@@ -218,11 +286,29 @@ export const VideoCard: React.FC<VideoCardProps> = ({ video }) => {
           </div>
         </div>
 
-        {/* Uproszczony pasek postępu z płynną animacją */}
-        <div className="absolute bottom-0 left-0 w-full h-1 bg-gray-200/30">
+        {/* Interaktywny pasek postępu */}
+        <div
+          ref={progressBarRef}
+          className="absolute bottom-0 left-0 w-full h-2 bg-gray-200/30 cursor-pointer group/progress"
+          onClick={handleProgressBarClick}
+          onMouseDown={handleProgressBarMouseDown}
+        >
+          {/* Tło postępu */}
           <div
-            className="h-full bg-orange-500 transition-all duration-200 ease-linear"
+            className="h-full bg-orange-500/30"
             style={{ width: `${progress}%` }}
+          />
+          {/* Aktualny postęp */}
+          <div
+            className="absolute top-0 h-full bg-orange-500 transition-all duration-200 ease-linear"
+            style={{ width: `${progress}%` }}
+          />
+          {/* Uchwyt do przeciągania */}
+          <div
+            className={`absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full -ml-2 transform transition-opacity duration-200 ${
+              isControlsVisible || isDragging ? "opacity-100" : "opacity-0"
+            } group-hover/progress:opacity-100`}
+            style={{ left: `${progress}%` }}
           />
         </div>
       </div>
