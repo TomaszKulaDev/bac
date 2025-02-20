@@ -10,7 +10,10 @@ export async function GET() {
     await connectToDatabase();
 
     const profiles = await User.find(
-      { isPublicProfile: true },
+      {
+        isPublicProfile: true,
+        isVerified: true,
+      },
       {
         name: 1,
         email: 1,
@@ -21,6 +24,7 @@ export async function GET() {
         slug: 1,
         createdAt: 1,
         isPublicProfile: 1,
+        isVerified: 1,
       }
     ).sort({ createdAt: -1 });
 
@@ -34,6 +38,7 @@ export async function GET() {
       slug: profile.slug,
       createdAt: profile.createdAt,
       isPublicProfile: profile.isPublicProfile,
+      isVerified: profile.isVerified,
     }));
 
     return NextResponse.json(formattedProfiles, {

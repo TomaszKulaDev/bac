@@ -12,13 +12,18 @@ export async function GET(
     console.log("Szukam profilu dla:", decodedSlug); // Debug log
 
     const profile = await User.findOne({
-      $or: [
-        { slug: { $regex: new RegExp(`^${decodedSlug}$`, "i") } },
+      $and: [
         {
-          name: {
-            $regex: new RegExp(`^${decodedSlug.replace(/-/g, " ")}$`, "i"),
-          },
+          $or: [
+            { slug: { $regex: new RegExp(`^${decodedSlug}$`, "i") } },
+            {
+              name: {
+                $regex: new RegExp(`^${decodedSlug.replace(/-/g, " ")}$`, "i"),
+              },
+            },
+          ],
         },
+        { isVerified: true }, // Dodajemy warunek weryfikacji
       ],
     });
 
@@ -48,6 +53,8 @@ export async function GET(
       createdAt: profile.createdAt,
       // Generujemy slug z nazwy jeśli nie istnieje
       slug: profile.slug || profile.name.toLowerCase().replace(/\s+/g, "-"),
+      isVerified: profile.isVerified, // Dodajemy do zwracanych danych
+      isPublicProfile: profile.isPublicProfile,
     };
 
     return NextResponse.json(formattedProfile);
