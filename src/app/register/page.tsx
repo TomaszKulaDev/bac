@@ -23,8 +23,6 @@ import Head from "next/head";
 import { motion } from "framer-motion";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { Input } from "@/app/register/Input";
-import { BannerGrid } from "@/app/register/BannerGrid";
-import { PremiumBanner } from "@/app/register/PremiumBanner";
 
 const registerSchemaBase = z.object({
   name: z
@@ -195,10 +193,7 @@ export default function Register() {
       </Head>
       <div className="min-h-screen bg-gradient-to-br from-[#0a1e3b] to-[#2a4a7f] flex items-center justify-center p-6 lg:p-8">
         <div className="container mx-auto flex flex-col xl:flex-row justify-between items-start gap-8 max-w-screen-2xl">
-          {/* Lewa strona - Banery */}
-          <div className="hidden xl:block sticky top-8 w-[380px]">
-            <BannerGrid />
-          </div>
+         
 
           {/* Środek - Formularz */}
           <div className="w-full max-w-md mx-auto">
@@ -378,11 +373,6 @@ export default function Register() {
                 Zaloguj się
               </Link>
             </motion.p>
-          </div>
-
-          {/* Prawa strona - Premium Banner */}
-          <div className="hidden xl:block sticky top-8 w-[380px]">
-            <PremiumBanner />
           </div>
         </div>
       </div>
