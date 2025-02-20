@@ -216,8 +216,8 @@ export default function Register() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white flex items-start justify-center p-6 lg:p-8">
-      <div className="container mx-auto flex flex-col xl:flex-row justify-between items-start gap-8 max-w-screen-2xl mt-8 lg:mt-12">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white flex items-start justify-center p-2 lg:p-2">
+      <div className="container mx-auto flex flex-col xl:flex-row justify-between items-start gap-8 max-w-screen-2xl mt-8 lg:mt-3">
         <div className="w-full max-w-md mx-auto">
           {/* Nagłówek */}
           <motion.div
