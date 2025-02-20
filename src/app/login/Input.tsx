@@ -14,24 +14,26 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className="w-full">
         {label && (
-          <label className="block text-white/90 text-sm font-medium mb-2">
+          <label className="block text-white text-sm font-semibold mb-2.5 tracking-wide">
             {label}
           </label>
         )}
         
-        <div className="relative">
+        <div className="relative group">
           <input
             ref={ref}
             {...props}
             className={`
-              w-full px-4 py-3 bg-white/5 border rounded-lg
-              ${error ? 'border-red-400' : 'border-white/10'}
-              text-white placeholder-white/50
-              focus:outline-none focus:ring-2 
-              ${error ? 'focus:ring-red-400/20' : 'focus:ring-white/20'}
-              focus:border-transparent
+              w-full px-4 py-3.5 bg-white/10 border-2 rounded-xl
+              ${error ? 'border-red-500' : 'border-white/20'}
+              text-white placeholder-white/40
+              focus:outline-none focus:ring-4 
+              ${error ? 'focus:ring-red-500/20' : 'focus:ring-yellow-500/20'}
+              focus:border-yellow-400
+              group-hover:border-yellow-400/50
               transition-all duration-200
               ${showPasswordToggle ? 'pr-12' : 'pr-4'}
+              text-sm font-medium
               ${className}
             `}
           />
@@ -40,8 +42,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             <button
               type="button"
               onClick={onPasswordToggle}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-white/50 
-                hover:text-white/80 transition-colors p-1"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-white/60 
+                hover:text-yellow-400 transition-colors p-1.5"
             >
               {showPassword ? <FaEyeSlash size={18} /> : <FaEye size={18} />}
             </button>
@@ -49,7 +51,10 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         </div>
         
         {error && (
-          <p className="mt-2 text-red-400 text-sm">{error}</p>
+          <p className="mt-2 text-red-400 text-sm font-medium flex items-center">
+            <span className="mr-1.5">●</span>
+            {error}
+          </p>
         )}
       </div>
     );
