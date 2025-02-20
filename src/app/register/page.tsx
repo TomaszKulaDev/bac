@@ -216,12 +216,12 @@ export default function Register() {
   }, []);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-white px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-white px-2">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="w-full max-w-md space-y-6 -mt-20"
+        className="w-full max-w-md space-y-6 -mt-60"
       >
         <div className="text-center">
           <h1 className="text-3xl font-bold text-gray-800">Dołącz do nas</h1>
