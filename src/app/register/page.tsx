@@ -216,182 +216,163 @@ export default function Register() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white flex items-start justify-center p-2 lg:p-2">
-      <div className="container mx-auto flex flex-col xl:flex-row justify-between items-start gap-8 max-w-screen-2xl mt-8 lg:mt-3">
-        <div className="w-full max-w-md mx-auto">
-          {/* Nagłówek */}
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-center space-y-2.5 mb-8"
-          >
-            <h1 className="text-3xl font-bold text-gray-800">Dołącz do nas</h1>
-            <p className="text-gray-500 text-lg">
-              Stwórz konto i rozpocznij swoją przygodę z bachatą
-            </p>
-          </motion.div>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-white px-4">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="w-full max-w-md space-y-6 -mt-20"
+      >
+        <div className="text-center">
+          <h1 className="text-3xl font-bold text-gray-800">Dołącz do nas</h1>
+          <p className="mt-2 text-gray-600">
+            Stwórz konto i rozpocznij swoją przygodę z bachatą
+          </p>
+        </div>
 
-          {/* Formularz */}
-          <motion.form
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            onSubmit={handleSubmit}
-            className="space-y-7 bg-white p-8 rounded-2xl shadow-lg shadow-gray-100/50 
-              border border-gray-100"
-          >
-            {successMessage && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="bg-green-50 border border-green-200/70 text-green-600 p-4 rounded-xl 
-                  flex items-center space-x-2.5"
-              >
-                <FaCheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
-                <span className="font-medium text-sm">{successMessage}</span>
-              </motion.div>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {successMessage && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="p-4 bg-green-50 border border-green-100 rounded-xl flex items-center space-x-2"
+            >
+              <FaCheckCircle className="h-5 w-5 text-green-500" />
+              <p className="text-green-600 text-sm font-medium">
+                {successMessage}
+              </p>
+            </motion.div>
+          )}
+
+          {errors.form && (
+            <div className="p-4 bg-red-50 border border-red-100 rounded-xl">
+              <p className="text-red-600 text-sm font-medium">{errors.form}</p>
+            </div>
+          )}
+
+          <div className="space-y-5">
+            {/* Pole imienia */}
+            <Input
+              type="text"
+              name="name"
+              value={name}
+              onChange={handleInputChange}
+              placeholder="Twoje imię"
+              icon={FaUser}
+              error={errors.name}
+              label="Imię"
+              autoComplete="name"
+            />
+
+            {/* Pole email */}
+            <Input
+              type="email"
+              name="email"
+              value={email}
+              onChange={handleInputChange}
+              placeholder="twoj@email.com"
+              icon={FaEnvelope}
+              error={errors.email}
+              label="Email"
+              autoComplete="email"
+            />
+
+            {/* Pole hasła */}
+            <Input
+              type="password"
+              name="password"
+              value={password}
+              onChange={handleInputChange}
+              placeholder="Twoje hasło"
+              icon={FaLock}
+              error={errors.password}
+              isPassword
+              label="Hasło"
+              showPasswords={showPasswords}
+              onTogglePassword={togglePasswordVisibility}
+              autoComplete="new-password"
+            />
+
+            {/* Pole potwierdzenia hasła */}
+            <Input
+              type="password"
+              name="confirmPassword"
+              value={confirmPassword}
+              onChange={handleInputChange}
+              placeholder="Potwierdź hasło"
+              icon={FaLock}
+              error={errors.confirmPassword}
+              isPassword
+              label="Potwierdź hasło"
+              showPasswords={showPasswords}
+              autoComplete="new-password"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="flex items-start space-x-3 text-gray-600">
+              <input
+                type="checkbox"
+                name="agreeToTerms"
+                checked={agreeToTerms}
+                onChange={handleInputChange}
+                className="mt-1 h-4 w-4 rounded border-gray-300 text-amber-500 
+                  focus:ring-amber-500/30"
+              />
+              <span className="text-sm">
+                Akceptuję{" "}
+                <Link
+                  href="/privacy"
+                  className="text-amber-600 hover:text-amber-700 font-medium"
+                >
+                  Politykę Prywatności
+                </Link>{" "}
+                oraz{" "}
+                <Link
+                  href="/terms"
+                  className="text-amber-600 hover:text-amber-700 font-medium"
+                >
+                  Regulamin
+                </Link>
+              </span>
+            </label>
+            {errors.agreeToTerms && (
+              <p className="text-red-500 text-sm pl-7">{errors.agreeToTerms}</p>
             )}
+          </div>
 
-            {errors.form && (
-              <div className="bg-red-400/20 border border-red-400/30 text-red-400 p-4 rounded-xl mb-6">
-                {errors.form}
+          <button
+            type="submit"
+            disabled={isLoading || !isFormValid}
+            className="w-full bg-gradient-to-r from-amber-500 to-amber-600 
+              text-white py-4 px-4 rounded-xl font-semibold tracking-wide
+              hover:from-amber-600 hover:to-amber-700 transition-all duration-200 
+              disabled:opacity-50 disabled:cursor-not-allowed shadow-lg 
+              shadow-amber-500/10 transform hover:-translate-y-0.5 
+              active:translate-y-0.5"
+          >
+            {isLoading ? (
+              <LoadingSpinner />
+            ) : (
+              <div className="flex items-center justify-center space-x-2">
+                <FaUserPlus className="h-5 w-5" />
+                <span>Zarejestruj się</span>
               </div>
             )}
+          </button>
 
-            <div className="space-y-5">
-              {/* Pole imienia */}
-              <Input
-                type="text"
-                name="name"
-                value={name}
-                onChange={handleInputChange}
-                placeholder="Twoje imię"
-                icon={FaUser}
-                error={errors.name}
-                label="Imię"
-                autoComplete="name"
-              />
-
-              {/* Pole email */}
-              <Input
-                type="email"
-                name="email"
-                value={email}
-                onChange={handleInputChange}
-                placeholder="twoj@email.com"
-                icon={FaEnvelope}
-                error={errors.email}
-                label="Email"
-                autoComplete="email"
-              />
-
-              {/* Pole hasła */}
-              <Input
-                type="password"
-                name="password"
-                value={password}
-                onChange={handleInputChange}
-                placeholder="Twoje hasło"
-                icon={FaLock}
-                error={errors.password}
-                isPassword
-                label="Hasło"
-                showPasswords={showPasswords}
-                onTogglePassword={togglePasswordVisibility}
-                autoComplete="new-password"
-              />
-
-              {/* Pole potwierdzenia hasła */}
-              <Input
-                type="password"
-                name="confirmPassword"
-                value={confirmPassword}
-                onChange={handleInputChange}
-                placeholder="Potwierdź hasło"
-                icon={FaLock}
-                error={errors.confirmPassword}
-                isPassword
-                label="Potwierdź hasło"
-                showPasswords={showPasswords}
-                autoComplete="new-password"
-              />
-            </div>
-
-            {/* Checkbox akceptacji warunków */}
-            <div className="space-y-2">
-              <label className="flex items-start space-x-3 text-gray-600">
-                <input
-                  type="checkbox"
-                  name="agreeToTerms"
-                  checked={agreeToTerms}
-                  onChange={handleInputChange}
-                  className="mt-1 h-4 w-4 rounded border-gray-300 bg-gray-50 
-                    text-amber-500 focus:ring-2 focus:ring-amber-500/30 
-                    focus:ring-offset-0 transition-colors duration-200"
-                />
-                <span className="text-sm leading-relaxed">
-                  Akceptuję{" "}
-                  <Link
-                    href="/polityka-prywatnosci-baciata-pl"
-                    className="text-amber-500 hover:text-amber-600 transition-colors font-medium"
-                  >
-                    Politykę Prywatności
-                  </Link>{" "}
-                  oraz{" "}
-                  <Link
-                    href="/warunki-korzystania-z-uslugi-baciata-pl"
-                    className="text-amber-500 hover:text-amber-600 transition-colors font-medium"
-                  >
-                    Regulamin
-                  </Link>
-                </span>
-              </label>
-            </div>
-
-            <button
-              type="submit"
-              disabled={isLoading || !isFormValid}
-              className="w-full bg-gradient-to-r from-amber-500 to-amber-600 
-                text-white py-4 px-4 rounded-xl font-semibold tracking-wide
-                hover:from-amber-600 hover:to-amber-700 
-                transition-all duration-200 disabled:opacity-50 
-                disabled:cursor-not-allowed shadow-lg shadow-amber-500/10
-                transform hover:translate-y-[-1px] active:translate-y-[1px]
-                mt-8"
-            >
-              {isLoading ? (
-                <div className="flex items-center justify-center space-x-2">
-                  <LoadingSpinner className="h-5 w-5" />
-                  <span>Rejestrowanie...</span>
-                </div>
-              ) : (
-                <div className="flex items-center justify-center space-x-2">
-                  <FaUserPlus className="h-5 w-5" />
-                  <span>Zarejestruj się</span>
-                </div>
-              )}
-            </button>
-          </motion.form>
-
-          {/* Link do logowania */}
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="text-center mt-8 text-gray-600"
-          >
+          <p className="text-center text-gray-600 text-sm">
             Masz już konto?{" "}
             <Link
               href="/login"
-              className="text-amber-500 hover:text-amber-600 transition-colors 
-                font-semibold hover:underline"
+              className="text-amber-600 hover:text-amber-700 
+                font-semibold transition-colors"
             >
               Zaloguj się
             </Link>
-          </motion.p>
-        </div>
-      </div>
+          </p>
+        </form>
+      </motion.div>
     </div>
   );
 }
