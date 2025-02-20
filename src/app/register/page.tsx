@@ -187,15 +187,8 @@ export default function Register() {
 
   return (
     <>
-      <Head>
-        <title>Rejestracja - baciata.pl</title>
-        <meta name="description" content={description} />
-      </Head>
-      <div className="min-h-screen bg-gradient-to-br from-[#0a1e3b] to-[#2a4a7f] flex items-center justify-center p-6 lg:p-8">
-        <div className="container mx-auto flex flex-col xl:flex-row justify-between items-start gap-8 max-w-screen-2xl">
-         
-
-          {/* Środek - Formularz */}
+      <div className="min-h-screen bg-white flex items-center justify-center p-6 lg:p-8">
+        <div className="container mx-auto flex flex-col xl:flex-row justify-between items-start gap-8 max-w-screen-2xl -mt-60">
           <div className="w-full max-w-md mx-auto">
             {/* Logo i nagłówek */}
             <motion.div
@@ -206,19 +199,13 @@ export default function Register() {
             >
               <div className="flex justify-center mb-6">
                 <motion.div
-                  className="bg-gradient-to-r from-yellow-400 to-yellow-600 p-0.5 rounded-full"
+                  className="bg-gradient-to-r from-amber-500 to-amber-600 p-0.5 rounded-full"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                >
-                  <div className="bg-[#0a1e3b] px-6 py-2 rounded-full">
-                    <span className="text-white font-medium text-xl">
-                      Dołącz do nas
-                    </span>
-                  </div>
-                </motion.div>
+                ></motion.div>
               </div>
-              <h2 className="text-3xl font-bold text-white">Stwórz konto</h2>
-              <p className="mt-2 text-white/60">
+              <h2 className="text-3xl font-bold text-gray-800">Stwórz konto</h2>
+              <p className="mt-2 text-gray-600">
                 i rozpocznij swoją przygodę z bachatą
               </p>
             </motion.div>
@@ -229,7 +216,7 @@ export default function Register() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               onSubmit={handleSubmit}
-              className="mt-8 space-y-6 bg-white/5 backdrop-blur-lg p-8 rounded-2xl border border-white/10"
+              className="mt-8 space-y-6 bg-white p-8 rounded-2xl shadow-lg border border-gray-100"
             >
               {successMessage && (
                 <div className="bg-green-400/20 border border-green-400/30 text-green-400 p-4 rounded-xl mb-6">
@@ -299,27 +286,27 @@ export default function Register() {
 
                 {/* Checkbox akceptacji warunków */}
                 <div className="space-y-2">
-                  <label className="flex items-start space-x-3 text-white/80">
+                  <label className="flex items-start space-x-3 text-gray-800">
                     <input
                       type="checkbox"
                       name="agreeToTerms"
                       checked={agreeToTerms}
                       onChange={handleInputChange}
-                      className="mt-1 h-4 w-4 rounded border-white/10 bg-white/5 text-yellow-400 
-                        focus:ring-2 focus:ring-yellow-400/50 focus:ring-offset-0"
+                      className="mt-1 h-4 w-4 rounded border-gray-300 bg-white text-amber-500 
+                        focus:ring-2 focus:ring-amber-500/50 focus:ring-offset-0"
                     />
                     <span className="text-sm">
                       Akceptuję{" "}
                       <Link
                         href="/polityka-prywatnosci-baciata-pl"
-                        className="text-yellow-400 hover:text-yellow-300"
+                        className="text-amber-500 hover:text-amber-600"
                       >
                         Politykę Prywatności
                       </Link>{" "}
                       oraz{" "}
                       <Link
                         href="/warunki-korzystania-z-uslugi-baciata-pl"
-                        className="text-yellow-400 hover:text-yellow-300"
+                        className="text-amber-500 hover:text-amber-600"
                       >
                         Warunki Korzystania z Usługi
                       </Link>
@@ -339,10 +326,13 @@ export default function Register() {
               <button
                 type="submit"
                 disabled={isLoading || !isFormValid}
-                className="w-full bg-gradient-to-r from-yellow-400 to-yellow-600 text-[#0a1e3b] py-3 px-4 
-                  rounded-xl font-medium hover:from-yellow-500 hover:to-yellow-700 
-                  transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed
-                  flex items-center justify-center space-x-2"
+                className="w-full bg-gradient-to-r from-amber-500 to-amber-600 
+                  text-white py-3 px-4 rounded-xl font-medium 
+                  hover:from-amber-600 hover:to-amber-700 
+                  transition-all duration-200 disabled:opacity-50 
+                  disabled:cursor-not-allowed flex items-center 
+                  justify-center space-x-2 shadow-lg 
+                  shadow-amber-500/10"
               >
                 {isLoading ? (
                   <>
@@ -363,12 +353,12 @@ export default function Register() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="text-center text-white/60"
+              className="text-center text-gray-600 mt-4"
             >
               Masz już konto?{" "}
               <Link
                 href="/login"
-                className="text-yellow-400 hover:text-yellow-300 transition-colors"
+                className="text-amber-600 hover:text-amber-700 transition-colors"
               >
                 Zaloguj się
               </Link>
