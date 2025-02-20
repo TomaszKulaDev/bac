@@ -160,9 +160,8 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0a1e3b] to-[#2a4a7f] p-4">
-      <div className="container mx-auto flex justify-center items-center max-w-screen-2xl">
-        {/* Środkowa sekcja - formularz */}
+    <div className="min-h-screen flex items-center justify-center bg-white p-4">
+      <div className="container mx-auto flex justify-center items-center max-w-screen-2xl -mt-60">
         <div className="w-full max-w-md mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -170,22 +169,22 @@ export default function Login() {
             transition={{ duration: 0.6 }}
             className="text-center mb-8"
           >
-            <h1 className="text-4xl font-bold text-white mb-2">
+            <h1 className="text-4xl font-bold text-gray-800 mb-2">
               Witaj ponownie!
             </h1>
-            <p className="text-white/80">Zaloguj się do swojego konta</p>
+            <p className="text-gray-600">Zaloguj się do swojego konta</p>
           </motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 shadow-2xl border border-white/10"
+            className="bg-white rounded-2xl p-8 shadow-lg"
           >
             <form onSubmit={handleLogin} className="space-y-6">
               {errors.form && (
-                <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
-                  <p className="text-red-200 text-sm">{errors.form}</p>
+                <div className="p-4 bg-red-50 rounded-lg">
+                  <p className="text-red-500 text-sm">{errors.form}</p>
                 </div>
               )}
 
@@ -215,8 +214,8 @@ export default function Login() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-gradient-to-r from-yellow-400 to-yellow-600 text-[#0a1e3b] py-3 px-4 rounded-lg font-medium 
-                  hover:from-yellow-500 hover:to-yellow-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-white py-3 px-4 rounded-lg font-medium 
+                  hover:from-amber-600 hover:to-amber-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isLoading ? <LoadingSpinner /> : "Zaloguj się"}
               </button>
@@ -225,7 +224,7 @@ export default function Login() {
               <div className="mt-4 text-center">
                 <Link
                   href="/forgot-password"
-                  className="text-yellow-400 hover:text-yellow-300 text-sm transition-colors duration-200"
+                  className="text-amber-600 hover:text-amber-700 text-sm transition-colors duration-200"
                 >
                   Zapomniałeś hasła?
                 </Link>
@@ -234,10 +233,10 @@ export default function Login() {
               {/* Separator */}
               <div className="relative my-8">
                 <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-white/10"></div>
+                  <div className="w-full border-t border-gray-200"></div>
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-4 text-white/60 bg-[#0a1e3b]/50 backdrop-blur-lg">
+                  <span className="px-4 text-gray-500 bg-white">
                     lub kontynuuj przez
                   </span>
                 </div>
@@ -247,8 +246,9 @@ export default function Login() {
               <motion.button
                 type="button"
                 onClick={() => signIn("google")}
-                className="w-full bg-white/10 hover:bg-white/20 text-white py-3 px-4 rounded-lg font-medium 
-                  transition-all duration-200 flex items-center justify-center space-x-3 border border-white/10"
+                className="w-full bg-white text-gray-700 py-3 px-4 rounded-lg font-medium 
+                  transition-all duration-200 flex items-center justify-center space-x-3 border border-gray-200
+                  hover:bg-gray-50"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
@@ -263,11 +263,11 @@ export default function Login() {
               </motion.button>
 
               {/* Link do rejestracji */}
-              <p className="text-center text-white/60 text-sm">
+              <p className="text-center text-gray-600 text-sm">
                 Nie masz jeszcze konta?{" "}
                 <Link
                   href="/register"
-                  className="text-yellow-400 hover:text-yellow-300 transition-colors"
+                  className="text-amber-600 hover:text-amber-700 transition-colors"
                 >
                   Zarejestruj się
                 </Link>
