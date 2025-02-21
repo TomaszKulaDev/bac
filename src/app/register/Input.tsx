@@ -46,7 +46,7 @@ export const Input = ({
               onClick={onTogglePassword}
               className="text-amber-600 hover:text-amber-700 text-sm transition-colors 
                 flex items-center space-x-1.5 bg-gray-50 px-3 py-1 
-                rounded-full border border-gray-200"
+                rounded-full border border-gray-200 hover:bg-gray-100"
             >
               {showPasswords ? (
                 <>
@@ -82,7 +82,7 @@ export const Input = ({
                 ? "border-red-400 focus:ring-red-400/50"
                 : "hover:border-gray-300"
             }
-            text-sm`}
+            text-sm shadow-sm`}
           placeholder={placeholder}
           autoComplete={autoComplete}
         />

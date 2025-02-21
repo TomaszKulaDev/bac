@@ -186,47 +186,37 @@ export default function Register() {
   }, [name, email, password, confirmPassword, agreeToTerms]);
 
   return (
-    <>
-      <div className="min-h-screen bg-white flex items-center justify-center p-6 lg:p-8">
-        <div className="container mx-auto flex flex-col xl:flex-row justify-between items-start gap-8 max-w-screen-2xl -mt-60">
-          <div className="w-full max-w-md mx-auto">
-            {/* Logo i nagłówek */}
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="text-center"
-            >
-              <div className="flex justify-center mb-6">
-                <motion.div
-                  className="bg-gradient-to-r from-amber-500 to-amber-600 p-0.5 rounded-full"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                ></motion.div>
-              </div>
-              <h2 className="text-3xl font-bold text-gray-800">Stwórz konto</h2>
-              <p className="mt-2 text-gray-600">
-                i rozpocznij swoją przygodę z bachatą
-              </p>
-            </motion.div>
+    <div className="min-h-screen flex items-center justify-center bg-white p-4">
+      <div className="container mx-auto flex justify-center items-center max-w-screen-2xl -mt-60">
+        <div className="w-full max-w-md mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-8"
+          >
+            <h1 className="text-4xl font-bold text-gray-800 mb-2">
+              Dołącz do nas!
+            </h1>
+            <p className="text-gray-600">Stwórz swoje konto już teraz</p>
+          </motion.div>
 
-            {/* Formularz */}
-            <motion.form
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              onSubmit={handleSubmit}
-              className="mt-8 space-y-6 bg-white p-8 rounded-2xl shadow-lg border border-gray-100"
-            >
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="bg-white rounded-2xl p-8 shadow-lg"
+          >
+            <form onSubmit={handleSubmit} className="space-y-6">
               {successMessage && (
-                <div className="bg-green-400/20 border border-green-400/30 text-green-400 p-4 rounded-xl mb-6">
-                  {successMessage}
+                <div className="p-4 bg-green-50 rounded-lg">
+                  <p className="text-green-600 text-sm">{successMessage}</p>
                 </div>
               )}
 
               {errors.form && (
-                <div className="bg-red-400/20 border border-red-400/30 text-red-400 p-4 rounded-xl mb-6">
-                  {errors.form}
+                <div className="p-4 bg-red-50 rounded-lg">
+                  <p className="text-red-500 text-sm">{errors.form}</p>
                 </div>
               )}
 
@@ -327,12 +317,12 @@ export default function Register() {
                 type="submit"
                 disabled={isLoading || !isFormValid}
                 className="w-full bg-gradient-to-r from-amber-500 to-amber-600 
-                  text-white py-3 px-4 rounded-xl font-medium 
+                  text-white py-3 px-4 rounded-lg font-medium 
                   hover:from-amber-600 hover:to-amber-700 
                   transition-all duration-200 disabled:opacity-50 
                   disabled:cursor-not-allowed flex items-center 
-                  justify-center space-x-2 shadow-lg 
-                  shadow-amber-500/10"
+                  justify-center space-x-2 shadow-md hover:shadow-lg
+                  hover:shadow-amber-500/20"
               >
                 {isLoading ? (
                   <>
@@ -346,26 +336,50 @@ export default function Register() {
                   </>
                 )}
               </button>
-            </motion.form>
 
-            {/* Link do logowania */}
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="text-center text-gray-600 mt-4"
-            >
-              Masz już konto?{" "}
-              <Link
-                href="/login"
-                className="text-amber-600 hover:text-amber-700 transition-colors"
+              <div className="relative my-8">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-gray-200"></div>
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="px-4 text-gray-500 bg-white">
+                    lub kontynuuj przez
+                  </span>
+                </div>
+              </div>
+
+              <motion.button
+                type="button"
+                onClick={() => signIn("google")}
+                className="w-full bg-white text-gray-700 py-3 px-4 rounded-lg font-medium 
+                  transition-all duration-200 flex items-center justify-center space-x-3 
+                  border border-gray-200 hover:bg-gray-50"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
-                Zaloguj się
-              </Link>
-            </motion.p>
-          </div>
+                <Image
+                  src="/images/google-logo.svg"
+                  alt="Google"
+                  width={20}
+                  height={20}
+                  className="w-5 h-5"
+                />
+                <span>Zarejestruj się przez Google</span>
+              </motion.button>
+
+              <p className="text-center text-gray-600 text-sm">
+                Masz już konto?{" "}
+                <Link
+                  href="/login"
+                  className="text-amber-600 hover:text-amber-700 font-medium transition-colors"
+                >
+                  Zaloguj się
+                </Link>
+              </p>
+            </form>
+          </motion.div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
