@@ -10,7 +10,6 @@ interface InputProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder: string;
-  icon: IconType;
   error?: string;
   isPassword?: boolean;
   label?: string;
@@ -25,7 +24,6 @@ export const Input = ({
   value,
   onChange,
   placeholder,
-  icon: Icon,
   error,
   isPassword,
   label,
@@ -44,9 +42,10 @@ export const Input = ({
             <button
               type="button"
               onClick={onTogglePassword}
-              className="text-amber-600 hover:text-amber-700 text-sm transition-colors 
-                flex items-center space-x-1.5 bg-gray-50 px-3 py-1 
-                rounded-full border border-gray-200 hover:bg-gray-100"
+              className="text-amber-600 hover:text-amber-700 text-sm transition-all 
+                flex items-center space-x-1.5 bg-gray-50/80 px-3 py-1 
+                rounded-full border border-gray-200 hover:bg-gray-100
+                hover:shadow-sm active:scale-95"
             >
               {showPasswords ? (
                 <>
@@ -63,26 +62,25 @@ export const Input = ({
           )}
         </div>
       )}
-      <div className="relative">
-        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-          <Icon className="h-5 w-5 text-gray-400" />
-        </div>
+      <div className="relative group">
         <input
           type={isPassword ? (showPasswords ? "text" : "password") : type}
           name={name}
           value={value}
           onChange={onChange}
-          className={`w-full pl-11 pr-4 py-3 
+          className={`w-full px-4 py-3.5 
             bg-white border border-gray-200 rounded-xl text-gray-800
-            focus:outline-none focus:ring-2 focus:ring-amber-500/50 
-            focus:border-transparent placeholder-gray-400 
-            transition-all duration-200
+            focus:outline-none focus:ring-2 focus:ring-amber-500/30
+            focus:border-amber-500 placeholder-gray-400 
+            transition-all duration-200 ease-in-out
+            hover:border-amber-500/50
             ${
               error
-                ? "border-red-400 focus:ring-red-400/50"
-                : "hover:border-gray-300"
+                ? "border-red-400 focus:ring-red-400/30 focus:border-red-400"
+                : ""
             }
-            text-sm shadow-sm`}
+            text-sm shadow-sm backdrop-blur-sm
+            group-hover:shadow-md`}
           placeholder={placeholder}
           autoComplete={autoComplete}
         />
