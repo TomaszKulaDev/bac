@@ -48,7 +48,6 @@ import { YouTubeError } from "../utils/youtube";
 import { useYouTubeErrorHandler } from "../hooks/useYouTubeErrorHandler";
 import {
   CreatePlaylistDrawer,
-  MobileDrawer,
   PlaylistSelectorDrawer,
 } from "../components/drawers";
 import { Tooltip } from "@/components/ui/Tooltip";
@@ -784,26 +783,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
       </div>
       {isMobile && (
         <>
-          <MobileDrawer
-            isOpen={isMobileDrawerOpen}
-            onClose={() => toggleDrawer("isMobileDrawerOpen")}
-            sortBy={sortBy}
-            sortOrder={sortOrder}
-            onSortChange={handleSortChange}
-            playlists={playlists}
-            songs={songs}
-            expandedPlaylist={expandedPlaylist}
-            setExpandedPlaylist={setExpandedPlaylist}
-            onAddToPlaylist={onAddToPlaylist}
-            onCreatePlaylist={onCreatePlaylist}
-            currentPlaylistId={currentPlaylistId}
-            onPlayPlaylist={handlePlaylistSelect}
-            onUpdatePlaylists={onUpdatePlaylists}
-            isAuthenticated={isAuthenticated}
-            showErrorToast={showErrorToast}
-            showSuccessToast={showSuccessToast}
-          />
-
           <PlaylistSelectorDrawer
             isOpen={isPlaylistSelectorOpen}
             onClose={() => toggleDrawer("isPlaylistSelectorOpen")}
@@ -829,18 +808,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
           <AnimatePresence>
             {!areButtonsHidden && (
               <>
-                {/* Przycisk Sortowania */}
-                <motion.button
-                  initial={{ opacity: 0, x: 100 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 100 }}
-                  transition={{ type: "spring", damping: 20 }}
-                  className="fixed right-4 bottom-[340px] bg-white rounded-full p-4 shadow-xl z-60"
-                  onClick={() => toggleDrawer("isMobileDrawerOpen")}
-                >
-                  <FaSort className="text-gray-700" />
-                </motion.button>
-
                 {/* Przycisk Play/Playlist */}
                 <motion.button
                   initial={{ opacity: 0, x: 100 }}
