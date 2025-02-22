@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaTimes, FaPlay, FaMusic } from "react-icons/fa";
-import { BaseDrawerProps, CreatePlaylistDrawerProps } from './types';
+import { BaseDrawerProps, } from './types';
 import { Playlist } from '@/app/muzyka/types';
 
 interface PlaylistSelectorDrawerProps extends BaseDrawerProps {
