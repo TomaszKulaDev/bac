@@ -13,6 +13,7 @@ import {
   FaSearch,
   FaCompass,
   FaArrowUp,
+  FaTrophy,
 } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { logout, login } from "../store/slices/authSlice";
@@ -44,6 +45,11 @@ export const NavContent: React.FC = React.memo(function NavContent() {
       label: "Społeczność",
       icon: FaUsers,
       badge: "2137",
+    },
+    {
+      href: "/poland-bachata-league",
+      label: "Polska Liga Bachaty",
+      icon: FaTrophy,
     },
     {
       href: "/nauka-tanca-bachata",

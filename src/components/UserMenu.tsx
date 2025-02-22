@@ -1,6 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { FaUser, FaCaretDown } from "react-icons/fa";
+import {
+  FaUser,
+  FaCaretDown,
+  FaTrophy,
+  FaChartLine,
+  FaCalendarAlt,
+} from "react-icons/fa";
 import { createPortal } from "react-dom";
 import Image from "next/image";
 
@@ -67,7 +73,7 @@ export const UserMenu: React.FC<UserMenuProps> = ({ user, onLogout }) => {
           <div
             ref={menuRef}
             className="fixed rounded-xl shadow-lg bg-white/95 backdrop-blur-sm
-          ring-1 ring-white/20 overflow-hidden"
+            ring-1 ring-white/20 overflow-hidden"
             style={{
               ...getMenuPosition(),
               zIndex: 9999,
@@ -78,16 +84,42 @@ export const UserMenu: React.FC<UserMenuProps> = ({ user, onLogout }) => {
               <Link
                 href="/profile"
                 className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 
-              hover:bg-gray-50 transition-colors duration-200"
+                hover:bg-gray-50 transition-colors duration-200"
               >
                 <FaUser className="w-4 h-4 text-gray-400" />
                 Twój profil
               </Link>
+
+              <Link
+                href="/poland-bachata-league"
+                className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 
+                hover:bg-gray-50 transition-colors duration-200"
+              >
+                <FaTrophy className="w-4 h-4 text-amber-400" />
+                Poland Bachata League
+              </Link>
+              <Link
+                href="/poland-bachata-league/ranking"
+                className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 
+                hover:bg-gray-50 transition-colors duration-200"
+              >
+                <FaChartLine className="w-4 h-4 text-blue-400" />
+                Mój Ranking
+              </Link>
+              <Link
+                href="/poland-bachata-league/events"
+                className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 
+                hover:bg-gray-50 transition-colors duration-200"
+              >
+                <FaCalendarAlt className="w-4 h-4 text-green-400" />
+                Wydarzenia Ligowe
+              </Link>
+
               {user.role === "admin" && (
                 <Link
                   href="/admin"
                   className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 
-                hover:bg-gray-50 transition-colors duration-200"
+                  hover:bg-gray-50 transition-colors duration-200"
                 >
                   <FaUser className="w-4 h-4 text-gray-400" />
                   Panel Admina
@@ -96,7 +128,7 @@ export const UserMenu: React.FC<UserMenuProps> = ({ user, onLogout }) => {
               <button
                 onClick={onLogout}
                 className="w-full flex items-center gap-3 px-4 py-3 text-sm text-red-600 
-              hover:bg-red-50 transition-colors duration-200"
+                hover:bg-red-50 transition-colors duration-200"
               >
                 <FaUser className="w-4 h-4 text-red-400" />
                 Wyloguj się
