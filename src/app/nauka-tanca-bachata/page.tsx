@@ -19,7 +19,6 @@ import LessonCard from "./components/LessonCard";
 import { mockCourses } from "./data/mockCourse";
 import { useNaukaBachataVideos } from "./hooks/useNaukaBachataVideos";
 import { BachataVideoGrid } from "./components/BachataVideoGrid";
-import { AdBanner } from "./components/Ads/AdBanner";
 
 export default function BachataLearningPage() {
   const [selectedLevel, setSelectedLevel] = useState<string>("all");
@@ -32,13 +31,6 @@ export default function BachataLearningPage() {
 
   return (
     <div className="space-y-2">
-      {/* Google AdSense - Reklama górna
-          - Format: Responsywny banner
-          - Slot ID: 2106187532
-          - Client ID: ca-pub-8585871789466302
-      */}
-      <AdBanner />
-
       {/* Sekcja Social Dance Videos */}
       <section className="space-y-4">
         <BachataVideoGrid videos={videos} isLoading={isLoading} error={error} />

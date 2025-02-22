@@ -23,7 +23,6 @@ import { useVirtualization } from "../hooks/useVirtualization";
 import { inView } from "framer-motion";
 import Link from "next/link";
 import { getProfileUrl } from "@/utils/profile";
-import AdBanner from "./AdBanner/AdBanner";
 
 const PROFILES_PER_PAGE = 50;
 
@@ -259,17 +258,7 @@ export const LatestProfiles = () => {
         <SortingButtons />
       </div>
 
-      <div className="mb-8">
-        <AdBanner />
-      </div>
-
       {renderProfiles()}
-
-      {profiles.length > 0 && profiles.length % 12 === 0 && (
-        <div className="my-8">
-          <AdBanner />
-        </div>
-      )}
 
       {hasNextPage && (
         <div ref={infiniteScrollRef} className="py-8">

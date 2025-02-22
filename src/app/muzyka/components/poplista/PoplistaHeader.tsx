@@ -13,7 +13,6 @@ import { togglePlayback } from "@/store/slices/playerSlice";
 import { RootState } from "@/store/store";
 import { motion } from "framer-motion";
 import { ShareButton } from "@/app/muzyka/components/ui/ShareButton";
-import { AdBanner } from "@/app/muzyka/components/ads/AdBanner";
 
 interface PoplistaHeaderProps {
   onShare: () => void;
@@ -146,9 +145,6 @@ export const PoplistaHeader = ({ onShare }: PoplistaHeaderProps) => {
           moc!
         </p>
       </div>
-
-      {/* Google AdSense Advertisement */}
-      <AdBanner />
     </motion.div>
   );
 };
