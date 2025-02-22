@@ -1,19 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useMemo } from "react";
-import {
-  FaEnvelope,
-  FaEye,
-  FaEyeSlash,
-  FaLock,
-  FaUser,
-  FaCheck,
-  FaUsers,
-  FaCalendar,
-  FaHeart,
-  FaCrown,
-  FaMusic,
-} from "react-icons/fa";
+import { FaCheck } from "react-icons/fa";
 import { z } from "zod";
 import { passwordSchema } from "../../schemas/passwordSchema";
 import { signIn } from "next-auth/react";
@@ -228,7 +216,6 @@ export default function Register() {
                   value={name}
                   onChange={handleInputChange}
                   placeholder="Twoje imię"
-                  icon={FaUser}
                   error={errors.name}
                   label="Imię"
                 />
@@ -240,7 +227,6 @@ export default function Register() {
                   value={email}
                   onChange={handleInputChange}
                   placeholder="twoj@email.com"
-                  icon={FaEnvelope}
                   error={errors.email}
                   label="Email"
                 />
@@ -252,7 +238,6 @@ export default function Register() {
                   value={password}
                   onChange={handleInputChange}
                   placeholder="Twoje hasło"
-                  icon={FaLock}
                   error={errors.password}
                   isPassword
                   label="Hasło"
@@ -267,7 +252,6 @@ export default function Register() {
                   value={confirmPassword}
                   onChange={handleInputChange}
                   placeholder="Potwierdź hasło"
-                  icon={FaLock}
                   error={errors.confirmPassword}
                   isPassword
                   label="Potwierdź hasło"
