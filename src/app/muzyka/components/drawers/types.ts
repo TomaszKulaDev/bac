@@ -7,8 +7,8 @@ export interface BaseDrawerProps {
   showErrorToast: (message: string) => void;
 }
 
-export interface CreatePlaylistDrawerProps extends BaseDrawerProps {
-  onCreatePlaylist: (name: string, selectedSongs?: string[]) => void;
+export interface CreatePlaylistModalProps extends BaseDrawerProps {
+  onCreatePlaylist: (name: string) => void;
   playlists: Playlist[];
 }
 

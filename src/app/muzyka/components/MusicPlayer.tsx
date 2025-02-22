@@ -34,7 +34,10 @@ import {
   setCurrentSongIndex,
   syncSongsWithPlaylists,
 } from "@/store/slices/features/songsSlice";
-import CreatePlaylistModal from "./CreatePlaylistModal";
+import {
+  PlaylistSelectorDrawer,
+  CreatePlaylistModal,
+} from "../components/drawers";
 import SortControl from "./SortControl";
 import PlaybackBar from "./playback/PlaybackBar";
 import { getYouTubeThumbnail } from "../utils/youtube";
@@ -46,10 +49,6 @@ import { PlayerErrorBoundary } from "./ErrorBoundary/PlayerErrorBoundary";
 import { ErrorLogBuffer } from "../utils/ErrorLogBuffer";
 import { YouTubeError } from "../utils/youtube";
 import { useYouTubeErrorHandler } from "../hooks/useYouTubeErrorHandler";
-import {
-  CreatePlaylistDrawer,
-  PlaylistSelectorDrawer,
-} from "../components/drawers";
 import { Tooltip } from "@/components/ui/Tooltip";
 import { SortByType } from "../hooks/useDrawers";
 import { motion, AnimatePresence } from "framer-motion";
@@ -61,7 +60,6 @@ import {
 import PlaylistManager from "./PlaylistManager";
 import "../styles/youtube-player.css";
 import { setCurrentPlaylistId } from "@/store/slices/features/playlistSlice";
-// import { DebugLogger } from "./DebugLogger";
 import { deletePlaylistAndRefetch } from "@/store/slices/features/playlistSlice";
 import { AppDispatch } from "@/store/store";
 import { useSecuredPlaylistOperations } from "../hooks/useSecuredPlaylistOperations";
@@ -433,7 +431,6 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     showDrawerButton,
     hasReachedPlaylist,
     handlePlaylistSelect,
-    handleCreatePlaylist,
     handleSortChange,
     toggleDrawer,
     closeAllDrawers,
@@ -518,6 +515,22 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     }
     refreshPlaylists();
   }, [isAuthenticated, refreshPlaylists]);
+
+  const handleCreatePlaylist = async (name: string) => {
+    if (!isAuthenticated) {
+      showErrorToast("Musisz być zalogowany, aby utworzyć playlistę");
+      return;
+    }
+
+    try {
+      await onCreatePlaylist(name);
+      toggleDrawer("isCreatePlaylistDrawerOpen");
+      showSuccessToast("Playlista została utworzona");
+    } catch (error) {
+      console.error("Błąd podczas tworzenia playlisty:", error);
+      showErrorToast("Nie udało się utworzyć playlisty");
+    }
+  };
 
   return (
     <PlayerErrorBoundary
@@ -793,7 +806,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
             showErrorToast={showErrorToast}
           />
 
-          <CreatePlaylistDrawer
+          <CreatePlaylistModal
             isOpen={isCreatePlaylistDrawerOpen}
             onClose={() => toggleDrawer("isCreatePlaylistDrawerOpen")}
             onCreatePlaylist={handleCreatePlaylist}
