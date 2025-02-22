@@ -1,22 +1,32 @@
 import { memo } from "react";
 import { motion } from "framer-motion";
 import { FaBookmark } from "react-icons/fa";
+import { MusicTooltip } from "../../ui/MusicTooltip";
 
 interface AddToPlaylistButtonProps {
   onClick: (e: React.MouseEvent) => void;
-  songTitle: string;
+  isAuthenticated: boolean;
+  hasPlaylists: boolean;
 }
 
-export const AddToPlaylistButton = memo(({ onClick, songTitle }: AddToPlaylistButtonProps) => (
-  <motion.button
-    whileHover={{ scale: 1.1 }}
-    whileTap={{ scale: 0.9 }}
-    onClick={onClick}
-    className="ml-4 p-2 text-blue-600 hover:bg-blue-50 rounded-full transition-colors duration-200"
-    aria-label={`Dodaj ${songTitle} do playlisty`}
-  >
-    <FaBookmark className="text-lg" />
-  </motion.button>
-));
+export const AddToPlaylistButton = memo(
+  ({ onClick, isAuthenticated, hasPlaylists }: AddToPlaylistButtonProps) => {
+    if (!isAuthenticated || !hasPlaylists) return null;
 
-AddToPlaylistButton.displayName = 'AddToPlaylistButton'; 
+    return (
+      <MusicTooltip content="Dodaj do playlisty" position="top">
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          onClick={onClick}
+          className="p-2 rounded-full hover:bg-blue-50 text-gray-500 hover:text-blue-500
+                 transition-all duration-200"
+        >
+          <FaBookmark className="text-xl" />
+        </motion.button>
+      </MusicTooltip>
+    );
+  }
+);
+
+AddToPlaylistButton.displayName = "AddToPlaylistButton";

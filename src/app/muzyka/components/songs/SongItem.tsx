@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, memo, useRef } from "react";
+import React, { useEffect, useCallback, memo, useRef, useState } from "react";
 import Image from "next/image";
 import { motion, Variants } from "framer-motion";
 import { FaPlay, FaBookmark, FaThumbsUp } from "react-icons/fa";
@@ -11,6 +11,7 @@ import { SongArtist } from "./SongArtist";
 import { SongTags } from "./tags/SongTags";
 import { AddToPlaylistButton } from "./buttons/AddToPlaylistButton";
 import { useLike } from "../../hooks/useLike";
+import { PlaylistSelectorModal } from "./PlaylistSelectorModal";
 
 interface SongItemProps {
   song: Song;
@@ -80,13 +81,12 @@ const SongItem: React.FC<SongItemProps> = ({
     onSelect(song.id);
   }, [onSelect, song.id]);
 
-  const handleAddToPlaylist = useCallback(
-    (e: React.MouseEvent) => {
-      e.stopPropagation();
-      onAddToPlaylist(song.id);
-    },
-    [onAddToPlaylist, song.id]
-  );
+  const [showPlaylistSelector, setShowPlaylistSelector] = useState(false);
+
+  const handleAddToPlaylist = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    setShowPlaylistSelector(true);
+  }, []);
 
   const itemVariants: Variants = {
     hidden: { opacity: 0, x: -20 },
@@ -106,76 +106,81 @@ const SongItem: React.FC<SongItemProps> = ({
   const { handleLike } = useLike();
 
   return (
-    <motion.li
-      variants={itemVariants}
-      whileHover="hover"
-      whileTap="tap"
-      className={`flex items-center justify-between p-4 ${
-        isCurrentSong ? "bg-blue-50 shadow-md" : "bg-white"
-      } rounded-xl shadow-sm transition-all duration-200`}
-      onClick={handleClick}
-    >
-      <div className="flex items-center flex-grow min-w-0">
-        <SongThumbnail
-          song={song}
-          isCurrentSong={isCurrentSong}
-          isPlaying={isPlaying}
-        />
-        <div className="min-w-0 flex-grow">
-          <SongTitle title={song.title} />
-          <SongArtist artist={song.artist} />
-          <SongTags song={song} playlists={playlists} />
+    <>
+      <motion.li
+        variants={itemVariants}
+        whileHover="hover"
+        whileTap="tap"
+        className={`flex items-center justify-between p-4 ${
+          isCurrentSong ? "bg-blue-50 shadow-md" : "bg-white"
+        } rounded-xl shadow-sm transition-all duration-200`}
+        onClick={handleClick}
+      >
+        <div className="flex items-center flex-grow min-w-0">
+          <SongThumbnail
+            song={song}
+            isCurrentSong={isCurrentSong}
+            isPlaying={isPlaying}
+          />
+          <div className="min-w-0 flex-grow">
+            <SongTitle title={song.title} />
+            <SongArtist artist={song.artist} />
+            <SongTags song={song} playlists={playlists} />
+          </div>
         </div>
-      </div>
 
-      <div className="flex items-center space-x-3">
-        {isAuthenticated && (
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={(e) => {
-              e.stopPropagation();
-              handleLike(song._id);
-            }}
-            className={`flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full
-              transition-all duration-200
-              ${
-                song.isLiked
-                  ? "bg-amber-100 text-amber-600 hover:bg-amber-200"
-                  : "bg-gray-50 hover:bg-gray-100 text-gray-600"
-              }
-              border
-              ${
-                song.isLiked
-                  ? "border-amber-200"
-                  : "border-gray-200 hover:border-gray-300"
-              }
-            `}
-            title={song.isLiked ? "Usuń głos" : "Zagłosuj"}
-          >
-            <FaThumbsUp
-              className={`text-lg ${
-                song.isLiked ? "text-amber-500" : "text-gray-400"
-              }`}
-            />
-            <span className="font-medium">{song.likesCount || 0}</span>
-          </motion.button>
-        )}
-        {isPlaylistExpanded && expandedPlaylist && hasPlaylists && (
-          <motion.button
-            whileHover={{ scale: 1.2 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={(e) => {
-              e.stopPropagation();
-              handleAddToPlaylist(e);
-            }}
-            className="p-2 rounded-full hover:bg-blue-50 text-gray-500 hover:text-blue-500"
-          >
-            <FaBookmark className="text-xl" />
-          </motion.button>
-        )}
-      </div>
-    </motion.li>
+        <div className="flex items-center space-x-3">
+          {isAuthenticated && (
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleLike(song._id);
+              }}
+              className={`flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full
+                transition-all duration-200
+                ${
+                  song.isLiked
+                    ? "bg-amber-100 text-amber-600 hover:bg-amber-200"
+                    : "bg-gray-50 hover:bg-gray-100 text-gray-600"
+                }
+                border
+                ${
+                  song.isLiked
+                    ? "border-amber-200"
+                    : "border-gray-200 hover:border-gray-300"
+                }
+              `}
+              title={song.isLiked ? "Usuń głos" : "Zagłosuj"}
+            >
+              <FaThumbsUp
+                className={`text-lg ${
+                  song.isLiked ? "text-amber-500" : "text-gray-400"
+                }`}
+              />
+              <span className="font-medium">{song.likesCount || 0}</span>
+            </motion.button>
+          )}
+          <AddToPlaylistButton
+            onClick={handleAddToPlaylist}
+            isAuthenticated={isAuthenticated}
+            hasPlaylists={hasPlaylists}
+          />
+        </div>
+      </motion.li>
+
+      <PlaylistSelectorModal
+        isOpen={showPlaylistSelector}
+        onClose={() => setShowPlaylistSelector(false)}
+        playlists={playlists}
+        onSelectPlaylist={(playlistId) => {
+          onAddToPlaylist(song.id);
+          setShowPlaylistSelector(false);
+        }}
+        songName={song.title}
+      />
+    </>
   );
 };
 
