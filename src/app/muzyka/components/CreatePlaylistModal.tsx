@@ -6,6 +6,7 @@ import { FaMusic, FaTimes, FaPlus } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { validatePlaylistTitle } from "../utils/validation";
+import { initial } from "lodash";
 
 interface CreatePlaylistModalProps {
   onClose: () => void;
@@ -111,114 +112,110 @@ const CreatePlaylistModal: React.FC<CreatePlaylistModalProps> = ({
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="fixed inset-0 flex items-center justify-center bg-black/70 backdrop-blur-md z-50"
-    >
-      <motion.div
-        initial={{ scale: 0.95, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.95, opacity: 0 }}
-        className="w-full max-w-md bg-gradient-to-b from-zinc-900 to-zinc-950 
-                 rounded-2xl shadow-2xl border border-zinc-800"
-      >
-        {/* Nagłówek */}
-        <div className="relative p-6 flex items-center justify-center">
-          <div className="absolute right-4 top-4">
-            <button
-              onClick={onClose}
-              className="p-2 text-zinc-400 hover:text-white 
-                       hover:bg-zinc-800/50 rounded-full transition-all"
-            >
-              <FaTimes className="text-xl" />
-            </button>
+    <AnimatePresence>
+      <div className="fixed inset-0 z-[999999] flex items-center justify-center p-4">
+        {/* Overlay */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={onClose}
+          className="absolute inset-0 bg-black/50"
+        />
+
+        {/* Modal */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.9 }}
+          className="relative bg-white rounded-2xl p-6 shadow-xl w-full max-w-md 
+            mx-auto overflow-y-auto max-h-[90vh]"
+        >
+          <h3 className="text-xl font-bold text-gray-900 mb-2">
+            Stwórz nową playlistę
+          </h3>
+
+          <div className="mb-6 p-4 bg-amber-50 rounded-xl border border-amber-100">
+            <p className="text-amber-800 text-sm leading-relaxed">
+              Stwórz własną playlistę i zachowaj ulubione utwory w jednym
+              miejscu. Możesz później edytować jej zawartość.
+            </p>
           </div>
-          <div className="text-center">
-            <div className="inline-flex p-3 rounded-full bg-gradient-to-tr 
-                          from-blue-500 to-purple-600 mb-3">
-              <FaMusic className="text-white text-2xl" />
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-gray-700 text-sm font-medium mb-2">
+                Nazwa playlisty
+              </label>
+              <input
+                type="text"
+                value={playlistName}
+                onChange={handleInputChange}
+                placeholder="Nazwa playlisty"
+                className={`w-full px-4 py-3.5 bg-white border-2 border-gray-200 
+                  rounded-xl text-gray-800 placeholder-gray-400
+                  focus:outline-none focus:border-amber-500/50 
+                  focus:ring-2 focus:ring-amber-500/30
+                  transition-all duration-200
+                  ${error ? "border-red-400 focus:border-red-400" : ""}`}
+                maxLength={50}
+              />
+              <AnimatePresence>
+                {error && (
+                  <motion.p
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="mt-2 text-red-500 text-sm flex items-center"
+                  >
+                    <span className="mr-2">●</span>
+                    {error}
+                  </motion.p>
+                )}
+              </AnimatePresence>
             </div>
-            <h2 className="text-2xl font-bold text-white">
-              Stwórz nową playlistę
-            </h2>
-          </div>
-        </div>
 
-        {/* Formularz */}
-        <form onSubmit={handleSubmit} className="p-6 pt-2 space-y-6">
-          <div className="space-y-2">
-            <input
-              type="text"
-              value={playlistName}
-              onChange={(e) => {
-                setPlaylistName(e.target.value);
-                validateOnChange(e.target.value);
-              }}
-              placeholder="Nazwa playlisty"
-              className="w-full px-4 py-3.5 bg-zinc-800/50 
-                       border-2 border-zinc-700/50 rounded-xl text-white 
-                       placeholder-zinc-500 focus:outline-none 
-                       focus:border-blue-500/50 focus:bg-zinc-800/80
-                       transition-all duration-200"
-              maxLength={50}
-            />
-            <AnimatePresence>
-              {error && (
-                <motion.p
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  className="text-red-400 text-sm flex items-center"
-                >
-                  <span className="mr-2">⚠️</span> {error}
-                </motion.p>
-              )}
-            </AnimatePresence>
-          </div>
+            <div className="flex flex-col gap-3 pt-4">
+              <motion.button
+                type="submit"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                disabled={isLoading || !playlistName.trim() || !!error}
+                className="w-full bg-amber-500 text-white py-3.5 rounded-xl
+                  font-medium hover:bg-amber-600 disabled:opacity-50 
+                  disabled:cursor-not-allowed transition-colors
+                  flex items-center justify-center gap-2"
+              >
+                {isLoading ? (
+                  <div className="flex items-center gap-2">
+                    <div
+                      className="w-5 h-5 border-2 border-white/20 
+                      border-t-white rounded-full animate-spin"
+                    />
+                    <span>Tworzenie...</span>
+                  </div>
+                ) : (
+                  <>
+                    <FaPlus className="text-lg" />
+                    <span>Utwórz playlistę</span>
+                  </>
+                )}
+              </motion.button>
 
-          {/* Przyciski */}
-          <div className="flex flex-col gap-3">
-            <motion.button
-              type="submit"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              disabled={isLoading || !playlistName.trim() || !!error}
-              className="w-full bg-gradient-to-r from-blue-500 to-purple-600 
-                       text-white py-3.5 px-4 rounded-xl font-medium
-                       hover:from-blue-600 hover:to-purple-700
-                       disabled:opacity-50 disabled:cursor-not-allowed
-                       shadow-lg shadow-blue-500/20
-                       flex items-center justify-center gap-2"
-            >
-              {isLoading ? (
-                <div className="flex items-center gap-2">
-                  <div className="w-5 h-5 border-2 border-white/20 border-t-white 
-                                rounded-full animate-spin" />
-                  <span>Tworzenie...</span>
-                </div>
-              ) : (
-                <>
-                  <FaPlus className="text-lg" />
-                  <span>Utwórz playlistę</span>
-                </>
-              )}
-            </motion.button>
-
-            <button
-              type="button"
-              onClick={onClose}
-              className="w-full py-3.5 px-4 rounded-xl font-medium
-                       text-zinc-400 hover:text-white hover:bg-zinc-800/50
-                       transition-all duration-200"
-            >
-              Anuluj
-            </button>
-          </div>
-        </form>
-      </motion.div>
-    </motion.div>
+              <button
+                type="button"
+                onClick={onClose}
+                className="w-full py-3.5 rounded-xl font-medium
+                  text-gray-600 hover:text-gray-800 
+                  hover:bg-gray-50 transition-colors"
+              >
+                Anuluj
+              </button>
+            </div>
+          </form>
+        </motion.div>
+      </div>
+    </AnimatePresence>
   );
 };
 
