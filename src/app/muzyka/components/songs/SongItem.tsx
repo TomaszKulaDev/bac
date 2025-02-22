@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback, memo, useRef } from "react";
 import Image from "next/image";
 import { motion, Variants } from "framer-motion";
-import { FaPlay, FaBookmark, FaHeart, FaRegHeart } from "react-icons/fa";
+import { FaPlay, FaBookmark, FaThumbsUp } from "react-icons/fa";
 import { Song, Playlist } from "../../types";
 import { getYouTubeThumbnail } from "../../utils/youtube";
 import { usePlaylistManagement } from "../../hooks/usePlaylistManagement";
@@ -131,25 +131,34 @@ const SongItem: React.FC<SongItemProps> = ({
       <div className="flex items-center space-x-3">
         {isAuthenticated && (
           <motion.button
-            whileHover={{ scale: 1.2 }}
+            whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={(e) => {
               e.stopPropagation();
               handleLike(song._id);
             }}
-            className={`p-2 rounded-full ${
-              song.isLiked
-                ? "text-red-500"
-                : "text-gray-500 hover:text-red-500 hover:bg-red-50"
-            }`}
-            title={song.isLiked ? "Usuń z ulubionych" : "Dodaj do ulubionych"}
+            className={`flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full
+              transition-all duration-200
+              ${
+                song.isLiked
+                  ? "bg-amber-100 text-amber-600 hover:bg-amber-200"
+                  : "bg-gray-50 hover:bg-gray-100 text-gray-600"
+              }
+              border
+              ${
+                song.isLiked
+                  ? "border-amber-200"
+                  : "border-gray-200 hover:border-gray-300"
+              }
+            `}
+            title={song.isLiked ? "Usuń głos" : "Zagłosuj"}
           >
-            {song.isLiked ? (
-              <FaHeart className="text-xl" />
-            ) : (
-              <FaRegHeart className="text-xl" />
-            )}
-            <span className="ml-1 text-sm">{song.likesCount || 0}</span>
+            <FaThumbsUp
+              className={`text-lg ${
+                song.isLiked ? "text-amber-500" : "text-gray-400"
+              }`}
+            />
+            <span className="font-medium">{song.likesCount || 0}</span>
           </motion.button>
         )}
         {isPlaylistExpanded && expandedPlaylist && hasPlaylists && (
