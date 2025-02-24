@@ -255,12 +255,12 @@ export const NavContent: React.FC = React.memo(function NavContent() {
             {/* Menu mobilne */}
             <div className="space-y-2">
               {[
-                // {
-                //   href: "/szukam-partnera-do-bachaty",
-                //   label: "Społeczność",
-                //   icon: FaUsers,
-                //   badge: "2137",
-                // },
+                {
+                  href: "/szukam-partnera-do-bachaty",
+                  label: "Społeczność",
+                  icon: FaUsers,
+                  badge: "2137",
+                },
                 {
                   href: "/nauka-tanca-bachata",
                   label: "Nauka tańca",
