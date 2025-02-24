@@ -4,24 +4,31 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import { fetchPlaylists } from "@/store/slices/features/playlistSlice";
 
-export const usePlaylistData = () => {
+interface UsePlaylistDataProps {
+  isAuthenticated?: boolean; // Opcjonalny parametr
+}
+
+export const usePlaylistData = (props?: UsePlaylistDataProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const { data: session, status: sessionStatus } = useSession();
   const { playlists, status, error, isInitialized } = useSelector(
     (state: RootState) => state.playlists
   );
 
+  // Używamy przekazanego isAuthenticated lub wartości z sesji
+  const isAuth = props?.isAuthenticated ?? sessionStatus === "authenticated";
+
   const fetchPlaylistsData = useCallback(async () => {
-    if (sessionStatus === "authenticated" && session?.user) {
+    if (isAuth && session?.user) {
       await dispatch(fetchPlaylists());
     }
-  }, [dispatch, sessionStatus, session]);
+  }, [dispatch, isAuth, session]);
 
   useEffect(() => {
-    if (sessionStatus === "authenticated" && !isInitialized) {
+    if (isAuth && !isInitialized) {
       fetchPlaylistsData();
     }
-  }, [sessionStatus, isInitialized, fetchPlaylistsData]);
+  }, [isAuth, isInitialized, fetchPlaylistsData]);
 
   return {
     playlists,
@@ -29,6 +36,6 @@ export const usePlaylistData = () => {
     error,
     isInitialized,
     refreshPlaylists: fetchPlaylistsData,
-    isAuthenticated: sessionStatus === "authenticated",
+    isAuthenticated: isAuth,
   };
 };
