@@ -1,4 +1,4 @@
-Żeby stworzyc lajki i serduszka wykorzystaliśmy następujące pliki do stworzenia funkcjonalności lajkowania:
+Żeby  stworzyc lajki i serduszka wykorzystaliśmy następujące pliki do stworzenia funkcjonalności lajkowania:
     - Następnie należy zaktualizować endpoint API dla like'ów, aby używał email zamiast ID. 
     - Wygląda na to, że w całej aplikacji używamy email jako identyfikatora użytkownika (widać to w src/app/api/users/update-profile/route.ts linie 32-33).
 
