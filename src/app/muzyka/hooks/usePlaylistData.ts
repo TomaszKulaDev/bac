@@ -1,38 +1,34 @@
-import { useState, useCallback, useEffect } from 'react';
-import { Playlist } from '../types';
-import { useSecuredPlaylistOperations } from './useSecuredPlaylistOperations';
+import { useState, useCallback, useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store/store";
+import { fetchPlaylists } from "@/store/slices/features/playlistSlice";
 
-export const usePlaylistData = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
-  const [playlists, setPlaylists] = useState<Playlist[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+export const usePlaylistData = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { data: session, status: sessionStatus } = useSession();
+  const { playlists, status, error, isInitialized } = useSelector(
+    (state: RootState) => state.playlists
+  );
 
-  const fetchPlaylists = useCallback(async () => {
-    if (!isAuthenticated) {
-      setPlaylists([]);
-      setIsLoading(false);
-      return;
+  const fetchPlaylistsData = useCallback(async () => {
+    if (sessionStatus === "authenticated" && session?.user) {
+      await dispatch(fetchPlaylists());
     }
-
-    try {
-      const response = await fetch('/api/musisite/playlists');
-      if (!response.ok) throw new Error('Błąd pobierania playlist');
-      const data = await response.json();
-      setPlaylists(data);
-      sessionStorage.setItem('playlists', JSON.stringify(data));
-    } catch (err) {
-      console.error("Error fetching playlists:", err);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [isAuthenticated]);
+  }, [dispatch, sessionStatus, session]);
 
   useEffect(() => {
-    fetchPlaylists();
-  }, [fetchPlaylists, isAuthenticated]);
+    if (sessionStatus === "authenticated" && !isInitialized) {
+      fetchPlaylistsData();
+    }
+  }, [sessionStatus, isInitialized, fetchPlaylistsData]);
 
-  return { 
-    playlists, 
-    isLoading, 
-    refreshPlaylists: fetchPlaylists 
+  return {
+    playlists,
+    isLoading: status === "loading",
+    error,
+    isInitialized,
+    refreshPlaylists: fetchPlaylistsData,
+    isAuthenticated: sessionStatus === "authenticated",
   };
 };

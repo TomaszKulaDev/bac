@@ -1,7 +1,7 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { Playlist, PlaylistState, UpdatePlaylistOrderAction } from '../types';
-import { RootState, AppDispatch } from '@/store/store';
-import { updateSongsPlaylists } from './songsSlice';
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { Playlist, PlaylistState, UpdatePlaylistOrderAction } from "../types";
+import { RootState, AppDispatch } from "@/store/store";
+import { updateSongsPlaylists } from "./songsSlice";
 
 interface DeletePlaylistResponse {
   message: string;
@@ -16,33 +16,38 @@ type ThunkConfig = {
     message: string;
     details?: string | null;
   };
-}
+};
 
 const initialState: PlaylistState = {
   playlists: [],
   currentPlaylistId: null,
-  status: 'idle',
-  error: null
+  status: "idle",
+  error: null,
+  isInitialized: false,
 };
 
 export const fetchPlaylists = createAsyncThunk(
-  'playlists/fetchPlaylists',
+  "playlists/fetchPlaylists",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch('/api/musisite/playlists');
+      const response = await fetch("/api/musisite/playlists");
       if (!response.ok) {
-        throw new Error('Nie udało się pobrać playlist');
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Nie udało się pobrać playlist");
       }
       const data = await response.json();
       return data;
     } catch (error: any) {
-      return rejectWithValue(error.message);
+      return rejectWithValue({
+        message: error.message || "Nie udało się pobrać playlist",
+        status: error.status || 500,
+      });
     }
   }
 );
 
 export const updatePlaylistOrder = createAsyncThunk(
-  'playlist/updateOrder',
+  "playlist/updateOrder",
   async (payload: { playlistId: string; newOrder: string[] }, thunkAPI) => {
     try {
       return payload;
@@ -53,7 +58,7 @@ export const updatePlaylistOrder = createAsyncThunk(
 );
 
 const playlistSlice = createSlice({
-  name: 'playlists',
+  name: "playlists",
   initialState,
   reducers: {
     setCurrentPlaylistId: (state, action: PayloadAction<string | null>) => {
@@ -63,70 +68,85 @@ const playlistSlice = createSlice({
       state.playlists.push(action.payload);
     },
     updatePlaylist: (state, action: PayloadAction<Playlist>) => {
-      const index = state.playlists.findIndex(p => p.id === action.payload.id);
+      const index = state.playlists.findIndex(
+        (p) => p.id === action.payload.id
+      );
       if (index !== -1) {
         state.playlists[index] = action.payload;
       }
     },
     removePlaylist: (state, action: PayloadAction<string>) => {
-      state.playlists = state.playlists.filter(p => p.id !== action.payload);
+      state.playlists = state.playlists.filter((p) => p.id !== action.payload);
       if (state.currentPlaylistId === action.payload) {
         state.currentPlaylistId = null;
       }
-    }
+    },
+    resetPlaylistState: (state) => {
+      return initialState;
+    },
+    setInitialized: (state) => {
+      state.isInitialized = true;
+    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchPlaylists.pending, (state) => {
-        state.status = 'loading';
+        state.status = "loading";
+        state.error = null;
       })
       .addCase(fetchPlaylists.fulfilled, (state, action) => {
-        state.status = 'idle';
+        state.status = "idle";
         state.playlists = action.payload;
+        state.error = null;
+        state.isInitialized = true;
       })
       .addCase(fetchPlaylists.rejected, (state, action) => {
-        state.status = 'failed';
+        state.status = "failed";
         state.error = action.payload as string;
+        state.isInitialized = true;
       })
       .addCase(updatePlaylistOrder.fulfilled, (state, action) => {
-        const playlist = state.playlists.find(p => p.id === action.payload.playlistId);
+        const playlist = state.playlists.find(
+          (p) => p.id === action.payload.playlistId
+        );
         if (playlist) {
           playlist.songs = action.payload.newOrder;
         }
       });
-  }
+  },
 });
 
 export const deletePlaylistAndRefetch = createAsyncThunk<
   DeletePlaylistResponse,
   string,
   ThunkConfig
->('playlists/deletePlaylistAndRefetch',
+>(
+  "playlists/deletePlaylistAndRefetch",
   async (id, { dispatch, rejectWithValue }) => {
     try {
-      const response = await fetch(`/api/musisite/playlists/${id}`, { 
-        method: 'DELETE',
+      const response = await fetch(`/api/musisite/playlists/${id}`, {
+        method: "DELETE",
         headers: {
-          'Content-Type': 'application/json'
-        }
+          "Content-Type": "application/json",
+        },
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        let errorMessage = 'Wystąpił błąd podczas usuwania playlisty';
+        let errorMessage = "Wystąpił błąd podczas usuwania playlisty";
 
         switch (response.status) {
           case 401:
-            errorMessage = 'Brak uprawnień do usunięcia playlisty';
+            errorMessage = "Brak uprawnień do usunięcia playlisty";
             break;
           case 403:
-            errorMessage = 'Dostęp zabroniony';
+            errorMessage = "Dostęp zabroniony";
             break;
           case 404:
-            errorMessage = 'Nie znaleziono playlisty';
+            errorMessage = "Nie znaleziono playlisty";
             break;
           case 500:
-            errorMessage = 'Błąd serwera podczas usuwania playlisty';
+            errorMessage = "Błąd serwera podczas usuwania playlisty";
             break;
           default:
             errorMessage = errorData.message || errorMessage;
@@ -135,7 +155,7 @@ export const deletePlaylistAndRefetch = createAsyncThunk<
         return rejectWithValue({
           status: response.status,
           message: errorMessage,
-          details: errorData.details || null
+          details: errorData.details || null,
         });
       }
 
@@ -146,21 +166,22 @@ export const deletePlaylistAndRefetch = createAsyncThunk<
     } catch (error: any) {
       return rejectWithValue({
         status: 500,
-        message: 'Wystąpił nieoczekiwany błąd podczas usuwania playlisty',
-        details: error.message
+        message: "Wystąpił nieoczekiwany błąd podczas usuwania playlisty",
+        details: error.message,
       });
     }
   }
 );
 
-export const { 
-  setCurrentPlaylistId, 
-  addPlaylist, 
-  updatePlaylist, 
-  removePlaylist 
+export const {
+  setCurrentPlaylistId,
+  addPlaylist,
+  updatePlaylist,
+  removePlaylist,
 } = playlistSlice.actions;
 
 export const selectPlaylists = (state: RootState) => state.playlists.playlists;
-export const selectCurrentPlaylistId = (state: RootState) => state.playlists.currentPlaylistId;
+export const selectCurrentPlaylistId = (state: RootState) =>
+  state.playlists.currentPlaylistId;
 
-export default playlistSlice.reducer; 
+export default playlistSlice.reducer;

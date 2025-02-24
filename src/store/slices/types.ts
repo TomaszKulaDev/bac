@@ -14,7 +14,7 @@ export interface RootState {
 // Interfejs dla stanu piosenek
 export interface SongsState {
   songs: Song[];
-  status: 'idle' | 'loading' | 'failed';
+  status: "idle" | "loading" | "failed";
   error: string | null;
   currentSongIndex: number;
 }
@@ -23,8 +23,9 @@ export interface SongsState {
 export interface PlaylistState {
   playlists: Playlist[];
   currentPlaylistId: string | null;
-  status: 'idle' | 'loading' | 'failed';
+  status: "idle" | "loading" | "failed";
   error: string | null;
+  isInitialized: boolean;
 }
 
 // Interfejs dla akcji związanych z playlistami
@@ -43,6 +44,7 @@ export interface UpdatePlaylistOrderAction {
 
 // Interfejs dla podstawowych danych playlisty
 export interface Playlist {
+  _id: string;
   id: string;
   name: string;
   songs: string[];

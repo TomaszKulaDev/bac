@@ -7,9 +7,9 @@ export interface Playlist {
   _id: string;
   id: string;
   name: string;
-  userId: string;
   songs: string[];
   createdAt: Date;
+  userId: string;
 }
 
 // Interfejs reprezentujący utwór muzyczny
@@ -159,11 +159,14 @@ export interface PlaylistManagerProps {
   setCurrentPlaylistId: (id: string | null) => void;
 }
 
-export interface PlaylistManagerContentProps extends PlaylistManagerProps {
+export interface PlaylistManagerContentProps {
+  playlists: Playlist[];
+  isAuthenticated: boolean;
+  setCurrentPlaylistId: (id: string | null) => void;
+  onRefresh?: () => Promise<void>;
   sensors: SensorDescriptor<SensorOptions>[];
   onDragEnd: (event: DragEndEvent, currentPlaylist: Playlist) => void;
   getSongDetails: (songId: string) => Song | undefined;
-  isAuthenticated: boolean;
 }
 
 interface SongListProps {
@@ -193,3 +196,16 @@ export interface PositionHistory {
 export type DifficultyLevel = "beginner" | "intermediate" | "advanced";
 export type StyleType = "sensual" | "dominicana" | "impro";
 export type TempoType = "slow" | "medium" | "fast";
+
+export interface PlaylistManagerProps extends PlaylistManagerContentProps {
+  // Dodatkowe props specyficzne dla PlaylistManager, jeśli są potrzebne
+}
+
+// Jeśli potrzebujesz typu dla szczegółów piosenki:
+export interface SongDetails {
+  id: string;
+  title: string;
+  artist: string;
+  youtubeId: string;
+  // ... inne pola
+}

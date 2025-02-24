@@ -1,5 +1,5 @@
 import React from "react";
-import { PlaylistManagerContentProps } from "../../types";
+import { Playlist } from "../../types";
 import { DndContext, closestCenter } from "@dnd-kit/core";
 import {
   SortableContext,
@@ -18,6 +18,33 @@ import {
 import DraggableSongItem from "../DraggableSongItem";
 import { restrictToParentElement } from "@dnd-kit/modifiers";
 import CreatePlaylistModal from "../CreatePlaylistModal";
+import { DragEndEvent } from "@dnd-kit/core";
+
+export interface PlaylistManagerContentProps {
+  playlists: Playlist[];
+  isAuthenticated: boolean;
+  setCurrentPlaylistId: (id: string | null) => void;
+  onRefresh?: () => Promise<void>;
+  expandedPlaylist: string | null;
+  setExpandedPlaylist: (id: string | null) => void;
+  onDeletePlaylist: (id: string) => Promise<void>;
+  onRenamePlaylist: (id: string, newName: string) => Promise<void>;
+  onRemoveSongFromPlaylist: (
+    playlistId: string,
+    songId: string
+  ) => Promise<void>;
+  onCreatePlaylist: (name: string) => Promise<void>;
+  isMobile: boolean;
+  onPlayPlaylist: (id: string) => void;
+  currentPlaylistId: string | null;
+  setIsModalOpen: (isOpen: boolean) => void;
+  isModalOpen: boolean;
+  showSuccessToast: (message: string) => void;
+  showErrorToast: (message: string) => void;
+  sensors: any[]; // Możesz zastąpić 'any' bardziej konkretnym typem z dnd-kit
+  onDragEnd: (event: DragEndEvent, currentPlaylist: Playlist) => void;
+  getSongDetails: (songId: string) => Promise<any>; // Możesz zastąpić 'any' konkretnym typem piosenki
+}
 
 const PlaylistManagerContent: React.FC<PlaylistManagerContentProps> = ({
   playlists,
@@ -38,6 +65,8 @@ const PlaylistManagerContent: React.FC<PlaylistManagerContentProps> = ({
   onDragEnd,
   getSongDetails,
   isAuthenticated,
+  setCurrentPlaylistId,
+  onRefresh,
 }) => {
   const maxPlaylistsReached = playlists.length >= 2;
   const buttonText = !isAuthenticated
