@@ -65,72 +65,53 @@ export async function GET() {
   console.log("GET /api/musisite/playlists: Start");
 
   try {
-    // Sprawdź sesję
     const session = await getServerSession(authOptions);
+
+    console.log("Session status:", !!session);
+    console.log("User email:", session?.user?.email);
+
     if (!session?.user?.email) {
-      console.log("GET /api/musisite/playlists: No authenticated session");
+      console.log("GET /api/musisite/playlists: No session or email");
       return NextResponse.json(
-        { error: "Zaloguj się, aby zobaczyć swoje playlisty" },
+        { error: "Musisz być zalogowany, aby zobaczyć playlisty" },
         { status: 401 }
       );
     }
 
-    // Połącz z bazą danych
-    try {
-      await connectToDatabase();
-    } catch (dbError) {
-      console.error("Database connection error:", dbError);
+    await connectToDatabase();
+
+    if (!mongoose.connection.readyState) {
+      console.error("Database connection not established");
       return NextResponse.json(
-        { error: "Błąd połączenia z bazą danych" },
-        { status: 503 }
+        { error: "Problem z połączeniem do bazy danych" },
+        { status: 500 }
       );
     }
 
-    // Sprawdź stan połączenia
-    if (mongoose.connection.readyState !== 1) {
-      console.error("Database not connected");
-      return NextResponse.json(
-        { error: "Brak połączenia z bazą danych" },
-        { status: 503 }
-      );
-    }
+    const playlists = await Playlist.find({ userId: session.user.email }).sort({
+      createdAt: -1,
+    });
 
-    // Pobierz playlisty
-    const playlists = await Playlist.find({ userId: session.user.email })
-      .populate({
-        path: "songs",
-        select: "title artist youtubeId impro beginnerFriendly",
-      })
-      .sort({ createdAt: -1 })
-      .lean<IPlaylistDocument[]>();
-
-    // Normalizuj dane
+    // Przekształć dokumenty Mongoose na zwykłe obiekty JavaScript
     const normalizedPlaylists = playlists.map((playlist) => ({
-      id: playlist._id.toString(),
       _id: playlist._id.toString(),
+      id: playlist._id.toString(),
       name: playlist.name,
       userId: playlist.userId,
       songs: Array.isArray(playlist.songs)
-        ? playlist.songs.map((song) =>
-            typeof song === "string" ? song : (song as any)._id?.toString()
+        ? playlist.songs.map((song: string | mongoose.Types.ObjectId) =>
+            typeof song === "string" ? song : song.toString()
           )
         : [],
       createdAt: playlist.createdAt,
-      updatedAt: playlist.createdAt,
+      updatedAt: playlist.updatedAt || playlist.createdAt,
     }));
 
-    console.log(
-      `GET /api/musisite/playlists: Successfully fetched ${normalizedPlaylists.length} playlists`
-    );
+    console.log(`Znaleziono ${normalizedPlaylists.length} playlist`);
 
-    return NextResponse.json(normalizedPlaylists, {
-      headers: {
-        "Cache-Control": "no-store, must-revalidate",
-        Pragma: "no-cache",
-      },
-    });
+    return NextResponse.json(normalizedPlaylists);
   } catch (error) {
-    console.error("GET /api/musisite/playlists: Unexpected error:", error);
+    console.error("GET /api/musisite/playlists: Error:", error);
     return NextResponse.json(
       {
         error: "Wystąpił błąd podczas pobierania playlist",
