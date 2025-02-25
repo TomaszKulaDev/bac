@@ -149,13 +149,21 @@ export const usePlaylistManagement = ({
           }
 
           try {
-            // Użyj istniejącego stanu playlisty zamiast pobierać go z serwera
+            // Sprawdź, czy playlista jest poprawnie zainicjalizowana
+            if (!Array.isArray(playlist.songs)) {
+              console.error("Playlist songs is not an array:", playlist);
+              // Zainicjuj pustą tablicę, jeśli nie istnieje
+              playlist.songs = [];
+            }
+
             console.log("Current playlist state:", {
               playlistId,
               localSongs: playlist.songs,
               playlistDetails: {
                 name: playlist.name,
                 currentSongs: playlist.songs.length,
+                playlistId: playlist._id || playlist.id,
+                songToAdd: song.title,
               },
             });
 
@@ -172,14 +180,15 @@ export const usePlaylistManagement = ({
             }
 
             console.log("Dispatching updatePlaylistWithSong:", {
-              playlistId,
-              songId,
+              playlistId: playlist._id || playlist.id,
+              songId: song._id || song.id,
               playlistDetails: {
                 name: playlist.name,
                 currentSongs: playlist.songs.length,
               },
             });
 
+            // Dodaj nagłówek autoryzacji
             const resultAction = await dispatch(
               updatePlaylistWithSong({
                 playlistId: playlist._id || playlist.id,
@@ -192,6 +201,7 @@ export const usePlaylistManagement = ({
               songsCount: resultAction?.songs?.length,
               playlistId: resultAction?._id || resultAction?.id,
               error: resultAction?.error,
+              resultAction,
             });
 
             if (!resultAction) {
@@ -205,9 +215,12 @@ export const usePlaylistManagement = ({
             }
 
             // Sprawdź, czy utwór został dodany używając obu możliwych ID
-            const songWasAdded = resultAction.songs.some(
-              (id: string) => id === songId || id === song._id || id === song.id
-            );
+            const songWasAdded =
+              Array.isArray(resultAction.songs) &&
+              resultAction.songs.some(
+                (id: string) =>
+                  id === songId || id === song._id || id === song.id
+              );
 
             if (!songWasAdded) {
               console.error("Song not found in updated playlist:", {
@@ -216,20 +229,29 @@ export const usePlaylistManagement = ({
                 songIds: { _id: song._id, id: song.id },
                 playlistDetails: {
                   beforeUpdate: playlist.songs.length,
-                  afterUpdate: resultAction.songs.length,
+                  afterUpdate: resultAction.songs?.length || 0,
                 },
               });
 
-              // Odśwież playlisty i spróbuj ponownie
+              // Spróbuj odświeżyć playlisty
               await dispatch(fetchPlaylists());
-              throw new Error("Spróbuj ponownie dodać utwór do playlisty");
+              throw new Error(
+                "Nie udało się dodać utworu do playlisty. Spróbuj ponownie za chwilę."
+              );
             }
 
             // Aktualizuj stan lokalny z nowymi danymi
             onUpdatePlaylists((prevPlaylists) =>
               prevPlaylists.map((p) =>
                 p._id === playlistId || p.id === playlistId
-                  ? { ...resultAction, songs: [...resultAction.songs] }
+                  ? {
+                      ...resultAction,
+                      songs: Array.isArray(resultAction.songs)
+                        ? [...resultAction.songs]
+                        : [],
+                      id: resultAction._id || resultAction.id,
+                      _id: resultAction._id || resultAction.id,
+                    }
                   : p
               )
             );
