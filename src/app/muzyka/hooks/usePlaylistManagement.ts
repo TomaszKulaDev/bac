@@ -189,42 +189,66 @@ export const usePlaylistManagement = ({
               },
             });
 
-            // Dodaj nagłówek autoryzacji
+            // Dodaj mechanizm ponownych prób
+            let retryCount = 0;
+            const maxRetries = 2;
             let resultAction;
-            try {
-              resultAction = await dispatch(
-                updatePlaylistWithSong({
+
+            while (retryCount <= maxRetries) {
+              try {
+                resultAction = await dispatch(
+                  updatePlaylistWithSong({
+                    playlistId: playlist._id || playlist.id,
+                    songId: song._id || song.id,
+                  })
+                ).unwrap();
+
+                // Jeśli udało się otrzymać odpowiedź, przerwij pętlę
+                break;
+              } catch (actionError: any) {
+                console.error(`Attempt ${retryCount + 1} failed:`, {
+                  error: actionError,
+                  status: actionError?.status,
+                  data: actionError?.data,
+                  originalError: actionError?.originalError,
                   playlistId: playlist._id || playlist.id,
                   songId: song._id || song.id,
-                })
-              ).unwrap();
-            } catch (actionError: any) {
-              console.error("Redux action error:", {
-                error: actionError,
-                status: actionError?.status,
-                data: actionError?.data,
-                originalError: actionError?.originalError,
-                playlistId: playlist._id || playlist.id,
-                songId: song._id || song.id,
-              });
+                  mongoError:
+                    actionError instanceof Error &&
+                    actionError.name === "MongooseError",
+                });
 
-              // Próba odświeżenia playlist przed zgłoszeniem błędu
-              try {
-                await dispatch(fetchPlaylists());
-              } catch (refreshError) {
-                console.error("Failed to refresh playlists:", refreshError);
+                retryCount++;
+
+                if (retryCount <= maxRetries) {
+                  // Czekaj przed kolejną próbą
+                  await new Promise((resolve) =>
+                    setTimeout(resolve, 1000 * retryCount)
+                  );
+                  console.log(`Retrying... Attempt ${retryCount + 1}`);
+
+                  // Spróbuj odświeżyć playlisty przed kolejną próbą
+                  try {
+                    await dispatch(fetchPlaylists());
+                  } catch (refreshError) {
+                    console.error("Failed to refresh playlists:", refreshError);
+                  }
+                } else {
+                  // Jeśli wszystkie próby się nie powiodły
+                  throw new Error(
+                    actionError?.data?.message ||
+                      actionError?.message ||
+                      "Nie udało się zaktualizować playlisty po kilku próbach. Spróbuj ponownie później."
+                  );
+                }
               }
-
-              throw new Error(
-                actionError?.data?.message ||
-                  actionError?.message ||
-                  "Wystąpił błąd podczas aktualizacji playlisty. Spróbuj ponownie za chwilę."
-              );
             }
 
             if (!resultAction) {
-              console.error("No result from server");
-              throw new Error("Nie otrzymano odpowiedzi z serwera");
+              console.error("No result from server after retries");
+              throw new Error(
+                "Nie otrzymano odpowiedzi z serwera po kilku próbach"
+              );
             }
 
             // Sprawdź strukturę odpowiedzi
@@ -236,6 +260,8 @@ export const usePlaylistManagement = ({
               ids: {
                 _id: resultAction._id,
                 id: resultAction.id,
+                playlistId: playlist._id || playlist.id,
+                songId: song._id || song.id,
               },
             });
 
