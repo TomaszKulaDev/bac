@@ -148,22 +148,43 @@ export const usePlaylistManagement = ({
             );
           }
 
-          if (playlist.songs.includes(songId)) {
-            showInfoToast(
-              `Utwór "${song.title}" jest już w playliście "${playlist.name}"`
-            );
-            return;
-          }
-
           try {
+            // Najpierw pobierz aktualny stan playlisty z serwera
+            const playlistResponse = await fetch(
+              `/api/musisite/playlists/${playlistId}`
+            );
+            if (!playlistResponse.ok) {
+              throw new Error("Nie można pobrać aktualnego stanu playlisty");
+            }
+            const currentPlaylistState = await playlistResponse.json();
+
+            console.log("Current playlist state from server:", {
+              playlistId,
+              serverSongs: currentPlaylistState.songs,
+              localSongs: playlist.songs,
+            });
+
+            // Sprawdź, czy utwór nie jest już w playliście (używając danych z serwera)
+            const songExists = currentPlaylistState.songs.some(
+              (id: string) => id === songId || id === song._id || id === song.id
+            );
+
+            if (songExists) {
+              showInfoToast(
+                `Utwór "${song.title}" jest już w playliście "${playlist.name}"`
+              );
+              return;
+            }
+
             console.log("Dispatching updatePlaylistWithSong:", {
               playlistId,
               songId,
               playlistDetails: {
                 name: playlist.name,
-                currentSongs: playlist.songs.length,
+                currentSongs: currentPlaylistState.songs.length,
               },
             });
+
             const resultAction = await dispatch(
               updatePlaylistWithSong({
                 playlistId: playlist._id || playlist.id,
@@ -199,19 +220,22 @@ export const usePlaylistManagement = ({
                 songId,
                 songIds: { _id: song._id, id: song.id },
                 playlistDetails: {
-                  beforeUpdate: playlist.songs.length,
+                  serverState: currentPlaylistState.songs.length,
                   afterUpdate: resultAction.songs.length,
                 },
               });
-              throw new Error(
-                "Utwór nie został dodany do playlisty - sprawdź logi serwera"
-              );
+
+              // Odśwież playlisty i spróbuj ponownie
+              await dispatch(fetchPlaylists());
+              throw new Error("Spróbuj ponownie dodać utwór do playlisty");
             }
 
-            // Aktualizuj stan lokalny
+            // Aktualizuj stan lokalny z pełnymi danymi z serwera
             onUpdatePlaylists((prevPlaylists) =>
               prevPlaylists.map((p) =>
-                p._id === playlistId || p.id === playlistId ? resultAction : p
+                p._id === playlistId || p.id === playlistId
+                  ? { ...resultAction, songs: [...resultAction.songs] }
+                  : p
               )
             );
 
