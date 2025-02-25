@@ -57,6 +57,36 @@ export const updatePlaylistOrder = createAsyncThunk(
   }
 );
 
+export const updatePlaylistWithSong = createAsyncThunk(
+  "playlists/updatePlaylistWithSong",
+  async (
+    { playlistId, songId }: { playlistId: string; songId: string },
+    { dispatch }
+  ) => {
+    try {
+      const response = await fetch(`/api/musisite/playlists/${playlistId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ songId }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update playlist");
+      }
+
+      const updatedPlaylist = await response.json();
+      return {
+        ...updatedPlaylist,
+        id: updatedPlaylist._id,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
 const playlistSlice = createSlice({
   name: "playlists",
   initialState,
@@ -111,6 +141,14 @@ const playlistSlice = createSlice({
         );
         if (playlist) {
           playlist.songs = action.payload.newOrder;
+        }
+      })
+      .addCase(updatePlaylistWithSong.fulfilled, (state, action) => {
+        const index = state.playlists.findIndex(
+          (p) => p.id === action.payload.id || p._id === action.payload._id
+        );
+        if (index !== -1) {
+          state.playlists[index] = action.payload;
         }
       });
   },

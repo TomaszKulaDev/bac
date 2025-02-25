@@ -7,6 +7,7 @@ import { DragEndEvent } from "@dnd-kit/core";
 import { AppDispatch } from "@/store/store";
 import { validatePlaylistTitle } from "../utils/validation";
 import { useSecuredPlaylistOperations } from "./useSecuredPlaylistOperations";
+import { updatePlaylist } from "@/store/slices/features/playlistSlice";
 
 export interface UsePlaylistManagementProps {
   playlists: Playlist[];
@@ -119,9 +120,9 @@ export const usePlaylistManagement = ({
           }
 
           const playlist = playlists.find(
-            (p) => (p._id || p.id) === playlistId
+            (p) => p._id === playlistId || p.id === playlistId
           );
-          const song = songs.find((s) => (s._id || s.id) === songId);
+          const song = songs.find((s) => s._id === songId || s.id === songId);
 
           if (!playlist || !song) {
             throw new Error("Nie można dodać utworu do playlisty");
@@ -134,28 +135,49 @@ export const usePlaylistManagement = ({
             return;
           }
 
-          const response = await fetch(
-            `/api/musisite/playlists/${playlistId}`,
-            {
-              method: "PUT",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({ songId }),
-            }
-          );
-
-          if (!response.ok) {
-            throw new Error("Nie udało się dodać utworu do playlisty");
-          }
-
           onUpdatePlaylists((prevPlaylists) =>
             prevPlaylists.map((p) =>
-              (p._id || p.id) === playlistId
+              p._id === playlistId || p.id === playlistId
                 ? { ...p, songs: [...p.songs, songId] }
                 : p
             )
           );
+
+          try {
+            const response = await fetch(
+              `/api/musisite/playlists/${playlistId}`,
+              {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ songId }),
+              }
+            );
+
+            if (!response.ok) {
+              onUpdatePlaylists((prevPlaylists) =>
+                prevPlaylists.map((p) =>
+                  p._id === playlistId || p.id === playlistId
+                    ? { ...p, songs: p.songs.filter((id) => id !== songId) }
+                    : p
+                )
+              );
+              throw new Error("Nie udało się dodać utworu do playlisty");
+            }
+
+            const updatedPlaylist = await response.json();
+
+            dispatch(
+              updatePlaylist({
+                ...updatedPlaylist,
+                id: updatedPlaylist._id,
+              })
+            );
+          } catch (error) {
+            console.error("Błąd podczas dodawania utworu:", error);
+            throw error;
+          }
         },
         {
           errorMessage: "Nie udało się dodać utworu do playlisty",
@@ -163,7 +185,14 @@ export const usePlaylistManagement = ({
         }
       );
     },
-    [secureOperation, playlists, songs, onUpdatePlaylists, showInfoToast]
+    [
+      secureOperation,
+      playlists,
+      songs,
+      onUpdatePlaylists,
+      dispatch,
+      showInfoToast,
+    ]
   );
 
   const removeSongFromPlaylist = useCallback(
