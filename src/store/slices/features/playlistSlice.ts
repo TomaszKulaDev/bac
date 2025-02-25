@@ -18,6 +18,11 @@ type ThunkConfig = {
   };
 };
 
+interface SongReference {
+  _id?: string;
+  id?: string;
+}
+
 const initialState: PlaylistState = {
   playlists: [],
   currentPlaylistId: null,
@@ -99,10 +104,18 @@ const playlistSlice = createSlice({
     },
     updatePlaylist: (state, action: PayloadAction<Playlist>) => {
       const index = state.playlists.findIndex(
-        (p) => p.id === action.payload.id
+        (p) =>
+          p.id === action.payload.id ||
+          p._id === action.payload._id ||
+          p.id === action.payload._id
       );
       if (index !== -1) {
-        state.playlists[index] = action.payload;
+        state.playlists[index] = {
+          ...action.payload,
+          id: action.payload._id || action.payload.id,
+          _id: action.payload._id || action.payload.id,
+          songs: [...action.payload.songs],
+        };
       }
     },
     removePlaylist: (state, action: PayloadAction<string>) => {
@@ -144,11 +157,22 @@ const playlistSlice = createSlice({
         }
       })
       .addCase(updatePlaylistWithSong.fulfilled, (state, action) => {
+        const normalizedPlaylist = {
+          ...action.payload,
+          id: action.payload._id || action.payload.id,
+          _id: action.payload._id || action.payload.id,
+          songs: action.payload.songs.map((songId: string | SongReference) =>
+            typeof songId === "object" ? songId._id || songId.id : songId
+          ),
+        };
+
         const index = state.playlists.findIndex(
-          (p) => p.id === action.payload.id || p._id === action.payload._id
+          (p) =>
+            p.id === normalizedPlaylist.id || p._id === normalizedPlaylist._id
         );
+
         if (index !== -1) {
-          state.playlists[index] = action.payload;
+          state.playlists[index] = normalizedPlaylist;
         }
       });
   },

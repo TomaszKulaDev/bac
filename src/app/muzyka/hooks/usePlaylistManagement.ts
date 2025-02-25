@@ -31,6 +31,11 @@ export interface PlaylistManagementReturn {
   // ...inne zwracane funkcje
 }
 
+interface SongReference {
+  _id?: string;
+  id?: string;
+}
+
 export const usePlaylistManagement = ({
   playlists,
   onUpdatePlaylists,
@@ -135,14 +140,6 @@ export const usePlaylistManagement = ({
             return;
           }
 
-          onUpdatePlaylists((prevPlaylists) =>
-            prevPlaylists.map((p) =>
-              p._id === playlistId || p.id === playlistId
-                ? { ...p, songs: [...p.songs, songId] }
-                : p
-            )
-          );
-
           try {
             const response = await fetch(
               `/api/musisite/playlists/${playlistId}`,
@@ -156,23 +153,31 @@ export const usePlaylistManagement = ({
             );
 
             if (!response.ok) {
-              onUpdatePlaylists((prevPlaylists) =>
-                prevPlaylists.map((p) =>
-                  p._id === playlistId || p.id === playlistId
-                    ? { ...p, songs: p.songs.filter((id) => id !== songId) }
-                    : p
-                )
-              );
               throw new Error("Nie udało się dodać utworu do playlisty");
             }
 
             const updatedPlaylist = await response.json();
 
-            dispatch(
-              updatePlaylist({
-                ...updatedPlaylist,
-                id: updatedPlaylist._id,
-              })
+            // Normalize the playlist data
+            const normalizedPlaylist = {
+              ...updatedPlaylist,
+              id: updatedPlaylist._id,
+              _id: updatedPlaylist._id,
+              songs: updatedPlaylist.songs.map((song: string | SongReference) =>
+                typeof song === "object" ? song._id || song.id : song
+              ),
+            };
+
+            // Update Redux state with normalized data
+            dispatch(updatePlaylist(normalizedPlaylist));
+
+            // Update local state with normalized data
+            onUpdatePlaylists((prevPlaylists) =>
+              prevPlaylists.map((p) =>
+                p._id === playlistId || p.id === playlistId
+                  ? normalizedPlaylist
+                  : p
+              )
             );
           } catch (error) {
             console.error("Błąd podczas dodawania utworu:", error);
