@@ -149,23 +149,18 @@ export const usePlaylistManagement = ({
           }
 
           try {
-            // Najpierw pobierz aktualny stan playlisty z serwera
-            const playlistResponse = await fetch(
-              `/api/musisite/playlists/${playlistId}`
-            );
-            if (!playlistResponse.ok) {
-              throw new Error("Nie można pobrać aktualnego stanu playlisty");
-            }
-            const currentPlaylistState = await playlistResponse.json();
-
-            console.log("Current playlist state from server:", {
+            // Użyj istniejącego stanu playlisty zamiast pobierać go z serwera
+            console.log("Current playlist state:", {
               playlistId,
-              serverSongs: currentPlaylistState.songs,
               localSongs: playlist.songs,
+              playlistDetails: {
+                name: playlist.name,
+                currentSongs: playlist.songs.length,
+              },
             });
 
-            // Sprawdź, czy utwór nie jest już w playliście (używając danych z serwera)
-            const songExists = currentPlaylistState.songs.some(
+            // Sprawdź, czy utwór nie jest już w playliście
+            const songExists = playlist.songs.some(
               (id: string) => id === songId || id === song._id || id === song.id
             );
 
@@ -181,7 +176,7 @@ export const usePlaylistManagement = ({
               songId,
               playlistDetails: {
                 name: playlist.name,
-                currentSongs: currentPlaylistState.songs.length,
+                currentSongs: playlist.songs.length,
               },
             });
 
@@ -220,7 +215,7 @@ export const usePlaylistManagement = ({
                 songId,
                 songIds: { _id: song._id, id: song.id },
                 playlistDetails: {
-                  serverState: currentPlaylistState.songs.length,
+                  beforeUpdate: playlist.songs.length,
                   afterUpdate: resultAction.songs.length,
                 },
               });
@@ -230,7 +225,7 @@ export const usePlaylistManagement = ({
               throw new Error("Spróbuj ponownie dodać utwór do playlisty");
             }
 
-            // Aktualizuj stan lokalny z pełnymi danymi z serwera
+            // Aktualizuj stan lokalny z nowymi danymi
             onUpdatePlaylists((prevPlaylists) =>
               prevPlaylists.map((p) =>
                 p._id === playlistId || p.id === playlistId
