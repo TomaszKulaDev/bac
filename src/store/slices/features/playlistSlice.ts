@@ -66,9 +66,14 @@ export const updatePlaylistWithSong = createAsyncThunk(
   "playlists/updatePlaylistWithSong",
   async (
     { playlistId, songId }: { playlistId: string; songId: string },
-    { dispatch }
+    { dispatch, rejectWithValue }
   ) => {
     try {
+      console.log("Sending request to update playlist:", {
+        playlistId,
+        songId,
+      });
+
       const response = await fetch(`/api/musisite/playlists/${playlistId}`, {
         method: "PUT",
         headers: {
@@ -78,10 +83,24 @@ export const updatePlaylistWithSong = createAsyncThunk(
       });
 
       if (!response.ok) {
-        throw new Error("Failed to update playlist");
+        const errorData = await response.json().catch(() => ({}));
+        console.error("Server error:", { status: response.status, errorData });
+        return rejectWithValue({
+          message: errorData.error || "Nie udało się zaktualizować playlisty",
+          status: response.status,
+        });
       }
 
       const updatedPlaylist = await response.json();
+      console.log("Received updated playlist:", updatedPlaylist);
+
+      if (!updatedPlaylist || !updatedPlaylist.songs) {
+        console.error("Invalid playlist data received:", updatedPlaylist);
+        return rejectWithValue({
+          message: "Otrzymano nieprawidłowe dane playlisty",
+          status: 500,
+        });
+      }
 
       // Normalize the playlist data
       const normalizedPlaylist = {
@@ -104,7 +123,14 @@ export const updatePlaylistWithSong = createAsyncThunk(
 
       return normalizedPlaylist;
     } catch (error) {
-      throw error;
+      console.error("Error in updatePlaylistWithSong:", error);
+      return rejectWithValue({
+        message:
+          error instanceof Error
+            ? error.message
+            : "Wystąpił nieoczekiwany błąd",
+        status: 500,
+      });
     }
   }
 );

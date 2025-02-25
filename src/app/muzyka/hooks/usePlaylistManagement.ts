@@ -125,6 +125,7 @@ export const usePlaylistManagement = ({
       await secureOperation(
         async () => {
           if (!playlistId || !songId) {
+            console.error("Missing data:", { playlistId, songId });
             throw new Error("Nieprawidłowe dane utworu lub playlisty");
           }
 
@@ -133,8 +134,18 @@ export const usePlaylistManagement = ({
           );
           const song = songs.find((s) => s._id === songId || s.id === songId);
 
+          console.log("Found playlist and song:", {
+            playlist: playlist?.name,
+            song: song?.title,
+            playlistId,
+            songId,
+          });
+
           if (!playlist || !song) {
-            throw new Error("Nie można dodać utworu do playlisty");
+            console.error("Not found:", { playlist: !!playlist, song: !!song });
+            throw new Error(
+              "Nie można dodać utworu do playlisty - nie znaleziono utworu lub playlisty"
+            );
           }
 
           if (playlist.songs.includes(songId)) {
@@ -145,33 +156,60 @@ export const usePlaylistManagement = ({
           }
 
           try {
+            console.log("Dispatching updatePlaylistWithSong:", {
+              playlistId,
+              songId,
+            });
             const resultAction = await dispatch(
-              updatePlaylistWithSong({ playlistId, songId })
+              updatePlaylistWithSong({
+                playlistId: playlist._id || playlist.id, // Upewniamy się, że używamy poprawnego ID
+                songId: song._id || song.id, // Upewniamy się, że używamy poprawnego ID
+              })
             ).unwrap();
 
-            if (resultAction) {
-              if (!resultAction.songs.includes(songId)) {
-                throw new Error("Utwór nie został dodany do playlisty");
-              }
+            console.log("Result from updatePlaylistWithSong:", resultAction);
 
-              onUpdatePlaylists((prevPlaylists) =>
-                prevPlaylists.map((p) =>
-                  p._id === playlistId || p.id === playlistId ? resultAction : p
-                )
-              );
-
-              showSuccessToast("Utwór został dodany do playlisty");
-            } else {
-              throw new Error("Nie otrzymano zaktualizowanej playlisty");
+            if (!resultAction) {
+              throw new Error("Nie otrzymano odpowiedzi z serwera");
             }
+
+            // Sprawdź, czy utwór został dodany używając obu możliwych ID
+            const songWasAdded = resultAction.songs.some(
+              (id: string) => id === songId || id === song._id || id === song.id
+            );
+
+            if (!songWasAdded) {
+              console.error("Song not found in updated playlist:", {
+                playlistSongs: resultAction.songs,
+                songId,
+                songIds: { _id: song._id, id: song.id },
+              });
+              throw new Error("Utwór nie został dodany do playlisty");
+            }
+
+            // Aktualizuj stan lokalny
+            onUpdatePlaylists((prevPlaylists) =>
+              prevPlaylists.map((p) =>
+                p._id === playlistId || p.id === playlistId ? resultAction : p
+              )
+            );
+
+            showSuccessToast(
+              `Utwór "${song.title}" został dodany do playlisty "${playlist.name}"`
+            );
           } catch (error) {
-            console.error("Błąd podczas dodawania utworu:", error);
+            console.error("Error details:", error);
+            // Spróbuj odświeżyć playlisty w przypadku błędu
             try {
               await dispatch(fetchPlaylists());
             } catch (refreshError) {
-              console.error("Błąd podczas odświeżania playlist:", refreshError);
+              console.error("Error refreshing playlists:", refreshError);
             }
-            throw error;
+            throw new Error(
+              error instanceof Error
+                ? error.message
+                : "Wystąpił błąd podczas dodawania utworu do playlisty"
+            );
           }
         },
         {
