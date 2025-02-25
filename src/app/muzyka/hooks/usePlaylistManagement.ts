@@ -12,6 +12,7 @@ import { validatePlaylistTitle } from "../utils/validation";
 import { useSecuredPlaylistOperations } from "./useSecuredPlaylistOperations";
 import { updatePlaylist } from "@/store/slices/features/playlistSlice";
 import { updatePlaylistWithSong } from "@/store/slices/features/playlistSlice";
+import { Error } from "mongoose";
 
 export interface UsePlaylistManagementProps {
   playlists: Playlist[];
@@ -189,29 +190,71 @@ export const usePlaylistManagement = ({
             });
 
             // Dodaj nagłówek autoryzacji
-            const resultAction = await dispatch(
-              updatePlaylistWithSong({
+            let resultAction;
+            try {
+              resultAction = await dispatch(
+                updatePlaylistWithSong({
+                  playlistId: playlist._id || playlist.id,
+                  songId: song._id || song.id,
+                })
+              ).unwrap();
+            } catch (actionError: any) {
+              console.error("Redux action error:", {
+                error: actionError,
+                status: actionError?.status,
+                data: actionError?.data,
+                originalError: actionError?.originalError,
                 playlistId: playlist._id || playlist.id,
                 songId: song._id || song.id,
-              })
-            ).unwrap();
+              });
 
-            console.log("Result from updatePlaylistWithSong:", {
-              success: !!resultAction,
-              songsCount: resultAction?.songs?.length,
-              playlistId: resultAction?._id || resultAction?.id,
-              error: resultAction?.error,
-              resultAction,
-            });
+              // Próba odświeżenia playlist przed zgłoszeniem błędu
+              try {
+                await dispatch(fetchPlaylists());
+              } catch (refreshError) {
+                console.error("Failed to refresh playlists:", refreshError);
+              }
+
+              throw new Error(
+                actionError?.data?.message ||
+                  actionError?.message ||
+                  "Wystąpił błąd podczas aktualizacji playlisty. Spróbuj ponownie za chwilę."
+              );
+            }
 
             if (!resultAction) {
               console.error("No result from server");
               throw new Error("Nie otrzymano odpowiedzi z serwera");
             }
 
+            // Sprawdź strukturę odpowiedzi
+            console.log("Server response structure:", {
+              resultAction,
+              hasError: !!resultAction.error,
+              hasSongs: Array.isArray(resultAction.songs),
+              songsLength: resultAction.songs?.length,
+              ids: {
+                _id: resultAction._id,
+                id: resultAction.id,
+              },
+            });
+
             if (resultAction.error) {
               console.error("Server returned error:", resultAction.error);
-              throw new Error(resultAction.error);
+              throw new Error(
+                typeof resultAction.error === "string"
+                  ? resultAction.error
+                  : "Wystąpił błąd podczas aktualizacji playlisty"
+              );
+            }
+
+            // Sprawdź, czy songs jest tablicą
+            if (!Array.isArray(resultAction.songs)) {
+              console.error(
+                "Invalid response format - songs is not an array:",
+                resultAction
+              );
+              throw new Error("Nieprawidłowy format odpowiedzi z serwera");
             }
 
             // Sprawdź, czy utwór został dodany używając obu możliwych ID
