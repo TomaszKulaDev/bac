@@ -1,13 +1,17 @@
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { updateSongsPlaylists } from "@/store/slices/features/songsSlice";
-import { updatePlaylistOrder } from "@/store/slices/features/playlistSlice";
+import {
+  fetchPlaylists,
+  updatePlaylistOrder,
+} from "@/store/slices/features/playlistSlice";
 import { Playlist, Song } from "../types";
 import { DragEndEvent } from "@dnd-kit/core";
 import { AppDispatch } from "@/store/store";
 import { validatePlaylistTitle } from "../utils/validation";
 import { useSecuredPlaylistOperations } from "./useSecuredPlaylistOperations";
 import { updatePlaylist } from "@/store/slices/features/playlistSlice";
+import { updatePlaylistWithSong } from "@/store/slices/features/playlistSlice";
 
 export interface UsePlaylistManagementProps {
   playlists: Playlist[];
@@ -141,52 +145,38 @@ export const usePlaylistManagement = ({
           }
 
           try {
-            const response = await fetch(
-              `/api/musisite/playlists/${playlistId}`,
-              {
-                method: "PUT",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ songId }),
+            const resultAction = await dispatch(
+              updatePlaylistWithSong({ playlistId, songId })
+            ).unwrap();
+
+            if (resultAction) {
+              if (!resultAction.songs.includes(songId)) {
+                throw new Error("Utwór nie został dodany do playlisty");
               }
-            );
 
-            if (!response.ok) {
-              throw new Error("Nie udało się dodać utworu do playlisty");
+              onUpdatePlaylists((prevPlaylists) =>
+                prevPlaylists.map((p) =>
+                  p._id === playlistId || p.id === playlistId ? resultAction : p
+                )
+              );
+
+              showSuccessToast("Utwór został dodany do playlisty");
+            } else {
+              throw new Error("Nie otrzymano zaktualizowanej playlisty");
             }
-
-            const updatedPlaylist = await response.json();
-
-            // Normalize the playlist data
-            const normalizedPlaylist = {
-              ...updatedPlaylist,
-              id: updatedPlaylist._id,
-              _id: updatedPlaylist._id,
-              songs: updatedPlaylist.songs.map((song: string | SongReference) =>
-                typeof song === "object" ? song._id || song.id : song
-              ),
-            };
-
-            // Update Redux state with normalized data
-            dispatch(updatePlaylist(normalizedPlaylist));
-
-            // Update local state with normalized data
-            onUpdatePlaylists((prevPlaylists) =>
-              prevPlaylists.map((p) =>
-                p._id === playlistId || p.id === playlistId
-                  ? normalizedPlaylist
-                  : p
-              )
-            );
           } catch (error) {
             console.error("Błąd podczas dodawania utworu:", error);
+            try {
+              await dispatch(fetchPlaylists());
+            } catch (refreshError) {
+              console.error("Błąd podczas odświeżania playlist:", refreshError);
+            }
             throw error;
           }
         },
         {
           errorMessage: "Nie udało się dodać utworu do playlisty",
-          successMessage: "Utwór został dodany do playlisty",
+          successMessage: undefined,
         }
       );
     },
@@ -197,6 +187,7 @@ export const usePlaylistManagement = ({
       onUpdatePlaylists,
       dispatch,
       showInfoToast,
+      showSuccessToast,
     ]
   );
 

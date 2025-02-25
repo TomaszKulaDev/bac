@@ -82,10 +82,27 @@ export const updatePlaylistWithSong = createAsyncThunk(
       }
 
       const updatedPlaylist = await response.json();
-      return {
+
+      // Normalize the playlist data
+      const normalizedPlaylist = {
         ...updatedPlaylist,
         id: updatedPlaylist._id,
+        _id: updatedPlaylist._id,
+        songs: updatedPlaylist.songs.map((song: string | SongReference) =>
+          typeof song === "object" ? song._id || song.id : song
+        ),
       };
+
+      // Update songs playlists
+      dispatch(
+        updateSongsPlaylists({
+          songIds: [songId],
+          playlistId: normalizedPlaylist.id,
+          playlistName: normalizedPlaylist.name,
+        })
+      );
+
+      return normalizedPlaylist;
     } catch (error) {
       throw error;
     }
