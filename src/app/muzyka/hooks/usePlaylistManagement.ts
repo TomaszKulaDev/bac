@@ -159,18 +159,33 @@ export const usePlaylistManagement = ({
             console.log("Dispatching updatePlaylistWithSong:", {
               playlistId,
               songId,
+              playlistDetails: {
+                name: playlist.name,
+                currentSongs: playlist.songs.length,
+              },
             });
             const resultAction = await dispatch(
               updatePlaylistWithSong({
-                playlistId: playlist._id || playlist.id, // Upewniamy się, że używamy poprawnego ID
-                songId: song._id || song.id, // Upewniamy się, że używamy poprawnego ID
+                playlistId: playlist._id || playlist.id,
+                songId: song._id || song.id,
               })
             ).unwrap();
 
-            console.log("Result from updatePlaylistWithSong:", resultAction);
+            console.log("Result from updatePlaylistWithSong:", {
+              success: !!resultAction,
+              songsCount: resultAction?.songs?.length,
+              playlistId: resultAction?._id || resultAction?.id,
+              error: resultAction?.error,
+            });
 
             if (!resultAction) {
+              console.error("No result from server");
               throw new Error("Nie otrzymano odpowiedzi z serwera");
+            }
+
+            if (resultAction.error) {
+              console.error("Server returned error:", resultAction.error);
+              throw new Error(resultAction.error);
             }
 
             // Sprawdź, czy utwór został dodany używając obu możliwych ID
@@ -183,8 +198,14 @@ export const usePlaylistManagement = ({
                 playlistSongs: resultAction.songs,
                 songId,
                 songIds: { _id: song._id, id: song.id },
+                playlistDetails: {
+                  beforeUpdate: playlist.songs.length,
+                  afterUpdate: resultAction.songs.length,
+                },
               });
-              throw new Error("Utwór nie został dodany do playlisty");
+              throw new Error(
+                "Utwór nie został dodany do playlisty - sprawdź logi serwera"
+              );
             }
 
             // Aktualizuj stan lokalny
@@ -198,7 +219,14 @@ export const usePlaylistManagement = ({
               `Utwór "${song.title}" został dodany do playlisty "${playlist.name}"`
             );
           } catch (error) {
-            console.error("Error details:", error);
+            console.error("Error details:", {
+              error,
+              message: error instanceof Error ? error.message : "Unknown error",
+              playlistId,
+              songId,
+              playlistName: playlist.name,
+              songTitle: song.title,
+            });
             // Spróbuj odświeżyć playlisty w przypadku błędu
             try {
               await dispatch(fetchPlaylists());
