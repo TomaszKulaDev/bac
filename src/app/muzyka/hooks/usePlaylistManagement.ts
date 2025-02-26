@@ -41,6 +41,19 @@ interface SongReference {
   id?: string;
 }
 
+interface PlaylistResponse extends Playlist {
+  error?: string;
+}
+
+interface PlaylistUpdateResponse {
+  playlist?: Playlist;
+  error?: string;
+  songs?: string[];
+  _id?: string;
+  id?: string;
+  name?: string;
+}
+
 export const usePlaylistManagement = ({
   playlists,
   onUpdatePlaylists,
@@ -196,12 +209,12 @@ export const usePlaylistManagement = ({
 
             while (retryCount <= maxRetries) {
               try {
-                resultAction = await dispatch(
+                resultAction = (await dispatch(
                   updatePlaylistWithSong({
                     playlistId: playlist._id || playlist.id,
                     songId: song._id || song.id,
                   })
-                ).unwrap();
+                ).unwrap()) as PlaylistUpdateResponse;
 
                 // Jeśli udało się otrzymać odpowiedź, przerwij pętlę
                 break;

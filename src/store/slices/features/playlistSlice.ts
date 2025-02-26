@@ -23,6 +23,12 @@ interface SongReference {
   id?: string;
 }
 
+interface UpdatePlaylistError {
+  message?: string;
+  status?: number;
+  details?: string;
+}
+
 const initialState: PlaylistState = {
   playlists: [],
   currentPlaylistId: null,
@@ -62,12 +68,15 @@ export const updatePlaylistOrder = createAsyncThunk(
   }
 );
 
-export const updatePlaylistWithSong = createAsyncThunk(
+export const updatePlaylistWithSong = createAsyncThunk<
+  Playlist,
+  { playlistId: string; songId: string },
+  {
+    rejectValue: UpdatePlaylistError;
+  }
+>(
   "playlists/updatePlaylistWithSong",
-  async (
-    { playlistId, songId }: { playlistId: string; songId: string },
-    { dispatch, rejectWithValue }
-  ) => {
+  async ({ playlistId, songId }, { dispatch, rejectWithValue }) => {
     try {
       console.log("Sending request to update playlist:", {
         playlistId,
@@ -84,7 +93,12 @@ export const updatePlaylistWithSong = createAsyncThunk(
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        console.error("Server error:", { status: response.status, errorData });
+        console.error("Server error:", {
+          status: response.status,
+          errorData,
+          playlistId,
+          songId,
+        });
         return rejectWithValue({
           message: errorData.error || "Nie udało się zaktualizować playlisty",
           status: response.status,
@@ -94,7 +108,7 @@ export const updatePlaylistWithSong = createAsyncThunk(
       const updatedPlaylist = await response.json();
       console.log("Received updated playlist:", updatedPlaylist);
 
-      if (!updatedPlaylist || !updatedPlaylist.songs) {
+      if (!updatedPlaylist || !Array.isArray(updatedPlaylist.songs)) {
         console.error("Invalid playlist data received:", updatedPlaylist);
         return rejectWithValue({
           message: "Otrzymano nieprawidłowe dane playlisty",
@@ -107,13 +121,13 @@ export const updatePlaylistWithSong = createAsyncThunk(
         ...updatedPlaylist,
         id: updatedPlaylist._id,
         _id: updatedPlaylist._id,
-        songs: updatedPlaylist.songs.map((song: string | SongReference) =>
-          typeof song === "object" ? song._id || song.id : song
+        songs: updatedPlaylist.songs.map((song: any) =>
+          typeof song === "string" ? song : song._id || song.id
         ),
       };
 
       // Update songs playlists
-      dispatch(
+      await dispatch(
         updateSongsPlaylists({
           songIds: [songId],
           playlistId: normalizedPlaylist.id,
@@ -130,6 +144,7 @@ export const updatePlaylistWithSong = createAsyncThunk(
             ? error.message
             : "Wystąpił nieoczekiwany błąd",
         status: 500,
+        details: error instanceof Error ? error.stack : undefined,
       });
     }
   }
@@ -204,8 +219,8 @@ const playlistSlice = createSlice({
           ...action.payload,
           id: action.payload._id || action.payload.id,
           _id: action.payload._id || action.payload.id,
-          songs: action.payload.songs.map((songId: string | SongReference) =>
-            typeof songId === "object" ? songId._id || songId.id : songId
+          songs: action.payload.songs.map((songId: any) =>
+            typeof songId === "string" ? songId : songId._id || songId.id
           ),
         };
 
@@ -216,7 +231,15 @@ const playlistSlice = createSlice({
 
         if (index !== -1) {
           state.playlists[index] = normalizedPlaylist;
+        } else {
+          state.playlists.push(normalizedPlaylist);
         }
+      })
+      .addCase(updatePlaylistWithSong.rejected, (state, action) => {
+        state.error =
+          action.payload?.message || "Nie udało się zaktualizować playlisty";
+        state.status = "failed";
+        console.error("Failed to update playlist:", action.payload);
       });
   },
 });
