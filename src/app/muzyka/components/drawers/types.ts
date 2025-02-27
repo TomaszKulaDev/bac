@@ -8,7 +8,7 @@ export interface BaseDrawerProps {
 }
 
 export interface CreatePlaylistModalProps extends BaseDrawerProps {
-  onCreatePlaylist: (name: string) => void;
+  onCreatePlaylist: (name: string) => Promise<void>;
   playlists: Playlist[];
 }
 

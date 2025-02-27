@@ -17,7 +17,7 @@ import {
 } from "react-icons/fa";
 import DraggableSongItem from "../DraggableSongItem";
 import { restrictToParentElement } from "@dnd-kit/modifiers";
-import CreatePlaylistModal from "../CreatePlaylistModal";
+import { CreatePlaylistModal } from "../drawers";
 import { DragEndEvent } from "@dnd-kit/core";
 
 export interface PlaylistManagerContentProps {

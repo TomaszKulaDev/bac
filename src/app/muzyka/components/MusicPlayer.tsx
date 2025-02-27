@@ -436,6 +436,7 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
     closeAllDrawers,
     toggleButtonsVisibility,
     areButtonsHidden,
+    toggleDrawerState,
   } = useDrawers({
     isAuthenticated,
     showErrorToast,
@@ -798,12 +799,12 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({
         <>
           <PlaylistSelectorDrawer
             isOpen={isPlaylistSelectorOpen}
-            onClose={() => toggleDrawer("isPlaylistSelectorOpen")}
-            playlists={playlists}
-            currentPlaylistId={currentPlaylistId}
+            onClose={() => toggleDrawerState("isPlaylistSelectorOpen", false)}
+            currentPlaylistId={currentPlaylist?.id || null}
             onPlayPlaylist={handlePlaylistSelect}
             isAuthenticated={isAuthenticated}
             showErrorToast={showErrorToast}
+            onDeletePlaylist={handleDeletePlaylist}
           />
 
           <CreatePlaylistModal
