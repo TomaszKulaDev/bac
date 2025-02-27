@@ -150,6 +150,87 @@ export const updatePlaylistWithSong = createAsyncThunk<
   }
 );
 
+export const deletePlaylistAndRefetch = createAsyncThunk<
+  DeletePlaylistResponse,
+  string,
+  ThunkConfig
+>(
+  "playlists/deletePlaylistAndRefetch",
+  async (id, { dispatch, rejectWithValue }) => {
+    try {
+      console.log("Attempting to delete playlist:", id);
+
+      const response = await fetch(`/api/musisite/playlists/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      console.log("Delete response status:", response.status);
+      const data = await response.json();
+      console.log("Delete response data:", data);
+
+      if (!response.ok) {
+        let errorMessage = "Wystąpił błąd podczas usuwania playlisty";
+
+        switch (response.status) {
+          case 401:
+            errorMessage = "Brak uprawnień do usunięcia playlisty";
+            break;
+          case 403:
+            errorMessage = "Dostęp zabroniony";
+            break;
+          case 404:
+            errorMessage = "Nie znaleziono playlisty";
+            break;
+          case 500:
+            errorMessage = "Błąd serwera podczas usuwania playlisty";
+            break;
+          default:
+            errorMessage = data.message || errorMessage;
+        }
+
+        console.error("Delete playlist error:", {
+          status: response.status,
+          message: errorMessage,
+          data,
+        });
+
+        return rejectWithValue({
+          status: response.status,
+          message: errorMessage,
+          details: data.details || null,
+        });
+      }
+
+      // Najpierw usuń playlistę ze stanu
+      dispatch(removePlaylist(id));
+
+      // Pobierz zaktualizowaną listę playlist
+      const updatedResponse = await fetch("/api/musisite/playlists");
+      if (!updatedResponse.ok) {
+        console.warn("Failed to fetch updated playlists after deletion");
+      } else {
+        const updatedPlaylists = await updatedResponse.json();
+        dispatch(setPlaylists(updatedPlaylists));
+      }
+
+      return {
+        message: "Playlista została usunięta",
+        success: true,
+      };
+    } catch (error: any) {
+      console.error("Unexpected error during playlist deletion:", error);
+      return rejectWithValue({
+        status: 500,
+        message: "Wystąpił nieoczekiwany błąd podczas usuwania playlisty",
+        details: error.message,
+      });
+    }
+  }
+);
+
 const playlistSlice = createSlice({
   name: "playlists",
   initialState,
@@ -177,7 +258,9 @@ const playlistSlice = createSlice({
       }
     },
     removePlaylist: (state, action: PayloadAction<string>) => {
-      state.playlists = state.playlists.filter((p) => p.id !== action.payload);
+      state.playlists = state.playlists.filter(
+        (p) => p.id !== action.payload && p._id !== action.payload
+      );
       if (state.currentPlaylistId === action.payload) {
         state.currentPlaylistId = null;
       }
@@ -187,6 +270,11 @@ const playlistSlice = createSlice({
     },
     setInitialized: (state) => {
       state.isInitialized = true;
+    },
+    setPlaylists: (state, action: PayloadAction<Playlist[]>) => {
+      state.playlists = action.payload;
+      state.status = "idle";
+      state.error = null;
     },
   },
   extraReducers: (builder) => {
@@ -240,72 +328,29 @@ const playlistSlice = createSlice({
           action.payload?.message || "Nie udało się zaktualizować playlisty";
         state.status = "failed";
         console.error("Failed to update playlist:", action.payload);
+      })
+      .addCase(deletePlaylistAndRefetch.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(deletePlaylistAndRefetch.fulfilled, (state) => {
+        state.status = "idle";
+        state.error = null;
+      })
+      .addCase(deletePlaylistAndRefetch.rejected, (state, action) => {
+        state.status = "failed";
+        state.error =
+          action.payload?.message || "Nie udało się usunąć playlisty";
       });
   },
 });
-
-export const deletePlaylistAndRefetch = createAsyncThunk<
-  DeletePlaylistResponse,
-  string,
-  ThunkConfig
->(
-  "playlists/deletePlaylistAndRefetch",
-  async (id, { dispatch, rejectWithValue }) => {
-    try {
-      const response = await fetch(`/api/musisite/playlists/${id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        let errorMessage = "Wystąpił błąd podczas usuwania playlisty";
-
-        switch (response.status) {
-          case 401:
-            errorMessage = "Brak uprawnień do usunięcia playlisty";
-            break;
-          case 403:
-            errorMessage = "Dostęp zabroniony";
-            break;
-          case 404:
-            errorMessage = "Nie znaleziono playlisty";
-            break;
-          case 500:
-            errorMessage = "Błąd serwera podczas usuwania playlisty";
-            break;
-          default:
-            errorMessage = errorData.message || errorMessage;
-        }
-
-        return rejectWithValue({
-          status: response.status,
-          message: errorMessage,
-          details: errorData.details || null,
-        });
-      }
-
-      const data = await response.json();
-      dispatch(removePlaylist(id));
-      await dispatch(fetchPlaylists());
-      return data;
-    } catch (error: any) {
-      return rejectWithValue({
-        status: 500,
-        message: "Wystąpił nieoczekiwany błąd podczas usuwania playlisty",
-        details: error.message,
-      });
-    }
-  }
-);
 
 export const {
   setCurrentPlaylistId,
   addPlaylist,
   updatePlaylist,
   removePlaylist,
+  setPlaylists,
 } = playlistSlice.actions;
 
 export const selectPlaylists = (state: RootState) => state.playlists.playlists;

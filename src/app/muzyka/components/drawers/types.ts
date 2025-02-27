@@ -16,4 +16,6 @@ export interface PlaylistSelectorDrawerProps extends BaseDrawerProps {
   playlists: Playlist[];
   currentPlaylistId: string | null;
   onPlayPlaylist: (playlistId: string) => void;
+  onCreatePlaylist?: () => void;
+  onDeletePlaylist: (playlistId: string) => Promise<void>;
 }

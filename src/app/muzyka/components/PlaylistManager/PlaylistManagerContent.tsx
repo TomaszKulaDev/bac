@@ -75,6 +75,18 @@ const PlaylistManagerContent: React.FC<PlaylistManagerContentProps> = ({
     ? "Osiągnięto limit playlist (max. 2)"
     : "+ Utwórz nową playlistę";
 
+  const handleDeletePlaylist = async (playlistId: string) => {
+    try {
+      await onDeletePlaylist(playlistId);
+      showSuccessToast("Playlista została usunięta");
+      if (onRefresh) {
+        await onRefresh();
+      }
+    } catch (error) {
+      showErrorToast("Nie udało się usunąć playlisty");
+    }
+  };
+
   return (
     <div className="space-y-4 overflow-y-auto flex-grow p-4">
       <button
@@ -106,7 +118,38 @@ const PlaylistManagerContent: React.FC<PlaylistManagerContentProps> = ({
         />
         {buttonText}
       </button>
-      {/* Kopiujemy JSX z oryginalnego PlaylistManager.tsx (linie 119-267) */}
+
+      <CreatePlaylistModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onCreatePlaylist={onCreatePlaylist}
+        isAuthenticated={isAuthenticated}
+        showErrorToast={showErrorToast}
+        playlists={playlists}
+      />
+
+      {playlists.map((playlist) => (
+        <div key={playlist.id} className="space-y-2">
+          <div className="flex items-center justify-between">
+            <button
+              onClick={() => onPlayPlaylist(playlist.id)}
+              className="flex items-center gap-2 text-lg font-medium"
+            >
+              <FaMusic className="text-gray-400" />
+              {playlist.name}
+            </button>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => handleDeletePlaylist(playlist.id)}
+                className="p-2 text-gray-400 hover:text-red-500 transition-colors"
+                title="Usuń playlistę"
+              >
+                <FaTrash size={16} />
+              </button>
+            </div>
+          </div>
+        </div>
+      ))}
     </div>
   );
 };

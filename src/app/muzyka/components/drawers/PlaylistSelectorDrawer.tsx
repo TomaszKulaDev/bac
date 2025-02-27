@@ -1,26 +1,61 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaTimes, FaPlay, FaMusic, FaPlus } from "react-icons/fa";
-import { BaseDrawerProps } from "./types";
+import { FaTimes, FaPlay, FaMusic, FaPlus, FaTrash } from "react-icons/fa";
+import { PlaylistSelectorDrawerProps } from "./types";
 import { Playlist } from "@/app/muzyka/types";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  deletePlaylistAndRefetch,
+  selectPlaylists,
+  fetchPlaylists,
+} from "@/store/slices/features/playlistSlice";
+import { AppDispatch, RootState } from "@/store/store";
 
-interface PlaylistSelectorDrawerProps extends BaseDrawerProps {
-  playlists: Playlist[];
-  currentPlaylistId: string | null;
-  onPlayPlaylist: (playlistId: string) => void;
-  onCreatePlaylist?: () => void;
-}
-
-const PlaylistSelectorDrawer: React.FC<PlaylistSelectorDrawerProps> = ({
+const PlaylistSelectorDrawer: React.FC<
+  Omit<PlaylistSelectorDrawerProps, "playlists">
+> = ({
   isOpen,
   onClose,
-  playlists,
   currentPlaylistId,
   onPlayPlaylist,
   isAuthenticated,
   showErrorToast,
   onCreatePlaylist,
 }) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const playlistStatus = useSelector(
+    (state: RootState) => state.playlists.status
+  );
+  const reduxPlaylists = useSelector(selectPlaylists);
+
+  // Pobierz playlisty przy pierwszym renderowaniu i gdy modal jest otwarty
+  useEffect(() => {
+    if (isOpen) {
+      console.log("Fetching playlists...");
+      dispatch(fetchPlaylists());
+    }
+  }, [dispatch, isOpen]);
+
+  // Normalizuj playlisty z Redux do wymaganego formatu
+  const playlists = useMemo(() => {
+    console.log("Redux playlists:", reduxPlaylists);
+    return reduxPlaylists.map((playlist) => ({
+      ...playlist,
+      createdAt: new Date(playlist.createdAt),
+      id: playlist.id || playlist._id,
+    }));
+  }, [reduxPlaylists]);
+
+  // Log stanu komponentu
+  useEffect(() => {
+    console.log("Component state:", {
+      isOpen,
+      playlistStatus,
+      playlistsCount: playlists.length,
+      currentPlaylistId,
+    });
+  }, [isOpen, playlistStatus, playlists, currentPlaylistId]);
+
   const handlePlaylistSelect = useCallback(
     (playlistId: string) => {
       if (!isAuthenticated) {
@@ -46,6 +81,68 @@ const PlaylistSelectorDrawer: React.FC<PlaylistSelectorDrawerProps> = ({
     onCreatePlaylist?.();
   };
 
+  const handleDeleteClick = async (e: React.MouseEvent, playlistId: string) => {
+    e.stopPropagation();
+
+    if (!isAuthenticated) {
+      showErrorToast("Musisz być zalogowany, aby usunąć playlistę");
+      return;
+    }
+
+    if (playlistStatus === "loading") {
+      return; // Prevent multiple delete requests
+    }
+
+    try {
+      if (window.confirm("Czy na pewno chcesz usunąć tę playlistę?")) {
+        console.log("Starting playlist deletion for ID:", playlistId);
+
+        const result = await dispatch(
+          deletePlaylistAndRefetch(playlistId)
+        ).unwrap();
+        console.log("Delete playlist result:", result);
+
+        if (result.success) {
+          console.log("Playlist deleted successfully");
+          onClose();
+        } else {
+          console.error("Delete playlist failed:", result);
+          throw new Error(result.message || "Nie udało się usunąć playlisty");
+        }
+      }
+    } catch (error: any) {
+      console.error("Error during playlist deletion:", error);
+
+      if (error.status && error.message) {
+        showErrorToast(error.message);
+      } else {
+        showErrorToast(
+          error instanceof Error
+            ? error.message
+            : "Nie udało się usunąć playlisty"
+        );
+      }
+    }
+  };
+
+  // Renderuj loading state jeśli dane są pobierane
+  if (playlistStatus === "loading") {
+    return (
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ y: "100%" }}
+            animate={{ y: 0 }}
+            exit={{ y: "100%" }}
+            className="fixed bottom-0 left-0 right-0 bg-white shadow-2xl z-50 rounded-t-[32px] p-8 text-center"
+          >
+            <div className="text-gray-600">Ładowanie playlist...</div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    );
+  }
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -68,7 +165,8 @@ const PlaylistSelectorDrawer: React.FC<PlaylistSelectorDrawerProps> = ({
               <div className="w-12 h-1 bg-gray-200 rounded-full mx-auto mb-6" />
               <div className="flex items-center justify-between">
                 <h2 className="text-2xl font-bold tracking-tight text-gray-900">
-                  Twoje Playlisty
+                  Twoje Playlisty{" "}
+                  {playlists.length > 0 && `(${playlists.length})`}
                 </h2>
                 <button
                   onClick={onClose}
@@ -105,19 +203,21 @@ const PlaylistSelectorDrawer: React.FC<PlaylistSelectorDrawerProps> = ({
                 ) : (
                   <>
                     {playlists.map((playlist) => (
-                      <motion.button
+                      <motion.div
                         key={playlist.id}
-                        onClick={() => handleSelect(playlist)}
                         whileHover={{ scale: 1.01 }}
                         whileTap={{ scale: 0.99 }}
                         className={`w-full p-4 rounded-2xl flex items-center justify-between
-                          transition-all duration-200 ${
+                          transition-all duration-200 group ${
                             currentPlaylistId === playlist.id
                               ? "bg-gray-50 border border-gray-200"
                               : "hover:bg-gray-50 border border-transparent"
                           }`}
                       >
-                        <div className="flex items-center gap-4">
+                        <button
+                          onClick={() => handleSelect(playlist)}
+                          className="flex items-center gap-4 flex-1"
+                        >
                           <div
                             className={`w-12 h-12 rounded-xl flex items-center justify-center
                             ${
@@ -135,7 +235,7 @@ const PlaylistSelectorDrawer: React.FC<PlaylistSelectorDrawerProps> = ({
                               }
                             />
                           </div>
-                          <div>
+                          <div className="text-left">
                             <span className="block font-medium text-gray-900 mb-1">
                               {playlist.name}
                             </span>
@@ -146,13 +246,27 @@ const PlaylistSelectorDrawer: React.FC<PlaylistSelectorDrawerProps> = ({
                                 : "utworów"}
                             </span>
                           </div>
+                        </button>
+                        <div className="flex items-center gap-2">
+                          {currentPlaylistId === playlist.id && (
+                            <div className="w-10 h-10 rounded-xl bg-white border border-gray-200 flex items-center justify-center">
+                              <FaPlay
+                                size={16}
+                                className="text-amber-500 ml-1"
+                              />
+                            </div>
+                          )}
+                          <button
+                            onClick={(e) => handleDeleteClick(e, playlist.id)}
+                            className="w-10 h-10 rounded-xl border border-gray-200 flex items-center justify-center
+                              text-gray-400 hover:text-red-500 hover:border-red-200 hover:bg-red-50
+                              transition-all duration-200"
+                            title="Usuń playlistę"
+                          >
+                            <FaTrash size={14} />
+                          </button>
                         </div>
-                        {currentPlaylistId === playlist.id && (
-                          <div className="w-10 h-10 rounded-xl bg-white border border-gray-200 flex items-center justify-center">
-                            <FaPlay size={16} className="text-amber-500 ml-1" />
-                          </div>
-                        )}
-                      </motion.button>
+                      </motion.div>
                     ))}
                     {onCreatePlaylist && playlists.length < 2 && (
                       <motion.button
