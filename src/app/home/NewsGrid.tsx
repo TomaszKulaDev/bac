@@ -18,169 +18,169 @@ interface NewsArticle {
 export default function NewsGrid() {
   const [hoveredArticle, setHoveredArticle] = useState<string | null>(null);
 
-  // Przykładowe dane artykułów
+  // Przykładowe dane artykułów o bachacie
   const featuredArticles: NewsArticle[] = [
     {
       id: "1",
-      title: 'Jest decyzja ws. koni z Morskiego Oka. "Historyczny moment"',
+      title: "Mistrzostwa Polski w Bachacie 2024 - Znamy zwycięzców",
       image:
-        "https://images.unsplash.com/photo-1551993186-9f3995d7ed05?q=80&w=1770&auto=format&fit=crop",
-      slug: "decyzja-konie-morskie-oko",
+        "https://images.unsplash.com/photo-1504609813442-a8924e83f76e?q=80&w=1770&auto=format&fit=crop",
+      slug: "mistrzostwa-polski-bachata-2024",
     },
     {
       id: "2",
-      title: "Pobite i pogryzione niemowlę. Zarzuty dla rodziców",
+      title: "Nowy trend w bachacie - Fusion z elementami tańca współczesnego",
       image:
-        "https://images.unsplash.com/photo-1617575521317-d2974f3b56d2?q=80&w=1770&auto=format&fit=crop",
-      slug: "pobite-niemowle-zarzuty",
+        "https://images.unsplash.com/photo-1545128485-c400ce7b23d5?q=80&w=1770&auto=format&fit=crop",
+      slug: "nowy-trend-bachata-fusion",
     },
     {
       id: "3",
-      title: "Będzie kolejny szczyt ws. Ukrainy. Wśród zaproszonych Tusk",
+      title: "Międzynarodowy Festiwal Bachaty w Warszawie już w czerwcu",
       image:
-        "https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?q=80&w=1770&auto=format&fit=crop",
-      slug: "szczyt-ukraina-tusk",
+        "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?q=80&w=1770&auto=format&fit=crop",
+      slug: "festiwal-bachaty-warszawa",
     },
   ];
 
   const secondaryArticles: NewsArticle[] = [
     {
       id: "4",
-      title: "Niebezpieczna pogoda w weekend. Od poniedziałku duże zmiany",
+      title: "Top 5 szkół bachaty w Polsce według tancerzy",
       image:
-        "https://images.unsplash.com/photo-1500740516770-92bd004b996e?q=80&w=1772&auto=format&fit=crop",
-      slug: "niebezpieczna-pogoda-weekend",
+        "https://images.unsplash.com/photo-1546805022-9f8c92733b86?q=80&w=1770&auto=format&fit=crop",
+      slug: "top-szkoly-bachaty-polska",
     },
     {
       id: "5",
-      title: "Przez moment był bogatszy od Muska. Przelali mu 81 bilionów",
+      title: "Romeo Santos ogłasza europejską trasę koncertową",
       image:
-        "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=1770&auto=format&fit=crop",
-      slug: "bogatszy-od-muska",
+        "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1770&auto=format&fit=crop",
+      slug: "romeo-santos-trasa-europa",
     },
     {
       id: "6",
-      title: "Makabryczne odkrycie na Mokotowie. Ciała ojca i syna",
+      title: "Jak wybrać idealne buty do bachaty? Poradnik dla początkujących",
       image:
-        "https://images.unsplash.com/photo-1617575521317-d2974f3b56d2?q=80&w=1770&auto=format&fit=crop",
-      slug: "makabryczne-odkrycie-mokotow",
+        "https://images.unsplash.com/photo-1535525153412-5a42439a210d?q=80&w=1770&auto=format&fit=crop",
+      slug: "buty-do-bachaty-poradnik",
     },
     {
       id: "7",
-      title: "Gene Hackman i jego żona nie żyją. Szokujący zapis rozmowy",
+      title: "Historia bachaty - Od muzyki wiejskiej do światowego fenomenu",
       image:
-        "https://images.unsplash.com/photo-1594909122845-11baa439b7bf?q=80&w=1770&auto=format&fit=crop",
-      slug: "gene-hackman-zona-nie-zyja",
+        "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?q=80&w=1770&auto=format&fit=crop",
+      slug: "historia-bachaty-fenomen",
     },
   ];
 
   const videoArticles: NewsArticle[] = [
     {
       id: "8",
-      title: "Jagiellonia wnosi skargę do UEFA. Chodzi o mecz z Legią",
+      title: "Warsztaty online z mistrzami bachaty - Nowa seria lekcji",
       image:
-        "https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=1776&auto=format&fit=crop",
-      slug: "jagiellonia-skarga-uefa",
-      hasVideo: false,
+        "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=1770&auto=format&fit=crop",
+      slug: "warsztaty-online-bachata",
+      hasVideo: true,
     },
     {
       id: "9",
-      title: "Cyklon Garance niszczy tropikalną wyspę. Pierwsza ofiara",
+      title: "Bachata Sensual vs Dominicana - Różnice w technice i stylu",
       image:
-        "https://images.unsplash.com/photo-1504253163759-c23fccaebb55?q=80&w=1770&auto=format&fit=crop",
-      slug: "cyklon-garance-wyspa",
+        "https://images.unsplash.com/photo-1504609813442-a8924e83f76e?q=80&w=1770&auto=format&fit=crop",
+      slug: "bachata-sensual-dominicana-roznice",
       hasVideo: true,
     },
     {
       id: "10",
-      title: "Jechał fiatem na czołówkę z tirem. Miał ponad 2 promile",
+      title: "Pokaz mistrzowski Daniel i Desiree na festiwalu w Krakowie",
       image:
-        "https://images.unsplash.com/photo-1566024164372-0281f1133aa6?q=80&w=1771&auto=format&fit=crop",
-      slug: "fiat-czolowka-tir",
+        "https://images.unsplash.com/photo-1545128485-c400ce7b23d5?q=80&w=1770&auto=format&fit=crop",
+      slug: "pokaz-daniel-desiree-krakow",
       hasVideo: true,
     },
     {
       id: "11",
-      title: "Przebłysk Piotra Żyły w Trondheim. Do podium jednak daleko",
+      title: "Ćwiczenia rozciągające dla tancerzy bachaty - Seria wideo",
       image:
-        "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?q=80&w=1770&auto=format&fit=crop",
-      slug: "piotr-zyla-trondheim",
-      hasVideo: false,
+        "https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=1770&auto=format&fit=crop",
+      slug: "cwiczenia-rozciagajace-bachata",
+      hasVideo: true,
     },
   ];
 
   const sidebarArticles: NewsArticle[] = [
     {
       id: "12",
-      title: 'Zełenski komentuje awanturę w Białym Domu. "Dziękuję Ameryko"',
+      title: "Nowe kursy bachaty w Warszawie - Gdzie zacząć naukę?",
       image:
-        "https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?q=80&w=1770&auto=format&fit=crop",
-      slug: "zelenski-komentuje-awanture",
-      category: "POLSKA",
+        "https://images.unsplash.com/photo-1546805022-9f8c92733b86?q=80&w=1770&auto=format&fit=crop",
+      slug: "kursy-bachaty-warszawa",
+      category: "KURSY",
     },
     {
       id: "13",
-      title: 'Macron za Zełenskim. "Należy szanować tych, którzy walczą"',
+      title: "Bachata Moderna - Nowy styl podbija polskie parkiety",
       image: "",
-      slug: "macron-za-zelenskim",
-      category: "ŚWIAT",
+      slug: "bachata-moderna-nowy-styl",
+      category: "STYLE",
     },
     {
       id: "14",
-      title: "Rosyjski reporter wyproszony ze spotkania Trumpa z Zełenskim",
+      title: "Jak znaleźć partnera do bachaty? Porady dla solistów",
       image: "",
-      slug: "rosyjski-reporter-wyproszony",
-      category: "ŚWIAT",
+      slug: "partner-do-bachaty-porady",
+      category: "PORADY",
     },
     {
       id: "15",
-      title: "Radomiak ratuje remis. Kuriozalny gol pogrążył Widzew",
+      title: "Weekendowe social dance w największych miastach Polski",
       image: "",
-      slug: "radomiak-remis-widzew",
-      category: "POLSKA",
+      slug: "social-dance-polska",
+      category: "WYDARZENIA",
     },
     {
       id: "16",
-      title: "Ekstraklasa. WYNIKI, TERMINARZ, TABELA",
+      title: "KALENDARZ FESTIWALI BACHATY 2024 - POLSKA I EUROPA",
       image: "",
-      slug: "ekstraklasa-wyniki-terminarz",
-      category: "POLSKA",
+      slug: "kalendarz-festiwali-2024",
+      category: "WYDARZENIA",
     },
     {
       id: "17",
-      title: 'Tusk wspiera Zełenskiego. "Nie jesteście sami"',
+      title: "Muzyka do bachaty - Najnowsze hity i klasyki gatunku",
       image: "",
-      slug: "tusk-wspiera-zelenskiego",
-      category: "POLSKA",
+      slug: "muzyka-do-bachaty-hity",
+      category: "MUZYKA",
     },
     {
       id: "18",
-      title: "Fiasko rozmów. Zełenski opuścił Biały Dom",
+      title: "Bachata Fusion - Łączenie stylów tanecznych",
       image: "",
-      slug: "fiasko-rozmow-zelenski",
-      category: "ŚWIAT",
+      slug: "bachata-fusion-style",
+      category: "STYLE",
     },
     {
       id: "19",
-      title: "Trump: jestem bardzo zaangażowany na rzecz Polski",
+      title: "Polscy instruktorzy na międzynarodowych festiwalach",
       image: "",
-      slug: "trump-zaangazowany-polska",
-      category: "POLSKA",
+      slug: "polscy-instruktorzy-festiwale",
+      category: "LUDZIE",
     },
     {
       id: "20",
-      title: "Sędzia wciągał kokainę podczas Euro. UEFA podjęła decyzję",
+      title: "Technika prowadzenia w bachacie - Warsztaty dla mężczyzn",
       image: "",
-      slug: "sedzia-kokaina-euro",
-      category: "ŚWIAT",
+      slug: "technika-prowadzenia-warsztaty",
+      category: "KURSY",
     },
     {
       id: "21",
       title:
-        "Sachajko o umowie Ukraina-USA: ważne, żeby Polska też miała udział w zyskach",
+        "Poland Bachata League - Nowa edycja konkursu dla tancerzy amatorów",
       image: "",
-      slug: "sachajko-umowa-ukraina-usa",
-      category: "POLSKA",
+      slug: "poland-bachata-league-konkurs",
+      category: "KONKURSY",
     },
   ];
 
@@ -191,29 +191,29 @@ export default function NewsGrid() {
       : {
           id: "last",
           title:
-            "Sachajko o umowie Ukraina-USA: ważne, żeby Polska też miała udział w zyskach",
+            "Poland Bachata League - Nowa edycja konkursu dla tancerzy amatorów",
           image: "",
-          slug: "sachajko-umowa-ukraina-usa",
-          category: "POLSKA",
+          slug: "poland-bachata-league-konkurs",
+          category: "KONKURSY",
         };
 
   return (
-    <div className="bg-gray-900 text-white py-8">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="text-3xl font-bold">Wiadomości</h1>
+    <div className="bg-slate-50 text-gray-900 py-8">
+      <div className="max-w-[1600px] mx-auto px-8">
+        <div className="flex items-center justify-between mb-6 border-b border-gray-200 pb-3">
+          <h1 className="text-2xl font-bold">Aktualności Bachata</h1>
           <div className="flex space-x-4">
             <Link
-              href="/polska"
-              className="text-white font-bold hover:text-gray-300"
+              href="/wydarzenia"
+              className="text-amber-600 font-bold hover:text-amber-700"
             >
-              #POLSKA
+              #WYDARZENIA
             </Link>
             <Link
-              href="/swiat"
-              className="text-white font-bold hover:text-gray-300"
+              href="/kursy"
+              className="text-amber-600 font-bold hover:text-amber-700"
             >
-              #ŚWIAT
+              #KURSY
             </Link>
           </div>
         </div>
@@ -224,10 +224,11 @@ export default function NewsGrid() {
             {/* Large featured article */}
             <div className="col-span-12 md:col-span-6 row-span-2">
               <motion.div
-                className="relative h-[400px] rounded overflow-hidden"
+                className="relative h-[400px] rounded-xl overflow-hidden shadow-md"
                 onHoverStart={() => setHoveredArticle(featuredArticles[0].id)}
                 onHoverEnd={() => setHoveredArticle(null)}
-                whileHover={{ scale: 1.01 }}
+                whileHover={{ y: -5 }}
+                transition={{ duration: 0.3 }}
               >
                 <Link
                   href={`/artykul/${featuredArticles[0].slug}`}
@@ -243,9 +244,9 @@ export default function NewsGrid() {
                         : "scale-100"
                     }`}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
                   <div className="absolute bottom-0 left-0 right-0 p-4">
-                    <h2 className="text-xl font-bold leading-tight">
+                    <h2 className="text-xl font-bold leading-tight text-white group-hover:text-amber-200">
                       {featuredArticles[0].title}
                     </h2>
                   </div>
@@ -257,10 +258,11 @@ export default function NewsGrid() {
             <div className="col-span-12 md:col-span-6 grid grid-cols-12 gap-4">
               <div className="col-span-12">
                 <motion.div
-                  className="relative h-[190px] rounded overflow-hidden"
+                  className="relative h-[190px] rounded-xl overflow-hidden shadow-md"
                   onHoverStart={() => setHoveredArticle(featuredArticles[1].id)}
                   onHoverEnd={() => setHoveredArticle(null)}
-                  whileHover={{ scale: 1.01 }}
+                  whileHover={{ y: -5 }}
+                  transition={{ duration: 0.3 }}
                 >
                   <Link
                     href={`/artykul/${featuredArticles[1].slug}`}
@@ -276,9 +278,9 @@ export default function NewsGrid() {
                           : "scale-100"
                       }`}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
                     <div className="absolute bottom-0 left-0 right-0 p-4">
-                      <h2 className="text-lg font-bold leading-tight">
+                      <h2 className="text-lg font-bold leading-tight text-white group-hover:text-amber-200">
                         {featuredArticles[1].title}
                       </h2>
                     </div>
@@ -287,10 +289,11 @@ export default function NewsGrid() {
               </div>
               <div className="col-span-12">
                 <motion.div
-                  className="relative h-[190px] rounded overflow-hidden"
+                  className="relative h-[190px] rounded-xl overflow-hidden shadow-md"
                   onHoverStart={() => setHoveredArticle(featuredArticles[2].id)}
                   onHoverEnd={() => setHoveredArticle(null)}
-                  whileHover={{ scale: 1.01 }}
+                  whileHover={{ y: -5 }}
+                  transition={{ duration: 0.3 }}
                 >
                   <Link
                     href={`/artykul/${featuredArticles[2].slug}`}
@@ -306,9 +309,9 @@ export default function NewsGrid() {
                           : "scale-100"
                       }`}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
                     <div className="absolute bottom-0 left-0 right-0 p-4">
-                      <h2 className="text-lg font-bold leading-tight">
+                      <h2 className="text-lg font-bold leading-tight text-white group-hover:text-amber-200">
                         {featuredArticles[2].title}
                       </h2>
                     </div>
@@ -323,7 +326,7 @@ export default function NewsGrid() {
             {sidebarArticles.slice(0, 5).map((article) => (
               <motion.div
                 key={article.id}
-                className="flex items-center gap-3"
+                className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100"
                 whileHover={{ x: 3 }}
               >
                 {article.image && (
@@ -337,7 +340,7 @@ export default function NewsGrid() {
                   </div>
                 )}
                 <div>
-                  <h3 className="font-bold text-sm leading-tight">
+                  <h3 className="font-bold text-sm leading-tight text-gray-800 hover:text-amber-600">
                     {article.title}
                   </h3>
                 </div>
@@ -353,10 +356,11 @@ export default function NewsGrid() {
                 className="col-span-12 sm:col-span-6 md:col-span-3"
               >
                 <motion.div
-                  className="relative h-[120px] rounded overflow-hidden"
+                  className="relative h-[120px] rounded-xl overflow-hidden shadow-md"
                   onHoverStart={() => setHoveredArticle(article.id)}
                   onHoverEnd={() => setHoveredArticle(null)}
-                  whileHover={{ scale: 1.01 }}
+                  whileHover={{ y: -5 }}
+                  transition={{ duration: 0.3 }}
                 >
                   <Link
                     href={`/artykul/${article.slug}`}
@@ -372,9 +376,9 @@ export default function NewsGrid() {
                           : "scale-100"
                       }`}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
                     <div className="absolute bottom-0 left-0 right-0 p-3">
-                      <h2 className="text-sm font-bold leading-tight">
+                      <h2 className="text-sm font-bold leading-tight text-white group-hover:text-amber-200">
                         {article.title}
                       </h2>
                     </div>
@@ -389,7 +393,7 @@ export default function NewsGrid() {
             {sidebarArticles.slice(5, 10).map((article) => (
               <motion.div
                 key={article.id}
-                className="flex items-center gap-3"
+                className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100"
                 whileHover={{ x: 3 }}
               >
                 {article.image && (
@@ -403,7 +407,7 @@ export default function NewsGrid() {
                   </div>
                 )}
                 <div>
-                  <h3 className="font-bold text-sm leading-tight">
+                  <h3 className="font-bold text-sm leading-tight text-gray-800 hover:text-amber-600">
                     {article.title}
                   </h3>
                 </div>
@@ -419,10 +423,11 @@ export default function NewsGrid() {
                 className="col-span-12 sm:col-span-6 md:col-span-3"
               >
                 <motion.div
-                  className="relative h-[120px] rounded overflow-hidden"
+                  className="relative h-[120px] rounded-xl overflow-hidden shadow-md"
                   onHoverStart={() => setHoveredArticle(article.id)}
                   onHoverEnd={() => setHoveredArticle(null)}
-                  whileHover={{ scale: 1.01 }}
+                  whileHover={{ y: -5 }}
+                  transition={{ duration: 0.3 }}
                 >
                   <Link
                     href={`/artykul/${article.slug}`}
@@ -438,16 +443,16 @@ export default function NewsGrid() {
                           : "scale-100"
                       }`}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
 
                     {article.hasVideo && (
-                      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-black/60 rounded-full flex items-center justify-center">
+                      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-amber-600/80 rounded-full flex items-center justify-center">
                         <FaPlay className="text-white ml-1" />
                       </div>
                     )}
 
                     <div className="absolute bottom-0 left-0 right-0 p-3">
-                      <h2 className="text-sm font-bold leading-tight">
+                      <h2 className="text-sm font-bold leading-tight text-white group-hover:text-amber-200">
                         {article.title}
                       </h2>
                     </div>
@@ -459,15 +464,15 @@ export default function NewsGrid() {
 
           {/* Last sidebar article */}
           <div className="col-span-12 lg:col-span-4">
-            <div className="bg-red-600 p-2 rounded mb-2 inline-block text-xs font-bold">
-              POLSKIE RADIO 24
+            <div className="bg-amber-600 p-2 rounded mb-2 inline-block text-xs font-bold text-white">
+              POLAND BACHATA LEAGUE
             </div>
             <motion.div
-              className="flex items-center gap-3"
+              className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100"
               whileHover={{ x: 3 }}
             >
               <div>
-                <h3 className="font-bold text-sm leading-tight">
+                <h3 className="font-bold text-sm leading-tight text-gray-800 hover:text-amber-600">
                   {lastSidebarArticle.title}
                 </h3>
               </div>
