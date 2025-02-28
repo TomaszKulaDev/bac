@@ -20,19 +20,6 @@ export function middleware(request: NextRequest) {
   if (request.nextUrl.pathname.startsWith("/api/playlists")) {
     // Sprawdź sesję i przekieruj jeśli brak autoryzacji
   }
-  //TODO --------------------------------- usunac po sylwestrze --------------------------------------
-  // Data końca przekierowania
-  const endDate = new Date("2025-07-07"); // przykładowa data
-  const now = new Date();
-
-  if (request.nextUrl.pathname === "/" && now < endDate) {
-    return NextResponse.redirect(new URL("/muzyka", request.url), {
-      // Status 302 oznacza tymczasowe przekierowanie
-      status: 302,
-    });
-  }
-
-  //TODO --------------------------------- usunac po sylwestrze --------------------------------------
   return NextResponse.next();
 }
 

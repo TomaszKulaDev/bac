@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import {
@@ -6,9 +8,20 @@ import {
   FaTrophy,
   FaChartLine,
   FaCalendarAlt,
+  FaCog,
+  FaSignOutAlt,
+  FaShieldAlt,
+  FaUserEdit,
+  FaBell,
+  FaEnvelope,
+  FaQuestionCircle,
+  FaRegBell,
+  FaRegEnvelope,
+  FaUsers,
 } from "react-icons/fa";
 import { createPortal } from "react-dom";
 import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface UserMenuProps {
   user: {
@@ -23,17 +36,44 @@ export const UserMenu: React.FC<UserMenuProps> = ({ user, onLogout }) => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const [mounted, setMounted] = useState(false);
 
+  // Efekt dla montowania komponentu (SSR)
+  useEffect(() => {
+    setMounted(true);
+    return () => setMounted(false);
+  }, []);
+
+  // Efekt dla obsługi kliknięcia poza menu
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(event.target as Node) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false);
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+    // Efekt dla obsługi klawisza Escape
+    const handleEscapeKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener("keydown", handleEscapeKey);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleEscapeKey);
+    };
+  }, [isOpen]);
 
   const getMenuPosition = () => {
     if (!buttonRef.current) return { top: 0, right: 0 };
@@ -44,97 +84,280 @@ export const UserMenu: React.FC<UserMenuProps> = ({ user, onLogout }) => {
     };
   };
 
+  // Animacje dla menu
+  const menuVariants = {
+    hidden: {
+      opacity: 0,
+      y: -10,
+      scale: 0.95,
+      transition: {
+        duration: 0.2,
+        ease: "easeInOut",
+      },
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 0.2,
+        ease: "easeOut",
+      },
+    },
+    exit: {
+      opacity: 0,
+      y: -10,
+      scale: 0.95,
+      transition: {
+        duration: 0.15,
+        ease: "easeInOut",
+      },
+    },
+  };
+
+  // Animacje dla elementów menu
+  const itemVariants = {
+    hidden: { opacity: 0, x: -10 },
+    visible: (i: number) => ({
+      opacity: 1,
+      x: 0,
+      transition: {
+        delay: i * 0.05,
+        duration: 0.2,
+      },
+    }),
+    exit: { opacity: 0, x: 10 },
+  };
+
+  // Grupy elementów menu
+  const menuItems = [
+    {
+      group: "Profil",
+      items: [
+        {
+          icon: <FaUserEdit className="w-4 h-4 text-amber-400" />,
+          label: "Twój profil",
+          href: "/profile",
+        },
+        {
+          icon: <FaRegBell className="w-4 h-4 text-blue-400" />,
+          label: "Powiadomienia",
+          href: "/notifications",
+          badge: "5",
+        },
+        {
+          icon: <FaRegEnvelope className="w-4 h-4 text-green-400" />,
+          label: "Wiadomości",
+          href: "/messages",
+          badge: "3",
+        },
+        {
+          icon: <FaCog className="w-4 h-4 text-gray-400" />,
+          label: "Ustawienia",
+          href: "/profile/edit/settings",
+        },
+      ],
+    },
+    {
+      group: "Poland Bachata League",
+      items: [
+        {
+          icon: <FaTrophy className="w-4 h-4 text-amber-400" />,
+          label: "Poland Bachata League",
+          href: "/poland-bachata-league",
+        },
+        {
+          icon: <FaChartLine className="w-4 h-4 text-blue-400" />,
+          label: "Mój Ranking",
+          href: "/poland-bachata-league/ranking",
+        },
+        {
+          icon: <FaCalendarAlt className="w-4 h-4 text-green-400" />,
+          label: "Wydarzenia Ligowe",
+          href: "/poland-bachata-league/events",
+        },
+      ],
+    },
+  ];
+
+  // Dodajemy menu administratora, jeśli użytkownik ma rolę admin
+  const adminItems = {
+    group: "Administracja",
+    items: [
+      {
+        icon: <FaShieldAlt className="w-4 h-4 text-purple-400" />,
+        label: "Panel Admina",
+        href: "/admin",
+      },
+      {
+        icon: <FaUsers className="w-4 h-4 text-purple-400" />,
+        label: "Zarządzanie użytkownikami",
+        href: "/admin/users",
+      },
+    ],
+  };
+
+  // Dodajemy sekcję pomocy
+  const helpItems = {
+    group: "Pomoc",
+    items: [
+      {
+        icon: <FaQuestionCircle className="w-4 h-4 text-teal-400" />,
+        label: "Centrum pomocy",
+        href: "/help",
+      },
+    ],
+  };
+
+  // Kompletna lista elementów menu
+  const allMenuItems = [...menuItems];
+
+  // Dodajemy sekcję administratora, jeśli użytkownik ma rolę admin
+  if (user.role === "admin") {
+    allMenuItems.push(adminItems);
+  }
+
+  // Dodajemy sekcję pomocy
+  allMenuItems.push(helpItems);
+
   return (
     <>
-      <button
+      <motion.button
         ref={buttonRef}
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-2 text-gray-700 hover:text-gray-900 
-        transition-all duration-200 text-[15px] tracking-wide font-medium group"
+        transition-all duration-200 text-[15px] tracking-wide font-medium group
+        p-1.5 rounded-full hover:bg-gray-50"
         aria-expanded={isOpen}
         aria-haspopup="true"
+        whileTap={{ scale: 0.97 }}
       >
-        <Image
-          src={user.image ?? "/images/default-avatar.png"}
-          alt={user.name}
-          width={32}
-          height={32}
-          className="rounded-full"
-        />
-        <span>{user.name}</span>
-        <FaCaretDown
-          className={`w-4 h-4 transition-transform duration-200 
-        ${isOpen ? "rotate-180" : ""}`}
-        />
-      </button>
+        <div className="relative">
+          <Image
+            src={user.image ?? "/images/default-avatar.png"}
+            alt={user.name}
+            width={32}
+            height={32}
+            className="rounded-full ring-2 ring-white"
+          />
+          <motion.div
+            className="absolute -bottom-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white"
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.2 }}
+            aria-label="Status: online"
+          />
+        </div>
+        <span className="hidden sm:inline">{user.name}</span>
+        <motion.div
+          animate={{ rotate: isOpen ? 180 : 0 }}
+          transition={{ duration: 0.2 }}
+        >
+          <FaCaretDown className="w-4 h-4" />
+        </motion.div>
+      </motion.button>
 
-      {isOpen &&
+      {mounted &&
         createPortal(
-          <div
-            ref={menuRef}
-            className="fixed rounded-xl shadow-lg bg-white/95 backdrop-blur-sm
-            ring-1 ring-white/20 overflow-hidden"
-            style={{
-              ...getMenuPosition(),
-              zIndex: 9999,
-              width: "220px",
-            }}
-          >
-            <div className="py-1" role="menu">
-              <Link
-                href="/profile"
-                className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 
-                hover:bg-gray-50 transition-colors duration-200"
+          <AnimatePresence>
+            {isOpen && (
+              <motion.div
+                ref={menuRef}
+                className="fixed rounded-xl shadow-lg bg-white/95 backdrop-blur-sm
+              ring-1 ring-black/5 overflow-hidden z-[9999]"
+                style={{
+                  ...getMenuPosition(),
+                  width: "260px",
+                }}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                variants={menuVariants}
+                role="menu"
+                aria-orientation="vertical"
+                aria-labelledby="user-menu-button"
               >
-                <FaUser className="w-4 h-4 text-gray-400" />
-                Twój profil
-              </Link>
+                {/* Nagłówek menu */}
+                <div className="p-4 border-b border-gray-100">
+                  <div className="flex items-center gap-3">
+                    <Image
+                      src={user.image ?? "/images/default-avatar.png"}
+                      alt={user.name}
+                      width={40}
+                      height={40}
+                      className="rounded-full"
+                    />
+                    <div>
+                      <div className="font-medium text-gray-900">
+                        {user.name}
+                      </div>
+                      {user.role && (
+                        <div className="text-xs text-gray-500">{user.role}</div>
+                      )}
+                    </div>
+                  </div>
+                </div>
 
-              <Link
-                href="/poland-bachata-league"
-                className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 
-                hover:bg-gray-50 transition-colors duration-200"
-              >
-                <FaTrophy className="w-4 h-4 text-amber-400" />
-                Poland Bachata League
-              </Link>
-              <Link
-                href="/poland-bachata-league/ranking"
-                className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 
-                hover:bg-gray-50 transition-colors duration-200"
-              >
-                <FaChartLine className="w-4 h-4 text-blue-400" />
-                Mój Ranking
-              </Link>
-              <Link
-                href="/poland-bachata-league/events"
-                className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 
-                hover:bg-gray-50 transition-colors duration-200"
-              >
-                <FaCalendarAlt className="w-4 h-4 text-green-400" />
-                Wydarzenia Ligowe
-              </Link>
+                {/* Grupy elementów menu */}
+                <div className="max-h-[calc(100vh-200px)] overflow-y-auto">
+                  {allMenuItems.map((group, groupIndex) => (
+                    <div key={`group-${groupIndex}`} className="py-2 px-2">
+                      <div className="px-3 py-1 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        {group.group}
+                      </div>
 
-              {user.role === "admin" && (
-                <Link
-                  href="/admin"
-                  className="flex items-center gap-3 px-4 py-3 text-sm text-gray-700 
-                  hover:bg-gray-50 transition-colors duration-200"
+                      {group.items.map((item, index) => (
+                        <motion.div
+                          key={`item-${groupIndex}-${index}`}
+                          custom={index}
+                          variants={itemVariants}
+                          initial="hidden"
+                          animate="visible"
+                          exit="exit"
+                        >
+                          <Link
+                            href={item.href}
+                            className="flex items-center gap-3 px-3 py-2 text-sm text-gray-700 
+                          hover:bg-gray-50 rounded-lg transition-colors duration-200 my-0.5"
+                            onClick={() => setIsOpen(false)}
+                            role="menuitem"
+                          >
+                            {item.icon}
+                            <span>{item.label}</span>
+                            {item.badge && (
+                              <span className="ml-auto bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5 min-w-[20px] text-center">
+                                {item.badge}
+                              </span>
+                            )}
+                          </Link>
+                        </motion.div>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+
+                {/* Przycisk wylogowania */}
+                <motion.div
+                  className="p-2 border-t border-gray-100"
+                  variants={itemVariants}
+                  custom={11}
                 >
-                  <FaUser className="w-4 h-4 text-gray-400" />
-                  Panel Admina
-                </Link>
-              )}
-              <button
-                onClick={onLogout}
-                className="w-full flex items-center gap-3 px-4 py-3 text-sm text-red-600 
-                hover:bg-red-50 transition-colors duration-200"
-              >
-                <FaUser className="w-4 h-4 text-red-400" />
-                Wyloguj się
-              </button>
-            </div>
-          </div>,
+                  <button
+                    onClick={() => {
+                      setIsOpen(false);
+                      onLogout();
+                    }}
+                    className="w-full flex items-center gap-3 px-3 py-2 text-sm text-red-600 
+                  hover:bg-red-50 rounded-lg transition-colors duration-200"
+                    role="menuitem"
+                  >
+                    <FaSignOutAlt className="w-4 h-4 text-red-500" />
+                    Wyloguj się
+                  </button>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>,
           document.body
         )}
     </>

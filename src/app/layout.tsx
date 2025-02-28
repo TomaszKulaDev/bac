@@ -75,9 +75,19 @@ import "leaflet/dist/leaflet.css";
 import QueryClientProvider from "@/providers/QueryClientProvider";
 import "react-toastify/dist/ReactToastify.css";
 import Script from "next/script";
+import { NavContent } from "@/components/NavContent";
+import ScrollToTopButton from "@/components/ScrollToTopButton";
 
 // Inicjalizujemy czcionkę Inter z podzbiorem "latin", aby używać jej w aplikacji
 const inter = Inter({ subsets: ["latin"] });
+
+export const metadata: Metadata = {
+  title: "Baciata - Polski Portal o Bachacie",
+  description:
+    "Największy polski portal poświęcony bachacie. Znajdziesz tu wszystko, co związane z tańcem, muzyką i kulturą bachaty.",
+  keywords:
+    "bachata, taniec, muzyka, wydarzenia, festiwale, kursy, szkoły tańca, polska, dominikana, sensual",
+};
 
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -107,12 +117,13 @@ export default function RootLayout({ children }: RootLayoutProps) {
             {/* Owijamy aplikację w ClientLayout, aby ustawić układ strony */}
             <ClientLayout>
               {/* Renderujemy nawigację za pomocą komponentu NavContent */}
-              <DynamicNavContent />
+              <NavContent />
               {/* Renderujemy dzieci przekazane do RootLayout */}
               {children}
             </ClientLayout>
             <CookieConsent />
           </ClientProviders>
+          <ScrollToTopButton />
         </QueryClientProvider>
       </body>
     </html>

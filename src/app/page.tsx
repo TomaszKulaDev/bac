@@ -1,136 +1,245 @@
 "use client";
-
-import React, { useState, useEffect } from "react";
+import { Suspense, useState } from "react";
+import LatestNews from "@/app/home/LatestNews";
+import TrendingTopics from "@/app/home/TrendingTopics";
+import NewsCategories from "@/app/home/HashTags";
+import Newsletter from "@/app/home/Newsletter";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
+import { FaFacebook, FaInstagram, FaYoutube } from "react-icons/fa";
 import Link from "next/link";
-import Image from "next/image";
-import { Poll, polls } from "@/app/news/components/Polls";
-import { NewsTickerBar } from "@/app/news/components/NewsTickerBar/NewsTickerBar";
-import { latestNewsData as tickerNewsData } from "@/app/news/components/NewsTickerBar/data";
-import { BachataVideoArtist } from "@/app/news/components/BachataVideoBar/BachataVideoArtist";
-import { bachataVideosData } from "@/app/news/components/BachataVideoBar/data";
-import { RightSideBar } from "@/app/news/components/NewsGrid";
-import { topicsData } from "@/app/news/components/NewsGrid/data";
-import { PollsRecord } from "@/app/news/components/Polls/types";
-import { NewsGrid } from "@/app/news/components/NewsGrid";
-import { newsGridData } from "@/app/news/components/NewsGrid/data";
-import { Header } from "@/app/news/components/Header";
-import { DailyHighlights } from "@/app/news/components/DailyHighlights/DailyHighlights";
-import {
-  highlightsData,
-  categories,
-} from "@/app/news/components/DailyHighlights/data";
-import { PolishPromoArtist } from "@/app/news/components/PolishPromoArtist/PolishPromoArtist";
-import { polishArtistsData } from "@/app/news/components/PolishPromoArtist/data";
-import { jsonLd } from "./page.metadata";
+import PopularTags from "@/app/home/HashTags";
+import EventsHighlights from "@/app/home/EventsHighlights";
+import NewsGrid from "@/app/home/NewsGrid";
 
-// Uproszczony interfejs bez elementów społecznościowych
-interface NewsItem {
-  id: string;
-  title: string;
-  image: string;
-  url: string;
-}
-
-// Uproszczony komponent dla artykułu
-const ArticleListItem = ({ news }: { news: NewsItem }) => {
+export default function HomePage() {
   return (
-    <Link href={`/news/${news.id}`} className="group block">
-      <div className="flex gap-5 group-hover:bg-gray-50 p-2 -mx-2 rounded-lg transition-colors">
-        {/* Miniatura */}
-        <div className="relative w-[180px] h-[120px] flex-shrink-0 overflow-hidden rounded-sm">
-          <Image
-            src={news.image}
-            alt={news.title}
-            fill
-            sizes="180px"
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
-          />
-        </div>
+    <div className="min-h-screen bg-slate-50">
+      <main className="pt-8">
+        {/* News Grid */}
+        <section className="py-8">
+          <NewsGrid />
+        </section>
 
-        {/* Content */}
-        <div className="pt-1 flex-1">
-          <h2 className="font-bold text-[15px] leading-tight mb-3 group-hover:text-gray-900 transition-colors">
-            {news.title}
-          </h2>
-        </div>
-      </div>
-    </Link>
-  );
-};
+        {/* Categories */}
+        <section className="py-8 border-b border-gray-200">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <NewsCategories />
+          </div>
+        </section>
 
-export default function Home() {
-  // Stan dla interakcji użytkownika z useMemo dla stabilnych wartości początkowych
-  const [isClient, setIsClient] = useState(false);
-  const [pollsState, setPollsState] = useState<PollsRecord>(polls);
+        {/* Events Highlights */}
+        <section className="py-8 border-b border-gray-200">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <EventsHighlights />
+          </div>
+        </section>
 
-  // Inicjalizacja stanu po stronie klienta
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
+        {/* Latest & Trending */}
+        <section className="py-12">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+              <div className="lg:col-span-2">
+                <div className="flex items-center justify-between mb-8">
+                  <h2 className="text-2xl font-bold text-gray-900">
+                    Najnowsze artykuły
+                  </h2>
+                  <Link
+                    href="/artykuly"
+                    className="text-amber-600 hover:text-amber-700 text-sm font-medium"
+                  >
+                    Zobacz wszystkie
+                  </Link>
+                </div>
+                <div className="space-y-12">
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <LatestNews />
+                  </Suspense>
+                </div>
+              </div>
+              <div>
+                <div className="sticky top-24">
+                  <div className="mb-10">
+                    <div className="flex items-center justify-between mb-6">
+                      <h2 className="text-xl font-bold text-gray-900">
+                        Popularne tematy
+                      </h2>
+                      <Link
+                        href="/popularne"
+                        className="text-amber-600 hover:text-amber-700 text-sm font-medium"
+                      >
+                        Więcej
+                      </Link>
+                    </div>
+                    <TrendingTopics />
+                  </div>
 
-  const handleVote = (pollId: string, optionId: string) => {
-    setPollsState((currentPolls) => {
-      const poll = currentPolls[pollId];
-      if (!poll) {
-        console.error(`Poll with id ${pollId} not found`);
-        return currentPolls;
-      }
-
-      return {
-        ...currentPolls,
-        [pollId]: {
-          ...poll,
-          options: poll.options.map((option) => ({
-            ...option,
-            votes: option.id === optionId ? option.votes + 1 : option.votes,
-          })),
-          totalVotes: poll.totalVotes + 1,
-        },
-      };
-    });
-  };
-
-  return (
-    <main className="min-h-screen bg-white font-['Roboto_Condensed']">
-      <BachataVideoArtist videos={bachataVideosData} />
-      <PolishPromoArtist artists={polishArtistsData} />
-      <NewsTickerBar latestNews={tickerNewsData} />
-
-      {/* -------------------------- SEKCJA 2: NAGŁÓWEK -------------------------- */}
-      <Header />
-
-      {/* -------------------------- SEKCJA 3: WYRÓŻNIONE WIADOMOŚCI -------------------------- */}
-      <DailyHighlights highlights={highlightsData} categories={categories} />
-
-      {/* -------------------------- SEKCJA 4: BACHATA NEWS -------------------------- */}
-
-      {/* Main Content Container */}
-      <div className="container mx-auto px-4 py-6 font-['Roboto_Condensed']">
-        <div className="flex gap-6">
-          {/* -------------------------- SEKCJA 5: LEWA KOLUMNA (62%) -------------------------- */}
-          <div className="w-[62%]">
-            {/* Główna siatka - najnowsze 10 newsów */}
-            <div className="w-full mt-8">
-              <NewsGrid newsItems={newsGridData} />
-            </div>
-            <div className="grid grid-cols-3 gap-6 mt-8">
-              <Poll data={pollsState.partnerPoll} onVote={handleVote} />
-              <Poll data={pollsState.frequencyPoll} onVote={handleVote} />
-              <Poll data={pollsState.stylePoll} onVote={handleVote} />
+                  <div>
+                    <Newsletter />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          {/* -------------------------- SEKCJA 6: PRAWA KOLUMNA (20%) -------------------------- */}
-          <div className="w-[20%]">
-            {/* Sidebar - starsze newsy */}
-            <RightSideBar topics={topicsData} />
+        </section>
+      </main>
+
+      {/* Footer */}
+      <footer className="bg-gray-900 text-white py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+              <Link href="/" className="flex items-center">
+                <div className="w-10 h-10 bg-amber-600 rounded-lg flex items-center justify-center text-white font-bold text-xl">
+                  B
+                </div>
+                <span className="ml-3 text-xl font-bold text-white">
+                  Baciata
+                </span>
+              </Link>
+              <p className="mt-4 text-gray-400 text-sm">
+                Największy polski portal poświęcony bachacie. Znajdziesz tu
+                wszystko, co związane z tańcem, muzyką i kulturą bachaty.
+              </p>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold mb-4 text-gray-200">
+                Nawigacja
+              </h3>
+              <ul className="space-y-2">
+                <li>
+                  <Link
+                    href="/wydarzenia"
+                    className="text-gray-400 hover:text-amber-400 text-sm"
+                  >
+                    Wydarzenia
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/spolecznosc"
+                    className="text-gray-400 hover:text-amber-400 text-sm"
+                  >
+                    Społeczność
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/szkoly"
+                    className="text-gray-400 hover:text-amber-400 text-sm"
+                  >
+                    Szkoły
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/blog"
+                    className="text-gray-400 hover:text-amber-400 text-sm"
+                  >
+                    Blog
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold mb-4 text-gray-200">
+                Społeczność
+              </h3>
+              <ul className="space-y-2">
+                <li>
+                  <Link
+                    href="/szukam-partnera-do-bachaty"
+                    className="text-gray-400 hover:text-amber-400 text-sm"
+                  >
+                    Szukam partnera do bachaty
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/poland-bachata-league"
+                    className="text-gray-400 hover:text-amber-400 text-sm"
+                  >
+                    Poland Bachata League
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/instruktorzy-bachaty"
+                    className="text-gray-400 hover:text-amber-400 text-sm"
+                  >
+                    Instruktorzy bachaty
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold mb-4 text-gray-200">
+                Kontakt
+              </h3>
+              <ul className="space-y-2">
+                <li>
+                  <Link
+                    href="/kontakt"
+                    className="text-gray-400 hover:text-amber-400 text-sm"
+                  >
+                    Kontakt
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/oferta-reklamowa"
+                    className="text-gray-400 hover:text-amber-400 text-sm"
+                  >
+                    Oferta reklamowa
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/wspolpraca"
+                    className="text-gray-400 hover:text-amber-400 text-sm"
+                  >
+                    Współpraca
+                  </Link>
+                </li>
+              </ul>
+              <div className="mt-4 flex space-x-4">
+                <a href="#" className="text-gray-400 hover:text-amber-400">
+                  <FaFacebook className="h-5 w-5" />
+                </a>
+                <a href="#" className="text-gray-400 hover:text-amber-400">
+                  <FaInstagram className="h-5 w-5" />
+                </a>
+                <a href="#" className="text-gray-400 hover:text-amber-400">
+                  <FaYoutube className="h-5 w-5" />
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+            <p className="text-gray-400 text-sm">
+              &copy; {new Date().getFullYear()} Baciata.pl. Wszelkie prawa
+              zastrzeżone.
+            </p>
+            <div className="flex space-x-6 mt-4 md:mt-0">
+              <Link
+                href="/polityka-prywatnosci-baciata-pl"
+                className="text-gray-400 hover:text-amber-400 text-sm"
+              >
+                Polityka prywatności
+              </Link>
+              <Link
+                href="/warunki-korzystania-z-uslugi-baciata-pl"
+                className="text-gray-400 hover:text-amber-400 text-sm"
+              >
+                Warunki korzystania
+              </Link>
+            </div>
           </div>
         </div>
-      </div>
-
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-    </main>
+      </footer>
+    </div>
   );
 }
