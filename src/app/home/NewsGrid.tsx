@@ -224,7 +224,7 @@ export default function NewsGrid() {
             {/* Large featured article */}
             <div className="col-span-12 md:col-span-6 row-span-2">
               <motion.div
-                className="relative h-[400px] rounded-xl overflow-hidden shadow-md"
+                className="relative h-[400px] rounded-none overflow-hidden shadow-md"
                 onHoverStart={() => setHoveredArticle(featuredArticles[0].id)}
                 onHoverEnd={() => setHoveredArticle(null)}
                 whileHover={{ y: -5 }}
@@ -258,7 +258,7 @@ export default function NewsGrid() {
             <div className="col-span-12 md:col-span-6 grid grid-cols-12 gap-4">
               <div className="col-span-12">
                 <motion.div
-                  className="relative h-[190px] rounded-xl overflow-hidden shadow-md"
+                  className="relative h-[190px] rounded-none overflow-hidden shadow-md"
                   onHoverStart={() => setHoveredArticle(featuredArticles[1].id)}
                   onHoverEnd={() => setHoveredArticle(null)}
                   whileHover={{ y: -5 }}
@@ -289,7 +289,7 @@ export default function NewsGrid() {
               </div>
               <div className="col-span-12">
                 <motion.div
-                  className="relative h-[190px] rounded-xl overflow-hidden shadow-md"
+                  className="relative h-[190px] rounded-none overflow-hidden shadow-md"
                   onHoverStart={() => setHoveredArticle(featuredArticles[2].id)}
                   onHoverEnd={() => setHoveredArticle(null)}
                   whileHover={{ y: -5 }}
@@ -330,7 +330,7 @@ export default function NewsGrid() {
                 whileHover={{ x: 3 }}
               >
                 {article.image && (
-                  <div className="relative w-16 h-16 flex-shrink-0 rounded overflow-hidden">
+                  <div className="relative w-16 h-16 flex-shrink-0 rounded-none overflow-hidden">
                     <Image
                       src={article.image}
                       alt={article.title}
@@ -356,7 +356,7 @@ export default function NewsGrid() {
                 className="col-span-12 sm:col-span-6 md:col-span-3"
               >
                 <motion.div
-                  className="relative h-[120px] rounded-xl overflow-hidden shadow-md"
+                  className="relative h-[120px] rounded-none overflow-hidden shadow-md"
                   onHoverStart={() => setHoveredArticle(article.id)}
                   onHoverEnd={() => setHoveredArticle(null)}
                   whileHover={{ y: -5 }}
@@ -397,7 +397,7 @@ export default function NewsGrid() {
                 whileHover={{ x: 3 }}
               >
                 {article.image && (
-                  <div className="relative w-16 h-16 flex-shrink-0 rounded overflow-hidden">
+                  <div className="relative w-16 h-16 flex-shrink-0 rounded-none overflow-hidden">
                     <Image
                       src={article.image}
                       alt={article.title}
@@ -423,7 +423,7 @@ export default function NewsGrid() {
                 className="col-span-12 sm:col-span-6 md:col-span-3"
               >
                 <motion.div
-                  className="relative h-[120px] rounded-xl overflow-hidden shadow-md"
+                  className="relative h-[120px] rounded-none overflow-hidden shadow-md"
                   onHoverStart={() => setHoveredArticle(article.id)}
                   onHoverEnd={() => setHoveredArticle(null)}
                   whileHover={{ y: -5 }}

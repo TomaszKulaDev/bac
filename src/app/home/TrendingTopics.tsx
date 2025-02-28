@@ -88,10 +88,10 @@ export default function TrendingTopics() {
   return (
     <div className="space-y-6">
       {/* Przełączniki czasowe */}
-      <div className="flex rounded-lg bg-gray-100 p-1 mb-6">
+      <div className="flex rounded-none bg-gray-100 p-1 mb-6">
         <button
           onClick={() => setActiveTimeframe("day")}
-          className={`flex-1 py-1.5 text-sm font-medium rounded-md transition-all ${
+          className={`flex-1 py-1.5 text-sm font-medium rounded-none transition-all ${
             activeTimeframe === "day"
               ? "bg-white text-amber-600 shadow-sm"
               : "text-gray-600 hover:text-amber-600"
@@ -101,7 +101,7 @@ export default function TrendingTopics() {
         </button>
         <button
           onClick={() => setActiveTimeframe("week")}
-          className={`flex-1 py-1.5 text-sm font-medium rounded-md transition-all ${
+          className={`flex-1 py-1.5 text-sm font-medium rounded-none transition-all ${
             activeTimeframe === "week"
               ? "bg-white text-amber-600 shadow-sm"
               : "text-gray-600 hover:text-amber-600"
@@ -111,7 +111,7 @@ export default function TrendingTopics() {
         </button>
         <button
           onClick={() => setActiveTimeframe("month")}
-          className={`flex-1 py-1.5 text-sm font-medium rounded-md transition-all ${
+          className={`flex-1 py-1.5 text-sm font-medium rounded-none transition-all ${
             activeTimeframe === "month"
               ? "bg-white text-amber-600 shadow-sm"
               : "text-gray-600 hover:text-amber-600"
@@ -139,7 +139,7 @@ export default function TrendingTopics() {
               className="flex items-start gap-6"
             >
               <span
-                className="flex-shrink-0 w-12 h-12 rounded-xl bg-amber-50 text-amber-600 
+                className="flex-shrink-0 w-12 h-12 rounded-none bg-amber-50 text-amber-600 
                          flex items-center justify-center font-bold text-xl shadow-sm
                          group-hover:bg-amber-100 transition-colors"
               >
@@ -194,7 +194,7 @@ export default function TrendingTopics() {
           href="/popularne"
           className="block text-center py-3 text-amber-600 font-medium 
                  hover:text-amber-700 transition-colors bg-amber-50 hover:bg-amber-100
-                 rounded-xl"
+                 rounded-none"
         >
           Zobacz więcej popularnych tematów
         </Link>

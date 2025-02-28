@@ -71,7 +71,7 @@ export default function EventsHighlights() {
         {events.map((event) => (
           <motion.div
             key={event.id}
-            className="relative overflow-hidden rounded-md shadow-md h-[300px] group"
+            className="relative overflow-hidden rounded-none shadow-md h-[300px] group"
             onHoverStart={() => setHoveredEvent(event.id)}
             onHoverEnd={() => setHoveredEvent(null)}
             whileHover={{ y: -5 }}

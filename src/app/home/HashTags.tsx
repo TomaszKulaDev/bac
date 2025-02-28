@@ -19,12 +19,10 @@ export default function PopularTags() {
     "dominicana",
     "moderna",
     "tradicional",
-    "urban",
-    "salsa",
     "partnerzy",
+    "body movement",
     "szkoły",
     "konkursy",
-    "wydarzenia",
     "warsztaty",
     "social",
     "technika",
@@ -32,7 +30,6 @@ export default function PopularTags() {
     "prowadzenie",
     "styling",
     "footwork",
-    "body movement",
   ];
 
   return (
@@ -58,7 +55,7 @@ export default function PopularTags() {
           >
             <Link
               href={`/tag/${tag}`}
-              className={`inline-block px-3 py-1.5 rounded-sm transition-all ${
+              className={`inline-block px-3 py-1.5 rounded-none transition-all ${
                 activeTag === tag
                   ? "bg-amber-100 text-amber-800"
                   : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:text-gray-900"

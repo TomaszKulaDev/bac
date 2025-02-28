@@ -69,7 +69,7 @@ export default function FeaturedNews() {
   };
 
   return (
-    <div className="relative h-full w-full rounded-2xl overflow-hidden bg-gray-900 shadow-lg">
+    <div className="relative h-full w-full rounded-none overflow-hidden bg-gray-900 shadow-lg">
       <AnimatePresence mode="wait">
         {featuredArticles.map(
           (article, index) =>
@@ -133,7 +133,7 @@ export default function FeaturedNews() {
       <div className="absolute top-1/2 -translate-y-1/2 left-4 right-4 flex justify-between pointer-events-none">
         <button
           onClick={prevSlide}
-          className="p-3 rounded-full bg-black/30 backdrop-blur-sm text-white 
+          className="p-3 rounded-none bg-black/30 backdrop-blur-sm text-white 
                    hover:bg-amber-600/70 transition-colors pointer-events-auto shadow-md"
           aria-label="Poprzedni slajd"
         >
@@ -141,7 +141,7 @@ export default function FeaturedNews() {
         </button>
         <button
           onClick={nextSlide}
-          className="p-3 rounded-full bg-black/30 backdrop-blur-sm text-white 
+          className="p-3 rounded-none bg-black/30 backdrop-blur-sm text-white 
                    hover:bg-amber-600/70 transition-colors pointer-events-auto shadow-md"
           aria-label="Następny slajd"
         >

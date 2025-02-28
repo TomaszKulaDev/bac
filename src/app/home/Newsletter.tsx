@@ -96,9 +96,9 @@ export default function Newsletter() {
   };
 
   return (
-    <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
+    <div className="bg-white rounded-none p-6 border border-gray-100 shadow-sm">
       <div className="flex items-center gap-3 mb-4">
-        <div className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center shadow-sm">
+        <div className="w-10 h-10 rounded-none bg-amber-100 flex items-center justify-center shadow-sm">
           <FaEnvelope className="w-5 h-5 text-amber-600" />
         </div>
         <div>
@@ -130,7 +130,7 @@ export default function Newsletter() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Twój adres email"
                   required
-                  className="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 
+                  className="w-full px-4 py-3 rounded-none bg-white border border-gray-200 
                            placeholder:text-gray-400 focus:outline-none focus:ring-2 
                            focus:ring-amber-500 focus:border-transparent shadow-sm"
                 />
@@ -161,7 +161,7 @@ export default function Newsletter() {
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         placeholder="Twoje imię (opcjonalnie)"
-                        className="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 
+                        className="w-full px-4 py-3 rounded-none bg-white border border-gray-200 
                                  placeholder:text-gray-400 focus:outline-none focus:ring-2 
                                  focus:ring-amber-500 focus:border-transparent shadow-sm"
                       />
@@ -173,7 +173,7 @@ export default function Newsletter() {
               <button
                 type="submit"
                 className="w-full px-4 py-3 bg-amber-600 text-white font-medium 
-                         rounded-xl transition-all hover:bg-amber-700 
+                         rounded-none transition-all hover:bg-amber-700 
                          focus:outline-none focus:ring-2 focus:ring-amber-500 
                          focus:ring-offset-2 shadow-sm"
               >
@@ -197,7 +197,7 @@ export default function Newsletter() {
                   <button
                     type="button"
                     onClick={() => setFrequency("daily")}
-                    className={`py-2 text-sm font-medium rounded-lg transition-colors ${
+                    className={`py-2 text-sm font-medium rounded-none transition-colors ${
                       frequency === "daily"
                         ? "bg-amber-600 text-white"
                         : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -208,7 +208,7 @@ export default function Newsletter() {
                   <button
                     type="button"
                     onClick={() => setFrequency("weekly")}
-                    className={`py-2 text-sm font-medium rounded-lg transition-colors ${
+                    className={`py-2 text-sm font-medium rounded-none transition-colors ${
                       frequency === "weekly"
                         ? "bg-amber-600 text-white"
                         : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -219,7 +219,7 @@ export default function Newsletter() {
                   <button
                     type="button"
                     onClick={() => setFrequency("monthly")}
-                    className={`py-2 text-sm font-medium rounded-lg transition-colors ${
+                    className={`py-2 text-sm font-medium rounded-none transition-colors ${
                       frequency === "monthly"
                         ? "bg-amber-600 text-white"
                         : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -238,7 +238,7 @@ export default function Newsletter() {
                   <button
                     type="button"
                     onClick={() => toggleCategory("wszystkie")}
-                    className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium mr-2 mb-2 transition-colors ${
+                    className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-none text-sm font-medium mr-2 mb-2 transition-colors ${
                       selectedCategories.includes("wszystkie")
                         ? "bg-amber-600 text-white"
                         : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -252,7 +252,7 @@ export default function Newsletter() {
                   <button
                     type="button"
                     onClick={() => toggleCategory("wydarzenia")}
-                    className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium mr-2 mb-2 transition-colors ${
+                    className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-none text-sm font-medium mr-2 mb-2 transition-colors ${
                       selectedCategories.includes("wydarzenia")
                         ? "bg-amber-600 text-white"
                         : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -267,7 +267,7 @@ export default function Newsletter() {
                   <button
                     type="button"
                     onClick={() => toggleCategory("porady")}
-                    className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium mr-2 mb-2 transition-colors ${
+                    className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-none text-sm font-medium mr-2 mb-2 transition-colors ${
                       selectedCategories.includes("porady")
                         ? "bg-amber-600 text-white"
                         : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -282,7 +282,7 @@ export default function Newsletter() {
                   <button
                     type="button"
                     onClick={() => toggleCategory("muzyka")}
-                    className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium mr-2 mb-2 transition-colors ${
+                    className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-none text-sm font-medium mr-2 mb-2 transition-colors ${
                       selectedCategories.includes("muzyka")
                         ? "bg-amber-600 text-white"
                         : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -297,7 +297,7 @@ export default function Newsletter() {
                   <button
                     type="button"
                     onClick={() => toggleCategory("społeczność")}
-                    className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium mr-2 mb-2 transition-colors ${
+                    className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-none text-sm font-medium mr-2 mb-2 transition-colors ${
                       selectedCategories.includes("społeczność")
                         ? "bg-amber-600 text-white"
                         : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -317,7 +317,7 @@ export default function Newsletter() {
                   type="button"
                   onClick={() => setStep(1)}
                   className="flex-1 px-4 py-3 border border-gray-300 text-gray-700 font-medium 
-                           rounded-xl transition-all hover:bg-gray-50 
+                           rounded-none transition-all hover:bg-gray-50 
                            focus:outline-none focus:ring-2 focus:ring-gray-500"
                 >
                   Wstecz
@@ -326,7 +326,7 @@ export default function Newsletter() {
                   type="submit"
                   disabled={status === "loading"}
                   className="flex-1 px-4 py-3 bg-amber-600 text-white font-medium 
-                           rounded-xl transition-all hover:bg-amber-700 
+                           rounded-none transition-all hover:bg-amber-700 
                            focus:outline-none focus:ring-2 focus:ring-amber-500 
                            focus:ring-offset-2 disabled:opacity-50 
                            disabled:cursor-not-allowed shadow-sm"
@@ -352,7 +352,7 @@ export default function Newsletter() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className={`mt-4 p-3 rounded-xl text-sm ${
+            className={`mt-4 p-3 rounded-none text-sm ${
               status === "success"
                 ? "bg-green-50 text-green-800 border border-green-100"
                 : "bg-red-50 text-red-800 border border-red-100"

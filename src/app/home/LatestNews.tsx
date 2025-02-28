@@ -154,7 +154,7 @@ export default function LatestNews() {
       <div className="flex flex-wrap gap-3 mb-8">
         <button
           onClick={() => setActiveFilter("wszystkie")}
-          className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+          className={`px-4 py-2 rounded-none text-sm font-medium transition-all ${
             activeFilter === "wszystkie"
               ? "bg-amber-600 text-white shadow-md"
               : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -164,7 +164,7 @@ export default function LatestNews() {
         </button>
         <button
           onClick={() => setActiveFilter("ranking")}
-          className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+          className={`px-4 py-2 rounded-none text-sm font-medium transition-all ${
             activeFilter === "ranking"
               ? "bg-amber-600 text-white shadow-md"
               : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -174,7 +174,7 @@ export default function LatestNews() {
         </button>
         <button
           onClick={() => setActiveFilter("poradnik")}
-          className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+          className={`px-4 py-2 rounded-none text-sm font-medium transition-all ${
             activeFilter === "poradnik"
               ? "bg-amber-600 text-white shadow-md"
               : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -184,7 +184,7 @@ export default function LatestNews() {
         </button>
         <button
           onClick={() => setActiveFilter("historia")}
-          className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+          className={`px-4 py-2 rounded-none text-sm font-medium transition-all ${
             activeFilter === "historia"
               ? "bg-amber-600 text-white shadow-md"
               : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -194,7 +194,7 @@ export default function LatestNews() {
         </button>
         <button
           onClick={() => setActiveFilter("edukacja")}
-          className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+          className={`px-4 py-2 rounded-none text-sm font-medium transition-all ${
             activeFilter === "edukacja"
               ? "bg-amber-600 text-white shadow-md"
               : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -230,7 +230,7 @@ export default function LatestNews() {
               >
                 {/* Image */}
                 <Link href={`/artykul/${article.slug}`} className="block">
-                  <div className="aspect-[16/10] rounded-2xl overflow-hidden bg-gray-100 shadow-md relative">
+                  <div className="aspect-[16/10] rounded-none overflow-hidden bg-gray-100 shadow-md relative">
                     <Image
                       src={article.image}
                       alt={article.title}
@@ -246,7 +246,7 @@ export default function LatestNews() {
                 <div className="flex flex-col justify-center">
                   <div className="space-y-4">
                     <div className="flex items-center gap-4 text-sm">
-                      <span className="px-3 py-1 bg-amber-100 text-amber-800 font-medium rounded-full shadow-sm">
+                      <span className="px-3 py-1 bg-amber-100 text-amber-800 font-medium rounded-none shadow-sm">
                         {article.category}
                       </span>
                       <time className="text-gray-500 flex items-center gap-1">
@@ -323,7 +323,7 @@ export default function LatestNews() {
                           <button
                             key={tag}
                             onClick={() => setActiveFilter(tag)}
-                            className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-md hover:bg-gray-200 transition-colors"
+                            className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-none hover:bg-gray-200 transition-colors"
                           >
                             #{tag}
                           </button>
@@ -343,7 +343,7 @@ export default function LatestNews() {
           onClick={loadMoreArticles}
           disabled={isLoading}
           className="px-8 py-3 text-amber-600 font-medium border-2 border-amber-600 
-                   rounded-full hover:bg-amber-600 hover:text-white transition-colors shadow-sm 
+                   rounded-none hover:bg-amber-600 hover:text-white transition-colors shadow-sm 
                    disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isLoading ? (
