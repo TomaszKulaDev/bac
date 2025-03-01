@@ -20,15 +20,15 @@ export default function OnetNewsSection() {
 
       {/* Main content area */}
       <div className="bg-red-600 grid grid-cols-12 gap-0">
-        {/* Left column - Main article */}
-        <div className="col-span-12 lg:col-span-5 relative pt-2">
+        {/* Left column - Main article - POWIĘKSZONE ZDJĘCIE */}
+        <div className="col-span-12 lg:col-span-6 relative pt-2">
           <Link href="/artykul/co-z-wojskami-usa-w-polsce" className="block">
             <div className="relative aspect-[16/9] overflow-hidden mx-3">
               <Image
                 src="https://images.unsplash.com/photo-1504609813442-a8924e83f76e?q=80&w=1770&auto=format&fit=crop"
                 alt="Co z wojskami USA w Polsce?"
                 fill
-                className="object-cover"
+                className="object-cover hover:scale-105 transition-transform duration-300"
               />
               <div className="absolute bottom-0 left-0 right-0">
                 <div className="bg-yellow-500 text-black px-4 py-3">
@@ -40,29 +40,12 @@ export default function OnetNewsSection() {
               </div>
             </div>
           </Link>
-
-          {/* Author info */}
-          <div className="flex items-center mt-3 px-3 pb-3 bg-white mx-3">
-            <div className="w-8 h-8 rounded-full overflow-hidden mr-2">
-              <Image
-                src="https://randomuser.me/api/portraits/men/32.jpg"
-                alt="Kamil Dziubka"
-                width={32}
-                height={32}
-                className="object-cover"
-              />
-            </div>
-            <span className="text-sm font-medium">Kamil Dziubka</span>
-            <button className="ml-4 px-3 py-1 border border-gray-300 text-sm rounded-full hover:bg-gray-100 transition-colors">
-              Obserwuj
-            </button>
-          </div>
         </div>
 
-        {/* Middle column - Media commentary */}
-        <div className="col-span-12 lg:col-span-4 bg-red-600 pt-2">
+        {/* Middle column - Media commentary - POMNIEJSZONE ZDJĘCIE */}
+        <div className="col-span-12 lg:col-span-3 bg-red-600 pt-2">
           <div className="px-3">
-            <div className="relative aspect-video overflow-hidden">
+            <div className="relative aspect-[4/3] overflow-hidden">
               <Image
                 src="https://images.unsplash.com/photo-1577493340887-b7bfff550145?q=80&w=1770&auto=format&fit=crop"
                 alt="Media komentują kłótnię w USA"
@@ -86,7 +69,7 @@ export default function OnetNewsSection() {
         <div className="col-span-12 lg:col-span-3 bg-red-600 pt-2">
           <div className="px-3 border-b border-red-500">
             <div className="flex items-center justify-between">
-              <h3 className="font-bold uppercase text-sm text-white bg-yellow-500 text-black px-2 py-1">
+              <h3 className="font-bold uppercase text-sm bg-yellow-500 text-black px-2 py-1">
                 SKRÓT WYDARZEŃ
               </h3>
             </div>
