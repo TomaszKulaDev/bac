@@ -3,32 +3,14 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { FaPlay } from "react-icons/fa";
 import {
   featuredArticles,
   secondaryArticles,
-  videoArticles,
   sidebarArticles,
-  lastSidebarArticle,
 } from "./data/newsGridData";
-import { NewsArticle } from "./types/article";
 
 export default function NewsGrid() {
   const [hoveredArticle, setHoveredArticle] = useState<string | null>(null);
-
-  // Ensure we have a valid article for the last sidebar position
-  const lastSidebarArticle =
-    sidebarArticles.length > 10
-      ? sidebarArticles[10]
-      : {
-          id: "last",
-          title:
-            "Poland Bachata League - Nowa edycja konkursu dla tancerzy amatorów",
-          image: "",
-          slug: "poland-bachata-league-konkurs",
-          category: "KONKURSY",
-        };
 
   return (
     <div className="bg-white text-gray-900 py-4">
@@ -36,15 +18,13 @@ export default function NewsGrid() {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center">
             <div className="bg-yellow-400 rounded-full w-8 h-8 flex items-center justify-center mr-2">
-              <span className="font-bold text-black">W</span>
+              <span className="font-bold text-black">B</span>
             </div>
-            <h1 className="text-base font-bold uppercase">
-              WYBRANE DLA CIEBIE
-            </h1>
+            <h1 className="text-base font-bold uppercase">BACHATA NA DZIŚ</h1>
           </div>
           <div>
-            <Link href="/onet-posty" className="text-sm hover:underline">
-              Zobacz Onet Posty!
+            <Link href="/bachat-posty" className="text-sm hover:underline">
+              Zobacz Bachata Posty!
             </Link>
           </div>
         </div>
@@ -172,7 +152,7 @@ export default function NewsGrid() {
               <h2 className="text-base font-bold uppercase">TANIEC</h2>
             </div>
             <div className="space-y-2">
-              {sidebarArticles.slice(1, 15).map((article) => (
+              {sidebarArticles.slice(1, 12).map((article) => (
                 <div key={article.id} className="border-t border-gray-200 pt-2">
                   <Link href={`/artykul/${article.slug}`} className="block">
                     <h3 className="text-sm font-bold hover:text-blue-600">

@@ -3,7 +3,7 @@ import { NewsArticle } from "../types/article";
 // Główny artykuł
 export const mainArticle = {
   id: "main-1",
-  title: 'Nowe trendy w bachacie na 2024 rok. "Rewolucja w technice"',
+  title: '11 Nowe trendy w bachacie na 2024 rok. "Rewolucja w technice"',
   image:
     "https://images.unsplash.com/photo-1545959570-a94084071b5d?q=80&w=1776&auto=format&fit=crop",
   slug: "nowe-trendy-w-bachacie",
@@ -20,7 +20,7 @@ export const rightColumnArticles = [
   {
     id: "right-1",
     title:
-      'Dominikańska bachata - powrót do korzeni. "Autentyczność ponad wszystko"',
+      ' 22 Dominikańska bachata - powrót do korzeni. "Autentyczność ponad wszystko"',
     image:
       "https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?q=80&w=1770&auto=format&fit=crop",
     slug: "dominikanska-bachata",
@@ -34,7 +34,7 @@ export const rightColumnArticles = [
   },
   {
     id: "right-2",
-    title: "Bachata Sensual - nowy wymiar bliskości w tańcu",
+    title: "33 Bachata Sensual - nowy wymiar bliskości w tańcu",
     image:
       "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?q=80&w=1770&auto=format&fit=crop",
     slug: "bachata-sensual",
@@ -51,7 +51,7 @@ export const shortNewsArticles = [
   {
     id: "short-1",
     title:
-      "Bachata Festiwal w Warszawie - największe wydarzenie roku już w maju",
+      "1 Bachata Festiwal w Warszawie - największe wydarzenie roku już w maju",
     image:
       "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?q=80&w=1770&auto=format&fit=crop",
     slug: "bachata-festiwal-warszawa",
@@ -59,7 +59,7 @@ export const shortNewsArticles = [
   {
     id: "short-2",
     title:
-      "Mistrzostwa Bachaty 2024 - polscy tancerze podbijają światowe podium",
+      "2 Mistrzostwa Bachaty 2024 - polscy tancerze podbijają światowe podium",
     image:
       "https://images.unsplash.com/photo-1504609813442-a8924e83f76e?q=80&w=1770&auto=format&fit=crop",
     slug: "mistrzostwa-bachaty",
@@ -67,14 +67,14 @@ export const shortNewsArticles = [
   {
     id: "short-3",
     title:
-      "Bachata dla początkujących - jak zacząć przygodę z najpopularniejszym tańcem",
+      " 3 Bachata dla początkujących - jak zacząć przygodę z najpopularniejszym tańcem",
     image:
       "https://images.unsplash.com/photo-1545128485-c400ce7b23d5?q=80&w=1770&auto=format&fit=crop",
     slug: "bachata-dla-poczatkujacych",
   },
   {
     id: "short-4",
-    title: "Muzyka do bachaty - nowe hity, które musisz znać w 2024 roku",
+    title: "4 Muzyka do bachaty - nowe hity, które musisz znać w 2024 roku",
     image:
       "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=1770&auto=format&fit=crop",
     slug: "muzyka-do-bachaty",
@@ -85,7 +85,8 @@ export const shortNewsArticles = [
 export const bottomRowArticles = [
   {
     id: "bottom-1",
-    title: 'Wywiad z mistrzem bachaty: "Taniec zmienił moje życie na zawsze"',
+    title:
+      '55 Wywiad z mistrzem bachaty: "Taniec zmienił moje życie na zawsze"',
     image:
       "https://images.unsplash.com/photo-1535525153412-5a42439a210d?q=80&w=1770&auto=format&fit=crop",
     slug: "wywiad-mistrz-bachaty",
@@ -94,7 +95,7 @@ export const bottomRowArticles = [
   {
     id: "bottom-2",
     title:
-      "Bachata w parach - jak osiągnąć idealną harmonię i zrozumienie na parkiecie",
+      "66 Bachata w parach - jak osiągnąć idealną harmonię i zrozumienie na parkiecie",
     image:
       "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1770&auto=format&fit=crop",
     slug: "bachata-w-parach-harmonia",
@@ -103,7 +104,7 @@ export const bottomRowArticles = [
   {
     id: "bottom-3",
     title:
-      "Stroje do bachaty - co wybrać, aby czuć się komfortowo i wyglądać olśniewająco",
+      "77 Stroje do bachaty - co wybrać, aby czuć się komfortowo i wyglądać olśniewająco",
     image:
       "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?q=80&w=1769&auto=format&fit=crop",
     slug: "stroje-do-bachaty",
@@ -112,7 +113,7 @@ export const bottomRowArticles = [
   {
     id: "bottom-4",
     title:
-      "Bachata fusion - jak łączyć style taneczne i tworzyć unikalne choreografie",
+      "88 Bachata fusion - jak łączyć style taneczne i tworzyć unikalne choreografie",
     image:
       "https://images.unsplash.com/photo-1547153760-18fc86324498?q=80&w=1774&auto=format&fit=crop",
     slug: "bachata-fusion-choreografie",
