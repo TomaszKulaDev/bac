@@ -13,6 +13,10 @@ interface NewsArticle {
   slug: string;
   category?: string;
   hasVideo?: boolean;
+  author?: {
+    name: string;
+    avatar: string;
+  };
 }
 
 export default function NewsGrid() {
@@ -22,55 +26,75 @@ export default function NewsGrid() {
   const featuredArticles: NewsArticle[] = [
     {
       id: "1",
-      title: "Mistrzostwa Polski w Bachacie 2024 - Znamy zwycięzców",
+      title:
+        "Światowy Kongres Bachaty 2024 - Największe wydarzenie roku już w czerwcu",
       image:
-        "https://images.unsplash.com/photo-1504609813442-a8924e83f76e?q=80&w=1770&auto=format&fit=crop",
-      slug: "mistrzostwa-polski-bachata-2024",
+        "https://images.unsplash.com/photo-1545128485-c400ce7b23d5?q=80&w=1770&auto=format&fit=crop",
+      slug: "swiatowy-kongres-bachaty-2024",
+      author: {
+        name: "Maria Rodriguez",
+        avatar: "https://randomuser.me/api/portraits/women/32.jpg",
+      },
     },
     {
       id: "2",
-      title: "Nowy trend w bachacie - Fusion z elementami tańca współczesnego",
+      title:
+        "Nowe trendy w bachacie na 2024 rok. Dominikańska tradycja wraca do łask",
       image:
-        "https://images.unsplash.com/photo-1545128485-c400ce7b23d5?q=80&w=1770&auto=format&fit=crop",
-      slug: "nowy-trend-bachata-fusion",
+        "https://images.unsplash.com/photo-1504609813442-a8924e83f76e?q=80&w=1770&auto=format&fit=crop",
+      slug: "nowe-trendy-bachata-2024",
     },
     {
       id: "3",
-      title: "Międzynarodowy Festiwal Bachaty w Warszawie już w czerwcu",
+      title: "Bachata Sensual - nowy wymiar bliskości w tańcu. Jak zacząć?",
       image:
         "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?q=80&w=1770&auto=format&fit=crop",
-      slug: "festiwal-bachaty-warszawa",
+      slug: "bachata-sensual-nowy-wymiar",
+      author: {
+        name: "Carlos Mendez",
+        avatar: "https://randomuser.me/api/portraits/men/42.jpg",
+      },
     },
   ];
 
   const secondaryArticles: NewsArticle[] = [
     {
       id: "4",
-      title: "Top 5 szkół bachaty w Polsce według tancerzy",
+      title:
+        "Mistrzowie bachaty z Dominikany przyjeżdżają do Polski na warsztaty",
       image:
         "https://images.unsplash.com/photo-1546805022-9f8c92733b86?q=80&w=1770&auto=format&fit=crop",
-      slug: "top-szkoly-bachaty-polska",
+      slug: "mistrzowie-bachaty-warsztaty",
+      author: {
+        name: "Sofia Garcia",
+        avatar: "https://randomuser.me/api/portraits/women/45.jpg",
+      },
     },
     {
       id: "5",
-      title: "Romeo Santos ogłasza europejską trasę koncertową",
+      title: "Festiwal Bachata Fusion 2024 - Zapisy otwarte do końca miesiąca",
       image:
         "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1770&auto=format&fit=crop",
-      slug: "romeo-santos-trasa-europa",
+      slug: "festiwal-bachata-fusion-2024",
+      author: {
+        name: "Juan Perez",
+        avatar: "https://randomuser.me/api/portraits/men/22.jpg",
+      },
     },
     {
       id: "6",
-      title: "Jak wybrać idealne buty do bachaty? Poradnik dla początkujących",
+      title:
+        'Muzyka do bachaty - "Nowy album Romeo Santosa bije rekordy popularności"',
       image:
         "https://images.unsplash.com/photo-1535525153412-5a42439a210d?q=80&w=1770&auto=format&fit=crop",
-      slug: "buty-do-bachaty-poradnik",
+      slug: "romeo-santos-nowy-album",
     },
     {
       id: "7",
-      title: "Historia bachaty - Od muzyki wiejskiej do światowego fenomenu",
+      title: "Mistrzostwa Polski w Bachacie - Zgłoszenia tylko do 15 czerwca",
       image:
         "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?q=80&w=1770&auto=format&fit=crop",
-      slug: "historia-bachaty-fenomen",
+      slug: "mistrzostwa-polski-bachata",
     },
   ];
 
@@ -112,53 +136,53 @@ export default function NewsGrid() {
   const sidebarArticles: NewsArticle[] = [
     {
       id: "12",
-      title: "Nowe kursy bachaty w Warszawie - Gdzie zacząć naukę?",
+      title: "Jak wybrać idealne buty do bachaty? Poradnik dla początkujących",
       image:
-        "https://images.unsplash.com/photo-1546805022-9f8c92733b86?q=80&w=1770&auto=format&fit=crop",
-      slug: "kursy-bachaty-warszawa",
-      category: "KURSY",
-    },
-    {
-      id: "13",
-      title: "Bachata Moderna - Nowy styl podbija polskie parkiety",
-      image: "",
-      slug: "bachata-moderna-nowy-styl",
-      category: "STYLE",
-    },
-    {
-      id: "14",
-      title: "Jak znaleźć partnera do bachaty? Porady dla solistów",
-      image: "",
-      slug: "partner-do-bachaty-porady",
+        "https://images.unsplash.com/photo-1535525153412-5a42439a210d?q=80&w=1770&auto=format&fit=crop",
+      slug: "buty-do-bachaty-poradnik",
       category: "PORADY",
     },
     {
+      id: "13",
+      title: "Top 5 szkół bachaty w Polsce według tancerzy",
+      image: "",
+      slug: "top-szkoly-bachaty-polska",
+      category: "RANKING",
+    },
+    {
+      id: "14",
+      title: "Bachata w parach - nowy trend na parkietach całego świata",
+      image: "",
+      slug: "bachata-w-parach-trend",
+      category: "TRENDY",
+    },
+    {
       id: "15",
+      title: "Historia bachaty - Od muzyki wiejskiej do światowego fenomenu",
+      image: "",
+      slug: "historia-bachaty-fenomen",
+      category: "HISTORIA",
+    },
+    {
+      id: "16",
       title: "Weekendowe social dance w największych miastach Polski",
       image: "",
       slug: "social-dance-polska",
       category: "WYDARZENIA",
     },
     {
-      id: "16",
-      title: "KALENDARZ FESTIWALI BACHATY 2024 - POLSKA I EUROPA",
-      image: "",
-      slug: "kalendarz-festiwali-2024",
-      category: "WYDARZENIA",
-    },
-    {
       id: "17",
-      title: "Muzyka do bachaty - Najnowsze hity i klasyki gatunku",
+      title: "Technika prowadzenia w bachacie - Warsztaty dla mężczyzn",
       image: "",
-      slug: "muzyka-do-bachaty-hity",
-      category: "MUZYKA",
+      slug: "technika-prowadzenia-warsztaty",
+      category: "KURSY",
     },
     {
       id: "18",
-      title: "Bachata Fusion - Łączenie stylów tanecznych",
+      title: "Jak znaleźć partnera do bachaty? Porady dla solistów",
       image: "",
-      slug: "bachata-fusion-style",
-      category: "STYLE",
+      slug: "partner-do-bachaty-porady",
+      category: "PORADY",
     },
     {
       id: "19",
@@ -169,18 +193,17 @@ export default function NewsGrid() {
     },
     {
       id: "20",
-      title: "Technika prowadzenia w bachacie - Warsztaty dla mężczyzn",
+      title: "Bachata Moderna - Nowy styl podbija polskie parkiety",
       image: "",
-      slug: "technika-prowadzenia-warsztaty",
-      category: "KURSY",
+      slug: "bachata-moderna-nowy-styl",
+      category: "STYLE",
     },
     {
       id: "21",
-      title:
-        "Poland Bachata League - Nowa edycja konkursu dla tancerzy amatorów",
+      title: "KALENDARZ FESTIWALI BACHATY 2024 - POLSKA I EUROPA",
       image: "",
-      slug: "poland-bachata-league-konkurs",
-      category: "KONKURSY",
+      slug: "kalendarz-festiwali-2024",
+      category: "WYDARZENIA",
     },
   ];
 
@@ -198,22 +221,20 @@ export default function NewsGrid() {
         };
 
   return (
-    <div className="bg-slate-50 text-gray-900 py-8">
-      <div className="max-w-[1600px] mx-auto px-8">
-        <div className="flex items-center justify-between mb-6 border-b border-gray-200 pb-3">
-          <h1 className="text-2xl font-bold">Aktualności Bachata</h1>
-          <div className="flex space-x-4">
-            <Link
-              href="/wydarzenia"
-              className="text-amber-600 font-bold hover:text-amber-700"
-            >
-              #WYDARZENIA
-            </Link>
-            <Link
-              href="/kursy"
-              className="text-amber-600 font-bold hover:text-amber-700"
-            >
-              #KURSY
+    <div className="bg-white text-gray-900 py-4">
+      <div className="max-w-[1600px] mx-auto px-4">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center">
+            <div className="bg-yellow-400 rounded-full w-8 h-8 flex items-center justify-center mr-2">
+              <span className="font-bold text-black">W</span>
+            </div>
+            <h1 className="text-base font-bold uppercase">
+              WYBRANE DLA CIEBIE
+            </h1>
+          </div>
+          <div>
+            <Link href="/onet-posty" className="text-sm hover:underline">
+              Zobacz Onet Posty!
             </Link>
           </div>
         </div>
@@ -222,261 +243,174 @@ export default function NewsGrid() {
           {/* Main featured articles - first row */}
           <div className="col-span-12 lg:col-span-8 grid grid-cols-12 gap-4">
             {/* Large featured article */}
-            <div className="col-span-12 md:col-span-6 row-span-2">
-              <motion.div
-                className="relative h-[400px] rounded-none overflow-hidden shadow-md"
-                onHoverStart={() => setHoveredArticle(featuredArticles[0].id)}
-                onHoverEnd={() => setHoveredArticle(null)}
-                whileHover={{ y: -5 }}
-                transition={{ duration: 0.3 }}
-              >
+            <div className="col-span-12 md:col-span-8 row-span-1">
+              <div className="relative overflow-hidden shadow-sm">
                 <Link
                   href={`/artykul/${featuredArticles[0].slug}`}
-                  className="block h-full"
+                  className="block"
                 >
                   <Image
                     src={featuredArticles[0].image}
                     alt={featuredArticles[0].title}
-                    fill
-                    className={`object-cover transition-transform duration-700 ${
-                      hoveredArticle === featuredArticles[0].id
-                        ? "scale-105"
-                        : "scale-100"
-                    }`}
+                    width={800}
+                    height={450}
+                    className="w-full h-auto object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
                   <div className="absolute bottom-0 left-0 right-0 p-4">
-                    <h2 className="text-xl font-bold leading-tight text-white group-hover:text-amber-200">
+                    <h2 className="text-xl font-bold leading-tight text-white">
                       {featuredArticles[0].title}
                     </h2>
                   </div>
                 </Link>
-              </motion.div>
+                {featuredArticles[0].author && (
+                  <div className="absolute bottom-4 right-4 flex items-center">
+                    <div className="flex items-center mr-2">
+                      <Image
+                        src={featuredArticles[0].author.avatar}
+                        alt={featuredArticles[0].author.name}
+                        width={24}
+                        height={24}
+                        className="rounded-full mr-2"
+                      />
+                      <span className="text-white text-sm">
+                        {featuredArticles[0].author.name}
+                      </span>
+                    </div>
+                    <button className="bg-transparent border border-white text-white text-xs px-2 py-1 rounded-sm hover:bg-white/20">
+                      Obserwuj
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Medium featured articles */}
-            <div className="col-span-12 md:col-span-6 grid grid-cols-12 gap-4">
-              <div className="col-span-12">
-                <motion.div
-                  className="relative h-[190px] rounded-none overflow-hidden shadow-md"
-                  onHoverStart={() => setHoveredArticle(featuredArticles[1].id)}
-                  onHoverEnd={() => setHoveredArticle(null)}
-                  whileHover={{ y: -5 }}
-                  transition={{ duration: 0.3 }}
-                >
+            <div className="col-span-12 md:col-span-4 grid grid-rows-2 gap-4">
+              <div className="row-span-1">
+                <div className="relative overflow-hidden shadow-sm">
                   <Link
                     href={`/artykul/${featuredArticles[1].slug}`}
-                    className="block h-full"
+                    className="block"
                   >
                     <Image
                       src={featuredArticles[1].image}
                       alt={featuredArticles[1].title}
-                      fill
-                      className={`object-cover transition-transform duration-700 ${
-                        hoveredArticle === featuredArticles[1].id
-                          ? "scale-105"
-                          : "scale-100"
-                      }`}
+                      width={400}
+                      height={225}
+                      className="w-full h-auto object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
-                    <div className="absolute bottom-0 left-0 right-0 p-4">
-                      <h2 className="text-lg font-bold leading-tight text-white group-hover:text-amber-200">
+                    <div className="absolute bottom-0 left-0 right-0 p-3">
+                      <h2 className="text-base font-bold leading-tight text-white">
                         {featuredArticles[1].title}
                       </h2>
                     </div>
                   </Link>
-                </motion.div>
+                </div>
               </div>
-              <div className="col-span-12">
-                <motion.div
-                  className="relative h-[190px] rounded-none overflow-hidden shadow-md"
-                  onHoverStart={() => setHoveredArticle(featuredArticles[2].id)}
-                  onHoverEnd={() => setHoveredArticle(null)}
-                  whileHover={{ y: -5 }}
-                  transition={{ duration: 0.3 }}
-                >
+              <div className="row-span-1">
+                <div className="relative overflow-hidden shadow-sm">
                   <Link
                     href={`/artykul/${featuredArticles[2].slug}`}
-                    className="block h-full"
+                    className="block"
                   >
                     <Image
                       src={featuredArticles[2].image}
                       alt={featuredArticles[2].title}
-                      fill
-                      className={`object-cover transition-transform duration-700 ${
-                        hoveredArticle === featuredArticles[2].id
-                          ? "scale-105"
-                          : "scale-100"
-                      }`}
+                      width={400}
+                      height={225}
+                      className="w-full h-auto object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
-                    <div className="absolute bottom-0 left-0 right-0 p-4">
-                      <h2 className="text-lg font-bold leading-tight text-white group-hover:text-amber-200">
+                    <div className="absolute bottom-0 left-0 right-0 p-3">
+                      <h2 className="text-base font-bold leading-tight text-white">
                         {featuredArticles[2].title}
                       </h2>
                     </div>
                   </Link>
-                </motion.div>
+                  {featuredArticles[2].author && (
+                    <div className="absolute bottom-3 right-3 flex items-center">
+                      <div className="flex items-center mr-2">
+                        <Image
+                          src={featuredArticles[2].author.avatar}
+                          alt={featuredArticles[2].author.name}
+                          width={20}
+                          height={20}
+                          className="rounded-full mr-1"
+                        />
+                        <span className="text-white text-xs">
+                          {featuredArticles[2].author.name}
+                        </span>
+                      </div>
+                      <button className="bg-transparent border border-white text-white text-xs px-1.5 py-0.5 rounded-sm hover:bg-white/20">
+                        Obserwuj
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
 
           {/* Sidebar articles */}
-          <div className="col-span-12 lg:col-span-4 space-y-4">
-            {sidebarArticles.slice(0, 5).map((article) => (
-              <motion.div
-                key={article.id}
-                className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100"
-                whileHover={{ x: 3 }}
-              >
-                {article.image && (
-                  <div className="relative w-16 h-16 flex-shrink-0 rounded-none overflow-hidden">
-                    <Image
-                      src={article.image}
-                      alt={article.title}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                )}
-                <div>
-                  <h3 className="font-bold text-sm leading-tight text-gray-800 hover:text-amber-600">
-                    {article.title}
-                  </h3>
+          <div className="col-span-12 lg:col-span-4">
+            <div className="flex items-center mb-2">
+              <div className="bg-yellow-400 rounded-full w-8 h-8 flex items-center justify-center mr-2">
+                <span className="font-bold text-black">T</span>
+              </div>
+              <h2 className="text-base font-bold uppercase">TANIEC</h2>
+            </div>
+            <div className="space-y-2">
+              {sidebarArticles.slice(1, 10).map((article) => (
+                <div key={article.id} className="border-t border-gray-200 pt-2">
+                  <Link href={`/artykul/${article.slug}`} className="block">
+                    <h3 className="text-sm font-bold hover:text-blue-600">
+                      {article.title}
+                    </h3>
+                  </Link>
                 </div>
-              </motion.div>
-            ))}
+              ))}
+            </div>
           </div>
 
           {/* Second row - 4 medium articles */}
           <div className="col-span-12 lg:col-span-8 grid grid-cols-12 gap-4">
-            {secondaryArticles.map((article) => (
+            {secondaryArticles.slice(0, 4).map((article, index) => (
               <div
                 key={article.id}
                 className="col-span-12 sm:col-span-6 md:col-span-3"
               >
-                <motion.div
-                  className="relative h-[120px] rounded-none overflow-hidden shadow-md"
-                  onHoverStart={() => setHoveredArticle(article.id)}
-                  onHoverEnd={() => setHoveredArticle(null)}
-                  whileHover={{ y: -5 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <Link
-                    href={`/artykul/${article.slug}`}
-                    className="block h-full"
-                  >
+                <div className="relative overflow-hidden shadow-sm">
+                  <Link href={`/artykul/${article.slug}`} className="block">
                     <Image
                       src={article.image}
                       alt={article.title}
-                      fill
-                      className={`object-cover transition-transform duration-700 ${
-                        hoveredArticle === article.id
-                          ? "scale-105"
-                          : "scale-100"
-                      }`}
+                      width={200}
+                      height={150}
+                      className="w-full h-auto object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
-                    <div className="absolute bottom-0 left-0 right-0 p-3">
-                      <h2 className="text-sm font-bold leading-tight text-white group-hover:text-amber-200">
+                    <div className="absolute bottom-0 left-0 right-0 p-2">
+                      <h2 className="text-sm font-bold leading-tight text-white">
                         {article.title}
                       </h2>
                     </div>
                   </Link>
-                </motion.div>
-              </div>
-            ))}
-          </div>
-
-          {/* More sidebar articles */}
-          <div className="col-span-12 lg:col-span-4 space-y-4">
-            {sidebarArticles.slice(5, 10).map((article) => (
-              <motion.div
-                key={article.id}
-                className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100"
-                whileHover={{ x: 3 }}
-              >
-                {article.image && (
-                  <div className="relative w-16 h-16 flex-shrink-0 rounded-none overflow-hidden">
-                    <Image
-                      src={article.image}
-                      alt={article.title}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                )}
-                <div>
-                  <h3 className="font-bold text-sm leading-tight text-gray-800 hover:text-amber-600">
-                    {article.title}
-                  </h3>
+                  {article.author && (
+                    <div className="absolute bottom-2 right-2">
+                      <Image
+                        src={article.author.avatar}
+                        alt={article.author.name}
+                        width={20}
+                        height={20}
+                        className="rounded-full"
+                      />
+                    </div>
+                  )}
                 </div>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Third row - Video articles */}
-          <div className="col-span-12 lg:col-span-8 grid grid-cols-12 gap-4">
-            {videoArticles.map((article) => (
-              <div
-                key={article.id}
-                className="col-span-12 sm:col-span-6 md:col-span-3"
-              >
-                <motion.div
-                  className="relative h-[120px] rounded-none overflow-hidden shadow-md"
-                  onHoverStart={() => setHoveredArticle(article.id)}
-                  onHoverEnd={() => setHoveredArticle(null)}
-                  whileHover={{ y: -5 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <Link
-                    href={`/artykul/${article.slug}`}
-                    className="block h-full"
-                  >
-                    <Image
-                      src={article.image}
-                      alt={article.title}
-                      fill
-                      className={`object-cover transition-transform duration-700 ${
-                        hoveredArticle === article.id
-                          ? "scale-105"
-                          : "scale-100"
-                      }`}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
-
-                    {article.hasVideo && (
-                      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-amber-600/80 rounded-full flex items-center justify-center">
-                        <FaPlay className="text-white ml-1" />
-                      </div>
-                    )}
-
-                    <div className="absolute bottom-0 left-0 right-0 p-3">
-                      <h2 className="text-sm font-bold leading-tight text-white group-hover:text-amber-200">
-                        {article.title}
-                      </h2>
-                    </div>
-                  </Link>
-                </motion.div>
               </div>
             ))}
-          </div>
-
-          {/* Last sidebar article */}
-          <div className="col-span-12 lg:col-span-4">
-            <div className="bg-amber-600 p-2 rounded mb-2 inline-block text-xs font-bold text-white">
-              POLAND BACHATA LEAGUE
-            </div>
-            <motion.div
-              className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100"
-              whileHover={{ x: 3 }}
-            >
-              <div>
-                <h3 className="font-bold text-sm leading-tight text-gray-800 hover:text-amber-600">
-                  {lastSidebarArticle.title}
-                </h3>
-              </div>
-            </motion.div>
           </div>
         </div>
       </div>

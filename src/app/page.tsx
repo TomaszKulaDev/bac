@@ -1,14 +1,11 @@
 "use client";
 import { Suspense, useState } from "react";
-import LatestNews from "@/app/home/LatestNews";
-import TrendingTopics from "@/app/home/TrendingTopics";
-import NewsCategories from "@/app/home/HashTags";
+// import LatestNews from "@/app/home/LatestNews";
 import Newsletter from "@/app/home/Newsletter";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import { FaFacebook, FaInstagram, FaYoutube } from "react-icons/fa";
 import Link from "next/link";
-import PopularTags from "@/app/home/HashTags";
-import EventsHighlights from "@/app/home/EventsHighlights";
+// import EventsHighlights from "@/app/home/EventsHighlights";
 import NewsGrid from "@/app/home/NewsGrid";
 import OnetNewsSection from "@/app/home/OnetNewsRedSection";
 import NewsTicker from "@/app/home/NewsTicker";
@@ -30,21 +27,7 @@ export default function HomePage() {
           <NewsGrid />
         </section>
 
-        {/* Categories */}
-        <section className="py-8 border-b border-gray-200">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <NewsCategories />
-          </div>
-        </section>
-
-        {/* Events Highlights */}
-        <section className="py-8 border-b border-gray-200">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <EventsHighlights />
-          </div>
-        </section>
-
-        {/* Latest & Trending */}
+        {/* Latest & Trending
         <section className="py-12">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
@@ -68,21 +51,6 @@ export default function HomePage() {
               </div>
               <div>
                 <div className="sticky top-24">
-                  <div className="mb-10">
-                    <div className="flex items-center justify-between mb-6">
-                      <h2 className="text-xl font-bold text-gray-900">
-                        Popularne tematy
-                      </h2>
-                      <Link
-                        href="/popularne"
-                        className="text-amber-600 hover:text-amber-700 text-sm font-medium"
-                      >
-                        Więcej
-                      </Link>
-                    </div>
-                    <TrendingTopics />
-                  </div>
-
                   <div>
                     <Newsletter />
                   </div>
@@ -90,7 +58,7 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-        </section>
+        </section> */}
       </main>
 
       {/* Footer */}
