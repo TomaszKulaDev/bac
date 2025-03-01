@@ -11,11 +11,15 @@ import PopularTags from "@/app/home/HashTags";
 import EventsHighlights from "@/app/home/EventsHighlights";
 import NewsGrid from "@/app/home/NewsGrid";
 import OnetNewsSection from "@/app/home/OnetNewsRedSection";
+import NewsTicker from "@/app/home/NewsTicker";
 
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-slate-50">
       <main className="pt-8">
+        {/* News Ticker - pasek informacyjny */}
+        <NewsTicker />
+
         {/* Onet News Section - full width */}
         <section className="py-8 mb-8 w-full">
           <OnetNewsSection />
