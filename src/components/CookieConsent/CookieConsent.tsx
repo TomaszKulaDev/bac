@@ -190,11 +190,15 @@ export const CookieConsent = () => {
 
                     <div className="text-center text-xs text-gray-500 mt-1 border-t border-gray-100 pt-4">
                       <p className="max-w-2xl mx-auto">
-                        Klikając "Akceptuj wszystkie", wyrażasz zgodę na używanie
-                        wszystkich plików cookie zgodnie z naszą{" "}
-                        <a href="/polityka-prywatnosci" className="text-amber-600 hover:text-amber-700 underline">
+                        Klikając &quot;Akceptuj wszystkie&quot;, wyrażasz zgodę na
+                        używanie wszystkich plików cookie zgodnie z naszą{" "}
+                        <a
+                          href="/polityka-prywatnosci"
+                          className="text-amber-600 hover:text-amber-700 underline"
+                        >
                           Polityką Prywatności
-                        </a>. 
+                        </a>
+                        .
                         Możesz zmienić swoje preferencje w dowolnym momencie w
                         ustawieniach prywatności.
                       </p>
