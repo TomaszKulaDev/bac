@@ -21,7 +21,7 @@ export default function OnetNewsSection() {
           <span className="text-white font-bold text-lg">B</span>
         </div>
         <h2 className="text-xl font-bold uppercase tracking-wide">
-          ŚWIATOWY KONGRES BACHATY
+          Tanczysz i wiesz
         </h2>
       </div>
 
@@ -103,22 +103,22 @@ export default function OnetNewsSection() {
                     />
                     {/* Prezentacja autora na zdjęciu w okręgu */}
                     <div className="absolute bottom-3 left-3 flex items-center">
-                      <div className="w-6 h-6 rounded-full overflow-hidden border-2 border-white shadow-md">
+                      <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-white shadow-md">
                         <Image
                           src="https://randomuser.me/api/portraits/men/44.jpg"
                           alt="Carlos Mendez"
-                          width={24}
-                          height={24}
+                          width={32}
+                          height={32}
                           className="object-cover"
                         />
                       </div>
-                      <div className="ml-1.5 bg-black/60 backdrop-blur-sm px-2 py-0.5 rounded-full">
+                      <div className="ml-2 bg-black/60 backdro-blur-sm px-2 py-0.5 rounded-full">
                         <span className="text-xs text-white">C. Mendez</span>
                       </div>
                     </div>
                     <div className="absolute top-2 right-2">
                       <div className="bg-yellow-400 text-black text-xs px-1.5 py-0.5 font-bold rounded-sm">
-                        premium
+                        sprawdź
                       </div>
                     </div>
                   </div>
@@ -141,16 +141,16 @@ export default function OnetNewsSection() {
                     />
                     {/* Prezentacja autora na zdjęciu w okręgu */}
                     <div className="absolute bottom-3 left-3 flex items-center">
-                      <div className="w-6 h-6 rounded-full overflow-hidden border-2 border-white shadow-md">
+                      <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-white shadow-md">
                         <Image
                           src="https://randomuser.me/api/portraits/women/42.jpg"
                           alt="Sofia Garcia"
-                          width={24}
-                          height={24}
+                          width={32}
+                          height={32}
                           className="object-cover"
                         />
                       </div>
-                      <div className="ml-1.5 bg-black/60 backdrop-blur-sm px-2 py-0.5 rounded-full">
+                      <div className="ml-2 bg-black/60 backdrop-blur-sm px-2 py-0.5 rounded-full">
                         <span className="text-xs text-white">S. Garcia</span>
                       </div>
                     </div>
