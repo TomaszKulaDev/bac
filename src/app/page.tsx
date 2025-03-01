@@ -1,21 +1,17 @@
 "use client";
 import { Suspense, useState } from "react";
-// import LatestNews from "@/app/home/LatestNews";
-import Newsletter from "@/app/home/Newsletter";
+
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import { FaFacebook, FaInstagram, FaYoutube } from "react-icons/fa";
 import Link from "next/link";
-// import EventsHighlights from "@/app/home/EventsHighlights";
+
 import NewsGrid from "@/app/home/NewsGrid";
 import OnetNewsSection from "@/app/home/OnetNewsRedSection";
-import NewsTicker from "@/app/home/NewsTicker";
 
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-slate-50">
       <main className="pt-8">
-        {/* News Ticker - pasek informacyjny */}
-        <NewsTicker />
 
         {/* Onet News Section - full width */}
         <section className="py-8 mb-8 w-full">
@@ -26,39 +22,6 @@ export default function HomePage() {
         <section className="py-8">
           <NewsGrid />
         </section>
-
-        {/* Latest & Trending
-        <section className="py-12">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-              <div className="lg:col-span-2">
-                <div className="flex items-center justify-between mb-8">
-                  <h2 className="text-2xl font-bold text-gray-900">
-                    Najnowsze artykuły
-                  </h2>
-                  <Link
-                    href="/artykuly"
-                    className="text-amber-600 hover:text-amber-700 text-sm font-medium"
-                  >
-                    Zobacz wszystkie
-                  </Link>
-                </div>
-                <div className="space-y-12">
-                  <Suspense fallback={<LoadingSpinner />}>
-                    <LatestNews />
-                  </Suspense>
-                </div>
-              </div>
-              <div>
-                <div className="sticky top-24">
-                  <div>
-                    <Newsletter />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section> */}
       </main>
 
       {/* Footer */}

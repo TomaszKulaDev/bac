@@ -11,6 +11,12 @@ import {
   FaShare,
   FaRegEye,
 } from "react-icons/fa";
+import {
+  mainArticle,
+  rightColumnArticles,
+  shortNewsArticles,
+  bottomRowArticles,
+} from "./data/onetNewsRedSectionData";
 
 export default function OnetNewsSection() {
   return (
@@ -30,11 +36,11 @@ export default function OnetNewsSection() {
         <div className="grid grid-cols-12 gap-4">
           {/* Lewa kolumna - główne duże zdjęcie */}
           <div className="col-span-12 lg:col-span-7 relative">
-            <Link href="/artykul/nowe-trendy-w-bachacie" className="block">
+            <Link href={`/artykul/${mainArticle.slug}`} className="block">
               <div className="relative aspect-[16/9] overflow-hidden">
                 <Image
-                  src="https://images.unsplash.com/photo-1545959570-a94084071b5d?q=80&w=1776&auto=format&fit=crop"
-                  alt="Nowe trendy w bachacie na 2024 rok"
+                  src={mainArticle.image}
+                  alt={mainArticle.title}
                   fill
                   className="object-cover hover:scale-105 transition-transform duration-300"
                 />
@@ -43,8 +49,8 @@ export default function OnetNewsSection() {
                 <div className="absolute top-4 left-4 flex items-center">
                   <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white shadow-md">
                     <Image
-                      src="https://randomuser.me/api/portraits/women/32.jpg"
-                      alt="Maria Rodriguez"
+                      src={mainArticle.author.avatar}
+                      alt={mainArticle.author.name}
                       width={40}
                       height={40}
                       className="object-cover"
@@ -52,17 +58,19 @@ export default function OnetNewsSection() {
                   </div>
                   <div className="ml-2 bg-black/60 backdrop-blur-sm px-3 py-1 rounded-full">
                     <span className="text-sm font-medium text-white">
-                      Maria Rodriguez
+                      {mainArticle.author.name}
                     </span>
                     <span className="mx-1 text-gray-400">•</span>
-                    <span className="text-xs text-gray-300">2 godz. temu</span>
+                    <span className="text-xs text-gray-300">
+                      {mainArticle.author.timeAgo}
+                    </span>
                   </div>
                 </div>
 
                 {/* Kategoria i akcje w prawym górnym rogu */}
                 <div className="absolute top-4 right-4 flex items-center space-x-2">
                   <span className="text-xs bg-red-600 text-white px-2 py-1 rounded-sm font-bold shadow-md">
-                    TANIEC
+                    {mainArticle.category}
                   </span>
                   <div className="flex items-center space-x-2 bg-black/60 backdrop-blur-sm rounded-full px-2 py-1">
                     <FaRegComment
@@ -79,8 +87,7 @@ export default function OnetNewsSection() {
                 <div className="absolute bottom-0 left-0 right-0">
                   <div className="bg-yellow-500 text-black px-4 py-3">
                     <h3 className="text-2xl font-bold text-black">
-                      Nowe trendy w bachacie na 2024 rok. &ldquo;Rewolucja w
-                      technice&rdquo;
+                      {mainArticle.title}
                     </h3>
                   </div>
                 </div>
@@ -93,11 +100,14 @@ export default function OnetNewsSection() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 h-full">
               {/* Artykuł z "premium" */}
               <div>
-                <Link href="/artykul/dominikanska-bachata" className="block">
+                <Link
+                  href={`/artykul/${rightColumnArticles[0].slug}`}
+                  className="block"
+                >
                   <div className="relative aspect-[4/3] overflow-hidden">
                     <Image
-                      src="https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?q=80&w=1770&auto=format&fit=crop"
-                      alt="Dominikańska bachata - powrót do korzeni"
+                      src={rightColumnArticles[0].image}
+                      alt={rightColumnArticles[0].title}
                       fill
                       className="object-cover"
                     />
@@ -105,37 +115,41 @@ export default function OnetNewsSection() {
                     <div className="absolute bottom-3 left-3 flex items-center">
                       <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-white shadow-md">
                         <Image
-                          src="https://randomuser.me/api/portraits/men/44.jpg"
-                          alt="Carlos Mendez"
+                          src={rightColumnArticles[0].author.avatar}
+                          alt={rightColumnArticles[0].author.name}
                           width={32}
                           height={32}
                           className="object-cover"
                         />
                       </div>
                       <div className="ml-2 bg-black/60 backdro-blur-sm px-2 py-0.5 rounded-full">
-                        <span className="text-xs text-white">C. Mendez</span>
+                        <span className="text-xs text-white">
+                          {rightColumnArticles[0].author.shortName}
+                        </span>
                       </div>
                     </div>
                     <div className="absolute top-2 right-2">
                       <div className="bg-yellow-400 text-black text-xs px-1.5 py-0.5 font-bold rounded-sm">
-                        sprawdź
+                        {rightColumnArticles[0].premiumLabel}
                       </div>
                     </div>
                   </div>
                   <h3 className="text-base font-bold text-white mt-2">
-                    Dominikańska bachata - powrót do korzeni.
-                    &ldquo;Autentyczność ponad wszystko&rdquo;
+                    {rightColumnArticles[0].title}
                   </h3>
                 </Link>
               </div>
 
               {/* Artykuł 2 - PODMIENIONE ZDJĘCIE */}
               <div>
-                <Link href="/artykul/bachata-sensual" className="block group">
+                <Link
+                  href={`/artykul/${rightColumnArticles[1].slug}`}
+                  className="block group"
+                >
                   <div className="relative aspect-[4/3] overflow-hidden">
                     <Image
-                      src="/images/bachata-romance.jpg"
-                      alt="Bachata Sensual - nowy wymiar bliskości"
+                      src={rightColumnArticles[1].image}
+                      alt={rightColumnArticles[1].title}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-300"
                     />
@@ -143,20 +157,22 @@ export default function OnetNewsSection() {
                     <div className="absolute bottom-3 left-3 flex items-center">
                       <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-white shadow-md">
                         <Image
-                          src="https://randomuser.me/api/portraits/women/42.jpg"
-                          alt="Sofia Garcia"
+                          src={rightColumnArticles[1].author.avatar}
+                          alt={rightColumnArticles[1].author.name}
                           width={32}
                           height={32}
                           className="object-cover"
                         />
                       </div>
                       <div className="ml-2 bg-black/60 backdrop-blur-sm px-2 py-0.5 rounded-full">
-                        <span className="text-xs text-white">S. Garcia</span>
+                        <span className="text-xs text-white">
+                          {rightColumnArticles[1].author.shortName}
+                        </span>
                       </div>
                     </div>
                   </div>
                   <h3 className="text-base font-bold text-white mt-2 group-hover:underline">
-                    Bachata Sensual - nowy wymiar bliskości w tańcu
+                    {rightColumnArticles[1].title}
                   </h3>
                 </Link>
               </div>
@@ -174,77 +190,73 @@ export default function OnetNewsSection() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                   {/* Article 1 */}
                   <Link
-                    href="/artykul/bachata-festiwal-warszawa"
+                    href={`/artykul/${shortNewsArticles[0].slug}`}
                     className="flex p-2 hover:bg-red-700 transition-colors group"
                   >
                     <div className="w-20 h-16 relative flex-shrink-0 mr-2">
                       <Image
-                        src="/images/bachata-festival.jpg"
-                        alt="Bachata Festiwal w Warszawie"
+                        src={shortNewsArticles[0].image}
+                        alt={shortNewsArticles[0].title}
                         fill
                         className="object-cover"
                       />
                     </div>
                     <h4 className="text-xs font-medium text-white group-hover:underline line-clamp-3">
-                      Bachata Festiwal w Warszawie - największe wydarzenie roku
-                      już w maju
+                      {shortNewsArticles[0].title}
                     </h4>
                   </Link>
 
                   {/* Article 2 */}
                   <Link
-                    href="/artykul/mistrzostwa-bachaty"
+                    href={`/artykul/${shortNewsArticles[1].slug}`}
                     className="flex p-2 hover:bg-red-700 transition-colors group"
                   >
                     <div className="w-20 h-16 relative flex-shrink-0 mr-2">
                       <Image
-                        src="https://images.unsplash.com/photo-1504609813442-a8924e83f76e?q=80&w=1770&auto=format&fit=crop"
-                        alt="Mistrzostwa Bachaty"
+                        src={shortNewsArticles[1].image}
+                        alt={shortNewsArticles[1].title}
                         fill
                         className="object-cover"
                       />
                     </div>
                     <h4 className="text-xs font-medium text-white group-hover:underline line-clamp-3">
-                      Mistrzostwa Bachaty 2024 - polscy tancerze podbijają
-                      światowe podium
+                      {shortNewsArticles[1].title}
                     </h4>
                   </Link>
 
                   {/* Article 3 */}
                   <Link
-                    href="/artykul/bachata-dla-poczatkujacych"
+                    href={`/artykul/${shortNewsArticles[2].slug}`}
                     className="flex p-2 hover:bg-red-700 transition-colors group"
                   >
                     <div className="w-20 h-16 relative flex-shrink-0 mr-2">
                       <Image
-                        src="/images/bachata-steps.jpg"
-                        alt="Bachata dla początkujących"
+                        src={shortNewsArticles[2].image}
+                        alt={shortNewsArticles[2].title}
                         fill
                         className="object-cover"
                       />
                     </div>
                     <h4 className="text-xs font-medium text-white group-hover:underline line-clamp-3">
-                      Bachata dla początkujących - jak zacząć przygodę z
-                      najpopularniejszym tańcem
+                      {shortNewsArticles[2].title}
                     </h4>
                   </Link>
 
                   {/* Article 4 */}
                   <Link
-                    href="/artykul/muzyka-do-bachaty"
+                    href={`/artykul/${shortNewsArticles[3].slug}`}
                     className="flex p-2 hover:bg-red-700 transition-colors group"
                   >
                     <div className="w-20 h-16 relative flex-shrink-0 mr-2">
                       <Image
-                        src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=1770&auto=format&fit=crop"
-                        alt="Muzyka do bachaty"
+                        src={shortNewsArticles[3].image}
+                        alt={shortNewsArticles[3].title}
                         fill
                         className="object-cover"
                       />
                     </div>
                     <h4 className="text-xs font-medium text-white group-hover:underline line-clamp-3">
-                      Muzyka do bachaty - nowe hity, które musisz znać w 2024
-                      roku
+                      {shortNewsArticles[3].title}
                     </h4>
                   </Link>
                 </div>
@@ -256,88 +268,96 @@ export default function OnetNewsSection() {
         {/* Dolny rząd artykułów */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
           {/* Artykuł 1 */}
-          <div className="flex group">
+          <Link
+            href={`/artykul/${bottomRowArticles[0].slug}`}
+            className="flex group"
+          >
             <div className="w-24 h-20 relative flex-shrink-0 mr-3">
               <Image
-                src="https://images.unsplash.com/photo-1535525153412-5a42439a210d?q=80&w=1770&auto=format&fit=crop"
-                alt="Wywiad z mistrzem bachaty"
+                src={bottomRowArticles[0].image}
+                alt={bottomRowArticles[0].title}
                 fill
                 className="object-cover"
               />
             </div>
             <div>
               <h4 className="text-sm font-medium text-white group-hover:underline line-clamp-3">
-                Wywiad z mistrzem bachaty: &ldquo;Taniec zmienił moje życie na
-                zawsze&rdquo;
+                {bottomRowArticles[0].title}
               </h4>
               <span className="text-xs text-gray-300 mt-1 block">
-                Juan Perez
+                {bottomRowArticles[0].author}
               </span>
             </div>
-          </div>
+          </Link>
 
           {/* Artykuł 2 */}
-          <div className="flex group">
+          <Link
+            href={`/artykul/${bottomRowArticles[1].slug}`}
+            className="flex group"
+          >
             <div className="w-24 h-20 relative flex-shrink-0 mr-3">
               <Image
-                src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1770&auto=format&fit=crop"
-                alt="Bachata w parach"
+                src={bottomRowArticles[1].image}
+                alt={bottomRowArticles[1].title}
                 fill
                 className="object-cover"
               />
             </div>
             <div>
               <h4 className="text-sm font-medium text-white group-hover:underline line-clamp-3">
-                Bachata w parach - jak osiągnąć idealną harmonię i zrozumienie
-                na parkiecie
+                {bottomRowArticles[1].title}
               </h4>
               <span className="text-xs text-gray-300 mt-1 block">
-                Marta Kowalska
+                {bottomRowArticles[1].author}
               </span>
             </div>
-          </div>
+          </Link>
 
           {/* Artykuł 3 */}
-          <div className="flex group">
+          <Link
+            href={`/artykul/${bottomRowArticles[2].slug}`}
+            className="flex group"
+          >
             <div className="w-24 h-20 relative flex-shrink-0 mr-3">
               <Image
-                src="https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?q=80&w=1769&auto=format&fit=crop"
-                alt="Stroje do bachaty"
+                src={bottomRowArticles[2].image}
+                alt={bottomRowArticles[2].title}
                 fill
                 className="object-cover"
               />
             </div>
             <div>
               <h4 className="text-sm font-medium text-white group-hover:underline line-clamp-3">
-                Stroje do bachaty - co wybrać, aby czuć się komfortowo i
-                wyglądać olśniewająco
+                {bottomRowArticles[2].title}
               </h4>
               <span className="text-xs text-gray-300 mt-1 block">
-                Anna Nowak
+                {bottomRowArticles[2].author}
               </span>
             </div>
-          </div>
+          </Link>
 
           {/* Artykuł 4 */}
-          <div className="flex group">
+          <Link
+            href={`/artykul/${bottomRowArticles[3].slug}`}
+            className="flex group"
+          >
             <div className="w-24 h-20 relative flex-shrink-0 mr-3">
               <Image
-                src="https://images.unsplash.com/photo-1547153760-18fc86324498?q=80&w=1774&auto=format&fit=crop"
-                alt="Bachata fusion"
+                src={bottomRowArticles[3].image}
+                alt={bottomRowArticles[3].title}
                 fill
                 className="object-cover"
               />
             </div>
             <div>
               <h4 className="text-sm font-medium text-white group-hover:underline line-clamp-3">
-                Bachata fusion - jak łączyć style taneczne i tworzyć unikalne
-                choreografie
+                {bottomRowArticles[3].title}
               </h4>
               <span className="text-xs text-gray-300 mt-1 block">
-                Piotr Wiśniewski
+                {bottomRowArticles[3].author}
               </span>
             </div>
-          </div>
+          </Link>
         </div>
       </div>
     </div>
