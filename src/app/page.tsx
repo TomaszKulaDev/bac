@@ -14,9 +14,9 @@ export default function HomePage() {
     <div className="min-h-screen bg-slate-50">
       <main className="pt-8">
         {/* Onet News Section - full width */}
-        <section className="py-8 mb-8 w-full">
+        {/* <section className="py-8 mb-8 w-full">
           <OnetNewsSection />
-        </section>
+        </section> */}
 
         {/* News Grid */}
         <section className="py-8">

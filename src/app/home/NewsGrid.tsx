@@ -29,110 +29,135 @@ export default function NewsGrid() {
           </div>
         </div>
 
-        <div className="grid grid-cols-12 gap-4">
-          {/* Main featured articles - first row */}
-          <div className="col-span-12 lg:col-span-9 grid grid-cols-12 gap-2">
-            {/* Large featured article */}
-            <div className="col-span-12 md:col-span-6 row-span-1">
-              <div className="relative overflow-hidden shadow-sm aspect-[16/10]">
-                <Link
-                  href={`/artykul/${featuredArticles[0].slug}`}
-                  className="block h-full"
-                >
-                  <Image
-                    src={featuredArticles[0].image}
-                    alt={featuredArticles[0].title}
-                    width={500}
-                    height={313}
-                    className="w-full h-full object-cover"
-                    priority
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
-                  <div className="absolute bottom-0 left-0 right-0 p-2">
-                    <h2 className="text-base font-bold leading-tight text-white">
-                      {featuredArticles[0].title}
-                    </h2>
-                  </div>
-                </Link>
-                {featuredArticles[0].author && (
-                  <div className="absolute bottom-2 right-2 flex items-center">
-                    <div className="flex items-center mr-2">
+        <div className="grid grid-cols-12 gap-3">
+          {/* Main content area */}
+          <div className="col-span-12 lg:col-span-9">
+            {/* Top row - main articles */}
+            <div className="grid grid-cols-12 gap-3 mb-3">
+              {/* Large featured article */}
+              <div className="col-span-12 md:col-span-7">
+                <div className="relative overflow-hidden shadow-sm h-full">
+                  <Link
+                    href={`/artykul/${featuredArticles[0].slug}`}
+                    className="block h-full"
+                  >
+                    <div className="aspect-[16/9] h-full">
                       <Image
-                        src={featuredArticles[0].author.avatar}
-                        alt={featuredArticles[0].author.name}
-                        width={20}
-                        height={20}
-                        className="rounded-full mr-1"
+                        src={featuredArticles[0].image}
+                        alt={featuredArticles[0].title}
+                        width={600}
+                        height={338}
+                        className="w-full h-full object-cover"
+                        priority
                       />
-                      <span className="text-white text-xs">
-                        {featuredArticles[0].author.name}
-                      </span>
                     </div>
-                    <button className="bg-transparent border border-white text-white text-xs px-1.5 py-0.5 hover:bg-white/20">
-                      Obserwuj
-                    </button>
-                  </div>
-                )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent"></div>
+                    <div className="absolute bottom-0 left-0 right-0 p-4">
+                      <div className="bg-yellow-400 text-black text-xs font-bold px-2 py-1 inline-block mb-2">
+                        WYDARZENIE
+                      </div>
+                      <h2 className="text-xl font-bold leading-tight text-white">
+                        {featuredArticles[0].title}
+                      </h2>
+                    </div>
+                  </Link>
+                </div>
               </div>
-            </div>
 
-            {/* Medium featured articles */}
-            <div className="col-span-12 md:col-span-6 grid grid-cols-2 gap-2">
-              <div className="col-span-1">
-                <div className="relative overflow-hidden shadow-sm aspect-[16/10]">
+              {/* Secondary featured article */}
+              <div className="col-span-12 md:col-span-5">
+                <div className="relative overflow-hidden shadow-sm h-full">
                   <Link
                     href={`/artykul/${featuredArticles[1].slug}`}
                     className="block h-full"
                   >
-                    <Image
-                      src={featuredArticles[1].image}
-                      alt={featuredArticles[1].title}
-                      width={250}
-                      height={156}
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
-                    <div className="absolute bottom-0 left-0 right-0 p-2">
-                      <h2 className="text-sm font-bold leading-tight text-white">
-                        {featuredArticles[1].title}
-                      </h2>
-                    </div>
-                  </Link>
-                </div>
-              </div>
-              <div className="col-span-1">
-                <div className="relative overflow-hidden shadow-sm aspect-[16/10]">
-                  <Link
-                    href={`/artykul/${featuredArticles[2].slug}`}
-                    className="block h-full"
-                  >
-                    <Image
-                      src={featuredArticles[2].image}
-                      alt={featuredArticles[2].title}
-                      width={250}
-                      height={156}
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
-                    <div className="absolute bottom-0 left-0 right-0 p-2">
-                      <h2 className="text-sm font-bold leading-tight text-white">
-                        {featuredArticles[2].title}
-                      </h2>
-                    </div>
-                  </Link>
-                  {featuredArticles[2].author && (
-                    <div className="absolute bottom-2 right-2">
+                    <div className="aspect-[16/9] h-full">
                       <Image
-                        src={featuredArticles[2].author.avatar}
-                        alt={featuredArticles[2].author.name}
-                        width={20}
-                        height={20}
-                        className="rounded-full"
+                        src={featuredArticles[1].image}
+                        alt={featuredArticles[1].title}
+                        width={400}
+                        height={225}
+                        className="w-full h-full object-cover"
                       />
                     </div>
-                  )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent"></div>
+                    <div className="absolute bottom-0 left-0 right-0 p-4">
+                      <div className="bg-blue-600 text-white text-xs font-bold px-2 py-1 inline-block mb-2">
+                        POLITYKA
+                      </div>
+                      <h2 className="text-lg font-bold leading-tight text-white">
+                        {featuredArticles[1].title}
+                      </h2>
+                      <div className="flex items-center mt-2">
+                        <div className="w-6 h-6 rounded-full overflow-hidden mr-2">
+                          <Image
+                            src={
+                              featuredArticles[1].author?.avatar ||
+                              "/placeholder-avatar.jpg"
+                            }
+                            alt={featuredArticles[1].author?.name || ""}
+                            width={24}
+                            height={24}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <span className="text-white text-xs">
+                          {featuredArticles[1].author?.name}
+                        </span>
+                        <button className="ml-2 text-xs text-white border border-white px-2 py-0.5 rounded-sm hover:bg-white/20">
+                          Obserwuj
+                        </button>
+                      </div>
+                    </div>
+                  </Link>
                 </div>
               </div>
+            </div>
+
+            {/* Bottom row - 3 smaller articles */}
+            <div className="grid grid-cols-3 gap-3">
+              {secondaryArticles.slice(0, 3).map((article, index) => (
+                <div key={article.id} className="overflow-hidden shadow-sm">
+                  <Link href={`/artykul/${article.slug}`} className="block">
+                    <div className="aspect-[4/3]">
+                      <Image
+                        src={article.image}
+                        alt={article.title}
+                        width={300}
+                        height={225}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div className="p-3 bg-white">
+                      <h2 className="text-base font-bold leading-tight text-gray-900 mb-2">
+                        {article.title}
+                      </h2>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center">
+                          <div className="w-6 h-6 rounded-full overflow-hidden mr-2">
+                            <Image
+                              src={
+                                article.author?.avatar ||
+                                "/placeholder-avatar.jpg"
+                              }
+                              alt={article.author?.name || ""}
+                              width={24}
+                              height={24}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                          <span className="text-gray-600 text-xs">
+                            {article.author?.name}
+                          </span>
+                        </div>
+                        <button className="text-xs text-gray-600 border border-gray-300 px-2 py-0.5 rounded-sm hover:bg-gray-100">
+                          Obserwuj
+                        </button>
+                      </div>
+                    </div>
+                  </Link>
+                </div>
+              ))}
             </div>
           </div>
 
@@ -145,7 +170,7 @@ export default function NewsGrid() {
               <h2 className="text-base font-bold uppercase">TANIEC</h2>
             </div>
             <div className="space-y-2">
-              {sidebarArticles.slice(1, 10).map((article) => (
+              {sidebarArticles.slice(1, 15).map((article) => (
                 <div key={article.id} className="border-t border-gray-200 pt-2">
                   <Link href={`/artykul/${article.slug}`} className="block">
                     <h3 className="text-sm font-bold hover:text-blue-600">
@@ -155,45 +180,6 @@ export default function NewsGrid() {
                 </div>
               ))}
             </div>
-          </div>
-
-          {/* Second row - 4 medium articles */}
-          <div className="col-span-12 lg:col-span-9 grid grid-cols-4 gap-2 mt-2">
-            {secondaryArticles.slice(0, 4).map((article) => (
-              <div
-                key={article.id}
-                className="relative overflow-hidden shadow-sm"
-              >
-                <Link href={`/artykul/${article.slug}`} className="block">
-                  <div className="aspect-[16/10]">
-                    <Image
-                      src={article.image}
-                      alt={article.title}
-                      width={200}
-                      height={125}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
-                  <div className="absolute bottom-0 left-0 right-0 p-2">
-                    <h2 className="text-xs font-bold leading-tight text-white">
-                      {article.title}
-                    </h2>
-                  </div>
-                </Link>
-                {article.author && (
-                  <div className="absolute bottom-2 right-2">
-                    <Image
-                      src={article.author.avatar}
-                      alt={article.author.name}
-                      width={16}
-                      height={16}
-                      className="rounded-full"
-                    />
-                  </div>
-                )}
-              </div>
-            ))}
           </div>
         </div>
       </div>
