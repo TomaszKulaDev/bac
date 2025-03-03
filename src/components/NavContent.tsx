@@ -2,7 +2,12 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { FaRegBell, FaRegEnvelope } from "react-icons/fa";
+import {
+  FaRegBell,
+  FaRegEnvelope,
+  FaRegUser,
+  FaUserPlus,
+} from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { useSession } from "next-auth/react";
 import { useRouter, usePathname } from "next/navigation";
@@ -106,18 +111,28 @@ export const NavContent: React.FC = React.memo(function NavContent() {
                 </>
               ) : (
                 <>
-                  <Link
-                    href="/login"
-                    className="px-4 py-2 text-sm text-gray-700 hover:text-blue-600 transition-colors"
-                  >
-                    Zaloguj
-                  </Link>
-                  <Link
-                    href="/register"
-                    className="px-4 py-2 text-sm text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
-                  >
-                    Dołącz do nas
-                  </Link>
+                  <div className="relative group">
+                    <Link
+                      href="/login"
+                      className="w-10 h-10 flex items-center justify-center rounded-full text-gray-600 hover:text-blue-600 hover:bg-gray-100 transition-all"
+                    >
+                      <FaRegUser className="w-5 h-5" />
+                    </Link>
+                    <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 hidden group-hover:block bg-gray-800 text-white text-xs py-1 px-2 rounded whitespace-nowrap">
+                      Zaloguj się
+                    </div>
+                  </div>
+                  <div className="relative group">
+                    <Link
+                      href="/register"
+                      className="w-10 h-10 flex items-center justify-center rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-all"
+                    >
+                      <FaUserPlus className="w-5 h-5" />
+                    </Link>
+                    <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 hidden group-hover:block bg-gray-800 text-white text-xs py-1 px-2 rounded whitespace-nowrap">
+                      Dołącz do nas
+                    </div>
+                  </div>
                 </>
               )}
 
