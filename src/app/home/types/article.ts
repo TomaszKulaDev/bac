@@ -4,16 +4,18 @@ export interface NewsArticle {
   title: string;
   image: string;
   slug: string;
-  category?: string;
-  hasVideo?: boolean;
-  isPremium?: boolean;
-  premiumLabel?: string;
+  category: string;
   author?: {
     name: string;
     avatar: string;
     shortName?: string;
     timeAgo?: string;
   };
+  // Add missing properties
+  sidebarCategory?: string;
+  date?: string;
+  views?: number;
+  premiumLabel?: string;
 }
 // Interfejs dla artykułów w sekcji "SKRÓT WYDARZEŃ"
 export interface ShortNewsArticle {

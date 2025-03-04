@@ -7,7 +7,7 @@ import {
   featuredArticles,
   secondaryArticles,
   sidebarArticles,
-} from "./data/newsGridData";
+} from "./data/articlesData";
 
 export default function NewsGrid() {
   const [hoveredArticle, setHoveredArticle] = useState<string | null>(null);
@@ -53,7 +53,17 @@ export default function NewsGrid() {
                     </div>
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent"></div>
                     <div className="absolute bottom-0 left-0 right-0 p-3">
-                      <h2 className="text-xl font-bold leading-tight text-white">
+                      <h2
+                        className="font-bold text-white"
+                        style={{
+                          fontFamily:
+                            '"Fira Sans", Arial, Helvetica, sans-serif',
+                          fontSize: "25px",
+                          lineHeight: "31px",
+                          textAlign: "left",
+                          letterSpacing: "-0.4px",
+                        }}
+                      >
                         {featuredArticles[0].title}
                       </h2>
                     </div>

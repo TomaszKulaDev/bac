@@ -5,11 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaRegComment, FaShare } from "react-icons/fa";
 import {
-  mainArticle,
-  rightColumnArticles,
-  shortNewsArticles,
-  bottomRowArticles,
-} from "./data/onetNewsRedSectionData";
+  redSectionArticles
+} from "./data/articlesData";
 
 /**
  * OnetNewsSection - Komponent wyświetlający sekcję wiadomości w stylu Onet
@@ -60,11 +57,11 @@ export default function OnetNewsSection() {
         <div className="grid grid-cols-12 gap-4">
           {/* Lewa kolumna - główne duże zdjęcie */}
           <div className="col-span-12 lg:col-span-7 relative">
-            <Link href={`/artykul/${mainArticle.slug}`} className="block">
+            <Link href={`/artykul/${redSectionArticles[0].slug}`} className="block">
               <div className="relative aspect-[16/7] overflow-hidden rounded-md shadow-md">
                 <Image
-                  src={mainArticle.image}
-                  alt={mainArticle.title}
+                  src={redSectionArticles[0].image}
+                  alt={redSectionArticles[0].title}
                   fill
                   className="object-cover hover:scale-105 transition-transform duration-300"
                 />
@@ -74,8 +71,8 @@ export default function OnetNewsSection() {
                 <div className="absolute top-4 left-4 flex items-center">
                   <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white shadow-md">
                     <Image
-                      src={mainArticle.author.avatar}
-                      alt={mainArticle.author.name}
+                      src={redSectionArticles[0].author.avatar}
+                      alt={redSectionArticles[0].author.name}
                       width={40}
                       height={40}
                       className="object-cover"
@@ -84,11 +81,11 @@ export default function OnetNewsSection() {
                   {/* Półprzezroczyste tło z informacjami o autorze */}
                   <div className="ml-2 bg-black/60 backdrop-blur-sm px-3 py-1 rounded-full">
                     <span className="text-sm font-medium text-white">
-                      {mainArticle.author.name}
+                      {redSectionArticles[0].author.name}
                     </span>
                     <span className="mx-1 text-gray-400">•</span>
                     <span className="text-xs text-gray-300">
-                      {mainArticle.author.timeAgo}
+                      {redSectionArticles[0].author.timeAgo}
                     </span>
                   </div>
                 </div>
@@ -99,7 +96,7 @@ export default function OnetNewsSection() {
                   <span
                     className={`text-xs ${colors.accent} ${colors.textLight} px-2 py-1 rounded-sm font-bold shadow-md`}
                   >
-                    {mainArticle.category}
+                    {redSectionArticles[0].category}
                   </span>
                   {/* Przyciski akcji na półprzezroczystym tle */}
                   <div className="flex items-center space-x-2 bg-black/60 backdrop-blur-sm rounded-full px-2 py-1">
@@ -121,7 +118,7 @@ export default function OnetNewsSection() {
                     className={`${colors.dark} ${colors.textLight} px-4 py-3`}
                   >
                     <h3 className="text-2xl font-bold text-white">
-                      {mainArticle.title}
+                      {redSectionArticles[0].title}
                     </h3>
                   </div>
                 </div>
@@ -136,13 +133,13 @@ export default function OnetNewsSection() {
               {/* Pierwszy artykuł w prawej kolumnie z oznaczeniem premium */}
               <div>
                 <Link
-                  href={`/artykul/${rightColumnArticles[0].slug}`}
+                  href={`/artykul/${redSectionArticles[1].slug}`}
                   className="block"
                 >
                   <div className="relative aspect-[4/2] overflow-hidden rounded-md shadow-md">
                     <Image
-                      src={rightColumnArticles[0].image}
-                      alt={rightColumnArticles[0].title}
+                      src={redSectionArticles[1].image}
+                      alt={redSectionArticles[1].title}
                       fill
                       className="object-cover"
                     />
@@ -151,8 +148,8 @@ export default function OnetNewsSection() {
                     <div className="absolute bottom-3 left-3 flex items-center">
                       <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-white shadow-md">
                         <Image
-                          src={rightColumnArticles[0].author.avatar}
-                          alt={rightColumnArticles[0].author.name}
+                          src={redSectionArticles[1].author.avatar}
+                          alt={redSectionArticles[1].author.name}
                           width={32}
                           height={32}
                           className="object-cover"
@@ -160,7 +157,7 @@ export default function OnetNewsSection() {
                       </div>
                       <div className="ml-2 bg-black/60 backdrop-blur-sm px-2 py-0.5 rounded-full">
                         <span className="text-xs text-white">
-                          {rightColumnArticles[0].author.shortName}
+                          {redSectionArticles[1].author.shortName}
                         </span>
                       </div>
                     </div>
@@ -170,12 +167,12 @@ export default function OnetNewsSection() {
                       <div
                         className={`${colors.secondary} ${colors.textLight} text-xs px-1.5 py-0.5 font-bold rounded-sm shadow-sm`}
                       >
-                        {rightColumnArticles[0].premiumLabel}
+                        {redSectionArticles[1].premiumLabel}
                       </div>
                     </div>
                   </div>
                   <h3 className={`text-base font-bold ${colors.text} mt-2`}>
-                    {rightColumnArticles[0].title}
+                    {redSectionArticles[1].title}
                   </h3>
                 </Link>
               </div>
@@ -183,13 +180,13 @@ export default function OnetNewsSection() {
               {/* Artykuł 2 */}
               <div>
                 <Link
-                  href={`/artykul/${rightColumnArticles[1].slug}`}
+                  href={`/artykul/${redSectionArticles[2].slug}`}
                   className="block group"
                 >
                   <div className="relative aspect-[4/2] overflow-hidden rounded-md shadow-md">
                     <Image
-                      src={rightColumnArticles[1].image}
-                      alt={rightColumnArticles[1].title}
+                      src={redSectionArticles[2].image}
+                      alt={redSectionArticles[2].title}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-300"
                     />
@@ -197,8 +194,8 @@ export default function OnetNewsSection() {
                     <div className="absolute bottom-3 left-3 flex items-center">
                       <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-white shadow-md">
                         <Image
-                          src={rightColumnArticles[1].author.avatar}
-                          alt={rightColumnArticles[1].author.name}
+                          src={redSectionArticles[2].author.avatar}
+                          alt={redSectionArticles[2].author.name}
                           width={32}
                           height={32}
                           className="object-cover"
@@ -206,7 +203,7 @@ export default function OnetNewsSection() {
                       </div>
                       <div className="ml-2 bg-black/60 backdrop-blur-sm px-2 py-0.5 rounded-full">
                         <span className="text-xs text-white">
-                          {rightColumnArticles[1].author.shortName}
+                          {redSectionArticles[2].author.shortName}
                         </span>
                       </div>
                     </div>
@@ -214,7 +211,7 @@ export default function OnetNewsSection() {
                   <h3
                     className={`text-base font-bold ${colors.text} mt-2 group-hover:underline`}
                   >
-                    {rightColumnArticles[1].title}
+                    {redSectionArticles[2].title}
                   </h3>
                 </Link>
               </div>
@@ -234,13 +231,13 @@ export default function OnetNewsSection() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                   {/* Article 1 */}
                   <Link
-                    href={`/artykul/${shortNewsArticles[0].slug}`}
+                    href={`/artykul/${redSectionArticles[3].slug}`}
                     className="flex p-2 hover:bg-[#f0c800] transition-colors group rounded"
                   >
                     <div className="w-20 h-16 relative flex-shrink-0 mr-2 rounded overflow-hidden shadow-sm">
                       <Image
-                        src={shortNewsArticles[0].image}
-                        alt={shortNewsArticles[0].title}
+                        src={redSectionArticles[3].image}
+                        alt={redSectionArticles[3].title}
                         fill
                         className="object-cover"
                       />
@@ -248,19 +245,19 @@ export default function OnetNewsSection() {
                     <h4
                       className={`text-xs font-medium ${colors.text} group-hover:underline line-clamp-3`}
                     >
-                      {shortNewsArticles[0].title}
+                      {redSectionArticles[3].title}
                     </h4>
                   </Link>
 
                   {/* Article 2 */}
                   <Link
-                    href={`/artykul/${shortNewsArticles[1].slug}`}
+                    href={`/artykul/${redSectionArticles[4].slug}`}
                     className="flex p-2 hover:bg-[#f0c800] transition-colors group rounded"
                   >
                     <div className="w-20 h-16 relative flex-shrink-0 mr-2 rounded overflow-hidden shadow-sm">
                       <Image
-                        src={shortNewsArticles[1].image}
-                        alt={shortNewsArticles[1].title}
+                        src={redSectionArticles[4].image}
+                        alt={redSectionArticles[4].title}
                         fill
                         className="object-cover"
                       />
@@ -268,19 +265,19 @@ export default function OnetNewsSection() {
                     <h4
                       className={`text-xs font-medium ${colors.text} group-hover:underline line-clamp-3`}
                     >
-                      {shortNewsArticles[1].title}
+                      {redSectionArticles[4].title}
                     </h4>
                   </Link>
 
                   {/* Article 3 */}
                   <Link
-                    href={`/artykul/${shortNewsArticles[2].slug}`}
+                    href={`/artykul/${redSectionArticles[5].slug}`}
                     className="flex p-2 hover:bg-[#f0c800] transition-colors group rounded"
                   >
                     <div className="w-20 h-16 relative flex-shrink-0 mr-2 rounded overflow-hidden shadow-sm">
                       <Image
-                        src={shortNewsArticles[2].image}
-                        alt={shortNewsArticles[2].title}
+                        src={redSectionArticles[5].image}
+                        alt={redSectionArticles[5].title}
                         fill
                         className="object-cover"
                       />
@@ -288,19 +285,19 @@ export default function OnetNewsSection() {
                     <h4
                       className={`text-xs font-medium ${colors.text} group-hover:underline line-clamp-3`}
                     >
-                      {shortNewsArticles[2].title}
+                      {redSectionArticles[5].title}
                     </h4>
                   </Link>
 
                   {/* Article 4 */}
                   <Link
-                    href={`/artykul/${shortNewsArticles[3].slug}`}
+                    href={`/artykul/${redSectionArticles[6].slug}`}
                     className="flex p-2 hover:bg-[#f0c800] transition-colors group rounded"
                   >
                     <div className="w-20 h-16 relative flex-shrink-0 mr-2 rounded overflow-hidden shadow-sm">
                       <Image
-                        src={shortNewsArticles[3].image}
-                        alt={shortNewsArticles[3].title}
+                        src={redSectionArticles[6].image}
+                        alt={redSectionArticles[6].title}
                         fill
                         className="object-cover"
                       />
@@ -308,7 +305,7 @@ export default function OnetNewsSection() {
                     <h4
                       className={`text-xs font-medium ${colors.text} group-hover:underline line-clamp-3`}
                     >
-                      {shortNewsArticles[3].title}
+                      {redSectionArticles[6].title}
                     </h4>
                   </Link>
                 </div>
@@ -321,13 +318,13 @@ export default function OnetNewsSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4 pt-4 border-t border-[#e6c200]">
           {/* Artykuł 1 */}
           <Link
-            href={`/artykul/${bottomRowArticles[0].slug}`}
+            href={`/artykul/${redSectionArticles[7].slug}`}
             className="flex group"
           >
             <div className="w-24 h-20 relative flex-shrink-0 mr-3 rounded overflow-hidden shadow-sm">
               <Image
-                src={bottomRowArticles[0].image}
-                alt={bottomRowArticles[0].title}
+                src={redSectionArticles[7].image}
+                alt={redSectionArticles[7].title}
                 fill
                 className="object-cover"
               />
@@ -336,23 +333,23 @@ export default function OnetNewsSection() {
               <h4
                 className={`text-sm font-medium ${colors.text} group-hover:underline line-clamp-3`}
               >
-                {bottomRowArticles[0].title}
+                {redSectionArticles[7].title}
               </h4>
               <span className={`text-xs ${colors.textMuted} mt-1 block`}>
-                {bottomRowArticles[0].author}
+                {redSectionArticles[7].author}
               </span>
             </div>
           </Link>
 
           {/* Artykuł 2 */}
           <Link
-            href={`/artykul/${bottomRowArticles[1].slug}`}
+            href={`/artykul/${redSectionArticles[8].slug}`}
             className="flex group"
           >
             <div className="w-24 h-20 relative flex-shrink-0 mr-3 rounded overflow-hidden shadow-sm">
               <Image
-                src={bottomRowArticles[1].image}
-                alt={bottomRowArticles[1].title}
+                src={redSectionArticles[8].image}
+                alt={redSectionArticles[8].title}
                 fill
                 className="object-cover"
               />
@@ -361,23 +358,23 @@ export default function OnetNewsSection() {
               <h4
                 className={`text-sm font-medium ${colors.text} group-hover:underline line-clamp-3`}
               >
-                {bottomRowArticles[1].title}
+                {redSectionArticles[8].title}
               </h4>
               <span className={`text-xs ${colors.textMuted} mt-1 block`}>
-                {bottomRowArticles[1].author}
+                {redSectionArticles[8].author}
               </span>
             </div>
           </Link>
 
           {/* Artykuł 3 */}
           <Link
-            href={`/artykul/${bottomRowArticles[2].slug}`}
+            href={`/artykul/${redSectionArticles[9].slug}`}
             className="flex group"
           >
             <div className="w-24 h-20 relative flex-shrink-0 mr-3 rounded overflow-hidden shadow-sm">
               <Image
-                src={bottomRowArticles[2].image}
-                alt={bottomRowArticles[2].title}
+                src={redSectionArticles[9].image}
+                alt={redSectionArticles[9].title}
                 fill
                 className="object-cover"
               />
@@ -386,23 +383,23 @@ export default function OnetNewsSection() {
               <h4
                 className={`text-sm font-medium ${colors.text} group-hover:underline line-clamp-3`}
               >
-                {bottomRowArticles[2].title}
+                {redSectionArticles[9].title}
               </h4>
               <span className={`text-xs ${colors.textMuted} mt-1 block`}>
-                {bottomRowArticles[2].author}
+                {redSectionArticles[9].author}
               </span>
             </div>
           </Link>
 
           {/* Artykuł 4 */}
           <Link
-            href={`/artykul/${bottomRowArticles[3].slug}`}
+            href={`/artykul/${redSectionArticles[10].slug}`}
             className="flex group"
           >
             <div className="w-24 h-20 relative flex-shrink-0 mr-3 rounded overflow-hidden shadow-sm">
               <Image
-                src={bottomRowArticles[3].image}
-                alt={bottomRowArticles[3].title}
+                src={redSectionArticles[10].image}
+                alt={redSectionArticles[10].title}
                 fill
                 className="object-cover"
               />
@@ -411,10 +408,10 @@ export default function OnetNewsSection() {
               <h4
                 className={`text-sm font-medium ${colors.text} group-hover:underline line-clamp-3`}
               >
-                {bottomRowArticles[3].title}
+                {redSectionArticles[10].title}
               </h4>
               <span className={`text-xs ${colors.textMuted} mt-1 block`}>
-                {bottomRowArticles[3].author}
+                {redSectionArticles[10].author}
               </span>
             </div>
           </Link>
