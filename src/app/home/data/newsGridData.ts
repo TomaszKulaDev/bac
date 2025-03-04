@@ -36,18 +36,7 @@ export const featuredArticles: NewsArticle[] = [
 ];
 
 export const secondaryArticles: NewsArticle[] = [
-  {
-    id: "4",
-    title:
-      "a4 Mistrzowie bachaty z Dominikany przyjeżdżają do Polski na warsztaty",
-    image:
-      "https://images.unsplash.com/photo-1546805022-9f8c92733b86?q=80&w=1770&auto=format&fit=crop",
-    slug: "mistrzowie-bachaty-warsztaty",
-    author: {
-      name: "Sofia Garcia",
-      avatar: "https://randomuser.me/api/portraits/women/45.jpg",
-    },
-  },
+
   {
     id: "5",
     title: "a5 Festiwal Bachata Fusion 2024 - Zapisy otwarte do końca miesiąca",
@@ -73,6 +62,35 @@ export const secondaryArticles: NewsArticle[] = [
     image:
       "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?q=80&w=1770&auto=format&fit=crop",
     slug: "mistrzostwa-polski-bachata",
+  },
+  {
+    id: "8",
+    title: "a8 Bachata Moderna - Fuzja stylów i nowe możliwości ekspresji",
+    image:
+      "https://images.unsplash.com/photo-1524117074681-31bd4de22ad3?q=80&w=1770&auto=format&fit=crop",
+    slug: "bachata-moderna-fuzja",
+    author: {
+      name: "Ana Martinez",
+      avatar: "https://randomuser.me/api/portraits/women/52.jpg",
+    },
+  },
+  {
+    id: "9",
+    title: "a9 Warsztaty Bachaty Online - Nowa Era Nauki Tańca",
+    image:
+      "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?q=80&w=1770&auto=format&fit=crop",
+    slug: "warsztaty-bachaty-online",
+  },
+  {
+    id: "10",
+    title: "a10 Bachata w klubach - Przewodnik po najlepszych miejscówkach",
+    image:
+      "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1770&auto=format&fit=crop",
+    slug: "bachata-kluby-przewodnik",
+    author: {
+      name: "Miguel Torres",
+      avatar: "https://randomuser.me/api/portraits/men/62.jpg",
+    },
   },
 ];
 

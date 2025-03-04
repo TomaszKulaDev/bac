@@ -118,7 +118,7 @@ export default function NewsGrid() {
 
             {/* Bottom row - 3 smaller articles */}
             <div className="grid grid-cols-3 gap-2">
-              {secondaryArticles.slice(0, 3).map((article, index) => (
+              {secondaryArticles.slice(0, 9).map((article, index) => (
                 <div key={article.id} className="overflow-hidden shadow-sm">
                   <Link href={`/artykul/${article.slug}`} className="block">
                     <div className="aspect-[16/9]">
