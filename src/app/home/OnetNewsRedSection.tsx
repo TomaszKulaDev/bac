@@ -4,9 +4,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { FaRegComment, FaShare } from "react-icons/fa";
-import {
-  redSectionArticles
-} from "./data/articlesData";
+import { redSectionArticles } from "./data/articlesData";
 
 /**
  * OnetNewsSection - Komponent wyświetlający sekcję wiadomości w stylu Onet
@@ -57,7 +55,10 @@ export default function OnetNewsSection() {
         <div className="grid grid-cols-12 gap-4">
           {/* Lewa kolumna - główne duże zdjęcie */}
           <div className="col-span-12 lg:col-span-7 relative">
-            <Link href={`/artykul/${redSectionArticles[0].slug}`} className="block">
+            <Link
+              href={`/artykul/${redSectionArticles[0].slug}`}
+              className="block"
+            >
               <div className="relative aspect-[16/7] overflow-hidden rounded-md shadow-md">
                 <Image
                   src={redSectionArticles[0].image}
@@ -71,8 +72,11 @@ export default function OnetNewsSection() {
                 <div className="absolute top-4 left-4 flex items-center">
                   <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white shadow-md">
                     <Image
-                      src={redSectionArticles[0].author.avatar}
-                      alt={redSectionArticles[0].author.name}
+                      src={
+                        redSectionArticles[0].author?.avatar ||
+                        "/placeholder-avatar.jpg"
+                      }
+                      alt={redSectionArticles[0].author?.name || "Author"}
                       width={40}
                       height={40}
                       className="object-cover"
@@ -81,11 +85,11 @@ export default function OnetNewsSection() {
                   {/* Półprzezroczyste tło z informacjami o autorze */}
                   <div className="ml-2 bg-black/60 backdrop-blur-sm px-3 py-1 rounded-full">
                     <span className="text-sm font-medium text-white">
-                      {redSectionArticles[0].author.name}
+                      {redSectionArticles[0].author?.name || "Author"}
                     </span>
                     <span className="mx-1 text-gray-400">•</span>
                     <span className="text-xs text-gray-300">
-                      {redSectionArticles[0].author.timeAgo}
+                      {redSectionArticles[0].author?.timeAgo || "Recently"}
                     </span>
                   </div>
                 </div>
@@ -148,8 +152,11 @@ export default function OnetNewsSection() {
                     <div className="absolute bottom-3 left-3 flex items-center">
                       <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-white shadow-md">
                         <Image
-                          src={redSectionArticles[1].author.avatar}
-                          alt={redSectionArticles[1].author.name}
+                          src={
+                            redSectionArticles[1].author?.avatar ||
+                            "/placeholder-avatar.jpg"
+                          }
+                          alt={redSectionArticles[1].author?.name || "Author"}
                           width={32}
                           height={32}
                           className="object-cover"
@@ -157,7 +164,9 @@ export default function OnetNewsSection() {
                       </div>
                       <div className="ml-2 bg-black/60 backdrop-blur-sm px-2 py-0.5 rounded-full">
                         <span className="text-xs text-white">
-                          {redSectionArticles[1].author.shortName}
+                          {redSectionArticles[1].author?.shortName ||
+                            redSectionArticles[1].author?.name ||
+                            "Author"}
                         </span>
                       </div>
                     </div>
@@ -194,8 +203,11 @@ export default function OnetNewsSection() {
                     <div className="absolute bottom-3 left-3 flex items-center">
                       <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-white shadow-md">
                         <Image
-                          src={redSectionArticles[2].author.avatar}
-                          alt={redSectionArticles[2].author.name}
+                          src={
+                            redSectionArticles[2].author?.avatar ||
+                            "/placeholder-avatar.jpg"
+                          }
+                          alt={redSectionArticles[2].author?.name || "Author"}
                           width={32}
                           height={32}
                           className="object-cover"
@@ -203,7 +215,9 @@ export default function OnetNewsSection() {
                       </div>
                       <div className="ml-2 bg-black/60 backdrop-blur-sm px-2 py-0.5 rounded-full">
                         <span className="text-xs text-white">
-                          {redSectionArticles[2].author.shortName}
+                          {redSectionArticles[2].author?.shortName ||
+                            redSectionArticles[2].author?.name ||
+                            "Author"}
                         </span>
                       </div>
                     </div>
@@ -229,85 +243,93 @@ export default function OnetNewsSection() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                  {/* Article 1 */}
-                  <Link
-                    href={`/artykul/${redSectionArticles[3].slug}`}
-                    className="flex p-2 hover:bg-[#f0c800] transition-colors group rounded"
-                  >
-                    <div className="w-20 h-16 relative flex-shrink-0 mr-2 rounded overflow-hidden shadow-sm">
-                      <Image
-                        src={redSectionArticles[3].image}
-                        alt={redSectionArticles[3].title}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                    <h4
-                      className={`text-xs font-medium ${colors.text} group-hover:underline line-clamp-3`}
+                  {/* Render articles only if they exist */}
+                  {redSectionArticles.length > 3 && (
+                    <Link
+                      href={`/artykul/${redSectionArticles[3].slug}`}
+                      className="flex p-2 hover:bg-[#f0c800] transition-colors group rounded"
                     >
-                      {redSectionArticles[3].title}
-                    </h4>
-                  </Link>
+                      <div className="w-20 h-16 relative flex-shrink-0 mr-2 rounded overflow-hidden shadow-sm">
+                        <Image
+                          src={redSectionArticles[3].image}
+                          alt={redSectionArticles[3].title}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                      <h4
+                        className={`text-xs font-medium ${colors.text} group-hover:underline line-clamp-3`}
+                      >
+                        {redSectionArticles[3].title}
+                      </h4>
+                    </Link>
+                  )}
 
                   {/* Article 2 */}
-                  <Link
-                    href={`/artykul/${redSectionArticles[4].slug}`}
-                    className="flex p-2 hover:bg-[#f0c800] transition-colors group rounded"
-                  >
-                    <div className="w-20 h-16 relative flex-shrink-0 mr-2 rounded overflow-hidden shadow-sm">
-                      <Image
-                        src={redSectionArticles[4].image}
-                        alt={redSectionArticles[4].title}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                    <h4
-                      className={`text-xs font-medium ${colors.text} group-hover:underline line-clamp-3`}
+                  {redSectionArticles.length > 4 && (
+                    <Link
+                      href={`/artykul/${redSectionArticles[4].slug}`}
+                      className="flex p-2 hover:bg-[#f0c800] transition-colors group rounded"
                     >
-                      {redSectionArticles[4].title}
-                    </h4>
-                  </Link>
+                      <div className="w-20 h-16 relative flex-shrink-0 mr-2 rounded overflow-hidden shadow-sm">
+                        <Image
+                          src={redSectionArticles[4].image}
+                          alt={redSectionArticles[4].title}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                      <h4
+                        className={`text-xs font-medium ${colors.text} group-hover:underline line-clamp-3`}
+                      >
+                        {redSectionArticles[4].title}
+                      </h4>
+                    </Link>
+                  )}
 
                   {/* Article 3 */}
-                  <Link
-                    href={`/artykul/${redSectionArticles[5].slug}`}
-                    className="flex p-2 hover:bg-[#f0c800] transition-colors group rounded"
-                  >
-                    <div className="w-20 h-16 relative flex-shrink-0 mr-2 rounded overflow-hidden shadow-sm">
-                      <Image
-                        src={redSectionArticles[5].image}
-                        alt={redSectionArticles[5].title}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                    <h4
-                      className={`text-xs font-medium ${colors.text} group-hover:underline line-clamp-3`}
+                  {redSectionArticles.length > 5 && (
+                    <Link
+                      href={`/artykul/${redSectionArticles[5].slug}`}
+                      className="flex p-2 hover:bg-[#f0c800] transition-colors group rounded"
                     >
-                      {redSectionArticles[5].title}
-                    </h4>
-                  </Link>
+                      <div className="w-20 h-16 relative flex-shrink-0 mr-2 rounded overflow-hidden shadow-sm">
+                        <Image
+                          src={redSectionArticles[5].image}
+                          alt={redSectionArticles[5].title}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                      <h4
+                        className={`text-xs font-medium ${colors.text} group-hover:underline line-clamp-3`}
+                      >
+                        {redSectionArticles[5].title}
+                      </h4>
+                    </Link>
+                  )}
 
                   {/* Article 4 */}
-                  <Link
-                    href={`/artykul/${redSectionArticles[6].slug}`}
-                    className="flex p-2 hover:bg-[#f0c800] transition-colors group rounded"
-                  >
-                    <div className="w-20 h-16 relative flex-shrink-0 mr-2 rounded overflow-hidden shadow-sm">
-                      <Image
-                        src={redSectionArticles[6].image}
-                        alt={redSectionArticles[6].title}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                    <h4
-                      className={`text-xs font-medium ${colors.text} group-hover:underline line-clamp-3`}
+                  {redSectionArticles.length > 6 && (
+                    <Link
+                      href={`/artykul/${redSectionArticles[6].slug}`}
+                      className="flex p-2 hover:bg-[#f0c800] transition-colors group rounded"
                     >
-                      {redSectionArticles[6].title}
-                    </h4>
-                  </Link>
+                      <div className="w-20 h-16 relative flex-shrink-0 mr-2 rounded overflow-hidden shadow-sm">
+                        <Image
+                          src={redSectionArticles[6].image}
+                          alt={redSectionArticles[6].title}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                      <h4
+                        className={`text-xs font-medium ${colors.text} group-hover:underline line-clamp-3`}
+                      >
+                        {redSectionArticles[6].title}
+                      </h4>
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>
@@ -317,104 +339,120 @@ export default function OnetNewsSection() {
         {/* Dolny rząd artykułów */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4 pt-4 border-t border-[#e6c200]">
           {/* Artykuł 1 */}
-          <Link
-            href={`/artykul/${redSectionArticles[7].slug}`}
-            className="flex group"
-          >
-            <div className="w-24 h-20 relative flex-shrink-0 mr-3 rounded overflow-hidden shadow-sm">
-              <Image
-                src={redSectionArticles[7].image}
-                alt={redSectionArticles[7].title}
-                fill
-                className="object-cover"
-              />
-            </div>
-            <div>
-              <h4
-                className={`text-sm font-medium ${colors.text} group-hover:underline line-clamp-3`}
-              >
-                {redSectionArticles[7].title}
-              </h4>
-              <span className={`text-xs ${colors.textMuted} mt-1 block`}>
-                {redSectionArticles[7].author}
-              </span>
-            </div>
-          </Link>
+          {redSectionArticles.length > 7 && (
+            <Link
+              href={`/artykul/${redSectionArticles[7].slug}`}
+              className="flex group"
+            >
+              <div className="w-24 h-20 relative flex-shrink-0 mr-3 rounded overflow-hidden shadow-sm">
+                <Image
+                  src={redSectionArticles[7].image}
+                  alt={redSectionArticles[7].title}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <div>
+                <h4
+                  className={`text-sm font-medium ${colors.text} group-hover:underline line-clamp-3`}
+                >
+                  {redSectionArticles[7].title}
+                </h4>
+                <span className={`text-xs ${colors.textMuted} mt-1 block`}>
+                  {typeof redSectionArticles[7].author === "string"
+                    ? redSectionArticles[7].author
+                    : redSectionArticles[7].author?.name || "Author"}
+                </span>
+              </div>
+            </Link>
+          )}
 
           {/* Artykuł 2 */}
-          <Link
-            href={`/artykul/${redSectionArticles[8].slug}`}
-            className="flex group"
-          >
-            <div className="w-24 h-20 relative flex-shrink-0 mr-3 rounded overflow-hidden shadow-sm">
-              <Image
-                src={redSectionArticles[8].image}
-                alt={redSectionArticles[8].title}
-                fill
-                className="object-cover"
-              />
-            </div>
-            <div>
-              <h4
-                className={`text-sm font-medium ${colors.text} group-hover:underline line-clamp-3`}
-              >
-                {redSectionArticles[8].title}
-              </h4>
-              <span className={`text-xs ${colors.textMuted} mt-1 block`}>
-                {redSectionArticles[8].author}
-              </span>
-            </div>
-          </Link>
+          {redSectionArticles.length > 8 && (
+            <Link
+              href={`/artykul/${redSectionArticles[8].slug}`}
+              className="flex group"
+            >
+              <div className="w-24 h-20 relative flex-shrink-0 mr-3 rounded overflow-hidden shadow-sm">
+                <Image
+                  src={redSectionArticles[8].image}
+                  alt={redSectionArticles[8].title}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <div>
+                <h4
+                  className={`text-sm font-medium ${colors.text} group-hover:underline line-clamp-3`}
+                >
+                  {redSectionArticles[8].title}
+                </h4>
+                <span className={`text-xs ${colors.textMuted} mt-1 block`}>
+                  {typeof redSectionArticles[8].author === "string"
+                    ? redSectionArticles[8].author
+                    : redSectionArticles[8].author?.name || "Author"}
+                </span>
+              </div>
+            </Link>
+          )}
 
           {/* Artykuł 3 */}
-          <Link
-            href={`/artykul/${redSectionArticles[9].slug}`}
-            className="flex group"
-          >
-            <div className="w-24 h-20 relative flex-shrink-0 mr-3 rounded overflow-hidden shadow-sm">
-              <Image
-                src={redSectionArticles[9].image}
-                alt={redSectionArticles[9].title}
-                fill
-                className="object-cover"
-              />
-            </div>
-            <div>
-              <h4
-                className={`text-sm font-medium ${colors.text} group-hover:underline line-clamp-3`}
-              >
-                {redSectionArticles[9].title}
-              </h4>
-              <span className={`text-xs ${colors.textMuted} mt-1 block`}>
-                {redSectionArticles[9].author}
-              </span>
-            </div>
-          </Link>
+          {redSectionArticles.length > 9 && (
+            <Link
+              href={`/artykul/${redSectionArticles[9].slug}`}
+              className="flex group"
+            >
+              <div className="w-24 h-20 relative flex-shrink-0 mr-3 rounded overflow-hidden shadow-sm">
+                <Image
+                  src={redSectionArticles[9].image}
+                  alt={redSectionArticles[9].title}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <div>
+                <h4
+                  className={`text-sm font-medium ${colors.text} group-hover:underline line-clamp-3`}
+                >
+                  {redSectionArticles[9].title}
+                </h4>
+                <span className={`text-xs ${colors.textMuted} mt-1 block`}>
+                  {typeof redSectionArticles[9].author === "string"
+                    ? redSectionArticles[9].author
+                    : redSectionArticles[9].author?.name || "Author"}
+                </span>
+              </div>
+            </Link>
+          )}
 
           {/* Artykuł 4 */}
-          <Link
-            href={`/artykul/${redSectionArticles[10].slug}`}
-            className="flex group"
-          >
-            <div className="w-24 h-20 relative flex-shrink-0 mr-3 rounded overflow-hidden shadow-sm">
-              <Image
-                src={redSectionArticles[10].image}
-                alt={redSectionArticles[10].title}
-                fill
-                className="object-cover"
-              />
-            </div>
-            <div>
-              <h4
-                className={`text-sm font-medium ${colors.text} group-hover:underline line-clamp-3`}
-              >
-                {redSectionArticles[10].title}
-              </h4>
-              <span className={`text-xs ${colors.textMuted} mt-1 block`}>
-                {redSectionArticles[10].author}
-              </span>
-            </div>
-          </Link>
+          {redSectionArticles.length > 10 && (
+            <Link
+              href={`/artykul/${redSectionArticles[10].slug}`}
+              className="flex group"
+            >
+              <div className="w-24 h-20 relative flex-shrink-0 mr-3 rounded overflow-hidden shadow-sm">
+                <Image
+                  src={redSectionArticles[10].image}
+                  alt={redSectionArticles[10].title}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <div>
+                <h4
+                  className={`text-sm font-medium ${colors.text} group-hover:underline line-clamp-3`}
+                >
+                  {redSectionArticles[10].title}
+                </h4>
+                <span className={`text-xs ${colors.textMuted} mt-1 block`}>
+                  {typeof redSectionArticles[10].author === "string"
+                    ? redSectionArticles[10].author
+                    : redSectionArticles[10].author?.name || "Author"}
+                </span>
+              </div>
+            </Link>
+          )}
         </div>
       </div>
     </div>
