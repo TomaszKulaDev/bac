@@ -41,7 +41,7 @@ export default function NewsGrid() {
                     href={`/artykul/${featuredArticles[0].slug}`}
                     className="block"
                   >
-                    <div className="aspect-[16/6]">
+                    <div className="aspect-[16/7]">
                       <Image
                         src={featuredArticles[0].image}
                         alt={featuredArticles[0].title}
