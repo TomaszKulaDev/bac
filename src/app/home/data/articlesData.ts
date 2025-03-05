@@ -1,12 +1,4 @@
-import { NewsArticle } from "../types/article";
-
-// Kategorie artykułów
-export enum ArticleCategory {
-  FEATURED = "featured", // Główne artykuły w NewsGrid
-  SECONDARY = "secondary", // Drugorzędne artykuły w NewsGrid
-  SIDEBAR = "sidebar", // Artykuły w sidebarze NewsGrid
-  RED_SECTION = "redSection", // Artykuły w OnetNewsRedSection
-}
+import { NewsArticle, ArticleCategory } from "../types/article";
 
 // Wszystkie artykuły w jednym źródle
 export const articles: Record<string, NewsArticle> = {
@@ -180,195 +172,19 @@ export const articles: Record<string, NewsArticle> = {
     category: ArticleCategory.SIDEBAR,
     sidebarCategory: "EDUKACJA",
   },
-
-  // ===== ARTYKUŁY Z ONET NEWS RED SECTION =====
-
-  "bachata-sensual-techniki": {
-    id: "r2",
-    title: "Bachata Sensual - zaawansowane techniki i figury",
-    image:
-      "https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?q=80&w=1770&auto=format&fit=crop",
-    slug: "bachata-sensual-techniki",
-    category: ArticleCategory.RED_SECTION,
-    author: {
-      name: "Maria Rodriguez",
-      avatar: "https://randomuser.me/api/portraits/women/45.jpg",
-      shortName: "M. Rodriguez",
-      timeAgo: "2 godz. temu",
-    },
-    date: "2024-02-28",
-    views: 987,
-  },
-  "bachata-festiwale-europa": {
-    id: "r3",
-    title: "Największe festiwale bachaty w Europie 2024",
-    image:
-      "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?q=80&w=1769&auto=format&fit=crop",
-    slug: "bachata-festiwale-europa",
-    category: ArticleCategory.RED_SECTION,
-    author: {
-      name: "Javier Lopez",
-      avatar: "https://randomuser.me/api/portraits/men/32.jpg",
-      shortName: "J. Lopez",
-      timeAgo: "3 godz. temu",
-    },
-    date: "2024-02-25",
-    views: 1532,
-  },
-  "bachata-muzyka-klasyka": {
-    id: "r4",
-    title: "Klasyka muzyki bachatowej - utwory, które musisz znać",
-    image:
-      "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=1770&auto=format&fit=crop",
-    slug: "bachata-muzyka-klasyka",
-    category: ArticleCategory.RED_SECTION,
-    author: {
-      name: "Carmen Diaz",
-      avatar: "https://randomuser.me/api/portraits/women/28.jpg",
-      shortName: "C. Diaz",
-      timeAgo: "5 godz. temu",
-    },
-    date: "2024-02-20",
-    views: 876,
-  },
-  "bachata-polska-scena": {
-    id: "r5",
-    title: "Polska scena bachatowa - rozwój i perspektywy",
-    image:
-      "https://images.unsplash.com/photo-1551634979-2b11f8c946fe?q=80&w=1770&auto=format&fit=crop",
-    slug: "bachata-polska-scena",
-    category: ArticleCategory.RED_SECTION,
-    author: {
-      name: "Tomasz Kowalski",
-      avatar: "https://randomuser.me/api/portraits/men/55.jpg",
-      shortName: "T. Kowalski",
-      timeAgo: "1 dzień temu",
-    },
-    date: "2024-02-15",
-    views: 1123,
-  },
-  "bachata-technika-podstawy": {
-    id: "r6",
-    title: "Podstawy techniki w bachacie - od czego zacząć?",
-    image:
-      "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1770&auto=format&fit=crop",
-    slug: "bachata-technika-podstawy",
-    category: ArticleCategory.RED_SECTION,
-    author: {
-      name: "Anna Nowak",
-      avatar: "https://randomuser.me/api/portraits/women/22.jpg",
-      shortName: "A. Nowak",
-      timeAgo: "2 dni temu",
-    },
-    date: "2024-02-10",
-    views: 2145,
-  },
-  "bachata-dominikanska-styl": {
-    id: "r7",
-    title: "Styl dominikański w bachacie - powrót do korzeni",
-    image:
-      "https://images.unsplash.com/photo-1545959570-a94084071b5d?q=80&w=1776&auto=format&fit=crop",
-    slug: "bachata-dominikanska-styl",
-    category: ArticleCategory.RED_SECTION,
-    author: {
-      name: "Carlos Mendez",
-      avatar: "https://randomuser.me/api/portraits/men/42.jpg",
-      shortName: "C. Mendez",
-      timeAgo: "3 dni temu",
-    },
-    date: "2024-02-05",
-    views: 1876,
-  },
-  "bachata-warsztaty-online": {
-    id: "r8",
-    title: "Warsztaty bachaty online - nowa era nauki tańca",
-    image:
-      "https://images.unsplash.com/photo-1524117074681-31bd4de22ad3?q=80&w=1770&auto=format&fit=crop",
-    slug: "bachata-warsztaty-online",
-    category: ArticleCategory.RED_SECTION,
-    author: {
-      name: "Sofia Garcia",
-      avatar: "https://randomuser.me/api/portraits/women/42.jpg",
-      shortName: "S. Garcia",
-      timeAgo: "4 dni temu",
-    },
-    date: "2024-02-01",
-    views: 1543,
-  },
-  "bachata-kluby-warszawa": {
-    id: "r9",
-    title: "Najlepsze kluby bachatowe w Warszawie - przewodnik",
-    image:
-      "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?q=80&w=1770&auto=format&fit=crop",
-    slug: "bachata-kluby-warszawa",
-    category: ArticleCategory.RED_SECTION,
-    author: {
-      name: "Piotr Wiśniewski",
-      avatar: "https://randomuser.me/api/portraits/men/62.jpg",
-      shortName: "P. Wiśniewski",
-      timeAgo: "5 dni temu",
-    },
-    date: "2024-01-28",
-    views: 2356,
-  },
-  "bachata-muzyka-2024": {
-    id: "r10",
-    title: "Najlepsze utwory do bachaty w 2024 roku",
-    image:
-      "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?q=80&w=1770&auto=format&fit=crop",
-    slug: "bachata-muzyka-2024",
-    category: ArticleCategory.RED_SECTION,
-    author: {
-      name: "Miguel Torres",
-      avatar: "https://randomuser.me/api/portraits/men/22.jpg",
-      shortName: "M. Torres",
-      timeAgo: "1 tydzień temu",
-    },
-    date: "2024-01-25",
-    views: 3421,
-  },
-  "bachata-stroje-2024": {
-    id: "r11",
-    title: "Trendy w strojach do bachaty na 2024 rok",
-    image:
-      "https://images.unsplash.com/photo-1547153760-18fc86324498?q=80&w=1774&auto=format&fit=crop",
-    slug: "bachata-stroje-2024",
-    category: ArticleCategory.RED_SECTION,
-    author: {
-      name: "Marta Kowalska",
-      avatar: "https://randomuser.me/api/portraits/women/32.jpg",
-      shortName: "M. Kowalska",
-      timeAgo: "2 tygodnie temu",
-    },
-    date: "2024-01-20",
-    views: 2876,
-  },
 };
 
-// Pomocnicze funkcje do pobierania artykułów według kategorii
-export const getArticlesByCategory = (
-  category: ArticleCategory
-): NewsArticle[] =>
+// Podstawowe funkcje pomocnicze
+const getArticlesByCategory = (category: ArticleCategory): NewsArticle[] =>
   Object.values(articles).filter((article) => article.category === category);
 
-export const getFeaturedArticles = (): NewsArticle[] =>
-  getArticlesByCategory(ArticleCategory.FEATURED);
+// Eksportowane funkcje używane w komponentach
+export const featuredArticles = getArticlesByCategory(ArticleCategory.FEATURED);
+export const secondaryArticles = getArticlesByCategory(
+  ArticleCategory.SECONDARY
+);
+export const sidebarArticles = getArticlesByCategory(ArticleCategory.SIDEBAR);
 
-export const getSecondaryArticles = (): NewsArticle[] =>
-  getArticlesByCategory(ArticleCategory.SECONDARY);
-
-export const getSidebarArticles = (): NewsArticle[] =>
-  getArticlesByCategory(ArticleCategory.SIDEBAR);
-
-export const getRedSectionArticles = (): NewsArticle[] =>
-  getArticlesByCategory(ArticleCategory.RED_SECTION);
-
-// Funkcja do pobierania artykułu po slugu
+// Funkcja do pobierania artykułu po slugu (używana w routingu)
 export const getArticleBySlug = (slug: string): NewsArticle | undefined =>
   articles[slug];
-
-// Dla zachowania kompatybilności z istniejącym kodem
-export const featuredArticles = getFeaturedArticles();
-export const secondaryArticles = getSecondaryArticles();
-export const sidebarArticles = getSidebarArticles();
-export const redSectionArticles = getRedSectionArticles();

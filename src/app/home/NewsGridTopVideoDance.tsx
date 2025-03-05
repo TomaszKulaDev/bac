@@ -148,14 +148,14 @@ const ArticleCard = ({ article, variant = "secondary" }: ArticleCardProps) => {
   );
 };
 
-export default function NewsGrid() {
+export default function NewsGridTopVideoDance() {
   return (
     <div className="bg-white text-gray-900 py-4">
       <div className="max-w-[1300px] mx-auto px-4">
         <div className="flex items-center justify-between mb-4">
-          <SectionHeader letter="B" title="BACHATA NA DZIŚ" />
+          <SectionHeader letter="T" title="najlepsze tance 2025" />
           <Link href="/bachat-posty" className="text-sm hover:underline">
-            Zobacz Bachata Posty!
+            Zobacz najlepsze tance 2025!
           </Link>
         </div>
 

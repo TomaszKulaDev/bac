@@ -1,35 +1,24 @@
-// Podstawowy interfejs dla artykułów
+export enum ArticleCategory {
+  FEATURED = "featured",
+  SECONDARY = "secondary",
+  SIDEBAR = "sidebar",
+}
+
+export interface Author {
+  name: string;
+  avatar: string;
+  shortName?: string;
+  timeAgo?: string;
+}
+
 export interface NewsArticle {
   id: string;
   title: string;
   image: string;
   slug: string;
-  category: string;
-  author?: {
-    name: string;
-    avatar: string;
-    shortName?: string;
-    timeAgo?: string;
-  };
-  // Add missing properties
-  sidebarCategory?: string;
+  category: ArticleCategory;
+  author?: Author;
   date?: string;
   views?: number;
-  premiumLabel?: string;
-}
-// Interfejs dla artykułów w sekcji "SKRÓT WYDARZEŃ"
-export interface ShortNewsArticle {
-  id: string;
-  title: string;
-  image: string;
-  slug: string;
-}
-
-// Interfejs dla artykułów w dolnym rzędzie
-export interface BottomRowArticle {
-  id: string;
-  title: string;
-  image: string;
-  slug: string;
-  author: string;
+  sidebarCategory?: string;
 }
