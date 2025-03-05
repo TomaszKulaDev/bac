@@ -8,6 +8,8 @@ import {
   sidebarArticles,
 } from "./data/articlesData";
 import { Author, NewsArticle } from "./types/article";
+import { AUTHORS } from "./data/authorsData";
+import SectionHeaderWithAuthors from "./components/SectionHeaderWithAuthors";
 
 // Typy dla komponentów
 interface ArticleImageProps {
@@ -71,21 +73,6 @@ const AuthorInfo = ({ author }: { author?: Author }) => {
   );
 };
 
-const SectionHeader = ({
-  letter,
-  title,
-}: {
-  letter: string;
-  title: string;
-}) => (
-  <div className="flex items-center">
-    <div className="bg-yellow-400 rounded-full w-8 h-8 flex items-center justify-center mr-2">
-      <span className="font-bold text-black">{letter}</span>
-    </div>
-    <h2 className="text-base font-bold uppercase">{title}</h2>
-  </div>
-);
-
 const ArticleCard = ({ article, variant = "secondary" }: ArticleCardProps) => {
   if (variant === "featured") {
     return (
@@ -148,14 +135,19 @@ const ArticleCard = ({ article, variant = "secondary" }: ArticleCardProps) => {
   );
 };
 
-export default function NewsGrid() {
+export default function NewsGridEducation() {
   return (
     <div className="bg-white text-gray-900 py-4">
       <div className="max-w-[1300px] mx-auto px-4">
         <div className="flex items-center justify-between mb-4">
-          <SectionHeader letter="B" title="BACHATA NA DZIŚ" />
-          <Link href="/bachat-posty" className="text-sm hover:underline">
-            Zobacz Bachata Posty!
+          <SectionHeaderWithAuthors
+            letter="N"
+            title="NAUKA"
+            authors={AUTHORS.educationAuthors}
+            sectionLabel="UCZĄ DLA NAS:"
+          />
+          <Link href="/edukacja" className="text-sm hover:underline">
+            Zobacz więcej!
           </Link>
         </div>
 
@@ -190,7 +182,12 @@ export default function NewsGrid() {
           {/* Sidebar */}
           <div className="col-span-12 lg:col-span-4">
             <div className="mb-4">
-              <SectionHeader letter="T" title="TANIEC" />
+              <SectionHeaderWithAuthors
+                letter="N"
+                title="NAUKA"
+                authors={AUTHORS.educationAuthors}
+                sectionLabel="UCZĄ DLA NAS:"
+              />
             </div>
             <div className="space-y-2">
               {sidebarArticles.slice(1, 15).map((article) => (

@@ -9,6 +9,7 @@ export interface Author {
   avatar: string;
   shortName?: string;
   timeAgo?: string;
+  role?: string;
 }
 
 export interface NewsArticle {
