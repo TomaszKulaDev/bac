@@ -19,7 +19,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
             <Link href="/" className="flex items-center">
-              <div className="w-10 h-10 bg-amber-600 rounded-lg flex items-center justify-center text-white font-bold text-xl">
+              <div className="w-10 h-10 bg-[#ffd200] rounded-lg flex items-center justify-center text-white font-bold text-xl">
                 B
               </div>
               <span className="ml-3 text-xl font-bold text-white">Baciata</span>
@@ -38,7 +38,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/wydarzenia"
-                  className="text-gray-400 hover:text-amber-400 text-sm"
+                  className="text-gray-400 hover:text-[#ffd200] text-sm"
                 >
                   Wydarzenia
                 </Link>
@@ -46,7 +46,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/spolecznosc"
-                  className="text-gray-400 hover:text-amber-400 text-sm"
+                  className="text-gray-400 hover:text-[#ffd200] text-sm"
                 >
                   Społeczność
                 </Link>
@@ -54,7 +54,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/szkoly"
-                  className="text-gray-400 hover:text-amber-400 text-sm"
+                  className="text-gray-400 hover:text-[#ffd200] text-sm"
                 >
                   Szkoły
                 </Link>
@@ -62,7 +62,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/blog"
-                  className="text-gray-400 hover:text-amber-400 text-sm"
+                  className="text-gray-400 hover:text-[#ffd200] text-sm"
                 >
                   Blog
                 </Link>
@@ -78,7 +78,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/szukam-partnera-do-bachaty"
-                  className="text-gray-400 hover:text-amber-400 text-sm"
+                  className="text-gray-400 hover:text-[#ffd200] text-sm"
                 >
                   Szukam partnera do bachaty
                 </Link>
@@ -86,7 +86,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/poland-bachata-league"
-                  className="text-gray-400 hover:text-amber-400 text-sm"
+                  className="text-gray-400 hover:text-[#ffd200] text-sm"
                 >
                   Poland Bachata League
                 </Link>
@@ -94,7 +94,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/instruktorzy-bachaty"
-                  className="text-gray-400 hover:text-amber-400 text-sm"
+                  className="text-gray-400 hover:text-[#ffd200] text-sm"
                 >
                   Instruktorzy bachaty
                 </Link>
@@ -110,7 +110,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/kontakt"
-                  className="text-gray-400 hover:text-amber-400 text-sm"
+                  className="text-gray-400 hover:text-[#ffd200] text-sm"
                 >
                   Kontakt
                 </Link>
@@ -118,7 +118,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/oferta-reklamowa"
-                  className="text-gray-400 hover:text-amber-400 text-sm"
+                  className="text-gray-400 hover:text-[#ffd200] text-sm"
                 >
                   Oferta reklamowa
                 </Link>
@@ -126,20 +126,20 @@ export default function Footer() {
               <li>
                 <Link
                   href="/wspolpraca"
-                  className="text-gray-400 hover:text-amber-400 text-sm"
+                  className="text-gray-400 hover:text-[#ffd200] text-sm"
                 >
                   Współpraca
                 </Link>
               </li>
             </ul>
             <div className="mt-4 flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-amber-400">
+              <a href="#" className="text-gray-400 hover:text-[#ffd200]">
                 <FaFacebook className="h-5 w-5" />
               </a>
-              <a href="#" className="text-gray-400 hover:text-amber-400">
+              <a href="#" className="text-gray-400 hover:text-[#ffd200]">
                 <FaInstagram className="h-5 w-5" />
               </a>
-              <a href="#" className="text-gray-400 hover:text-amber-400">
+              <a href="#" className="text-gray-400 hover:text-[#ffd200]">
                 <FaYoutube className="h-5 w-5" />
               </a>
             </div>
@@ -154,13 +154,13 @@ export default function Footer() {
           <div className="flex space-x-6 mt-4 md:mt-0">
             <Link
               href="/polityka-prywatnosci-baciata-pl"
-              className="text-gray-400 hover:text-amber-400 text-sm"
+              className="text-gray-400 hover:text-[#ffd200] text-sm"
             >
               Polityka prywatności
             </Link>
             <Link
               href="/warunki-korzystania-z-uslugi-baciata-pl"
-              className="text-gray-400 hover:text-amber-400 text-sm"
+              className="text-gray-400 hover:text-[#ffd200] text-sm"
             >
               Warunki korzystania
             </Link>

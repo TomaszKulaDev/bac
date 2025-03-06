@@ -81,7 +81,7 @@ const SectionHeader = ({
   title: string;
 }) => (
   <div className="flex items-center">
-    <div className="bg-yellow-400 rounded-full w-8 h-8 flex items-center justify-center mr-2">
+    <div className="bg-[#ffd200] rounded-full w-8 h-8 flex items-center justify-center mr-2">
       <span className="font-bold text-black">{letter}</span>
     </div>
     <h2 className="text-base font-bold uppercase">{title}</h2>

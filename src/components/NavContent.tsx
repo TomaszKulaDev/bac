@@ -79,12 +79,12 @@ export const NavContent: React.FC = React.memo(function NavContent() {
             <Link href="/" className="flex items-center">
               <div className="flex items-center">
                 <div
-                  className={`rounded-full bg-[#FFCB04] transition-all duration-200 ${
+                  className={`rounded-full bg-[#ffd200] transition-all duration-200 ${
                     hasScrolled ? "w-12 h-12" : "w-[56px] h-[56px]"
                   }`}
                 />
                 <span
-                  className={`ml-3 transition-all duration-200 font-['Fira_Sans',Arial,Helvetica,sans-serif] ${
+                  className={`ml-3 font-bold transition-all duration-200 font-['Fira_Sans',Arial,Helvetica,sans-serif] ${
                     hasScrolled ? "text-[30px]" : "text-[38px]"
                   }`}
                   style={{
@@ -104,7 +104,7 @@ export const NavContent: React.FC = React.memo(function NavContent() {
                 <>
                   <div className="relative">
                     <button
-                      className={`flex items-center justify-center rounded-full bg-[#FFCB04] hover:bg-[#e6b700] transition-all duration-200 ${
+                      className={`flex items-center justify-center rounded-full bg-[#ffd200] hover:bg-[#ffd200]/80 transition-all duration-200 ${
                         hasScrolled ? "w-12 h-12" : "w-[56px] h-[56px]"
                       }`}
                     >
@@ -114,7 +114,7 @@ export const NavContent: React.FC = React.memo(function NavContent() {
                         }`}
                       />
                       {notifications.alerts > 0 && (
-                        <span className="absolute -top-1 -right-1 bg-red-500 text-white text-sm rounded-full min-w-[22px] h-[22px] flex items-center justify-center px-1">
+                        <span className="absolute -top-1 -right-1 bg-[#ffd200] text-white text-sm rounded-full min-w-[22px] h-[22px] flex items-center justify-center px-1">
                           {notifications.alerts}
                         </span>
                       )}
@@ -122,7 +122,7 @@ export const NavContent: React.FC = React.memo(function NavContent() {
                   </div>
                   <div className="relative">
                     <button
-                      className={`flex items-center justify-center rounded-full bg-[#FFCB04] hover:bg-[#e6b700] transition-all duration-200 ${
+                      className={`flex items-center justify-center rounded-full bg-[#ffd200] hover:bg-[#ffd200]/80 transition-all duration-200 ${
                         hasScrolled ? "w-12 h-12" : "w-[56px] h-[56px]"
                       }`}
                     >
@@ -132,7 +132,7 @@ export const NavContent: React.FC = React.memo(function NavContent() {
                         }`}
                       />
                       {notifications.messages > 0 && (
-                        <span className="absolute -top-1 -right-1 bg-red-500 text-white text-sm rounded-full min-w-[22px] h-[22px] flex items-center justify-center px-1">
+                        <span className="absolute -top-1 -right-1 bg-[#ffd200] text-white text-sm rounded-full min-w-[22px] h-[22px] flex items-center justify-center px-1">
                           {notifications.messages}
                         </span>
                       )}
@@ -152,7 +152,7 @@ export const NavContent: React.FC = React.memo(function NavContent() {
                     <div className="relative group">
                       <Link
                         href="/login"
-                        className={`flex items-center justify-center rounded-full bg-[#FFCB04] hover:bg-[#e6b700] transition-all duration-200 ${
+                        className={`flex items-center justify-center rounded-full bg-[#ffd200] hover:bg-[#ffd200]/80 transition-all duration-200 ${
                           hasScrolled ? "w-12 h-12" : "w-[56px] h-[56px]"
                         }`}
                       >
@@ -169,7 +169,7 @@ export const NavContent: React.FC = React.memo(function NavContent() {
                     <div className="relative group">
                       <Link
                         href="/register"
-                        className={`flex items-center justify-center rounded-full bg-[#FFCB04] hover:bg-[#e6b700] transition-all duration-200 ${
+                        className={`flex items-center justify-center rounded-full bg-[#ffd200] hover:bg-[#ffd200]/80 transition-all duration-200 ${
                           hasScrolled ? "w-12 h-12" : "w-[56px] h-[56px]"
                         }`}
                       >
@@ -192,8 +192,8 @@ export const NavContent: React.FC = React.memo(function NavContent() {
 
         {/* Dolny pasek z menu */}
         <div className="border-b border-gray-200 hidden lg:block">
-          <div className="max-w-[1200px] mx-auto px-4">
-            <div className="flex items-center h-10 gap-6">
+          <div className="max-w-[1300px] mx-auto px-4">
+            <div className="flex items-center justify-center h-10 gap-8">
               {menuItems.map((item) => (
                 <Link
                   key={item.href}
@@ -207,7 +207,7 @@ export const NavContent: React.FC = React.memo(function NavContent() {
                   <span className="flex items-center gap-2">
                     {item.label}
                     {item.badge && (
-                      <span className="text-xs bg-red-500 text-white px-1.5 py-0.5 rounded-full">
+                      <span className="text-xs bg-[#ffd200] text-white px-1.5 py-0.5 rounded-full">
                         {item.badge}
                       </span>
                     )}
@@ -275,7 +275,7 @@ export const NavContent: React.FC = React.memo(function NavContent() {
                   >
                     <span>{item.label}</span>
                     {item.badge && (
-                      <span className="text-xs bg-red-500 text-white px-1.5 py-0.5 rounded-full">
+                      <span className="text-xs bg-[#ffd200] text-white px-1.5 py-0.5 rounded-full">
                         {item.badge}
                       </span>
                     )}

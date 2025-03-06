@@ -183,7 +183,7 @@ export default function NewsGridTopVideoDance() {
           <div className="col-span-12 lg:col-span-4">
             <div className="mb-4">
               <div className="flex items-center">
-                <div className="bg-yellow-400 rounded-full w-8 h-8 flex items-center justify-center mr-2">
+                <div className="bg-[#ffd200] rounded-full w-8 h-8 flex items-center justify-center mr-2">
                   <span className="font-bold text-black">T</span>
                 </div>
                 <h2 className="text-base font-bold uppercase">TANIEC</h2>
