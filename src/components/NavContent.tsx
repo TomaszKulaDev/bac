@@ -63,39 +63,76 @@ export const NavContent: React.FC = React.memo(function NavContent() {
 
   return (
     <>
-      <div className="h-[104px]" aria-hidden="true" />{" "}
-      {/* Spacer dla fixed navbar */}
+      <div
+        className={`h-[${hasScrolled ? "75px" : "96px"}]`}
+        aria-hidden="true"
+      />
       <div className="fixed top-0 left-0 right-0 z-[100] bg-white">
         {/* Górny pasek z logo i przyciskami */}
         <div className="border-b border-gray-200">
-          <div className="max-w-[1200px] mx-auto px-4 h-14 flex items-center justify-between">
+          <div
+            className={`max-w-[1300px] mx-auto px-4 flex items-center justify-between transition-all duration-200 ${
+              hasScrolled ? "h-[75px]" : "h-[96px]"
+            }`}
+          >
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-2">
-              <span className="text-2xl font-bold text-blue-600">BACIATA</span>
-              <span className="text-xl font-bold text-gray-700">
-                WYDARZENIA
-              </span>
+            <Link href="/" className="flex items-center">
+              <div className="flex items-center">
+                <div
+                  className={`rounded-full bg-[#FFCB04] transition-all duration-200 ${
+                    hasScrolled ? "w-12 h-12" : "w-[56px] h-[56px]"
+                  }`}
+                />
+                <span
+                  className={`ml-3 transition-all duration-200 font-['Fira_Sans',Arial,Helvetica,sans-serif] ${
+                    hasScrolled ? "text-[30px]" : "text-[38px]"
+                  }`}
+                  style={{
+                    letterSpacing: "normal",
+                    textAlign: "start",
+                    lineHeight: "normal",
+                  }}
+                >
+                  Baciata
+                </span>
+              </div>
             </Link>
 
             {/* Przyciski po prawej */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-5">
               {isAuthenticated ? (
                 <>
                   <div className="relative">
-                    <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-                      <FaRegBell className="w-5 h-5 text-gray-600" />
+                    <button
+                      className={`flex items-center justify-center rounded-full bg-[#FFCB04] hover:bg-[#e6b700] transition-all duration-200 ${
+                        hasScrolled ? "w-12 h-12" : "w-[56px] h-[56px]"
+                      }`}
+                    >
+                      <FaRegBell
+                        className={`text-gray-700 transition-all duration-200 ${
+                          hasScrolled ? "w-7 h-7" : "w-8 h-8"
+                        }`}
+                      />
                       {notifications.alerts > 0 && (
-                        <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1">
+                        <span className="absolute -top-1 -right-1 bg-red-500 text-white text-sm rounded-full min-w-[22px] h-[22px] flex items-center justify-center px-1">
                           {notifications.alerts}
                         </span>
                       )}
                     </button>
                   </div>
                   <div className="relative">
-                    <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-                      <FaRegEnvelope className="w-5 h-5 text-gray-600" />
+                    <button
+                      className={`flex items-center justify-center rounded-full bg-[#FFCB04] hover:bg-[#e6b700] transition-all duration-200 ${
+                        hasScrolled ? "w-12 h-12" : "w-[56px] h-[56px]"
+                      }`}
+                    >
+                      <FaRegEnvelope
+                        className={`text-gray-700 transition-all duration-200 ${
+                          hasScrolled ? "w-7 h-7" : "w-8 h-8"
+                        }`}
+                      />
                       {notifications.messages > 0 && (
-                        <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1">
+                        <span className="absolute -top-1 -right-1 bg-red-500 text-white text-sm rounded-full min-w-[22px] h-[22px] flex items-center justify-center px-1">
                           {notifications.messages}
                         </span>
                       )}
@@ -111,54 +148,44 @@ export const NavContent: React.FC = React.memo(function NavContent() {
                 </>
               ) : (
                 <>
-                  <div className="relative group">
-                    <Link
-                      href="/login"
-                      className="w-10 h-10 flex items-center justify-center rounded-full text-gray-600 hover:text-blue-600 hover:bg-gray-100 transition-all"
-                    >
-                      <FaRegUser className="w-5 h-5" />
-                    </Link>
-                    <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 hidden group-hover:block bg-gray-800 text-white text-xs py-1 px-2 rounded whitespace-nowrap">
-                      Zaloguj się
+                  <div className="flex items-center gap-3">
+                    <div className="relative group">
+                      <Link
+                        href="/login"
+                        className={`flex items-center justify-center rounded-full bg-[#FFCB04] hover:bg-[#e6b700] transition-all duration-200 ${
+                          hasScrolled ? "w-12 h-12" : "w-[56px] h-[56px]"
+                        }`}
+                      >
+                        <FaRegUser
+                          className={`text-gray-700 transition-all duration-200 ${
+                            hasScrolled ? "w-7 h-7" : "w-8 h-8"
+                          }`}
+                        />
+                      </Link>
+                      <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 hidden group-hover:block bg-gray-800 text-white text-xs py-1 px-2 rounded whitespace-nowrap">
+                        Zaloguj się
+                      </div>
                     </div>
-                  </div>
-                  <div className="relative group">
-                    <Link
-                      href="/register"
-                      className="w-10 h-10 flex items-center justify-center rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-all"
-                    >
-                      <FaUserPlus className="w-5 h-5" />
-                    </Link>
-                    <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 hidden group-hover:block bg-gray-800 text-white text-xs py-1 px-2 rounded whitespace-nowrap">
-                      Dołącz do nas
+                    <div className="relative group">
+                      <Link
+                        href="/register"
+                        className={`flex items-center justify-center rounded-full bg-[#FFCB04] hover:bg-[#e6b700] transition-all duration-200 ${
+                          hasScrolled ? "w-12 h-12" : "w-[56px] h-[56px]"
+                        }`}
+                      >
+                        <FaUserPlus
+                          className={`text-gray-700 transition-all duration-200 ${
+                            hasScrolled ? "w-7 h-7" : "w-8 h-8"
+                          }`}
+                        />
+                      </Link>
+                      <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 hidden group-hover:block bg-gray-800 text-white text-xs py-1 px-2 rounded whitespace-nowrap">
+                        Dołącz do nas
+                      </div>
                     </div>
                   </div>
                 </>
               )}
-
-              {/* Przycisk menu mobilnego */}
-              <button
-                className="lg:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                onClick={handleMobileMenu}
-              >
-                <div className="w-6 h-6 flex flex-col justify-center gap-1.5">
-                  <span
-                    className={`block h-0.5 w-6 bg-gray-600 transition-all ${
-                      isMobileMenuOpen ? "rotate-45 translate-y-2" : ""
-                    }`}
-                  />
-                  <span
-                    className={`block h-0.5 w-6 bg-gray-600 transition-all ${
-                      isMobileMenuOpen ? "opacity-0" : ""
-                    }`}
-                  />
-                  <span
-                    className={`block h-0.5 w-6 bg-gray-600 transition-all ${
-                      isMobileMenuOpen ? "-rotate-45 -translate-y-2" : ""
-                    }`}
-                  />
-                </div>
-              </button>
             </div>
           </div>
         </div>
