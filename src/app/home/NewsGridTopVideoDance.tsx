@@ -182,12 +182,12 @@ export default function NewsGridTopVideoDance() {
           {/* Sidebar */}
           <div className="col-span-12 lg:col-span-4">
             <div className="mb-4">
-              <SectionHeaderWithAuthors
-                letter="T"
-                title="TANIEC"
-                authors={AUTHORS.videoAuthors}
-                sectionLabel="FILMUJĄ DLA NAS:"
-              />
+              <div className="flex items-center">
+                <div className="bg-yellow-400 rounded-full w-8 h-8 flex items-center justify-center mr-2">
+                  <span className="font-bold text-black">T</span>
+                </div>
+                <h2 className="text-base font-bold uppercase">TANIEC</h2>
+              </div>
             </div>
             <div className="space-y-2">
               {sidebarArticles.slice(1, 15).map((article) => (
