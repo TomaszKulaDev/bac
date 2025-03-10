@@ -6,6 +6,7 @@ import {
   FaGraduationCap,
   FaMusic,
   FaBook,
+  FaVideo,
 } from "react-icons/fa";
 import { usePathname } from "next/navigation";
 
@@ -34,6 +35,11 @@ const navigationItems = [
     href: "/historie-bachaty",
     label: "Historie",
     icon: FaBook,
+  },
+  {
+    href: "/filmy-bachata",
+    label: "Filmy",
+    icon: FaVideo,
   },
 ];
 
