@@ -104,16 +104,16 @@ export const NavContent: React.FC = React.memo(function NavContent() {
                   <div className="relative">
                     <button
                       className={`flex items-center justify-center rounded-full bg-[#ffd200] hover:bg-[#ffd200]/80 transition-all duration-200 ${
-                        hasScrolled ? "w-12 h-12" : "w-[56px] h-[56px]"
+                        hasScrolled ? "w-10 h-10" : "w-[44px] h-[44px]"
                       }`}
                     >
                       <FaRegBell
                         className={`text-gray-700 transition-all duration-200 ${
-                          hasScrolled ? "w-7 h-7" : "w-8 h-8"
+                          hasScrolled ? "w-5 h-5" : "w-6 h-6"
                         }`}
                       />
                       {notifications.alerts > 0 && (
-                        <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full min-w-[20px] h-[20px] flex items-center justify-center px-1">
+                        <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1">
                           {notifications.alerts}
                         </span>
                       )}
@@ -122,16 +122,16 @@ export const NavContent: React.FC = React.memo(function NavContent() {
                   <div className="relative">
                     <button
                       className={`flex items-center justify-center rounded-full bg-[#ffd200] hover:bg-[#ffd200]/80 transition-all duration-200 ${
-                        hasScrolled ? "w-12 h-12" : "w-[56px] h-[56px]"
+                        hasScrolled ? "w-10 h-10" : "w-[44px] h-[44px]"
                       }`}
                     >
                       <FaRegEnvelope
                         className={`text-gray-700 transition-all duration-200 ${
-                          hasScrolled ? "w-7 h-7" : "w-8 h-8"
+                          hasScrolled ? "w-5 h-5" : "w-6 h-6"
                         }`}
                       />
                       {notifications.messages > 0 && (
-                        <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full min-w-[20px] h-[20px] flex items-center justify-center px-1">
+                        <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1">
                           {notifications.messages}
                         </span>
                       )}
@@ -152,12 +152,12 @@ export const NavContent: React.FC = React.memo(function NavContent() {
                       <Link
                         href="/login"
                         className={`flex items-center justify-center rounded-full bg-[#ffd200] hover:bg-[#ffd200]/80 transition-all duration-200 ${
-                          hasScrolled ? "w-12 h-12" : "w-[56px] h-[56px]"
+                          hasScrolled ? "w-10 h-10" : "w-[44px] h-[44px]"
                         }`}
                       >
                         <FaRegUser
                           className={`text-gray-700 transition-all duration-200 ${
-                            hasScrolled ? "w-7 h-7" : "w-8 h-8"
+                            hasScrolled ? "w-5 h-5" : "w-6 h-6"
                           }`}
                         />
                       </Link>
@@ -169,12 +169,12 @@ export const NavContent: React.FC = React.memo(function NavContent() {
                       <Link
                         href="/register"
                         className={`flex items-center justify-center rounded-full bg-[#ffd200] hover:bg-[#ffd200]/80 transition-all duration-200 ${
-                          hasScrolled ? "w-12 h-12" : "w-[56px] h-[56px]"
+                          hasScrolled ? "w-10 h-10" : "w-[44px] h-[44px]"
                         }`}
                       >
                         <FaUserPlus
                           className={`text-gray-700 transition-all duration-200 ${
-                            hasScrolled ? "w-7 h-7" : "w-8 h-8"
+                            hasScrolled ? "w-5 h-5" : "w-6 h-6"
                           }`}
                         />
                       </Link>
