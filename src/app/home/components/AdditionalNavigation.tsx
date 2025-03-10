@@ -1,6 +1,12 @@
 import React from "react";
 import Link from "next/link";
-import { FaUsers, FaTrophy, FaGraduationCap, FaMusic } from "react-icons/fa";
+import {
+  FaUsers,
+  FaTrophy,
+  FaGraduationCap,
+  FaMusic,
+  FaBook,
+} from "react-icons/fa";
 import { usePathname } from "next/navigation";
 
 const navigationItems = [
@@ -23,6 +29,11 @@ const navigationItems = [
     href: "/muzyka",
     label: "Muzyka",
     icon: FaMusic,
+  },
+  {
+    href: "/historie-bachaty",
+    label: "Historie",
+    icon: FaBook,
   },
 ];
 
