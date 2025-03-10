@@ -45,7 +45,6 @@ export const NavContent: React.FC = React.memo(function NavContent() {
     {
       href: "/szukam-partnera-do-bachaty",
       label: "Społeczność",
-      badge: "2137",
     },
     {
       href: "/poland-bachata-league",
@@ -69,17 +68,17 @@ export const NavContent: React.FC = React.memo(function NavContent() {
       />
       <div className="fixed top-0 left-0 right-0 z-[100] bg-white">
         {/* Górny pasek z logo i przyciskami */}
-        <div className="border-b border-gray-200">
+        <div className="border-b border-gray-100">
           <div
             className={`max-w-[1300px] mx-auto px-4 flex items-center justify-between transition-all duration-200 ${
               hasScrolled ? "h-[75px]" : "h-[96px]"
             }`}
           >
             {/* Logo */}
-            <Link href="/" className="flex items-center">
+            <Link href="/" className="flex items-center group">
               <div className="flex items-center">
                 <div
-                  className={`rounded-full bg-[#ffd200] transition-all duration-200 ${
+                  className={`rounded-full bg-[#ffd200] transition-transform duration-200 group-hover:scale-105 ${
                     hasScrolled ? "w-12 h-12" : "w-[56px] h-[56px]"
                   }`}
                 />
@@ -114,7 +113,7 @@ export const NavContent: React.FC = React.memo(function NavContent() {
                         }`}
                       />
                       {notifications.alerts > 0 && (
-                        <span className="absolute -top-1 -right-1 bg-[#ffd200] text-white text-sm rounded-full min-w-[22px] h-[22px] flex items-center justify-center px-1">
+                        <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full min-w-[20px] h-[20px] flex items-center justify-center px-1">
                           {notifications.alerts}
                         </span>
                       )}
@@ -132,7 +131,7 @@ export const NavContent: React.FC = React.memo(function NavContent() {
                         }`}
                       />
                       {notifications.messages > 0 && (
-                        <span className="absolute -top-1 -right-1 bg-[#ffd200] text-white text-sm rounded-full min-w-[22px] h-[22px] flex items-center justify-center px-1">
+                        <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full min-w-[20px] h-[20px] flex items-center justify-center px-1">
                           {notifications.messages}
                         </span>
                       )}
@@ -191,31 +190,24 @@ export const NavContent: React.FC = React.memo(function NavContent() {
         </div>
 
         {/* Dolny pasek z menu */}
-        <div className="border-b border-gray-200 hidden lg:block">
+        <div className="border-b border-gray-100 hidden lg:block">
           <div className="max-w-[1300px] mx-auto px-4">
-            <div className="flex items-center justify-center h-10 gap-8">
+            <div className="flex items-center justify-center h-12">
               {menuItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`relative text-sm font-medium transition-colors ${
+                  className={`relative px-4 h-full flex items-center text-sm font-medium transition-all ${
                     pathname === item.href
-                      ? "text-blue-600"
-                      : "text-gray-700 hover:text-blue-600"
+                      ? "text-[#ffd200]"
+                      : "text-gray-600 hover:text-gray-900"
                   }`}
                 >
-                  <span className="flex items-center gap-2">
-                    {item.label}
-                    {item.badge && (
-                      <span className="text-xs bg-[#ffd200] text-white px-1.5 py-0.5 rounded-full">
-                        {item.badge}
-                      </span>
-                    )}
-                  </span>
+                  <span className="flex items-center gap-2">{item.label}</span>
                   {pathname === item.href && (
                     <motion.div
                       layoutId="activeTab"
-                      className="absolute -bottom-[1px] left-0 right-0 h-0.5 bg-blue-600"
+                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#ffd200]"
                       initial={false}
                     />
                   )}
@@ -239,14 +231,14 @@ export const NavContent: React.FC = React.memo(function NavContent() {
               onClick={handleMobileMenu}
             />
             <motion.div
-              className="absolute right-0 top-0 bottom-0 w-64 bg-white shadow-xl"
+              className="absolute right-0 top-0 bottom-0 w-72 bg-white shadow-xl"
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
             >
-              <div className="p-4 border-b border-gray-200">
+              <div className="p-4 border-b border-gray-100">
                 <div className="flex items-center justify-between">
-                  <span className="font-semibold text-gray-900">Menu</span>
+                  <span className="font-bold text-gray-900">Menu</span>
                   <button
                     onClick={handleMobileMenu}
                     className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
@@ -270,15 +262,14 @@ export const NavContent: React.FC = React.memo(function NavContent() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="flex items-center justify-between px-4 py-3 text-gray-700 hover:bg-gray-50 transition-colors"
+                    className={`flex items-center justify-between px-4 py-3 transition-colors ${
+                      pathname === item.href
+                        ? "bg-[#ffd200]/10 text-[#ffd200]"
+                        : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                    }`}
                     onClick={handleMobileMenu}
                   >
                     <span>{item.label}</span>
-                    {item.badge && (
-                      <span className="text-xs bg-[#ffd200] text-white px-1.5 py-0.5 rounded-full">
-                        {item.badge}
-                      </span>
-                    )}
                   </Link>
                 ))}
               </div>
