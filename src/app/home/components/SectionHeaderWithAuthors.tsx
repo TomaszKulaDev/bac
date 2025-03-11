@@ -24,7 +24,7 @@ export default function SectionHeaderWithAuthors({
         </div>
         <h2 className="text-base font-bold uppercase">{title}</h2>
       </div>
-      <div className="ml-6 flex items-center">
+      <div className="ml-6 items-center hidden md:flex">
         <span className="text-sm text-gray-500 mr-3">{sectionLabel}</span>
         <div className="flex -space-x-3">
           {authors.slice(0, 4).map((author, index) => (
