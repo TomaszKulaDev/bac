@@ -95,7 +95,7 @@ export const articles: Record<string, NewsArticle> = {
     id: "s1",
     title: "Jak wybrać idealne buty do bachaty? Poradnik dla początkujących",
     image:
-      "https://images.unsplash.com/photo-1535525153412-5a42439a210d?q=80&w=1770&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1535043934128-cf0b28d52f95?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80",
     slug: "buty-do-bachaty-poradnik",
     category: ArticleCategory.SIDEBAR,
     sidebarCategory: "PORADY",
@@ -103,7 +103,8 @@ export const articles: Record<string, NewsArticle> = {
   "top-szkoly-bachaty-polska": {
     id: "s2",
     title: "Top 5 szkół bachaty w Polsce według tancerzy",
-    image: "",
+    image:
+      "https://images.unsplash.com/photo-1566224425427-998683bb171e?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80",
     slug: "top-szkoly-bachaty-polska",
     category: ArticleCategory.SIDEBAR,
     sidebarCategory: "RANKING",
@@ -111,7 +112,8 @@ export const articles: Record<string, NewsArticle> = {
   "bachata-w-parach-trend": {
     id: "s3",
     title: "Bachata w parach - nowy trend na parkietach całego świata",
-    image: "",
+    image:
+      "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80",
     slug: "bachata-w-parach-trend",
     category: ArticleCategory.SIDEBAR,
     sidebarCategory: "TRENDY",
@@ -119,7 +121,8 @@ export const articles: Record<string, NewsArticle> = {
   "historia-bachaty-fenomen": {
     id: "s4",
     title: "Historia bachaty - Od muzyki wiejskiej do światowego fenomenu",
-    image: "",
+    image:
+      "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80",
     slug: "historia-bachaty-fenomen",
     category: ArticleCategory.SIDEBAR,
     sidebarCategory: "HISTORIA",
@@ -127,7 +130,8 @@ export const articles: Record<string, NewsArticle> = {
   "social-dance-polska": {
     id: "s5",
     title: "Weekendowe social dance w największych miastach Polski",
-    image: "",
+    image:
+      "https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80",
     slug: "social-dance-polska",
     category: ArticleCategory.SIDEBAR,
     sidebarCategory: "WYDARZENIA",
@@ -135,7 +139,8 @@ export const articles: Record<string, NewsArticle> = {
   "technika-bachaty-podstawy": {
     id: "s6",
     title: "Technika bachaty dla początkujących - od czego zacząć?",
-    image: "",
+    image:
+      "https://images.unsplash.com/photo-1545128485-c400ce7b6892?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80",
     slug: "technika-bachaty-podstawy",
     category: ArticleCategory.SIDEBAR,
     sidebarCategory: "PORADY",
@@ -143,7 +148,8 @@ export const articles: Record<string, NewsArticle> = {
   "muzyka-do-bachaty": {
     id: "s7",
     title: "Najlepsze utwory do nauki bachaty w 2024 roku",
-    image: "",
+    image:
+      "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80",
     slug: "muzyka-do-bachaty",
     category: ArticleCategory.SIDEBAR,
     sidebarCategory: "MUZYKA",
@@ -151,7 +157,8 @@ export const articles: Record<string, NewsArticle> = {
   "bachata-moderna": {
     id: "s8",
     title: "Bachata moderna - nowy styl podbijający parkiety",
-    image: "",
+    image:
+      "https://images.unsplash.com/photo-1524117074681-31bd4de22ad3?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80",
     slug: "bachata-moderna",
     category: ArticleCategory.SIDEBAR,
     sidebarCategory: "TRENDY",
@@ -159,7 +166,8 @@ export const articles: Record<string, NewsArticle> = {
   "warsztaty-bachaty-2024": {
     id: "s9",
     title: "Kalendarz warsztatów bachaty na rok 2024",
-    image: "",
+    image:
+      "https://images.unsplash.com/photo-1547153760-18fc86324498?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80",
     slug: "warsztaty-bachaty-2024",
     category: ArticleCategory.SIDEBAR,
     sidebarCategory: "WYDARZENIA",
@@ -167,7 +175,8 @@ export const articles: Record<string, NewsArticle> = {
   "bachata-styl-dominikanski": {
     id: "s10",
     title: "Styl dominikański vs sensual - poznaj różnice",
-    image: "",
+    image:
+      "https://images.unsplash.com/photo-1544717684-1243da23b545?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80",
     slug: "bachata-styl-dominikanski",
     category: ArticleCategory.SIDEBAR,
     sidebarCategory: "EDUKACJA",
