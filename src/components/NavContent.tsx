@@ -58,6 +58,18 @@ export const NavContent: React.FC = React.memo(function NavContent() {
       href: "/muzyka",
       label: "Muzyka",
     },
+    {
+      href: "/praktyki",
+      label: "Praktyki",
+    },
+    {
+      href: "/historie-bachaty",
+      label: "Historie",
+    },
+    {
+      href: "/filmy-bachata",
+      label: "Filmy",
+    },
   ];
 
   return (

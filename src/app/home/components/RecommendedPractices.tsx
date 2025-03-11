@@ -72,9 +72,9 @@ const recommendedPractices: Practice[] = [
 
 const RecommendedPractices: React.FC = () => {
   return (
-    <div className="py-10 bg-white">
+    <div className="py-6">
       <div className="max-w-[1300px] mx-auto px-4">
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-4">
           <div className="flex items-center">
             <div className="bg-[#ffd200] rounded-full w-8 h-8 flex items-center justify-center mr-2">
               <span className="font-bold text-black">P</span>
@@ -92,15 +92,15 @@ const RecommendedPractices: React.FC = () => {
           </div>
         </div>
 
-        <div className="overflow-x-auto pb-4">
-          <div className="flex space-x-4 min-w-max">
+        <div className="overflow-x-auto -mx-4 px-4 pb-4 scrollbar-hide">
+          <div className="flex space-x-4">
             {recommendedPractices.map((practice) => (
               <Link
                 key={practice.id}
                 href={practice.url}
-                className="block w-[280px] bg-white border border-gray-100 rounded-lg overflow-hidden hover:shadow-md transition-shadow duration-200 group"
+                className="block w-[280px] flex-shrink-0 bg-white hover:shadow-sm transition-shadow duration-200 group"
               >
-                <div className="flex">
+                <div className="flex border-t border-l border-r border-gray-100 rounded-t-lg overflow-hidden">
                   {/* Date column */}
                   <div className="w-20 bg-gray-50 flex flex-col items-center justify-center py-4 border-r border-gray-100 group-hover:bg-[#ffd200]/10 transition-colors">
                     <div className="text-xs font-medium text-gray-500">
@@ -132,7 +132,7 @@ const RecommendedPractices: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="h-32 relative">
+                <div className="h-32 relative border-b border-l border-r border-gray-100 rounded-b-lg overflow-hidden">
                   <Image
                     src={practice.image}
                     alt={practice.title}
@@ -152,12 +152,25 @@ const RecommendedPractices: React.FC = () => {
           </div>
         </div>
 
-        <div className="mt-6 text-center">
+        <div className="mt-4 flex justify-end">
           <Link
             href="/praktyki"
-            className="inline-flex items-center justify-center px-4 py-2 border border-gray-200 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors"
+            className="text-sm text-gray-500 hover:text-gray-900 transition-colors flex items-center"
           >
-            Zobacz wszystkie praktyki
+            <span>Zobacz wszystkie praktyki</span>
+            <svg
+              className="w-4 h-4 ml-1"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
           </Link>
         </div>
       </div>
