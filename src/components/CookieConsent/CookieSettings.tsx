@@ -35,33 +35,33 @@ export const CookieSettingsModal = ({
   const cookieTypes = [
     {
       id: "necessary",
-      icon: <FaShieldAlt className="text-2xl text-amber-500" />,
+      icon: <FaShieldAlt className="text-xl text-gray-900" />,
       title: "Niezbędne",
       description:
-        "Te pliki cookie są wymagane do działania podstawowych funkcji strony, takich jak logowanie, koszyk zakupowy czy formularze kontaktowe. Nie można ich wyłączyć.",
+        "Te pliki cookie są wymagane do działania podstawowych funkcji strony, takich jak logowanie, koszyk zakupowy czy formularze kontaktowe.",
       disabled: true,
       details:
-        "Niezbędne pliki cookie zapewniają podstawową funkcjonalność strony. Strona nie może działać poprawnie bez tych plików cookie, dlatego można je wyłączyć tylko zmieniając ustawienia przeglądarki.",
+        "Niezbędne pliki cookie zapewniają podstawową funkcjonalność strony. Strona nie może działać poprawnie bez tych plików cookie.",
     },
     {
       id: "analytics",
-      icon: <FaChartLine className="text-2xl text-blue-500" />,
+      icon: <FaChartLine className="text-xl text-gray-900" />,
       title: "Analityczne",
       description:
         "Pomagają nam zrozumieć, jak użytkownicy korzystają z naszej strony, co pozwala nam ulepszać jej funkcjonalność i zawartość.",
       disabled: false,
       details:
-        "Analityczne pliki cookie pomagają nam zrozumieć, w jaki sposób odwiedzający wchodzą w interakcję z naszą stroną. Te informacje pomagają nam ulepszać naszą stronę i zapewniać lepsze doświadczenia użytkownika.",
+        "Analityczne pliki cookie pomagają nam zrozumieć, w jaki sposób odwiedzający wchodzą w interakcję z naszą stroną.",
     },
     {
       id: "marketing",
-      icon: <FaBullhorn className="text-2xl text-green-500" />,
+      icon: <FaBullhorn className="text-xl text-gray-900" />,
       title: "Marketingowe",
       description:
         "Używane do personalizacji reklam i śledzenia skuteczności kampanii marketingowych na różnych stronach internetowych.",
       disabled: false,
       details:
-        "Marketingowe pliki cookie są używane do śledzenia odwiedzających na stronach internetowych. Ich celem jest wyświetlanie reklam, które są odpowiednie i angażujące dla poszczególnych użytkowników, a tym samym bardziej wartościowe dla wydawców i reklamodawców zewnętrznych.",
+        "Marketingowe pliki cookie są używane do śledzenia odwiedzających na stronach internetowych i wyświetlania odpowiednich reklam.",
     },
   ];
 
@@ -135,36 +135,39 @@ export const CookieSettingsModal = ({
               animate="visible"
               exit="exit"
               variants={modalVariants}
-              className="relative bg-white rounded-xl shadow-2xl w-full max-w-2xl overflow-hidden"
+              className="relative bg-white rounded-xl shadow-2xl w-full max-w-xl overflow-hidden my-8 mx-auto"
+              style={{ maxHeight: "calc(100vh - 100px)" }}
             >
               {/* Decorative header */}
-              <div className="h-1.5 bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600"></div>
+              <div className="h-1.5 bg-[#ffd200]"></div>
 
-              <div className="p-8 space-y-6">
+              <div
+                className="p-5 space-y-4 overflow-y-auto"
+                style={{ maxHeight: "calc(100vh - 140px)" }}
+              >
                 {/* Header */}
                 <div className="flex justify-between items-center">
                   <h2
                     id="settings-title"
-                    className="text-2xl font-semibold text-gray-800 flex items-center gap-2.5 tracking-tight"
+                    className="text-xl font-semibold text-gray-800 flex items-center gap-2 tracking-tight"
                   >
-                    <div className="p-2 bg-amber-50 rounded-full">
-                      <FaCookieBite className="text-xl text-amber-500" />
+                    <div className="p-1.5 bg-[#ffd200] rounded-full">
+                      <FaCookieBite className="text-lg text-gray-900" />
                     </div>
                     Ustawienia prywatności
                   </h2>
                   <button
                     onClick={onClose}
-                    className="p-2 hover:bg-gray-100 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-amber-300"
+                    className="p-1.5 hover:bg-gray-100 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-[#ffd200]"
                     aria-label="Zamknij ustawienia"
                   >
-                    <FaTimes className="text-xl text-gray-500" />
+                    <FaTimes className="text-lg text-gray-500" />
                   </button>
                 </div>
 
-                <p className="text-gray-600 text-[15px] leading-relaxed">
+                <p className="text-gray-600 text-sm leading-relaxed">
                   Dostosuj swoje preferencje dotyczące plików cookie. Niektóre
-                  pliki cookie są niezbędne do działania strony, podczas gdy
-                  inne pomagają nam ulepszać doświadczenia użytkownika.
+                  pliki cookie są niezbędne do działania strony.
                 </p>
 
                 {/* Tabs */}
@@ -173,17 +176,19 @@ export const CookieSettingsModal = ({
                     <button
                       key={type.id}
                       onClick={() => setActiveTab(type.id)}
-                      className={`px-5 py-3 font-medium text-sm transition-colors relative
+                      className={`px-3 py-2 font-medium text-xs sm:text-sm transition-colors relative
                                 ${
                                   activeTab === type.id
-                                    ? "text-amber-600"
+                                    ? "text-gray-900"
                                     : "text-gray-500 hover:text-gray-700"
                                 }`}
                       aria-selected={activeTab === type.id}
                       role="tab"
                     >
-                      <div className="flex items-center gap-2">
-                        {type.id === "necessary" && <FaLock className="text-xs" />}
+                      <div className="flex items-center gap-1.5">
+                        {type.id === "necessary" && (
+                          <FaLock className="text-xs" />
+                        )}
                         {type.title}
                         {settings[type.id as keyof CookieSettings] && (
                           <FaRegCheckCircle className="text-xs text-green-500" />
@@ -192,7 +197,7 @@ export const CookieSettingsModal = ({
                       {activeTab === type.id && (
                         <motion.div
                           layoutId="activeTab"
-                          className="absolute bottom-0 left-0 right-0 h-0.5 bg-amber-500"
+                          className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#ffd200]"
                         />
                       )}
                     </button>
@@ -200,7 +205,7 @@ export const CookieSettingsModal = ({
                 </div>
 
                 {/* Cookie Types */}
-                <div className="space-y-6 min-h-[240px]">
+                <div className="space-y-4 min-h-[180px]">
                   <AnimatePresence mode="wait">
                     {cookieTypes.map(
                       (type) =>
@@ -211,18 +216,18 @@ export const CookieSettingsModal = ({
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             transition={{ duration: 0.2 }}
-                            className="space-y-5"
+                            className="space-y-3"
                           >
-                            <div className="flex items-start gap-5 p-5 rounded-lg bg-gray-50 border border-gray-100">
-                              <div className="mt-1 p-2.5 rounded-full bg-white shadow-sm">
+                            <div className="flex items-start gap-3 p-3 rounded-lg bg-gray-50 border border-gray-100">
+                              <div className="mt-1 p-2 rounded-full bg-[#ffd200] shadow-sm">
                                 {type.icon}
                               </div>
                               <div className="flex-1">
                                 <div className="flex items-center justify-between">
-                                  <h3 className="font-semibold text-gray-800 flex items-center gap-2">
+                                  <h3 className="font-semibold text-gray-800 flex items-center gap-2 text-sm">
                                     {type.title}
                                     {type.disabled && (
-                                      <span className="text-xs px-2 py-0.5 bg-amber-100 text-amber-800 rounded-full">
+                                      <span className="text-xs px-2 py-0.5 bg-[#ffd200]/20 text-gray-900 rounded-full">
                                         Wymagane
                                       </span>
                                     )}
@@ -247,9 +252,9 @@ export const CookieSettingsModal = ({
                                     />
                                     <div
                                       className={`
-                                    w-12 h-6 bg-gray-200 
+                                    w-10 h-5 bg-gray-200 
                                     peer-focus:outline-none peer-focus:ring-4 
-                                    peer-focus:ring-amber-300 
+                                    peer-focus:ring-[#ffd200]/30 
                                     rounded-full peer 
                                     peer-checked:after:translate-x-full 
                                     peer-checked:after:border-white 
@@ -260,45 +265,31 @@ export const CookieSettingsModal = ({
                                     after:border-gray-300 
                                     after:border 
                                     after:rounded-full 
-                                    after:h-5 after:w-5 
+                                    after:h-4 after:w-4 
                                     after:transition-all
                                     ${
                                       type.disabled
                                         ? "opacity-50 cursor-not-allowed"
-                                        : "peer-checked:bg-amber-500"
+                                        : "peer-checked:bg-[#ffd200]"
                                     }
                                   `}
                                     ></div>
                                   </label>
                                 </div>
-                                <p className="text-sm text-gray-600 mt-2 leading-relaxed">
+                                <p className="text-xs text-gray-600 mt-1 leading-relaxed">
                                   {type.description}
                                 </p>
                               </div>
                             </div>
 
-                            <div className="bg-amber-50 p-5 rounded-lg border border-amber-100">
-                              <div className="flex items-start gap-3">
-                                <FaInfoCircle className="text-amber-500 mt-0.5 flex-shrink-0" />
-                                <div>
-                                  <h4 className="font-medium text-amber-800 text-sm mb-1">Szczegółowe informacje</h4>
-                                  <p className="text-sm text-amber-700/90 leading-relaxed">
-                                    {type.details}
-                                  </p>
-                                </div>
+                            <div className="bg-[#ffd200]/10 p-3 rounded-lg border border-[#ffd200]/20">
+                              <div className="flex items-start gap-2">
+                                <FaInfoCircle className="text-gray-900 mt-0.5 flex-shrink-0 text-xs" />
+                                <p className="text-xs text-gray-700 leading-relaxed">
+                                  {type.details}
+                                </p>
                               </div>
                             </div>
-                            
-                            {type.id === "necessary" && (
-                              <div className="bg-blue-50 p-4 rounded-lg border border-blue-100 text-sm text-blue-800">
-                                <div className="flex items-start gap-2">
-                                  <FaInfoCircle className="text-blue-500 mt-0.5 flex-shrink-0" />
-                                  <p>
-                                    Niezbędne pliki cookie są zawsze włączone, ponieważ są konieczne do prawidłowego działania strony.
-                                  </p>
-                                </div>
-                              </div>
-                            )}
                           </motion.div>
                         )
                     )}
@@ -306,17 +297,17 @@ export const CookieSettingsModal = ({
                 </div>
 
                 {/* Quick actions */}
-                <div className="flex flex-wrap gap-4 pt-4 border-t border-gray-100">
+                <div className="flex flex-wrap gap-2 pt-3 border-t border-gray-100">
                   <button
                     onClick={handleAcceptAll}
-                    className="flex items-center gap-1.5 px-4 py-2 text-sm text-amber-600 hover:text-amber-700 hover:bg-amber-50 rounded-lg transition-colors font-medium"
+                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs text-gray-900 hover:bg-[#ffd200]/20 rounded-lg transition-colors font-medium"
                   >
                     <FaCheck className="text-xs" />
                     Zaakceptuj wszystkie
                   </button>
                   <button
                     onClick={handleRejectAll}
-                    className="flex items-center gap-1.5 px-4 py-2 text-sm text-gray-600 hover:text-gray-700 hover:bg-gray-50 rounded-lg transition-colors font-medium"
+                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs text-gray-600 hover:text-gray-700 hover:bg-gray-50 rounded-lg transition-colors font-medium"
                   >
                     <FaRegTimesCircle className="text-xs" />
                     Odrzuć opcjonalne
@@ -324,12 +315,12 @@ export const CookieSettingsModal = ({
                 </div>
 
                 {/* Actions */}
-                <div className="flex justify-end gap-3 pt-6 border-t border-gray-100">
+                <div className="flex justify-end gap-2 pt-3 border-t border-gray-100">
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={onClose}
-                    className="px-5 py-2.5 text-gray-600 hover:bg-gray-100 
+                    className="px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 
                              rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-gray-300 font-medium"
                   >
                     Anuluj
@@ -338,13 +329,11 @@ export const CookieSettingsModal = ({
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={() => onSave(settings)}
-                    className="px-6 py-2.5 bg-gradient-to-r from-amber-500 
-                             to-amber-600 text-white rounded-lg 
-                             hover:from-amber-600 hover:to-amber-700 
-                             transition-colors shadow-md shadow-amber-500/10
-                             focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 font-medium"
+                    className="px-5 py-2 text-sm bg-[#ffd200] text-gray-900 rounded-lg 
+                             hover:bg-[#e6bd00] transition-colors shadow-md
+                             focus:outline-none focus:ring-2 focus:ring-[#ffd200] focus:ring-offset-2 font-medium"
                   >
-                    Zapisz ustawienia
+                    Zapisz
                   </motion.button>
                 </div>
               </div>
