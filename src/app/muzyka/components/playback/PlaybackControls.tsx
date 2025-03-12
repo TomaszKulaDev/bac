@@ -67,12 +67,27 @@ export const PlaybackControls: React.FC<PlaybackControlsProps> = ({
 
       <button
         onClick={onTogglePlay}
-        className={styles.controls.primaryButton}
+        className={`relative flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-r ${
+          isPlaying
+            ? "from-amber-400 to-amber-500"
+            : "from-amber-500 to-amber-600"
+        } text-white shadow-lg hover:shadow-amber-200/50 transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-95 focus:outline-none focus-visible:shadow-[0_0_0_4px_rgba(255,255,255,0.5)] ${
+          isLoading ? "opacity-70 cursor-not-allowed" : ""
+        }`}
         aria-label={isPlaying ? "Pauza" : "Odtwórz"}
         title={isPlaying ? "Pauza" : "Odtwórz"}
         disabled={isLoading}
       >
-        {isPlaying ? <FaPause size={24} /> : <FaPlay size={24} />}
+        {isLoading ? (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="w-8 h-8 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+          </div>
+        ) : isPlaying ? (
+          <FaPause size={24} className="text-white ml-0.5" />
+        ) : (
+          <FaPlay size={24} className="text-white ml-1.5" />
+        )}
+        <span className="absolute inset-0 rounded-full bg-white opacity-20 transform scale-0 group-hover:scale-100 transition-transform duration-300"></span>
       </button>
 
       <button
