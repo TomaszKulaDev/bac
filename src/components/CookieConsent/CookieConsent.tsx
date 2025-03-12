@@ -95,14 +95,14 @@ export const CookieConsent = () => {
             aria-describedby="cookie-description"
             className="fixed bottom-4 left-0 right-0 z-[9999] mx-auto max-w-3xl"
           >
-            <div className="relative mx-4 rounded-xl bg-white shadow-[0_10px_40px_-5px_rgba(0,0,0,0.15)] overflow-hidden border border-gray-100">
+            <div className="relative mx-4 bg-white shadow-[0_10px_40px_-5px_rgba(0,0,0,0.15)] overflow-hidden border border-gray-100">
               {/* Decorative header */}
               <div className="absolute top-0 left-0 right-0 h-1.5 bg-[#ffd200]"></div>
 
               {/* Minimize/Expand button */}
               <button
                 onClick={toggleMinimize}
-                className="absolute top-3 right-3 p-1.5 text-gray-400 hover:text-gray-600 transition-colors z-10 rounded-full hover:bg-gray-100"
+                className="absolute top-3 right-3 p-1.5 text-gray-400 hover:text-gray-600 transition-colors z-10 hover:bg-gray-100"
                 aria-label={
                   minimized
                     ? "Rozwiń informacje o cookies"
@@ -126,7 +126,7 @@ export const CookieConsent = () => {
                     className="p-3 flex items-center justify-between"
                   >
                     <div className="flex items-center gap-2">
-                      <div className="p-2 bg-[#ffd200] rounded-full shadow-sm">
+                      <div className="p-2 bg-[#ffd200] shadow-sm">
                         <FaCookieBite className="text-base text-gray-900" />
                       </div>
                       <p className="font-medium text-gray-800 text-sm">
@@ -136,7 +136,7 @@ export const CookieConsent = () => {
                     <div className="flex gap-2">
                       <button
                         onClick={handleAcceptAll}
-                        className="px-3 py-1.5 text-xs bg-[#ffd200] text-gray-900 rounded-lg hover:bg-[#e6bd00] transition-colors shadow-sm font-medium"
+                        className="px-4 py-2 text-sm bg-[#ffd200] text-gray-900 hover:bg-[#e6bd00] transition-colors shadow-sm font-medium"
                       >
                         Akceptuj wszystkie
                       </button>
@@ -152,7 +152,7 @@ export const CookieConsent = () => {
                   >
                     <div className="flex flex-col gap-4">
                       <div className="flex items-start gap-4">
-                        <div className="flex-shrink-0 p-2.5 bg-[#ffd200] rounded-full shadow-sm">
+                        <div className="flex-shrink-0 p-2.5 bg-[#ffd200] shadow-sm">
                           <FaCookieBite className="text-xl text-gray-900" />
                         </div>
                         <div className="space-y-2">
@@ -176,27 +176,27 @@ export const CookieConsent = () => {
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <motion.button
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
+                          whileHover={{ scale: 1.01 }}
+                          whileTap={{ scale: 0.99 }}
                           onClick={openSettings}
-                          className="flex items-center justify-center gap-2 px-4 py-2.5 
-                                   rounded-lg border-2 border-gray-200 text-gray-700 
-                                   hover:bg-gray-50 hover:border-gray-300 transition-all font-medium text-sm
-                                   focus:outline-none focus:ring-2 focus:ring-[#ffd200] focus:ring-offset-2"
+                          className="flex items-center justify-center gap-2 px-4 py-2 
+                                   border border-gray-200 text-gray-500 
+                                   hover:bg-gray-50 hover:border-gray-300 transition-all font-normal text-sm
+                                   focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2"
                         >
-                          <FaShieldAlt className="text-gray-600 text-xs" />
+                          <FaShieldAlt className="text-gray-500 text-xs" />
                           Dostosuj ustawienia
                         </motion.button>
                         <motion.button
-                          whileHover={{ scale: 1.02 }}
+                          whileHover={{ scale: 1.03 }}
                           whileTap={{ scale: 0.98 }}
                           onClick={handleAcceptAll}
-                          className="flex items-center justify-center gap-2 px-4 py-2.5 
-                                   rounded-lg bg-[#ffd200] text-gray-900 
-                                   hover:bg-[#e6bd00] transition-all font-medium shadow-md text-sm
+                          className="flex items-center justify-center gap-2 px-5 py-3 
+                                   bg-[#ffd200] text-gray-900 
+                                   hover:bg-[#e6bd00] transition-all font-medium shadow-md text-base
                                    focus:outline-none focus:ring-2 focus:ring-[#ffd200] focus:ring-offset-2"
                         >
-                          <FaLock className="text-xs" />
+                          <FaLock className="text-sm" />
                           Akceptuj wszystkie
                         </motion.button>
                       </div>

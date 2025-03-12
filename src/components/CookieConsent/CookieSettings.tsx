@@ -135,7 +135,7 @@ export const CookieSettingsModal = ({
               animate="visible"
               exit="exit"
               variants={modalVariants}
-              className="relative bg-white rounded-xl shadow-2xl w-full max-w-xl overflow-hidden my-8 mx-auto"
+              className="relative bg-white shadow-2xl w-full max-w-xl overflow-hidden my-8 mx-auto"
               style={{ maxHeight: "calc(100vh - 100px)" }}
             >
               {/* Decorative header */}
@@ -151,14 +151,14 @@ export const CookieSettingsModal = ({
                     id="settings-title"
                     className="text-xl font-semibold text-gray-800 flex items-center gap-2 tracking-tight"
                   >
-                    <div className="p-1.5 bg-[#ffd200] rounded-full">
+                    <div className="p-1.5 bg-[#ffd200]">
                       <FaCookieBite className="text-lg text-gray-900" />
                     </div>
                     Ustawienia prywatności
                   </h2>
                   <button
                     onClick={onClose}
-                    className="p-1.5 hover:bg-gray-100 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-[#ffd200]"
+                    className="p-1.5 hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-[#ffd200]"
                     aria-label="Zamknij ustawienia"
                   >
                     <FaTimes className="text-lg text-gray-500" />
@@ -218,8 +218,8 @@ export const CookieSettingsModal = ({
                             transition={{ duration: 0.2 }}
                             className="space-y-3"
                           >
-                            <div className="flex items-start gap-3 p-3 rounded-lg bg-gray-50 border border-gray-100">
-                              <div className="mt-1 p-2 rounded-full bg-[#ffd200] shadow-sm">
+                            <div className="flex items-start gap-3 p-3 bg-gray-50 border border-gray-100">
+                              <div className="mt-1 p-2 bg-[#ffd200] shadow-sm">
                                 {type.icon}
                               </div>
                               <div className="flex-1">
@@ -227,7 +227,7 @@ export const CookieSettingsModal = ({
                                   <h3 className="font-semibold text-gray-800 flex items-center gap-2 text-sm">
                                     {type.title}
                                     {type.disabled && (
-                                      <span className="text-xs px-2 py-0.5 bg-[#ffd200]/20 text-gray-900 rounded-full">
+                                      <span className="text-xs px-2 py-0.5 bg-[#ffd200]/20 text-gray-900">
                                         Wymagane
                                       </span>
                                     )}
@@ -282,7 +282,7 @@ export const CookieSettingsModal = ({
                               </div>
                             </div>
 
-                            <div className="bg-[#ffd200]/10 p-3 rounded-lg border border-[#ffd200]/20">
+                            <div className="bg-[#ffd200]/10 p-3 border border-[#ffd200]/20">
                               <div className="flex items-start gap-2">
                                 <FaInfoCircle className="text-gray-900 mt-0.5 flex-shrink-0 text-xs" />
                                 <p className="text-xs text-gray-700 leading-relaxed">
@@ -300,40 +300,40 @@ export const CookieSettingsModal = ({
                 <div className="flex flex-wrap gap-2 pt-3 border-t border-gray-100">
                   <button
                     onClick={handleAcceptAll}
-                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs text-gray-900 hover:bg-[#ffd200]/20 rounded-lg transition-colors font-medium"
+                    className="flex-1 flex items-center justify-center gap-1.5 px-5 py-2.5 text-sm text-gray-900 bg-[#ffd200] hover:bg-[#e6bd00] transition-colors font-medium shadow-md"
                   >
-                    <FaCheck className="text-xs" />
-                    Zaakceptuj wszystkie
+                    <FaCheck className="text-sm" />
+                    <span>Zaakceptuj wszystkie</span>
                   </button>
                   <button
                     onClick={handleRejectAll}
-                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs text-gray-600 hover:text-gray-700 hover:bg-gray-50 rounded-lg transition-colors font-medium"
+                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs text-gray-500 hover:text-gray-600 transition-colors font-normal"
                   >
                     <FaRegTimesCircle className="text-xs" />
-                    Odrzuć opcjonalne
+                    <span className="opacity-80">Odrzuć opcjonalne</span>
                   </button>
                 </div>
 
                 {/* Actions */}
                 <div className="flex justify-end gap-2 pt-3 border-t border-gray-100">
                   <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
+                    whileHover={{ scale: 1.01 }}
+                    whileTap={{ scale: 0.99 }}
                     onClick={onClose}
-                    className="px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 
-                             rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-gray-300 font-medium"
+                    className="px-4 py-2 text-sm text-gray-500 hover:bg-gray-100 
+                             transition-colors focus:outline-none focus:ring-2 focus:ring-gray-300 font-normal"
                   >
                     Anuluj
                   </motion.button>
                   <motion.button
-                    whileHover={{ scale: 1.02 }}
+                    whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={() => onSave(settings)}
-                    className="px-5 py-2 text-sm bg-[#ffd200] text-gray-900 rounded-lg 
+                    className="px-6 py-2.5 text-sm bg-[#ffd200] text-gray-900 
                              hover:bg-[#e6bd00] transition-colors shadow-md
                              focus:outline-none focus:ring-2 focus:ring-[#ffd200] focus:ring-offset-2 font-medium"
                   >
-                    Zapisz
+                    Zapisz ustawienia
                   </motion.button>
                 </div>
               </div>
