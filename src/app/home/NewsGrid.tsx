@@ -30,7 +30,7 @@ interface ArticleCardProps {
 const STYLES = {
   articleTitle: {
     fontFamily: '"Fira Sans", Arial, Helvetica, sans-serif',
-    fontSize: "20px",
+    fontSize: "18px",
     lineHeight: "24px",
     textAlign: "left" as const,
     letterSpacing: "-0.4px",

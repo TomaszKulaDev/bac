@@ -1,6 +1,13 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import {
+  FaChevronLeft,
+  FaChevronRight,
+  FaMapMarkerAlt,
+  FaClock,
+  FaUsers,
+} from "react-icons/fa";
 
 interface Practice {
   id: string;
@@ -24,8 +31,7 @@ const recommendedPractices: Practice[] = [
     day: "12",
     month: "MAJ",
     time: "19:00",
-    image:
-      "https://images.unsplash.com/photo-1545959570-a94084071b5d?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
+    image: "/images/dance1.jpg",
     url: "/praktyki/warszawa-bachata-sredniozaawansowana",
     participants: 24,
   },
@@ -37,8 +43,7 @@ const recommendedPractices: Practice[] = [
     day: "13",
     month: "MAJ",
     time: "20:00",
-    image:
-      "https://images.unsplash.com/photo-1504609813442-a9c86dff9c2e?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
+    image: "/images/dance2.jpg",
     url: "/praktyki/krakow-social-dance",
     participants: 56,
   },
@@ -50,8 +55,7 @@ const recommendedPractices: Practice[] = [
     day: "14",
     month: "MAJ",
     time: "18:00",
-    image:
-      "https://images.unsplash.com/photo-1566154184214-c1f9c94fb8c7?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
+    image: "/images/dance3.jpg",
     url: "/praktyki/wroclaw-bachata-sensual",
     participants: 18,
   },
@@ -63,91 +67,306 @@ const recommendedPractices: Practice[] = [
     day: "18",
     month: "MAJ",
     time: "19:30",
-    image:
-      "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
+    image: "/images/dance4.jpg",
     url: "/praktyki/poznan-bachata-open",
     participants: 32,
+  },
+  {
+    id: "5",
+    title: "Bachata Dominicana",
+    location: "Gdańsk",
+    date: "Sobota",
+    day: "20",
+    month: "MAJ",
+    time: "19:00",
+    image: "/images/dance5.jpg",
+    url: "/praktyki/gdansk-bachata-dominicana",
+    participants: 28,
+  },
+  {
+    id: "6",
+    title: "Bachata Fusion",
+    location: "Łódź",
+    date: "Piątek",
+    day: "26",
+    month: "MAJ",
+    time: "20:00",
+    image: "/images/dance6.jpg",
+    url: "/praktyki/lodz-bachata-fusion",
+    participants: 42,
+  },
+  {
+    id: "7",
+    title: "Warsztaty Bachaty",
+    location: "Szczecin",
+    date: "Sobota",
+    day: "27",
+    month: "MAJ",
+    time: "16:00",
+    image: "/images/dance7.jpg",
+    url: "/praktyki/szczecin-warsztaty-bachaty",
+    participants: 35,
+  },
+  {
+    id: "8",
+    title: "Bachata dla Początkujących",
+    location: "Katowice",
+    date: "Niedziela",
+    day: "28",
+    month: "MAJ",
+    time: "17:00",
+    image: "/images/dance8.jpg",
+    url: "/praktyki/katowice-bachata-poczatkujacy",
+    participants: 20,
+  },
+  {
+    id: "9",
+    title: "Bachata & Salsa Night",
+    location: "Bydgoszcz",
+    date: "Piątek",
+    day: "2",
+    month: "CZE",
+    time: "21:00",
+    image: "/images/dance9.jpg",
+    url: "/praktyki/bydgoszcz-bachata-salsa-night",
+    participants: 64,
+  },
+  {
+    id: "10",
+    title: "Bachata Masterclass",
+    location: "Lublin",
+    date: "Sobota",
+    day: "3",
+    month: "CZE",
+    time: "14:00",
+    image: "/images/dance10.jpg",
+    url: "/praktyki/lublin-bachata-masterclass",
+    participants: 30,
   },
 ];
 
 const RecommendedPractices: React.FC = () => {
+  const [activeMonth, setActiveMonth] = useState("Maj");
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  const scrollLeft = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({ left: -300, behavior: "smooth" });
+    }
+  };
+
+  const scrollRight = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({ left: 300, behavior: "smooth" });
+    }
+  };
+
+  const handleScroll = () => {
+    if (scrollContainerRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } =
+        scrollContainerRef.current;
+      setCanScrollLeft(scrollLeft > 0);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
+
+      // Calculate current index based on scroll position
+      const itemWidth = 280; // Width of each card
+      const newIndex = Math.round(scrollLeft / itemWidth);
+      setCurrentIndex(Math.min(newIndex, recommendedPractices.length - 1));
+    }
+  };
+
+  useEffect(() => {
+    const scrollContainer = scrollContainerRef.current;
+    if (scrollContainer) {
+      scrollContainer.addEventListener("scroll", handleScroll);
+      handleScroll(); // Initial check
+
+      return () => {
+        scrollContainer.removeEventListener("scroll", handleScroll);
+      };
+    }
+  }, []);
+
+  // Filtrowanie wydarzeń na podstawie aktywnego miesiąca
+  const filteredPractices = recommendedPractices.filter(
+    (practice) =>
+      (activeMonth === "Maj" && practice.month === "MAJ") ||
+      (activeMonth === "Czerwiec" && practice.month === "CZE")
+  );
+
   return (
-    <div className="py-6">
+    <div className="py-8">
       <div className="max-w-[1300px] mx-auto px-4">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center">
-            <div className="bg-[#ffd200] rounded-full w-8 h-8 flex items-center justify-center mr-2">
-              <span className="font-bold text-black">P</span>
+        {/* Header section */}
+        <div className="flex flex-wrap items-center justify-between mb-6">
+          <div className="flex items-center mb-2 sm:mb-0">
+            <div className="bg-[#ffd200] rounded-full w-9 h-9 flex items-center justify-center mr-3 shadow-sm">
+              <span className="font-bold text-black text-base">P</span>
             </div>
-            <h2 className="text-base font-bold uppercase">POLECANE PRAKTYKI</h2>
+            <h2 className="text-base font-bold uppercase tracking-wide">
+              POLECANE PRAKTYKI
+            </h2>
           </div>
 
-          <div className="flex space-x-2">
-            <button className="px-3 py-1 text-xs bg-[#ffd200] rounded-full text-gray-900">
-              Maj
-            </button>
-            <button className="px-3 py-1 text-xs bg-gray-100 rounded-full text-gray-600 hover:bg-gray-200 transition-colors">
-              Czerwiec
-            </button>
+          <div className="flex items-center">
+            <div className="flex space-x-2 mr-4">
+              <button
+                className={`px-3 py-1.5 text-sm rounded-full transition-colors ${
+                  activeMonth === "Maj"
+                    ? "bg-[#ffd200] text-gray-900 font-medium"
+                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                }`}
+                onClick={() => setActiveMonth("Maj")}
+              >
+                Maj
+              </button>
+              <button
+                className={`px-3 py-1.5 text-sm rounded-full transition-colors ${
+                  activeMonth === "Czerwiec"
+                    ? "bg-[#ffd200] text-gray-900 font-medium"
+                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                }`}
+                onClick={() => setActiveMonth("Czerwiec")}
+              >
+                Czerwiec
+              </button>
+            </div>
+
+            <div className="flex space-x-2">
+              <button
+                onClick={scrollLeft}
+                disabled={!canScrollLeft}
+                className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
+                  canScrollLeft
+                    ? "bg-white text-gray-700 hover:bg-gray-100 shadow-sm"
+                    : "bg-gray-100 text-gray-400 cursor-not-allowed"
+                }`}
+                aria-label="Przewiń w lewo"
+              >
+                <FaChevronLeft className="w-3 h-3" />
+              </button>
+              <button
+                onClick={scrollRight}
+                disabled={!canScrollRight}
+                className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
+                  canScrollRight
+                    ? "bg-white text-gray-700 hover:bg-gray-100 shadow-sm"
+                    : "bg-gray-100 text-gray-400 cursor-not-allowed"
+                }`}
+                aria-label="Przewiń w prawo"
+              >
+                <FaChevronRight className="w-3 h-3" />
+              </button>
+            </div>
           </div>
         </div>
 
-        <div className="overflow-x-auto -mx-4 px-4 pb-4 scrollbar-hide">
-          <div className="flex space-x-4">
-            {recommendedPractices.map((practice) => (
-              <Link
-                key={practice.id}
-                href={practice.url}
-                className="block w-[280px] flex-shrink-0 bg-white hover:shadow-sm transition-shadow duration-200 group"
-              >
-                <div className="flex border-t border-l border-r border-gray-100 rounded-t-lg overflow-hidden">
-                  {/* Date column */}
-                  <div className="w-20 bg-gray-50 flex flex-col items-center justify-center py-4 border-r border-gray-100 group-hover:bg-[#ffd200]/10 transition-colors">
-                    <div className="text-xs font-medium text-gray-500">
-                      {practice.month}
+        <div className="relative">
+          <div
+            ref={scrollContainerRef}
+            className="overflow-x-auto pb-6 scroll-smooth"
+            onScroll={handleScroll}
+            style={{
+              scrollbarWidth: "none" /* Firefox */,
+              msOverflowStyle: "none" /* IE and Edge */,
+            }}
+          >
+            {/* CSS do ukrycia scrollbara dla WebKit (Chrome, Safari) */}
+            <style jsx>{`
+              div::-webkit-scrollbar {
+                display: none;
+              }
+            `}</style>
+            <div className="flex space-x-4 pl-1 pr-4">
+              {filteredPractices.map((practice, index) => (
+                <Link
+                  key={practice.id}
+                  href={practice.url}
+                  className="block w-[280px] flex-shrink-0 bg-white hover:shadow-lg transition-all duration-300 group border border-gray-200 rounded-xl overflow-hidden hover:border-gray-300"
+                  style={{
+                    transform: `scale(${index === currentIndex ? 1.02 : 1})`,
+                  }}
+                >
+                  <div className="flex h-[140px]">
+                    {/* Date column - standaryzowana szerokość */}
+                    <div className="w-[80px] bg-gray-50 flex flex-col items-center justify-center py-4 border-r border-gray-200 group-hover:bg-[#ffd200]/10 transition-colors">
+                      <div className="text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        {practice.month}
+                      </div>
+                      <div className="text-2xl font-bold text-gray-900 my-1">
+                        {practice.day}
+                      </div>
+                      <div className="text-xs font-medium text-gray-600">
+                        {practice.date}
+                      </div>
                     </div>
-                    <div className="text-2xl font-bold text-gray-900">
-                      {practice.day}
-                    </div>
-                    <div className="text-xs font-medium text-gray-500">
-                      {practice.date}
+
+                    {/* Content column - standaryzowana wysokość */}
+                    <div className="flex-1 p-3">
+                      <h3 className="font-bold text-gray-900 mb-2 text-base line-clamp-2 group-hover:text-[#ffd200] transition-colors">
+                        {practice.title}
+                      </h3>
+                      <div className="space-y-1.5">
+                        <div className="flex items-center text-xs text-gray-600">
+                          <FaClock className="w-3 h-3 text-[#ffd200] mr-1.5" />
+                          <span className="font-medium">{practice.time}</span>
+                        </div>
+                        <div className="flex items-center text-xs text-gray-600">
+                          <FaMapMarkerAlt className="w-3 h-3 text-[#ffd200] mr-1.5" />
+                          <span>{practice.location}</span>
+                        </div>
+                        <div className="flex items-center text-xs text-gray-600">
+                          <FaUsers className="w-3 h-3 text-[#ffd200] mr-1.5" />
+                          <span>{practice.participants} uczestników</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
 
-                  {/* Content column */}
-                  <div className="flex-1 p-4">
-                    <h3 className="font-bold text-gray-900 mb-2">
-                      {practice.title}
-                    </h3>
-                    <div className="flex items-center text-sm text-gray-500 mb-2">
-                      <span className="font-medium text-[#ffd200]">
-                        {practice.time}
-                      </span>
-                      <span className="mx-2">•</span>
-                      <span>{practice.location}</span>
+                  <div className="h-[160px] relative overflow-hidden bg-gray-100">
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
+                        <FaUsers className="w-6 h-6 text-gray-400" />
+                      </div>
                     </div>
-                    <div className="text-xs text-gray-500">
-                      {practice.participants} uczestników
+                    <div className="absolute bottom-0 left-0 right-0 h-2/3 bg-gradient-to-t from-black/70 via-black/40 to-transparent"></div>
+                    <div className="absolute bottom-0 left-0 right-0 p-3 flex justify-between items-end">
+                      <div className="px-3 py-1.5 bg-white/90 backdrop-blur-sm rounded-lg text-xs font-medium text-gray-900 shadow-sm group-hover:bg-[#ffd200] transition-colors duration-300">
+                        Dołącz do praktyki
+                      </div>
+                      <div className="bg-black/60 backdrop-blur-sm text-white text-xs px-2 py-1 rounded">
+                        {index + 1}/{filteredPractices.length}
+                      </div>
                     </div>
                   </div>
-                </div>
+                </Link>
+              ))}
+            </div>
+          </div>
 
-                <div className="h-32 relative border-b border-l border-r border-gray-100 rounded-b-lg overflow-hidden">
-                  <Image
-                    src={practice.image}
-                    alt={practice.title}
-                    width={280}
-                    height={128}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-black/50 to-transparent"></div>
-                  <div className="absolute bottom-0 left-0 right-0 p-3">
-                    <div className="inline-block px-2 py-1 bg-white/80 backdrop-blur-sm rounded text-xs font-medium text-gray-900">
-                      Dołącz do praktyki
-                    </div>
-                  </div>
-                </div>
-              </Link>
+          {/* Scroll indicators */}
+          <div className="flex justify-center mt-4 space-x-1">
+            {filteredPractices.map((_, index) => (
+              <div
+                key={index}
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                  index === currentIndex
+                    ? "bg-[#ffd200] w-4"
+                    : "bg-gray-300 hover:bg-gray-400"
+                }`}
+                onClick={() => {
+                  if (scrollContainerRef.current) {
+                    scrollContainerRef.current.scrollTo({
+                      left: index * 280,
+                      behavior: "smooth",
+                    });
+                  }
+                }}
+              />
             ))}
           </div>
         </div>
@@ -155,11 +374,11 @@ const RecommendedPractices: React.FC = () => {
         <div className="mt-4 flex justify-end">
           <Link
             href="/praktyki"
-            className="text-sm text-gray-500 hover:text-gray-900 transition-colors flex items-center"
+            className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors flex items-center group"
           >
             <span>Zobacz wszystkie praktyki</span>
             <svg
-              className="w-4 h-4 ml-1"
+              className="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
