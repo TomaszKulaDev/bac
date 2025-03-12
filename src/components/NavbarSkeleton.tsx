@@ -9,8 +9,7 @@ export const NavbarSkeleton = () => {
               {/* Logo skeleton */}
               <div className="flex items-center gap-3">
                 <div className="relative">
-                  <div className="w-10 h-10 bg-gray-200 rounded-xl animate-pulse" />
-                  <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-gray-100 rounded-lg animate-pulse" />
+                  <div className="w-10 h-10 bg-gray-200 rounded-md animate-pulse" />
                 </div>
                 <div className="flex flex-col gap-1">
                   <div className="w-24 h-4 bg-gray-200 rounded animate-pulse" />
@@ -20,35 +19,26 @@ export const NavbarSkeleton = () => {
 
               {/* Search Bar skeleton */}
               <div className="hidden lg:block max-w-xs w-full mx-4">
-                <div className="w-full h-9 bg-gray-100 rounded-full animate-pulse" />
+                <div className="w-full h-9 bg-gray-100 rounded-md animate-pulse" />
               </div>
 
               {/* Menu główne skeleton - desktop */}
-              <div className="hidden md:flex items-center gap-1 flex-1 justify-center max-w-2xl">
+              <div className="hidden md:flex items-center gap-3 flex-1 justify-center max-w-2xl">
                 {[...Array(4)].map((_, index) => (
                   <div
                     key={index}
-                    className="flex items-center gap-2 px-4 py-2 w-32 h-9 bg-gray-100 rounded-lg animate-pulse"
-                  >
-                    <div className="w-4 h-4 bg-gray-200 rounded" />
-                    <div className="flex-1 h-3 bg-gray-200 rounded" />
-                  </div>
+                    className="w-32 h-9 bg-gray-100 rounded-md animate-pulse"
+                  />
                 ))}
               </div>
 
               {/* Przyciski logowania skeleton - desktop */}
               <div className="hidden md:flex items-center gap-4">
                 {/* Notifications skeleton */}
-                <div className="relative">
-                  <div className="w-9 h-9 bg-gray-100 rounded-lg animate-pulse" />
-                  <div className="absolute top-1 right-1 w-2 h-2 bg-gray-200 rounded-full animate-pulse" />
-                </div>
+                <div className="w-24 h-9 bg-gray-100 rounded-md animate-pulse" />
 
                 {/* Messages skeleton */}
-                <div className="relative">
-                  <div className="w-9 h-9 bg-gray-100 rounded-lg animate-pulse" />
-                  <div className="absolute top-1 right-1 w-2 h-2 bg-gray-200 rounded-full animate-pulse" />
-                </div>
+                <div className="w-24 h-9 bg-gray-100 rounded-md animate-pulse" />
 
                 {/* User menu skeleton */}
                 <div className="flex items-center gap-2">
@@ -58,7 +48,7 @@ export const NavbarSkeleton = () => {
               </div>
 
               {/* Mobile menu button skeleton */}
-              <div className="md:hidden w-10 h-10 bg-gray-100 rounded-lg animate-pulse" />
+              <div className="md:hidden w-20 h-9 bg-gray-100 rounded-md animate-pulse" />
             </div>
           </div>
         </div>

@@ -2,23 +2,6 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import {
-  FaUser,
-  FaCaretDown,
-  FaTrophy,
-  FaChartLine,
-  FaCalendarAlt,
-  FaCog,
-  FaSignOutAlt,
-  FaShieldAlt,
-  FaUserEdit,
-  FaBell,
-  FaEnvelope,
-  FaQuestionCircle,
-  FaRegBell,
-  FaRegEnvelope,
-  FaUsers,
-} from "react-icons/fa";
 import { createPortal } from "react-dom";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
@@ -135,24 +118,20 @@ export const UserMenu: React.FC<UserMenuProps> = ({ user, onLogout }) => {
       group: "Profil",
       items: [
         {
-          icon: <FaUserEdit className="w-4 h-4 text-amber-400" />,
           label: "Twój profil",
           href: "/profile",
         },
         {
-          icon: <FaRegBell className="w-4 h-4 text-blue-400" />,
           label: "Powiadomienia",
           href: "/notifications",
           badge: "5",
         },
         {
-          icon: <FaRegEnvelope className="w-4 h-4 text-green-400" />,
           label: "Wiadomości",
           href: "/messages",
           badge: "3",
         },
         {
-          icon: <FaCog className="w-4 h-4 text-gray-400" />,
           label: "Ustawienia",
           href: "/profile/edit/settings",
         },
@@ -162,17 +141,14 @@ export const UserMenu: React.FC<UserMenuProps> = ({ user, onLogout }) => {
       group: "Poland Bachata League",
       items: [
         {
-          icon: <FaTrophy className="w-4 h-4 text-amber-400" />,
           label: "Poland Bachata League",
           href: "/poland-bachata-league",
         },
         {
-          icon: <FaChartLine className="w-4 h-4 text-blue-400" />,
           label: "Mój Ranking",
           href: "/poland-bachata-league/ranking",
         },
         {
-          icon: <FaCalendarAlt className="w-4 h-4 text-green-400" />,
           label: "Wydarzenia Ligowe",
           href: "/poland-bachata-league/events",
         },
@@ -185,12 +161,10 @@ export const UserMenu: React.FC<UserMenuProps> = ({ user, onLogout }) => {
     group: "Administracja",
     items: [
       {
-        icon: <FaShieldAlt className="w-4 h-4 text-purple-400" />,
         label: "Panel Admina",
         href: "/admin",
       },
       {
-        icon: <FaUsers className="w-4 h-4 text-purple-400" />,
         label: "Zarządzanie użytkownikami",
         href: "/admin/users",
       },
@@ -202,7 +176,6 @@ export const UserMenu: React.FC<UserMenuProps> = ({ user, onLogout }) => {
     group: "Pomoc",
     items: [
       {
-        icon: <FaQuestionCircle className="w-4 h-4 text-teal-400" />,
         label: "Centrum pomocy",
         href: "/help",
       },
@@ -227,7 +200,7 @@ export const UserMenu: React.FC<UserMenuProps> = ({ user, onLogout }) => {
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-2 text-gray-700 hover:text-gray-900 
         transition-all duration-200 text-[15px] tracking-wide font-medium group
-        p-1.5 rounded-full hover:bg-gray-50"
+        p-1.5 rounded-md hover:bg-gray-50"
         aria-expanded={isOpen}
         aria-haspopup="true"
         whileTap={{ scale: 0.97 }}
@@ -252,8 +225,9 @@ export const UserMenu: React.FC<UserMenuProps> = ({ user, onLogout }) => {
         <motion.div
           animate={{ rotate: isOpen ? 180 : 0 }}
           transition={{ duration: 0.2 }}
+          className="text-xs ml-1"
         >
-          <FaCaretDown className="w-4 h-4" />
+          ▼
         </motion.div>
       </motion.button>
 
@@ -263,7 +237,7 @@ export const UserMenu: React.FC<UserMenuProps> = ({ user, onLogout }) => {
             {isOpen && (
               <motion.div
                 ref={menuRef}
-                className="fixed rounded-xl shadow-lg bg-white/95 backdrop-blur-sm
+                className="fixed rounded-md shadow-lg bg-white
               ring-1 ring-black/5 overflow-hidden z-[9999]"
                 style={{
                   ...getMenuPosition(),
@@ -317,12 +291,11 @@ export const UserMenu: React.FC<UserMenuProps> = ({ user, onLogout }) => {
                         >
                           <Link
                             href={item.href}
-                            className="flex items-center gap-3 px-3 py-2 text-sm text-gray-700 
-                          hover:bg-gray-50 rounded-lg transition-colors duration-200 my-0.5"
+                            className="flex items-center justify-between px-3 py-2 text-sm text-gray-700 
+                          hover:bg-gray-50 rounded-md transition-colors duration-200 my-0.5"
                             onClick={() => setIsOpen(false)}
                             role="menuitem"
                           >
-                            {item.icon}
                             <span>{item.label}</span>
                             {item.badge && (
                               <span className="ml-auto bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5 min-w-[20px] text-center">
@@ -347,11 +320,10 @@ export const UserMenu: React.FC<UserMenuProps> = ({ user, onLogout }) => {
                       setIsOpen(false);
                       onLogout();
                     }}
-                    className="w-full flex items-center gap-3 px-3 py-2 text-sm text-red-600 
-                  hover:bg-red-50 rounded-lg transition-colors duration-200"
+                    className="w-full flex items-center justify-center px-3 py-2 text-sm text-red-600 
+                  hover:bg-red-50 rounded-md transition-colors duration-200"
                     role="menuitem"
                   >
-                    <FaSignOutAlt className="w-4 h-4 text-red-500" />
                     Wyloguj się
                   </button>
                 </motion.div>
