@@ -42,7 +42,7 @@ export const Input = ({
             <button
               type="button"
               onClick={onTogglePassword}
-              className="text-amber-600 hover:text-amber-700 text-sm transition-all 
+              className="text-gray-700 hover:text-[#ffd200] text-sm transition-all 
                 flex items-center space-x-1.5 bg-gray-50/80 px-3 py-1 
                 rounded-full border border-gray-200 hover:bg-gray-100
                 hover:shadow-sm active:scale-95"
@@ -70,10 +70,10 @@ export const Input = ({
           onChange={onChange}
           className={`w-full px-4 py-3.5 
             bg-white border border-gray-200 rounded-xl text-gray-800
-            focus:outline-none focus:ring-2 focus:ring-amber-500/30
-            focus:border-amber-500 placeholder-gray-400 
+            focus:outline-none focus:ring-2 focus:ring-[#ffd200]/30
+            focus:border-[#ffd200] placeholder-gray-400 
             transition-all duration-200 ease-in-out
-            hover:border-amber-500/50
+            hover:border-[#ffd200]/50
             ${
               error
                 ? "border-red-400 focus:ring-red-400/30 focus:border-red-400"

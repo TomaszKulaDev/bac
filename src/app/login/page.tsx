@@ -160,8 +160,8 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white p-4">
-      <div className="container mx-auto flex justify-center items-center max-w-screen-2xl -mt-60">
+    <div className="min-h-screen flex items-start justify-center bg-white p-4 pt-10">
+      <div className="container mx-auto flex justify-center items-center max-w-screen-2xl mt-4">
         <div className="w-full max-w-md mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -214,8 +214,8 @@ export default function Login() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-white py-3 px-4 rounded-lg font-medium 
-                  hover:from-amber-600 hover:to-amber-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-[#ffd200] text-gray-900 py-3 px-4 rounded-lg font-medium 
+                  hover:bg-[#ffd200]/80 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isLoading ? <LoadingSpinner /> : "Zaloguj się"}
               </button>
@@ -224,7 +224,7 @@ export default function Login() {
               <div className="mt-4 text-center">
                 <Link
                   href="/forgot-password"
-                  className="text-amber-600 hover:text-amber-700 text-sm transition-colors duration-200"
+                  className="text-gray-700 hover:text-[#ffd200] text-sm transition-colors duration-200"
                 >
                   Zapomniałeś hasła?
                 </Link>
@@ -267,7 +267,7 @@ export default function Login() {
                 Nie masz jeszcze konta?{" "}
                 <Link
                   href="/register"
-                  className="text-amber-600 hover:text-amber-700 transition-colors"
+                  className="text-gray-700 hover:text-[#ffd200] transition-colors font-medium"
                 >
                   Zarejestruj się
                 </Link>

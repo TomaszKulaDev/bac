@@ -174,8 +174,8 @@ export default function Register() {
   }, [name, email, password, confirmPassword, agreeToTerms]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white p-4">
-      <div className="container mx-auto flex justify-center items-center max-w-screen-2xl -mt-60">
+    <div className="min-h-screen flex items-start justify-center bg-white p-4 pt-10">
+      <div className="container mx-auto flex justify-center items-center max-w-screen-2xl mt-4">
         <div className="w-full max-w-md mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -266,21 +266,21 @@ export default function Register() {
                       name="agreeToTerms"
                       checked={agreeToTerms}
                       onChange={handleInputChange}
-                      className="mt-1 h-4 w-4 rounded border-gray-300 bg-white text-amber-500 
-                        focus:ring-2 focus:ring-amber-500/50 focus:ring-offset-0"
+                      className="mt-1 h-4 w-4 rounded border-gray-300 bg-white text-[#ffd200] 
+                        focus:ring-2 focus:ring-[#ffd200]/50 focus:ring-offset-0"
                     />
                     <span className="text-sm">
                       Akceptuję{" "}
                       <Link
                         href="/polityka-prywatnosci-baciata-pl"
-                        className="text-amber-500 hover:text-amber-600"
+                        className="text-gray-700 hover:text-[#ffd200]"
                       >
                         Politykę Prywatności
                       </Link>{" "}
                       oraz{" "}
                       <Link
                         href="/warunki-korzystania-z-uslugi-baciata-pl"
-                        className="text-amber-500 hover:text-amber-600"
+                        className="text-gray-700 hover:text-[#ffd200]"
                       >
                         Warunki Korzystania z Usługi
                       </Link>
@@ -300,13 +300,11 @@ export default function Register() {
               <button
                 type="submit"
                 disabled={isLoading || !isFormValid}
-                className="w-full bg-gradient-to-r from-amber-500 to-amber-600 
-                  text-white py-3 px-4 rounded-lg font-medium 
-                  hover:from-amber-600 hover:to-amber-700 
-                  transition-all duration-200 disabled:opacity-50 
+                className="w-full bg-[#ffd200] text-gray-900 py-3 px-4 rounded-lg font-medium 
+                  hover:bg-[#ffd200]/80 transition-all duration-200 disabled:opacity-50 
                   disabled:cursor-not-allowed flex items-center 
                   justify-center space-x-2 shadow-md hover:shadow-lg
-                  hover:shadow-amber-500/20"
+                  hover:shadow-[#ffd200]/20"
               >
                 {isLoading ? (
                   <>
@@ -355,7 +353,7 @@ export default function Register() {
                 Masz już konto?{" "}
                 <Link
                   href="/login"
-                  className="text-amber-600 hover:text-amber-700 font-medium transition-colors"
+                  className="text-gray-700 hover:text-[#ffd200] font-medium transition-colors"
                 >
                   Zaloguj się
                 </Link>

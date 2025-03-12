@@ -37,7 +37,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               <button
                 type="button"
                 onClick={onPasswordToggle}
-                className="text-amber-600 hover:text-amber-700 text-sm transition-colors 
+                className="text-gray-700 hover:text-[#ffd200] text-sm transition-colors 
                   flex items-center space-x-1.5 bg-gray-50 px-3 py-1 
                   rounded-full border border-gray-200"
               >
@@ -76,7 +76,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               ${
                 error
                   ? "border-red-400 focus:ring-red-400/50"
-                  : "hover:border-gray-300 focus:ring-amber-500/50"
+                  : "hover:border-gray-300 focus:ring-[#ffd200]/50 focus:border-[#ffd200]"
               }
               transition-all duration-200
               ${showPasswordToggle ? "pr-12" : "pr-4"}

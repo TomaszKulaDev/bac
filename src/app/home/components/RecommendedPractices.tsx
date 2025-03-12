@@ -394,11 +394,11 @@ const RecommendedPractices: React.FC = () => {
         {/* Header section with improved styling */}
         <div className="flex items-center justify-between py-2">
           <div className="flex items-center">
-            <div className="bg-[#ffd200] rounded-full w-8 h-8 flex items-center justify-center mr-2 shadow-sm">
-              <FaCalendarAlt className="text-gray-900 w-3.5 h-3.5" />
+            <div className="bg-[#ffd200] rounded-full w-6 h-6 flex items-center justify-center mr-2 shadow-sm">
+              <FaCalendarAlt className="text-gray-900 w-3 h-3" />
             </div>
             <div>
-              <h2 className="text-base font-bold uppercase tracking-wide text-gray-900">
+              <h2 className="text-xs font-bold uppercase tracking-wide text-gray-900">
                 PRAKTISY TANECZNE
               </h2>
             </div>
