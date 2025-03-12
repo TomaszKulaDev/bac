@@ -238,13 +238,15 @@ const RecommendedPractices: React.FC = () => {
   ];
   const [monthIndex, setMonthIndex] = useState(0);
   const [activeMonth, setActiveMonth] = useState(months[monthIndex]);
+
+  // Rozdzielenie stanów dla przewijania kart i nawigacji miesiąca
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  // Function to navigate to previous month
+  // Function to navigate to previous month - uproszczona logika
   const previousMonth = () => {
     if (monthIndex > 0) {
       const newIndex = monthIndex - 1;
@@ -253,7 +255,7 @@ const RecommendedPractices: React.FC = () => {
     }
   };
 
-  // Function to navigate to next month
+  // Function to navigate to next month - uproszczona logika
   const nextMonth = () => {
     if (monthIndex < months.length - 1) {
       const newIndex = monthIndex + 1;
@@ -300,11 +302,13 @@ const RecommendedPractices: React.FC = () => {
     }
   }, []);
 
-  // Update canScrollLeft and canScrollRight based on monthIndex
+  // Reset scroll position when month changes
   useEffect(() => {
-    setCanScrollLeft(monthIndex > 0);
-    setCanScrollRight(monthIndex < months.length - 1);
-  }, [monthIndex, months.length]);
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollLeft = 0;
+      setCurrentIndex(0);
+    }
+  }, [activeMonth]);
 
   // Function to get the appropriate dance style badge
   const getDanceStyleBadge = (
@@ -359,7 +363,7 @@ const RecommendedPractices: React.FC = () => {
 
     return (
       <div
-        className={`flex items-center text-xs font-medium px-2 py-0.5 rounded-full ${classes}`}
+        className={`flex items-center text-xs font-medium px-2 py-0.5 ${classes}`}
       >
         {icon}
         <span>{text}</span>
@@ -390,11 +394,11 @@ const RecommendedPractices: React.FC = () => {
         {/* Header section with improved styling */}
         <div className="flex items-center justify-between py-2">
           <div className="flex items-center">
-            <div className="bg-[#ffd200] rounded-full w-6 h-6 flex items-center justify-center mr-2 shadow-sm">
-              <FaCalendarAlt className="text-gray-900 w-3 h-3" />
+            <div className="bg-[#ffd200] rounded-full w-8 h-8 flex items-center justify-center mr-2 shadow-sm">
+              <FaCalendarAlt className="text-gray-900 w-3.5 h-3.5" />
             </div>
             <div>
-              <h2 className="text-xs font-bold uppercase tracking-wide text-gray-900">
+              <h2 className="text-base font-bold uppercase tracking-wide text-gray-900">
                 PRAKTISY TANECZNE
               </h2>
             </div>
@@ -403,9 +407,9 @@ const RecommendedPractices: React.FC = () => {
           <div className="flex items-center space-x-2">
             <button
               onClick={previousMonth}
-              disabled={!canScrollLeft}
-              className={`w-5 h-5 rounded-full flex items-center justify-center transition-colors ${
-                canScrollLeft
+              disabled={monthIndex <= 0}
+              className={`w-5 h-5 flex items-center justify-center transition-colors ${
+                monthIndex > 0
                   ? "bg-white text-gray-700 hover:bg-gray-100 shadow-sm border border-gray-200"
                   : "bg-gray-100 text-gray-400 cursor-not-allowed"
               }`}
@@ -414,15 +418,15 @@ const RecommendedPractices: React.FC = () => {
               <FaChevronLeft className="w-2 h-2" />
             </button>
 
-            <button className="px-2 py-0.5 text-xs rounded-full transition-colors bg-[#ffd200] text-gray-900 font-medium shadow-sm min-w-[60px] text-center">
+            <button className="px-2 py-0.5 text-xs transition-colors bg-[#ffd200] text-gray-900 font-medium shadow-sm min-w-[60px] text-center">
               {activeMonth}
             </button>
 
             <button
               onClick={nextMonth}
-              disabled={!canScrollRight}
-              className={`w-5 h-5 rounded-full flex items-center justify-center transition-colors ${
-                canScrollRight
+              disabled={monthIndex >= months.length - 1}
+              className={`w-5 h-5 flex items-center justify-center transition-colors ${
+                monthIndex < months.length - 1
                   ? "bg-white text-gray-700 hover:bg-gray-100 shadow-sm border border-gray-200"
                   : "bg-gray-100 text-gray-400 cursor-not-allowed"
               }`}
@@ -433,7 +437,7 @@ const RecommendedPractices: React.FC = () => {
 
             <Link
               href="/praktyki"
-              className="text-xs font-medium text-gray-700 hover:text-gray-900 transition-colors flex items-center group bg-white px-2 py-0.5 rounded-full shadow-sm border border-gray-200 hover:shadow"
+              className="text-xs font-medium text-gray-700 hover:text-gray-900 transition-colors flex items-center group bg-white px-2 py-0.5 shadow-sm border border-gray-200 hover:shadow"
             >
               <span>Zobacz wszystkie</span>
               <svg
@@ -458,7 +462,7 @@ const RecommendedPractices: React.FC = () => {
           <div className="absolute left-0 top-1/2 -translate-y-1/2 -ml-3 z-10">
             <button
               onClick={scrollLeft}
-              className="w-6 h-6 rounded-full flex items-center justify-center transition-colors bg-white text-gray-700 hover:bg-gray-100 shadow-md border border-gray-200"
+              className="w-6 h-6 flex items-center justify-center transition-colors bg-white text-gray-700 hover:bg-gray-100 shadow-md border border-gray-200"
               aria-label="Przewiń w lewo"
             >
               <FaChevronLeft className="w-2.5 h-2.5" />
@@ -468,7 +472,7 @@ const RecommendedPractices: React.FC = () => {
           <div className="absolute right-0 top-1/2 -translate-y-1/2 -mr-3 z-10">
             <button
               onClick={scrollRight}
-              className="w-6 h-6 rounded-full flex items-center justify-center transition-colors bg-white text-gray-700 hover:bg-gray-100 shadow-md border border-gray-200"
+              className="w-6 h-6 flex items-center justify-center transition-colors bg-white text-gray-700 hover:bg-gray-100 shadow-md border border-gray-200"
               aria-label="Przewiń w prawo"
             >
               <FaChevronRight className="w-2.5 h-2.5" />
@@ -495,7 +499,7 @@ const RecommendedPractices: React.FC = () => {
                 <Link
                   key={practice.id}
                   href={practice.url}
-                  className="w-[300px] h-[180px] flex-shrink-0 bg-white hover:shadow-lg transition-all duration-300 group rounded-xl overflow-hidden border border-gray-200 hover:border-gray-300 flex"
+                  className="w-[300px] h-[180px] flex-shrink-0 bg-white hover:shadow-lg transition-all duration-300 group overflow-hidden border border-gray-200 hover:border-gray-300 flex"
                   style={{
                     transform: `scale(${index === currentIndex ? 1.02 : 1})`,
                     transformOrigin: "center center",
@@ -511,7 +515,7 @@ const RecommendedPractices: React.FC = () => {
                       className="object-cover transition-transform duration-500 group-hover:scale-105"
                       priority={index < 2}
                     />
-                    <div className="absolute top-0 left-0 m-2 px-2 py-0.5 bg-[#ffd200] rounded-md text-xs font-bold text-gray-900">
+                    <div className="absolute top-0 left-0 m-2 px-2 py-0.5 bg-[#ffd200] text-xs font-bold text-gray-900">
                       {practice.date}
                     </div>
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -519,7 +523,7 @@ const RecommendedPractices: React.FC = () => {
                     {/* Przycisk "Wezmę udział" - widoczny po najechaniu */}
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <button
-                        className="bg-[#ffd200] hover:bg-[#ffdc33] text-gray-900 font-medium text-xs px-3 py-1.5 rounded-full shadow-md transform translate-y-2 group-hover:translate-y-0 transition-all duration-300"
+                        className="bg-[#ffd200] hover:bg-[#ffdc33] text-gray-900 font-medium text-xs px-3 py-1.5 shadow-md transform translate-y-2 group-hover:translate-y-0 transition-all duration-300"
                         onClick={(e) => {
                           e.preventDefault();
                           // Tutaj można dodać logikę zapisywania się na praktykę
@@ -537,7 +541,7 @@ const RecommendedPractices: React.FC = () => {
                       <h3 className="font-bold text-gray-900 text-sm line-clamp-1 group-hover:text-[#ffd200] transition-colors flex-1 pr-2">
                         {practice.title}
                       </h3>
-                      <div className="flex flex-col items-center bg-gray-50 rounded-lg px-1.5 py-0.5 border border-gray-100">
+                      <div className="flex flex-col items-center bg-gray-50 px-1.5 py-0.5 border border-gray-100">
                         <span className="text-[10px] text-gray-500">
                           {practice.month}
                         </span>
@@ -602,7 +606,7 @@ const RecommendedPractices: React.FC = () => {
             {filteredPractices.map((_, index) => (
               <button
                 key={index}
-                className={`transition-all duration-300 rounded-full ${
+                className={`transition-all duration-300 ${
                   index === currentIndex
                     ? "bg-[#ffd200] w-5 h-1.5"
                     : "bg-gray-300 hover:bg-gray-400 w-1.5 h-1.5"
