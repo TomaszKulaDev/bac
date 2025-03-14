@@ -4,6 +4,7 @@ export interface SectionAuthors {
   mainAuthors: Author[];
   educationAuthors: Author[];
   videoAuthors: Author[];
+  newsAuthors: Author[];
 }
 
 export const AUTHORS: SectionAuthors = {
@@ -70,6 +71,24 @@ export const AUTHORS: SectionAuthors = {
       avatar:
         "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&auto=format&fit=crop&q=60",
       role: "Montażystka",
+    },
+  ],
+
+  newsAuthors: [
+    {
+      name: "Anna Kowalska",
+      avatar: "/images/authors/author1.jpg",
+      role: "Redaktor Bachata News",
+    },
+    {
+      name: "Piotr Nowak",
+      avatar: "/images/authors/author2.jpg",
+      role: "Korespondent",
+    },
+    {
+      name: "Marta Wiśniewska",
+      avatar: "/images/authors/author3.jpg",
+      role: "Dziennikarz",
     },
   ],
 };

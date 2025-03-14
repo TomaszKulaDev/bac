@@ -523,7 +523,7 @@ const RecommendedPractices: React.FC = () => {
                     {/* Przycisk "Wezmę udział" - widoczny po najechaniu */}
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <button
-                        className="bg-[#ffd200] hover:bg-[#ffdc33] text-gray-900 font-medium text-xs px-3 py-1.5 shadow-md transform translate-y-2 group-hover:translate-y-0 transition-all duration-300"
+                        className="bg-[#ffd200] hover:bg-gray-100 text-gray-900 font-medium text-xs px-3 py-1.5 shadow-md transform translate-y-2 group-hover:translate-y-0 transition-all duration-300"
                         onClick={(e) => {
                           e.preventDefault();
                           // Tutaj można dodać logikę zapisywania się na praktykę
@@ -538,7 +538,7 @@ const RecommendedPractices: React.FC = () => {
                   {/* Content section */}
                   <div className="flex-1 p-3 flex flex-col">
                     <div className="flex justify-between items-start mb-1">
-                      <h3 className="font-bold text-gray-900 text-sm line-clamp-1 group-hover:text-[#ffd200] transition-colors flex-1 pr-2">
+                      <h3 className="font-bold text-gray-900 text-sm line-clamp-1 transition-colors flex-1 pr-2">
                         {practice.title}
                       </h3>
                       <div className="flex flex-col items-center bg-gray-50 px-1.5 py-0.5 border border-gray-100">

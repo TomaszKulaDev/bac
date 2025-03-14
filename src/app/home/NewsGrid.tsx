@@ -22,7 +22,7 @@ interface ArticleImageProps {
 
 interface ArticleCardProps {
   article: NewsArticle;
-  variant?: "featured" | "secondary" | "sidebar";
+  variant?: "featured" | "secondary" | "sidebar" | "default" | "compact";
   index?: number;
 }
 
@@ -200,6 +200,7 @@ export default function NewsGrid() {
             letter="B"
             title="BACHATA NA DZIŚ"
             authors={AUTHORS.mainAuthors}
+            sectionLabel="PISZĄ DLA NAS:"
           />
           <Link href="/bachat-posty" className="text-sm hover:underline">
             Zobacz Bachata Posty!
@@ -236,8 +237,13 @@ export default function NewsGrid() {
 
           {/* Sidebar - News Portal Style */}
           <div className="col-span-12 lg:col-span-4">
-            <div className="mb-4 border-b border-gray-200 pb-2 pl-3">
-              <SectionHeader letter="B" title="BACHATA NEWS" />
+            <div className="mb-4">
+              <div className="flex items-center">
+                <div className="bg-[#ffd200] rounded-full w-8 h-8 flex items-center justify-center mr-2">
+                  <span className="font-bold text-black">B</span>
+                </div>
+                <h2 className="text-base font-bold uppercase">BACHATA NEWS</h2>
+              </div>
             </div>
 
             <div className="space-y-0">

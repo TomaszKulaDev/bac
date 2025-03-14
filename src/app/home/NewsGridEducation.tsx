@@ -22,7 +22,8 @@ interface ArticleImageProps {
 
 interface ArticleCardProps {
   article: NewsArticle;
-  variant?: "featured" | "secondary" | "sidebar";
+  variant?: "featured" | "secondary" | "sidebar" | "default" | "compact";
+  index?: number;
 }
 
 // Style
@@ -69,6 +70,46 @@ const AuthorInfo = ({ author }: { author?: Author }) => {
         />
       </div>
       <span className="text-gray-600 text-xs">{author.name}</span>
+    </div>
+  );
+};
+
+// Nowy komponent dla elementów sidebara w stylu portalu informacyjnego
+const SidebarArticleCard = ({
+  article,
+  index = 0,
+}: {
+  article: NewsArticle;
+  index?: number;
+}) => {
+  // Domyślny obrazek, jeśli artykuł nie ma obrazka
+  const imageUrl =
+    article.image ||
+    "https://images.unsplash.com/photo-1545128485-c400ce7b6892?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80";
+
+  return (
+    <div className="flex py-3 border-b border-gray-100 last:border-b-0 group pl-3">
+      <div className="flex-shrink-0 w-[80px] h-[60px] mr-3 overflow-hidden">
+        <Image
+          src={imageUrl}
+          alt={article.title}
+          width={80}
+          height={60}
+          className="w-full h-full object-cover"
+        />
+      </div>
+      <div className="flex-1 pr-3">
+        <Link href={`/artykul/${article.slug}`}>
+          <h3 className="text-sm font-bold text-gray-900 leading-tight line-clamp-3 group-hover:text-gray-700 transition-colors">
+            {article.title}
+          </h3>
+        </Link>
+        {article.sidebarCategory && (
+          <span className="text-xs text-gray-500 mt-1 inline-block">
+            {article.sidebarCategory}
+          </span>
+        )}
+      </div>
     </div>
   );
 };
@@ -189,12 +230,12 @@ export default function NewsGridEducation() {
                 <h2 className="text-base font-bold uppercase">NAUKA</h2>
               </div>
             </div>
-            <div className="space-y-2">
-              {sidebarArticles.slice(1, 15).map((article) => (
-                <ArticleCard
+            <div className="space-y-0">
+              {sidebarArticles.slice(1, 15).map((article, index) => (
+                <SidebarArticleCard
                   key={article.id}
                   article={article}
-                  variant="sidebar"
+                  index={index}
                 />
               ))}
             </div>

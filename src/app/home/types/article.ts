@@ -23,3 +23,9 @@ export interface NewsArticle {
   views?: number;
   sidebarCategory?: string;
 }
+
+export interface SectionAuthors {
+  mainAuthors: Author[];
+  newsAuthors: Author[];
+  // ... existing properties ...
+}
