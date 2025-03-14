@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -10,9 +10,6 @@ import {
   FaCalendarAlt,
   FaMoneyBillWave,
   FaMusic,
-  FaGuitar,
-  FaDrum,
-  FaSignal,
   FaHeart,
 } from "react-icons/fa";
 
@@ -28,23 +25,13 @@ interface Practice {
   url: string;
   participants?: number;
   price?: string;
-  partnerStatus: "rotation" | "required" | "optional";
-  rating: number;
-  ratingCount: number;
-  danceStyle:
-    | "dominicana"
-    | "sensual"
-    | "moderna"
-    | "fusion"
-    | "traditional"
-    | "urban"
-    | "mixed";
+  danceStyles: Array<"sensual" | "kizomba" | "salsa">;
 }
 
 const recommendedPractices: Practice[] = [
   {
     id: "1",
-    title: "Praktyka Bachaty",
+    title: "Lemon Salsa - Praktis Bachaty",
     location: "Warszawa",
     date: "Piątek",
     day: "12",
@@ -55,14 +42,11 @@ const recommendedPractices: Practice[] = [
     url: "/praktyki/warszawa-bachata-sredniozaawansowana",
     participants: 24,
     price: "25 zł",
-    partnerStatus: "rotation",
-    rating: 4.5,
-    ratingCount: 42,
-    danceStyle: "dominicana",
+    danceStyles: ["sensual"],
   },
   {
     id: "2",
-    title: "Social Dance",
+    title: "Sabrosa - Salsa w Krakowie",
     location: "Kraków",
     date: "Sobota",
     day: "13",
@@ -73,14 +57,11 @@ const recommendedPractices: Practice[] = [
     url: "/praktyki/krakow-social-dance",
     participants: 56,
     price: "30 zł",
-    partnerStatus: "optional",
-    rating: 4.8,
-    ratingCount: 65,
-    danceStyle: "mixed",
+    danceStyles: ["salsa"],
   },
   {
     id: "3",
-    title: "Bachata Sensual",
+    title: "Sun Salsa - Bachata praktis Tarnów",
     location: "Wrocław",
     date: "Niedziela",
     day: "14",
@@ -91,14 +72,11 @@ const recommendedPractices: Practice[] = [
     url: "/praktyki/wroclaw-bachata-sensual",
     participants: 18,
     price: "20 zł",
-    partnerStatus: "required",
-    rating: 4.2,
-    ratingCount: 28,
-    danceStyle: "sensual",
+    danceStyles: ["sensual"],
   },
   {
     id: "4",
-    title: "Open Practice",
+    title: "Open Practice - Debica",
     location: "Poznań",
     date: "Czwartek",
     day: "18",
@@ -109,10 +87,7 @@ const recommendedPractices: Practice[] = [
     url: "/praktyki/poznan-bachata-open",
     participants: 32,
     price: "15 zł",
-    partnerStatus: "rotation",
-    rating: 3.9,
-    ratingCount: 17,
-    danceStyle: "mixed",
+    danceStyles: ["salsa", "kizomba"],
   },
   {
     id: "5",
@@ -127,10 +102,7 @@ const recommendedPractices: Practice[] = [
     url: "/praktyki/gdansk-bachata-dominicana",
     participants: 28,
     price: "25 zł",
-    partnerStatus: "optional",
-    rating: 4.7,
-    ratingCount: 36,
-    danceStyle: "dominicana",
+    danceStyles: ["sensual"],
   },
   {
     id: "6",
@@ -145,10 +117,7 @@ const recommendedPractices: Practice[] = [
     url: "/praktyki/lodz-bachata-fusion",
     participants: 42,
     price: "Wstęp wolny",
-    partnerStatus: "rotation",
-    rating: 4.3,
-    ratingCount: 51,
-    danceStyle: "fusion",
+    danceStyles: ["sensual", "kizomba"],
   },
   {
     id: "7",
@@ -163,10 +132,7 @@ const recommendedPractices: Practice[] = [
     url: "/praktyki/szczecin-warsztaty-bachaty",
     participants: 35,
     price: "40 zł",
-    partnerStatus: "required",
-    rating: 4.9,
-    ratingCount: 22,
-    danceStyle: "traditional",
+    danceStyles: ["sensual"],
   },
   {
     id: "8",
@@ -181,10 +147,7 @@ const recommendedPractices: Practice[] = [
     url: "/praktyki/katowice-bachata-poczatkujacy",
     participants: 20,
     price: "20 zł",
-    partnerStatus: "rotation",
-    rating: 4.0,
-    ratingCount: 15,
-    danceStyle: "dominicana",
+    danceStyles: ["sensual"],
   },
   {
     id: "9",
@@ -199,10 +162,7 @@ const recommendedPractices: Practice[] = [
     url: "/praktyki/bydgoszcz-bachata-salsa-night",
     participants: 64,
     price: "35 zł",
-    partnerStatus: "optional",
-    rating: 4.6,
-    ratingCount: 78,
-    danceStyle: "mixed",
+    danceStyles: ["sensual", "salsa"],
   },
   {
     id: "10",
@@ -217,10 +177,7 @@ const recommendedPractices: Practice[] = [
     url: "/praktyki/lublin-bachata-masterclass",
     participants: 30,
     price: "50 zł",
-    partnerStatus: "required",
-    rating: 5.0,
-    ratingCount: 12,
-    danceStyle: "urban",
+    danceStyles: ["sensual", "kizomba"],
   },
 ];
 
@@ -276,101 +233,6 @@ const RecommendedPractices: React.FC = () => {
     }
   };
 
-  const handleScroll = () => {
-    if (scrollContainerRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } =
-        scrollContainerRef.current;
-      setCanScrollLeft(scrollLeft > 0);
-      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
-
-      // Calculate current index based on scroll position
-      const itemWidth = 300; // Width of each card
-      const newIndex = Math.round(scrollLeft / itemWidth);
-      setCurrentIndex(Math.min(newIndex, recommendedPractices.length - 1));
-    }
-  };
-
-  useEffect(() => {
-    const scrollContainer = scrollContainerRef.current;
-    if (scrollContainer) {
-      scrollContainer.addEventListener("scroll", handleScroll);
-      handleScroll(); // Initial check
-
-      return () => {
-        scrollContainer.removeEventListener("scroll", handleScroll);
-      };
-    }
-  }, []);
-
-  // Reset scroll position when month changes
-  useEffect(() => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollLeft = 0;
-      setCurrentIndex(0);
-    }
-  }, [activeMonth]);
-
-  // Function to get the appropriate dance style badge
-  const getDanceStyleBadge = (
-    style:
-      | "dominicana"
-      | "sensual"
-      | "moderna"
-      | "fusion"
-      | "traditional"
-      | "urban"
-      | "mixed"
-  ) => {
-    const styleConfig = {
-      dominicana: {
-        text: "Dominicana",
-        classes: "bg-amber-100 text-amber-800",
-        icon: <FaDrum className="w-3 h-3 mr-1" />,
-      },
-      sensual: {
-        text: "Sensual",
-        classes: "bg-pink-100 text-pink-800",
-        icon: <FaHeart className="w-3 h-3 mr-1" />,
-      },
-      moderna: {
-        text: "Moderna",
-        classes: "bg-blue-100 text-blue-800",
-        icon: <FaMusic className="w-3 h-3 mr-1" />,
-      },
-      fusion: {
-        text: "Fusion",
-        classes: "bg-purple-100 text-purple-800",
-        icon: <FaMusic className="w-3 h-3 mr-1" />,
-      },
-      traditional: {
-        text: "Traditional",
-        classes: "bg-green-100 text-green-800",
-        icon: <FaGuitar className="w-3 h-3 mr-1" />,
-      },
-      urban: {
-        text: "Urban",
-        classes: "bg-indigo-100 text-indigo-800",
-        icon: <FaMusic className="w-3 h-3 mr-1" />,
-      },
-      mixed: {
-        text: "Mixed Styles",
-        classes: "bg-gray-100 text-gray-800",
-        icon: <FaMusic className="w-3 h-3 mr-1" />,
-      },
-    };
-
-    const { text, classes, icon } = styleConfig[style];
-
-    return (
-      <div
-        className={`flex items-center text-xs font-medium px-2 py-0.5 ${classes}`}
-      >
-        {icon}
-        <span>{text}</span>
-      </div>
-    );
-  };
-
   // Map month names to their abbreviations for filtering
   const monthAbbreviations: Record<string, string> = {
     Maj: "MAJ",
@@ -388,13 +250,75 @@ const RecommendedPractices: React.FC = () => {
     (practice) => monthAbbreviations[activeMonth] === practice.month
   );
 
+  // Funkcja obsługująca przewijanie - opakowana w useCallback
+  const handleScroll = useCallback(() => {
+    if (scrollContainerRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } =
+        scrollContainerRef.current;
+      setCanScrollLeft(scrollLeft > 0);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
+
+      // Calculate current index based on scroll position
+      const itemWidth = 300; // Width of each card
+      const newIndex = Math.round(scrollLeft / itemWidth);
+      setCurrentIndex(Math.min(newIndex, filteredPractices.length - 1));
+    }
+  }, [
+    filteredPractices.length,
+    setCanScrollLeft,
+    setCanScrollRight,
+    setCurrentIndex,
+  ]);
+
+  useEffect(() => {
+    const scrollContainer = scrollContainerRef.current;
+    if (scrollContainer) {
+      scrollContainer.addEventListener("scroll", handleScroll);
+      handleScroll(); // Initial check
+
+      return () => {
+        scrollContainer.removeEventListener("scroll", handleScroll);
+      };
+    }
+  }, [handleScroll]);
+
+  // Reset scroll position when month changes
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollLeft = 0;
+      setCurrentIndex(0);
+    }
+  }, [activeMonth]);
+
+  // Funkcja zwracająca kolor dla danego stylu tańca
+  const getDanceStyleColor = (style: "sensual" | "kizomba" | "salsa") => {
+    const styleColors = {
+      sensual: "#FFD200", // żółty - główny kolor strony
+      kizomba: "#3B82F6", // niebieski - kontrastujący
+      salsa: "#F97316", // pomarańczowy - energetyczny
+    };
+
+    return styleColors[style];
+  };
+
+  // Funkcja zwracająca skróconą nazwę stylu tańca
+  const getShortStyleName = (style: "sensual" | "kizomba" | "salsa") => {
+    const styleNames = {
+      sensual: "BACHATA",
+      kizomba: "KIZO",
+      salsa: "SALSA",
+    };
+
+    return styleNames[style];
+  };
+
   return (
     <div className="bg-gray-50 h-[232px]">
       <div className="max-w-[1300px] mx-auto px-4 h-full flex flex-col">
         {/* Header section with improved styling */}
         <div className="flex items-center justify-between py-2">
           <div className="flex items-center">
-            <div className="bg-[#ffd200] rounded-full w-6 h-6 flex items-center justify-center mr-2 shadow-sm">
+            <div className="bg-[#ffd200] w-6 h-6 flex items-center justify-center mr-2 shadow-sm">
               <FaCalendarAlt className="text-gray-900 w-3 h-3" />
             </div>
             <div>
@@ -535,13 +459,50 @@ const RecommendedPractices: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Content section */}
-                  <div className="flex-1 p-3 flex flex-col">
-                    <div className="flex justify-between items-start mb-1">
-                      <h3 className="font-bold text-gray-900 text-sm line-clamp-1 transition-colors flex-1 pr-2">
-                        {practice.title}
+                  {/* Content section - zmodyfikowana struktura */}
+                  <div className="flex-1 p-3 flex flex-col overflow-hidden">
+                    {/* Tytuł na samej górze - poprawione style */}
+                    <div className="min-h-[36px] mb-1">
+                      <h3 className="font-bold text-gray-900 text-sm line-clamp-2">
+                        {practice.title || "Brak tytułu"}
                       </h3>
-                      <div className="flex flex-col items-center bg-gray-50 px-1.5 py-0.5 border border-gray-100">
+                    </div>
+
+                    {/* Tagi stylów tańca bezpośrednio pod tytułem */}
+                    <div className="flex flex-wrap gap-1 max-w-[180px] mb-2">
+                      {practice.danceStyles.map((style, idx) => (
+                        <div
+                          key={idx}
+                          className="text-[10px] font-medium px-1.5 py-0.5 text-white"
+                          style={{
+                            backgroundColor: getDanceStyleColor(style),
+                          }}
+                        >
+                          {getShortStyleName(style)}
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Informacje o praktyce z datą po prawej */}
+                    <div className="flex justify-between">
+                      {/* Lewa kolumna z informacjami */}
+                      <div className="space-y-1 flex-1">
+                        <div className="flex items-center text-xs text-gray-600">
+                          <FaClock className="w-3 h-3 text-[#ffd200] mr-1.5 flex-shrink-0" />
+                          <span className="font-medium">{practice.time}</span>
+                        </div>
+                        <div className="flex items-center text-xs text-gray-600">
+                          <FaMapMarkerAlt className="w-3 h-3 text-[#ffd200] mr-1.5 flex-shrink-0" />
+                          <span className="truncate">{practice.location}</span>
+                        </div>
+                        <div className="flex items-center text-xs text-gray-600">
+                          <FaMoneyBillWave className="w-3 h-3 text-[#ffd200] mr-1.5 flex-shrink-0" />
+                          <span>{practice.price || "Cena nie podana"}</span>
+                        </div>
+                      </div>
+
+                      {/* Data po prawej stronie */}
+                      <div className="flex flex-col items-center bg-gray-50 px-1.5 py-0.5 border border-gray-100 ml-1 flex-shrink-0 h-fit">
                         <span className="text-[10px] text-gray-500">
                           {practice.month}
                         </span>
@@ -551,22 +512,7 @@ const RecommendedPractices: React.FC = () => {
                       </div>
                     </div>
 
-                    <div className="space-y-1 mb-auto">
-                      <div className="flex items-center text-xs text-gray-600">
-                        <FaClock className="w-3 h-3 text-[#ffd200] mr-1.5" />
-                        <span className="font-medium">{practice.time}</span>
-                      </div>
-                      <div className="flex items-center text-xs text-gray-600">
-                        <FaMapMarkerAlt className="w-3 h-3 text-[#ffd200] mr-1.5" />
-                        <span>{practice.location}</span>
-                      </div>
-                      <div className="flex items-center text-xs text-gray-600">
-                        <FaMoneyBillWave className="w-3 h-3 text-[#ffd200] mr-1.5" />
-                        <span>{practice.price || "Cena nie podana"}</span>
-                      </div>
-                    </div>
-
-                    <div className="pt-1 border-t border-gray-100 flex justify-between items-center mt-1">
+                    <div className="pt-1 border-t border-gray-100 flex justify-between items-center mt-auto">
                       <div className="flex -space-x-1.5">
                         {[...Array(3)].map((_, i) => (
                           <div
@@ -592,8 +538,6 @@ const RecommendedPractices: React.FC = () => {
                           </div>
                         )}
                       </div>
-
-                      {getDanceStyleBadge(practice.danceStyle)}
                     </div>
                   </div>
                 </Link>
@@ -602,7 +546,7 @@ const RecommendedPractices: React.FC = () => {
           </div>
 
           {/* Scroll indicators */}
-          <div className="absolute bottom-0 left-0 right-0 flex justify-center space-x-1">
+          <div className="absolute bottom-[-6px] left-0 right-0 flex justify-center space-x-1">
             {filteredPractices.map((_, index) => (
               <button
                 key={index}
