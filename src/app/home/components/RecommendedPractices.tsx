@@ -318,7 +318,7 @@ const RecommendedPractices: React.FC = () => {
         {/* Header section with improved styling */}
         <div className="flex items-center justify-between py-2">
           <div className="flex items-center">
-            <div className="bg-[#ffd200] w-8 h-8 flex items-center justify-center mr-2 shadow-sm">
+            <div className="bg-[#ffd200] w-8 h-8 flex items-center justify-center mr-2 rounded-md shadow-sm">
               <FaCalendarAlt className="text-gray-900 w-4 h-4" />
             </div>
             <div>

@@ -33,37 +33,11 @@ export default function SectionHeaderWithAuthors({
 
   // Shared header component used in all variants
   const HeaderSection = () => (
-    <div className="flex items-center justify-between">
-      <div className="flex items-center">
-        <div className="bg-[#ffd200] w-8 h-8 flex items-center justify-center mr-3 shadow-sm">
-          <span className="font-bold text-gray-900">{letter}</span>
-        </div>
-        <h2 className="text-base font-bold uppercase tracking-wide text-gray-900">
-          {title}
-        </h2>
+    <div className="flex items-center">
+      <div className="bg-[#ffd200] rounded-md w-8 h-8 flex items-center justify-center mr-2">
+        <span className="font-bold text-black">{letter}</span>
       </div>
-
-      {linkUrl && variant !== "default" && (
-        <Link
-          href={linkUrl}
-          className="text-xs text-gray-500 hover:text-[#ffd200] transition-colors flex items-center gap-1"
-        >
-          <span>{linkText || "Zobacz więcej"}</span>
-          <svg
-            className="w-3 h-3"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M9 5l7 7-7 7"
-            />
-          </svg>
-        </Link>
-      )}
+      <h2 className="text-base font-bold uppercase">{title}</h2>
     </div>
   );
 
@@ -150,12 +124,10 @@ export default function SectionHeaderWithAuthors({
       <div className="flex flex-wrap items-center justify-between gap-4">
         {/* Left side - Section title */}
         <div className="flex items-center">
-          <div className="bg-[#ffd200] w-8 h-8 flex items-center justify-center mr-3 shadow-sm">
-            <span className="font-bold text-gray-900">{letter}</span>
+          <div className="bg-[#ffd200] rounded-md w-8 h-8 flex items-center justify-center mr-2">
+            <span className="font-bold text-black">{letter}</span>
           </div>
-          <h2 className="text-base font-bold uppercase tracking-wide text-gray-900">
-            {title}
-          </h2>
+          <h2 className="text-base font-bold uppercase">{title}</h2>
 
           {linkUrl && (
             <Link

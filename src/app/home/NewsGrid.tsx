@@ -94,7 +94,7 @@ const SectionHeader = ({
   title: string;
 }) => (
   <div className="flex items-center">
-    <div className="bg-[#ffd200] rounded-full w-8 h-8 flex items-center justify-center mr-2">
+    <div className="bg-[#ffd200] rounded-md w-8 h-8 flex items-center justify-center mr-2">
       <span className="font-bold text-black">{letter}</span>
     </div>
     <h2 className="text-base font-bold uppercase">{title}</h2>
@@ -289,7 +289,7 @@ export default function NewsGrid() {
           <div className="col-span-12 lg:col-span-4">
             <div className="mb-4">
               <div className="flex items-center">
-                <div className="bg-[#ffd200] rounded-full w-8 h-8 flex items-center justify-center mr-2">
+                <div className="bg-[#ffd200] rounded-md w-8 h-8 flex items-center justify-center mr-2">
                   <span className="font-bold text-black">B</span>
                 </div>
                 <h2 className="text-base font-bold uppercase">BACHATA NEWS</h2>
