@@ -185,7 +185,7 @@ const InfoBar: React.FC = () => {
                 transition={{ duration: ANIMATION_DURATION / 1000 }}
                 className="flex items-center space-x-3 py-2 flex-wrap md:flex-nowrap mt-1 relative"
               >
-                <div className="flex-shrink-0 bg-white/20 rounded-full p-2 flex items-center justify-center">
+                <div className="flex-shrink-0 bg-white/20 rounded-full p-2 flex items-center justify-center -mt-1">
                   <MessageIcon type={currentMessage.type} />
                 </div>
                 <span className="text-xs sm:text-sm font-medium leading-tight flex-1 min-w-0">
