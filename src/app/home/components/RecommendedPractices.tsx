@@ -221,15 +221,24 @@ const RecommendedPractices: React.FC = () => {
     }
   };
 
+  // Funkcja do przewijania dostosowana do szerokości ekranu
   const scrollLeft = () => {
     if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({ left: -300, behavior: "smooth" });
+      const cardWidth = window.innerWidth < 640 ? window.innerWidth - 32 : 300;
+      scrollContainerRef.current.scrollBy({
+        left: -cardWidth,
+        behavior: "smooth",
+      });
     }
   };
 
   const scrollRight = () => {
     if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({ left: 300, behavior: "smooth" });
+      const cardWidth = window.innerWidth < 640 ? window.innerWidth - 32 : 300;
+      scrollContainerRef.current.scrollBy({
+        left: cardWidth,
+        behavior: "smooth",
+      });
     }
   };
 
@@ -250,7 +259,7 @@ const RecommendedPractices: React.FC = () => {
     (practice) => monthAbbreviations[activeMonth] === practice.month
   );
 
-  // Funkcja obsługująca przewijanie - opakowana w useCallback
+  // Zmodyfikowana funkcja obsługująca przewijanie
   const handleScroll = useCallback(() => {
     if (scrollContainerRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } =
@@ -258,8 +267,8 @@ const RecommendedPractices: React.FC = () => {
       setCanScrollLeft(scrollLeft > 0);
       setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
 
-      // Calculate current index based on scroll position
-      const itemWidth = 300; // Width of each card
+      // Calculate current index based on scroll position and screen size
+      const itemWidth = window.innerWidth < 640 ? window.innerWidth - 32 : 300;
       const newIndex = Math.round(scrollLeft / itemWidth);
       setCurrentIndex(Math.min(newIndex, filteredPractices.length - 1));
     }
@@ -313,9 +322,9 @@ const RecommendedPractices: React.FC = () => {
   };
 
   return (
-    <div className="bg-gray-50 h-[220px]">
+    <div className="bg-gray-50 min-h-[250px]">
       <div className="max-w-[1300px] mx-auto px-4 h-full flex flex-col">
-        {/* Header section with improved styling */}
+        {/* Header section - uproszczony na mobile */}
         <div className="flex items-center justify-between py-1">
           <div className="flex items-center">
             <div className="bg-[#ffd200] w-7 h-7 flex items-center justify-center mr-2 rounded-md shadow-sm">
@@ -332,233 +341,240 @@ const RecommendedPractices: React.FC = () => {
             <button
               onClick={previousMonth}
               disabled={monthIndex <= 0}
-              className={`w-5 h-5 flex items-center justify-center transition-colors ${
+              className={`w-6 h-6 flex items-center justify-center transition-colors ${
                 monthIndex > 0
                   ? "bg-white text-gray-700 hover:bg-gray-100 shadow-sm border border-gray-200"
                   : "bg-gray-100 text-gray-400 cursor-not-allowed"
               }`}
               aria-label="Poprzedni miesiąc"
             >
-              <FaChevronLeft className="w-2 h-2" />
+              <FaChevronLeft className="w-2.5 h-2.5" />
             </button>
 
-            <button className="px-2 py-0.5 text-xs transition-colors bg-[#ffd200] text-gray-900 font-medium shadow-sm min-w-[60px] text-center">
+            <button className="px-3 py-1 text-xs transition-colors bg-[#ffd200] text-gray-900 font-medium shadow-sm min-w-[60px] text-center">
               {activeMonth}
             </button>
 
             <button
               onClick={nextMonth}
               disabled={monthIndex >= months.length - 1}
-              className={`w-5 h-5 flex items-center justify-center transition-colors ${
+              className={`w-6 h-6 flex items-center justify-center transition-colors ${
                 monthIndex < months.length - 1
                   ? "bg-white text-gray-700 hover:bg-gray-100 shadow-sm border border-gray-200"
                   : "bg-gray-100 text-gray-400 cursor-not-allowed"
               }`}
               aria-label="Następny miesiąc"
             >
-              <FaChevronRight className="w-2 h-2" />
+              <FaChevronRight className="w-2.5 h-2.5" />
             </button>
-
-            <Link
-              href="/praktyki"
-              className="text-xs font-medium text-gray-700 hover:text-gray-900 transition-colors flex items-center group bg-white px-2 py-0.5 shadow-sm border border-gray-200 hover:shadow"
-            >
-              <span>Zobacz wszystkie</span>
-              <svg
-                className="w-2.5 h-2.5 ml-1 transform group-hover:translate-x-0.5 transition-transform"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
-            </Link>
           </div>
         </div>
 
-        <div className="relative flex-1 mt-1">
-          {/* Card navigation buttons positioned on the sides of the carousel */}
-          <div className="absolute left-0 top-1/2 -translate-y-1/2 -ml-3 z-10">
+        {/* Drugi wiersz z informacją o liczbie praktyk i linkiem "Zobacz wszystkie" */}
+        <div className="flex items-center justify-between mb-2 mt-1">
+          <div className="text-xs text-gray-500">
+            <span>
+              W {activeMonth} jest: {filteredPractices.length} wydarzeń
+              {filteredPractices.length === 1
+                ? "a"
+                : filteredPractices.length > 1 && filteredPractices.length < 5
+                ? "i"
+                : ""}
+            </span>
+          </div>
+
+          <Link
+            href="/praktyki"
+            className="text-xs font-medium text-gray-700 hover:text-gray-900 transition-colors flex items-center group bg-white px-2 py-0.5 shadow-sm border border-gray-200 hover:shadow"
+          >
+            <span>Zobacz wszystkie</span>
+            <svg
+              className="w-2.5 h-2.5 ml-1 transform group-hover:translate-x-0.5 transition-transform"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </Link>
+        </div>
+
+        <div className="relative flex-1">
+          {/* Card navigation buttons - bardziej widoczne */}
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 -ml-2 z-10">
             <button
               onClick={scrollLeft}
-              className="w-6 h-6 flex items-center justify-center transition-colors bg-white text-gray-700 hover:bg-gray-100 shadow-md border border-gray-200"
+              className="w-8 h-8 flex items-center justify-center transition-colors bg-white text-gray-700 hover:bg-gray-100 shadow-md border border-gray-200 rounded-full"
               aria-label="Przewiń w lewo"
             >
-              <FaChevronLeft className="w-2.5 h-2.5" />
+              <FaChevronLeft className="w-3 h-3" />
             </button>
           </div>
 
-          <div className="absolute right-0 top-1/2 -translate-y-1/2 -mr-3 z-10">
+          <div className="absolute right-0 top-1/2 -translate-y-1/2 -mr-2 z-10">
             <button
               onClick={scrollRight}
-              className="w-6 h-6 flex items-center justify-center transition-colors bg-white text-gray-700 hover:bg-gray-100 shadow-md border border-gray-200"
+              className="w-8 h-8 flex items-center justify-center transition-colors bg-white text-gray-700 hover:bg-gray-100 shadow-md border border-gray-200 rounded-full"
               aria-label="Przewiń w prawo"
             >
-              <FaChevronRight className="w-2.5 h-2.5" />
+              <FaChevronRight className="w-3 h-3" />
             </button>
           </div>
 
           <div
             ref={scrollContainerRef}
-            className="overflow-x-auto h-full scroll-smooth"
+            className="overflow-x-auto h-full scroll-smooth snap-x snap-mandatory"
             onScroll={handleScroll}
             style={{
               scrollbarWidth: "none" /* Firefox */,
               msOverflowStyle: "none" /* IE and Edge */,
             }}
           >
-            {/* CSS do ukrycia scrollbara dla WebKit (Chrome, Safari) */}
+            {/* CSS do ukrycia scrollbara */}
             <style jsx>{`
               div::-webkit-scrollbar {
                 display: none;
               }
             `}</style>
+
+            {/* Zmodyfikowany układ kart - zwiększona wysokość */}
             <div className="flex space-x-3 pl-1 pr-4 h-full py-0">
-              {filteredPractices.map((practice, index) => (
-                <Link
-                  key={practice.id}
-                  href={practice.url}
-                  className="w-[300px] h-[175px] flex-shrink-0 bg-white hover:shadow-lg transition-all duration-300 group overflow-hidden border border-gray-200 hover:border-gray-300 flex"
-                  style={{
-                    transform: `scale(${index === currentIndex ? 1.02 : 1})`,
-                    transformOrigin: "center center",
-                  }}
-                >
-                  {/* Image section on left */}
-                  <div className="w-[120px] relative overflow-hidden">
-                    <Image
-                      src={practice.image}
-                      alt={practice.title}
-                      fill
-                      sizes="120px"
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      priority={index < 2}
-                    />
-                    <div className="absolute top-0 left-0 m-2 px-2 py-0.5 bg-[#ffd200] text-xs font-bold text-gray-900">
-                      {practice.date}
-                    </div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-
-                    {/* Przycisk "Wezmę udział" - widoczny po najechaniu */}
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <button
-                        className="bg-[#ffd200] hover:bg-gray-100 text-gray-900 font-medium text-xs px-3 py-1.5 shadow-md transform translate-y-2 group-hover:translate-y-0 transition-all duration-300"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          // Tutaj można dodać logikę zapisywania się na praktykę
-                          alert(`Zapisano na praktykę: ${practice.title}`);
-                        }}
-                      >
-                        Wezmę udział
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Content section - zmodyfikowana struktura */}
-                  <div className="flex-1 p-3 flex flex-col overflow-hidden">
-                    {/* Tytuł na samej górze - poprawione style */}
-                    <div className="min-h-[36px] mb-1">
-                      <h3 className="font-bold text-gray-900 text-sm line-clamp-2">
-                        {practice.title || "Brak tytułu"}
-                      </h3>
-                    </div>
-
-                    {/* Tagi stylów tańca bezpośrednio pod tytułem */}
-                    <div className="flex flex-wrap gap-1 max-w-[180px] mb-2">
-                      {practice.danceStyles.map((style, idx) => (
-                        <div
-                          key={idx}
-                          className="text-[10px] font-medium px-1.5 py-0.5 text-white"
-                          style={{
-                            backgroundColor: getDanceStyleColor(style),
-                          }}
-                        >
-                          {getShortStyleName(style)}
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Informacje o praktyce z datą po prawej */}
-                    <div className="flex justify-between">
-                      {/* Lewa kolumna z informacjami */}
-                      <div className="space-y-1 flex-1">
-                        <div className="flex items-center text-xs text-gray-600">
-                          <FaClock className="w-3 h-3 text-[#ffd200] mr-1.5 flex-shrink-0" />
-                          <span className="font-medium">{practice.time}</span>
-                        </div>
-                        <div className="flex items-center text-xs text-gray-600">
-                          <FaMapMarkerAlt className="w-3 h-3 text-[#ffd200] mr-1.5 flex-shrink-0" />
-                          <span className="truncate">{practice.location}</span>
-                        </div>
-                        <div className="flex items-center text-xs text-gray-600">
-                          <FaMoneyBillWave className="w-3 h-3 text-[#ffd200] mr-1.5 flex-shrink-0" />
-                          <span>{practice.price || "Cena nie podana"}</span>
-                        </div>
+              {filteredPractices.length === 0 ? (
+                <div className="w-full flex items-center justify-center text-gray-500 text-sm py-10">
+                  Brak praktyk w wybranym miesiącu
+                </div>
+              ) : (
+                filteredPractices.map((practice, index) => (
+                  <Link
+                    key={practice.id}
+                    href={practice.url}
+                    className="w-[calc(100vw-48px)] sm:w-[300px] h-[170px] sm:h-[185px] flex-shrink-0 bg-white hover:shadow-lg transition-all duration-300 group overflow-hidden border border-gray-200 hover:border-gray-300 flex snap-center"
+                    style={{
+                      transform: `scale(${index === currentIndex ? 1.02 : 1})`,
+                      transformOrigin: "center center",
+                    }}
+                  >
+                    {/* Image section - data w prawym górnym rogu zarówno na mobile jak i desktop */}
+                    <div className="w-[140px] sm:w-[120px] relative overflow-hidden">
+                      <Image
+                        src={practice.image}
+                        alt={practice.title}
+                        fill
+                        sizes="(max-width: 640px) 140px, 120px"
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        priority={index < 2}
+                      />
+                      <div className="absolute top-0 left-0 m-2 px-2 py-0.5 bg-[#ffd200] text-xs font-bold text-gray-900">
+                        {practice.date}
                       </div>
 
-                      {/* Data po prawej stronie */}
-                      <div className="flex flex-col items-center bg-gray-50 px-1.5 py-0.5 border border-gray-100 ml-1 flex-shrink-0 h-fit">
-                        <span className="text-[10px] text-gray-500">
+                      {/* Data w prawym górnym rogu (zarówno na mobile jak i desktop) */}
+                      <div className="absolute top-0 right-0 m-2 flex flex-col items-center bg-gray-50 px-2 py-0.5 border border-gray-100 text-center min-w-[36px]">
+                        <span className="text-[10px] text-gray-500 leading-none">
                           {practice.month}
                         </span>
-                        <span className="text-sm font-bold text-gray-900 leading-tight">
+                        <span className="text-sm font-bold text-gray-900 leading-none">
                           {practice.day}
                         </span>
                       </div>
                     </div>
 
-                    <div className="pt-1 border-t border-gray-100 flex justify-between items-center mt-auto">
-                      <div className="flex -space-x-2">
-                        {[...Array(3)].map((_, i) => (
+                    {/* Content section - zwiększony padding bez zmiany line-height */}
+                    <div className="flex-1 p-3 flex flex-col overflow-hidden">
+                      {/* Tytuł - unchanged */}
+                      <div className="mb-1">
+                        <h3 className="font-bold text-gray-900 text-sm line-clamp-2">
+                          {practice.title || "Brak tytułu"}
+                        </h3>
+                      </div>
+
+                      {/* Tagi stylów tańca - unchanged */}
+                      <div className="mb-2">
+                        {practice.danceStyles.map((style, idx) => (
                           <div
-                            key={i}
-                            className="w-7 h-7 rounded-full border-2 border-white overflow-hidden bg-gray-200"
+                            key={idx}
+                            className="text-xs font-medium px-2 py-0.5 text-white inline-block"
+                            style={{
+                              backgroundColor: getDanceStyleColor(style),
+                            }}
                           >
-                            {i < 2 && (
+                            {getShortStyleName(style)}
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Informacje o praktyce - usunięta data z sekcji informacji na desktop */}
+                      <div className="space-y-1.5 flex-1 text-xs">
+                        <div className="flex items-center text-gray-600">
+                          <FaClock className="w-3 h-3 text-[#ffd200] mr-1.5 flex-shrink-0" />
+                          <span className="font-medium">{practice.time}</span>
+                        </div>
+                        <div className="flex items-center text-gray-600">
+                          <FaMapMarkerAlt className="w-3 h-3 text-[#ffd200] mr-1.5 flex-shrink-0" />
+                          <span className="truncate">{practice.location}</span>
+                        </div>
+                        <div className="flex items-center text-gray-600">
+                          <FaMoneyBillWave className="w-3 h-3 text-[#ffd200] mr-1.5 flex-shrink-0" />
+                          <span>{practice.price || "Cena nie podana"}</span>
+                        </div>
+                      </div>
+
+                      {/* Uczestnicy i data - usunięta data z dolnej części */}
+                      <div className="pt-1 pb-1.5 border-t border-gray-100 flex items-center justify-between mt-auto">
+                        {/* Awatary użytkowników - bez zmian */}
+                        <div className="flex -space-x-1.5 items-center">
+                          {[...Array(2)].map((_, i) => (
+                            <div
+                              key={i}
+                              className="w-6 h-6 rounded-full border-2 border-white overflow-hidden bg-gray-200"
+                            >
                               <Image
                                 src={`https://randomuser.me/api/portraits/${
                                   i % 2 === 0 ? "women" : "men"
                                 }/${((index * 3 + i) % 30) + 1}.jpg`}
                                 alt="Uczestnik"
-                                width={28}
-                                height={28}
+                                width={24}
+                                height={24}
                                 className="w-full h-full object-cover"
                               />
+                            </div>
+                          ))}
+                          {practice.participants &&
+                            practice.participants > 2 && (
+                              <div className="w-6 h-6 rounded-full border-2 border-white bg-gray-100 flex items-center justify-center text-[10px] font-medium text-gray-600">
+                                +{practice.participants - 2}
+                              </div>
                             )}
-                          </div>
-                        ))}
-                        {practice.participants && practice.participants > 3 && (
-                          <div className="w-7 h-7 rounded-full border-2 border-white bg-gray-100 flex items-center justify-center text-xs font-medium text-gray-600">
-                            +{practice.participants - 3}
-                          </div>
-                        )}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </Link>
-              ))}
+                  </Link>
+                ))
+              )}
             </div>
           </div>
 
-          {/* Scroll indicators */}
-          <div className="absolute bottom-[-8px] left-0 right-0 flex justify-center space-x-1">
+          {/* Scroll indicators - przesunięte niżej */}
+          <div className="absolute bottom-[-16px] left-0 right-0 flex justify-center space-x-1.5">
             {filteredPractices.map((_, index) => (
               <button
                 key={index}
-                className={`transition-all duration-300 ${
+                className={`transition-all duration-300 rounded-full ${
                   index === currentIndex
-                    ? "bg-[#ffd200] w-5 h-1.5"
-                    : "bg-gray-300 hover:bg-gray-400 w-1.5 h-1.5"
+                    ? "bg-[#ffd200] w-6 h-2"
+                    : "bg-gray-300 hover:bg-gray-400 w-2 h-2"
                 }`}
                 onClick={() => {
                   if (scrollContainerRef.current) {
+                    const cardWidth =
+                      window.innerWidth < 640 ? window.innerWidth - 48 : 300;
                     scrollContainerRef.current.scrollTo({
-                      left: index * 300,
+                      left: index * cardWidth,
                       behavior: "smooth",
                     });
                   }

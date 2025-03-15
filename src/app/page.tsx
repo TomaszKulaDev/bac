@@ -18,8 +18,8 @@ export default function HomePage() {
       </div>
 
       <main>
-        {/* Recommended Practices */}
-        <section className="py-2">
+        {/* Recommended Practices - zwiększony padding */}
+        <section className="py-3 mb-1">
           <RecommendedPractices />
         </section>
 
