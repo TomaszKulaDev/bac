@@ -25,8 +25,14 @@ export const AUTHORS: SectionAuthors = {
     {
       name: "Michał Domański",
       avatar:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=60",
+        "https://images.unsplash.com/photo-1500468756762-a401b6f17b46?w=400&auto=format&fit=crop&q=60",
       role: "Tancerz",
+    },
+    {
+      name: "Julia Nowicka",
+      avatar:
+        "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&auto=format&fit=crop&q=60",
+      role: "Dziennikarka Taneczna",
     },
   ],
 
@@ -50,6 +56,12 @@ export const AUTHORS: SectionAuthors = {
         "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&auto=format&fit=crop&q=60",
       role: "Pedagog Tańca",
     },
+    {
+      name: "Zofia Lewandowska",
+      avatar:
+        "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&auto=format&fit=crop&q=60",
+      role: "Metodyk Tańca",
+    },
   ],
 
   // Autorzy dla sekcji wideo
@@ -72,23 +84,39 @@ export const AUTHORS: SectionAuthors = {
         "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&auto=format&fit=crop&q=60",
       role: "Montażystka",
     },
+    {
+      name: "Tomasz Adamski",
+      avatar:
+        "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&auto=format&fit=crop&q=60",
+      role: "Producent Wideo",
+    },
   ],
 
+  // Autorzy dla sekcji newsów
   newsAuthors: [
     {
       name: "Anna Kowalska",
-      avatar: "/images/authors/author1.jpg",
+      avatar:
+        "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&auto=format&fit=crop&q=60",
       role: "Redaktor Bachata News",
     },
     {
       name: "Piotr Nowak",
-      avatar: "/images/authors/author2.jpg",
+      avatar:
+        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=60",
       role: "Korespondent",
     },
     {
       name: "Marta Wiśniewska",
-      avatar: "/images/authors/author3.jpg",
+      avatar:
+        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&auto=format&fit=crop&q=60",
       role: "Dziennikarz",
+    },
+    {
+      name: "Kamil Wójcik",
+      avatar:
+        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&auto=format&fit=crop&q=60",
+      role: "Reporter Taneczny",
     },
   ],
 };

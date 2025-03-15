@@ -4,6 +4,7 @@ import NewsGrid from "@/app/home/NewsGrid";
 import Footer from "@/app/home/Footer";
 import NewsGridEducation from "./home/NewsGridEducation";
 import NewsGridTopVideoDance from "./home/NewsGridTopVideoDance";
+import NewsGridInterviews from "./home/NewsGridInterviews";
 import RecommendedPractices from "./home/components/RecommendedPractices";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
 
@@ -28,6 +29,11 @@ export default function HomePage() {
         {/* News Grid Top Video Dance */}
         <section className="py-8">
           <NewsGridTopVideoDance />
+        </section>
+
+        {/* News Grid Interviews */}
+        <section className="py-8 bg-gray-50">
+          <NewsGridInterviews />
         </section>
       </main>
 

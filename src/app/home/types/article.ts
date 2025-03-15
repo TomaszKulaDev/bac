@@ -2,6 +2,9 @@ export enum ArticleCategory {
   FEATURED = "featured",
   SECONDARY = "secondary",
   SIDEBAR = "sidebar",
+  INTERVIEW_FEATURED = "interview_featured",
+  INTERVIEW_SECONDARY = "interview_secondary",
+  INTERVIEW_SIDEBAR = "interview_sidebar",
 }
 
 export interface Author {

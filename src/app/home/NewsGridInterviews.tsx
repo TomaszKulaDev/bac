@@ -3,9 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import {
-  featuredArticles,
-  secondaryArticles,
-  sidebarArticles,
+  interviewFeaturedArticles,
+  interviewSecondaryArticles,
+  interviewSidebarArticles,
 } from "./data/articlesData";
 import { Author, NewsArticle } from "./types/article";
 import { AUTHORS } from "./data/authorsData";
@@ -23,7 +23,7 @@ interface ArticleImageProps {
 
 interface ArticleCardProps {
   article: NewsArticle;
-  variant?: "featured" | "secondary" | "sidebar" | "default" | "compact";
+  variant?: "featured" | "secondary" | "sidebar";
   index?: number;
 }
 
@@ -56,26 +56,6 @@ const ArticleImage = ({
   />
 );
 
-const AuthorInfo = ({ author }: { author?: Author }) => {
-  if (!author) return null;
-
-  return (
-    <div className="flex items-center">
-      <div className="w-5 h-5 rounded-full overflow-hidden mr-1">
-        <Image
-          src={author.avatar}
-          alt={author.name}
-          width={20}
-          height={20}
-          className="w-full h-full object-cover"
-        />
-      </div>
-      <span className="text-gray-600 text-xs">{author.name}</span>
-    </div>
-  );
-};
-
-// Dodaj komponent SidebarArticleCard przed ArticleCard
 const SidebarArticleCard = ({
   article,
   index = 0,
@@ -114,10 +94,9 @@ const ArticleCard = ({
   variant = "secondary",
   index = 0,
 }: ArticleCardProps) => {
-  // Użyj useMemo do stabilizacji wyboru autora
   const author = useMemo(() => {
-    const authorIndex = index % AUTHORS.educationAuthors.length;
-    return AUTHORS.educationAuthors[authorIndex];
+    const authorIndex = index % AUTHORS.newsAuthors.length;
+    return AUTHORS.newsAuthors[authorIndex];
   }, [index]);
 
   if (variant === "featured") {
@@ -210,46 +189,49 @@ const ArticleCard = ({
   );
 };
 
-export default function NewsGridEducation() {
+export default function NewsGridInterviews() {
   return (
     <div className="bg-white text-gray-900 py-4">
       <div className="max-w-[1300px] mx-auto px-4">
         <div className="flex items-center justify-between mb-4">
           <SectionHeaderWithAuthors
-            letter="N"
-            title="NAUKA"
-            authors={AUTHORS.educationAuthors}
-            sectionLabel="UCZĄ DLA NAS:"
+            letter="W"
+            title="WYWIADY Z TANCERZAMI"
+            authors={AUTHORS.newsAuthors}
+            sectionLabel="ROZMAWIAJĄ DLA NAS:"
           />
-          <Link href="/edukacja" className="text-sm hover:underline">
-            Zobacz więcej!
+          <Link
+            href="/wywiady-z-tancerzami"
+            className="text-sm hover:underline"
+          >
+            Zobacz wszystkie wywiady!
           </Link>
         </div>
 
         <div className="grid grid-cols-12 gap-2">
-          {/* Main content area */}
           <div className="col-span-12 lg:col-span-8">
-            {/* Featured articles */}
             <div className="grid grid-cols-12 gap-2 mb-2">
-              {featuredArticles[0] && (
+              {interviewFeaturedArticles[0] && (
                 <div className="col-span-12 md:col-span-8">
                   <ArticleCard
-                    article={featuredArticles[0]}
+                    article={interviewFeaturedArticles[0]}
                     variant="featured"
                     index={0}
                   />
                 </div>
               )}
-              {featuredArticles[1] && (
+              {interviewFeaturedArticles[1] && (
                 <div className="col-span-12 md:col-span-4">
-                  <ArticleCard article={featuredArticles[1]} index={1} />
+                  <ArticleCard
+                    article={interviewFeaturedArticles[1]}
+                    index={1}
+                  />
                 </div>
               )}
             </div>
 
-            {/* Secondary articles grid */}
             <div className="grid grid-cols-3 gap-2">
-              {secondaryArticles.slice(0, 9).map((article, index) => (
+              {interviewSecondaryArticles.map((article, index) => (
                 <ArticleCard
                   key={article.id}
                   article={article}
@@ -259,18 +241,19 @@ export default function NewsGridEducation() {
             </div>
           </div>
 
-          {/* Sidebar */}
           <div className="col-span-12 lg:col-span-4">
             <div className="mb-4">
               <div className="flex items-center">
                 <div className="bg-[#ffd200] rounded-full w-8 h-8 flex items-center justify-center mr-2">
-                  <span className="font-bold text-black">N</span>
+                  <span className="font-bold text-black">W</span>
                 </div>
-                <h2 className="text-base font-bold uppercase">NAUKA</h2>
+                <h2 className="text-base font-bold uppercase">
+                  NAJNOWSZE WYWIADY
+                </h2>
               </div>
             </div>
             <div className="space-y-0">
-              {sidebarArticles.slice(1, 15).map((article, index) => (
+              {interviewSidebarArticles.map((article, index) => (
                 <SidebarArticleCard
                   key={article.id}
                   article={article}

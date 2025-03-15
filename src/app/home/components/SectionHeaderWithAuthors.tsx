@@ -238,29 +238,29 @@ export default function SectionHeaderWithAuthors({
             transition={{ duration: 0.2 }}
             className="mt-3 bg-gray-50 border border-gray-100 p-3 overflow-hidden"
           >
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {authors.map((author) => (
                 <Link
                   href={`/autor/${author.name
                     .toLowerCase()
                     .replace(/\s+/g, "-")}`}
                   key={author.name}
-                  className="flex items-center gap-2 p-1.5 hover:bg-white group"
+                  className="flex items-center gap-3 p-2 hover:bg-white group min-w-[250px]"
                 >
-                  <div className="w-8 h-8 rounded-full overflow-hidden border border-transparent group-hover:border-[#ffd200]">
+                  <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-transparent group-hover:border-[#ffd200] flex-shrink-0">
                     <Image
                       src={author.avatar}
                       alt=""
-                      width={32}
-                      height={32}
+                      width={48}
+                      height={48}
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <div className="overflow-hidden">
-                    <p className="text-xs font-medium text-gray-900 truncate group-hover:text-[#ffd200] transition-colors">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-gray-900 group-hover:text-[#ffd200] transition-colors line-clamp-1">
                       {author.name}
                     </p>
-                    <p className="text-[10px] text-gray-500 truncate">
+                    <p className="text-xs text-gray-500 line-clamp-1">
                       {author.role}
                     </p>
                   </div>

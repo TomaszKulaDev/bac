@@ -1,3 +1,4 @@
+import { values } from "lodash";
 import { NewsArticle, ArticleCategory } from "../types/article";
 
 // Wszystkie artykuły w jednym źródle
@@ -181,6 +182,86 @@ export const articles: Record<string, NewsArticle> = {
     category: ArticleCategory.SIDEBAR,
     sidebarCategory: "EDUKACJA",
   },
+
+  // ===== ARTYKUŁY Z WYWIADÓW =====
+  "wywiad-carla-viviani": {
+    id: "i1",
+    title:
+      "Zouk i Bachata - wywiad z Carlą Viviani o łączeniu stylów tanecznych",
+    slug: "zouk-bachata-wywiad-carla-viviani",
+    image: "https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?w=800",
+    category: ArticleCategory.INTERVIEW_FEATURED,
+  },
+  "wywiad-daniel-desiree": {
+    id: "i2",
+    title: "Daniel y Desiree - o rozwoju bachaty sensual w Europie",
+    slug: "daniel-desiree-rozwoj-bachaty-sensual",
+    image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800",
+    category: ArticleCategory.INTERVIEW_FEATURED,
+  },
+  "wywiad-korke-judith": {
+    id: "i3",
+    title: "Korke i Judith - nasza droga do sukcesu w bachacie",
+    slug: "korke-judith-droga-do-sukcesu",
+    image: "https://images.unsplash.com/photo-1547153760-18fc86324498?w=800",
+    category: ArticleCategory.INTERVIEW_SECONDARY,
+  },
+  "wywiad-jorge-burgos": {
+    id: "i4",
+    title: "Jorge Burgos - o ewolucji bachaty dominikańskiej",
+    slug: "jorge-burgos-ewolucja-bachaty",
+    image: "https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?w=800",
+    category: ArticleCategory.INTERVIEW_SECONDARY,
+  },
+  "wywiad-marco-sara": {
+    id: "i5",
+    title: "Marco i Sara - jak stworzyliśmy własny styl w bachacie",
+    slug: "marco-sara-wlasny-styl",
+    image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800",
+    category: ArticleCategory.INTERVIEW_SECONDARY,
+  },
+  "wywiad-ataca-alemana": {
+    id: "i6",
+    title: "Ataca i La Alemana - o początkach kariery i planach na przyszłość",
+    slug: "ataca-alemana-wywiad",
+    image: "https://images.unsplash.com/photo-1547153760-18fc86324498?w=800",
+    category: ArticleCategory.INTERVIEW_SECONDARY,
+  },
+  "wywiad-ronald-alba": {
+    id: "i7",
+    title: "Ronald i Alba - jak prowadzić szkołę tańca z sukcesem",
+    slug: "ronald-alba-szkola-tanca",
+    image: "https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?w=800",
+    category: ArticleCategory.INTERVIEW_SECONDARY,
+  },
+  "wywiad-tony-lara": {
+    id: "i8",
+    title: "Tony Lara - o historii bachaty i jej współczesnym obliczu",
+    slug: "tony-lara-historia-bachaty",
+    image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800",
+    category: ArticleCategory.INTERVIEW_SECONDARY,
+  },
+  "wywiad-isabelle-felicien": {
+    id: "i9",
+    title: "Isabelle i Felicien - łączenie stylów w bachacie fusion",
+    slug: "isabelle-felicien-bachata-fusion",
+    image: "https://images.unsplash.com/photo-1547153760-18fc86324498?w=800",
+    category: ArticleCategory.INTERVIEW_SECONDARY,
+  },
+  "wywiad-daniel-poczatkujacy": {
+    id: "i10",
+    title: "Wywiad z Danielem: Od początkującego do mistrza bachaty",
+    slug: "daniel-od-poczatkujacego-do-mistrza",
+    image: "https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?w=800",
+    category: ArticleCategory.INTERVIEW_SIDEBAR,
+  },
+  "wywiad-desiree-kobiecosc": {
+    id: "i11",
+    title: "Rozmowa z Desirée o kobiecości w bachacie",
+    slug: "desiree-kobiecosc-w-bachacie",
+    image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800",
+    category: ArticleCategory.INTERVIEW_SIDEBAR,
+  },
 };
 
 // Podstawowe funkcje pomocnicze
@@ -193,6 +274,17 @@ export const secondaryArticles = getArticlesByCategory(
   ArticleCategory.SECONDARY
 );
 export const sidebarArticles = getArticlesByCategory(ArticleCategory.SIDEBAR);
+
+// Dodaj nowe funkcje pomocnicze
+export const interviewFeaturedArticles = getArticlesByCategory(
+  ArticleCategory.INTERVIEW_FEATURED
+);
+export const interviewSecondaryArticles = getArticlesByCategory(
+  ArticleCategory.INTERVIEW_SECONDARY
+);
+export const interviewSidebarArticles = getArticlesByCategory(
+  ArticleCategory.INTERVIEW_SIDEBAR
+);
 
 // Funkcja do pobierania artykułu po slugu (używana w routingu)
 export const getArticleBySlug = (slug: string): NewsArticle | undefined =>

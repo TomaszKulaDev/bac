@@ -318,11 +318,11 @@ const RecommendedPractices: React.FC = () => {
         {/* Header section with improved styling */}
         <div className="flex items-center justify-between py-2">
           <div className="flex items-center">
-            <div className="bg-[#ffd200] w-6 h-6 flex items-center justify-center mr-2 shadow-sm">
-              <FaCalendarAlt className="text-gray-900 w-3 h-3" />
+            <div className="bg-[#ffd200] w-8 h-8 flex items-center justify-center mr-2 shadow-sm">
+              <FaCalendarAlt className="text-gray-900 w-4 h-4" />
             </div>
             <div>
-              <h2 className="text-xs font-bold uppercase tracking-wide text-gray-900">
+              <h2 className="text-base font-bold uppercase tracking-wide text-gray-900">
                 PRAKTISY TANECZNE
               </h2>
             </div>
@@ -513,11 +513,11 @@ const RecommendedPractices: React.FC = () => {
                     </div>
 
                     <div className="pt-1 border-t border-gray-100 flex justify-between items-center mt-auto">
-                      <div className="flex -space-x-1.5">
+                      <div className="flex -space-x-2">
                         {[...Array(3)].map((_, i) => (
                           <div
                             key={i}
-                            className="w-5 h-5 rounded-full border-2 border-white overflow-hidden bg-gray-200"
+                            className="w-7 h-7 rounded-full border-2 border-white overflow-hidden bg-gray-200"
                           >
                             {i < 2 && (
                               <Image
@@ -525,15 +525,15 @@ const RecommendedPractices: React.FC = () => {
                                   i % 2 === 0 ? "women" : "men"
                                 }/${((index * 3 + i) % 30) + 1}.jpg`}
                                 alt="Uczestnik"
-                                width={20}
-                                height={20}
+                                width={28}
+                                height={28}
                                 className="w-full h-full object-cover"
                               />
                             )}
                           </div>
                         ))}
                         {practice.participants && practice.participants > 3 && (
-                          <div className="w-5 h-5 rounded-full border-2 border-white bg-gray-100 flex items-center justify-center text-[10px] font-medium text-gray-600">
+                          <div className="w-7 h-7 rounded-full border-2 border-white bg-gray-100 flex items-center justify-center text-xs font-medium text-gray-600">
                             +{practice.participants - 3}
                           </div>
                         )}
