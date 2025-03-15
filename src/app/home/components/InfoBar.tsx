@@ -183,24 +183,24 @@ const InfoBar: React.FC = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: ANIMATION_DURATION / 1000 }}
-                className="flex items-center space-x-3 py-2 flex-wrap md:flex-nowrap mt-1"
+                className="flex items-center space-x-3 py-2 flex-wrap md:flex-nowrap mt-1 relative"
               >
                 <div className="flex-shrink-0 bg-white/20 rounded-full p-2 flex items-center justify-center">
                   <MessageIcon type={currentMessage.type} />
                 </div>
-                <span className="text-sm font-medium leading-tight flex-1 min-w-0">
+                <span className="text-xs sm:text-sm font-medium leading-tight flex-1 min-w-0">
                   {currentMessage.content}
                   {currentMessage.date && (
-                    <span className="ml-2 font-bold inline-block">
+                    <span className="ml-1 sm:ml-2 font-bold inline-block text-[10px] sm:text-xs">
                       {currentMessage.date}
                     </span>
                   )}
-                  {currentMessage.isNew && (
-                    <span className="ml-2 bg-white text-red-500 text-xs px-1.5 py-0.5 rounded-full font-bold animate-pulse inline-flex items-center">
-                      NOWOŚĆ
-                    </span>
-                  )}
                 </span>
+                {currentMessage.isNew && (
+                  <span className="ml-1 sm:ml-2 bg-white text-red-500 text-[8px] sm:text-xs px-1 sm:px-1.5 py-0.5 rounded-full font-bold animate-pulse inline-flex items-center">
+                    NOWOŚĆ
+                  </span>
+                )}
                 {currentMessage.link && (
                   <Link
                     href={currentMessage.link}
