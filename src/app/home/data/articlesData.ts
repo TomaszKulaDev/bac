@@ -354,6 +354,13 @@ export interface InfoMessage {
 // UWAGA: Pole expiresAt określa datę wygaśnięcia wiadomości w formacie "YYYY-MM-DD"
 // Wiadomości z datą wygaśnięcia wcześniejszą niż dzisiejsza nie będą wyświetlane
 // Aby wiadomość była zawsze widoczna, można usunąć pole expiresAt lub ustawić odległą datę
+
+// Kolory dla typów wiadomości:
+// - announcement: żółty (#ffd200) - dla ważnych ogłoszeń i nowości
+// - event: niebieski (blue-500) - dla wydarzeń i warsztatów
+// - promo: gradient fioletowo-różowy (purple-500 to pink-500) - dla promocji i ofert specjalnych
+// - info (default): ciemny szary (gray-800) - dla standardowych informacji
+
 export const infoMessages: InfoMessage[] = [
   {
     id: "1",
@@ -381,8 +388,7 @@ export const infoMessages: InfoMessage[] = [
   {
     id: "4",
     type: "promo",
-    content:
-      "Kup bilet na Bachata Masters i otrzymaj darmowy wstęp na after party",
+    content: "Warsztaty Lady Styling z Carlą Viviani - zapisz się już dziś!",
     link: "/promocje/bachata-masters",
     expiresAt: "2025-07-15", // Wygasa po zakończeniu promocji
   },
@@ -404,7 +410,7 @@ export const infoMessages: InfoMessage[] = [
   },
   {
     id: "7",
-    type: "promo",
+    type: "announcement",
     content: "Subskrybuj newsletter i otrzymaj darmowy e-book o bachacie",
     link: "/newsletter",
     expiresAt: "2025-12-31", // Długoterminowa promocja

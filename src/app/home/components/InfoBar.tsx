@@ -82,20 +82,20 @@ const InfoBar: React.FC = () => {
     setActiveMessages(filtered);
   }, []);
 
-  // Memoizacja funkcji stylów dla lepszej wydajności
+  // Zmiana koloru tła wiadomości ------------------------------------------------------------
   const getBackgroundColor = useCallback((type: InfoMessage["type"]) => {
     switch (type) {
       case "announcement":
         return "bg-[#ffd200]";
       case "event":
-        return "bg-blue-500";
+        return "bg-[#4a90e2]";
       case "promo":
         return "bg-gradient-to-r from-purple-500 to-pink-500";
       default:
         return "bg-gray-800";
     }
   }, []);
-
+  // ----------------------------------------------------------------------------------------
   const getTextColor = useCallback((type: InfoMessage["type"]) => {
     switch (type) {
       case "announcement":
@@ -183,7 +183,7 @@ const InfoBar: React.FC = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: ANIMATION_DURATION / 1000 }}
-                className="flex items-center space-x-3 py-2 flex-wrap md:flex-nowrap mt-0.5"
+                className="flex items-center space-x-3 py-2 flex-wrap md:flex-nowrap mt-1"
               >
                 <div className="flex-shrink-0 bg-white/20 rounded-full p-2 flex items-center justify-center">
                   <MessageIcon type={currentMessage.type} />
