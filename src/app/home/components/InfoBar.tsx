@@ -1,11 +1,16 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+} from "react";
 import {
   FaBullhorn,
   FaCalendarAlt,
   FaInfoCircle,
-  FaTimes,
   FaChevronLeft,
   FaChevronRight,
   FaExternalLinkAlt,
@@ -13,80 +18,72 @@ import {
 } from "react-icons/fa";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import { InfoMessage, infoMessages } from "../data/articlesData";
 
-interface InfoMessage {
-  id: string;
-  type: "info" | "announcement" | "event" | "promo";
-  content: string;
-  link?: string;
-  date?: string;
-  isNew?: boolean;
-  expiresAt?: string; // Format: "YYYY-MM-DD"
-}
+// Wydzielenie stałych wartości poza komponent
+const ANIMATION_DURATION = 300;
+const AUTO_SCROLL_INTERVAL = 6000;
 
-const messages: InfoMessage[] = [
-  {
-    id: "1",
-    type: "announcement",
-    content: "Nowe kursy bachaty - zapisz się już dziś i otrzymaj 15% zniżki!",
-    link: "/kursy",
-    isNew: true,
-  },
-  {
-    id: "2",
-    type: "event",
-    content: "Wielki Festiwal Bachaty 2024 - Early Birds do 1 czerwca",
-    link: "/festiwal-2024",
-    date: "15-17 sierpnia 2024",
-    expiresAt: "2024-06-01",
-  },
-  {
-    id: "3",
-    type: "info",
-    content: "Aktualizacja harmonogramu praktyk na czerwiec już dostępna",
-    link: "/praktyki",
-  },
-  {
-    id: "4",
-    type: "promo",
-    content:
-      "Kup bilet na Bachata Masters i otrzymaj darmowy wstęp na after party",
-    link: "/promocje/bachata-masters",
-    expiresAt: "2024-07-15",
-  },
-];
+// Wydzielenie komponentu MessageIcon dla lepszej organizacji kodu
+const MessageIcon = ({ type }: { type: InfoMessage["type"] }) => {
+  switch (type) {
+    case "announcement":
+      return <FaBullhorn className="w-4 h-4" />;
+    case "event":
+      return <FaCalendarAlt className="w-4 h-4" />;
+    case "promo":
+      return <FaRegClock className="w-4 h-4" />;
+    default:
+      return <FaInfoCircle className="w-4 h-4" />;
+  }
+};
+
+// Wydzielenie komponentu MessageIndicators dla lepszej organizacji kodu
+const MessageIndicators = ({
+  count,
+  currentIndex,
+  onSelect,
+}: {
+  count: number;
+  currentIndex: number;
+  onSelect: (index: number) => void;
+}) => {
+  return (
+    <div className="hidden sm:flex items-center space-x-1 mr-4 mt-0.5">
+      {Array.from({ length: count }).map((_, idx) => (
+        <button
+          key={idx}
+          onClick={() => onSelect(idx)}
+          className={`w-1.5 h-1.5 rounded-full transition-all ${
+            idx === currentIndex
+              ? "bg-white w-3"
+              : "bg-white/50 hover:bg-white/70"
+          }`}
+          aria-label={`Wiadomość ${idx + 1} z ${count}`}
+        />
+      ))}
+    </div>
+  );
+};
 
 const InfoBar: React.FC = () => {
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
-  const [isVisible, setIsVisible] = useState(true);
   const [isAnimating, setIsAnimating] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [activeMessages, setActiveMessages] = useState<InfoMessage[]>([]);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Filtruj wiadomości, które nie wygasły
+  // Filtruj wiadomości, które nie wygasły - wykonywane tylko raz przy montowaniu
   useEffect(() => {
     const today = new Date().toISOString().split("T")[0];
-    const filtered = messages.filter(
+    const filtered = infoMessages.filter(
       (msg) => !msg.expiresAt || msg.expiresAt >= today
     );
     setActiveMessages(filtered);
   }, []);
 
-  const getIcon = (type: InfoMessage["type"]) => {
-    switch (type) {
-      case "announcement":
-        return <FaBullhorn className="w-4 h-4" />;
-      case "event":
-        return <FaCalendarAlt className="w-4 h-4" />;
-      case "promo":
-        return <FaRegClock className="w-4 h-4" />;
-      default:
-        return <FaInfoCircle className="w-4 h-4" />;
-    }
-  };
-
-  const getBackgroundColor = (type: InfoMessage["type"]) => {
+  // Memoizacja funkcji stylów dla lepszej wydajności
+  const getBackgroundColor = useCallback((type: InfoMessage["type"]) => {
     switch (type) {
       case "announcement":
         return "bg-[#ffd200]";
@@ -97,47 +94,51 @@ const InfoBar: React.FC = () => {
       default:
         return "bg-gray-800";
     }
-  };
+  }, []);
 
-  const getTextColor = (type: InfoMessage["type"]) => {
+  const getTextColor = useCallback((type: InfoMessage["type"]) => {
     switch (type) {
       case "announcement":
         return "text-gray-900";
       default:
         return "text-white";
     }
-  };
+  }, []);
 
-  // Przenieśmy funkcję nextMessage do useCallback, aby uniknąć nieskończonej pętli
-  const nextMessage = useCallback(() => {
-    if (activeMessages.length <= 1) return;
-
+  // Funkcje zmiany wiadomości
+  const changeMessage = useCallback((newIndex: number) => {
     setIsAnimating(true);
     setTimeout(() => {
-      setCurrentMessageIndex((prev) => (prev + 1) % activeMessages.length);
+      setCurrentMessageIndex(newIndex);
       setIsAnimating(false);
-    }, 300);
-  }, [activeMessages.length]);
+    }, ANIMATION_DURATION);
+  }, []);
+
+  const nextMessage = useCallback(() => {
+    if (activeMessages.length <= 1) return;
+    changeMessage((currentMessageIndex + 1) % activeMessages.length);
+  }, [activeMessages.length, currentMessageIndex, changeMessage]);
 
   const previousMessage = useCallback(() => {
     if (activeMessages.length <= 1) return;
+    changeMessage(
+      (currentMessageIndex - 1 + activeMessages.length) % activeMessages.length
+    );
+  }, [activeMessages.length, currentMessageIndex, changeMessage]);
 
-    setIsAnimating(true);
-    setTimeout(() => {
-      setCurrentMessageIndex(
-        (prev) => (prev - 1 + activeMessages.length) % activeMessages.length
-      );
-      setIsAnimating(false);
-    }, 300);
-  }, [activeMessages.length]);
+  const selectMessage = useCallback(
+    (index: number) => {
+      if (isAnimating || index === currentMessageIndex) return;
+      changeMessage(index);
+    },
+    [isAnimating, currentMessageIndex, changeMessage]
+  );
 
   // Automatyczne przewijanie wiadomości
   useEffect(() => {
     if (activeMessages.length <= 1 || isPaused) return;
 
-    timerRef.current = setInterval(() => {
-      nextMessage();
-    }, 6000);
+    timerRef.current = setInterval(nextMessage, AUTO_SCROLL_INTERVAL);
 
     return () => {
       if (timerRef.current) {
@@ -146,25 +147,8 @@ const InfoBar: React.FC = () => {
     };
   }, [activeMessages.length, isPaused, nextMessage]);
 
-  // Zapisz stan w localStorage
-  useEffect(() => {
-    const savedState = localStorage.getItem("infoBarVisible");
-    if (savedState === "false") {
-      setIsVisible(false);
-    }
-  }, []);
-
-  const handleClose = () => {
-    setIsVisible(false);
-    localStorage.setItem("infoBarVisible", "false");
-
-    // Resetuj po 24 godzinach
-    setTimeout(() => {
-      localStorage.removeItem("infoBarVisible");
-    }, 24 * 60 * 60 * 1000);
-  };
-
-  if (!isVisible || activeMessages.length === 0) return null;
+  // Wczesny return jeśli nie ma aktywnych wiadomości
+  if (activeMessages.length === 0) return null;
 
   const currentMessage = activeMessages[currentMessageIndex];
 
@@ -184,8 +168,9 @@ const InfoBar: React.FC = () => {
             {activeMessages.length > 1 && (
               <button
                 onClick={previousMessage}
-                className="absolute left-0 w-8 h-8 flex items-center justify-center hover:bg-black/10 rounded-md transition-colors"
+                className="absolute left-0 w-8 h-8 flex items-center justify-center hover:bg-black/10 rounded-md transition-colors mt-1"
                 aria-label="Poprzednia wiadomość"
+                disabled={isAnimating}
               >
                 <FaChevronLeft className="w-3 h-3" />
               </button>
@@ -197,11 +182,11 @@ const InfoBar: React.FC = () => {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: ANIMATION_DURATION / 1000 }}
                 className="flex items-center space-x-3 py-2 flex-wrap md:flex-nowrap mt-0.5"
               >
                 <div className="flex-shrink-0 bg-white/20 rounded-full p-2 flex items-center justify-center">
-                  {getIcon(currentMessage.type)}
+                  <MessageIcon type={currentMessage.type} />
                 </div>
                 <span className="text-sm font-medium leading-tight flex-1 min-w-0">
                   {currentMessage.content}
@@ -231,8 +216,9 @@ const InfoBar: React.FC = () => {
             {activeMessages.length > 1 && (
               <button
                 onClick={nextMessage}
-                className="absolute right-0 w-8 h-8 flex items-center justify-center hover:bg-black/10 rounded-md transition-colors"
+                className="absolute right-0 w-8 h-8 flex items-center justify-center hover:bg-black/10 rounded-md transition-colors mt-1"
                 aria-label="Następna wiadomość"
+                disabled={isAnimating}
               >
                 <FaChevronRight className="w-3 h-3" />
               </button>
@@ -241,35 +227,12 @@ const InfoBar: React.FC = () => {
 
           {/* Wskaźniki wiadomości */}
           {activeMessages.length > 1 && (
-            <div className="hidden sm:flex items-center space-x-1 mr-4 mt-0.5">
-              {activeMessages.map((_, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => {
-                    setIsAnimating(true);
-                    setTimeout(() => {
-                      setCurrentMessageIndex(idx);
-                      setIsAnimating(false);
-                    }, 300);
-                  }}
-                  className={`w-1.5 h-1.5 rounded-full transition-all ${
-                    idx === currentMessageIndex
-                      ? "bg-white w-3"
-                      : "bg-white/50 hover:bg-white/70"
-                  }`}
-                  aria-label={`Wiadomość ${idx + 1} z ${activeMessages.length}`}
-                />
-              ))}
-            </div>
+            <MessageIndicators
+              count={activeMessages.length}
+              currentIndex={currentMessageIndex}
+              onSelect={selectMessage}
+            />
           )}
-
-          <button
-            onClick={handleClose}
-            className="ml-2 p-2 hover:bg-black/10 rounded-md transition-colors mt-0.5"
-            aria-label="Zamknij"
-          >
-            <FaTimes className="w-3.5 h-3.5" />
-          </button>
         </div>
       </div>
     </div>

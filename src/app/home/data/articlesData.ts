@@ -338,3 +338,75 @@ export const interviewSidebarArticles = getArticlesByCategory(
 // Funkcja do pobierania artykułu po slugu (używana w routingu)
 export const getArticleBySlug = (slug: string): NewsArticle | undefined =>
   articles[slug];
+
+// Dodajemy nowy interfejs dla wiadomości informacyjnych
+export interface InfoMessage {
+  id: string;
+  type: "info" | "announcement" | "event" | "promo";
+  content: string;
+  link?: string;
+  date?: string;
+  isNew?: boolean;
+  expiresAt?: string; // Format: "YYYY-MM-DD" - data po której wiadomość nie będzie wyświetlana
+}
+
+// Dodajemy dane dla paska informacyjnego
+// UWAGA: Pole expiresAt określa datę wygaśnięcia wiadomości w formacie "YYYY-MM-DD"
+// Wiadomości z datą wygaśnięcia wcześniejszą niż dzisiejsza nie będą wyświetlane
+// Aby wiadomość była zawsze widoczna, można usunąć pole expiresAt lub ustawić odległą datę
+export const infoMessages: InfoMessage[] = [
+  {
+    id: "1",
+    type: "announcement",
+    content: "Nowe kursy bachaty - zapisz się już dziś i otrzymaj 15% zniżki!",
+    link: "/kursy",
+    isNew: true,
+    expiresAt: "2025-12-31", // Wygasa z końcem 2025 roku
+  },
+  {
+    id: "2",
+    type: "event",
+    content: "Wielki Festiwal Bachaty 2025 - Early Birds do 1 czerwca",
+    link: "/festiwal-2025",
+    date: "15-17 sierpnia 2025",
+    expiresAt: "2025-12-01", // Wygasa po zakończeniu festiwalu
+  },
+  {
+    id: "3",
+    type: "info",
+    content: "Aktualizacja harmonogramu praktyk na czerwiec już dostępna",
+    link: "/praktyki",
+    expiresAt: "2025-07-01", // Wygasa po czerwcu
+  },
+  {
+    id: "4",
+    type: "promo",
+    content:
+      "Kup bilet na Bachata Masters i otrzymaj darmowy wstęp na after party",
+    link: "/promocje/bachata-masters",
+    expiresAt: "2025-07-15", // Wygasa po zakończeniu promocji
+  },
+  {
+    id: "5",
+    type: "event",
+    content: "Warsztaty z Korke i Judith w Warszawie - ostatnie miejsca",
+    link: "/warsztaty/korke-judith",
+    date: "24-25 czerwca 2024",
+    isNew: true,
+    expiresAt: "2024-06-25", // Wygasa po zakończeniu warsztatów
+  },
+  {
+    id: "6",
+    type: "info",
+    content: "Nowy ranking szkół bachaty w Polsce - sprawdź wyniki",
+    link: "/ranking-szkol",
+    expiresAt: "2025-01-15", // Wygasa po pewnym czasie od publikacji
+  },
+  {
+    id: "7",
+    type: "promo",
+    content: "Subskrybuj newsletter i otrzymaj darmowy e-book o bachacie",
+    link: "/newsletter",
+    expiresAt: "2025-12-31", // Długoterminowa promocja
+  },
+];
