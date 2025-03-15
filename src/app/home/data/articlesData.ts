@@ -3,95 +3,224 @@ import { NewsArticle, ArticleCategory } from "../types/article";
 
 // Wszystkie artykuły w jednym źródle
 export const articles: Record<string, NewsArticle> = {
-  // ===== ARTYKUŁY Z NEWSGRID =====
-
-  // Główne artykuły (featured)
+  // ===== ARTYKUŁY Z NEWSGRID (BACHATA NA DZIŚ) =====
   "nowe-trendy-bachata-2024": {
-    id: "2",
-    title:
-      "Nowe trendy w bachacie na 2024 rok. Dominikańska tradycja wraca do łask",
+    id: "1",
+    title: "Nowe trendy w bachacie na 2024 rok - Co się zmienia w stylu tańca?",
     image:
       "https://images.unsplash.com/photo-1504609813442-a8924e83f76e?q=80&w=1770&auto=format&fit=crop",
     slug: "nowe-trendy-bachata-2024",
     category: ArticleCategory.FEATURED,
   },
-  "bachata-sensual-nowy-wymiar": {
-    id: "3",
-    title: "Bachata Sensual - nowy wymiar bliskości w tańcu. Jak zacząć?",
+  "social-bachata-polska": {
+    id: "2",
+    title: "Social Bachata w Polsce - Gdzie potańczyć w 2024 roku?",
     image:
       "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?q=80&w=1770&auto=format&fit=crop",
-    slug: "bachata-sensual-nowy-wymiar",
-    author: {
-      name: "Carlos Mendez",
-      avatar: "https://randomuser.me/api/portraits/men/42.jpg",
-    },
+    slug: "social-bachata-polska",
     category: ArticleCategory.FEATURED,
   },
 
-  // Artykuły drugorzędne (secondary)
-  "festiwal-bachata-fusion-2024": {
-    id: "5",
-    title: "Festiwal Bachata Fusion 2024 - Zapisy otwarte do końca miesiąca",
-    image:
-      "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1770&auto=format&fit=crop",
-    slug: "festiwal-bachata-fusion-2024",
-    author: {
-      name: "Juan Perez",
-      avatar: "https://randomuser.me/api/portraits/men/22.jpg",
-    },
-    category: ArticleCategory.SECONDARY,
-  },
-  "romeo-santos-nowy-album": {
-    id: "6",
+  // Artykuły drugorzędne (secondary) dla BACHATA NA DZIŚ
+  "festiwale-bachata-2024": {
+    id: "3",
     title:
-      'Muzyka do bachaty - "Nowy album Romeo Santosa bije rekordy popularności"',
+      "Kalendarz festiwali bachaty 2024 - Nie przegap najważniejszych wydarzeń",
     image:
-      "https://images.unsplash.com/photo-1535525153412-5a42439a210d?q=80&w=1770&auto=format&fit=crop",
-    slug: "romeo-santos-nowy-album",
+      "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=1770",
+    slug: "festiwale-bachata-2024",
     category: ArticleCategory.SECONDARY,
   },
-  "mistrzostwa-polski-bachata": {
-    id: "7",
-    title: "Mistrzostwa Polski w Bachacie - Zgłoszenia tylko do 15 czerwca",
+  "muzyka-bachata-nowosci": {
+    id: "4",
+    title: "Nowe hity w bachacie - Przegląd najgorętszych utworów miesiąca",
     image:
-      "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?q=80&w=1770&auto=format&fit=crop",
-    slug: "mistrzostwa-polski-bachata",
+      "https://images.unsplash.com/photo-1535525153412-5a42439a210d?w=1770",
+    slug: "muzyka-bachata-nowosci",
     category: ArticleCategory.SECONDARY,
   },
-  "bachata-moderna-fuzja": {
-    id: "8",
-    title: "Bachata Moderna - Fuzja stylów i nowe możliwości ekspresji",
+  "konkursy-bachata-polska": {
+    id: "5",
+    title: "Konkursy bachaty w Polsce - Harmonogram na najbliższe miesiące",
     image:
-      "https://images.unsplash.com/photo-1524117074681-31bd4de22ad3?q=80&w=1770&auto=format&fit=crop",
-    slug: "bachata-moderna-fuzja",
-    author: {
-      name: "Ana Martinez",
-      avatar: "https://randomuser.me/api/portraits/women/52.jpg",
-    },
-    category: ArticleCategory.SECONDARY,
-  },
-  "warsztaty-bachaty-online": {
-    id: "9",
-    title: "Warsztaty Bachaty Online - Nowa Era Nauki Tańca",
-    image:
-      "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?q=80&w=1770&auto=format&fit=crop",
-    slug: "warsztaty-bachaty-online",
-    category: ArticleCategory.SECONDARY,
-  },
-  "bachata-kluby-przewodnik": {
-    id: "10",
-    title: "Bachata w klubach - Przewodnik po najlepszych miejscówkach",
-    image:
-      "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=1770&auto=format&fit=crop",
-    slug: "bachata-kluby-przewodnik",
-    author: {
-      name: "Miguel Torres",
-      avatar: "https://randomuser.me/api/portraits/men/62.jpg",
-    },
+      "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=1770",
+    slug: "konkursy-bachata-polska",
     category: ArticleCategory.SECONDARY,
   },
 
-  // Artykuły w sidebarze
+  // ===== ARTYKUŁY EDUKACYJNE (NAUKA) =====
+  "podstawy-bachaty": {
+    id: "e1",
+    title: "Od czego zacząć naukę bachaty? Kompletny przewodnik",
+    image:
+      "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=1770",
+    slug: "podstawy-bachaty",
+    category: ArticleCategory.FEATURED,
+  },
+  "technika-prowadzenia": {
+    id: "e2",
+    title: "Technika prowadzenia w bachacie - Najważniejsze zasady",
+    image:
+      "https://images.unsplash.com/photo-1524117074681-31bd4de22ad3?w=1770",
+    slug: "technika-prowadzenia",
+    category: ArticleCategory.FEATURED,
+  },
+  "figury-dla-poczatkujacych": {
+    id: "e3",
+    title: "Top 10 figur dla początkujących w bachacie",
+    image:
+      "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=1770",
+    slug: "figury-dla-poczatkujacych",
+    category: ArticleCategory.SECONDARY,
+  },
+  "musicality-bachata": {
+    id: "e4",
+    title: "Muzyczność w bachacie - Jak tańczyć do rytmu?",
+    image:
+      "https://images.unsplash.com/photo-1535525153412-5a42439a210d?w=1770",
+    slug: "musicality-bachata",
+    category: ArticleCategory.SECONDARY,
+  },
+
+  // ===== ARTYKUŁY O NAJLEPSZYCH TAŃCACH (TOP DANCE) =====
+  "top-bachata-2024": {
+    id: "v1",
+    title: "Najlepsze występy bachaty 2024 - Top 10 pokazów",
+    image:
+      "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=1770",
+    slug: "top-bachata-2024",
+    category: ArticleCategory.FEATURED,
+  },
+  "mistrzowskie-pokazy": {
+    id: "v2",
+    title: "Mistrzowskie pokazy z World Bachata Masters 2024",
+    image:
+      "https://images.unsplash.com/photo-1524117074681-31bd4de22ad3?w=1770",
+    slug: "mistrzowskie-pokazy",
+    category: ArticleCategory.FEATURED,
+  },
+  "viral-bachata-videos": {
+    id: "v3",
+    title: "Viralowe filmy bachatowe tego miesiąca",
+    image:
+      "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=1770",
+    slug: "viral-bachata-videos",
+    category: ArticleCategory.SECONDARY,
+  },
+  "najlepsze-choreografie": {
+    id: "v4",
+    title: "Najlepsze choreografie bachaty 2024",
+    image:
+      "https://images.unsplash.com/photo-1535525153412-5a42439a210d?w=1770",
+    slug: "najlepsze-choreografie",
+    category: ArticleCategory.SECONDARY,
+  },
+
+  // ===== ARTYKUŁY Z WYWIADÓW =====
+  "wywiad-carla-viviani": {
+    id: "i1",
+    title:
+      "Zouk i Bachata - wywiad z Carlą Viviani o łączeniu stylów tanecznych",
+    slug: "zouk-bachata-wywiad-carla-viviani",
+    image: "https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?w=800",
+    category: ArticleCategory.INTERVIEW_FEATURED,
+  },
+  "wywiad-daniel-desiree": {
+    id: "i2",
+    title: "Daniel y Desiree - o rozwoju bachaty sensual w Europie",
+    slug: "daniel-desiree-rozwoj-bachaty-sensual",
+    image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800",
+    category: ArticleCategory.INTERVIEW_FEATURED,
+  },
+  "wywiad-korke-judith": {
+    id: "i3",
+    title: "Korke i Judith - nasza droga do sukcesu w bachacie",
+    slug: "korke-judith-droga-do-sukcesu",
+    image: "https://images.unsplash.com/photo-1547153760-18fc86324498?w=800",
+    category: ArticleCategory.INTERVIEW_SECONDARY,
+  },
+  "wywiad-jorge-burgos": {
+    id: "i4",
+    title: "Jorge Burgos - o ewolucji bachaty dominikańskiej",
+    slug: "jorge-burgos-ewolucja-bachaty",
+    image: "https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?w=800",
+    category: ArticleCategory.INTERVIEW_SECONDARY,
+  },
+  "wywiad-marco-sara": {
+    id: "i5",
+    title: "Marco i Sara - jak stworzyliśmy własny styl w bachacie",
+    slug: "marco-sara-wlasny-styl",
+    image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800",
+    category: ArticleCategory.INTERVIEW_SECONDARY,
+  },
+  "wywiad-ataca-alemana": {
+    id: "i6",
+    title: "Ataca i La Alemana - o początkach kariery i planach na przyszłość",
+    slug: "ataca-alemana-wywiad",
+    image: "https://images.unsplash.com/photo-1547153760-18fc86324498?w=800",
+    category: ArticleCategory.INTERVIEW_SECONDARY,
+  },
+  "wywiad-ronald-alba": {
+    id: "i7",
+    title: "Ronald i Alba - jak prowadzić szkołę tańca z sukcesem",
+    slug: "ronald-alba-szkola-tanca",
+    image: "https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?w=800",
+    category: ArticleCategory.INTERVIEW_SECONDARY,
+  },
+  "wywiad-tony-lara": {
+    id: "i8",
+    title: "Tony Lara - o historii bachaty i jej współczesnym obliczu",
+    slug: "tony-lara-historia-bachaty",
+    image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800",
+    category: ArticleCategory.INTERVIEW_SECONDARY,
+  },
+  "wywiad-isabelle-felicien": {
+    id: "i9",
+    title: "Isabelle i Felicien - łączenie stylów w bachacie fusion",
+    slug: "isabelle-felicien-bachata-fusion",
+    image: "https://images.unsplash.com/photo-1547153760-18fc86324498?w=800",
+    category: ArticleCategory.INTERVIEW_SECONDARY,
+  },
+  "wywiad-daniel-poczatkujacy": {
+    id: "i10",
+    title: "Wywiad z Danielem: Od początkującego do mistrza bachaty",
+    slug: "daniel-od-poczatkujacego-do-mistrza",
+    image: "https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?w=800",
+    category: ArticleCategory.INTERVIEW_SIDEBAR,
+  },
+  "wywiad-desiree-kobiecosc": {
+    id: "i11",
+    title: "Rozmowa z Desirée o kobiecości w bachacie",
+    slug: "desiree-kobiecosc-w-bachacie",
+    image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800",
+    category: ArticleCategory.INTERVIEW_SIDEBAR,
+  },
+
+  // Artykuły w sidebarze dla każdej sekcji
+  "sidebar-nowosci": {
+    id: "s1",
+    title: "Najnowsze trendy w bachacie dominikańskiej",
+    image: "https://images.unsplash.com/photo-1535043934128-cf0b28d52f95",
+    slug: "sidebar-nowosci",
+    category: ArticleCategory.SIDEBAR,
+    sidebarCategory: "TRENDY",
+  },
+  "sidebar-technika": {
+    id: "s2",
+    title: "5 ćwiczeń na poprawę techniki w bachacie",
+    image: "https://images.unsplash.com/photo-1566224425427-998683bb171e",
+    slug: "sidebar-technika",
+    category: ArticleCategory.SIDEBAR,
+    sidebarCategory: "NAUKA",
+  },
+  "sidebar-pokazy": {
+    id: "s3",
+    title: "Najlepsze pokazy z BachatArt Festival",
+    image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7",
+    slug: "sidebar-pokazy",
+    category: ArticleCategory.SIDEBAR,
+    sidebarCategory: "POKAZY",
+  },
   "buty-do-bachaty-poradnik": {
     id: "s1",
     title: "Jak wybrać idealne buty do bachaty? Poradnik dla początkujących",
@@ -181,86 +310,6 @@ export const articles: Record<string, NewsArticle> = {
     slug: "bachata-styl-dominikanski",
     category: ArticleCategory.SIDEBAR,
     sidebarCategory: "EDUKACJA",
-  },
-
-  // ===== ARTYKUŁY Z WYWIADÓW =====
-  "wywiad-carla-viviani": {
-    id: "i1",
-    title:
-      "Zouk i Bachata - wywiad z Carlą Viviani o łączeniu stylów tanecznych",
-    slug: "zouk-bachata-wywiad-carla-viviani",
-    image: "https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?w=800",
-    category: ArticleCategory.INTERVIEW_FEATURED,
-  },
-  "wywiad-daniel-desiree": {
-    id: "i2",
-    title: "Daniel y Desiree - o rozwoju bachaty sensual w Europie",
-    slug: "daniel-desiree-rozwoj-bachaty-sensual",
-    image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800",
-    category: ArticleCategory.INTERVIEW_FEATURED,
-  },
-  "wywiad-korke-judith": {
-    id: "i3",
-    title: "Korke i Judith - nasza droga do sukcesu w bachacie",
-    slug: "korke-judith-droga-do-sukcesu",
-    image: "https://images.unsplash.com/photo-1547153760-18fc86324498?w=800",
-    category: ArticleCategory.INTERVIEW_SECONDARY,
-  },
-  "wywiad-jorge-burgos": {
-    id: "i4",
-    title: "Jorge Burgos - o ewolucji bachaty dominikańskiej",
-    slug: "jorge-burgos-ewolucja-bachaty",
-    image: "https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?w=800",
-    category: ArticleCategory.INTERVIEW_SECONDARY,
-  },
-  "wywiad-marco-sara": {
-    id: "i5",
-    title: "Marco i Sara - jak stworzyliśmy własny styl w bachacie",
-    slug: "marco-sara-wlasny-styl",
-    image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800",
-    category: ArticleCategory.INTERVIEW_SECONDARY,
-  },
-  "wywiad-ataca-alemana": {
-    id: "i6",
-    title: "Ataca i La Alemana - o początkach kariery i planach na przyszłość",
-    slug: "ataca-alemana-wywiad",
-    image: "https://images.unsplash.com/photo-1547153760-18fc86324498?w=800",
-    category: ArticleCategory.INTERVIEW_SECONDARY,
-  },
-  "wywiad-ronald-alba": {
-    id: "i7",
-    title: "Ronald i Alba - jak prowadzić szkołę tańca z sukcesem",
-    slug: "ronald-alba-szkola-tanca",
-    image: "https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?w=800",
-    category: ArticleCategory.INTERVIEW_SECONDARY,
-  },
-  "wywiad-tony-lara": {
-    id: "i8",
-    title: "Tony Lara - o historii bachaty i jej współczesnym obliczu",
-    slug: "tony-lara-historia-bachaty",
-    image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800",
-    category: ArticleCategory.INTERVIEW_SECONDARY,
-  },
-  "wywiad-isabelle-felicien": {
-    id: "i9",
-    title: "Isabelle i Felicien - łączenie stylów w bachacie fusion",
-    slug: "isabelle-felicien-bachata-fusion",
-    image: "https://images.unsplash.com/photo-1547153760-18fc86324498?w=800",
-    category: ArticleCategory.INTERVIEW_SECONDARY,
-  },
-  "wywiad-daniel-poczatkujacy": {
-    id: "i10",
-    title: "Wywiad z Danielem: Od początkującego do mistrza bachaty",
-    slug: "daniel-od-poczatkujacego-do-mistrza",
-    image: "https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?w=800",
-    category: ArticleCategory.INTERVIEW_SIDEBAR,
-  },
-  "wywiad-desiree-kobiecosc": {
-    id: "i11",
-    title: "Rozmowa z Desirée o kobiecości w bachacie",
-    slug: "desiree-kobiecosc-w-bachacie",
-    image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800",
-    category: ArticleCategory.INTERVIEW_SIDEBAR,
   },
 };
 
