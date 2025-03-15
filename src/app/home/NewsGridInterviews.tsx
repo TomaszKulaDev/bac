@@ -67,24 +67,41 @@ const SidebarArticleCard = ({
     article.image ||
     "https://images.unsplash.com/photo-1545128485-c400ce7b6892?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80";
 
-  return (
-    <div className="flex py-3 border-b border-gray-100 last:border-b-0 group pl-3">
-      <div className="flex-shrink-0 w-[80px] h-[60px] mr-3 overflow-hidden">
-        <Image
-          src={imageUrl}
-          alt={article.title}
-          width={80}
-          height={60}
-          className="w-full h-full object-cover"
-        />
+  // Tylko pierwszy artykuł ma zdjęcie, reszta to tylko napisy
+  if (index === 0) {
+    return (
+      <div className="flex py-3 border-b border-gray-100 last:border-b-0 group pl-3">
+        <div className="flex-shrink-0 w-[80px] h-[60px] mr-3 overflow-hidden">
+          <Image
+            src={imageUrl}
+            alt={article.title}
+            width={80}
+            height={60}
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div className="flex-1 pr-3">
+          <Link href={`/artykul/${article.slug}`}>
+            <h3 className="text-sm font-bold text-gray-900 leading-tight line-clamp-2 group-hover:text-gray-700 transition-colors">
+              {article.title}
+            </h3>
+          </Link>
+        </div>
       </div>
-      <div className="flex-1 pr-3">
-        <Link href={`/artykul/${article.slug}`}>
-          <h3 className="text-sm font-bold text-gray-900 leading-tight line-clamp-2 group-hover:text-gray-700 transition-colors">
+    );
+  }
+
+  // Uproszczona wersja dla pozostałych artykułów - tylko tekst
+  return (
+    <div className="py-2 border-b border-gray-100 last:border-b-0 group pl-3">
+      <Link href={`/artykul/${article.slug}`} className="block">
+        <div className="flex items-center">
+          <div className="w-1.5 h-1.5 bg-[#ffd200] rounded-full mr-2 flex-shrink-0"></div>
+          <h3 className="text-xs font-medium text-gray-900 leading-tight line-clamp-1 group-hover:text-gray-700 transition-colors">
             {article.title}
           </h3>
-        </Link>
-      </div>
+        </div>
+      </Link>
     </div>
   );
 };
@@ -191,9 +208,9 @@ const ArticleCard = ({
 
 export default function NewsGridInterviews() {
   return (
-    <div className="bg-white text-gray-900 py-4">
+    <div className="bg-white text-gray-900 py-6 mt-4">
       <div className="max-w-[1300px] mx-auto px-4">
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-2">
           <SectionHeaderWithAuthors
             letter="W"
             title="WYWIADY Z TANCERZAMI"
@@ -242,12 +259,12 @@ export default function NewsGridInterviews() {
           </div>
 
           <div className="col-span-12 lg:col-span-4">
-            <div className="mb-4">
+            <div className="mb-2">
               <div className="flex items-center">
-                <div className="bg-[#ffd200] rounded-md w-8 h-8 flex items-center justify-center mr-2">
-                  <span className="font-bold text-black">W</span>
+                <div className="bg-[#ffd200] rounded-md w-6 h-6 flex items-center justify-center mr-1.5">
+                  <span className="font-bold text-black text-xs">W</span>
                 </div>
-                <h2 className="text-base font-bold uppercase">
+                <h2 className="text-xs font-bold uppercase">
                   NAJNOWSZE WYWIADY
                 </h2>
               </div>
@@ -260,6 +277,15 @@ export default function NewsGridInterviews() {
                   index={index}
                 />
               ))}
+            </div>
+
+            <div className="mt-2 text-center">
+              <Link
+                href="/wywiady-z-tancerzami"
+                className="inline-block px-3 py-1 text-xs text-gray-600 hover:text-gray-900 hover:underline transition-colors"
+              >
+                Zobacz więcej
+              </Link>
             </div>
           </div>
         </div>

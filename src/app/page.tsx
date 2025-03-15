@@ -19,27 +19,27 @@ export default function HomePage() {
 
       <main>
         {/* Recommended Practices */}
-        <section className="py-4">
+        <section className="py-2">
           <RecommendedPractices />
         </section>
 
         {/* News Grid */}
-        <section className="py-2">
+        <section className="py-2 border-b border-gray-100">
           <NewsGrid />
         </section>
 
         {/* News Grid Education */}
-        <section className="py-2">
+        <section className="py-2 border-b border-gray-100">
           <NewsGridEducation />
         </section>
 
         {/* News Grid Top Video Dance */}
-        <section className="py-2">
+        <section className="py-2 border-b border-gray-100">
           <NewsGridTopVideoDance />
         </section>
 
         {/* News Grid Interviews */}
-        <section className="py-2 bg-gray-50">
+        <section className="py-2">
           <NewsGridInterviews />
         </section>
       </main>
