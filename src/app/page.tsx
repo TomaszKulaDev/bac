@@ -7,11 +7,17 @@ import NewsGridTopVideoDance from "./home/NewsGridTopVideoDance";
 import NewsGridInterviews from "./home/NewsGridInterviews";
 import RecommendedPractices from "./home/components/RecommendedPractices";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
+import InfoBar from "./home/components/InfoBar";
 
 export default function HomePage() {
   return (
     <div className="min-h-screen">
-      <main className="pt-8">
+      {/* Info Bar */}
+      <div className="mb-4">
+        <InfoBar />
+      </div>
+
+      <main>
         {/* Recommended Practices */}
         <section className="py-4 bg-gray-50">
           <RecommendedPractices />
@@ -26,6 +32,7 @@ export default function HomePage() {
         <section className="py-8">
           <NewsGridEducation />
         </section>
+
         {/* News Grid Top Video Dance */}
         <section className="py-8">
           <NewsGridTopVideoDance />

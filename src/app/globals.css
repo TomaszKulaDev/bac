@@ -493,7 +493,7 @@ select option {
 }
 
 /* Dodajmy style dla znaczników zakresu zapętlenia */
-.loop-marker {    
+.loop-marker {
   @apply absolute top-1/2 -translate-y-1/2 w-1 h-4 
          bg-orange-500 rounded-sm 
          transform -translate-x-1/2
