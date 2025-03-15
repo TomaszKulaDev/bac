@@ -313,16 +313,16 @@ const RecommendedPractices: React.FC = () => {
   };
 
   return (
-    <div className="bg-gray-50 h-[232px]">
+    <div className="bg-gray-50 h-[220px]">
       <div className="max-w-[1300px] mx-auto px-4 h-full flex flex-col">
         {/* Header section with improved styling */}
-        <div className="flex items-center justify-between py-2">
+        <div className="flex items-center justify-between py-1">
           <div className="flex items-center">
-            <div className="bg-[#ffd200] w-8 h-8 flex items-center justify-center mr-2 rounded-md shadow-sm">
-              <FaCalendarAlt className="text-gray-900 w-4 h-4" />
+            <div className="bg-[#ffd200] w-7 h-7 flex items-center justify-center mr-2 rounded-md shadow-sm">
+              <FaCalendarAlt className="text-gray-900 w-3.5 h-3.5" />
             </div>
             <div>
-              <h2 className="text-base font-bold uppercase tracking-wide text-gray-900">
+              <h2 className="text-sm font-bold uppercase tracking-wide text-gray-900">
                 PRAKTISY TANECZNE
               </h2>
             </div>
@@ -381,7 +381,7 @@ const RecommendedPractices: React.FC = () => {
           </div>
         </div>
 
-        <div className="relative flex-1">
+        <div className="relative flex-1 mt-1">
           {/* Card navigation buttons positioned on the sides of the carousel */}
           <div className="absolute left-0 top-1/2 -translate-y-1/2 -ml-3 z-10">
             <button
@@ -418,12 +418,12 @@ const RecommendedPractices: React.FC = () => {
                 display: none;
               }
             `}</style>
-            <div className="flex space-x-3 pl-1 pr-4 h-full py-1">
+            <div className="flex space-x-3 pl-1 pr-4 h-full py-0">
               {filteredPractices.map((practice, index) => (
                 <Link
                   key={practice.id}
                   href={practice.url}
-                  className="w-[300px] h-[180px] flex-shrink-0 bg-white hover:shadow-lg transition-all duration-300 group overflow-hidden border border-gray-200 hover:border-gray-300 flex"
+                  className="w-[300px] h-[175px] flex-shrink-0 bg-white hover:shadow-lg transition-all duration-300 group overflow-hidden border border-gray-200 hover:border-gray-300 flex"
                   style={{
                     transform: `scale(${index === currentIndex ? 1.02 : 1})`,
                     transformOrigin: "center center",
@@ -546,7 +546,7 @@ const RecommendedPractices: React.FC = () => {
           </div>
 
           {/* Scroll indicators */}
-          <div className="absolute bottom-[-6px] left-0 right-0 flex justify-center space-x-1">
+          <div className="absolute bottom-[-8px] left-0 right-0 flex justify-center space-x-1">
             {filteredPractices.map((_, index) => (
               <button
                 key={index}

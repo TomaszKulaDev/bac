@@ -238,9 +238,9 @@ const ArticleCard = ({
 
 export default function NewsGrid() {
   return (
-    <div className="bg-white text-gray-900 py-4">
+    <div className="bg-white text-gray-900 py-0">
       <div className="max-w-[1300px] mx-auto px-4">
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-2">
           <SectionHeaderWithAuthors
             letter="B"
             title="BACHATA NA DZIŚ"
@@ -287,12 +287,12 @@ export default function NewsGrid() {
 
           {/* Sidebar - News Portal Style */}
           <div className="col-span-12 lg:col-span-4">
-            <div className="mb-4">
+            <div className="mb-2">
               <div className="flex items-center">
-                <div className="bg-[#ffd200] rounded-md w-8 h-8 flex items-center justify-center mr-2">
-                  <span className="font-bold text-black">B</span>
+                <div className="bg-[#ffd200] rounded-md w-6 h-6 flex items-center justify-center mr-1.5">
+                  <span className="font-bold text-black text-xs">B</span>
                 </div>
-                <h2 className="text-base font-bold uppercase">BACHATA NEWS</h2>
+                <h2 className="text-xs font-bold uppercase">BACHATA NEWS</h2>
               </div>
             </div>
 
@@ -306,10 +306,10 @@ export default function NewsGrid() {
               ))}
             </div>
 
-            <div className="mt-4 text-center">
+            <div className="mt-2 text-center">
               <Link
                 href="/bachata-news"
-                className="inline-block px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:underline transition-colors"
+                className="inline-block px-3 py-1 text-xs text-gray-600 hover:text-gray-900 hover:underline transition-colors"
               >
                 Zobacz więcej
               </Link>
