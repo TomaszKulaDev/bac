@@ -264,8 +264,8 @@ export default function NewsGridEducation() {
               )}
             </div>
 
-            {/* Secondary articles grid */}
-            <div className="grid grid-cols-3 gap-2">
+            {/* Secondary articles grid - zmodyfikowana dla responsywności */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
               {secondaryArticles.slice(0, 9).map((article, index) => (
                 <ArticleCard
                   key={article.id}
